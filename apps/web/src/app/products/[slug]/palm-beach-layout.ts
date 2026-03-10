@@ -162,8 +162,8 @@ export const palmBeachLayout: ProductLayout = {
   ],
 
   gallery: [
-    { image: 'page002_img01_2106x1506.jpeg', text: '\', label: \'' },
-    { image: 'page005_img01_1955x1505.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_2106x1506.jpeg', text: '', label: '' },
+    { image: 'page005_img01_1955x1505.jpeg', text: '', label: '' },
     { image: 'page006_img01_2086x1505.jpeg', text: 'Our window treatments do more than look ', label: '' },
     { image: 'page007_img01_2996x1505.jpeg', text: '5136 Bright White with 41/2" Louver and ', label: '' },
     { image: 'page008_img01_2995x1505.jpeg', text: 'SoftClose™ louvers with Quick Align™ pro', label: '' },

@@ -135,13 +135,13 @@ export const vignetteLayout: VignetteLayout = {
 
   // ──── Gallery ────
   gallery: [
-    { image: 'page005_img02_1959x3009.jpeg', text: '\', label: \'' },
-    { image: 'page010_img01_3909x3012.jpeg', text: '\', label: \'' },
-    { image: 'page011_img01_7810x3009.jpeg', text: '\', label: \'' },
-    { image: 'page012_img01_3909x3009.jpeg', text: '\', label: \'' },
-    { image: 'page013_img01_2820x1623.jpeg', text: '\', label: \'' },
-    { image: 'page014_img01_5234x3010.jpeg', text: '\', label: \'' },
-    { image: 'page020_img01_3909x3010.jpeg', text: '\', label: \'' },
+    { image: 'page005_img02_1959x3009.jpeg', text: '', label: '' },
+    { image: 'page010_img01_3909x3012.jpeg', text: '', label: '' },
+    { image: 'page011_img01_7810x3009.jpeg', text: '', label: '' },
+    { image: 'page012_img01_3909x3009.jpeg', text: '', label: '' },
+    { image: 'page013_img01_2820x1623.jpeg', text: '', label: '' },
+    { image: 'page014_img01_5234x3010.jpeg', text: '', label: '' },
+    { image: 'page020_img01_3909x3010.jpeg', text: '', label: '' },
   ],
 
   hardwareColors: null,

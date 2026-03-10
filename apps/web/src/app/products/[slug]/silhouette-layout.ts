@@ -199,14 +199,14 @@ export const silhouetteLayout: SilhouetteLayout = {
 
   // ──── Gallery (排除已用于 scene-pair 的图) ────
   gallery: [
-    { image: 'page005_img01_1957x1513.jpeg', text: '\', label: \'' },
-    { image: 'page006_img02_2672x1505.jpeg', text: '\', label: \'' },
-    { image: 'page007_img01_3080x1505.jpeg', text: '\', label: \'' },
-    { image: 'page009_img01_3080x1505.jpeg', text: '\', label: \'' },
-    { image: 'page012_img01_3083x1518.jpeg', text: '\', label: \'' },
-    { image: 'page017_img01_3077x1505.jpeg', text: '\', label: \'' },
-    { image: 'page022_img01_3082x1516.jpeg', text: '\', label: \'' },
-    { image: 'page025_img01_1955x1505.jpeg', text: '\', label: \'' },
+    { image: 'page005_img01_1957x1513.jpeg', text: '', label: '' },
+    { image: 'page006_img02_2672x1505.jpeg', text: '', label: '' },
+    { image: 'page007_img01_3080x1505.jpeg', text: '', label: '' },
+    { image: 'page009_img01_3080x1505.jpeg', text: '', label: '' },
+    { image: 'page012_img01_3083x1518.jpeg', text: '', label: '' },
+    { image: 'page017_img01_3077x1505.jpeg', text: '', label: '' },
+    { image: 'page022_img01_3082x1516.jpeg', text: '', label: '' },
+    { image: 'page025_img01_1955x1505.jpeg', text: '', label: '' },
   ],
 
   // ──── Vane Size - page 34 (2×2) ────

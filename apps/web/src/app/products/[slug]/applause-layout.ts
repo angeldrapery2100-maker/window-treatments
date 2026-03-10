@@ -237,17 +237,17 @@ export const applauseLayout: ApplauseLayout = {
 
   // ──── Gallery (scene/lifestyle images with PDF labels) ────
   gallery: [
-    { image: 'page002_img01_2105x1505.jpeg', text: '\', label: \'Applause® Honeycomb Shades' },
-    { image: 'page005_img01_1955x1506.jpeg', text: '\', label: \'' },
-    { image: 'page005_img02_978x1505.jpeg', text: '\', label: \'' },
-    { image: 'page010_img01_2618x1505.jpeg', text: '\', label: \'' },
-    { image: 'page010_img02_764x1013.jpeg', text: '\', label: \'' },
-    { image: 'page011_img01_1955x1505.jpeg', text: '\', label: \'Fabric Classic    Color Daisy White\nOperating System LiteRise®' },
-    { image: 'page011_img02_1236x836.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_2105x1505.jpeg', text: '', label: 'Applause® Honeycomb Shades' },
+    { image: 'page005_img01_1955x1506.jpeg', text: '', label: '' },
+    { image: 'page005_img02_978x1505.jpeg', text: '', label: '' },
+    { image: 'page010_img01_2618x1505.jpeg', text: '', label: '' },
+    { image: 'page010_img02_764x1013.jpeg', text: '', label: '' },
+    { image: 'page011_img01_1955x1505.jpeg', text: '', label: 'Fabric Classic    Color Daisy White\nOperating System LiteRise®' },
+    { image: 'page011_img02_1236x836.jpeg', text: '', label: '' },
     { image: 'page015_img01_1953x1504.jpeg', text: 'Year-Round Comfort', label: 'Fabric Kinship™    Color Beach Glass\nOperating System LiteRise®' },
     { image: 'page016_img01_1952x1503.jpeg', text: 'Light Control and Privacy', label: 'Fabric Classic    Color Daisy White\nOperating System PowerView® Automation' },
     { image: 'page017_img01_1951x1505.jpeg', text: 'Duolite® Dual Opacity Option', label: 'Fabric Classic    Color Daisy White\nOperating System PowerView® Automation\nDesign Option Duolite®' },
-    { image: 'page023_img01_1953x1505.jpeg', text: '\', label: \'Fabric Classic    Color Frost\nOperating System LiteRise®' },
+    { image: 'page023_img01_1953x1505.jpeg', text: '', label: 'Fabric Classic    Color Frost\nOperating System LiteRise®' },
   ],
 
   // ──── Cell Size ────

@@ -182,13 +182,13 @@ export const pirouetteLayout: PirouetteLayout = {
 
   /* ─── Gallery ─── */
   gallery: [
-    { image: 'page002_img01_4209x3009.jpeg', text: '\', label: \'' },
-    { image: 'page005_img01_3936x3044.jpeg', text: '\', label: \'' },
-    { image: 'page011_img01_3909x3009.jpeg', text: '\', label: \'Fabric Alustra\u00AE Oakley\u2122 \u00B7 Color Sand Jasper\nControl Option PowerView\u00AE Automation' },
-    { image: 'page015_img01_3910x3009.jpeg', text: '\', label: \'Fabric Thea\u2122 \u00B7 Color Cypher\nControl Option PowerView\u00AE Automation' },
-    { image: 'page016_img01_3907x3009.jpeg', text: '\', label: \'Fabric ClearView\u00AE Satin \u00B7 Color Luxe\nControl Option PowerView\u00AE Automation' },
-    { image: 'page022_img01_3909x3010.jpeg', text: '\', label: \'Fabric ClearView\u00AE Batiste Bamboo \u00B7 Color Pesto\nControl Option PowerView\u00AE Automation' },
-    { image: 'page024_img01_3009x2427.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_4209x3009.jpeg', text: '', label: '' },
+    { image: 'page005_img01_3936x3044.jpeg', text: '', label: '' },
+    { image: 'page011_img01_3909x3009.jpeg', text: '', label: 'Fabric Alustra\u00AE Oakley\u2122 \u00B7 Color Sand Jasper\nControl Option PowerView\u00AE Automation' },
+    { image: 'page015_img01_3910x3009.jpeg', text: '', label: 'Fabric Thea\u2122 \u00B7 Color Cypher\nControl Option PowerView\u00AE Automation' },
+    { image: 'page016_img01_3907x3009.jpeg', text: '', label: 'Fabric ClearView\u00AE Satin \u00B7 Color Luxe\nControl Option PowerView\u00AE Automation' },
+    { image: 'page022_img01_3909x3010.jpeg', text: '', label: 'Fabric ClearView\u00AE Batiste Bamboo \u00B7 Color Pesto\nControl Option PowerView\u00AE Automation' },
+    { image: 'page024_img01_3009x2427.jpeg', text: '', label: '' },
   ],
 
   hardwareColors: null,

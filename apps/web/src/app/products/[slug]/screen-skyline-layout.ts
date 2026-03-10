@@ -98,8 +98,8 @@ export const screenSkylineLayout: ProductLayout = {
   ],
 
   gallery: [
-    { image: 'page002_img01_4328x3009.jpeg', text: '\', label: \'' },
-    { image: 'page005_img01_3910x3010.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_4328x3009.jpeg', text: '', label: '' },
+    { image: 'page005_img01_3910x3010.jpeg', text: '', label: '' },
     { image: 'page006_img01_3117x2249.jpeg', text: 'Our window treatments do more than look ', label: '' },
     { image: 'page007_img01_4478x2250.jpeg', text: 'Control Option PowerView® Automation', label: 'Fabric Fondant 3%    Color Brittle\nControl Option PowerView® Automation' },
     { image: 'page008_img01_4416x2219.jpeg', text: 'Designer Screen Shades and Skyline® Pane', label: '' },

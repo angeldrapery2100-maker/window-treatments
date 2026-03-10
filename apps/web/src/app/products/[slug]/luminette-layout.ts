@@ -156,11 +156,11 @@ export const luminetteLayout: LuminetteLayout = {
 
   // ──── Gallery ────
   gallery: [
-    { image: 'page005_img01_1955x1505.jpeg', text: '\', label: \'' },
+    { image: 'page005_img01_1955x1505.jpeg', text: '', label: '' },
     { image: 'page012_img01_3080x1505.jpeg', text: 'Pair Luminette® sheers with Pirouette® Window Shadings for a refined, sculptural aesthetic.', label: 'Luminette® and Pirouette® Fabric Stria™ · Color Sand Shimmer\nOperating System PowerView® Automation' },
     { image: 'page013_img01_2855x1505.jpeg', text: 'A sleekly engineered hardware system allows Luminette® sheers to open and close with ease.', label: 'Luminette® and Silhouette® Fabric Stria™ · Color Sand Shimmer\nOperating System PowerView® Automation' },
-    { image: 'page017_img01_3077x1505.jpeg', text: '\', label: \'Fabric Bristol™ · Color Tahitian Vanilla\nOperating System PowerView® Automation' },
-    { image: 'page020_img01_1955x1505.jpeg', text: '\', label: \'Fabric Originale™ · Color Radiant White\nOperating System PowerView® Automation' },
+    { image: 'page017_img01_3077x1505.jpeg', text: '', label: 'Fabric Bristol™ · Color Tahitian Vanilla\nOperating System PowerView® Automation' },
+    { image: 'page020_img01_1955x1505.jpeg', text: '', label: 'Fabric Originale™ · Color Radiant White\nOperating System PowerView® Automation' },
   ],
 
   // Vane Size removed per user request

@@ -177,8 +177,8 @@ export const heritanceNewstyleLayout: ProductLayout = {
   ],
 
   gallery: [
-    { image: 'page002_img01_2105x1505.jpeg', text: '\', label: \'' },
-    { image: 'page005_img01_1955x1505.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_2105x1505.jpeg', text: '', label: '' },
+    { image: 'page005_img01_1955x1505.jpeg', text: '', label: '' },
     { image: 'page006_img01_2086x1505.jpeg', text: 'Our window treatments do more than look ', label: '' },
     { image: 'page007_img01_2995x1505.jpeg', text: 'Heritance® 7081 Obsidian with 31/2" Louv', label: '' },
     { image: 'page008_img01_2993x1504.jpeg', text: 'Heritance® Hardwood Shutters are custom ', label: '' },
@@ -186,7 +186,7 @@ export const heritanceNewstyleLayout: ProductLayout = {
     { image: 'page010_img01_5043x1944.jpeg', text: 'Heritance®  7088 Greyhound with 41/2" Lo', label: '' },
     { image: 'page011_img01_2999x1507.jpeg', text: 'Heritance®  8002 Windsor Walnut with 41/', label: '' },
     { image: 'page012_img01_3900x1503.jpeg', text: 'Heritance®  8044 Salt and Pepper with 41', label: '' },
-    { image: 'page014_img01_1954x1504.jpeg', text: '\', label: \'' },
+    { image: 'page014_img01_1954x1504.jpeg', text: '', label: '' },
     { image: 'page015_img01_2087x1506.jpeg', text: 'Our window treatments do more than look ', label: '' },
     { image: 'page016_img01_2997x1506.jpeg', text: 'NewStyle® 6683 Zenith with 41/2" Louver ', label: '' },
   ],

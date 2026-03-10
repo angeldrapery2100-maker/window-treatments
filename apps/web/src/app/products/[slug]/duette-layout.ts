@@ -459,7 +459,7 @@ export function buildDuetteLayout(product: SourceProduct): DuetteLayout {
         ],
       },
     ],
-    gallery: galleryImages.map((image) => ({ image, text: '\', label: \'' })),
+    gallery: galleryImages.map((image) => ({ image, text: '', label: '' })),
     cellSize: null,
     hardwareColors,
     swatchCollections,
