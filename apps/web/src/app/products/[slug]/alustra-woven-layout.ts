@@ -227,7 +227,7 @@ export const alustraWovenLayout: ProductLayout = {
   ],
 
   gallery: [
-    { image: 'page002_img01_2028x1953.jpeg', text: '\', label: \'' },
+    { image: 'page002_img01_2028x1953.jpeg', text: '', label: '' },
     { image: 'page006_img01_2681x1953.jpeg', text: 'Operating System PowerView® Automation  ', label: 'Fabric Timberlake    Color Sun\nOperating System PowerView® Automation    Deck 1' },
     { image: 'page008_img01_1641x1954.jpeg', text: '4 Created to meet the expectations of th', label: '' },
     { image: 'page008_img03_1777x1955.jpeg', text: 'Created to meet the expectations of thos', label: '' },
@@ -237,7 +237,11 @@ export const alustraWovenLayout: ProductLayout = {
     { image: 'page010_img02_1798x1770.jpeg', text: 'Lori Weitzner is a leading international', label: '' },
     { image: 'page020_img02_1762x1536.jpeg', text: '28 Refined Dimension Specialty Features', label: 'Fabric Highlands by Lori Weitzner    Color Parchment\nOperating System PowerView® Automation    Deck 2' },
     { image: 'page021_img02_1703x1537.jpeg', text: '30 Minimalistic Perspective Specialty Fe', label: 'Fabric Retreat    Color Pure\nOperating System PowerView® Automation    Deck 1' },
-    { image: 'page027_img07_1269x1243.jpeg', text: '\', label: \'Fabric Plantation    Color Dynasty\nOperating System PowerView® Automation    Deck 2' },
+    {
+      image: 'page027_img07_1269x1243.jpeg',
+      text: '',
+      label: 'Fabric Plantation    Color Dynasty\nOperating System PowerView® Automation    Deck 2',
+    },
     { image: 'page028_img02_1696x1955.jpeg', text: '7:00 AM Morning Schedule shades to let i', label: '' },
   ],
 
