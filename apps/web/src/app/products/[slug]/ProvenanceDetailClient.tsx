@@ -398,18 +398,32 @@ function SwatchPanel({ collection, onImg }: { collection: SwatchCollection; onIm
 /* ═══ Section Router ═══ */
 function SectionRenderer({ section, onImg }: { section: any; onImg: (s: string, c?: string) => void }) {
   switch (section.type) {
+    case "scene-pair":
+      return (
+        <div className="space-y-12">
+          {(section.scenes as { image: string; text: string; label: string }[]).map((scene, i) => (
+            <ScenePairBlock key={i} scene={scene} index={i} onImg={onImg} />
+          ))}
+        </div>
+      )
     case "card-grid":
       return <CardGrid title={section.title} cols={section.cols} cards={section.cards} onImg={onImg} />
     case "comparison-grid":
       return <ComparisonGrid title={section.title} cols={section.cols} items={section.items} onImg={onImg} />
+    case "split-scene":
+      return <ComparisonGrid title={section.title} cols={4} items={section.items} onImg={onImg} />
     case "shade-styles":
       return <ShadeStylesSection section={section} onImg={onImg} />
     case "mounting-grid":
       return <MountingGrid title={section.title} rows={section.rows} onImg={onImg} />
     case "mounting-profiles":
       return <MountingProfilesSection section={section} onImg={onImg} />
+    case "edge-banding":
+      return <EdgeBandingSection data={section} onImg={onImg} />
     case "hardware-colors":
       return <HardwareColors title={section.title} brandLabel={section.brandLabel} items={section.items} />
+    case "control-systems":
+      return null  // handled separately if needed
     default:
       return null
   }
@@ -478,15 +492,6 @@ export default function ProvenanceDetailClient({ product, related, footer }: Pro
         </div>
       </section>
 
-      {/* ─── Scene Pairs ─── */}
-      <section className="w-full bg-white py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {L.scenePairs.map((scene, i) => (
-            <ScenePairBlock key={i} scene={scene} index={i} onImg={openLightbox} />
-          ))}
-        </div>
-      </section>
-
       {/* ═══ Direct Sections ═══ */}
       {L.sections.map((section, i) => (
         <section key={i} className={`w-full py-12 md:py-16 ${i % 2 === 0 ? "bg-[#fafaf8]" : "bg-white"}`}>
@@ -497,12 +502,12 @@ export default function ProvenanceDetailClient({ product, related, footer }: Pro
       ))}
 
       {/* ─── Liner Section ─── */}
-      {L.linerSection && (
+      {L.liner && (
         <section className="w-full py-12 md:py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-light text-gray-800 mb-2">Liner</h2>
             <p className="text-base text-gray-500 mb-10 max-w-3xl">Liner color options available for versatility and coordination.</p>
-            <LinerSection data={L.linerSection} onImg={openLightbox} />
+            <LinerSection data={L.liner} onImg={openLightbox} />
           </div>
         </section>
       )}
