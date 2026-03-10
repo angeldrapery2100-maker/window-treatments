@@ -47,7 +47,7 @@ export type SectionLayout =
   | { type: 'hero'; image: string; label: string }
   | { type: 'scene-pair'; scenes: { image: string; text: string; label: string }[] }
   | { type: 'card-grid'; title: string; cols: number; cards: CardItem[] }
-  | { type: 'comparison-grid'; title: string; cols: number; items: ImageLabel[] }
+  | { type: 'comparison-grid'; title: string; subtitle?: string; cols: number; items: ImageLabel[] }
   | { type: 'image-label-grid'; title: string; cols: number; items: ImageLabel[] }
   | { type: 'mounting-grid'; title: string; rows: { items: ImageLabel[] }[] }
   | { type: 'cell-size'; title: string; brandLabel: string; items: ImageLabel[] }

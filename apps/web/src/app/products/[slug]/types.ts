@@ -46,7 +46,7 @@ export type SectionLayout =
   | { type: 'hero'; image: string; label: string }
   | { type: 'scene-pair'; scenes: { image: string; text: string; label: string }[] }
   | { type: 'card-grid'; title: string; cols: number; cards: CardItem[] }
-  | { type: 'comparison-grid'; title: string; cols: number; items: ImageLabel[] }
+  | { type: 'comparison-grid'; title: string; subtitle?: string; cols: number; items: ImageLabel[] }
   | { type: 'image-label-grid'; title: string; cols: number; items: ImageLabel[] }
   | { type: 'mounting-grid'; title: string; rows: { label?: string; items: ImageLabel[] }[] }
   | { type: 'cell-size'; title: string; brandLabel: string; items: ImageLabel[] }
@@ -58,7 +58,7 @@ export type SectionLayout =
   | { type: 'mounting-profiles'; title: string; description?: string; topTreatments?: any[]; bottomBar?: any }
   | { type: 'reverse-roll'; title: string; items?: ImageLabel[]; variations?: ImageLabel[]; variationNote?: string }
   | { type: 'edge-banding'; title: string; widths?: ImageLabel[]; desc?: string; colors?: ImageLabel[]; footnote?: string }
-  | { type: 'liner'; title: string; independent?: any; attached?: any }
+  | { type: 'liner'; title: string; independent?: any; attached?: any; groups?: any }
   // Split-scene: large scene image on one side + detail items on the other (like PDF spread)
   | { type: 'split-scene'; title: string; sceneImage: string; sceneLabel?: string; sceneSide: 'left' | 'right'; items: ImageLabel[] }
   // Mixed grid: main items in columns + a stacked column on the right (e.g. Light Control)
