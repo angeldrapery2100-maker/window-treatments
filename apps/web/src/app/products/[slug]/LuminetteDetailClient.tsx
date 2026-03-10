@@ -1,5 +1,7 @@
 'use client'
 
+import { CDN_BASE } from '@/lib/cdn'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -15,7 +17,7 @@ interface Props {
   footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string }
 }
 
-const IMG_BASE = '/hunter-douglas/luminette'
+const IMG_BASE = `${CDN_BASE}/hunter-douglas/luminette`
 
 /* ─── Lightbox ─── */
 function Lightbox({ src, caption, onClose }: { src: string; caption?: string; onClose: () => void }) {
@@ -469,7 +471,7 @@ export default function LuminetteDetailClient({ product, related, footer }: Prop
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
                       <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     ) : (

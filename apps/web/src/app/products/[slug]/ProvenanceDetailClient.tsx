@@ -15,7 +15,7 @@ interface Props {
   footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string }
 }
 
-const IMG = "/hunter-douglas/provenance"
+const IMG = `${CDN_BASE}/hunter-douglas/provenance`
 
 /* ─── Lightbox ─── */
 function Lightbox({ src, caption, onClose }: { src: string; caption?: string; onClose: () => void }) {
@@ -557,7 +557,7 @@ export default function ProvenanceDetailClient({ product, related, footer }: Pro
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {r.cover_image ? (
                       <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
+                        <img src={`${CDN_BASE}/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     ) : (

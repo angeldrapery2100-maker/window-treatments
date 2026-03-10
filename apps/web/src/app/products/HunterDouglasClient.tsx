@@ -1,5 +1,7 @@
 'use client'
 
+import { CDN_BASE } from '@/lib/cdn'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
@@ -112,7 +114,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
       {/* ═══════════════════════ HERO ═══════════════════════ */}
       <section className="relative w-full h-[65vh] min-h-[500px] overflow-hidden bg-[#3d3d3d]">
         <img
-          src="/hunter-douglas/pirouette/page009_img01_5986x3009.jpeg"
+          src={`${CDN_BASE}/hunter-douglas/pirouette/page009_img01_5986x3009.jpeg`}
           alt="Premium window treatments"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -292,7 +294,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               const imgSrc = product.cover_image
                 ? (useDbCatalog || product.cover_image.startsWith('/')
                     ? product.cover_image
-                    : `/hunter-douglas/${product.slug}/${product.cover_image}`)
+                    : `${CDN_BASE}/hunter-douglas/${product.slug}/${product.cover_image}`)
                 : null
               return (
               <motion.div key={product.id || product.slug} variants={cardReveal}>

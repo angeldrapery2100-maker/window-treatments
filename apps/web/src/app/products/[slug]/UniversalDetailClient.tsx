@@ -1,5 +1,7 @@
 'use client'
 
+import { CDN_BASE } from '@/lib/cdn'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
@@ -946,9 +948,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
     setLightboxChip(undefined)
   }
 
-  const imgBase = `/hunter-douglas/${layout.slug}`
-
-
+  const imgBase = `${CDN_BASE}/hunter-douglas/${layout.slug}`
   const totalSwatches = layout.swatchCollections.reduce((sum, c) => sum + c.swatches.length, 0)
 
   return (
@@ -1016,8 +1016,6 @@ export default function UniversalDetailClient({ layout, product, related, footer
               <SectionRenderer section={layout.cellSize} imgBase={imgBase} onImg={openLightbox} />
             </Collapsible>
           )}
-
-
           {layout.edgeBanding && (
             <Collapsible title={(layout.edgeBanding as any)?.title || 'Edge Banding'}>
               <EdgeBandingSection data={layout.edgeBanding} imgBase={imgBase} onImg={openLightbox} />
@@ -1112,7 +1110,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
                       <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     ) : (

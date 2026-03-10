@@ -1,5 +1,7 @@
 'use client'
 
+import { CDN_BASE } from '@/lib/cdn'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -389,7 +391,7 @@ function SwatchCollection({
           <div key={i} className="text-center">
             <div className="rounded-md overflow-hidden bg-gray-50 mb-2 border border-gray-200 hover:border-gray-400 transition-colors">
               <img
-                src={`/hunter-douglas/${slug}/${swatch.image}`}
+                src={`${CDN_BASE}/hunter-douglas/${slug}/${swatch.image}`}
                 alt={swatch.color_name}
                 className="w-full h-auto"
                 loading="lazy"
@@ -419,7 +421,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
     { name: 'Online Store', href: '/store' },
   ]
 
-  const imgBase = `/hunter-douglas/${product.slug}`
+  const imgBase = `${CDN_BASE}/hunter-douglas/${product.slug}`
   const swatchEntries = Object.entries(product.fabric_swatches || {})
   const totalSwatches = swatchEntries.reduce((sum, [, v]) => sum + v.length, 0)
   const openLightbox = (src: string) => setLightboxSrc(src)
@@ -568,7 +570,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
                       <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     ) : (

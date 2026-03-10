@@ -1,3 +1,4 @@
+import { CDN_BASE } from '@/lib/cdn'
 import type { Metadata } from 'next'
 import { promises as fs } from 'fs'
 import path from 'path'
@@ -24,7 +25,7 @@ async function getFeaturedProducts() {
       all.push({
         name: p.name,
         desc: p.description,
-        image: p.cover_image ? `/hunter-douglas/${p.slug}/${p.cover_image}` : null,
+        image: p.cover_image ? `${CDN_BASE}/hunter-douglas/${p.slug}/${p.cover_image}` : null,
         href: `/products/${p.slug}`,
       })
     }

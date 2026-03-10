@@ -1,5 +1,7 @@
 'use client'
 
+import { CDN_BASE } from '@/lib/cdn'
+
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -243,7 +245,7 @@ export default function GenericProductClient({ product, related, footer }: Props
   const [layout, setLayout] = useState<LayoutData | null>(null)
 
   const slug = product.slug
-  const imgBase = `/hunter-douglas/${slug}`
+  const imgBase = `${CDN_BASE}/hunter-douglas/${slug}`
 
   const openLightbox = (src: string, caption?: string) => {
     setLightboxSrc(src)
@@ -376,7 +378,7 @@ export default function GenericProductClient({ product, related, footer }: Props
                     {item.cover_image ? (
                       <div className="w-full h-full flex items-center justify-center p-2">
                         <img
-                          src={`/hunter-douglas/${item.slug}/${item.cover_image}`}
+                          src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`}
                           alt={item.name}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
