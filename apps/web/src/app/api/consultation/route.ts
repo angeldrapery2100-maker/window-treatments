@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { query } from '@/lib/db'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _resend: Resend | null = null
+function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
 
 // Create / migrate table on first access
 async function ensureTable() {
@@ -71,7 +72,7 @@ export async function POST(request: Request) {
 
     // Send notification email to business owner
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: process.env.EMAIL_FROM || 'Angel Drapery <onboarding@resend.dev>',
         to: process.env.NOTIFICATION_EMAIL || 'ghost5566ac@gmail.com',
         subject: `New Consultation Request from ${cleanName}`,

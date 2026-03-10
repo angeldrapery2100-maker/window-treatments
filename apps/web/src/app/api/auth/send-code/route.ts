@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { query } from '@/lib/db'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _resend: Resend | null = null
+function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
 
 // Ensure verification codes table
 async function ensureTable() {
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
     )
 
     // Send email
-    await resend.emails.send({
+    await getResend().emails.send({
       from: 'Angel Drapery <onboarding@resend.dev>',
       to: email,
       subject: 'Your Verification Code',

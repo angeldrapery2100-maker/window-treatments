@@ -4,8 +4,9 @@ import { Resend } from 'resend'
 import { requireAdmin } from '@/lib/auth'
 
 const SHIPPO_API = 'https://api.goshippo.com'
-const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY!
-const resend = new Resend(process.env.RESEND_API_KEY)
+const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY || ''
+let _resend: Resend | null = null
+function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
 
 async function shippoFetch(endpoint: string, method = 'GET', body?: any) {
   const res = await fetch(`${SHIPPO_API}${endpoint}`, {
@@ -96,7 +97,7 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
     </div>
   `
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'Angel Drapery <onboarding@resend.dev>',
     to: order.customer_email,
     subject: `Your order ${order.order_number} has been shipped! 📦`,
