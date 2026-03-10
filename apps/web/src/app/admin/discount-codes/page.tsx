@@ -20,7 +20,7 @@ interface DiscountCode {
 const emptyForm = {
   code: '',
   description: '',
-  discount_type: 'percent' as const,
+  discount_type: 'percent' as 'percent' | 'fixed',
   discount_value: '',
   min_order: '',
   max_uses: '',
