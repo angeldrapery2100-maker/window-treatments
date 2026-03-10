@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { alustraArchLayout } from "./alustra-arch-layout"
-import type { SceneRow } from "./alustra-arch-layout"
+import type { SceneRow } from "./types"
 
 interface RelatedProduct {
   name: string; slug: string; cover_image: string | null; description: string
