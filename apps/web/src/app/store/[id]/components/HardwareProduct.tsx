@@ -45,8 +45,8 @@ export default function HardwareProduct({ productId }: { productId: string }) {
     setWidthError(!v ? 'Required' : num < 20 || num > 192 ? 'Must be 20–192"' : '')
   }
 
-  const totalWidth = width + parseFraction(widthFraction)
-  const canSubmit = () => width >= 20 && totalWidth <= 192
+  const totalWidth = (typeof width === 'number' ? width : 0) + parseFraction(widthFraction)
+  const canSubmit = () => typeof width === 'number' && width >= 20 && totalWidth <= 192
 
   useEffect(() => {
     if (!canSubmit()) { setUnitPrice(0); return }
