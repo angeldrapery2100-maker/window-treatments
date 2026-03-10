@@ -394,7 +394,7 @@ export default function AlustraArchDetailClient({ product, related, footer }: Pr
       {/* ─── Scenes ─── */}
       <section className="w-full bg-white py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScenePairSection scenes={L.scenes} onImg={openLightbox} />
+          <ScenePairSection scenes={L.scenes ?? []} onImg={openLightbox} />
         </div>
       </section>
 
