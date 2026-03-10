@@ -59,9 +59,9 @@ export const nantucketLayout: ProductLayout = {
       cols: 2,
       cards: [
         { image: 'page015_img02_755x455.jpeg', title: 'Concise Collection', desc: 'Easily find your perfect Nantucket\u2122 shading with a streamlined offering of beautiful and durable fabrics and colors.' },
-        { image: 'page015_img03_755x455.jpeg', title: 'Customizable Light Control', desc: 'Fabric vanes tilt to achieve the preferred amount of illumination, whether it\\\'s a well-lit space or a room with a softer brilliance.' },
+        { image: 'page015_img03_755x455.jpeg', title: 'Customizable Light Control', desc: 'Fabric vanes tilt to achieve the preferred amount of illumination, whether it\'s a well-lit space or a room with a softer brilliance.' },
         { image: 'page015_img04_755x455.jpeg', title: 'Daytime Privacy', desc: 'During the day, the rear sheer deflects light to the outside and obscures views from the street into your home.' },
-        { image: 'page015_img05_755x455.jpeg', title: 'UV Protection with View-Through', desc: 'Nantucket shadings provide outdoor views while protecting flooring, furniture and d\u00e9cor from the sun\\\'s harmful UV rays.' },
+        { image: 'page015_img05_755x455.jpeg', title: 'UV Protection with View-Through', desc: 'Nantucket shadings provide outdoor views while protecting flooring, furniture and d\u00e9cor from the sun\'s harmful UV rays.' },
       ],
     },
 
@@ -105,7 +105,7 @@ export const nantucketLayout: ProductLayout = {
             { title: 'Convenience', desc: 'Achieve your perfect light automatically' },
             { title: 'Privacy', desc: 'Schedule shadings to close whenever you prefer' },
             { title: 'Energy Efficiency', desc: 'Program shadings to be in the best positions throughout the day' },
-            { title: 'Security', desc: 'Remote control gives the illusion that you\\\'re always home' },
+            { title: 'Security', desc: 'Remote control gives the illusion that you\'re always home' },
             { title: 'Child Friendly', desc: 'Simple, cord-free operation' },
           ],
         },

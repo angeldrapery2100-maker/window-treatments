@@ -108,7 +108,7 @@ export const alustraArchLayout: ProductLayout = {
             { title: 'Convenience', desc: 'Achieve your perfect light automatically' },
             { title: 'Privacy', desc: 'Schedule shadings to close whenever you prefer' },
             { title: 'Energy Efficiency', desc: 'Program shadings to be in the best positions throughout the day' },
-            { title: 'Security', desc: 'Remote control gives the illusion that you\\\'re always home' },
+            { title: 'Security', desc: 'Remote control gives the illusion that you\'re always home' },
             { title: 'Voice Control', desc: 'Compatible with smart speakers and smart-home systems' },
           ],
         },

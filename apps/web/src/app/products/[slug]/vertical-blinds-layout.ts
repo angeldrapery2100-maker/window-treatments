@@ -30,7 +30,7 @@ export const verticalBlindsLayout: ProductLayout = {
         {
           image: 'page011_img01_2688x1505.jpeg',
           text: 'Cadence® Motif™',
-          label: 'Product Cadence® Motif™    Fabric Regal    Color Lily\\nOperating System Cord & Wand',
+          label: 'Product Cadence® Motif™    Fabric Regal    Color Lily\nOperating System Cord & Wand',
         },
         {
           image: 'page013_img01_2681x1505.jpeg',
