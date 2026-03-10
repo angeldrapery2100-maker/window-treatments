@@ -3,7 +3,7 @@
  * 图片已按页面位置顺序编号 (re-extract)
  */
 
-import type { SectionLayout, ApplauseLayout } from './applause-layout'
+import type { SectionLayout } from './applause-layout'
 
 /* Silhouette 色卡结构: 每页4张图 (2大竖图 705x1157 + 2小圆片 256x256)
  * img01 = 左竖图 (左侧色卡)

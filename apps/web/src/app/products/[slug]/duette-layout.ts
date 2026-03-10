@@ -62,7 +62,7 @@ function normalizeDuetteImage(filename: string): string | null {
   return replaced
 }
 
-function extractHardwareColorLabels(sections: Array<{ text?: string }>): string[] {
+function extractHardwareColorLabels(sections: Array<Record<string, unknown>>): string[] {
   const labels: string[] = []
   const seen = new Set<string>()
   const lines = sections

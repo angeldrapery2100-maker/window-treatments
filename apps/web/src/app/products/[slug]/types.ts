@@ -18,6 +18,7 @@ export interface ImageLabel {
 
 export interface SwatchItem {
   image: string
+  chip?: string
   colorName: string
   specs: string[]
 }
