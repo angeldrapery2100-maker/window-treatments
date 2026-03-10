@@ -1,0 +1,31 @@
+node_modules
+dist
+.next
+.turbo
+.DS_Store
+.env
+.env.local
+.env.*.local
+*.tsbuildinfonode_modules/
+.next/
+*.pack
+Video/
+Hunter Douglas Digital Samples  PDF/
+Roller Shade/
+Zebra Shade/
+Sheer Shade/
+Drapery /
+Essentials Collection/
+Handcrafted Roman/
+top treatments/
+apps/web/public/uploads/
+apps/web/public/videos/
+apps/web/public/hunter-douglas/
+apps/web/public/uploads/
+apps/web/public/roller-collection/
+apps/web/public/luma-collection/
+apps/web/public/sheer-collection/
+apps/web/public/lutron/
+apps/web/public/drapery/
+apps/web/public/roman-shade/
+apps/web/public/top-treatments/

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /api
+Disallow: /store/cart
+Disallow: /store/checkout
+Disallow: /store/account
+Disallow: /store/order-confirmation
+
+Sitemap: https://angeldrapery.com/sitemap.xml

@@ -1,0 +1,35 @@
+{
+  "name": "@window-treatments/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "clean": "rm -rf .next *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1005.0",
+    "@window-treatments/shared": "*",
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.0.5",
+    "next": "^15",
+    "pg": "^8.18.0",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-hook-form": "^7.50.1",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss": "^3.4.1",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/node": "^22",
+    "@types/pg": "^8.6.6",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "typescript": "^5.7"
+  }
+}

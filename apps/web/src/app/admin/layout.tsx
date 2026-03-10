@@ -1,0 +1,113 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const WEBSITE_NAV = [
+  { href: '/admin/site-content', label: 'Site Content', icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z' },
+  { href: '/admin/gallery-videos', label: 'Gallery Videos', icon: 'M15 10l4.553-2.069A1 1 0 0121 8.868V15.13a1 1 0 01-1.447.899L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z' },
+  { href: '/admin/showcase-products', label: 'Showcase', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+]
+
+const STORE_NAV = [
+  { href: '/admin/products', label: 'Products', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
+  { href: '/admin/orders', label: 'Orders', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+  { href: '/admin/shipments', label: 'Shipments', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
+  { href: '/admin/discount-codes', label: 'Discounts', icon: 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z' },
+]
+
+const SYSTEM_NAV = [
+  { href: '/admin/accounts', label: 'Accounts', icon: 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z' },
+]
+
+function NavItem({ item, pathname }: { item: typeof WEBSITE_NAV[0]; pathname: string }) {
+  const active = pathname === item.href || pathname.startsWith(item.href + '/')
+  return (
+    <Link href={item.href}
+      className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] transition-colors ${
+        active
+          ? 'bg-[#3d3d3d] text-white font-medium'
+          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+      }`}>
+      <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+        <path d={item.icon} />
+      </svg>
+      {item.label}
+    </Link>
+  )
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
+  // Full-width pages (no sidebar)
+  const fullWidthPaths = ['/admin/orders/shipping/', '/admin/orders/work-order/', '/admin/login']
+  const isFullWidth = fullWidthPaths.some(p => pathname.startsWith(p))
+
+  if (isFullWidth) return <>{children}</>
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <aside className="w-56 bg-white border-r border-gray-200 flex flex-col flex-shrink-0 sticky top-0 h-screen">
+        <div className="px-5 py-5 border-b border-gray-100">
+          <Link href="/admin" className="block">
+            <h1 className="text-sm font-bold text-gray-900 tracking-tight">ANGEL DRAPERY</h1>
+            <p className="text-[10px] text-gray-400 mt-0.5 tracking-wide">ADMIN</p>
+          </Link>
+        </div>
+
+        <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
+          <div>
+            <Link href="/admin"
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] transition-colors ${
+                pathname === '/admin'
+                  ? 'bg-[#3d3d3d] text-white font-medium'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+              }`}>
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+              </svg>
+              Dashboard
+            </Link>
+          </div>
+
+          <div>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Website</p>
+            <div className="space-y-0.5">
+              {WEBSITE_NAV.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
+            </div>
+          </div>
+
+          <div>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Store</p>
+            <div className="space-y-0.5">
+              {STORE_NAV.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
+            </div>
+          </div>
+
+          <div>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">System</p>
+            <div className="space-y-0.5">
+              {SYSTEM_NAV.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
+            </div>
+          </div>
+        </nav>
+
+        <div className="px-3 py-3 border-t border-gray-100">
+          <Link href="/" target="_blank" className="flex items-center gap-2 px-3 py-2 text-[12px] text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-50 transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            View Site
+          </Link>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 min-w-0">
+        {children}
+      </main>
+    </div>
+  )
+}

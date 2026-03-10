@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 26 26 26;
+    --color-accent: 212 175 55;
+  }
+  
+  body {
+    @apply text-gray-900 bg-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-8 py-3 bg-primary text-white font-medium tracking-wide uppercase transition-all duration-300 hover:bg-primary-light;
+  }
+  
+  .btn-secondary {
+    @apply px-8 py-3 border-2 border-primary text-primary font-medium tracking-wide uppercase transition-all duration-300 hover:bg-primary hover:text-white;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
