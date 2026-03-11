@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
     if (!CDN_URL) return []
     return [
       {
+        source: '/hunter-douglas/:path*',
+        destination: `${CDN_URL}/hunter-douglas/:path*`,
+      },
+      {
         source: '/uploads/:path*',
         destination: `${CDN_URL}/uploads/:path*`,
       },
