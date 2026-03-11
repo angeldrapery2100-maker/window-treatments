@@ -14,6 +14,38 @@ export const alustraWovenLayout: ProductLayout = {
   heroLabel: 'Alustra® Woven Textures®',
 
   sections: [
+    // ── Scene Gallery ──
+    {
+      type: 'scene-pair',
+      scenes: [
+        {
+          image: 'page005_img01_1800x1953.jpeg',
+          text: 'Globally sourced woven textures bring warmth and sophisticated style to modern living spaces.',
+          label: 'Fabric Retreat · Color Pure · Skyline® Panels',
+        },
+        {
+          image: 'page010_img01_1778x1955.jpeg',
+          text: 'Soft, filtered light transforms any room into an inviting retreat with the natural beauty of woven fabrics.',
+          label: 'Fabric Highlands by Lori Weitzner · Color Parchment · Roman Shades',
+        },
+        {
+          image: 'page014_img01_1794x1952.jpeg',
+          text: 'The Roller Duolite® Shade provides dual layers of fabric for enhanced light control and privacy throughout the day.',
+          label: 'Fabric Timberlake · Color Sun · Roller Duolite® Shade',
+        },
+        {
+          image: 'page012_img01_1787x1956.jpeg',
+          text: 'Create a cozy, serene bedroom with woven texture roller shades that gently diffuse natural light.',
+          label: 'Fabric Ramble by Lori Weitzner · Color Silver · Roller Shades',
+        },
+        {
+          image: 'page016_img01_1797x1953.jpeg',
+          text: 'A refined palette of textures and colors seamlessly complements contemporary kitchen and living areas.',
+          label: 'Fabric Plantation · Color Dynasty · Roller Shades',
+        },
+      ],
+    },
+
     // ── Benefits ──
     {
       type: 'comparison-grid',
@@ -176,10 +208,10 @@ export const alustraWovenLayout: ProductLayout = {
       ],
     },
 
-    // ── Operating Systems ──
+    // ── Operating Systems & Specialty Options ──
     {
       type: 'comparison-grid',
-      title: 'Operating Systems',
+      title: 'Operating Systems & Specialty Options',
       cols: 4,
       items: [
         {
@@ -193,31 +225,22 @@ export const alustraWovenLayout: ProductLayout = {
           sublabel: 'The revolutionary retractable cord with constant cord length provides enhanced safety.',
         },
         {
-          image: 'page029_img05_469x559.jpeg',
+          image: 'page029_img09_471x341.jpeg',
+          label: 'EasyRise®',
+          sublabel: 'Raise or lower the shade with a continuous cord loop. A universal cord tensioner attaches to the window frame for enhanced safety.',
+        },
+        {
+          image: 'page029_img07_509x394.jpeg',
           label: 'LiteRise®',
           sublabel: 'The cordless system makes raising and lowering the shade easy. Simply push up to raise and pull down to lower.',
         },
         {
           image: 'page029_img04_469x555.jpeg',
-          label: 'EasyRise®',
-          sublabel: 'Raise or lower the shade with a continuous cord loop. A universal cord tensioner attaches to the window frame for enhanced safety.',
-        },
-      ],
-    },
-
-    // ── Specialty Options ──
-    {
-      type: 'comparison-grid',
-      title: 'Specialty Options',
-      cols: 3,
-      items: [
-        {
-          image: 'page029_img07_509x394.jpeg',
           label: 'Independent Operable Liner',
           sublabel: 'Available in Duo Liner (color faces room, white faces street) and Mono Liner (single color, front and back). Light-Filtering and Room-Darkening options.',
         },
         {
-          image: 'page029_img09_471x341.jpeg',
+          image: 'page029_img05_469x559.jpeg',
           label: 'Top-Down / Bottom-Up',
           sublabel: 'Open from the top or the bottom for the perfect balance of privacy and light. Available with PowerView®, UltraGlide® and EasyRise®.',
         },

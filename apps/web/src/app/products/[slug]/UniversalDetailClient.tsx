@@ -92,8 +92,11 @@ function chunk<T>(arr: T[], size: number): T[][] {
 /* ═══ Section Renderers ═══ */
 
 function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (s: string) => void }) {
-  /* Filter out portrait/vertical images */
-  const filtered = scenes.filter(s => isLandscape(s.image))
+  /* Filter out very narrow portrait images (allow near-square with ratio >= 0.75) */
+  const filtered = scenes.filter(s => {
+    const d = parseDims(s.image)
+    return !d || d.w / d.h >= 0.75
+  })
 
   return (
     <div className="space-y-8">
@@ -178,8 +181,54 @@ function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string
   )
 }
 
+function ComparisonGridItem({ item, imgBase, onImg, uniform }: { item: ImageLabel; imgBase: string; onImg: (s: string) => void; uniform?: boolean }) {
+  const portrait = !isLandscape(item.image)
+  return (
+    <div className="flex flex-col">
+      <div
+        className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${uniform ? 'bg-gray-50' : portrait ? 'max-h-[360px]' : ''}`}
+        style={uniform ? { aspectRatio: '4/3' } : undefined}
+        onClick={() => onImg(`${imgBase}/${item.image}`)}
+      >
+        <img
+          src={`${imgBase}/${item.image}`}
+          alt={item.label}
+          className={uniform ? 'w-full h-full object-cover' : `w-full ${portrait ? 'max-h-[360px] object-contain mx-auto' : 'h-auto'}`}
+          loading="lazy"
+        />
+      </div>
+      <p className="font-semibold text-sm text-gray-900 whitespace-pre-line">{item.label}</p>
+      {item.sublabel && <p className="text-xs text-gray-500 mt-0.5">{item.sublabel}</p>}
+    </div>
+  )
+}
+
 function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: string; cols: number; items: ImageLabel[]; imgBase: string; onImg: (s: string) => void }) {
-  /* Auto-split items into 2:1 proportioned chunks (2 rows per chunk) */
+  /* For 7 items in a 4-col grid, use balanced 4+3 layout with uniform image sizing */
+  const useBalanced = cols === 4 && items.length === 7
+
+  if (useBalanced) {
+    return (
+      <div>
+        <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>
+        {/* Top row: 4 items */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+          {items.slice(0, 4).map((item, i) => (
+            <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} uniform />
+          ))}
+        </div>
+        {/* Bottom row: 3 items, centered via offset */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="hidden md:block" />
+          {items.slice(4, 7).map((item, i) => (
+            <ComparisonGridItem key={i + 4} item={item} imgBase={imgBase} onImg={onImg} uniform />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  /* Default: auto-split items into 2-row chunks */
   const rowsPerChunk = 2
   const itemsPerChunk = cols * rowsPerChunk
   const chunks = chunk(items, itemsPerChunk)
@@ -193,19 +242,9 @@ function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: 
           {ci === 0 && <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>}
           {ci > 0 && <h4 className="text-xl font-light text-gray-600 mb-6">{title} (cont.)</h4>}
           <div className={`grid ${baseGridCols} ${colClass} gap-6 ${cols === 1 ? 'max-w-xl mx-auto' : ''}`}>
-            {chunkItems.map((item, i) => {
-              const portrait = !isLandscape(item.image)
-              return (
-                <div key={i} className={portrait ? 'text-center' : ''}>
-                  <div className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${portrait ? 'max-h-[360px]' : ''}`}
-                    onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                    <img src={`${imgBase}/${item.image}`} alt={item.label} className={`w-full ${portrait ? 'max-h-[360px] object-contain mx-auto' : 'h-auto'}`} loading="lazy" />
-                  </div>
-                  <p className="font-semibold text-sm text-gray-900 whitespace-pre-line">{item.label}</p>
-                  {item.sublabel && <p className="text-xs text-gray-500 mt-0.5">{item.sublabel}</p>}
-                </div>
-              )
-            })}
+            {chunkItems.map((item, i) => (
+              <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} />
+            ))}
           </div>
         </div>
       ))}

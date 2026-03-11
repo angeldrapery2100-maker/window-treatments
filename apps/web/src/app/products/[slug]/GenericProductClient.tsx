@@ -130,39 +130,81 @@ function CardGridSection({ section, imgBase, onImg }: { section: any; imgBase: s
 function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
   const cols = section.cols || 2
   const isVignettePowerView = section.title === 'PowerView and Operating Systems'
+  const itemCount = section.items?.length || 0
+
+  /* For 7 items in a 4-col grid, use 4+3 layout with the bottom row centered */
+  const useBalancedLayout = cols === 4 && itemCount === 7
 
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{section.title}</h3>
-      <div className={`grid grid-cols-2 ${cols >= 4 ? 'md:grid-cols-4' : cols >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6`}>
-        {section.items.map((item: any, i: number) => (
-          <div key={i} className={isVignettePowerView ? 'h-full flex flex-col' : ''}>
-            <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(`${imgBase}/${item.image}`)}>
-              <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
-            </div>
-            <div className={isVignettePowerView ? 'mt-auto' : ''}>
-              <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
-              {item.sublabel && item.label === 'PowerView® Automation' && isVignettePowerView ? (
-                <div className="space-y-1">
-                  {(() => {
-                    const lines = String(item.sublabel).split('\n').map((x) => x.trim()).filter(Boolean)
-                    const pairs: Array<{ title: string; desc: string }> = []
-                    for (let n = 0; n < lines.length; n += 2) pairs.push({ title: lines[n], desc: lines[n + 1] || '' })
-                    return pairs.map((pair, idx) => (
-                      <div key={idx}>
-                        <p className="text-sm font-semibold text-gray-700 leading-tight">{pair.title}</p>
-                        {pair.desc && <p className="text-xs text-gray-500 leading-snug">{pair.desc}</p>}
-                      </div>
-                    ))
-                  })()}
+      {useBalancedLayout ? (
+        <>
+          {/* Top row: 4 items */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+            {section.items.slice(0, 4).map((item: any, i: number) => (
+              <div key={i} className="flex flex-col">
+                <div
+                  className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
+                  style={{ aspectRatio: '4/3' }}
+                  onClick={() => onImg(`${imgBase}/${item.image}`)}
+                >
+                  <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
                 </div>
-              ) : (
-                <p className="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{item.sublabel}</p>
-              )}
-            </div>
+                <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.sublabel}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+          {/* Bottom row: 3 items, centered */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="hidden md:block" />
+            {section.items.slice(4, 7).map((item: any, i: number) => (
+              <div key={i + 4} className="flex flex-col">
+                <div
+                  className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
+                  style={{ aspectRatio: '4/3' }}
+                  onClick={() => onImg(`${imgBase}/${item.image}`)}
+                >
+                  <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+                </div>
+                <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.sublabel}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className={`grid grid-cols-2 ${cols >= 4 ? 'md:grid-cols-4' : cols >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6`}>
+          {section.items.map((item: any, i: number) => (
+            <div key={i} className={isVignettePowerView ? 'h-full flex flex-col' : ''}>
+              <div className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3" style={{ aspectRatio: '4/3' }} onClick={() => onImg(`${imgBase}/${item.image}`)}>
+                <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div className={isVignettePowerView ? 'mt-auto' : ''}>
+                <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
+                {item.sublabel && item.label === 'PowerView® Automation' && isVignettePowerView ? (
+                  <div className="space-y-1">
+                    {(() => {
+                      const lines = String(item.sublabel).split('\n').map((x) => x.trim()).filter(Boolean)
+                      const pairs: Array<{ title: string; desc: string }> = []
+                      for (let n = 0; n < lines.length; n += 2) pairs.push({ title: lines[n], desc: lines[n + 1] || '' })
+                      return pairs.map((pair, idx) => (
+                        <div key={idx}>
+                          <p className="text-sm font-semibold text-gray-700 leading-tight">{pair.title}</p>
+                          {pair.desc && <p className="text-xs text-gray-500 leading-snug">{pair.desc}</p>}
+                        </div>
+                      ))
+                    })()}
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{item.sublabel}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

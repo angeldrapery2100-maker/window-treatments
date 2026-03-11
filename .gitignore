@@ -21,6 +21,9 @@ top treatments/
 apps/web/public/uploads/
 apps/web/public/videos/
 apps/web/public/hunter-douglas/
+!apps/web/public/hunter-douglas/products/
+!apps/web/public/hunter-douglas/products/*.json
+!apps/web/public/hunter-douglas/products-index.json
 apps/web/public/uploads/
 apps/web/public/roller-collection/
 apps/web/public/luma-collection/
