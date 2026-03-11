@@ -71,7 +71,7 @@ export const alustraWovenLayout: ProductLayout = {
     {
       type: 'split-scene',
       title: 'Roman Shades — Refined Dimension',
-      sceneImage: 'page020_img01_1762x1536.jpeg',
+      sceneImage: 'page020_img02_1762x1536.jpeg',
       sceneLabel: 'Fabric Highlands by Lori Weitzner · Color Parchment',
       sceneSide: 'left',
       items: [
@@ -92,7 +92,7 @@ export const alustraWovenLayout: ProductLayout = {
     {
       type: 'split-scene',
       title: 'Roller Shades — Minimalistic Perspective',
-      sceneImage: 'page021_img01_1703x1537.jpeg',
+      sceneImage: 'page021_img02_1703x1537.jpeg',
       sceneLabel: 'Fabric Retreat · Color Pure',
       sceneSide: 'right',
       items: [
@@ -126,7 +126,7 @@ export const alustraWovenLayout: ProductLayout = {
           sublabel: 'Adjust the back liner as needed for your preferred level of privacy.',
         },
         {
-          image: 'page025_img06_479x623.jpeg',
+          image: 'page025_img06_479x512.jpeg',
           label: 'Liner Fully Lowered',
           sublabel: 'Complete room darkening and maximum privacy.',
         },
@@ -150,7 +150,7 @@ export const alustraWovenLayout: ProductLayout = {
           sublabel: 'Two shades combined with one Woven Textures® fabric positioned in front.',
         },
         {
-          image: 'page026_img05_479x623.jpeg',
+          image: 'page026_img05_475x525.jpeg',
           label: 'Back Liner Fully Raised',
           sublabel: 'Front shade lowered for filtered light while the view remains unobstructed through the sheer fabric.',
         },
@@ -183,17 +183,17 @@ export const alustraWovenLayout: ProductLayout = {
       cols: 3,
       items: [
         {
-          image: 'page027_img02_416x669.jpeg',
+          image: 'page027_img02_321x556.jpeg',
           label: 'Convenience',
           sublabel: 'Achieve your perfect light automatically. Program shadings to be in the best positions throughout the day.',
         },
         {
-          image: 'page027_img03_259x551.jpeg',
+          image: 'page027_img03_216x458.jpeg',
           label: 'Privacy & Security',
           sublabel: 'Schedule shadings to close whenever you prefer. Remote control gives the illusion that you\'re always home.',
         },
         {
-          image: 'page028_img02_711x602.jpeg',
+          image: 'page028_img02_1696x1955.jpeg',
           label: 'A Day With PowerView®',
           sublabel: '7 AM — let in morning light. 2 PM — protect from midday sun. Sunset — open for the view. 10:30 PM — lower for a perfect night\'s sleep.',
         },
@@ -217,12 +217,12 @@ export const alustraWovenLayout: ProductLayout = {
           sublabel: 'The revolutionary retractable cord with constant cord length provides enhanced safety.',
         },
         {
-          image: 'page029_img05_509x394.jpeg',
+          image: 'page029_img05_469x559.jpeg',
           label: 'LiteRise®',
           sublabel: 'The cordless system makes raising and lowering the shade easy. Simply push up to raise and pull down to lower.',
         },
         {
-          image: 'page029_img04_471x341.jpeg',
+          image: 'page029_img04_469x555.jpeg',
           label: 'EasyRise®',
           sublabel: 'Raise or lower the shade with a continuous cord loop. A universal cord tensioner attaches to the window frame for enhanced safety.',
         },
@@ -236,12 +236,12 @@ export const alustraWovenLayout: ProductLayout = {
       cols: 3,
       items: [
         {
-          image: 'page029_img07_469x555.jpeg',
+          image: 'page029_img07_509x394.jpeg',
           label: 'Independent Operable Liner',
           sublabel: 'Available in Duo Liner (color faces room, white faces street) and Mono Liner (single color, front and back). Light-Filtering and Room-Darkening options.',
         },
         {
-          image: 'page029_img09_469x559.jpeg',
+          image: 'page029_img09_471x341.jpeg',
           label: 'Top-Down / Bottom-Up',
           sublabel: 'Open from the top or the bottom for the perfect balance of privacy and light. Available with PowerView®, UltraGlide® and EasyRise®.',
         },
@@ -294,8 +294,8 @@ export const alustraWovenLayout: ProductLayout = {
     { image: 'page009_img03_1795x1732.jpeg', text: 'Imagine. Edit. Refine.', label: 'Fabric Ramble by Lori Weitzner · Color Silver' },
     { image: 'page013_img01_940x1956.jpeg', text: 'Roman Shades paired with Design Studio™', label: 'Fabric Coppice by Lori Weitzner · Color Sunrise' },
     { image: 'page017_img02_1795x1957.jpeg', text: 'Skyline® Panels', label: 'Fabric Rivulet by Lori Weitzner · Color Silt' },
-    { image: 'page020_img01_1762x1536.jpeg', text: 'Refined Dimension', label: 'Fabric Highlands by Lori Weitzner · Color Parchment' },
-    { image: 'page021_img01_1703x1537.jpeg', text: 'Minimalistic Perspective', label: 'Fabric Retreat · Color Pure' },
+    { image: 'page020_img02_1762x1536.jpeg', text: 'Refined Dimension', label: 'Fabric Highlands by Lori Weitzner · Color Parchment' },
+    { image: 'page021_img02_1703x1537.jpeg', text: 'Minimalistic Perspective', label: 'Fabric Retreat · Color Pure' },
     { image: 'page027_img07_1269x1243.jpeg', text: 'PowerView® Automation', label: 'Fabric Plantation · Color Dynasty' },
   ],
 
