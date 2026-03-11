@@ -49,9 +49,27 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
   // React 表单状态
   const [openPercentage, setOpenPercentage] = useState(53)
+  const [shadePercentage, setShadePercentage] = useState(53)  // 卷帘/布帘延迟跟随
+  const [shadeDuration, setShadeDuration] = useState(0)       // 按比例计算的动画时长
+  const prevShadeRef = useRef(53)                              // 上一次 shadePercentage
   const [tappedLogos, setTappedLogos] = useState<Set<string>>(new Set())
   const sliderRef = useRef<SVGRectElement | HTMLDivElement>(null)
+  const shadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // 滑块停止后 300ms 延迟，卷帘/布帘才开始运动
+  // 动画时长 = 8秒 × |变化量| / 100（全程8秒，按比例缩放）
+  useEffect(() => {
+    if (shadeTimerRef.current) clearTimeout(shadeTimerRef.current)
+    shadeTimerRef.current = setTimeout(() => {
+      const delta = Math.abs(openPercentage - prevShadeRef.current)
+      const duration = Math.max(0.3, (8 * delta) / 100)  // 最短 0.3s 避免太突兀
+      setShadeDuration(duration)
+      setShadePercentage(openPercentage)
+      prevShadeRef.current = openPercentage
+    }, 300)
+    return () => { if (shadeTimerRef.current) clearTimeout(shadeTimerRef.current) }
+  }, [openPercentage])
 
   // Pointer-capture drag — works on PC + mobile without losing track
   const updatePercentage = useCallback((clientY: number) => {
@@ -592,7 +610,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       {(() => {
         // 1. 卷帘参数
         const rollerMaxHeight = 285
-        const rollerFabricHeight = (rollerMaxHeight * (100 - openPercentage)) / 100
+        const rollerFabricHeight = (rollerMaxHeight * (100 - shadePercentage)) / 100
         const rollerBarY = 230 + rollerFabricHeight
         // 卷起部分高度：全开时卷管最粗，全关时最细
         const rollH = 28  // 固定高度，不随开合变化
@@ -603,7 +621,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
         // 2. 9褶蛇形帘参数 (完全外装)
         const drapeMaxWidth = 178
         const drapeMinWidth = 40
-        const currentDrapeW = drapeMinWidth + (drapeMaxWidth - drapeMinWidth) * ((100 - openPercentage) / 100)
+        const currentDrapeW = drapeMinWidth + (drapeMaxWidth - drapeMinWidth) * ((100 - shadePercentage) / 100)
         const pleatW = currentDrapeW / 9
         // 2-Fold Pinch Pleat 参数
         const numGroups = 8
@@ -803,7 +821,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       fill="#3A3A3A"
                       initial={false}
                       animate={{ y: sTop + rollH }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}
                     />
                     {/* 垂下的面料（深灰 30% 透明）*/}
                     <motion.rect
@@ -811,7 +829,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       fill="#3A3A3A" opacity="0.8"
                       initial={false}
                       animate={{ y: sTop + rollH + 3, height: Math.max(0, rollerFabricHeight - 3) }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}
                     />
                     {/* 底杆 hem bar */}
                     <motion.rect
@@ -819,7 +837,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       fill="#3A3A3A" rx="3.5"
                       initial={false}
                       animate={{ y: sHemY }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}
                     />
                   </g>
 
@@ -828,7 +846,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 {/* ════ 3. 纯 SVG 滑块（兼容 iOS Safari）════ */}
                 {(() => {
                   const slCx = 800, slTop = 155, slTextGap = 40
-                  const slW = 56, slH = 200, slR = slW / 2
+                  const slW = 56, slH = 160, slR = slW / 2
                   const slY = slTop + slTextGap + 45
                   const fillH = (slH * (100 - openPercentage)) / 100
                   const handleY = slY + fillH
@@ -952,22 +970,22 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       <g key={`rings-${i}`}>
                         <motion.circle cy="164" r="8" fill="#1A1208"
                           initial={false} animate={{ cx: lx }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.circle cy="164" r="4.5" fill="none" stroke="#2E2418" strokeWidth="1.5"
                           initial={false} animate={{ cx: lx }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="171" width="3" height="6" fill="#1A1208"
                           initial={false} animate={{ x: lx - 1.5 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.circle cy="164" r="8" fill="#1A1208"
                           initial={false} animate={{ cx: rx }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.circle cy="164" r="4.5" fill="none" stroke="#2E2418" strokeWidth="1.5"
                           initial={false} animate={{ cx: rx }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="171" width="3" height="6" fill="#1A1208"
                           initial={false} animate={{ x: rx - 1.5 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                       </g>
                     )
                   })}
@@ -978,54 +996,54 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                     {/* 左帘底色 */}
                     <motion.rect y="177" height="350" fill="#C8C4BC"
                       initial={false} animate={{ x: 1075, width: currentDrapeW }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                     {/* 左帘 2-Fold Pinch Pleat */}
                     {Array.from({ length: numGroups }).map((_, i) => (
                       <g key={`lp-${i}`}>
                         <motion.rect y="177" height="350" fill="url(#pinchFaceL)"
                           initial={false}
                           animate={{ x: 1075 + i * groupW + groupW * 0.04, width: groupW * 0.36 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="177" height="350" fill="#8A8782"
                           initial={false}
                           animate={{ x: 1075 + i * groupW + groupW * 0.40, width: groupW * 0.07 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="177" height="350" fill="url(#pinchFaceR)"
                           initial={false}
                           animate={{ x: 1075 + i * groupW + groupW * 0.47, width: groupW * 0.32 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                       </g>
                     ))}
                     {/* 左帘底边横杆 */}
                     <motion.rect y="527" height="9" fill="#4A4845" rx="3"
                       initial={false} animate={{ x: 1075, width: currentDrapeW }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
 
                     {/* 右帘底色 */}
                     <motion.rect y="177" height="350" fill="#C8C4BC"
                       initial={false} animate={{ x: 1430 - currentDrapeW, width: currentDrapeW }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                     {/* 右帘 2-Fold Pinch Pleat */}
                     {Array.from({ length: numGroups }).map((_, i) => (
                       <g key={`rp-${i}`}>
                         <motion.rect y="177" height="350" fill="url(#pinchFaceL)"
                           initial={false}
                           animate={{ x: (1430 - currentDrapeW) + i * groupW + groupW * 0.04, width: groupW * 0.36 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="177" height="350" fill="#8A8782"
                           initial={false}
                           animate={{ x: (1430 - currentDrapeW) + i * groupW + groupW * 0.40, width: groupW * 0.07 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                         <motion.rect y="177" height="350" fill="url(#pinchFaceR)"
                           initial={false}
                           animate={{ x: (1430 - currentDrapeW) + i * groupW + groupW * 0.47, width: groupW * 0.32 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                          transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                       </g>
                     ))}
                     {/* 右帘底边横杆 */}
                     <motion.rect y="527" height="9" fill="#4A4845" rx="3"
                       initial={false} animate={{ x: 1430 - currentDrapeW, width: currentDrapeW }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}/>
+                      transition={{ duration: shadeDuration, ease: 'easeInOut' }}/>
                   </g>
                 </g>
 
