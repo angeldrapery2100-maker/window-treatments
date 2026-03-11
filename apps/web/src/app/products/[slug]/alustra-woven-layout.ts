@@ -26,14 +26,6 @@ export const alustraWovenLayout: ProductLayout = {
     },
     {
       type: 'comparison-grid',
-      title: 'Designed by Lori Weitzner',
-      cols: 1,
-      items: [
-        { image: 'page010_img03_588x610.jpeg', label: 'Lori Weitzner', sublabel: 'A leading international designer known for her expertise in texture, color and sensory design.' },
-      ],
-    },
-    {
-      type: 'comparison-grid',
       title: 'Benefits',
       cols: 4,
       items: [
@@ -124,8 +116,10 @@ export const alustraWovenLayout: ProductLayout = {
       items: [
         { image: 'page027_img01_944x1955.jpeg', label: 'PowerView® Automation', sublabel: 'Program shadings to be in the best positions throughout the day. Remote control gives the illusion that you\'re always home.' },
         { image: 'page027_img02_321x556.jpeg', label: 'Convenience', sublabel: 'Achieve your perfect light automatically with scheduled shade adjustments.' },
-        { image: 'page027_img04_416x669.jpeg', label: 'Privacy', sublabel: 'Remote control gives the illusion that you\'re always home for added security.' },
         { image: 'page028_img08_711x602.jpeg', label: 'Scheduled Scenes', sublabel: 'Shades adjust automatically throughout the day — lower at bedtime for privacy and a perfect night\'s sleep.' },
+        { image: 'page027_img06_471x341.jpeg', label: 'EasyRise®', sublabel: 'Raise or lower the shade with a continuous cord loop for simple, intuitive operation.' },
+        { image: 'page027_img08_509x394.jpeg', label: 'LiteRise®', sublabel: 'The cordless system makes raising and lowering the shade easy. Simply push up to raise and pull down to lower.' },
+        { image: 'page027_img09_471x341.jpeg', label: 'UltraGlide®', sublabel: 'The revolutionary retractable cord with constant cord length provides enhanced child safety.' },
       ],
     },
     {
