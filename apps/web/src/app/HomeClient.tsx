@@ -50,7 +50,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
   // React 表单状态
   const [openPercentage, setOpenPercentage] = useState(53)
   const [tappedLogos, setTappedLogos] = useState<Set<string>>(new Set())
-  const sliderRef = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<SVGRectElement | HTMLDivElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Pointer-capture drag — works on PC + mobile without losing track
@@ -825,50 +825,64 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
                 </g>
 
-                {/* ════ 3. HTML 滑块 via foreignObject ════ */}
-                <foreignObject x="700" y="130" width="200" height="440">
-                  <div className="w-full h-full flex flex-col items-center justify-center pointer-events-auto select-none">
-                    <div className="text-center mb-5">
-                      <p style={{color:'#94A3B8', fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', textTransform:'uppercase', marginBottom:'4px'}}>Blinds Status</p>
-                      <p style={{color:'#5BC1F5', fontSize:'28px', fontWeight:700, lineHeight:1}}>{100 - openPercentage}%</p>
-                    </div>
-                    {/* 胶囊滑块 — pointer-capture 原生级拖动 */}
-                    <div
-                      ref={sliderRef}
-                      style={{
-                        position:'relative', width:'72px', height:'220px',
-                        background:'#2A2A2B', borderRadius:'999px',
-                        cursor:'ns-resize', overflow:'hidden',
-                        boxShadow:'0 10px 30px rgba(0,0,0,0.5)',
-                        touchAction:'none'
-                      }}
-                      onPointerDown={(e) => {
-                        ;(e.currentTarget as Element).setPointerCapture(e.pointerId)
-                        updatePercentage(e.clientY)
-                      }}
-                      onPointerMove={(e) => {
-                        if (e.buttons === 1 || e.pressure > 0) updatePercentage(e.clientY)
-                      }}
-                    >
-                      <motion.div
-                        style={{ position:'absolute', top:0, left:0, width:'100%', background:'#5BC1F5' }}
+                {/* ════ 3. 纯 SVG 滑块（兼容 iOS Safari）════ */}
+                {(() => {
+                  const slCx = 800, slTop = 155, slTextGap = 40
+                  const slW = 56, slH = 200, slR = slW / 2
+                  const slY = slTop + slTextGap + 45
+                  const fillH = (slH * (100 - openPercentage)) / 100
+                  const handleY = slY + fillH
+                  return (
+                    <g>
+                      {/* 文字标签 */}
+                      <text x={slCx} y={slTop} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="700" letterSpacing="0.15em" style={{textTransform:'uppercase'} as any}>BLINDS STATUS</text>
+                      <text x={slCx} y={slTop + 32} textAnchor="middle" fill="#5BC1F5" fontSize="30" fontWeight="700">{100 - openPercentage}%</text>
+
+                      {/* 胶囊滑块背景 */}
+                      <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} fill="#2A2A2B" />
+
+                      {/* 蓝色填充 — 从顶部向下 */}
+                      <defs>
+                        <clipPath id="sliderCapsuleClip">
+                          <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} />
+                        </clipPath>
+                      </defs>
+                      <motion.rect
+                        x={slCx - slW / 2} y={slY} width={slW}
+                        fill="#5BC1F5"
+                        clipPath="url(#sliderCapsuleClip)"
                         initial={false}
-                        animate={{ height: `${100 - openPercentage}%` }}
+                        animate={{ height: fillH }}
                         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                       />
+
                       {/* 拖动手柄纹路 */}
-                      <motion.div
-                        style={{position:'absolute', left:0, width:'100%', display:'flex', justifyContent:'center', pointerEvents:'none', mixBlendMode:'overlay'}}
+                      <motion.g
                         initial={false}
-                        animate={{ top: `calc(${100 - openPercentage}% - 18px)` }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}>
-                        <svg viewBox="0 0 24 12" style={{width:'32px'}} fill="none" stroke="white" strokeWidth="2">
-                          <line x1="2" y1="2" x2="22" y2="2"/><line x1="2" y1="6" x2="22" y2="6"/><line x1="2" y1="10" x2="22" y2="10"/>
-                        </svg>
-                      </motion.div>
-                    </div>
-                  </div>
-                </foreignObject>
+                        animate={{ translateY: handleY - slY }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      >
+                        <line x1={slCx - 12} y1={slY - 6} x2={slCx + 12} y2={slY - 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                        <line x1={slCx - 12} y1={slY} x2={slCx + 12} y2={slY} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                        <line x1={slCx - 12} y1={slY + 6} x2={slCx + 12} y2={slY + 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                      </motion.g>
+
+                      {/* 透明交互热区 — 接收触摸/鼠标事件 */}
+                      <rect
+                        ref={sliderRef as any}
+                        x={slCx - slW / 2} y={slY} width={slW} height={slH}
+                        fill="transparent" style={{ cursor: 'ns-resize', touchAction: 'none' } as any}
+                        onPointerDown={(e: any) => {
+                          ;(e.currentTarget as Element).setPointerCapture(e.pointerId)
+                          updatePercentage(e.clientY)
+                        }}
+                        onPointerMove={(e: any) => {
+                          if (e.buttons === 1 || e.pressure > 0) updatePercentage(e.clientY)
+                        }}
+                      />
+                    </g>
+                  )
+                })()}
 
                 {/* ════ 4. 2-Fold Pinch Pleat Drapery ════ */}
                 <g>
