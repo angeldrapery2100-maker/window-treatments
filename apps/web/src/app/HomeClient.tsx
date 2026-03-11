@@ -48,10 +48,10 @@ export default function HomeClient({ hero, gallery, about, process: processData,
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   // React 表单状态
-  const [openPercentage, setOpenPercentage] = useState(53)
-  const [shadePercentage, setShadePercentage] = useState(53)  // 卷帘/布帘延迟跟随
+  const [openPercentage, setOpenPercentage] = useState(75)
+  const [shadePercentage, setShadePercentage] = useState(75)  // 卷帘/布帘延迟跟随
   const [shadeDuration, setShadeDuration] = useState(0)       // 按比例计算的动画时长
-  const prevShadeRef = useRef(53)                              // 上一次 shadePercentage
+  const prevShadeRef = useRef(75)                              // 上一次 shadePercentage
   const [tappedLogos, setTappedLogos] = useState<Set<string>>(new Set())
   const sliderRef = useRef<SVGRectElement | HTMLDivElement>(null)
   const shadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -712,6 +712,16 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                     <stop offset="50%" stopColor="#C084FC" />
                     <stop offset="100%" stopColor="#F472B6" />
                   </radialGradient>
+                  {/* Apple Intelligence 彩虹边框渐变 */}
+                  <linearGradient id="appleIntelBorder" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%"   stopColor="#FF6B6B" />
+                    <stop offset="16%"  stopColor="#FF9F43" />
+                    <stop offset="33%"  stopColor="#FECA57" />
+                    <stop offset="50%"  stopColor="#48DBFB" />
+                    <stop offset="66%"  stopColor="#5F7FFF" />
+                    <stop offset="83%"  stopColor="#C56CF0" />
+                    <stop offset="100%" stopColor="#FF6B6B" />
+                  </linearGradient>
                   {/* 玻璃窗光效 */}
                   <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
                     <stop offset="0%" stopColor="#BFDBFE" stopOpacity="0.6" />
@@ -735,17 +745,72 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   <line x1="1420" y1="50" x2="800" y2="70" />
                 </g>
 
-                {/* ════ 1. iPhone ════ */}
+                {/* ════ 1. iPhone 16 Pro — Dynamic Island + Apple Intelligence Siri ════ */}
                 <g transform="translate(80, 130)">
-                  <rect x="0" y="0" width="200" height="400" rx="30" fill="#020617" stroke="#334155" strokeWidth="4" />
-                  <rect x="60" y="15" width="80" height="20" rx="10" fill="#000" />
-                  <rect x="15" y="50" width="170" height="300" rx="6" fill="#0F172A" />
-                  <text x="100" y="110" textAnchor="middle" fill="#94A3B8" fontSize="11">Hey Siri,</text>
-                  <text x="100" y="135" textAnchor="middle" fill="#5BC1F5" fontSize="12" fontWeight="bold">"Set shades to</text>
-                  <text x="100" y="155" textAnchor="middle" fill="#5BC1F5" fontSize="12" fontWeight="bold">{openPercentage}%"</text>
-                  <circle cx="100" cy="270" r="35" fill="url(#siriGlow)" opacity="0.75" />
-                  <circle cx="100" cy="270" r="16" fill="#fff" opacity="0.9" />
-                  <rect x="30" y="385" width="140" height="5" rx="2.5" fill="#1E293B" />
+                  {/* 机身外壳 — 钛金属色 */}
+                  <rect x="0" y="0" width="200" height="400" rx="38" fill="#1A1A1E" stroke="#3A3A3E" strokeWidth="3" />
+
+                  {/* Apple Intelligence 彩虹发光边框 — 心跳脉动 */}
+                  <motion.rect
+                    x="3" y="3" width="194" height="394" rx="36"
+                    fill="none" stroke="url(#appleIntelBorder)" strokeWidth="2.5"
+                    initial={{ opacity: 0.3 }}
+                    animate={{ opacity: [0.3, 0.9, 0.3], strokeWidth: [2, 3.5, 2] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                  {/* 柔和外发光层 */}
+                  <motion.rect
+                    x="-2" y="-2" width="204" height="404" rx="40"
+                    fill="none" stroke="url(#appleIntelBorder)" strokeWidth="1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.4, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ filter: 'blur(4px)' } as any}
+                  />
+
+                  {/* 屏幕（极窄边框）*/}
+                  <rect x="6" y="6" width="188" height="388" rx="34" fill="#0F172A" />
+
+                  {/* Dynamic Island 灵动岛 */}
+                  <rect x="72" y="14" width="56" height="22" rx="11" fill="#000" />
+                  {/* 摄像头 */}
+                  <circle cx="110" cy="25" r="5" fill="#0A0A0A" stroke="#1A1A2E" strokeWidth="1" />
+                  <circle cx="110" cy="25" r="2" fill="#111" />
+
+                  {/* 屏幕内容 */}
+                  <text x="100" y="75" textAnchor="middle" fill="#94A3B8" fontSize="10" letterSpacing="0.5">Hey Siri,</text>
+                  <text x="100" y="100" textAnchor="middle" fill="#5BC1F5" fontSize="13" fontWeight="bold">&quot;Set shades to</text>
+                  <text x="100" y="120" textAnchor="middle" fill="#5BC1F5" fontSize="13" fontWeight="bold">75%&quot;</text>
+
+                  {/* Siri 光球按钮 — 点击设为 75%（滑块显示 100-25=75%）*/}
+                  <g style={{ cursor: 'pointer' } as any} onClick={() => setOpenPercentage(25)}>
+                    {/* 外圈呼吸光晕 */}
+                    <motion.circle
+                      cx="100" cy="230" r="42"
+                      fill="url(#siriGlow)" opacity="0.15"
+                      animate={{ r: [42, 50, 42] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                    {/* 主光球 */}
+                    <circle cx="100" cy="230" r="35" fill="url(#siriGlow)" opacity="0.8" />
+                    {/* 白色高光 */}
+                    <circle cx="100" cy="230" r="14" fill="#fff" opacity="0.85" />
+                    {/* 播放三角 */}
+                    <polygon points="95,222 95,238 108,230" fill="url(#siriGlow)" />
+                  </g>
+
+                  {/* 按钮提示 */}
+                  <text x="100" y="290" textAnchor="middle" fill="#94A3B8" fontSize="9" opacity="0.7">Tap to activate</text>
+
+                  {/* Apple 智能状态栏 */}
+                  <text x="100" y="330" textAnchor="middle" fill="#64748B" fontSize="8" letterSpacing="0.8">APPLE INTELLIGENCE</text>
+                  <line x1="30" y1="340" x2="170" y2="340" stroke="#1E293B" strokeWidth="0.5" />
+
+                  {/* HomeKit 图标行 */}
+                  <text x="100" y="362" textAnchor="middle" fill="#475569" fontSize="9">🏠 Home · Shades · Living Room</text>
+
+                  {/* 底部横条 — home indicator */}
+                  <rect x="62" y="384" width="76" height="4" rx="2" fill="#334155" />
                 </g>
 
                 {/* ════ 2. 内装卷帘（建筑图纸风格）════ */}
@@ -1081,6 +1146,16 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   <path d="M1426,36 Q1438,42 1438,50 Q1438,58 1426,64" fill="none" stroke="white" strokeWidth="3.4" strokeLinecap="round" opacity="0.6"/>
                   <text x="1420" y="102" textAnchor="middle" fill="white" fontSize="11" fontWeight="700" letterSpacing="0.5" opacity="0.8">SENSOR</text>
                 </g>
+
+                {/* ════ 跳动提醒文字 ════ */}
+                <motion.g
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <text x="800" y="570" textAnchor="middle" fill="#5BC1F5" fontSize="13" fontWeight="600" opacity="0.9" letterSpacing="0.5">
+                    👆 Try tapping the Siri button or dragging the slider
+                  </text>
+                </motion.g>
 
               </svg>
             </div>
