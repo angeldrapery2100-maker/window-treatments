@@ -921,25 +921,14 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       <text x={slCx} y={slTop} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="700" letterSpacing="0.15em" style={{textTransform:'uppercase'} as any}>BLINDS STATUS</text>
                       <text x={slCx} y={slTop + 32} textAnchor="middle" fill="#5BC1F5" fontSize="30" fontWeight="700">{100 - openPercentage}%</text>
 
-                      {/* 胶囊滑块背景 */}
-                      <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} fill="#2A2A2B" />
-
-                      {/* 彩虹边框 — 心跳脉动 */}
-                      <motion.rect
-                        x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR}
-                        fill="none" stroke="url(#appleIntelBorder)" strokeWidth="2"
-                        initial={{ opacity: 0.3 }}
-                        animate={{ opacity: [0.3, 0.85, 0.3], strokeWidth: [1.5, 3, 1.5] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                      />
-                      {/* 外发光层 */}
-                      <motion.rect
-                        x={slCx - slW / 2 - 3} y={slY - 3} width={slW + 6} height={slH + 6} rx={slR + 3}
-                        fill="none" stroke="url(#appleIntelBorder)" strokeWidth="1"
-                        animate={{ opacity: [0, 0.35, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                        style={{ filter: 'blur(4px)' } as any}
-                      />
+                      {/* 胶囊滑块背景 — 心跳脉动（缩放） */}
+                      <motion.g
+                        style={{ transformOrigin: `${slCx}px ${slY + slH / 2}px` } as any}
+                        animate={{ scale: [1, 1.06, 1] }}
+                        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} fill="#2A2A2B" />
+                      </motion.g>
 
                       {/* 蓝色填充 — 从顶部向下 */}
                       <defs>
