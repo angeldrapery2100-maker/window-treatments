@@ -293,7 +293,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               // JSON mode:  cover_image is a filename relative to /hunter-douglas/{slug}/
               const imgSrc = product.cover_image
                 ? (useDbCatalog || product.cover_image.startsWith('/')
-                    ? product.cover_image
+                    ? `${CDN_BASE}${product.cover_image.startsWith('/') ? '' : '/'}${product.cover_image}`
                     : `${CDN_BASE}/hunter-douglas/${product.slug}/${product.cover_image}`)
                 : null
               return (

@@ -21,20 +21,24 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     if (!CDN_URL) return []
-    return [
-      {
-        source: '/hunter-douglas/:path*',
-        destination: `${CDN_URL}/hunter-douglas/:path*`,
-      },
-      {
-        source: '/uploads/:path*',
-        destination: `${CDN_URL}/uploads/:path*`,
-      },
-      {
-        source: '/videos/:path*',
-        destination: `${CDN_URL}/videos/:path*`,
-      },
+    // Rewrite all public asset folders to R2 CDN
+    const assetFolders = [
+      'hunter-douglas',
+      'uploads',
+      'videos',
+      'drapery',
+      'roman-shade',
+      'top-treatments',
+      'roller-collection',
+      'sheer-collection',
+      'luma-collection',
+      'lutron',
+      'about',
     ]
+    return assetFolders.map(folder => ({
+      source: `/${folder}/:path*`,
+      destination: `${CDN_URL}/${folder}/:path*`,
+    }))
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
