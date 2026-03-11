@@ -59,8 +59,21 @@ const cardReveal = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
+// Hunter Douglas product slugs — only these appear in the HD grid section.
+// Other products (Handcrafted, Lutron, Luma) have their own hardcoded sections.
+const HD_SLUGS = new Set([
+  'alustra-architectural','alustra-woven-textures','applause','aria','duette',
+  'everwood-parkland','heritance-newstyle','luminette','modern-precious-metals',
+  'nantucket','palm-beach','pirouette','provenance','roller-skyline',
+  'screen-skyline','silhouette','sonnette','us-banded','verticals','vignette',
+])
+
 export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, footer }: Props) {
   const [activeFilter, setActiveFilter] = useState<string>('all')
+
+  // When DB catalog is active, filter to only Hunter Douglas products for the HD grid.
+  // Other products (Handcrafted, Lutron, Luma) are shown in their own hardcoded sections.
+  const hdProducts = useDbCatalog ? products.filter(p => HD_SLUGS.has(p.slug)) : products
 
   // Product categories for filtering.
   // When DB catalog is active: use the `category` field from DB.
@@ -76,10 +89,10 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
   ].filter(cat => {
     // Only show category tabs that have at least one product
     if (cat.key === 'all') return true
-    if (useDbCatalog) return products.some(p => p.category === cat.key)
+    if (useDbCatalog) return hdProducts.some(p => p.category === cat.key)
     // JSON mode: show only the original 4 tabs
     return ['shades', 'blinds', 'shutters', 'sheers'].includes(cat.key) &&
-      products.some(p => {
+      hdProducts.some(p => {
         const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
         const blindsSlugs   = ['everwood-parkland','modern-precious-metals','vertical-blinds','verticals','nantucket']
         const shuttersSlugs = ['palm-beach','heritance-newstyle']
@@ -93,8 +106,8 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
   })
 
   const filteredProducts = activeFilter === 'all'
-    ? products
-    : products.filter(p => {
+    ? hdProducts
+    : hdProducts.filter(p => {
         if (useDbCatalog) return p.category === activeFilter
         // JSON fallback: original slug-based categorisation
         const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
