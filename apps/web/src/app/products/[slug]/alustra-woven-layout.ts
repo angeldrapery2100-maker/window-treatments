@@ -176,30 +176,6 @@ export const alustraWovenLayout: ProductLayout = {
       ],
     },
 
-    // ── PowerView® Automation ──
-    {
-      type: 'comparison-grid',
-      title: 'PowerView® Automation',
-      cols: 3,
-      items: [
-        {
-          image: 'page027_img02_321x556.jpeg',
-          label: 'Convenience',
-          sublabel: 'Achieve your perfect light automatically. Program shadings to be in the best positions throughout the day.',
-        },
-        {
-          image: 'page027_img03_216x458.jpeg',
-          label: 'Privacy & Security',
-          sublabel: 'Schedule shadings to close whenever you prefer. Remote control gives the illusion that you\'re always home.',
-        },
-        {
-          image: 'page028_img02_1696x1955.jpeg',
-          label: 'A Day With PowerView®',
-          sublabel: '7 AM — let in morning light. 2 PM — protect from midday sun. Sunset — open for the view. 10:30 PM — lower for a perfect night\'s sleep.',
-        },
-      ],
-    },
-
     // ── Operating Systems ──
     {
       type: 'comparison-grid',
@@ -207,9 +183,9 @@ export const alustraWovenLayout: ProductLayout = {
       cols: 4,
       items: [
         {
-          image: 'page029_img01_416x669.jpeg',
+          image: 'page027_img03_216x458.jpeg',
           label: 'PowerView® Automation',
-          sublabel: 'Smoothly integrates with other smart-home technologies for total automation.',
+          sublabel: 'Smoothly integrates with other smart-home technologies for total automation. Schedule shadings for privacy and security.',
         },
         {
           image: 'page029_img03_471x341.jpeg',
