@@ -266,7 +266,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               <span className="text-gray-400 text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">Authorized Dealer</span>
               <h3 className="text-4xl md:text-5xl font-light tracking-tighter text-[#12141C]">Hunter Douglas</h3>
               <p className="text-gray-400 text-sm mt-3 max-w-md">
-                {products.length} product lines featuring world-class window treatments with industry-leading innovation.
+                {hdProducts.length} product lines featuring world-class window treatments with industry-leading innovation.
               </p>
             </div>
           </motion.div>
