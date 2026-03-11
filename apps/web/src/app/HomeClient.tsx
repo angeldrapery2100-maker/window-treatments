@@ -924,6 +924,23 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       {/* 胶囊滑块背景 */}
                       <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} fill="#2A2A2B" />
 
+                      {/* 彩虹边框 — 心跳脉动 */}
+                      <motion.rect
+                        x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR}
+                        fill="none" stroke="url(#appleIntelBorder)" strokeWidth="2"
+                        initial={{ opacity: 0.3 }}
+                        animate={{ opacity: [0.3, 0.85, 0.3], strokeWidth: [1.5, 3, 1.5] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                      />
+                      {/* 外发光层 */}
+                      <motion.rect
+                        x={slCx - slW / 2 - 3} y={slY - 3} width={slW + 6} height={slH + 6} rx={slR + 3}
+                        fill="none" stroke="url(#appleIntelBorder)" strokeWidth="1"
+                        animate={{ opacity: [0, 0.35, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                        style={{ filter: 'blur(4px)' } as any}
+                      />
+
                       {/* 蓝色填充 — 从顶部向下 */}
                       <defs>
                         <clipPath id="sliderCapsuleClip">
