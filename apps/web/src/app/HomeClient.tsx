@@ -921,42 +921,43 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       <text x={slCx} y={slTop} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="700" letterSpacing="0.15em" style={{textTransform:'uppercase'} as any}>BLINDS STATUS</text>
                       <text x={slCx} y={slTop + 32} textAnchor="middle" fill="#5BC1F5" fontSize="30" fontWeight="700">{100 - openPercentage}%</text>
 
-                      {/* 胶囊滑块背景 — 心跳脉动（缩放） */}
+                      {/* 心跳脉动 — 整个滑块视觉元素一起缩放 */}
                       <motion.g
                         style={{ transformOrigin: `${slCx}px ${slY + slH / 2}px` } as any}
                         animate={{ scale: [1, 1.06, 1] }}
                         transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
                       >
+                        {/* 胶囊背景 */}
                         <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} fill="#2A2A2B" />
+
+                        {/* 蓝色填充 — 从顶部向下 */}
+                        <defs>
+                          <clipPath id="sliderCapsuleClip">
+                            <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} />
+                          </clipPath>
+                        </defs>
+                        <motion.rect
+                          x={slCx - slW / 2} y={slY} width={slW}
+                          fill="#5BC1F5"
+                          clipPath="url(#sliderCapsuleClip)"
+                          initial={false}
+                          animate={{ height: fillH }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        />
+
+                        {/* 拖动手柄纹路 */}
+                        <motion.g
+                          initial={false}
+                          animate={{ translateY: handleY - slY }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        >
+                          <line x1={slCx - 12} y1={slY - 6} x2={slCx + 12} y2={slY - 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                          <line x1={slCx - 12} y1={slY} x2={slCx + 12} y2={slY} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                          <line x1={slCx - 12} y1={slY + 6} x2={slCx + 12} y2={slY + 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                        </motion.g>
                       </motion.g>
 
-                      {/* 蓝色填充 — 从顶部向下 */}
-                      <defs>
-                        <clipPath id="sliderCapsuleClip">
-                          <rect x={slCx - slW / 2} y={slY} width={slW} height={slH} rx={slR} />
-                        </clipPath>
-                      </defs>
-                      <motion.rect
-                        x={slCx - slW / 2} y={slY} width={slW}
-                        fill="#5BC1F5"
-                        clipPath="url(#sliderCapsuleClip)"
-                        initial={false}
-                        animate={{ height: fillH }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      />
-
-                      {/* 拖动手柄纹路 */}
-                      <motion.g
-                        initial={false}
-                        animate={{ translateY: handleY - slY }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      >
-                        <line x1={slCx - 12} y1={slY - 6} x2={slCx + 12} y2={slY - 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-                        <line x1={slCx - 12} y1={slY} x2={slCx + 12} y2={slY} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-                        <line x1={slCx - 12} y1={slY + 6} x2={slCx + 12} y2={slY + 6} stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-                      </motion.g>
-
-                      {/* 透明交互热区 — 接收触摸/鼠标事件 */}
+                      {/* 透明交互热区（不参与缩放，保持坐标精准）*/}
                       <rect
                         ref={sliderRef as any}
                         x={slCx - slW / 2} y={slY} width={slW} height={slH}
