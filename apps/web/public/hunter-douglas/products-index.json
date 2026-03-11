@@ -1,0 +1,382 @@
+[
+  {
+    "id": "hd-alustra-architectural-digital-sample-book",
+    "name": "Alustra® Architectural Roller Shades",
+    "slug": "alustra-architectural",
+    "description": "The innovative form of Alustra® Architectural Shades infuses a soft yet structural beauty at the window. Sophisticated fabrics combined with a unique linear design.",
+    "cover_image": "page006_img01_2903x1956.jpeg",
+    "stats": {
+      "gallery": 6,
+      "benefits": 1,
+      "control": 10,
+      "design": 1,
+      "mounting": 0,
+      "details": 2,
+      "vane": 0,
+      "hardware": 1,
+      "swatch_collections": 1,
+      "swatch_colors": 41
+    }
+  },
+  {
+    "id": "hd-alustra-woven-textures-digital-sample-book",
+    "name": "Alustra® Woven Textures®",
+    "slug": "alustra-woven-textures",
+    "description": "Alustra® Woven Textures® offer an exclusive collection of richly woven fabrics with intricate patterns and refined colorways for Hunter Douglas window treatments.",
+    "cover_image": "page002_img01_2028x1953.jpeg",
+    "stats": {
+      "gallery": 12,
+      "benefits": 1,
+      "control": 14,
+      "design": 0,
+      "mounting": 2,
+      "details": 4,
+      "vane": 0,
+      "hardware": 4,
+      "swatch_collections": 1,
+      "swatch_colors": 70
+    }
+  },
+  {
+    "id": "hd-applause-digital-sample-book",
+    "name": "Applause® Honeycomb Shades",
+    "slug": "applause",
+    "description": "Applause® Honeycomb Shades feature a unique two-cell construction that provides extra insulation and a sophisticated look with an extensive palette of colors.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 8,
+      "benefits": 1,
+      "control": 5,
+      "design": 1,
+      "mounting": 1,
+      "details": 5,
+      "vane": 0,
+      "hardware": 2,
+      "swatch_collections": 2,
+      "swatch_colors": 81
+    }
+  },
+  {
+    "id": "hd-aria-digital-sample-book",
+    "name": "Aria™ On & Off Track Blinds",
+    "slug": "aria",
+    "description": "Aria™ On & Off Track Blinds offer a versatile, modern solution with curved vanes that rotate to adjust light and slide effortlessly along a track.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 8,
+      "benefits": 1,
+      "control": 4,
+      "design": 0,
+      "mounting": 1,
+      "details": 2,
+      "vane": 0,
+      "hardware": 1,
+      "swatch_collections": 2,
+      "swatch_colors": 26
+    }
+  },
+  {
+    "id": "hd-duette-digital-sample-book",
+    "name": "Duette® Honeycomb Shades",
+    "slug": "duette",
+    "description": "Duette® Honeycomb Shades set the standard for energy-efficient window fashions with their patented honeycomb construction that traps air to insulate your home.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 6,
+      "benefits": 1,
+      "control": 10,
+      "design": 0,
+      "mounting": 1,
+      "details": 4,
+      "vane": 0,
+      "hardware": 3,
+      "swatch_collections": 16,
+      "swatch_colors": 150
+    }
+  },
+  {
+    "id": "hd-everwood-parkland-digital-sample-book",
+    "name": "EverWood® & Parkland® Blinds",
+    "slug": "everwood-parkland",
+    "description": "EverWood® and Parkland® alternative wood and real wood blinds deliver the beauty of genuine wood with options designed to resist fading, warping, and bowing.",
+    "cover_image": "page002_img01_1391x1003.jpeg",
+    "stats": {
+      "gallery": 69,
+      "benefits": 2,
+      "control": 5,
+      "design": 3,
+      "mounting": 1,
+      "details": 3,
+      "vane": 3,
+      "hardware": 1,
+      "swatch_collections": 1,
+      "swatch_colors": 1
+    }
+  },
+  {
+    "id": "hd-heritance-newstyle-digital-sample-book",
+    "name": "Heritance® & NewStyle® Shutters",
+    "slug": "heritance-newstyle",
+    "description": "Heritance® hardwood and NewStyle® hybrid shutters combine timeless beauty with modern innovation for enduring quality and charm.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 18,
+      "benefits": 1,
+      "control": 1,
+      "design": 9,
+      "mounting": 4,
+      "details": 1,
+      "vane": 0,
+      "hardware": 0,
+      "swatch_collections": 8,
+      "swatch_colors": 27
+    }
+  },
+  {
+    "id": "hd-luminette-digital-sample-book",
+    "name": "Luminette® Privacy Sheers",
+    "slug": "luminette",
+    "description": "Luminette® Privacy Sheers combine the beauty of sheer draperies with the light control and privacy of a blind, perfect for wide windows and sliding glass doors.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 48,
+      "benefits": 1,
+      "control": 6,
+      "design": 0,
+      "mounting": 1,
+      "details": 0,
+      "vane": 1,
+      "hardware": 1,
+      "swatch_collections": 1,
+      "swatch_colors": 2
+    }
+  },
+  {
+    "id": "hd-modern-precious-metals-digital-sample-book",
+    "name": "Modern Precious Metals®",
+    "slug": "modern-precious-metals",
+    "description": "Modern Precious Metals® aluminum blinds feature sleek profiles with a curated collection of metallic finishes for a contemporary, refined look.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 9,
+      "benefits": 0,
+      "control": 5,
+      "design": 1,
+      "mounting": 1,
+      "details": 1,
+      "vane": 3,
+      "hardware": 1,
+      "swatch_collections": 1,
+      "swatch_colors": 70
+    }
+  },
+  {
+    "id": "hd-nantucket-digital-sample-book",
+    "name": "Nantucket™ Window Shadings",
+    "slug": "nantucket",
+    "description": "Nantucket™ Window Shadings blend the softness of a sheer with the precise light control of a blind, creating a relaxed coastal-inspired elegance.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 6,
+      "benefits": 1,
+      "control": 9,
+      "design": 0,
+      "mounting": 0,
+      "details": 1,
+      "vane": 0,
+      "hardware": 4,
+      "swatch_collections": 1,
+      "swatch_colors": 176
+    }
+  },
+  {
+    "id": "hd-palm-beach-digital-sample-book",
+    "name": "Palm Beach™ Shutters",
+    "slug": "palm-beach",
+    "description": "Palm Beach™ Polysatin™ shutters are built to last with a UV-resistant compound that resists warping, cracking, fading, and discoloring—guaranteed for life.",
+    "cover_image": "page002_img01_2106x1506.jpeg",
+    "stats": {
+      "gallery": 5,
+      "benefits": 1,
+      "control": 2,
+      "design": 8,
+      "mounting": 1,
+      "details": 0,
+      "vane": 0,
+      "hardware": 0,
+      "swatch_collections": 1,
+      "swatch_colors": 6
+    }
+  },
+  {
+    "id": "hd-pirouette-digital-sample-book",
+    "name": "Pirouette® Window Shadings",
+    "slug": "pirouette",
+    "description": "Pirouette® Window Shadings feature soft horizontal fabric vanes attached to a single sheer backing that gently diffuses incoming light.",
+    "cover_image": "page002_img01_4209x3009.jpeg",
+    "stats": {
+      "gallery": 8,
+      "benefits": 1,
+      "control": 6,
+      "design": 1,
+      "mounting": 0,
+      "details": 2,
+      "vane": 1,
+      "hardware": 0,
+      "swatch_collections": 8,
+      "swatch_colors": 92
+    }
+  },
+  {
+    "id": "hd-provenance-digital-sample-book",
+    "name": "Provenance® Woven Wood Shades",
+    "slug": "provenance",
+    "description": "Provenance® Woven Wood Shades are hand-woven from natural materials like reeds, grasses, and woods, bringing organic texture and warmth to your home.",
+    "cover_image": "page002_img01_2363x1768.jpeg",
+    "stats": {
+      "gallery": 19,
+      "benefits": 2,
+      "control": 7,
+      "design": 0,
+      "mounting": 1,
+      "details": 8,
+      "vane": 0,
+      "hardware": 1,
+      "swatch_collections": 1,
+      "swatch_colors": 105
+    }
+  },
+  {
+    "id": "hd-roller-skyline-digital-sample-book",
+    "name": "Roller & Skyline® Shades",
+    "slug": "roller-skyline",
+    "description": "Roller and Skyline® Gliding Window Panels offer clean lines and modern styling, available in an extensive range of on-trend fabrics and colors.",
+    "cover_image": "page003_img01_2930x1541.jpeg",
+    "stats": {
+      "gallery": 16,
+      "benefits": 1,
+      "control": 10,
+      "design": 0,
+      "mounting": 2,
+      "details": 5,
+      "vane": 0,
+      "hardware": 17,
+      "swatch_collections": 2,
+      "swatch_colors": 365
+    }
+  },
+  {
+    "id": "hd-screen-skyline-digital-sample-book",
+    "name": "Screen & Skyline® Shades",
+    "slug": "screen-skyline",
+    "description": "Screen and Skyline® shades provide solar protection while maintaining your view, available in a range of openness factors and contemporary fabrics.",
+    "cover_image": "page002_img01_4328x3009.jpeg",
+    "stats": {
+      "gallery": 11,
+      "benefits": 1,
+      "control": 8,
+      "design": 0,
+      "mounting": 1,
+      "details": 5,
+      "vane": 0,
+      "hardware": 2,
+      "swatch_collections": 1,
+      "swatch_colors": 126
+    }
+  },
+  {
+    "id": "hd-silhouette-digital-sample-book",
+    "name": "Silhouette® Window Shadings",
+    "slug": "silhouette",
+    "description": "Silhouette® Window Shadings transform harsh sunlight into beautiful ambient glow with signature S-shaped vanes suspended between two sheers.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 8,
+      "benefits": 1,
+      "control": 10,
+      "design": 0,
+      "mounting": 0,
+      "details": 1,
+      "vane": 2,
+      "hardware": 6,
+      "swatch_collections": 9,
+      "swatch_colors": 312
+    }
+  },
+  {
+    "id": "hd-sonnette-digital-sample-book",
+    "name": "Sonnette™ Cellular Roller Shades",
+    "slug": "sonnette",
+    "description": "Sonnette™ Cellular Roller Shades combine the clean look of a roller shade with the energy efficiency of a cellular shade in a curved modern design.",
+    "cover_image": "page002_img01_2105x1505.jpeg",
+    "stats": {
+      "gallery": 7,
+      "benefits": 1,
+      "control": 10,
+      "design": 0,
+      "mounting": 0,
+      "details": 1,
+      "vane": 0,
+      "hardware": 6,
+      "swatch_collections": 4,
+      "swatch_colors": 77
+    }
+  },
+  {
+    "id": "hd-us-banded-digital-sample-book",
+    "name": "Design Studio™ Banded Shades",
+    "slug": "us-banded",
+    "description": "Design Studio™ Banded Shades create striking visual effects with alternating sheer and solid fabric bands that shift to control light and privacy.",
+    "cover_image": "page002_img01_2059x1715.jpeg",
+    "stats": {
+      "gallery": 13,
+      "benefits": 1,
+      "control": 4,
+      "design": 0,
+      "mounting": 0,
+      "details": 3,
+      "vane": 0,
+      "hardware": 5,
+      "swatch_collections": 11,
+      "swatch_colors": 84
+    }
+  },
+  {
+    "id": "hd-verticals-digital-sample-book",
+    "name": "Vertical Blinds Collection",
+    "slug": "verticals",
+    "description": "Vertical Blinds offer a versatile and practical solution for large windows and sliding doors, with a wide selection of materials, textures, and colors.",
+    "cover_image": "page002_img01_1935x1505.jpeg",
+    "stats": {
+      "gallery": 120,
+      "benefits": 1,
+      "control": 5,
+      "design": 0,
+      "mounting": 1,
+      "details": 5,
+      "vane": 0,
+      "hardware": 0,
+      "swatch_collections": 1,
+      "swatch_colors": 3
+    }
+  },
+  {
+    "id": "hd-vignette-digital-sample-book",
+    "name": "Vignette® Modern Roman Shades",
+    "slug": "vignette",
+    "description": "Vignette® Modern Roman Shades feature consistent folds with no exposed rear cords, creating a clean, tailored look in both raised and lowered positions.",
+    "cover_image": "page002_img01_4210x3010.jpeg",
+    "stats": {
+      "gallery": 5,
+      "benefits": 0,
+      "control": 10,
+      "design": 2,
+      "mounting": 0,
+      "details": 4,
+      "vane": 0,
+      "hardware": 0,
+      "swatch_collections": 50,
+      "swatch_colors": 111
+    }
+  }
+]
