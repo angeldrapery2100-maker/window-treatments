@@ -65,7 +65,7 @@ const HD_SLUGS = new Set([
   'alustra-architectural','alustra-woven-textures','applause','aria','duette',
   'everwood-parkland','heritance-newstyle','luminette','modern-precious-metals',
   'nantucket','palm-beach','pirouette','provenance','roller-skyline',
-  'screen-skyline','silhouette','sonnette','us-banded','verticals','vignette',
+  'screen-skyline','silhouette','sonnette','triathlon-roller-shades','us-banded','verticals','vignette',
 ])
 
 export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, footer }: Props) {
@@ -93,7 +93,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
     // JSON mode: show only the original 4 tabs
     return ['shades', 'blinds', 'shutters', 'sheers'].includes(cat.key) &&
       hdProducts.some(p => {
-        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
+        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance','triathlon-roller-shades']
         const blindsSlugs   = ['everwood-parkland','modern-precious-metals','vertical-blinds','verticals','nantucket']
         const shuttersSlugs = ['palm-beach','heritance-newstyle']
         const sheersSlugs   = ['silhouette','pirouette','luminette','aria','alustra-architectural','alustra-woven-textures']
@@ -110,7 +110,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
     : hdProducts.filter(p => {
         if (useDbCatalog) return p.category === activeFilter
         // JSON fallback: original slug-based categorisation
-        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
+        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance','triathlon-roller-shades']
         const blindsSlugs   = ['everwood-parkland','modern-precious-metals','vertical-blinds','verticals','nantucket']
         const shuttersSlugs = ['palm-beach','heritance-newstyle']
         const sheersSlugs   = ['silhouette','pirouette','luminette','aria','alustra-architectural','alustra-woven-textures']

@@ -987,7 +987,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
     setLightboxChip(undefined)
   }
 
-  const imgBase = `${CDN_BASE}/hunter-douglas/${layout.slug}`
+  const imgBase = (layout as any).imageBase || `${CDN_BASE}/hunter-douglas/${layout.slug}`
   const totalSwatches = layout.swatchCollections.reduce((sum, c) => sum + c.swatches.length, 0)
 
   return (

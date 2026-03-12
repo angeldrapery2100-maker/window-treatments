@@ -27,6 +27,7 @@ import { screenSkylineLayout } from './screen-skyline-layout'
 import { verticalBlindsLayout } from './vertical-blinds-layout'
 import { usBandedLayout } from './us-banded-layout'
 import { alustraWovenLayout } from './alustra-woven-layout'
+import { triathlonRollerShadesLayout } from './triathlon-roller-shades-layout'
 
 /**
  * Load layout for a given product slug.
@@ -75,6 +76,8 @@ export function loadLayout(slug: string, product: any): ProductLayout | null {
       return usBandedLayout as unknown as ProductLayout
     case 'alustra-woven-textures':
       return alustraWovenLayout as unknown as ProductLayout
+    case 'triathlon-roller-shades':
+      return triathlonRollerShadesLayout as unknown as ProductLayout
 
     default:
       return null

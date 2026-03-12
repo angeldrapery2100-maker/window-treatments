@@ -378,5 +378,24 @@
       "swatch_collections": 50,
       "swatch_colors": 111
     }
+  },
+  {
+    "id": "lutron-triathlon-roller-shades",
+    "name": "Triathlon® Roller Shades",
+    "slug": "triathlon-roller-shades",
+    "description": "Professional-grade motorized roller shades with Intelligent Hembar Alignment, ultra-quiet operation, and seamless smart home integration.",
+    "cover_image": null,
+    "stats": {
+      "gallery": 7,
+      "benefits": 3,
+      "control": 3,
+      "design": 3,
+      "mounting": 3,
+      "details": 2,
+      "vane": 0,
+      "hardware": 0,
+      "swatch_collections": 0,
+      "swatch_colors": 0
+    }
   }
 ]
