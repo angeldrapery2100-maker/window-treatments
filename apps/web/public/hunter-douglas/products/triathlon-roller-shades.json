@@ -2,13 +2,58 @@
   "id": "lutron-triathlon-roller-shades",
   "name": "Triathlon® Roller Shades",
   "slug": "triathlon-roller-shades",
-  "description": "Professional-grade motorized roller shades with Intelligent Hembar Alignment, ultra-quiet operation, and seamless smart home integration for windows up to 144\" wide.",
+  "description": "Professional-grade motorized roller shades powered by Sivoia QS Triathlon technology — featuring Intelligent Hembar Alignment, precision hybrid drive, ultra-quiet operation below 38 dBA, and seamless integration with Lutron smart home platforms.",
   "cover_image": null,
-  "benefits": [],
-  "operating_systems": [],
-  "specialty_options": [],
-  "mounting": [],
-  "hardware_colors": [],
-  "swatch_collections": [],
+  "benefits": [
+    "Intelligent Hembar Alignment (IHA) — 1/8\" precision synchronization",
+    "Ultra-quiet operation below 38 dBA at 3 ft",
+    "Precision hybrid drive with 3.6 in/sec smooth bottom bar speed",
+    "ClearConnect RF wireless — no Wi-Fi required",
+    "Child-safe cordless motorized design",
+    "UV protection up to 99% with blackout fabrics",
+    "Natural light optimization with sun-tracking automation",
+    "20+ third-party smart home integrations"
+  ],
+  "operating_systems": [
+    "RadioRA 3",
+    "HomeWorks",
+    "Caséta PRO",
+    "RA2 Select",
+    "Athena"
+  ],
+  "specialty_options": [
+    "WIDR (Width Integrated Deflection Reduction) for wider spans",
+    "Battery Boost for wider wire-free shades",
+    "Astronomical timeclock scheduling (sunrise/sunset)"
+  ],
+  "mounting": [
+    "Wall mount",
+    "Ceiling mount"
+  ],
+  "hardware_colors": [
+    "White",
+    "Black",
+    "Bronze",
+    "Silver",
+    "Custom paint match"
+  ],
+  "swatch_collections": [
+    {
+      "name": "Classico",
+      "opacities": ["Sheer", "Translucent", "Blackout"]
+    },
+    {
+      "name": "Gallery",
+      "opacities": ["Sheer", "Translucent", "Blackout"]
+    },
+    {
+      "name": "Atelier",
+      "opacities": ["Translucent", "Blackout"]
+    },
+    {
+      "name": "Commercial",
+      "opacities": ["Sheer", "Translucent", "Blackout"]
+    }
+  ],
   "pages": []
 }
