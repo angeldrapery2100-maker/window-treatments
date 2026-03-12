@@ -65,7 +65,7 @@ const HD_SLUGS = new Set([
   'alustra-architectural','alustra-woven-textures','applause','aria','duette',
   'everwood-parkland','heritance-newstyle','luminette','modern-precious-metals',
   'nantucket','palm-beach','pirouette','provenance','roller-skyline',
-  'screen-skyline','silhouette','sonnette','triathlon-roller-shades','us-banded','verticals','vignette',
+  'screen-skyline','silhouette','sonnette','us-banded','verticals','vignette',
 ])
 
 export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, footer }: Props) {
@@ -93,7 +93,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
     // JSON mode: show only the original 4 tabs
     return ['shades', 'blinds', 'shutters', 'sheers'].includes(cat.key) &&
       hdProducts.some(p => {
-        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance','triathlon-roller-shades']
+        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
         const blindsSlugs   = ['everwood-parkland','modern-precious-metals','vertical-blinds','verticals','nantucket']
         const shuttersSlugs = ['palm-beach','heritance-newstyle']
         const sheersSlugs   = ['silhouette','pirouette','luminette','aria','alustra-architectural','alustra-woven-textures']
@@ -110,7 +110,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
     : hdProducts.filter(p => {
         if (useDbCatalog) return p.category === activeFilter
         // JSON fallback: original slug-based categorisation
-        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance','triathlon-roller-shades']
+        const shadesSlugs   = ['duette','applause','sonnette','vignette','roller-skyline','screen-skyline','us-banded','provenance']
         const blindsSlugs   = ['everwood-parkland','modern-precious-metals','vertical-blinds','verticals','nantucket']
         const shuttersSlugs = ['palm-beach','heritance-newstyle']
         const sheersSlugs   = ['silhouette','pirouette','luminette','aria','alustra-architectural','alustra-woven-textures']
@@ -386,44 +386,81 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
             </p>
           </motion.div>
 
-          <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }}
-            variants={cardReveal}
-          >
-            <Link
-              href="/products/lutron-palladiom"
-              className="group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }}
+              variants={cardReveal}
             >
-              {/* Image — fixed height ~2/3 of original */}
-              <div className="md:w-1/2 h-48 md:h-64 overflow-hidden">
-                <img
-                  src="/lutron/palladiom/hero.jpg"
-                  alt="Lutron PALLADIOM Shading System"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              {/* Content */}
-              <div className="md:w-1/2 flex flex-col justify-center p-7 md:p-10">
-                <span className="text-[#C8A84B] text-[10px] font-bold tracking-[0.4em] uppercase block mb-2">Smart Shading System</span>
-                <h4 className="text-2xl md:text-3xl font-light tracking-tighter text-white mb-3">
-                  PALLADIOM<span className="text-white/30 text-xl align-super">®</span>
-                </h4>
-                <p className="text-white/50 text-sm leading-relaxed mb-5 max-w-sm">
-                  Whisper-quiet automated roller shades with machined aluminum brackets, carbon fiber tube, and patented Intelligent Hembar Alignment. Width 20″ to 144″.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {['Motorized', 'Smart Home', '7 Finishes', 'Up to 12×12 ft'].map(tag => (
-                    <span key={tag} className="text-[10px] text-white/30 bg-white/5 border border-white/10 px-3 py-1 rounded-full tracking-wide">
-                      {tag}
-                    </span>
-                  ))}
+              <Link
+                href="/products/lutron-palladiom"
+                className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)] h-full"
+              >
+                <div className="h-48 md:h-56 overflow-hidden">
+                  <img
+                    src="/lutron/palladiom/hero.jpg"
+                    alt="Lutron PALLADIOM Shading System"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
-                <span className="text-xs text-white/30 group-hover:text-[#C8A84B] transition-colors tracking-[0.25em] uppercase">
-                  Explore PALLADIOM →
-                </span>
-              </div>
-            </Link>
-          </motion.div>
+                <div className="flex flex-col justify-center p-7 md:p-8 flex-1">
+                  <span className="text-[#C8A84B] text-[10px] font-bold tracking-[0.4em] uppercase block mb-2">Smart Shading System</span>
+                  <h4 className="text-2xl md:text-3xl font-light tracking-tighter text-white mb-3">
+                    PALLADIOM<span className="text-white/30 text-xl align-super">®</span>
+                  </h4>
+                  <p className="text-white/50 text-sm leading-relaxed mb-5 max-w-sm">
+                    Whisper-quiet automated roller shades with machined aluminum brackets, carbon fiber tube, and patented Intelligent Hembar Alignment. Width 20″ to 144″.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {['Motorized', 'Smart Home', '7 Finishes', 'Up to 12×12 ft'].map(tag => (
+                      <span key={tag} className="text-[10px] text-white/30 bg-white/5 border border-white/10 px-3 py-1 rounded-full tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-xs text-white/30 group-hover:text-[#C8A84B] transition-colors tracking-[0.25em] uppercase">
+                    Explore PALLADIOM →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }}
+              variants={cardReveal}
+            >
+              <Link
+                href="/products/triathlon-roller-shades"
+                className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)] h-full"
+              >
+                <div className="h-48 md:h-56 overflow-hidden">
+                  <img
+                    src="https://assets.lutron.com/a/pdp/triathlon/triathlon-select-ph-an-4272-43e8.jpg"
+                    alt="Triathlon® Roller Shades"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+                <div className="flex flex-col justify-center p-7 md:p-8 flex-1">
+                  <span className="text-[#C8A84B] text-[10px] font-bold tracking-[0.4em] uppercase block mb-2">Sivoia QS Triathlon</span>
+                  <h4 className="text-2xl md:text-3xl font-light tracking-tighter text-white mb-3">
+                    Triathlon<span className="text-white/30 text-xl align-super">®</span> Roller Shades
+                  </h4>
+                  <p className="text-white/50 text-sm leading-relaxed mb-5 max-w-sm">
+                    Precision hybrid drive with Intelligent Hembar Alignment, ultra-quiet operation below 38 dBA, and ClearConnect RF wireless — battery or wired power options.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {['Motorized', 'Battery/Wired', 'IHA Technology', '20+ Integrations'].map(tag => (
+                      <span key={tag} className="text-[10px] text-white/30 bg-white/5 border border-white/10 px-3 py-1 rounded-full tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-xs text-white/30 group-hover:text-[#C8A84B] transition-colors tracking-[0.25em] uppercase">
+                    Explore Triathlon →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 
