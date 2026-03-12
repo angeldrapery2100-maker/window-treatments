@@ -395,7 +395,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/lutron-palladiom"
                 className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)] h-full"
               >
-                <div className="h-48 md:h-56 overflow-hidden">
+                <div className="aspect-square overflow-hidden">
                   <img
                     src="/lutron/palladiom/hero.jpg"
                     alt="Lutron PALLADIOM Shading System"
@@ -432,7 +432,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/triathlon-roller-shades"
                 className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)] h-full"
               >
-                <div className="h-48 md:h-56 overflow-hidden">
+                <div className="aspect-square overflow-hidden">
                   <img
                     src="https://assets.lutron.com/a/pdp/triathlon/triathlon-select-ph-an-4272-43e8.jpg"
                     alt="Triathlon® Roller Shades"
