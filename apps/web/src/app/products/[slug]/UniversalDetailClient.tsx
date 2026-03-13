@@ -89,6 +89,12 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return result
 }
 
+/** Resolve image path: absolute or http paths pass through, others get imgBase prefix */
+function resolveImg(imgBase: string, image: string): string {
+  if (image.startsWith('/') || image.startsWith('http')) return image
+  return `${imgBase}/${image}`
+}
+
 /* ═══ Section Renderers ═══ */
 
 function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (s: string) => void }) {
@@ -105,8 +111,8 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string;
         return (
           <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
             {/* Image: 4/5 width on desktop, natural aspect ratio */}
-            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(`${imgBase}/${scene.image}`)}>
-              <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto object-contain" loading="lazy" />
+            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                   <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -133,8 +139,8 @@ function AlustraSceneSection({ scenes, imgBase, onImg }: { scenes: SceneRow[]; i
         const dir = scene.textSide === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'
         return (
           <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
-            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(`${imgBase}/${scene.image}`)}>
-              <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto object-contain" loading="lazy" />
+            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                   <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -167,8 +173,8 @@ function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string
             {chunkCards.map((card, i) => (
               <div key={i} className="grid" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }}>
                 <div className="rounded-md overflow-hidden cursor-zoom-in flex items-end"
-                  onClick={() => onImg(`${imgBase}/${card.image}`)}>
-                  <img src={`${imgBase}/${card.image}`} alt={card.title} className="w-full h-auto" loading="lazy" />
+                  onClick={() => onImg(resolveImg(imgBase, card.image))}>
+                  <img src={resolveImg(imgBase, card.image)} alt={card.title} className="w-full h-auto" loading="lazy" />
                 </div>
                 <h4 className="font-semibold text-sm text-gray-900 mt-3">{card.title}</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">{card.desc}</p>
@@ -188,10 +194,10 @@ function ComparisonGridItem({ item, imgBase, onImg, uniform }: { item: ImageLabe
       <div
         className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${uniform ? 'bg-gray-50' : portrait ? 'max-h-[360px]' : ''}`}
         style={uniform ? { aspectRatio: '4/3' } : undefined}
-        onClick={() => onImg(`${imgBase}/${item.image}`)}
+        onClick={() => onImg(resolveImg(imgBase, item.image))}
       >
         <img
-          src={`${imgBase}/${item.image}`}
+          src={resolveImg(imgBase, item.image)}
           alt={item.label}
           className={uniform ? 'w-full h-full object-cover' : `w-full ${portrait ? 'max-h-[360px] object-contain mx-auto' : 'h-auto'}`}
           loading="lazy"
@@ -266,8 +272,8 @@ function MountingGridSection({ title, rows, imgBase, onImg }: { title: string; r
               {row.items.map((item, i) => (
                 <div key={i}>
                   <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-                    onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                    <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
+                    onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                    <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
                   </div>
                   <p className="text-[11px] font-semibold text-gray-700 whitespace-pre-line leading-tight">{item.label}</p>
                   {item.sublabel && <p className="text-[10px] text-gray-500">{item.sublabel}</p>}
@@ -292,8 +298,8 @@ function CellSizeSection({ title, brandLabel, items, imgBase, onImg }: { title: 
         {items.map((item, i) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-              onClick={() => onImg(`${imgBase}/${item.image}`)}>
-              <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              onClick={() => onImg(resolveImg(imgBase, item.image))}>
+              <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
           </div>
@@ -314,7 +320,7 @@ function HardwareColorsSection({ title, brandLabel, items, imgBase }: { title: s
         {items.map((item, i) => (
           <div key={i} className="text-center">
             <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1 flex items-center justify-center">
-              <img src={`${imgBase}/${item.image}`} alt={item.label} className="max-w-full max-h-full object-contain" loading="lazy" />
+              <img src={resolveImg(imgBase, item.image)} alt={item.label} className="max-w-full max-h-full object-contain" loading="lazy" />
             </div>
             <p className="text-[10px] text-gray-600 leading-tight">{item.label}</p>
             {(item as any).sublabel && <p className="text-[9px] text-gray-400 leading-tight">{(item as any).sublabel}</p>}
@@ -331,14 +337,14 @@ function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: S
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {collection.swatches.map((sw, i) => {
           const caption = `${collection.name}\n${sw.colorName}\n${sw.specs.join('\n')}`
-          const chipSrc = (sw as any).chip ? `${imgBase}/${(sw as any).chip}` : undefined
+          const chipSrc = (sw as any).chip ? resolveImg(imgBase, (sw as any).chip) : undefined
           return (
-            <div key={i} className="cursor-zoom-in" onClick={() => onImg(`${imgBase}/${sw.image}`, caption, chipSrc)}>
+            <div key={i} className="cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, sw.image), caption, chipSrc)}>
               <div className="relative rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-2 aspect-square">
-                <img src={`${imgBase}/${sw.image}`} alt={sw.colorName} className="w-[200%] h-auto origin-top-left" loading="lazy" />
+                <img src={resolveImg(imgBase, sw.image)} alt={sw.colorName} className="w-[200%] h-auto origin-top-left" loading="lazy" />
                 {(sw as any).chip && (
                   <div className="absolute bottom-1.5 left-1.5 w-[28%] h-[28%] rounded-sm overflow-hidden border-2 border-white shadow-md">
-                    <img src={`${imgBase}/${(sw as any).chip}`} alt={`${sw.colorName} fabric detail`} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={resolveImg(imgBase, (sw as any).chip)} alt={`${sw.colorName} fabric detail`} className="w-full h-full object-cover" loading="lazy" />
                   </div>
                 )}
               </div>
@@ -365,8 +371,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
         {/* Scene image side */}
         {sceneImage && (
           <div className={`md:flex-[1] relative cursor-zoom-in overflow-hidden flex items-center justify-center ${scenePortrait ? 'md:max-h-[600px]' : ''}`}
-            onClick={() => onImg(`${imgBase}/${sceneImage}`)}>
-            <img src={`${imgBase}/${sceneImage}`} alt={sceneLabel} className={`object-contain ${scenePortrait ? 'h-full w-auto max-h-[600px]' : 'w-full h-auto'}`} loading="lazy" />
+            onClick={() => onImg(resolveImg(imgBase, sceneImage))}>
+            <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel} className={`object-contain ${scenePortrait ? 'h-full w-auto max-h-[600px]' : 'w-full h-auto'}`} loading="lazy" />
           </div>
         )}
         {/* Operating system panels side */}
@@ -376,8 +382,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
               <div key={pi}>
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
                   {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(`${imgBase}/${panel.image}`)}>
-                      <img src={`${imgBase}/${panel.image}`} alt={panel.title} className="w-32 h-auto rounded-md object-contain" loading="lazy" />
+                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
+                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="w-32 h-auto rounded-md object-contain" loading="lazy" />
                     </div>
                   )}
                   <div className="flex-1">
@@ -394,8 +400,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
                     {panel.items?.map((item, i) => (
                       <div key={i} className="flex gap-4 items-start mb-3">
                         <div className="w-16 shrink-0 cursor-zoom-in rounded-md overflow-hidden"
-                          onClick={(e) => { e.stopPropagation(); onImg(`${imgBase}/${item.image}`) }}>
-                          <img src={`${imgBase}/${item.image}`} alt={item.title} className="w-full h-auto object-contain" loading="lazy" />
+                          onClick={(e) => { e.stopPropagation(); onImg(resolveImg(imgBase, item.image)) }}>
+                          <img src={resolveImg(imgBase, item.image)} alt={item.title} className="w-full h-auto object-contain" loading="lazy" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-sm text-gray-900">{item.title}</p>
@@ -416,8 +422,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
               <div key={pi} className="bg-white rounded-lg p-6">
                 <div className="flex flex-col sm:flex-row gap-6 items-start">
                   {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(`${imgBase}/${panel.image}`)}>
-                      <img src={`${imgBase}/${panel.image}`} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
+                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
+                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
                     </div>
                   )}
                   <div className="flex-1">
@@ -447,8 +453,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
                     {panel.items?.map((item, i) => (
                       <div key={i} className="bg-white rounded-lg p-4 text-center">
                         <div className="cursor-zoom-in rounded-md overflow-hidden mb-3 flex justify-center"
-                          onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                          <img src={`${imgBase}/${item.image}`} alt={item.title} className="h-72 w-auto object-contain" loading="lazy" />
+                          onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                          <img src={resolveImg(imgBase, item.image)} alt={item.title} className="h-72 w-auto object-contain" loading="lazy" />
                         </div>
                         <p className="font-semibold text-sm text-gray-900 mb-1">{item.title}</p>
                         <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
@@ -483,15 +489,15 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
             {/* Top row: scene image + first 2 panels */}
             <div className="flex gap-4 mb-4">
               {group.sceneImage && (
-                <div className="flex-1 cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(`${imgBase}/${group.sceneImage}`)}>
-                  <img src={`${imgBase}/${group.sceneImage}`} alt={group.title} className="w-full h-full object-cover" loading="lazy" />
+                <div className="flex-1 cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, group.sceneImage))}>
+                  <img src={resolveImg(imgBase, group.sceneImage)} alt={group.title} className="w-full h-full object-cover" loading="lazy" />
                 </div>
               )}
               {topPanels.map((panel, pi) => (
                 <div key={pi} className="flex-1 flex flex-col items-center text-center">
                   {panel.image && (
-                    <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(`${imgBase}/${panel.image}`)}>
-                      <img src={`${imgBase}/${panel.image}`} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                    <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
+                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                     </div>
                   )}
                   <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
@@ -507,8 +513,8 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
                 {bottomPanels.map((panel, pi) => (
                   <div key={pi} className="flex flex-col items-center text-center">
                     {panel.image && (
-                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(`${imgBase}/${panel.image}`)}>
-                        <img src={`${imgBase}/${panel.image}`} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
+                        <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                       </div>
                     )}
                     <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
@@ -531,8 +537,8 @@ function GallerySection({ scenes, imgBase, onImg }: { scenes: { image: string; t
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
-          onClick={() => onImg(`${imgBase}/${scene.image}`)}>
-          <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+          <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {scene.text && <p className="text-white/90 text-sm leading-relaxed">{scene.text}</p>}
@@ -556,8 +562,8 @@ function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase
         {/* Left: scene image (2/3) */}
         {topImg && (
           <div className="md:col-span-2">
-            <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => onImg(`${imgBase}/${topImg.image}`)}>
-              <img src={`${imgBase}/${topImg.image}`} alt={topImg.label || ''} className="w-full h-auto" loading="lazy" />
+            <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => onImg(resolveImg(imgBase, topImg.image))}>
+              <img src={resolveImg(imgBase, topImg.image)} alt={topImg.label || ''} className="w-full h-auto" loading="lazy" />
               {topImg.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 pt-16">
                   <p className="text-white font-light text-lg">{topImg.label}</p>
@@ -571,8 +577,8 @@ function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase
         <div className="space-y-6">
           {(section.lineDrawings || []).map((d: any, i: number) => (
             <div key={i}>
-              <div className="cursor-zoom-in mb-2 rounded-md overflow-hidden" onClick={() => onImg(`${imgBase}/${d.image}`)}>
-                <img src={`${imgBase}/${d.image}`} alt={d.label} className="w-full h-auto" loading="lazy" />
+              <div className="cursor-zoom-in mb-2 rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, d.image))}>
+                <img src={resolveImg(imgBase, d.image)} alt={d.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-sm text-gray-900">{d.label}</p>
               {d.desc && <p className="text-xs text-gray-500 mt-1 leading-relaxed italic">{d.desc}</p>}
@@ -597,16 +603,16 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
             <div className="flex gap-4">
               {t.insideMount && (
                 <div className="flex-1">
-                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(`${imgBase}/${t.insideMount}`)}>
-                    <img src={`${imgBase}/${t.insideMount}`} alt="Inside Mount" className="w-full h-auto" loading="lazy" />
+                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, t.insideMount))}>
+                    <img src={resolveImg(imgBase, t.insideMount)} alt="Inside Mount" className="w-full h-auto" loading="lazy" />
                   </div>
                   <p className="text-[10px] text-gray-500 text-center">Inside Mount</p>
                 </div>
               )}
               {t.outsideMount && (
                 <div className="flex-1">
-                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(`${imgBase}/${t.outsideMount}`)}>
-                    <img src={`${imgBase}/${t.outsideMount}`} alt="Outside Mount" className="w-full h-auto" loading="lazy" />
+                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, t.outsideMount))}>
+                    <img src={resolveImg(imgBase, t.outsideMount)} alt="Outside Mount" className="w-full h-auto" loading="lazy" />
                   </div>
                   <p className="text-[10px] text-gray-500 text-center">Outside Mount</p>
                 </div>
@@ -616,8 +622,8 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
         ))}
         {section.bottomBar && (
           <div className="flex gap-6 items-start">
-            <div className="w-32 cursor-zoom-in" onClick={() => onImg(`${imgBase}/${section.bottomBar.image}`)}>
-              <img src={`${imgBase}/${section.bottomBar.image}`} alt="" className="w-full h-auto rounded-md" loading="lazy" />
+            <div className="w-32 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, section.bottomBar.image))}>
+              <img src={resolveImg(imgBase, section.bottomBar.image)} alt="" className="w-full h-auto rounded-md" loading="lazy" />
             </div>
             <p className="text-sm text-gray-600 flex-1">{section.bottomBar.desc}</p>
           </div>
@@ -634,8 +640,8 @@ function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase
       <div className="grid grid-cols-2 gap-6 mb-6">
         {(section.items || []).map((item: any, i: number) => (
           <div key={i}>
-            <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(`${imgBase}/${item.image}`)}>
-              <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+            <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+              <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
             {item.desc && <p className="text-xs text-gray-500 mt-1 leading-relaxed">{item.desc}</p>}
@@ -645,8 +651,8 @@ function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase
       {(section.variations || []).length > 0 && (
         <div className="grid grid-cols-4 gap-4 mb-4">
           {section.variations.map((v: any, i: number) => (
-            <div key={i} className="cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(`${imgBase}/${v.image}`)}>
-              <img src={`${imgBase}/${v.image}`} alt={v.label} className="w-full h-auto" loading="lazy" />
+            <div key={i} className="cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, v.image))}>
+              <img src={resolveImg(imgBase, v.image)} alt={v.label} className="w-full h-auto" loading="lazy" />
             </div>
           ))}
         </div>
@@ -663,8 +669,8 @@ function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: stri
       <div className="grid grid-cols-2 gap-6 mb-6">
         {(data.widths || []).map((w: any, i: number) => (
           <div key={i}>
-            <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(`${imgBase}/${w.image}`)}>
-              <img src={`${imgBase}/${w.image}`} alt={w.label} className="w-full h-auto" loading="lazy" />
+            <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, w.image))}>
+              <img src={resolveImg(imgBase, w.image)} alt={w.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900 text-center">{w.label}</p>
             {w.sublabel && <p className="text-xs text-gray-500 text-center italic">{w.sublabel}</p>}
@@ -676,15 +682,15 @@ function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: stri
         {(data.colors || []).map((c: any, i: number) => (
           (data.colors || []).length >= 8 ? (
             <div key={i} className="text-center">
-              <div className="rounded-sm overflow-hidden border border-gray-200 cursor-zoom-in mb-1.5 aspect-square" onClick={() => onImg(`${imgBase}/${c.image}`)}>
-                <img src={`${imgBase}/${c.image}`} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+              <div className="rounded-sm overflow-hidden border border-gray-200 cursor-zoom-in mb-1.5 aspect-square" onClick={() => onImg(resolveImg(imgBase, c.image))}>
+                <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <p className="text-[11px] text-gray-700 leading-tight">{c.label}</p>
             </div>
           ) : (
             <div key={i} className="flex items-center gap-3">
               <div className="w-20 h-12 rounded-sm overflow-hidden border border-gray-200 flex-shrink-0 flex items-center justify-center">
-                <img src={`${imgBase}/${c.image}`} alt={c.label} className="max-w-full max-h-full object-contain" loading="lazy" />
+                <img src={resolveImg(imgBase, c.image)} alt={c.label} className="max-w-full max-h-full object-contain" loading="lazy" />
               </div>
               <p className="text-sm text-gray-700">{c.label}</p>
             </div>
@@ -711,8 +717,8 @@ function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: st
         <div className={`grid grid-cols-${Math.min(top.length, 4)} gap-4 mb-8`}>
           {top.map((item, i) => (
             <div key={i}>
-              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-xs text-gray-900">{item.label}</p>
               {item.sublabel && <p className="text-[11px] text-gray-500 leading-relaxed mt-0.5">{item.sublabel}</p>}
@@ -724,8 +730,8 @@ function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: st
         <div className={`grid grid-cols-${Math.min(bottom.length, 4)} gap-4`}>
           {bottom.map((item, i) => (
             <div key={i}>
-              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-xs text-gray-900">{item.label}</p>
               {item.sublabel && <p className="text-[11px] text-gray-500 leading-relaxed mt-0.5">{item.sublabel}</p>}
@@ -753,8 +759,8 @@ function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: 
           return (
             <div key={`main-${i}`}>
               <div className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${portrait ? 'max-h-[360px]' : ''}`}
-                onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                <img src={`${imgBase}/${item.image}`} alt={item.label}
+                onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                <img src={resolveImg(imgBase, item.image)} alt={item.label}
                   className={`w-full ${portrait ? 'max-h-[360px] object-contain mx-auto' : 'h-auto'}`} loading="lazy" />
               </div>
               <p className="font-semibold text-sm text-gray-900">{item.label}</p>
@@ -767,8 +773,8 @@ function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: 
           {stackedItems.map((item, i) => (
             <div key={`stacked-${i}`}>
               <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-                onClick={() => onImg(`${imgBase}/${item.image}`)}>
-                <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+                onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-sm text-gray-900">{item.label}</p>
               {item.sublabel && <p className="text-xs text-gray-500 mt-0.5">{item.sublabel}</p>}
@@ -798,9 +804,9 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
         <div className="md:flex-[1] p-4 flex items-center justify-center">
           <div className={`grid ${gridCols} gap-x-4 w-full`} style={{ gridTemplateRows: 'auto auto auto '.repeat(Math.ceil(items.length / (items.length <= 2 ? 1 : 2))).trim() }}>
             {items.map((item, i) => (
-              <div key={i} className="grid cursor-zoom-in" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }} onClick={() => onImg(`${imgBase}/${item.image}`, item.label)}>
+              <div key={i} className="grid cursor-zoom-in" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }} onClick={() => onImg(resolveImg(imgBase, item.image), item.label)}>
                 <div className="rounded-md overflow-hidden flex items-end">
-                  <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
+                  <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
                 </div>
                 <p className="font-semibold text-xs text-gray-900 mt-2">{item.label}</p>
                 <div>{(item.sublabel || item.desc) && <p className="text-[10px] text-gray-500 leading-relaxed">{item.sublabel || item.desc}</p>}</div>
@@ -809,8 +815,8 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
           </div>
         </div>
         {/* Scene image side — constrained to match the height of the detail side */}
-        <div className="md:flex-[0.7] relative cursor-zoom-in overflow-hidden flex items-end justify-center rounded-lg" onClick={() => onImg(`${imgBase}/${sceneImage}`, sceneLabel)}>
-          <img src={`${imgBase}/${sceneImage}`} alt={sceneLabel || title} className="w-full h-full object-cover" loading="lazy" />
+        <div className="md:flex-[0.7] relative cursor-zoom-in overflow-hidden flex items-end justify-center rounded-lg" onClick={() => onImg(resolveImg(imgBase, sceneImage), sceneLabel)}>
+          <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel || title} className="w-full h-full object-cover" loading="lazy" />
           {sceneLabel && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
               <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{sceneLabel}</p>
@@ -827,9 +833,9 @@ function LinerColorChips({ colors, imgBase, onImg }: { colors: { image: string; 
   return (
     <div className="flex flex-wrap gap-3">
       {colors.map((c, i) => (
-        <div key={i} className="text-center cursor-zoom-in" onClick={() => onImg(`${imgBase}/${c.image}`, c.label)}>
+        <div key={i} className="text-center cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, c.image), c.label)}>
           <div className="w-16 h-16 rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-1">
-            <img src={`${imgBase}/${c.image}`} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+            <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
           </div>
           <p className="text-[9px] text-gray-600 leading-tight max-w-[70px]">{c.label}</p>
         </div>
@@ -852,9 +858,9 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
             {independent.photos && (
               <div className="flex gap-3">
                 {independent.photos.map((p: any, i: number) => (
-                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(`${imgBase}/${p.image}`, p.label)}>
+                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, p.image), p.label)}>
                     <div className="rounded-md overflow-hidden mb-1">
-                      <img src={`${imgBase}/${p.image}`} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
+                      <img src={resolveImg(imgBase, p.image)} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
                     </div>
                     <p className="text-[9px] text-gray-500 whitespace-pre-line leading-tight">{p.label}</p>
                   </div>
@@ -885,9 +891,9 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
             {attached.photos && (
               <div className="flex gap-3">
                 {attached.photos.map((p: any, i: number) => (
-                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(`${imgBase}/${p.image}`, p.label)}>
+                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, p.image), p.label)}>
                     <div className="rounded-md overflow-hidden mb-1">
-                      <img src={`${imgBase}/${p.image}`} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
+                      <img src={resolveImg(imgBase, p.image)} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
                     </div>
                     <p className="text-[9px] text-gray-500 whitespace-pre-line leading-tight">{p.label}</p>
                   </div>
@@ -913,9 +919,9 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
                 <p className="text-xs font-semibold text-gray-700 mb-2">{attached.opacity.title}</p>
                 <div className="flex gap-4">
                   {attached.opacity.items.map((item: any, i: number) => (
-                    <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(`${imgBase}/${item.image}`, item.label)}>
+                    <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, item.image), item.label)}>
                       <div className="rounded-md overflow-hidden mb-1">
-                        <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
+                        <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
                       </div>
                       <p className="text-[9px] font-semibold text-gray-700">{item.label}</p>
                       <p className="text-[9px] text-gray-500 leading-tight">{item.desc}</p>
@@ -998,7 +1004,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
 
       {/* ─── Hero (2:1) ─── */}
       <section className="relative w-full overflow-hidden aspect-[2/1]">
-        <img src={`${imgBase}/${layout.heroImage}`} alt={layout.name} className="absolute inset-0 w-full h-full object-contain bg-[#f5f4f0]" />
+        <img src={resolveImg(imgBase, layout.heroImage)} alt={layout.name} className="absolute inset-0 w-full h-full object-contain bg-[#f5f4f0]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
 
         <SiteNav activePage="Products" />
@@ -1085,9 +1091,9 @@ export default function UniversalDetailClient({ layout, product, related, footer
                         <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{sg.desc}</p>
                         <div className="flex flex-wrap gap-3">
                           {sg.colors.map((c: any, ci: number) => (
-                            <div key={ci} className="text-center cursor-zoom-in" onClick={() => openLightbox(`${imgBase}/${c.image}`, c.label)}>
+                            <div key={ci} className="text-center cursor-zoom-in" onClick={() => openLightbox(resolveImg(imgBase, c.image), c.label)}>
                               <div className="w-16 h-16 rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-1">
-                                <img src={`${imgBase}/${c.image}`} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+                                <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
                               </div>
                               <p className="text-[9px] text-gray-600 leading-tight max-w-[70px]">{c.label}</p>
                             </div>

@@ -138,7 +138,7 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
 
     /* ═══════════════════════════════════════════════════════════════
        SMART CONTROL — from PDF page 7 (Sivoia QS Triathlon shade
-       control options)
+       control options) using actual product images extracted from PDF
        ═══════════════════════════════════════════════════════════════ */
     {
       type: 'card-grid',
@@ -146,19 +146,19 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
       cols: 3,
       cards: [
         {
-          image: 'triathlon-select-pa-5965-4491.jpg',
+          image: '/lutron/triathlon/keypads-row.jpg',
           title: 'Keypads & Scene Control',
-          desc: 'Wall-mounted Pico scene keypads, seeTouch keypads (RadioRA 2 / HomeWorks QS), GRAFIK T keypads, and Palladiom keypads. One button press activates scenes that dim lights, adjust temperature, and position shades simultaneously.',
+          desc: 'Wall-mounted Pico scene keypads (any residential system), seeTouch keypads (RadioRA 2 / HomeWorks QS), GRAFIK T keypads (RadioRA 2 / HomeWorks QS), and Palladiom keypads (HomeWorks QS). One button press dims lights, adjusts temperature, and positions shades.',
         },
         {
-          image: 'triathlon-ap-df68-48dc.jpg',
+          image: '/lutron/triathlon/mobile-devices.jpg',
           title: 'Mobile App & Timeclock',
-          desc: 'Control shades from your mobile device with the Lutron app (Android & iOS) — even when away from home. Astronomical timeclock integration automatically raises and lowers shades based on sunrise and sunset schedules.',
+          desc: 'Control shades from your mobile device with the Lutron app on Android and iOS — even when away from home. Astronomical timeclock integration automatically raises and lowers shades based on sunrise and sunset schedules.',
         },
         {
-          image: 'triathlon-select-ap-001e-4307.jpg',
+          image: '/lutron/triathlon/third-party-logos.jpg',
           title: 'Third-Party Integration',
-          desc: 'Integrates with 20+ platforms: Amazon Alexa, Apple HomeKit, Google Assistant, Control4, Crestron, Savant, Sonos, Ring, SmartThings, Honeywell, ELAN, JOSH, and more — for audio/visual and whole-home automation.',
+          desc: 'Integrates with 20+ platforms: Amazon Alexa, Apple HomeKit, Google Assistant, Control4, Crestron, Savant, Sonos, Ring, SmartThings, Honeywell, ELAN, JOSH, AMX, Autonomic, B&O, ELK, and more.',
         },
       ],
     },
@@ -172,12 +172,12 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
       cols: 2,
       items: [
         {
-          image: 'triathlon-select-ap-df3a-4b18.jpg',
+          image: '/lutron/triathlon/timeclock.jpg',
           label: 'Whole-Home Solutions',
           sublabel: 'Integrates with Lutron Caséta, RA2 Select, RadioRA 2, and HomeWorks QS lighting systems · Control shades from keypads, mobile, timeclock, or third-party platforms · Dim lights, adjust temperature, and position shades with one button',
         },
         {
-          image: 'triathlon-pa-3745-43b9.jpg',
+          image: '/lutron/triathlon/pico-wireless-controls.jpg',
           label: 'Shade-Only Solution',
           sublabel: 'Pico wireless controls — flexible, battery-operated remotes that mount on a wall, sit on a tabletop pedestal, or carry room-to-room · No cutting holes or running wire required · Works with any residential system',
         },
