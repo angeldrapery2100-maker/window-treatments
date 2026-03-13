@@ -434,7 +434,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               >
                 <div className="aspect-square overflow-hidden">
                   <img
-                    src="https://assets.lutron.com/a/pdp/triathlon/triathlon-select-ph-an-4272-43e8.jpg"
+                    src="https://assets.lutron.com/a/pdp/triathlon/triathlon-ph-b56e-443b.jpg"
                     alt="Triathlon® Roller Shades"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />

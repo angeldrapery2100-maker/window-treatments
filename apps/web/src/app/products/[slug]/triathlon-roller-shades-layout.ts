@@ -58,8 +58,8 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
 
   imageBase: 'https://assets.lutron.com/a/pdp/triathlon',
 
-  heroImage: 'triathlon-select-ph-an-4272-43e8.jpg',
-  heroLabel: 'Triathlon® Roller Shades · Metal Fascia · 12V Wired',
+  heroImage: 'triathlon-ph-b56e-443b.jpg',
+  heroLabel: 'Triathlon® Roller Shades · Fabric-Wrapped Fascia',
 
   sections: [
     /* ═══════════════════════════════════════════════════════════════
