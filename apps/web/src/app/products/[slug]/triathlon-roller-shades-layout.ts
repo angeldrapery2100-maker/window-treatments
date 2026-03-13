@@ -25,6 +25,28 @@
  *    triathlon-wire-free-dm-si-2473-44fa.png — wire-free side dimensions
  *    triathlon-dm-fr-05a6-4469.png           — wired front dimensions
  *    triathlon-wire-free-dm-fr-2995-4bfc.png — wire-free front dimensions
+ *
+ * LOCAL IMAGES (extracted from PDF, stored in /public/lutron/triathlon/):
+ *  Keypads (clean individual extractions from PDF page 7):
+ *    pico-scene-keypad.jpg      — Pico scene keypad (Bright/Entertain/Relax/Off)
+ *    seetouch-keypad-clean.jpg  — seeTouch keypad (On/Preset/Off + Open/Preset/Close)
+ *    grafik-t-keypad-clean.jpg  — GRAFIK T keypad (Day/Evening/Nightlight/Off)
+ *    palladiom-keypad-clean.jpg — Palladiom keypad (Sheer/Blackout Open/Close)
+ *  Pico wireless controls:
+ *    pico-remote-wall.jpg       — Pico shade remote (wall-mount)
+ *    pico-remote-pedestal.jpg   — Pico remote on tabletop pedestal
+ *  Mobile devices:
+ *    lutron-app-ipad.jpg        — iPad with Lutron app
+ *    lutron-app-iphone.jpg      — iPhone with Lutron app
+ *  Smart speakers / integration:
+ *    amazon-echo.jpg            — Amazon Echo (Alexa)
+ *    timeclock-clean.jpg        — Analog clock (timeclock feature)
+ *  Power / hardware:
+ *    power-adapter.jpg          — 12V plug-in power adapter
+ *    power-panel.jpg            — Lutron CSPS centralized power panel
+ *    shade-installation.jpg     — Installer mounting shade into bracket
+ *    shade-metal-fascia-product.jpg — Shade with metal fascia (product shot)
+ *    shade-roller-product.jpg   — Roller shade product close-up
  */
 
 import type { ProductLayout } from './types'
@@ -138,48 +160,64 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
 
     /* ═══════════════════════════════════════════════════════════════
        SMART CONTROL — from PDF page 7 (Sivoia QS Triathlon shade
-       control options) using actual product images extracted from PDF
+       control options) using clean individual images extracted from PDF
        ═══════════════════════════════════════════════════════════════ */
     {
-      type: 'card-grid',
-      title: 'Smart Control',
-      cols: 3,
-      cards: [
+      type: 'control-systems',
+      sceneImage: '/lutron/triathlon/lutron-app-ipad.jpg',
+      sceneLabel: 'Smart Control',
+      panels: [
         {
-          image: '/lutron/triathlon/keypads-row.jpg',
           title: 'Keypads & Scene Control',
-          desc: 'Wall-mounted Pico scene keypads (any residential system), seeTouch keypads (RadioRA 2 / HomeWorks QS), GRAFIK T keypads (RadioRA 2 / HomeWorks QS), and Palladiom keypads (HomeWorks QS). One button press dims lights, adjusts temperature, and positions shades.',
+          items: [
+            { image: '/lutron/triathlon/pico-scene-keypad.jpg', title: 'Pico Scene Keypads', desc: 'Works with any residential system — one button press dims lights, adjusts temperature, and positions shades.' },
+            { image: '/lutron/triathlon/seetouch-keypad-clean.jpg', title: 'seeTouch Keypads', desc: 'Works with RadioRA 2 and HomeWorks QS systems for full scene and shade control.' },
+            { image: '/lutron/triathlon/grafik-t-keypad-clean.jpg', title: 'GRAFIK T Keypads', desc: 'Elegant backlit keypads for RadioRA 2 and HomeWorks QS systems.' },
+            { image: '/lutron/triathlon/palladiom-keypad-clean.jpg', title: 'Palladiom Keypads', desc: 'Premium keypad design for HomeWorks QS systems.' },
+          ],
         },
         {
-          image: '/lutron/triathlon/mobile-devices.jpg',
           title: 'Mobile App & Timeclock',
-          desc: 'Control shades from your mobile device with the Lutron app on Android and iOS — even when away from home. Astronomical timeclock integration automatically raises and lowers shades based on sunrise and sunset schedules.',
+          image: '/lutron/triathlon/lutron-app-iphone.jpg',
+          features: [
+            { title: 'Lutron App', desc: 'Control shades from your mobile device on Android and iOS — even when away from home.' },
+            { title: 'Astronomical Timeclock', desc: 'Automatically raises and lowers shades based on sunrise and sunset schedules.' },
+          ],
         },
         {
-          image: '/lutron/triathlon/third-party-logos.jpg',
           title: 'Third-Party Integration',
-          desc: 'Integrates with 20+ platforms: Amazon Alexa, Apple HomeKit, Google Assistant, Control4, Crestron, Savant, Sonos, Ring, SmartThings, Honeywell, ELAN, JOSH, AMX, Autonomic, B&O, ELK, and more.',
+          image: '/lutron/triathlon/amazon-echo.jpg',
+          features: [
+            { title: '20+ Platforms', desc: 'Amazon Alexa, Apple HomeKit, Google Assistant, Control4, Crestron, Savant, Sonos, Ring, SmartThings, Honeywell, ELAN, JOSH, AMX, Autonomic, B&O, ELK, and more.' },
+          ],
         },
       ],
     },
 
     /* ═══════════════════════════════════════════════════════════════
        WHOLE-HOME vs SHADE-ONLY — from PDF page 7
+       Clean individual images replace screenshot composites
        ═══════════════════════════════════════════════════════════════ */
     {
-      type: 'comparison-grid',
-      title: 'Control Systems',
-      cols: 2,
-      items: [
+      type: 'control-systems',
+      sceneImage: null,
+      sceneLabel: 'Control Systems',
+      panels: [
         {
-          image: '/lutron/triathlon/timeclock.jpg',
-          label: 'Whole-Home Solutions',
-          sublabel: 'Integrates with Lutron Caséta, RA2 Select, RadioRA 2, and HomeWorks QS lighting systems · Control shades from keypads, mobile, timeclock, or third-party platforms · Dim lights, adjust temperature, and position shades with one button',
+          title: 'Whole-Home Solutions',
+          image: '/lutron/triathlon/timeclock-clean.jpg',
+          features: [
+            { title: 'Lutron Systems', desc: 'Integrates with Caséta, RA2 Select, RadioRA 2, and HomeWorks QS lighting systems.' },
+            { title: 'Unified Control', desc: 'Control shades from keypads, mobile, timeclock, or third-party platforms — dim lights, adjust temperature, and position shades with one button.' },
+          ],
         },
         {
-          image: '/lutron/triathlon/pico-wireless-controls.jpg',
-          label: 'Shade-Only Solution',
-          sublabel: 'Pico wireless controls — flexible, battery-operated remotes that mount on a wall, sit on a tabletop pedestal, or carry room-to-room · No cutting holes or running wire required · Works with any residential system',
+          title: 'Shade-Only Solution',
+          image: '/lutron/triathlon/pico-remote-wall.jpg',
+          features: [
+            { title: 'Pico Wireless Controls', desc: 'Flexible, battery-operated remotes that mount on a wall, sit on a tabletop pedestal, or carry room-to-room.' },
+            { title: 'Easy Installation', desc: 'No cutting holes or running wire required — works with any residential system.' },
+          ],
         },
       ],
     },
@@ -242,7 +280,7 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       POWER OPTIONS — expanded from PDF
+       POWER OPTIONS — expanded from PDF with clean hardware images
        ═══════════════════════════════════════════════════════════════ */
     {
       type: 'comparison-grid',
@@ -250,12 +288,12 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
       cols: 2,
       items: [
         {
-          image: 'triathlon-select-pa-0742-4cc4.jpg',
+          image: '/lutron/triathlon/power-adapter.jpg',
           label: 'Plug-In Power Supply',
           sublabel: '12V low-voltage · Plugs into standard wall outlet · Ideal for single shades or small groups · No battery replacement · Continuous, reliable power',
         },
         {
-          image: 'triathlon-select-pa-5965-4491.jpg',
+          image: '/lutron/triathlon/power-panel.jpg',
           label: 'Centralized Power Panel',
           sublabel: '10-output power supply · Powers multiple shades from one location · Clean installation with concealed wiring · Professional-grade reliability for larger installations',
         },
