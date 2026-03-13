@@ -16,7 +16,7 @@ interface RelatedProduct {
 interface Props {
   product: any
   related: RelatedProduct[]
-  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string }
+  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string; instagram: string }
 }
 
 interface LayoutData {

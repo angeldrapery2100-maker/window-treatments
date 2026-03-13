@@ -49,6 +49,7 @@ export default async function GalleryPage() {
     etsy:      getText(globalData, 'footer', 'etsy_url',     '#'),
     tiktok:    getText(globalData, 'footer', 'tiktok_url',   '#'),
     linkedin:  getText(globalData, 'footer', 'linkedin_url', '#'),
+    instagram: getText(globalData, 'footer', 'instagram_url', 'https://instagram.com/angeldrapery?igshid=MjEwN2IyYWYwYw=='),
   }
 
   return <GalleryClient footer={footer} videos={videos} />
