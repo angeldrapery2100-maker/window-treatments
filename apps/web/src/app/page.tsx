@@ -15,7 +15,7 @@ export default async function HomePage() {
     tagline: getText(data, 'hero', 'tagline', 'Since 1984 · 40 Years of Excellence'),
   }
 
-  const galleryImages = Array.from({ length: 12 }, (_, i) => {
+  const galleryImages = Array.from({ length: 11 }, (_, i) => {
     const img = getImage(data, 'gallery', `project_${i + 1}`)
     return {
       id: i + 1,
