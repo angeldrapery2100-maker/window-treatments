@@ -382,8 +382,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
               <div key={pi}>
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
                   {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
-                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="w-32 h-auto rounded-md object-contain" loading="lazy" />
+                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                      <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="w-32 h-auto rounded-md object-contain" loading="lazy" />
                     </div>
                   )}
                   <div className="flex-1">
@@ -422,8 +422,8 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
               <div key={pi} className="bg-white rounded-lg p-6">
                 <div className="flex flex-col sm:flex-row gap-6 items-start">
                   {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
-                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
+                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                      <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
                     </div>
                   )}
                   <div className="flex-1">
@@ -496,8 +496,8 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
               {topPanels.map((panel, pi) => (
                 <div key={pi} className="flex-1 flex flex-col items-center text-center">
                   {panel.image && (
-                    <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
-                      <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                    <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                      <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                     </div>
                   )}
                   <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
@@ -513,8 +513,8 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
                 {bottomPanels.map((panel, pi) => (
                   <div key={pi} className="flex flex-col items-center text-center">
                     {panel.image && (
-                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image))}>
-                        <img src={resolveImg(imgBase, panel.image)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                        <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                       </div>
                     )}
                     <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
