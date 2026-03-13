@@ -161,10 +161,11 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
     /* ═══════════════════════════════════════════════════════════════
        SMART CONTROL — from PDF page 7 (Sivoia QS Triathlon shade
        control options) using clean individual images extracted from PDF
+       No scene image — full-width panel layout
        ═══════════════════════════════════════════════════════════════ */
     {
       type: 'control-systems',
-      sceneImage: '/lutron/triathlon/lutron-app-ipad.jpg',
+      sceneImage: null,
       sceneLabel: 'Smart Control',
       panels: [
         {
@@ -196,28 +197,22 @@ export const triathlonRollerShadesLayout: ProductLayout & { imageBase: string } 
 
     /* ═══════════════════════════════════════════════════════════════
        WHOLE-HOME vs SHADE-ONLY — from PDF page 7
-       Clean individual images replace screenshot composites
+       Side-by-side comparison layout (left / right)
        ═══════════════════════════════════════════════════════════════ */
     {
-      type: 'control-systems',
-      sceneImage: null,
-      sceneLabel: 'Control Systems',
-      panels: [
+      type: 'comparison-grid',
+      title: 'Control Systems',
+      cols: 2,
+      items: [
         {
-          title: 'Whole-Home Solutions',
           image: '/lutron/triathlon/timeclock-clean.jpg',
-          features: [
-            { title: 'Lutron Systems', desc: 'Integrates with Caséta, RA2 Select, RadioRA 2, and HomeWorks QS lighting systems.' },
-            { title: 'Unified Control', desc: 'Control shades from keypads, mobile, timeclock, or third-party platforms — dim lights, adjust temperature, and position shades with one button.' },
-          ],
+          label: 'Whole-Home Solutions',
+          sublabel: 'Integrates with Caséta, RA2 Select, RadioRA 2, and HomeWorks QS lighting systems · Control shades from keypads, mobile, timeclock, or third-party platforms · Dim lights, adjust temperature, and position shades with one button',
         },
         {
-          title: 'Shade-Only Solution',
           image: '/lutron/triathlon/pico-remote-wall.jpg',
-          features: [
-            { title: 'Pico Wireless Controls', desc: 'Flexible, battery-operated remotes that mount on a wall, sit on a tabletop pedestal, or carry room-to-room.' },
-            { title: 'Easy Installation', desc: 'No cutting holes or running wire required — works with any residential system.' },
-          ],
+          label: 'Shade-Only Solution',
+          sublabel: 'Pico wireless controls — flexible, battery-operated remotes that mount on a wall, sit on a tabletop pedestal, or carry room-to-room · No cutting holes or running wire required · Works with any residential system',
         },
       ],
     },
