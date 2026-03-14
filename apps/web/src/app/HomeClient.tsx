@@ -24,7 +24,7 @@ interface ImageData {
 }
 
 interface Props {
-  hero: { video: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string }
+  hero: { video: string; bgImage?: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string }
   gallery: GalleryImage[]
   about: {
     title: string; highlight: string; subtitle: string; description: string
@@ -210,9 +210,13 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       {/* Hero Section */}
       <section className="relative w-full h-screen overflow-hidden">
         <div className="absolute inset-0 w-full h-full bg-gray-800">
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-            <source src={hero.video} type="video/mp4" />
-          </video>
+          {hero.bgImage ? (
+            <img src={hero.bgImage} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+              <source src={hero.video} type="video/mp4" />
+            </video>
+          )}
           <div className="absolute inset-0 bg-black/40" />
         </div>
 

@@ -10,6 +10,7 @@ export default async function HomePage() {
   // Build serializable props for client component
   const hero = {
     video: data?.hero?.video?.image_url || '/videos/hero-background.mp4',
+    bgImage: data?.hero?.bg_image?.image_url || '',
     titleCn: getText(data, 'hero', 'title_cn', '天使窗簾'),
     titleEn: getText(data, 'hero', 'title_en', 'ANGEL DRAPERY, INC'),
     subtitle: getText(data, 'hero', 'subtitle', '专业窗簾設計、訂造、安裝'),

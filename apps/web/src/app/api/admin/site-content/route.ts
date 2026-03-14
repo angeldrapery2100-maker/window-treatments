@@ -39,10 +39,11 @@ async function ensureTable() {
 const PAGE_DEFAULTS: Record<string, Array<{ section: string; field_key: string; field_type: string; content: string; image_url?: string; sort_order: number; image_width?: number; image_height?: number; image_fit?: string }>> = {
   home: [
     { section: 'hero', field_key: 'video',    field_type: 'video', content: 'Hero Background Video', image_url: '/videos/hero-background.mp4', sort_order: 0, image_width: 1920, image_height: 1080 },
-    { section: 'hero', field_key: 'title_cn', field_type: 'text',  content: '天使窗簾', sort_order: 1 },
-    { section: 'hero', field_key: 'title_en', field_type: 'text',  content: 'ANGEL DRAPERY, INC', sort_order: 2 },
-    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '专业窗簾設計、訂造、安裝', sort_order: 3 },
-    { section: 'hero', field_key: 'tagline',  field_type: 'text',  content: 'Since 1984 • 40 Years Experience', sort_order: 4 },
+    { section: 'hero', field_key: 'bg_image', field_type: 'image', content: 'Hero Background Image (fallback)', image_url: '', sort_order: 1, image_width: 1920, image_height: 1080, image_fit: 'cover' },
+    { section: 'hero', field_key: 'title_cn', field_type: 'text',  content: '天使窗簾', sort_order: 2 },
+    { section: 'hero', field_key: 'title_en', field_type: 'text',  content: 'ANGEL DRAPERY, INC', sort_order: 3 },
+    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '专业窗簾設計、訂造、安裝', sort_order: 4 },
+    { section: 'hero', field_key: 'tagline',  field_type: 'text',  content: 'Since 1984 • 40 Years Experience', sort_order: 5 },
   ],
   about: [
     { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'About Us', sort_order: 0 },

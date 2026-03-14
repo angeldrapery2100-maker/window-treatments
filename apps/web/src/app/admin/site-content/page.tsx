@@ -678,12 +678,21 @@ function ImageEditor({
           onClick={() => fileRef.current?.click()}
         >
           {item.image_url ? (
-            <img
-              src={item.image_url}
-              alt={item.content}
-              className="w-full h-full"
-              style={{ objectFit: item.image_fit as any || 'cover' }}
-            />
+            item.field_type === 'video' ? (
+              <video
+                src={item.image_url}
+                muted
+                className="w-full h-full"
+                style={{ objectFit: item.image_fit as any || 'cover' }}
+              />
+            ) : (
+              <img
+                src={item.image_url}
+                alt={item.content}
+                className="w-full h-full"
+                style={{ objectFit: item.image_fit as any || 'cover' }}
+              />
+            )
           ) : (
             <div className="text-center p-2">
               <svg className="w-6 h-6 mx-auto text-gray-300 mb-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -750,12 +759,12 @@ function ImageEditor({
               onClick={() => fileRef.current?.click()}
               className="text-xs px-3 py-1.5 border border-gray-200 hover:bg-gray-50 rounded-md transition-colors"
             >
-              {item.image_url ? 'Replace Image' : 'Upload Image'}
+              {item.image_url ? (item.field_type === 'video' ? 'Replace Video' : 'Replace Image') : (item.field_type === 'video' ? 'Upload Video' : 'Upload Image')}
             </button>
             <input
               ref={fileRef}
               type="file"
-              accept="image/*,video/mp4"
+              accept={item.field_type === 'video' ? 'video/mp4,video/quicktime,video/webm' : 'image/*'}
               className="hidden"
               onChange={handleFileChange}
             />

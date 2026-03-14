@@ -4,15 +4,18 @@ import { uploadToR2 } from '@/lib/r2'
 
 // Allowed MIME types and their safe extensions
 const ALLOWED_TYPES: Record<string, string> = {
-  'image/jpeg': 'jpg',
-  'image/jpg':  'jpg',
-  'image/png':  'png',
-  'image/webp': 'webp',
-  'image/gif':  'gif',
-  'video/mp4':  'mp4',
+  'image/jpeg':      'jpg',
+  'image/jpg':       'jpg',
+  'image/png':       'png',
+  'image/webp':      'webp',
+  'image/gif':       'gif',
+  'video/mp4':       'mp4',
+  'video/quicktime': 'mov',
+  'video/webm':      'webm',
 }
 
-const MAX_SIZE_BYTES = 20 * 1024 * 1024 // 20 MB
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024   // 20 MB for images
+const MAX_VIDEO_SIZE = 200 * 1024 * 1024  // 200 MB for videos
 
 export async function POST(request: Request) {
   // Explicit admin guard — defence-in-depth beyond middleware matcher
@@ -30,10 +33,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: { message: 'No file provided' } }, { status: 400 })
     }
 
-    // Size check
-    if (file.size > MAX_SIZE_BYTES) {
+    // Size check — videos get a higher limit
+    const isVideo = file.type.startsWith('video/')
+    const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE
+    if (file.size > maxSize) {
       return NextResponse.json(
-        { success: false, error: { message: `File too large (max ${MAX_SIZE_BYTES / 1024 / 1024} MB)` } },
+        { success: false, error: { message: `File too large (max ${Math.round(maxSize / 1024 / 1024)} MB)` } },
         { status: 400 }
       )
     }
