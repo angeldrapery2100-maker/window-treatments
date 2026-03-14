@@ -17,19 +17,42 @@ async function ensureTable() {
     )
   `)
   await pool.query(`ALTER TABLE gallery_video_meta ADD COLUMN IF NOT EXISTS is_published BOOLEAN DEFAULT true`)
+
+  // Custom videos table (user-uploaded)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS gallery_custom_videos (
+      id          SERIAL PRIMARY KEY,
+      title       TEXT NOT NULL DEFAULT '',
+      location    TEXT NOT NULL DEFAULT '',
+      tag         TEXT NOT NULL DEFAULT '',
+      description TEXT NOT NULL DEFAULT '',
+      orientation TEXT NOT NULL DEFAULT 'landscape',
+      video_url   TEXT NOT NULL,
+      poster_url  TEXT NOT NULL,
+      sort_order  INTEGER NOT NULL DEFAULT 0,
+      is_published BOOLEAN DEFAULT true,
+      created_at  TIMESTAMPTZ DEFAULT now(),
+      updated_at  TIMESTAMPTZ DEFAULT now()
+    )
+  `)
 }
 
 // GET /api/admin/gallery-videos
-// Returns all rows keyed by video_id
+// Returns overrides map + custom videos
 export async function GET() {
   try {
     await ensureTable()
-    const { rows } = await pool.query(
+    const { rows: metaRows } = await pool.query(
       'SELECT * FROM gallery_video_meta ORDER BY video_id'
     )
-    const map: Record<number, typeof rows[0]> = {}
-    for (const row of rows) map[row.video_id] = row
-    return NextResponse.json({ success: true, data: map })
+    const map: Record<number, typeof metaRows[0]> = {}
+    for (const row of metaRows) map[row.video_id] = row
+
+    const { rows: customRows } = await pool.query(
+      'SELECT * FROM gallery_custom_videos ORDER BY sort_order, id'
+    )
+
+    return NextResponse.json({ success: true, data: map, customVideos: customRows })
   } catch (e: any) {
     console.error('GET gallery-videos error:', e)
     return NextResponse.json({ success: false, error: e.message }, { status: 500 })
@@ -82,7 +105,86 @@ export async function PUT(request: Request) {
   }
 }
 
-// POST /api/admin/gallery-videos/check-validity
-// Checks if video URLs are still accessible (HEAD requests)
-// This is triggered separately via a dedicated route
+// POST /api/admin/gallery-videos
+// Create a new custom video
+// Body: { title, location, tag, description, orientation, video_url, poster_url }
+export async function POST(request: Request) {
+  try {
+    await ensureTable()
+    let adminUser: any
+    try { adminUser = requireAdmin(request) } catch {}
+
+    const body = await request.json()
+    const { title, location, tag, description, orientation, video_url, poster_url } = body
+
+    if (!video_url || !poster_url) {
+      return NextResponse.json({ success: false, error: 'video_url and poster_url required' }, { status: 400 })
+    }
+
+    // Get max sort_order
+    const { rows: maxRows } = await pool.query('SELECT COALESCE(MAX(sort_order), 0) as max_sort FROM gallery_custom_videos')
+    const sortOrder = maxRows[0].max_sort + 1
+
+    const { rows } = await pool.query(`
+      INSERT INTO gallery_custom_videos (title, location, tag, description, orientation, video_url, poster_url, sort_order)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
+    `, [title || '', location || '', tag || '', description || '', orientation || 'landscape', video_url, poster_url, sortOrder])
+
+    if (adminUser) {
+      await recordAudit({
+        action: 'gallery.updated',
+        actor_id: adminUser.id,
+        actor_email: adminUser.email,
+        target_type: 'gallery_custom_video',
+        target_id: String(rows[0].id),
+        after: { title, video_url },
+      })
+    }
+
+    return NextResponse.json({ success: true, data: rows[0] })
+  } catch (e: any) {
+    console.error('POST gallery-videos error:', e)
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+  }
+}
+
+// DELETE /api/admin/gallery-videos?id=xxx
+// Delete a custom video
+export async function DELETE(request: Request) {
+  try {
+    await ensureTable()
+    let adminUser: any
+    try { adminUser = requireAdmin(request) } catch {}
+
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'id required' }, { status: 400 })
+    }
+
+    const { rows } = await pool.query('DELETE FROM gallery_custom_videos WHERE id = $1 RETURNING *', [id])
+
+    if (rows.length === 0) {
+      return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
+    }
+
+    if (adminUser) {
+      await recordAudit({
+        action: 'gallery.updated',
+        actor_id: adminUser.id,
+        actor_email: adminUser.email,
+        target_type: 'gallery_custom_video',
+        target_id: String(id),
+        after: { deleted: true },
+      })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (e: any) {
+    console.error('DELETE gallery-videos error:', e)
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+  }
+}
+
 export const dynamic = 'force-dynamic'
