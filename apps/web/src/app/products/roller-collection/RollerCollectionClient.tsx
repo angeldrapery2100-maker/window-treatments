@@ -245,7 +245,7 @@ export default function RollerCollectionClient() {
                 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.12 } } }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm"
               >
-                <div className={`overflow-hidden ${item.code === 'MS' ? 'aspect-square' : 'aspect-[16/9]'}`}>
+                <div className="overflow-hidden aspect-square">
                   <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-7">

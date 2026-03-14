@@ -17,14 +17,6 @@ interface StoreProduct {
   store_category_slug: string | null
 }
 
-interface StoreCategory {
-  id: string
-  name: string
-  slug: string
-  sort_order: number
-  product_count: number
-}
-
 // Recently viewed helper
 function getRecentlyViewed(): string[] {
   if (typeof window === 'undefined') return []
@@ -32,8 +24,7 @@ function getRecentlyViewed(): string[] {
 }
 
 // Product card component
-function ProductCard({ p, calcPrice }: { p: StoreProduct; calcPrice?: number | null }) {
-  const displayPrice = (calcPrice != null && calcPrice > 0) ? calcPrice : (p.base_price != null ? Number(p.base_price) : null)
+function ProductCard({ p }: { p: StoreProduct }) {
   return (
     <Link href={`/store/${p.id}`}
       className="group cursor-pointer bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 block">
@@ -49,16 +40,13 @@ function ProductCard({ p, calcPrice }: { p: StoreProduct; calcPrice?: number | n
       </div>
       <div className="p-4">
         <h3 className="text-base font-medium mb-1 group-hover:text-gray-600 transition-colors">{p.name}</h3>
-        {displayPrice != null && displayPrice > 0 && (
-          <span className="text-sm text-gray-600">Starting at <span className="text-lg font-bold text-gray-900">${displayPrice.toFixed(2)}</span></span>
-        )}
       </div>
     </Link>
   )
 }
 
 // Recommended section with horizontal scroll
-function RecommendedSection({ products, startingPrices }: { products: StoreProduct[]; startingPrices: Record<string, number | null> }) {
+function RecommendedSection({ products }: { products: StoreProduct[] }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -84,9 +72,8 @@ function RecommendedSection({ products, startingPrices }: { products: StoreProdu
   const scroll = (dir: 'left' | 'right') => {
     const el = scrollRef.current
     if (!el) return
-    // Scroll by the width of one card + gap
     const card = el.querySelector('a')
-    const scrollAmount = card ? card.offsetWidth + 24 : 300 // 24 = gap-6
+    const scrollAmount = card ? card.offsetWidth + 24 : 300
     el.scrollBy({ left: dir === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' })
   }
 
@@ -98,27 +85,24 @@ function RecommendedSection({ products, startingPrices }: { products: StoreProdu
           <p className="text-gray-500 text-sm">Our handpicked selections for you</p>
         </div>
         <div className="relative group/carousel">
-          {/* Left Arrow */}
           {canScrollLeft && (
             <button onClick={() => scroll('left')}
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:shadow-xl transition-all opacity-0 group-hover/carousel:opacity-100">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
           )}
-          {/* Right Arrow */}
           {canScrollRight && (
             <button onClick={() => scroll('right')}
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:shadow-xl transition-all opacity-0 group-hover/carousel:opacity-100">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
           )}
-          {/* Scrollable container */}
           <div ref={scrollRef}
             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {products.map(p => (
               <div key={p.id} className="flex-shrink-0 w-[calc(25%-18px)]" style={{ minWidth: '260px' }}>
-                <ProductCard p={p} calcPrice={startingPrices[p.id]} />
+                <ProductCard p={p} />
               </div>
             ))}
           </div>
@@ -131,10 +115,8 @@ function RecommendedSection({ products, startingPrices }: { products: StoreProdu
 export default function OnlineStorePage() {
   const [storeEnabled, setStoreEnabled] = useState<boolean | null>(null)
   const [products, setProducts] = useState<StoreProduct[]>([])
-  const [categories, setCategories] = useState<StoreCategory[]>([])
   const [loading, setLoading] = useState(true)
   const [recentProducts, setRecentProducts] = useState<StoreProduct[]>([])
-  const [startingPrices, setStartingPrices] = useState<Record<string, number | null>>({})
   const [cartCount, setCartCount] = useState(0)
 
   // Check if store is enabled
@@ -161,16 +143,10 @@ export default function OnlineStorePage() {
 
   useEffect(() => {
     if (storeEnabled === false) return
-    Promise.all([
-      fetch('/api/store/products?status=active').then(r => r.json()),
-      fetch('/api/store/categories').then(r => r.json()),
-      fetch('/api/store/starting-prices').then(r => r.json()).catch(() => ({ success: false })),
-    ]).then(([prodData, catData, priceData]) => {
+    fetch('/api/store/products?status=active').then(r => r.json())
+    .then(prodData => {
       const prods: StoreProduct[] = prodData.success ? (prodData.data.products || []) : []
       setProducts(prods)
-      // The categories API already filters is_active = true server-side, no need to re-filter
-      if (catData.success) setCategories(catData.data || [])
-      if (priceData.success) setStartingPrices(priceData.data || {})
 
       // Load recently viewed
       const recentIds = getRecentlyViewed()
@@ -183,24 +159,26 @@ export default function OnlineStorePage() {
   }, [storeEnabled])
 
 
-  // Featured: products marked as is_featured in default_config AND active
+  // Featured: products marked as is_featured in default_config
   const featured = products.filter(p => p.default_config?.is_featured)
 
+  // Group products by category name derived from product data
   const grouped: Record<string, StoreProduct[]> = {}
   const uncategorized: StoreProduct[] = []
   products.forEach(p => {
-    if (p.store_category_id) {
-      if (!grouped[p.store_category_id]) grouped[p.store_category_id] = []
-      grouped[p.store_category_id].push(p)
+    const catName = p.store_category_name
+    if (catName) {
+      if (!grouped[catName]) grouped[catName] = []
+      grouped[catName].push(p)
     } else {
       uncategorized.push(p)
     }
   })
 
-  const displayCategories = categories.filter(c => grouped[c.id]?.length > 0)
+  const displayCategoryNames = Object.keys(grouped)
 
-  const scrollToCategory = (id: string) => {
-    document.getElementById(`cat-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const scrollToCategory = (name: string) => {
+    document.getElementById(`cat-${name}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   // Coming Soon screen
@@ -260,14 +238,14 @@ export default function OnlineStorePage() {
       </section>
 
       {/* Category Nav */}
-      {displayCategories.length > 0 && (
+      {displayCategoryNames.length > 0 && (
         <section className="w-full bg-white py-4 border-b border-gray-200 sticky top-0 z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-3">
-              {displayCategories.map(cat => (
-                <button key={cat.id} onClick={() => scrollToCategory(cat.id)}
+              {displayCategoryNames.map(name => (
+                <button key={name} onClick={() => scrollToCategory(name)}
                   className="px-6 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-all duration-300">
-                  {cat.name}
+                  {name}
                 </button>
               ))}
             </div>
@@ -279,22 +257,22 @@ export default function OnlineStorePage() {
         <div className="py-20 text-center text-gray-400">Loading...</div>
       ) : (
         <>
-          {/* Recommended - Horizontal Scroll */}
-          {featured.length > 0 && <RecommendedSection products={featured} startingPrices={startingPrices} />}
+          {/* Recommended */}
+          {featured.length > 0 && <RecommendedSection products={featured} />}
 
           {/* Category Sections */}
-          {displayCategories.map((cat, catIdx) => (
-            <section key={cat.id} id={`cat-${cat.id}`} className="scroll-mt-20">
+          {displayCategoryNames.map((name, catIdx) => (
+            <section key={name} id={`cat-${name}`} className="scroll-mt-20">
               {catIdx > 0 && <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="border-t-2 border-black" /></div>}
               <div className="w-full bg-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex items-center gap-4 mb-10">
-                    <h2 className="text-3xl md:text-4xl font-light tracking-wide">{cat.name}</h2>
+                    <h2 className="text-3xl md:text-4xl font-light tracking-wide">{name}</h2>
                     <div className="flex-1 h-px bg-gray-200" />
-                    <span className="text-sm text-gray-400">{grouped[cat.id].length} products</span>
+                    <span className="text-sm text-gray-400">{grouped[name].length} products</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {grouped[cat.id].map(p => <ProductCard key={p.id} p={p} calcPrice={startingPrices[p.id]} />)}
+                    {grouped[name].map(p => <ProductCard key={p.id} p={p} />)}
                   </div>
                 </div>
               </div>
@@ -304,7 +282,7 @@ export default function OnlineStorePage() {
           {/* Uncategorized */}
           {uncategorized.length > 0 && (
             <section className="scroll-mt-20">
-              {displayCategories.length > 0 && <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="border-t-2 border-black" /></div>}
+              {displayCategoryNames.length > 0 && <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="border-t-2 border-black" /></div>}
               <div className="w-full bg-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex items-center gap-4 mb-10">
@@ -313,7 +291,7 @@ export default function OnlineStorePage() {
                     <span className="text-sm text-gray-400">{uncategorized.length} products</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {uncategorized.map(p => <ProductCard key={p.id} p={p} calcPrice={startingPrices[p.id]} />)}
+                    {uncategorized.map(p => <ProductCard key={p.id} p={p} />)}
                   </div>
                 </div>
               </div>
@@ -329,7 +307,7 @@ export default function OnlineStorePage() {
                   <div className="flex-1 h-px bg-gray-200" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {recentProducts.map(p => <ProductCard key={p.id} p={p} calcPrice={startingPrices[p.id]} />)}
+                  {recentProducts.map(p => <ProductCard key={p.id} p={p} />)}
                 </div>
               </div>
             </section>
@@ -368,7 +346,7 @@ export default function OnlineStorePage() {
               <a href="#" className="text-red-600 hover:text-red-700"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
               <a href="#" className="text-orange-500 hover:text-orange-600"><span className="text-xl font-bold">Etsy</span></a>
               <a href="#" className="text-gray-900 hover:text-gray-700"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
-              <a href="#" className="text-blue-700 hover:text-blue-800"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+              <a href="#" className="text-pink-500 hover:text-pink-600"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
             </div>
             <div className="text-center text-sm text-gray-600">©2025 by Angel Drapery</div>
           </div>

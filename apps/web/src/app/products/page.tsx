@@ -58,7 +58,6 @@ export default async function ProductsPage() {
     youtube:   getText(globalData, 'footer', 'youtube_url', '#'),
     etsy:      getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok:    getText(globalData, 'footer', 'tiktok_url', '#'),
-    linkedin:  getText(globalData, 'footer', 'linkedin_url', '#'),
     instagram: getText(globalData, 'footer', 'instagram_url', 'https://instagram.com/angeldrapery?igshid=MjEwN2IyYWYwYw=='),
   }
 

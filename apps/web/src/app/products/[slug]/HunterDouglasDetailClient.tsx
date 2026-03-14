@@ -3,6 +3,7 @@
 import { CDN_BASE } from '@/lib/cdn'
 
 import { useState } from 'react'
+import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -51,24 +52,9 @@ interface RelatedProduct {
 interface Props {
   product: Product
   related: RelatedProduct[]
-  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string; instagram: string }
+  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; instagram: string }
 }
 
-/* ─── Lightbox ─── */
-function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-      onClick={onClose}
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl z-10">✕</button>
-      <img src={src} alt={alt} className="max-w-full max-h-[90vh] object-contain" />
-    </motion.div>
-  )
-}
 
 /* ─── Collapsible Section ─── */
 function CollapsibleSection({
@@ -125,9 +111,10 @@ function PageRenderer({
 }: {
   section: PageSection
   imgBase: string
-  onImageClick: (src: string) => void
+  onImageClick: (images: LightboxImage[], index: number) => void
 }) {
   const { images, text } = section
+  const sectionImgs = images.map(img => ({ src: `${imgBase}/${img.filename}` }))
   const textLines = text.split('\n').filter(l => l.trim() && !/^\d+$/.test(l.trim()) && !l.trim().startsWith('FPO'))
 
   // 分离标题行和描述行
@@ -180,7 +167,7 @@ function PageRenderer({
     // 配对：每张图配一个标题和描述
     const cards: { img: typeof images[0]; heading: string; desc: string }[] = []
     let hIdx = 0, bIdx = 0
-    
+
     for (let i = 0; i < images.length; i++) {
       cards.push({
         img: images[i],
@@ -188,7 +175,7 @@ function PageRenderer({
         desc: bIdx < bodies.length ? bodies[bIdx++].text : '',
       })
     }
-    
+
     const cols = images.length <= 4 ? 2 : 3
     return (
       <div className={`grid grid-cols-1 md:grid-cols-${cols} gap-8`}>
@@ -196,7 +183,7 @@ function PageRenderer({
           <div key={i}>
             <div
               className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3"
-              onClick={() => onImageClick(`${imgBase}/${card.img.filename}`)}
+              onClick={() => onImageClick(sectionImgs, i)}
             >
               <img
                 src={`${imgBase}/${card.img.filename}`}
@@ -230,7 +217,7 @@ function PageRenderer({
             <div key={i}>
               <div
                 className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2"
-                onClick={() => onImageClick(`${imgBase}/${img.filename}`)}
+                onClick={() => onImageClick(sectionImgs, i)}
               >
                 <img
                   src={`${imgBase}/${img.filename}`}
@@ -285,7 +272,7 @@ function PageRenderer({
               <div
                 key={i}
                 className={`${widthClass} rounded-md overflow-hidden bg-gray-100 cursor-zoom-in`}
-                onClick={() => onImageClick(`${imgBase}/${img.filename}`)}
+                onClick={() => onImageClick(sectionImgs, i)}
               >
                 <img
                   src={`${imgBase}/${img.filename}`}
@@ -310,7 +297,7 @@ function SectionGroup({
 }: {
   sections: PageSection[]
   imgBase: string
-  onImageClick: (src: string) => void
+  onImageClick: (images: LightboxImage[], index: number) => void
 }) {
   if (sections.length === 0) return null
   return (
@@ -335,8 +322,12 @@ function GalleryGrid({
 }: {
   sections: PageSection[]
   imgBase: string
-  onImageClick: (src: string) => void
+  onImageClick: (images: LightboxImage[], index: number) => void
 }) {
+  const sectionImgs = sections.map(section => {
+    const mainImg = section.images.find(img => img.width > 1200) || section.images[0]
+    return { src: `${imgBase}/${mainImg.filename}` }
+  })
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {sections.map((section, idx) => {
@@ -350,7 +341,7 @@ function GalleryGrid({
             className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${
               idx === 0 ? 'md:col-span-2' : ''
             }`}
-            onClick={() => onImageClick(`${imgBase}/${mainImg.filename}`)}
+            onClick={() => onImageClick(sectionImgs, idx)}
           >
             <img
               src={`${imgBase}/${mainImg.filename}`}
@@ -378,17 +369,20 @@ function SwatchCollection({
   swatches,
   slug,
   defaultOpen = false,
+  onSwatchClick,
 }: {
   name: string
   swatches: Swatch[]
   slug: string
   defaultOpen?: boolean
+  onSwatchClick: (images: LightboxImage[], index: number) => void
 }) {
+  const sectionImgs = swatches.map(swatch => ({ src: `${CDN_BASE}/hunter-douglas/${slug}/${swatch.image}` }))
   return (
     <CollapsibleSection title={name} badge={`${swatches.length} colors`} defaultOpen={defaultOpen}>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {swatches.map((swatch, i) => (
-          <div key={i} className="text-center">
+          <div key={i} className="text-center cursor-zoom-in" onClick={() => onSwatchClick(sectionImgs, i)}>
             <div className="rounded-md overflow-hidden bg-gray-50 mb-2 border border-gray-200 hover:border-gray-400 transition-colors">
               <img
                 src={`${CDN_BASE}/hunter-douglas/${slug}/${swatch.image}`}
@@ -411,7 +405,8 @@ function SwatchCollection({
 /* ═══════════════════════ Main Component ═══════════════════════ */
 export default function HunterDouglasDetailClient({ product, related, footer }: Props) {
   const [hoveredNav, setHoveredNav] = useState<string | null>(null)
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+  const [lbImages, setLbImages] = useState<LightboxImage[]>([])
+  const [lbIndex, setLbIndex] = useState(-1)
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -424,7 +419,6 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
   const imgBase = `${CDN_BASE}/hunter-douglas/${product.slug}`
   const swatchEntries = Object.entries(product.fabric_swatches || {})
   const totalSwatches = swatchEntries.reduce((sum, [, v]) => sum + v.length, 0)
-  const openLightbox = (src: string) => setLightboxSrc(src)
 
   // 收集所有直接展示的section，按页码排序
   const directSections = [
@@ -434,6 +428,12 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
     ...product.design_options.map(s => ({ ...s, _type: 'design' as const })),
     ...product.mounting.map(s => ({ ...s, _type: 'mounting' as const })),
   ].sort((a, b) => a.page - b.page)
+
+  const openLightbox = (images: LightboxImage[], index: number) => {
+    setLbImages(images)
+    setLbIndex(index)
+  }
+  const closeLightbox = () => setLbIndex(-1)
 
   // 按类型分组，保持组内页码顺序，组间按首页排序
   type SectionType = 'benefits' | 'details' | 'control' | 'design' | 'mounting'
@@ -462,7 +462,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
   return (
     <main className="min-h-screen bg-white">
       <AnimatePresence>
-        {lightboxSrc && <Lightbox src={lightboxSrc} alt={product.name} onClose={() => setLightboxSrc(null)} />}
+        {lbIndex >= 0 && <ImageLightbox images={lbImages} currentIndex={lbIndex} onNav={setLbIndex} onClose={closeLightbox} />}
       </AnimatePresence>
 
       {/* ─── Hero ─── */}
@@ -551,7 +551,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
                 <p className="text-sm text-gray-500 mt-1">{totalSwatches} colors across {swatchEntries.length} collection{swatchEntries.length > 1 ? 's' : ''}</p>
               </div>
               {swatchEntries.map(([name, swatches], i) => (
-                <SwatchCollection key={name} name={name} swatches={swatches} slug={product.slug} defaultOpen={i === 0} />
+                <SwatchCollection key={name} name={name} swatches={swatches} slug={product.slug} defaultOpen={i === 0} onSwatchClick={openLightbox} />
               ))}
             </>
           )}
@@ -607,9 +607,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
               <a href={footer.tiktok} className="text-gray-900 hover:text-gray-700"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
               <a href={footer.instagram} className="text-pink-500 hover:text-pink-600 transition-colors" target="_blank" rel="noopener noreferrer">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                </a>
-              <a href={footer.linkedin} className="text-blue-700 hover:text-blue-800"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            </div>
+                </a>            </div>
             <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
           </div>
         </div>

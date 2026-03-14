@@ -10,15 +10,9 @@ export type { ProjectVideo }
 export { DEFAULT_VIDEOS }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Video Card — always colour, plays on hover
+// Video Card — plays on hover
 // ─────────────────────────────────────────────────────────────────────────────
-function VideoFrame({
-  item,
-  onClick,
-}: {
-  item: ProjectVideo
-  onClick: () => void
-}) {
+function VideoFrame({ item, onClick }: { item: ProjectVideo; onClick: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -46,79 +40,89 @@ function VideoFrame({
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
     >
-      {/* Thumbnail */}
       <div
         className="relative overflow-hidden rounded-xl"
-        style={{ aspectRatio: item.orientation === 'landscape' ? '16/9' : '3/4' }}
+        style={{ aspectRatio: item.orientation === 'landscape' ? '16/9' : '9/16' }}
       >
-        {/* Always-colour poster */}
         <img
           src={item.poster}
           alt={item.title}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-            isHovered ? 'opacity-0' : 'opacity-100'
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
         />
-        {/* Video on hover */}
         <video
           ref={videoRef}
           src={item.video}
-          muted
-          loop
-          playsInline
-          preload="none"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}
+          muted loop playsInline preload="none"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
         />
-        {/* Subtle overlay */}
-        <div
-          className={`absolute inset-0 bg-black/20 transition-opacity duration-400 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-        {/* Play button */}
-        <div
-          className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${
-            isHovered ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
-          }`}
-        >
+        <div className={`absolute inset-0 bg-black/20 transition-opacity duration-400 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+        <div className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${isHovered ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`}>
           <div className="w-12 h-12 rounded-full backdrop-blur-md bg-white/20 border border-white/40 flex items-center justify-center text-white">
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-              <path d="M8 5v14l11-7z" />
-            </svg>
+            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
           </div>
         </div>
-        {/* Tag pill */}
         <span className="absolute top-3 left-3 text-[9px] font-mono bg-black/40 text-white/80 px-2 py-0.5 rounded-full backdrop-blur-sm">
           {item.tag}
         </span>
       </div>
-
-      {/* Caption */}
       <div>
         <h3 className="text-sm font-medium text-[#3d3d3d] leading-tight">{item.title}</h3>
-        <p className="text-[10px] uppercase tracking-widest text-gray-400 mt-0.5">
-          {item.location}
-        </p>
+        <p className="text-[10px] uppercase tracking-widest text-gray-400 mt-0.5">{item.location}</p>
       </div>
     </motion.div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Lightbox
+// Lightbox with prev/next navigation + swipe
 // ─────────────────────────────────────────────────────────────────────────────
-function Lightbox({ item, onClose }: { item: ProjectVideo; onClose: () => void }) {
+function Lightbox({
+  videos,
+  currentIndex,
+  onClose,
+  onNav,
+}: {
+  videos: ProjectVideo[]
+  currentIndex: number
+  onClose: () => void
+  onNav: (idx: number) => void
+}) {
+  const item = videos[currentIndex]
+  const hasPrev = currentIndex > 0
+  const hasNext = currentIndex < videos.length - 1
+
+  // Touch swipe state
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+
+  const goPrev = useCallback(() => { if (hasPrev) onNav(currentIndex - 1) }, [hasPrev, currentIndex, onNav])
+  const goNext = useCallback(() => { if (hasNext) onNav(currentIndex + 1) }, [hasNext, currentIndex, onNav])
+
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', handleEsc)
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') goPrev()
+      if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', handleKey)
     return () => {
       document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleEsc)
+      window.removeEventListener('keydown', handleKey)
     }
-  }, [onClose])
+  }, [onClose, goPrev, goNext])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].clientX
+  }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX
+    const diff = touchStartX.current - touchEndX.current
+    if (Math.abs(diff) > 60) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+  }
 
   const isPortrait = item.orientation === 'portrait'
 
@@ -128,71 +132,99 @@ function Lightbox({ item, onClose }: { item: ProjectVideo; onClose: () => void }
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center p-6 lg:p-12"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{ isolation: 'isolate', backgroundColor: '#000' }}
       onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
+      {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 z-50"
+        className="absolute top-4 right-4 md:top-6 md:right-6 z-50 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all group"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
 
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className={`relative flex flex-col md:flex-row gap-10 items-start ${
-          isPortrait ? 'h-[85vh] w-auto' : 'w-full max-w-6xl'
-        }`}
+      {/* Counter */}
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 text-white/40 text-xs font-mono tracking-widest">
+        {currentIndex + 1} / {videos.length}
+      </div>
+
+      {/* Prev arrow */}
+      {hasPrev && (
+        <button
+          onClick={e => { e.stopPropagation(); goPrev() }}
+          className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all"
+        >
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
+
+      {/* Next arrow */}
+      {hasNext && (
+        <button
+          onClick={e => { e.stopPropagation(); goNext() }}
+          className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all"
+        >
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      )}
+
+      {/* Content — vertical layout: video on top, info below */}
+      <div
+        className="relative flex flex-col items-center justify-center w-full h-full px-2 md:px-6 py-12 overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
+        {/* Video — maximized */}
         <div
-          className={`overflow-hidden rounded-xl bg-black ${
-            isPortrait ? 'aspect-[3/4] h-full' : 'aspect-video w-full md:w-2/3'
+          className={`overflow-hidden rounded-lg bg-black flex-shrink-0 ${
+            isPortrait
+              ? 'h-[82vh] md:h-[88vh] w-auto'
+              : 'w-full max-w-[95vw] md:max-w-[85vw] lg:max-w-[80vw]'
           }`}
+          style={{ aspectRatio: isPortrait ? '9/16' : '16/9' }}
         >
           <video
+            key={item.id}
             src={item.video}
             poster={item.poster}
-            controls
-            autoPlay
-            loop
-            playsInline
-            className="w-full h-full object-contain"
+            controls autoPlay loop playsInline
+            className="w-full h-full object-cover"
           />
         </div>
 
-        <div className={`flex flex-col justify-between py-2 ${isPortrait ? 'w-64 h-full' : 'md:w-1/3'}`}>
-          <div className="space-y-6">
+        {/* Info bar — compact, below video */}
+        <div className="w-full max-w-[85vw] mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="flex items-center gap-3">
             <span className="text-[#ef8200] text-[10px] font-bold uppercase tracking-[0.4em]">{item.tag}</span>
-            <div>
-              <h2 className="text-3xl md:text-4xl font-light text-white leading-tight mb-2">{item.title}</h2>
-              <p className="text-gray-400 text-xs uppercase tracking-widest">{item.location}</p>
-            </div>
-            <div className="w-12 h-px bg-white/20" />
-            <p className="text-gray-300 text-sm leading-relaxed font-light">{item.description}</p>
+            <div className="w-px h-4 bg-white/20 hidden md:block" />
+            <h2 className="text-lg md:text-xl font-light text-white leading-tight">{item.title}</h2>
+            <p className="text-gray-500 text-[10px] uppercase tracking-widest hidden md:block">{item.location}</p>
           </div>
-          <div className="space-y-4 pt-10">
+          <div className="flex items-center gap-3">
             <Link
               href="/#contact"
               onClick={onClose}
-              className="block w-full text-center py-4 bg-white text-gray-900 text-xs font-bold uppercase tracking-[0.3em] rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2.5 bg-white text-gray-900 text-[10px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-gray-200 transition-colors"
             >
               Book Consultation
             </Link>
             <button
               onClick={onClose}
-              className="block w-full text-center py-4 text-white/50 hover:text-white text-[10px] uppercase tracking-widest transition-colors"
+              className="px-4 py-2.5 text-white/40 hover:text-white text-[10px] uppercase tracking-widest transition-colors"
             >
-              Return to Gallery
+              Back
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   )
 }
@@ -207,9 +239,7 @@ interface Props {
 
 export default function GalleryClient({ footer, videos: videosProp }: Props) {
   const VIDEOS = videosProp ?? DEFAULT_VIDEOS
-  const v = (id: number) => VIDEOS.find(x => x.id === id)!
-
-  const [activeVideo, setActiveVideo] = useState<ProjectVideo | null>(null)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [hoveredNav, setHoveredNav] = useState<string | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -218,6 +248,44 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Split videos by orientation
+  const landscapes = VIDEOS.filter(v => v.orientation === 'landscape')
+  const portraits = VIDEOS.filter(v => v.orientation === 'portrait')
+
+  // Build rows: landscape pairs, portrait groups of 4, and mixed
+  type Row = { type: 'landscape-pair'; items: ProjectVideo[] }
+    | { type: 'portrait-quad'; items: ProjectVideo[] }
+    | { type: 'landscape-single'; items: ProjectVideo[] }
+
+  const rows: Row[] = []
+  let li = 0, pi = 0
+
+  // Pattern: 2 landscape, 4 portrait, repeat, then leftover
+  while (li < landscapes.length || pi < portraits.length) {
+    // 2 landscapes
+    if (li < landscapes.length) {
+      const pair = landscapes.slice(li, li + 2)
+      if (pair.length === 2) {
+        rows.push({ type: 'landscape-pair', items: pair })
+        li += 2
+      } else {
+        rows.push({ type: 'landscape-single', items: pair })
+        li += pair.length
+      }
+    }
+    // 4 portraits
+    if (pi < portraits.length) {
+      const quad = portraits.slice(pi, pi + 4)
+      rows.push({ type: 'portrait-quad', items: quad })
+      pi += quad.length
+    }
+  }
+
+  const openVideo = (item: ProjectVideo) => {
+    const idx = VIDEOS.findIndex(v => v.id === item.id)
+    setActiveIndex(idx >= 0 ? idx : 0)
+  }
 
   const NAV_ITEMS = [
     { name: 'Home',         href: '/' },
@@ -274,53 +342,34 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
 
       {/* ── Gallery Grid ── */}
       <section className="px-6 lg:px-12 pb-24 max-w-[1900px] mx-auto space-y-6">
-
-        {/* Row 1: Full-width feature landscape */}
-        <div>
-          <VideoFrame item={v(1)} onClick={() => setActiveVideo(v(1))} />
-        </div>
-
-        {/* Row 2: 3 portraits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[3, 4, 5].map(id => (
-            <VideoFrame key={id} item={v(id)} onClick={() => setActiveVideo(v(id))} />
-          ))}
-        </div>
-
-        {/* Row 3: wide landscape + portrait (asymmetric 2/3 + 1/3) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <VideoFrame item={v(7)} onClick={() => setActiveVideo(v(7))} />
-          </div>
-          <div>
-            <VideoFrame item={v(9)} onClick={() => setActiveVideo(v(9))} />
-          </div>
-        </div>
-
-        {/* Row 4: 3 landscapes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[2, 8, 13].map(id => (
-            <VideoFrame key={id} item={v(id)} onClick={() => setActiveVideo(v(id))} />
-          ))}
-        </div>
-
-        {/* Row 5: 4 portraits */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[10, 11, 12, 15].map(id => (
-            <VideoFrame key={id} item={v(id)} onClick={() => setActiveVideo(v(id))} />
-          ))}
-        </div>
-
-        {/* Row 6: portrait + wide landscape (1/3 + 2/3) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <VideoFrame item={v(16)} onClick={() => setActiveVideo(v(16))} />
-          </div>
-          <div className="md:col-span-2">
-            <VideoFrame item={v(14)} onClick={() => setActiveVideo(v(14))} />
-          </div>
-        </div>
-
+        {rows.map((row, ri) => {
+          if (row.type === 'landscape-pair') {
+            return (
+              <div key={`row-${ri}`} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {row.items.map(v => (
+                  <VideoFrame key={v.id} item={v} onClick={() => openVideo(v)} />
+                ))}
+              </div>
+            )
+          }
+          if (row.type === 'portrait-quad') {
+            return (
+              <div key={`row-${ri}`} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {row.items.map(v => (
+                  <VideoFrame key={v.id} item={v} onClick={() => openVideo(v)} />
+                ))}
+              </div>
+            )
+          }
+          // landscape-single (last odd one — full width)
+          return (
+            <div key={`row-${ri}`} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {row.items.map(v => (
+                <VideoFrame key={v.id} item={v} onClick={() => openVideo(v)} />
+              ))}
+            </div>
+          )
+        })}
       </section>
 
       {/* ── CTA ── */}
@@ -343,7 +392,14 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
 
       {/* ── Lightbox ── */}
       <AnimatePresence>
-        {activeVideo && <Lightbox item={activeVideo} onClose={() => setActiveVideo(null)} />}
+        {activeIndex !== null && (
+          <Lightbox
+            videos={VIDEOS}
+            currentIndex={activeIndex}
+            onClose={() => setActiveIndex(null)}
+            onNav={setActiveIndex}
+          />
+        )}
       </AnimatePresence>
     </main>
   )

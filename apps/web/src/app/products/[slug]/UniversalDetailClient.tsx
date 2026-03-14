@@ -2,7 +2,8 @@
 
 import { CDN_BASE } from '@/lib/cdn'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -15,31 +16,9 @@ interface Props {
   layout: ProductLayout
   product: any
   related: RelatedProduct[]
-  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string; instagram: string }
+  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; instagram: string }
 }
 
-/* ─── Lightbox ─── */
-function Lightbox({ src, caption, chipSrc, onClose }: { src: string; caption?: string; chipSrc?: string; onClose: () => void }) {
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out" onClick={onClose}>
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl z-10">✕</button>
-      <div className="relative max-w-full max-h-[90vh]">
-        <img src={src} alt="" className="max-w-full max-h-[90vh] object-contain" />
-        {chipSrc && (
-          <div className="absolute bottom-4 left-4 w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-sm overflow-hidden border-2 border-white shadow-lg">
-            <img src={chipSrc} alt="Fabric detail" className="w-full h-full object-cover" />
-          </div>
-        )}
-        {caption && (
-          <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded px-3 py-2 max-w-xs text-right">
-            <p className="text-white/90 text-sm whitespace-pre-line leading-snug">{caption}</p>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  )
-}
 
 /* ─── Collapsible ─── */
 function Collapsible({ title, badge, defaultOpen = false, children }: {
@@ -97,12 +76,13 @@ function resolveImg(imgBase: string, image: string): string {
 
 /* ═══ Section Renderers ═══ */
 
-function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (s: string) => void }) {
+function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   /* Filter out very narrow portrait images (allow near-square with ratio >= 0.75) */
   const filtered = scenes.filter(s => {
     const d = parseDims(s.image)
     return !d || d.w / d.h >= 0.75
   })
+  const sectionImgs: LightboxImage[] = filtered.map(s => ({ src: resolveImg(imgBase, s.image) }))
 
   return (
     <div className="space-y-8">
@@ -111,7 +91,7 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string;
         return (
           <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
             {/* Image: 4/5 width on desktop, natural aspect ratio */}
-            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(sectionImgs, i)}>
               <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
@@ -131,15 +111,16 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string;
 }
 
 /** Alustra-style scene rows with textSide */
-function AlustraSceneSection({ scenes, imgBase, onImg }: { scenes: SceneRow[]; imgBase: string; onImg: (s: string) => void }) {
+function AlustraSceneSection({ scenes, imgBase, onImg }: { scenes: SceneRow[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const filtered = scenes.filter(s => isLandscape(s.image))
+  const sectionImgs: LightboxImage[] = filtered.map(s => ({ src: resolveImg(imgBase, s.image) }))
   return (
     <div className="space-y-8">
       {filtered.map((scene, i) => {
         const dir = scene.textSide === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'
         return (
           <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
-            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(sectionImgs, i)}>
               <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
@@ -157,12 +138,13 @@ function AlustraSceneSection({ scenes, imgBase, onImg }: { scenes: SceneRow[]; i
   )
 }
 
-function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string; cols: number; cards: CardItem[]; imgBase: string; onImg: (s: string) => void }) {
+function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string; cols: number; cards: CardItem[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   /* Auto-split cards into 2:1 proportioned chunks (2 rows per chunk) */
   const rowsPerChunk = 2
   const itemsPerChunk = cols * rowsPerChunk
   const chunks = chunk(cards, itemsPerChunk)
   const colClass = cols === 4 ? 'md:grid-cols-4' : cols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
+  const sectionImgs: LightboxImage[] = cards.map(c => ({ src: resolveImg(imgBase, c.image) }))
 
   return (
     <div className="space-y-10">
@@ -170,16 +152,19 @@ function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string
         <div key={ci}>
           {ci === 0 && <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>}
           <div className={`grid grid-cols-2 ${colClass} gap-x-6 gap-y-8`} style={{ gridTemplateRows: 'auto auto auto' }}>
-            {chunkCards.map((card, i) => (
-              <div key={i} className="grid" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }}>
-                <div className="rounded-md overflow-hidden cursor-zoom-in flex items-end"
-                  onClick={() => onImg(resolveImg(imgBase, card.image))}>
-                  <img src={resolveImg(imgBase, card.image)} alt={card.title} className="w-full h-auto" loading="lazy" />
+            {chunkCards.map((card, i) => {
+              const cardIndex = ci * itemsPerChunk + i
+              return (
+                <div key={i} className="grid" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }}>
+                  <div className="rounded-md overflow-hidden cursor-zoom-in flex items-end"
+                    onClick={() => onImg(sectionImgs, cardIndex)}>
+                    <img src={resolveImg(imgBase, card.image)} alt={card.title} className="w-full h-auto" loading="lazy" />
+                  </div>
+                  <h4 className="font-semibold text-sm text-gray-900 mt-3">{card.title}</h4>
+                  <p className="text-xs text-gray-500 leading-relaxed">{card.desc}</p>
                 </div>
-                <h4 className="font-semibold text-sm text-gray-900 mt-3">{card.title}</h4>
-                <p className="text-xs text-gray-500 leading-relaxed">{card.desc}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       ))}
@@ -187,14 +172,14 @@ function CardGridSection({ title, cols, cards, imgBase, onImg }: { title: string
   )
 }
 
-function ComparisonGridItem({ item, imgBase, onImg, uniform }: { item: ImageLabel; imgBase: string; onImg: (s: string) => void; uniform?: boolean }) {
+function ComparisonGridItem({ item, imgBase, onImg, index, sectionImgs, uniform }: { item: ImageLabel; imgBase: string; onImg: (images: LightboxImage[], index: number) => void; index: number; sectionImgs: LightboxImage[]; uniform?: boolean }) {
   const portrait = !isLandscape(item.image)
   return (
     <div className="flex flex-col">
       <div
         className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${uniform ? 'bg-gray-50' : portrait ? 'max-h-[360px]' : ''}`}
         style={uniform ? { aspectRatio: '4/3' } : undefined}
-        onClick={() => onImg(resolveImg(imgBase, item.image))}
+        onClick={() => onImg(sectionImgs, index)}
       >
         <img
           src={resolveImg(imgBase, item.image)}
@@ -209,9 +194,10 @@ function ComparisonGridItem({ item, imgBase, onImg, uniform }: { item: ImageLabe
   )
 }
 
-function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: string; cols: number; items: ImageLabel[]; imgBase: string; onImg: (s: string) => void }) {
+function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: string; cols: number; items: ImageLabel[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   /* For 7 items in a 4-col grid, use balanced 4+3 layout with uniform image sizing */
   const useBalanced = cols === 4 && items.length === 7
+  const sectionImgs: LightboxImage[] = items.map(item => ({ src: resolveImg(imgBase, item.image) }))
 
   if (useBalanced) {
     return (
@@ -220,14 +206,14 @@ function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: 
         {/* Top row: 4 items */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
           {items.slice(0, 4).map((item, i) => (
-            <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} uniform />
+            <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} index={i} sectionImgs={sectionImgs} uniform />
           ))}
         </div>
         {/* Bottom row: 3 items, centered via offset */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="hidden md:block" />
           {items.slice(4, 7).map((item, i) => (
-            <ComparisonGridItem key={i + 4} item={item} imgBase={imgBase} onImg={onImg} uniform />
+            <ComparisonGridItem key={i + 4} item={item} imgBase={imgBase} onImg={onImg} index={i + 4} sectionImgs={sectionImgs} uniform />
           ))}
         </div>
       </div>
@@ -248,9 +234,12 @@ function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: 
           {ci === 0 && <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>}
           {ci > 0 && <h4 className="text-xl font-light text-gray-600 mb-6">{title} (cont.)</h4>}
           <div className={`grid ${baseGridCols} ${colClass} gap-6 ${cols === 1 ? 'max-w-xl mx-auto' : ''}`}>
-            {chunkItems.map((item, i) => (
-              <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} />
-            ))}
+            {chunkItems.map((item, i) => {
+              const itemIndex = ci * itemsPerChunk + i
+              return (
+                <ComparisonGridItem key={i} item={item} imgBase={imgBase} onImg={onImg} index={itemIndex} sectionImgs={sectionImgs} />
+              )
+            })}
           </div>
         </div>
       ))}
@@ -258,9 +247,20 @@ function ComparisonGridSection({ title, cols, items, imgBase, onImg }: { title: 
   )
 }
 
-function MountingGridSection({ title, rows, imgBase, onImg }: { title: string; rows: { label?: string; items: ImageLabel[] }[]; imgBase: string; onImg: (s: string) => void }) {
+function MountingGridSection({ title, rows, imgBase, onImg }: { title: string; rows: { label?: string; items: ImageLabel[] }[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const maxCols = Math.max(...rows.map(r => r.items.length))
   const colClass = maxCols >= 5 ? 'md:grid-cols-5' : maxCols === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'
+
+  // Build flat array of all images in section
+  const sectionImgs: LightboxImage[] = []
+  rows.forEach(row => {
+    row.items.forEach(item => {
+      sectionImgs.push({ src: resolveImg(imgBase, item.image) })
+    })
+  })
+
+  let globalIndex = 0
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>
@@ -269,16 +269,20 @@ function MountingGridSection({ title, rows, imgBase, onImg }: { title: string; r
           <div key={ri}>
             {row.label && <h4 className="font-semibold text-base text-gray-800 mb-3">{row.label}</h4>}
             <div className={`grid grid-cols-2 ${colClass} gap-4`}>
-              {row.items.map((item, i) => (
-                <div key={i}>
-                  <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-                    onClick={() => onImg(resolveImg(imgBase, item.image))}>
-                    <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
+              {row.items.map((item, i) => {
+                const itemIndex = globalIndex
+                globalIndex++
+                return (
+                  <div key={i}>
+                    <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
+                      onClick={() => onImg(sectionImgs, itemIndex)}>
+                      <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
+                    </div>
+                    <p className="text-[11px] font-semibold text-gray-700 whitespace-pre-line leading-tight">{item.label}</p>
+                    {item.sublabel && <p className="text-[10px] text-gray-500">{item.sublabel}</p>}
                   </div>
-                  <p className="text-[11px] font-semibold text-gray-700 whitespace-pre-line leading-tight">{item.label}</p>
-                  {item.sublabel && <p className="text-[10px] text-gray-500">{item.sublabel}</p>}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))}
@@ -287,7 +291,8 @@ function MountingGridSection({ title, rows, imgBase, onImg }: { title: string; r
   )
 }
 
-function CellSizeSection({ title, brandLabel, items, imgBase, onImg }: { title: string; brandLabel: string; items: ImageLabel[]; imgBase: string; onImg: (s: string) => void }) {
+function CellSizeSection({ title, brandLabel, items, imgBase, onImg }: { title: string; brandLabel: string; items: ImageLabel[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = items.map(item => ({ src: resolveImg(imgBase, item.image) }))
   return (
     <div>
       <div className="flex items-baseline justify-between mb-6">
@@ -298,7 +303,7 @@ function CellSizeSection({ title, brandLabel, items, imgBase, onImg }: { title: 
         {items.map((item, i) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-              onClick={() => onImg(resolveImg(imgBase, item.image))}>
+              onClick={() => onImg(sectionImgs, i)}>
               <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
@@ -331,15 +336,22 @@ function HardwareColorsSection({ title, brandLabel, items, imgBase }: { title: s
   )
 }
 
-function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: SwatchCollection; imgBase: string; onImg: (s: string, caption?: string, chipSrc?: string) => void }) {
+function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: SwatchCollection; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = collection.swatches
+    .filter(sw => sw.image)
+    .map((sw, i) => {
+      const caption = `${collection.name}\n${sw.colorName}\n${sw.specs.join('\n')}`
+      const chipSrc = (sw as any).chip ? resolveImg(imgBase, (sw as any).chip) : undefined
+      return { src: resolveImg(imgBase, sw.image), caption, chipSrc }
+    })
+
   return (
     <Collapsible title={collection.name} badge={`${collection.swatches.length} colors`}>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {collection.swatches.map((sw, i) => {
-          const caption = `${collection.name}\n${sw.colorName}\n${sw.specs.join('\n')}`
-          const chipSrc = (sw as any).chip ? resolveImg(imgBase, (sw as any).chip) : undefined
+          if (!sw.image) return null
           return (
-            <div key={i} className="cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, sw.image), caption, chipSrc)}>
+            <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
               <div className="relative rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-2 aspect-square">
                 <img src={resolveImg(imgBase, sw.image)} alt={sw.colorName} className="w-[200%] h-auto origin-top-left" loading="lazy" />
                 {(sw as any).chip && (
@@ -361,9 +373,42 @@ function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: S
 }
 
 function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg }: {
-  panels: ControlSystemPanel[]; sceneImage: string | null; sceneLabel: string; imgBase: string; onImg: (s: string) => void
+  panels: ControlSystemPanel[]; sceneImage: string | null; sceneLabel: string; imgBase: string; onImg: (images: LightboxImage[], index: number) => void
 }) {
+  // Build flat array of all images in this section
+  const sectionImgs: LightboxImage[] = []
+  if (sceneImage) sectionImgs.push({ src: resolveImg(imgBase, sceneImage) })
+  panels.forEach(panel => {
+    if (panel.image) sectionImgs.push({ src: resolveImg(imgBase, panel.image) })
+    panel.items?.forEach(item => {
+      sectionImgs.push({ src: resolveImg(imgBase, item.image) })
+    })
+  })
+
   const scenePortrait = sceneImage ? !isLandscape(sceneImage) : false
+  let sceneImgIndex = 0
+  const panelImgIndices: Record<number, number> = {}
+  const itemImgIndices: Record<number, Record<number, number>> = {}
+
+  let currentIndex = 0
+  if (sceneImage) {
+    sceneImgIndex = currentIndex
+    currentIndex++
+  }
+  panels.forEach((panel, pi) => {
+    if (panel.image) {
+      panelImgIndices[pi] = currentIndex
+      currentIndex++
+    }
+    if (panel.items) {
+      itemImgIndices[pi] = {}
+      panel.items.forEach((item, ii) => {
+        itemImgIndices[pi][ii] = currentIndex
+        currentIndex++
+      })
+    }
+  })
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{sceneLabel || 'Operating Systems'}</h3>
@@ -371,7 +416,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
         {/* Scene image side */}
         {sceneImage && (
           <div className={`md:flex-[1] relative cursor-zoom-in overflow-hidden flex items-center justify-center ${scenePortrait ? 'md:max-h-[600px]' : ''}`}
-            onClick={() => onImg(resolveImg(imgBase, sceneImage))}>
+            onClick={() => onImg(sectionImgs, sceneImgIndex)}>
             <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel} className={`object-contain ${scenePortrait ? 'h-full w-auto max-h-[600px]' : 'w-full h-auto'}`} loading="lazy" />
           </div>
         )}
@@ -382,7 +427,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
               <div key={pi}>
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
                   {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(sectionImgs, panelImgIndices[pi])}>
                       <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="w-32 h-auto rounded-md object-contain" loading="lazy" />
                     </div>
                   )}
@@ -400,7 +445,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
                     {panel.items?.map((item, i) => (
                       <div key={i} className="flex gap-4 items-start mb-3">
                         <div className="w-16 shrink-0 cursor-zoom-in rounded-md overflow-hidden"
-                          onClick={(e) => { e.stopPropagation(); onImg(resolveImg(imgBase, item.image)) }}>
+                          onClick={(e) => { e.stopPropagation(); onImg(sectionImgs, itemImgIndices[pi][i]) }}>
                           <img src={resolveImg(imgBase, item.image)} alt={item.title} className="w-full h-auto object-contain" loading="lazy" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -418,32 +463,36 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
         ) : (
           <div className="w-full space-y-8">
             {/* Panels with features: show image + features side by side */}
-            {panels.filter(p => p.features).map((panel, pi) => (
-              <div key={pi} className="bg-white rounded-lg p-6">
-                <div className="flex flex-col sm:flex-row gap-6 items-start">
-                  {panel.image && (
-                    <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
-                      <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-lg text-gray-900 mb-3">{panel.title}</h4>
-                    {panel.features?.map((f, i) => (
-                      <div key={i} className="flex gap-2 mb-1.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-1.5 shrink-0" />
-                        <div>
-                          {f.title !== panel.title && <p className="font-semibold text-sm text-gray-900">{f.title}</p>}
-                          <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
-                        </div>
+            {panels.filter(p => p.features).map((panel, pi) => {
+              const actualPanelIndex = panels.indexOf(panel)
+              return (
+                <div key={pi} className="bg-white rounded-lg p-6">
+                  <div className="flex flex-col sm:flex-row gap-6 items-start">
+                    {panel.image && (
+                      <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(sectionImgs, panelImgIndices[actualPanelIndex])}>
+                        <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="w-40 h-auto rounded-md object-contain" loading="lazy" />
                       </div>
-                    ))}
-                    {panel.footnote && <p className="text-[10px] text-gray-400 mt-2 leading-relaxed">{panel.footnote}</p>}
+                    )}
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-lg text-gray-900 mb-3">{panel.title}</h4>
+                      {panel.features?.map((f, i) => (
+                        <div key={i} className="flex gap-2 mb-1.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-1.5 shrink-0" />
+                          <div>
+                            {f.title !== panel.title && <p className="font-semibold text-sm text-gray-900">{f.title}</p>}
+                            <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                      {panel.footnote && <p className="text-[10px] text-gray-400 mt-2 leading-relaxed">{panel.footnote}</p>}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
             {/* Panels with items: render items in a single row */}
             {panels.filter(p => p.items).map((panel, pi) => {
+              const actualPanelIndex = panels.indexOf(panel)
               const itemCount = panel.items?.length || 0
               const itemColClass = itemCount >= 4 ? 'md:grid-cols-4' : itemCount === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
               return (
@@ -453,7 +502,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
                     {panel.items?.map((item, i) => (
                       <div key={i} className="bg-white rounded-lg p-4 text-center">
                         <div className="cursor-zoom-in rounded-md overflow-hidden mb-3 flex justify-center"
-                          onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                          onClick={() => onImg(sectionImgs, itemImgIndices[actualPanelIndex][i])}>
                           <img src={resolveImg(imgBase, item.image)} alt={item.title} className="h-72 w-auto object-contain" loading="lazy" />
                         </div>
                         <p className="font-semibold text-sm text-gray-900 mb-1">{item.title}</p>
@@ -473,11 +522,26 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
 
 /* ═══ Control-Systems Pair (two operating-system groups side-by-side, like PDF page 36) ═══ */
 function ControlSystemsPairSection({ groups, imgBase, onImg }: {
-  groups: { title: string; sceneImage: string; panels: ControlSystemPanel[] }[]; imgBase: string; onImg: (s: string) => void
+  groups: { title: string; sceneImage: string; panels: ControlSystemPanel[] }[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void
 }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {groups.map((group, gi) => {
+        // Build section images for this group
+        const groupImgs: LightboxImage[] = []
+        if (group.sceneImage) groupImgs.push({ src: resolveImg(imgBase, group.sceneImage) })
+        group.panels.forEach(panel => {
+          if (panel.image) groupImgs.push({ src: resolveImg(imgBase, panel.image) })
+        })
+
+        let sceneIdx = 0
+        const panelIndices: Record<number, number> = {}
+        let currentIdx = 0
+        if (group.sceneImage) currentIdx = ++sceneIdx
+        group.panels.forEach((panel, pi) => {
+          if (panel.image) panelIndices[pi] = currentIdx++
+        })
+
         /* Determine grid: top row = scene + first N panels, bottom row = remaining panels */
         const topPanels = group.panels.slice(0, 2)
         const bottomPanels = group.panels.slice(2)
@@ -489,31 +553,16 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
             {/* Top row: scene image + first 2 panels */}
             <div className="flex gap-4 mb-4">
               {group.sceneImage && (
-                <div className="flex-1 cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, group.sceneImage))}>
+                <div className="flex-1 cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(groupImgs, 0)}>
                   <img src={resolveImg(imgBase, group.sceneImage)} alt={group.title} className="w-full h-full object-cover" loading="lazy" />
                 </div>
               )}
-              {topPanels.map((panel, pi) => (
-                <div key={pi} className="flex-1 flex flex-col items-center text-center">
-                  {panel.image && (
-                    <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
-                      <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
-                    </div>
-                  )}
-                  <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
-                  {panel.features?.map((f, fi) => (
-                    <p key={fi} className="text-[10px] text-gray-500 leading-relaxed mt-0.5">{f.desc}</p>
-                  ))}
-                </div>
-              ))}
-            </div>
-            {/* Bottom row: remaining panels */}
-            {bottomPanels.length > 0 && (
-              <div className={`grid ${bottomColsClass} gap-4`}>
-                {bottomPanels.map((panel, pi) => (
-                  <div key={pi} className="flex flex-col items-center text-center">
+              {topPanels.map((panel, pi) => {
+                const panelIndex = group.panels.indexOf(panel)
+                return (
+                  <div key={pi} className="flex-1 flex flex-col items-center text-center">
                     {panel.image && (
-                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(resolveImg(imgBase, panel.image!))}>
+                      <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-square flex items-center justify-center" onClick={() => onImg(groupImgs, panelIndices[panelIndex])}>
                         <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                       </div>
                     )}
@@ -522,7 +571,28 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
                       <p key={fi} className="text-[10px] text-gray-500 leading-relaxed mt-0.5">{f.desc}</p>
                     ))}
                   </div>
-                ))}
+                )
+              })}
+            </div>
+            {/* Bottom row: remaining panels */}
+            {bottomPanels.length > 0 && (
+              <div className={`grid ${bottomColsClass} gap-4`}>
+                {bottomPanels.map((panel, pi) => {
+                  const panelIndex = group.panels.indexOf(panel)
+                  return (
+                    <div key={pi} className="flex flex-col items-center text-center">
+                      {panel.image && (
+                        <div className="cursor-zoom-in rounded-md overflow-hidden mb-2 w-full aspect-[4/3] flex items-center justify-center" onClick={() => onImg(groupImgs, panelIndices[panelIndex])}>
+                          <img src={resolveImg(imgBase, panel.image!)} alt={panel.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                        </div>
+                      )}
+                      <p className="font-semibold text-xs text-gray-900">{panel.title}</p>
+                      {panel.features?.map((f, fi) => (
+                        <p key={fi} className="text-[10px] text-gray-500 leading-relaxed mt-0.5">{f.desc}</p>
+                      ))}
+                    </div>
+                  )
+                })}
               </div>
             )}
           </div>
@@ -532,12 +602,13 @@ function ControlSystemsPairSection({ groups, imgBase, onImg }: {
   )
 }
 
-function GallerySection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (s: string) => void }) {
+function GallerySection({ scenes, imgBase, onImg }: { scenes: { image: string; text: string; label: string }[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = scenes.map(s => ({ src: resolveImg(imgBase, s.image) }))
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
-          onClick={() => onImg(resolveImg(imgBase, scene.image))}>
+          onClick={() => onImg(sectionImgs, i)}>
           <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
@@ -553,8 +624,17 @@ function GallerySection({ scenes, imgBase, onImg }: { scenes: { image: string; t
 
 /* ── Product-specific section renderers ── */
 
-function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const topImg = (section.topImages || [])[0]
+  const sectionImgs: LightboxImage[] = []
+  const topImgIndex = topImg ? 0 : -1
+  if (topImg) {
+    sectionImgs.push({ src: resolveImg(imgBase, topImg.image) })
+  }
+  (section.lineDrawings || []).forEach((d: any) => {
+    sectionImgs.push({ src: resolveImg(imgBase, d.image) })
+  })
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{section.title}</h3>
@@ -562,7 +642,7 @@ function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase
         {/* Left: scene image (2/3) */}
         {topImg && (
           <div className="md:col-span-2">
-            <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => onImg(resolveImg(imgBase, topImg.image))}>
+            <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => onImg(sectionImgs, topImgIndex)}>
               <img src={resolveImg(imgBase, topImg.image)} alt={topImg.label || ''} className="w-full h-auto" loading="lazy" />
               {topImg.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 pt-16">
@@ -575,22 +655,42 @@ function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase
         )}
         {/* Right: line drawings (1/3) */}
         <div className="space-y-6">
-          {(section.lineDrawings || []).map((d: any, i: number) => (
-            <div key={i}>
-              <div className="cursor-zoom-in mb-2 rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, d.image))}>
-                <img src={resolveImg(imgBase, d.image)} alt={d.label} className="w-full h-auto" loading="lazy" />
+          {(section.lineDrawings || []).map((d: any, i: number) => {
+            const imgIndex: number = topImg ? i + 1 : i
+            return (
+              <div key={i}>
+                <div className="cursor-zoom-in mb-2 rounded-md overflow-hidden" onClick={() => onImg(sectionImgs, imgIndex)}>
+                  <img src={resolveImg(imgBase, d.image)} alt={d.label} className="w-full h-auto" loading="lazy" />
+                </div>
+                <p className="font-semibold text-sm text-gray-900">{d.label}</p>
+                {d.desc && <p className="text-xs text-gray-500 mt-1 leading-relaxed italic">{d.desc}</p>}
               </div>
-              <p className="font-semibold text-sm text-gray-900">{d.label}</p>
-              {d.desc && <p className="text-xs text-gray-500 mt-1 leading-relaxed italic">{d.desc}</p>}
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>
   )
 }
 
-function MountingProfilesSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function MountingProfilesSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  // Build flat array of all images
+  const sectionImgs: LightboxImage[] = []
+  (section.topTreatments || []).forEach((t: any) => {
+    if (t.insideMount) sectionImgs.push({ src: resolveImg(imgBase, t.insideMount) })
+    if (t.outsideMount) sectionImgs.push({ src: resolveImg(imgBase, t.outsideMount) })
+  })
+  if (section.bottomBar?.image) sectionImgs.push({ src: resolveImg(imgBase, section.bottomBar.image) })
+
+  let currentIndex = 0
+  const treatmentIndices: Record<number, { inside?: number; outside?: number }> = {}
+  (section.topTreatments || []).forEach((t: any, ti: number) => {
+    treatmentIndices[ti] = {}
+    if (t.insideMount) treatmentIndices[ti].inside = currentIndex++
+    if (t.outsideMount) treatmentIndices[ti].outside = currentIndex++
+  })
+  const bottomBarIndex = section.bottomBar?.image ? currentIndex : -1
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-4">{section.title}</h3>
@@ -603,7 +703,7 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
             <div className="flex gap-4">
               {t.insideMount && (
                 <div className="flex-1">
-                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, t.insideMount))}>
+                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(sectionImgs, treatmentIndices[i].inside!)}>
                     <img src={resolveImg(imgBase, t.insideMount)} alt="Inside Mount" className="w-full h-auto" loading="lazy" />
                   </div>
                   <p className="text-[10px] text-gray-500 text-center">Inside Mount</p>
@@ -611,7 +711,7 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
               )}
               {t.outsideMount && (
                 <div className="flex-1">
-                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, t.outsideMount))}>
+                  <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(sectionImgs, treatmentIndices[i].outside!)}>
                     <img src={resolveImg(imgBase, t.outsideMount)} alt="Outside Mount" className="w-full h-auto" loading="lazy" />
                   </div>
                   <p className="text-[10px] text-gray-500 text-center">Outside Mount</p>
@@ -622,7 +722,7 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
         ))}
         {section.bottomBar && (
           <div className="flex gap-6 items-start">
-            <div className="w-32 cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, section.bottomBar.image))}>
+            <div className="w-32 cursor-zoom-in" onClick={() => onImg(sectionImgs, bottomBarIndex)}>
               <img src={resolveImg(imgBase, section.bottomBar.image)} alt="" className="w-full h-auto rounded-md" loading="lazy" />
             </div>
             <p className="text-sm text-gray-600 flex-1">{section.bottomBar.desc}</p>
@@ -633,14 +733,30 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
   )
 }
 
-function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = []
+  const itemImgIndices: Record<number, number> = {}
+  const variationImgIndices: Record<number, number> = {}
+
+  let currentIdx: number = 0
+  (section.items || []).forEach((item: any, i: number) => {
+    itemImgIndices[i] = currentIdx
+    sectionImgs.push({ src: resolveImg(imgBase, item.image) })
+    currentIdx++
+  })
+  (section.variations || []).forEach((v: any, i: number) => {
+    variationImgIndices[i] = currentIdx
+    sectionImgs.push({ src: resolveImg(imgBase, v.image) })
+    currentIdx++
+  })
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{section.title}</h3>
       <div className="grid grid-cols-2 gap-6 mb-6">
         {(section.items || []).map((item: any, i: number) => (
           <div key={i}>
-            <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+            <div className="cursor-zoom-in rounded-md overflow-hidden mb-2" onClick={() => onImg(sectionImgs, itemImgIndices[i]!)}>
               <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
@@ -651,7 +767,7 @@ function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase
       {(section.variations || []).length > 0 && (
         <div className="grid grid-cols-4 gap-4 mb-4">
           {section.variations.map((v: any, i: number) => (
-            <div key={i} className="cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(resolveImg(imgBase, v.image))}>
+            <div key={i} className="cursor-zoom-in rounded-md overflow-hidden" onClick={() => onImg(sectionImgs, variationImgIndices[i]!)}>
               <img src={resolveImg(imgBase, v.image)} alt={v.label} className="w-full h-auto" loading="lazy" />
             </div>
           ))}
@@ -662,14 +778,30 @@ function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase
   )
 }
 
-function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: string; onImg: (s: string) => void }) {
+function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = []
+  const widthImgIndices: Record<number, number> = {}
+  const colorImgIndices: Record<number, number> = {}
+
+  let currentIdx: number = 0
+  (data.widths || []).forEach((w: any, i: number) => {
+    widthImgIndices[i] = currentIdx
+    sectionImgs.push({ src: resolveImg(imgBase, w.image) })
+    currentIdx++
+  })
+  (data.colors || []).forEach((c: any, i: number) => {
+    colorImgIndices[i] = currentIdx
+    sectionImgs.push({ src: resolveImg(imgBase, c.image) })
+    currentIdx++
+  })
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{data.title}</h3>
       <div className="grid grid-cols-2 gap-6 mb-6">
         {(data.widths || []).map((w: any, i: number) => (
           <div key={i}>
-            <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, w.image))}>
+            <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, widthImgIndices[i]!)}>
               <img src={resolveImg(imgBase, w.image)} alt={w.label} className="w-full h-auto" loading="lazy" />
             </div>
             <p className="font-semibold text-sm text-gray-900 text-center">{w.label}</p>
@@ -682,14 +814,14 @@ function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: stri
         {(data.colors || []).map((c: any, i: number) => (
           (data.colors || []).length >= 8 ? (
             <div key={i} className="text-center">
-              <div className="rounded-sm overflow-hidden border border-gray-200 cursor-zoom-in mb-1.5 aspect-square" onClick={() => onImg(resolveImg(imgBase, c.image))}>
+              <div className="rounded-sm overflow-hidden border border-gray-200 cursor-zoom-in mb-1.5 aspect-square" onClick={() => onImg(sectionImgs, colorImgIndices[i]!)}>
                 <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <p className="text-[11px] text-gray-700 leading-tight">{c.label}</p>
             </div>
           ) : (
             <div key={i} className="flex items-center gap-3">
-              <div className="w-20 h-12 rounded-sm overflow-hidden border border-gray-200 flex-shrink-0 flex items-center justify-center">
+              <div className="w-20 h-12 rounded-sm overflow-hidden border border-gray-200 flex-shrink-0 flex items-center justify-center cursor-zoom-in" onClick={() => onImg(sectionImgs, colorImgIndices[i]!)}>
                 <img src={resolveImg(imgBase, c.image)} alt={c.label} className="max-w-full max-h-full object-contain" loading="lazy" />
               </div>
               <p className="text-sm text-gray-700">{c.label}</p>
@@ -703,12 +835,24 @@ function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: stri
 }
 
 /** Duette-specific: PowerView and Operating Systems row layout */
-function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: string; items: ImageLabel[]; imgBase: string; onImg: (s: string) => void }) {
+function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: string; items: ImageLabel[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   // PowerView items at top, then horizontal divider, then operating systems
   const pvItems = items.filter(it => it.label.toLowerCase().includes('powerview') || it.label.toLowerCase().includes('automation'))
   const osItems = items.filter(it => !pvItems.includes(it))
   const top = pvItems.length > 0 ? pvItems : items.slice(0, Math.ceil(items.length / 2))
   const bottom = pvItems.length > 0 ? osItems : items.slice(Math.ceil(items.length / 2))
+
+  const sectionImgs: LightboxImage[] = items.map(item => ({ src: resolveImg(imgBase, item.image) }))
+  const topIndices: Record<number, number> = {}
+  const bottomIndices: Record<number, number> = {}
+
+  let topIdx = 0, bottomIdx = 0
+  top.forEach((item, i) => {
+    topIndices[i] = items.indexOf(item)
+  })
+  bottom.forEach((item, i) => {
+    bottomIndices[i] = items.indexOf(item)
+  })
 
   return (
     <div>
@@ -717,7 +861,7 @@ function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: st
         <div className={`grid grid-cols-${Math.min(top.length, 4)} gap-4 mb-8`}>
           {top.map((item, i) => (
             <div key={i}>
-              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, topIndices[i])}>
                 <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-xs text-gray-900">{item.label}</p>
@@ -730,7 +874,7 @@ function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: st
         <div className={`grid grid-cols-${Math.min(bottom.length, 4)} gap-4`}>
           {bottom.map((item, i) => (
             <div key={i}>
-              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(resolveImg(imgBase, item.image))}>
+              <div className="rounded-md overflow-hidden cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, bottomIndices[i])}>
                 <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-xs text-gray-900">{item.label}</p>
@@ -745,10 +889,13 @@ function DuetteOperatingRowSection({ title, items, imgBase, onImg }: { title: st
 
 /* ═══ Mixed Grid (main cols + stacked column on right) ═══ */
 function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: {
-  title: string; cols: number; items: ImageLabel[]; stackedItems: ImageLabel[]; imgBase: string; onImg: (s: string) => void
+  title: string; cols: number; items: ImageLabel[]; stackedItems: ImageLabel[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void
 }) {
   const totalCols = cols + 1 // e.g. 3 main + 1 stacked = 4
   const gridClass = totalCols === 4 ? 'md:grid-cols-4' : totalCols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-5'
+
+  const sectionImgs: LightboxImage[] = [...items, ...stackedItems].map(item => ({ src: resolveImg(imgBase, item.image) }))
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>
@@ -759,7 +906,7 @@ function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: 
           return (
             <div key={`main-${i}`}>
               <div className={`rounded-md overflow-hidden cursor-zoom-in mb-3 ${portrait ? 'max-h-[360px]' : ''}`}
-                onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                onClick={() => onImg(sectionImgs, i)}>
                 <img src={resolveImg(imgBase, item.image)} alt={item.label}
                   className={`w-full ${portrait ? 'max-h-[360px] object-contain mx-auto' : 'h-auto'}`} loading="lazy" />
               </div>
@@ -773,7 +920,7 @@ function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: 
           {stackedItems.map((item, i) => (
             <div key={`stacked-${i}`}>
               <div className="rounded-md overflow-hidden cursor-zoom-in mb-2"
-                onClick={() => onImg(resolveImg(imgBase, item.image))}>
+                onClick={() => onImg(sectionImgs, items.length + i)}>
                 <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto" loading="lazy" />
               </div>
               <p className="font-semibold text-sm text-gray-900">{item.label}</p>
@@ -788,7 +935,7 @@ function MixedGridSection({ title, cols, items, stackedItems, imgBase, onImg }: 
 
 /* ═══ Split-Scene (PDF spread style: big scene + detail grid) ═══ */
 function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, imgBase, onImg }: {
-  title: string; sceneImage: string; sceneLabel?: string; sceneSide: 'left' | 'right'; items: ImageLabel[]; imgBase: string; onImg: (s: string, caption?: string) => void
+  title: string; sceneImage: string; sceneLabel?: string; sceneSide: 'left' | 'right'; items: ImageLabel[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void
 }) {
   const isRight = sceneSide === 'right'
   const flexDir = isRight ? 'md:flex-row' : 'md:flex-row-reverse'
@@ -796,6 +943,13 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
   const gridCols = items.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'
   /* Check if scene image is portrait (tall) */
   const scenePortrait = !isLandscape(sceneImage)
+
+  const sectionImgs: LightboxImage[] = [
+    ...items.map(item => ({ src: resolveImg(imgBase, item.image) })),
+    { src: resolveImg(imgBase, sceneImage), caption: sceneLabel }
+  ]
+  const sceneImgIndex = items.length
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{title}</h3>
@@ -804,7 +958,7 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
         <div className="md:flex-[1] p-4 flex items-center justify-center">
           <div className={`grid ${gridCols} gap-x-4 w-full`} style={{ gridTemplateRows: 'auto auto auto '.repeat(Math.ceil(items.length / (items.length <= 2 ? 1 : 2))).trim() }}>
             {items.map((item, i) => (
-              <div key={i} className="grid cursor-zoom-in" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }} onClick={() => onImg(resolveImg(imgBase, item.image), item.label)}>
+              <div key={i} className="grid cursor-zoom-in" style={{ gridRow: 'span 3', gridTemplateRows: 'subgrid' }} onClick={() => onImg(sectionImgs, i)}>
                 <div className="rounded-md overflow-hidden flex items-end">
                   <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
                 </div>
@@ -815,7 +969,7 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
           </div>
         </div>
         {/* Scene image side — constrained to match the height of the detail side */}
-        <div className="md:flex-[0.7] relative cursor-zoom-in overflow-hidden flex items-end justify-center rounded-lg" onClick={() => onImg(resolveImg(imgBase, sceneImage), sceneLabel)}>
+        <div className="md:flex-[0.7] relative cursor-zoom-in overflow-hidden flex items-end justify-center rounded-lg" onClick={() => onImg(sectionImgs, sceneImgIndex)}>
           <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel || title} className="w-full h-full object-cover" loading="lazy" />
           {sceneLabel && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
@@ -829,11 +983,11 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
 }
 
 /* ═══ Liner Section (Independent Operable + Attached) ═══ */
-function LinerColorChips({ colors, imgBase, onImg }: { colors: { image: string; label: string }[]; imgBase: string; onImg: (s: string, caption?: string) => void }) {
+function LinerColorChips({ colors, imgBase, onImg, sectionImgs, startIndex }: { colors: { image: string; label: string }[]; imgBase: string; onImg: (images: LightboxImage[], index: number) => void; sectionImgs: LightboxImage[]; startIndex: number }) {
   return (
     <div className="flex flex-wrap gap-3">
       {colors.map((c, i) => (
-        <div key={i} className="text-center cursor-zoom-in" onClick={() => onImg(resolveImg(imgBase, c.image), c.label)}>
+        <div key={i} className="text-center cursor-zoom-in" onClick={() => onImg(sectionImgs, startIndex + i)}>
           <div className="w-16 h-16 rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-1">
             <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
           </div>
@@ -844,8 +998,72 @@ function LinerColorChips({ colors, imgBase, onImg }: { colors: { image: string; 
   )
 }
 
-function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string, caption?: string) => void }) {
+function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const { independent, attached } = section
+
+  // Build flat array of all images
+  const sectionImgs: LightboxImage[] = []
+  let currentIdx = 0
+
+  // Track indices for different sections
+  const indepPhotoIndices: Record<number, number> = {}
+  const indepDuoIndices: Record<number, number> = {}
+  const indepMonoIndices: Record<number, number> = {}
+  const attachPhotoIndices: Record<number, number> = {}
+  const attachDuoIndices: Record<number, number> = {}
+  const attachMonoIndices: Record<number, number> = {}
+  const attachOpacityIndices: Record<number, number> = {}
+
+  if (independent?.photos) {
+    independent.photos.forEach((p: any, i: number) => {
+      indepPhotoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, p.image), caption: p.label })
+      currentIdx++
+    })
+  }
+  if (independent?.duo?.colors) {
+    independent.duo.colors.forEach((c: any, i: number) => {
+      indepDuoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, c.image) })
+      currentIdx++
+    })
+  }
+  if (independent?.mono?.colors) {
+    independent.mono.colors.forEach((c: any, i: number) => {
+      indepMonoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, c.image) })
+      currentIdx++
+    })
+  }
+  if (attached?.photos) {
+    attached.photos.forEach((p: any, i: number) => {
+      attachPhotoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, p.image), caption: p.label })
+      currentIdx++
+    })
+  }
+  if (attached?.duo?.colors) {
+    attached.duo.colors.forEach((c: any, i: number) => {
+      attachDuoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, c.image) })
+      currentIdx++
+    })
+  }
+  if (attached?.mono?.colors) {
+    attached.mono.colors.forEach((c: any, i: number) => {
+      attachMonoIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, c.image) })
+      currentIdx++
+    })
+  }
+  if (attached?.opacity?.items) {
+    attached.opacity.items.forEach((item: any, i: number) => {
+      attachOpacityIndices[i] = currentIdx
+      sectionImgs.push({ src: resolveImg(imgBase, item.image), caption: item.label })
+      currentIdx++
+    })
+  }
+
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{section.title}</h3>
@@ -858,7 +1076,7 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
             {independent.photos && (
               <div className="flex gap-3">
                 {independent.photos.map((p: any, i: number) => (
-                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, p.image), p.label)}>
+                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(sectionImgs, indepPhotoIndices[i])}>
                     <div className="rounded-md overflow-hidden mb-1">
                       <img src={resolveImg(imgBase, p.image)} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
                     </div>
@@ -871,14 +1089,14 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
               <div>
                 <p className="text-xs font-semibold text-gray-700 mb-1">{independent.duo.title}</p>
                 <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{independent.duo.desc}</p>
-                <LinerColorChips colors={independent.duo.colors} imgBase={imgBase} onImg={onImg} />
+                <LinerColorChips colors={independent.duo.colors} imgBase={imgBase} onImg={onImg} sectionImgs={sectionImgs} startIndex={Object.values(indepDuoIndices)[0] || currentIdx} />
               </div>
             )}
             {independent.mono && (
               <div>
                 <p className="text-xs font-semibold text-gray-700 mb-1">{independent.mono.title}</p>
                 <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{independent.mono.desc}</p>
-                <LinerColorChips colors={independent.mono.colors} imgBase={imgBase} onImg={onImg} />
+                <LinerColorChips colors={independent.mono.colors} imgBase={imgBase} onImg={onImg} sectionImgs={sectionImgs} startIndex={Object.values(indepMonoIndices)[0] || currentIdx} />
               </div>
             )}
           </div>
@@ -891,7 +1109,7 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
             {attached.photos && (
               <div className="flex gap-3">
                 {attached.photos.map((p: any, i: number) => (
-                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, p.image), p.label)}>
+                  <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(sectionImgs, attachPhotoIndices[i])}>
                     <div className="rounded-md overflow-hidden mb-1">
                       <img src={resolveImg(imgBase, p.image)} alt={p.label} className="w-full h-auto object-contain" loading="lazy" />
                     </div>
@@ -904,14 +1122,14 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
               <div>
                 <p className="text-xs font-semibold text-gray-700 mb-1">{attached.duo.title}</p>
                 <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{attached.duo.desc}</p>
-                <LinerColorChips colors={attached.duo.colors} imgBase={imgBase} onImg={onImg} />
+                <LinerColorChips colors={attached.duo.colors} imgBase={imgBase} onImg={onImg} sectionImgs={sectionImgs} startIndex={Object.values(attachDuoIndices)[0] || currentIdx} />
               </div>
             )}
             {attached.mono && (
               <div>
                 <p className="text-xs font-semibold text-gray-700 mb-1">{attached.mono.title}</p>
                 <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{attached.mono.desc}</p>
-                <LinerColorChips colors={attached.mono.colors} imgBase={imgBase} onImg={onImg} />
+                <LinerColorChips colors={attached.mono.colors} imgBase={imgBase} onImg={onImg} sectionImgs={sectionImgs} startIndex={Object.values(attachMonoIndices)[0] || currentIdx} />
               </div>
             )}
             {attached.opacity && (
@@ -919,7 +1137,7 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
                 <p className="text-xs font-semibold text-gray-700 mb-2">{attached.opacity.title}</p>
                 <div className="flex gap-4">
                   {attached.opacity.items.map((item: any, i: number) => (
-                    <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(resolveImg(imgBase, item.image), item.label)}>
+                    <div key={i} className="flex-1 cursor-zoom-in text-center" onClick={() => onImg(sectionImgs, attachOpacityIndices[i])}>
                       <div className="rounded-md overflow-hidden mb-1">
                         <img src={resolveImg(imgBase, item.image)} alt={item.label} className="w-full h-auto object-contain" loading="lazy" />
                       </div>
@@ -938,7 +1156,7 @@ function LinerSection({ section, imgBase, onImg }: { section: any; imgBase: stri
 }
 
 /* ═══ Section Router ═══ */
-function SectionRenderer({ section, imgBase, onImg }: { section: SectionLayout; imgBase: string; onImg: (s: string, caption?: string) => void }) {
+function SectionRenderer({ section, imgBase, onImg }: { section: SectionLayout; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   switch (section.type) {
     case 'scene-pair':
       return <ScenePairSection scenes={section.scenes} imgBase={imgBase} onImg={onImg} />
@@ -978,28 +1196,23 @@ function SectionRenderer({ section, imgBase, onImg }: { section: SectionLayout; 
 
 /* ═══════════ MAIN ═══════════ */
 export default function UniversalDetailClient({ layout, product, related, footer }: Props) {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
-  const [lightboxCaption, setLightboxCaption] = useState<string | undefined>(undefined)
-  const [lightboxChip, setLightboxChip] = useState<string | undefined>(undefined)
-
-  const openLightbox = (src: string, caption?: string, chipSrc?: string) => {
-    setLightboxSrc(src)
-    setLightboxCaption(caption)
-    setLightboxChip(chipSrc)
-  }
-  const closeLightbox = () => {
-    setLightboxSrc(null)
-    setLightboxCaption(undefined)
-    setLightboxChip(undefined)
-  }
+  const [lbImages, setLbImages] = useState<LightboxImage[]>([])
+  const [lbIndex, setLbIndex] = useState(-1)
 
   const imgBase = (layout as any).imageBase || `${CDN_BASE}/hunter-douglas/${layout.slug}`
+
+  const openLightbox = (images: LightboxImage[], index: number) => {
+    setLbImages(images)
+    setLbIndex(index)
+  }
+  const closeLightbox = () => setLbIndex(-1)
+
   const totalSwatches = layout.swatchCollections.reduce((sum, c) => sum + c.swatches.length, 0)
 
   return (
     <main className="min-h-screen bg-white">
       <AnimatePresence>
-        {lightboxSrc && <Lightbox src={lightboxSrc} caption={lightboxCaption} chipSrc={lightboxChip} onClose={closeLightbox} />}
+        {lbIndex >= 0 && <ImageLightbox images={lbImages} currentIndex={lbIndex} onNav={setLbIndex} onClose={closeLightbox} />}
       </AnimatePresence>
 
       {/* ─── Hero (2:1) ─── */}
@@ -1079,33 +1292,50 @@ export default function UniversalDetailClient({ layout, product, related, footer
             </Collapsible>
           )}
 
-          {layout.liner && (layout.liner as any)?.groups && (
-            <Collapsible title={(layout.liner as any)?.title || 'Liner Colors'}>
-              <div className="space-y-6">
-                {(layout.liner as any).groups.map((group: any, gi: number) => (
-                  <div key={gi}>
-                    <h4 className="text-sm font-semibold text-gray-800 mb-3">{group.heading}</h4>
-                    {group.subgroups.map((sg: any, si: number) => (
-                      <div key={si} className="mb-4">
-                        <p className="text-xs font-semibold text-gray-700 mb-1">{sg.title}</p>
-                        <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{sg.desc}</p>
-                        <div className="flex flex-wrap gap-3">
-                          {sg.colors.map((c: any, ci: number) => (
-                            <div key={ci} className="text-center cursor-zoom-in" onClick={() => openLightbox(resolveImg(imgBase, c.image), c.label)}>
-                              <div className="w-16 h-16 rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-1">
-                                <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+          {layout.liner && (layout.liner as any)?.groups && (() => {
+            // Build flat array of all liner colors for this section
+            const linerColors: LightboxImage[] = []
+            const groupSubgroupColorIndices: Record<string, Record<string, Record<number, number>>> = {}
+            let colorIdx = 0
+            (layout.liner as any).groups.forEach((group: any, gi: number) => {
+              groupSubgroupColorIndices[gi] = {}
+              group.subgroups.forEach((sg: any, si: number) => {
+                groupSubgroupColorIndices[gi][si] = {}
+                sg.colors.forEach((c: any, ci: number) => {
+                  groupSubgroupColorIndices[gi][si][ci] = colorIdx
+                  linerColors.push({ src: resolveImg(imgBase, c.image), caption: c.label })
+                  colorIdx++
+                })
+              })
+            })
+            return (
+              <Collapsible title={(layout.liner as any)?.title || 'Liner Colors'}>
+                <div className="space-y-6">
+                  {(layout.liner as any).groups.map((group: any, gi: number) => (
+                    <div key={gi}>
+                      <h4 className="text-sm font-semibold text-gray-800 mb-3">{group.heading}</h4>
+                      {group.subgroups.map((sg: any, si: number) => (
+                        <div key={si} className="mb-4">
+                          <p className="text-xs font-semibold text-gray-700 mb-1">{sg.title}</p>
+                          <p className="text-[10px] text-gray-500 mb-2 leading-relaxed">{sg.desc}</p>
+                          <div className="flex flex-wrap gap-3">
+                            {sg.colors.map((c: any, ci: number) => (
+                              <div key={ci} className="text-center cursor-zoom-in" onClick={() => openLightbox(linerColors, groupSubgroupColorIndices[gi][si][ci]!)}>
+                                <div className="w-16 h-16 rounded-md overflow-hidden border border-gray-200 hover:border-gray-400 transition-colors mb-1">
+                                  <img src={resolveImg(imgBase, c.image)} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+                                </div>
+                                <p className="text-[9px] text-gray-600 leading-tight max-w-[70px]">{c.label}</p>
                               </div>
-                              <p className="text-[9px] text-gray-600 leading-tight max-w-[70px]">{c.label}</p>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
                       </div>
                     ))}
                   </div>
                 ))}
-              </div>
-            </Collapsible>
-          )}
+                </div>
+              </Collapsible>
+            )
+          })()}
 
           {layout.swatchCollections.length > 0 && (() => {
             /* Group collections by opacity series (e.g. "Sheer", "Semi-Sheer") extracted from name after " — " */
@@ -1192,9 +1422,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
               <a href={footer.tiktok} className="text-gray-900 hover:text-gray-700"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
               <a href={footer.instagram} className="text-pink-500 hover:text-pink-600 transition-colors" target="_blank" rel="noopener noreferrer">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                </a>
-              <a href={footer.linkedin} className="text-blue-700 hover:text-blue-800"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            </div>
+                </a>            </div>
             <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
           </div>
         </div>

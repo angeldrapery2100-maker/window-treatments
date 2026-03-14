@@ -2,9 +2,10 @@
 
 import { CDN_BASE } from '@/lib/cdn'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
+import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 
 interface RelatedProduct {
   name: string
@@ -16,7 +17,7 @@ interface RelatedProduct {
 interface Props {
   product: any
   related: RelatedProduct[]
-  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; linkedin: string; instagram: string }
+  footer: { copyright: string; youtube: string; etsy: string; tiktok: string; instagram: string }
 }
 
 interface LayoutData {
@@ -30,28 +31,6 @@ interface LayoutData {
   gallery: Array<{ image: string; text: string; label: string }>
   hardwareColors: any | null
   swatchCollections: Array<{ name: string; swatches: Array<{ image: string; colorName: string; specs: string[] }> }>
-}
-
-function Lightbox({ src, caption, onClose }: { src: string; caption?: string; onClose: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-      onClick={onClose}
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl z-10">✕</button>
-      <div className="relative">
-        <img src={src} alt="" className="max-w-full max-h-[90vh] object-contain" />
-        {caption && (
-          <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded px-3 py-2 max-w-xs text-right">
-            <p className="text-white/90 text-sm whitespace-pre-line leading-snug">{caption}</p>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  )
 }
 
 function Collapsible({ title, badge, defaultOpen = false, children }: { title: string; badge?: string; defaultOpen?: boolean; children: React.ReactNode }) {
@@ -85,12 +64,13 @@ function Collapsible({ title, badge, defaultOpen = false, children }: { title: s
   )
 }
 
-function ScenePairSection({ scenes, imgBase, onImg }: { scenes: Array<{ image: string; text: string; label: string }>; imgBase: string; onImg: (s: string) => void }) {
+function ScenePairSection({ scenes, imgBase, onImg }: { scenes: Array<{ image: string; text: string; label: string }>; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = scenes.map(s => ({ src: `${imgBase}/${s.image}` }))
   return (
     <div className="space-y-12">
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
-          <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(`${imgBase}/${scene.image}`)}>
+          <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
             <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
             {scene.label && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
@@ -107,15 +87,16 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: Array<{ image: s
   )
 }
 
-function CardGridSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function CardGridSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const cols = section.cols || 4
+  const sectionImgs: LightboxImage[] = section.cards.map((c: any) => ({ src: `${imgBase}/${c.image}` }))
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{section.title}</h3>
       <div className={`grid grid-cols-2 ${cols >= 4 ? 'md:grid-cols-4' : cols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-x-6 gap-y-8`}>
         {section.cards.map((card: any, i: number) => (
           <div key={i}>
-            <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(`${imgBase}/${card.image}`)}>
+            <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
               <img src={`${imgBase}/${card.image}`} alt={card.title} className="w-full h-auto" loading="lazy" />
             </div>
             <h4 className="font-semibold text-sm text-gray-900 mb-1">{card.title}</h4>
@@ -127,13 +108,16 @@ function CardGridSection({ section, imgBase, onImg }: { section: any; imgBase: s
   )
 }
 
-function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const cols = section.cols || 2
   const isVignettePowerView = section.title === 'PowerView and Operating Systems'
   const itemCount = section.items?.length || 0
 
   /* For 7 items in a 4-col grid, use 4+3 layout with the bottom row centered */
   const useBalancedLayout = cols === 4 && itemCount === 7
+
+  // Build flat array of all images in this section
+  const sectionImgs: LightboxImage[] = section.items.map((item: any) => ({ src: `${imgBase}/${item.image}` }))
 
   return (
     <div>
@@ -147,7 +131,7 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
                 <div
                   className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
                   style={{ aspectRatio: '4/3' }}
-                  onClick={() => onImg(`${imgBase}/${item.image}`)}
+                  onClick={() => onImg(sectionImgs, i)}
                 >
                   <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
                 </div>
@@ -164,7 +148,7 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
                 <div
                   className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
                   style={{ aspectRatio: '4/3' }}
-                  onClick={() => onImg(`${imgBase}/${item.image}`)}
+                  onClick={() => onImg(sectionImgs, i + 4)}
                 >
                   <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
                 </div>
@@ -178,7 +162,7 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
         <div className={`grid grid-cols-2 ${cols >= 4 ? 'md:grid-cols-4' : cols >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6`}>
           {section.items.map((item: any, i: number) => (
             <div key={i} className={isVignettePowerView ? 'h-full flex flex-col' : ''}>
-              <div className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3" style={{ aspectRatio: '4/3' }} onClick={() => onImg(`${imgBase}/${item.image}`)}>
+              <div className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3" style={{ aspectRatio: '4/3' }} onClick={() => onImg(sectionImgs, i)}>
                 <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <div className={isVignettePowerView ? 'mt-auto' : ''}>
@@ -226,38 +210,40 @@ function HardwareColorsSection({ data, imgBase }: { data: any; imgBase: string }
   )
 }
 
-function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: any; imgBase: string; onImg: (s: string, caption?: string) => void }) {
+function SwatchCollectionSection({ collection, imgBase, onImg }: { collection: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   const displayName = String(collection.name || '').replace(/\bTM\b/g, '™')
+  const sectionImgs: LightboxImage[] = collection.swatches.map((sw: any, i: number) => {
+    const captionSpecs = (sw.specs || [])
+      .filter((spec: string) => Boolean(spec))
+      .filter((spec: string) => !/^Stacking 4" Full Fold \(Room Darkening\)/i.test(spec))
+    const caption = [displayName, sw.colorName, ...captionSpecs].join('\n')
+    return { src: `${imgBase}/${sw.image}`, caption }
+  })
   return (
     <Collapsible title={displayName} badge={`${collection.swatches.length} colors`}>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-        {collection.swatches.map((sw: any, i: number) => {
-          const captionSpecs = (sw.specs || [])
-            .filter((spec: string) => Boolean(spec))
-            .filter((spec: string) => !/^Stacking 4" Full Fold \(Room Darkening\)/i.test(spec))
-          const caption = [displayName, sw.colorName, ...captionSpecs].join('\n')
-          return (
-            <div key={i} className="cursor-zoom-in" onClick={() => onImg(`${imgBase}/${sw.image}`, caption)}>
-              <div className="rounded-md overflow-hidden bg-gray-50 border border-gray-200 hover:border-gray-400 transition-colors mb-2">
-                <img src={`${imgBase}/${sw.image}`} alt={sw.colorName} className="w-full h-auto" loading="lazy" />
-              </div>
-              <p className="text-xs font-bold text-gray-800 tracking-wide">{sw.colorName}</p>
-              {(sw.specs || []).map((spec: string, j: number) => (
-                <p key={j} className="text-[10px] text-gray-400 leading-tight">{spec}</p>
-              ))}
+        {collection.swatches.map((sw: any, i: number) => (
+          <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
+            <div className="rounded-md overflow-hidden bg-gray-50 border border-gray-200 hover:border-gray-400 transition-colors mb-2">
+              <img src={`${imgBase}/${sw.image}`} alt={sw.colorName} className="w-full h-auto" loading="lazy" />
             </div>
-          )
-        })}
+            <p className="text-xs font-bold text-gray-800 tracking-wide">{sw.colorName}</p>
+            {(sw.specs || []).map((spec: string, j: number) => (
+              <p key={j} className="text-[10px] text-gray-400 leading-tight">{spec}</p>
+            ))}
+          </div>
+        ))}
       </div>
     </Collapsible>
   )
 }
 
-function GallerySection({ scenes, imgBase, onImg }: { scenes: Array<{ image: string; text: string; label: string }>; imgBase: string; onImg: (s: string) => void }) {
+function GallerySection({ scenes, imgBase, onImg }: { scenes: Array<{ image: string; text: string; label: string }>; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
+  const sectionImgs: LightboxImage[] = scenes.map(s => ({ src: `${imgBase}/${s.image}` }))
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {scenes.map((scene, i) => (
-        <div key={i} className="cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(`${imgBase}/${scene.image}`)}>
+        <div key={i} className="cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
           <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
           {scene.label && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-3 py-2">
@@ -270,7 +256,7 @@ function GallerySection({ scenes, imgBase, onImg }: { scenes: Array<{ image: str
   )
 }
 
-function SectionRenderer({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (s: string) => void }) {
+function SectionRenderer({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   switch (section.type) {
     case 'card-grid':
       return <CardGridSection section={section} imgBase={imgBase} onImg={onImg} />
@@ -282,22 +268,19 @@ function SectionRenderer({ section, imgBase, onImg }: { section: any; imgBase: s
 }
 
 export default function GenericProductClient({ product, related, footer }: Props) {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
-  const [lightboxCaption, setLightboxCaption] = useState<string | undefined>(undefined)
+  const [lbImages, setLbImages] = useState<LightboxImage[]>([])
+  const [lbIndex, setLbIndex] = useState(-1)
   const [layout, setLayout] = useState<LayoutData | null>(null)
 
   const slug = product.slug
   const imgBase = `${CDN_BASE}/hunter-douglas/${slug}`
 
-  const openLightbox = (src: string, caption?: string) => {
-    setLightboxSrc(src)
-    setLightboxCaption(caption)
+  const openLightbox = (images: LightboxImage[], index: number) => {
+    setLbImages(images)
+    setLbIndex(index)
   }
 
-  const closeLightbox = () => {
-    setLightboxSrc(null)
-    setLightboxCaption(undefined)
-  }
+  const closeLightbox = () => setLbIndex(-1)
 
   useEffect(() => {
     fetch(`${imgBase}/layout.json`)
@@ -327,7 +310,7 @@ export default function GenericProductClient({ product, related, footer }: Props
   return (
     <main className="min-h-screen bg-white">
       <AnimatePresence>
-        {lightboxSrc && <Lightbox src={lightboxSrc} caption={lightboxCaption} onClose={closeLightbox} />}
+        {lbIndex >= 0 && <ImageLightbox images={lbImages} currentIndex={lbIndex} onNav={setLbIndex} onClose={closeLightbox} />}
       </AnimatePresence>
 
       <section className="relative w-full overflow-hidden">

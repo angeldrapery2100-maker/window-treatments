@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -51,7 +51,7 @@ const romanStyles = [
   },
 ]
 
-const installations = [
+const defaultInstallations = [
   { src: `${IMG}/IMG_0077.JPG`,     alt: 'Roman shade in bedroom' },
   { src: `${IMG}/IMG_0078.JPG`,     alt: 'Roman shade in dining room' },
   { src: `${IMG}/IMG_4114.JPG`,     alt: 'Light beige Roman shade installation' },
@@ -61,6 +61,22 @@ const installations = [
 
 export default function HandcraftedRomanShadePage() {
   const [lightbox, setLightbox] = useState<{ srcs: string[]; idx: number } | null>(null)
+  const [installations, setInstallations] = useState(defaultInstallations)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/installation-images?productType=handcrafted-roman-shade')
+        const json = await res.json()
+        if (json.success && json.data.length > 0) {
+          const published = json.data.filter((i: any) => i.is_published)
+          if (published.length > 0) {
+            setInstallations(published.map((i: any) => ({ src: i.image_url, alt: i.caption || '' })))
+          }
+        }
+      } catch {}
+    })()
+  }, [])
 
   const openLightbox = (srcs: string[], idx: number) => setLightbox({ srcs, idx })
   const closeLightbox = () => setLightbox(null)

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -67,7 +67,7 @@ const swags = [
   { name: 'Westlake Swag with Cascades',   image: `${BASE}/swags/image_005.jpg`, description: 'A single traditional swag draped over cascades and mounted on a board.' },
 ]
 
-const swagInstallations = [
+const defaultSwagInstallations = [
   `${BASE}/swags/photo_001.jpg`,
   `${BASE}/swags/photo_002.jpg`,
   `${BASE}/swags/photo_003.jpg`,
@@ -131,11 +131,27 @@ function StyleGrid({
 
 export default function HandcraftedTopTreatmentPage() {
   const [lightbox, setLightbox] = useState<{ srcs: string[]; idx: number } | null>(null)
+  const [swagInstallations, setSwagInstallations] = useState(defaultSwagInstallations)
 
   const openLightbox = (srcs: string[], idx: number) => setLightbox({ srcs, idx })
   const closeLightbox = () => setLightbox(null)
   const lbPrev = () => setLightbox(prev => prev ? { ...prev, idx: (prev.idx - 1 + prev.srcs.length) % prev.srcs.length } : null)
   const lbNext = () => setLightbox(prev => prev ? { ...prev, idx: (prev.idx + 1) % prev.srcs.length } : null)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/installation-images?productType=handcrafted-top-treatment')
+        const json = await res.json()
+        if (json.success && json.data.length > 0) {
+          const published = json.data.filter((i: any) => i.is_published)
+          if (published.length > 0) {
+            setSwagInstallations(published.map((i: any) => i.image_url))
+          }
+        }
+      } catch {}
+    })()
+  }, [])
 
   const swagSrcs = swags.map(s => s.image)
 

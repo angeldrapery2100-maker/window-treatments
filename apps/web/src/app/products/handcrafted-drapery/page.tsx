@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import SiteNav from '@/components/SiteNav'
+import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 
 const IMG = '/drapery/handcrafted-drapery'
@@ -27,19 +28,6 @@ function TactileBg({ children, className }: { children: React.ReactNode; classNa
   )
 }
 
-/* ─── Lightbox ─── */
-function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-      onClick={onClose}
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl z-10">&times;</button>
-      <motion.img initial={{ scale: 0.92 }} animate={{ scale: 1 }} src={src} alt="" className="max-w-full max-h-[90vh] object-contain" />
-    </motion.div>
-  )
-}
 
 /* ─── Cinema-style Video Lightbox ─── */
 function CinemaPlayer({ videos, startIndex = 0, onClose }: { videos: ProjectVideo[]; startIndex?: number; onClose: () => void }) {
@@ -172,10 +160,10 @@ function CinemaPlayer({ videos, startIndex = 0, onClose }: { videos: ProjectVide
 }
 
 /* ─── Tactile clickable image ─── */
-function TactileImg({ src, alt, className, onOpen }: { src: string; alt: string; className?: string; onOpen: (s: string) => void }) {
+function TactileImg({ src, alt, className, onOpen }: { src: string; alt: string; className?: string; onOpen: () => void }) {
   return (
     <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={`cursor-zoom-in overflow-hidden rounded-sm ${className || ''}`} onClick={() => onOpen(src)}>
+      className={`cursor-zoom-in overflow-hidden rounded-sm ${className || ''}`} onClick={onOpen}>
       <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
     </motion.div>
   )
@@ -197,11 +185,56 @@ function Reveal({ children, className, delay = 0 }: { children: React.ReactNode;
 }
 
 export default function HandcraftedDraperyPage() {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+  const [lbImages, setLbImages] = useState<LightboxImage[]>([])
+  const [lbIndex, setLbIndex] = useState(-1)
   const [videoOpen, setVideoOpen] = useState(false)
   const [videoStartIndex, setVideoStartIndex] = useState(0)
   const [draperyVideos, setDraperyVideos] = useState<ProjectVideo[]>([])
-  const open = (s: string) => setLightboxSrc(s)
+
+  // Generic function to open lightbox for a section
+  const openLightbox = (images: LightboxImage[], index: number) => {
+    setLbImages(images)
+    setLbIndex(index)
+  }
+
+  // Styles section images
+  const stylesImages: LightboxImage[] = [
+    { src: `${IMG}/04_fa469c_c8ae22a6dc774d28a6e6e3b637ad406c~mv2.jpeg` },
+    { src: `${IMG}/05_fa469c_9d6c408529b640c0b7bdb6ab0277d248~mv2.jpg` },
+  ]
+
+  // Process/How We Make section images
+  const processImages: LightboxImage[] = [
+    { src: `${IMG}/06_fa469c_cca674eb66bd4de89cdb21c54b1777fe~mv2.jpg` },
+    { src: `${IMG}/07_fa469c_c2525d0710da44e280725f3f9222e746~mv2.jpg` },
+    { src: `${IMG}/08_fa469c_b3fe01b8538d4205b0babddf41bdc2fb~mv2.jpg` },
+    { src: `${IMG}/09_fa469c_17345f9b1b6641dcb0d613016d49c095~mv2.jpg` },
+  ]
+
+  // Installation Gallery masonry images — default fallback
+  const defaultInstallationImages: LightboxImage[] = [
+    { src: `${IMG}/IMG_2531.PNG` },
+    { src: `${IMG}/IMG_0547.JPG` },
+    { src: `${IMG}/IMG_9864.JPG` },
+    { src: `${IMG}/IMG_3146.jpg` },
+    { src: `${IMG}/IMG_6600.jpg` },
+    { src: `${IMG}/IMG_9865.JPG` },
+    { src: `${IMG}/FullSizeRender.JPG` },
+  ]
+  const [installationImages, setInstallationImages] = useState<LightboxImage[]>(defaultInstallationImages)
+
+  // Fabric & Hardware section images
+  const fabricImages: LightboxImage[] = [
+    { src: `${IMG}/IMG_1304.jpg` },
+    { src: `${IMG}/IMG_1310.WEBP` },
+  ]
+
+  // Behind the Scenes section images
+  const behindScenesImages: LightboxImage[] = [
+    { src: `${IMG}/IMG_5390.jpg` },
+    { src: `${IMG}/IMG_5391.jpg` },
+    { src: `${IMG}/IMG_0993.jpg` },
+  ]
 
   // Fetch admin-edited video data and filter drapery-related ones
   useEffect(() => {
@@ -228,10 +261,26 @@ export default function HandcraftedDraperyPage() {
     })()
   }, [])
 
+  // Fetch admin-managed installation images
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/installation-images?productType=handcrafted-drapery')
+        const json = await res.json()
+        if (json.success && json.data.length > 0) {
+          const published = json.data.filter((i: any) => i.is_published)
+          if (published.length > 0) {
+            setInstallationImages(published.map((i: any) => ({ src: i.image_url, caption: i.caption })))
+          }
+        }
+      } catch {}
+    })()
+  }, [])
+
   return (
     <main className="min-h-screen bg-white text-[#111827]">
       <AnimatePresence>
-        {lightboxSrc && <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />}
+        {lbIndex >= 0 && <ImageLightbox images={lbImages} currentIndex={lbIndex} onNav={setLbIndex} onClose={() => setLbIndex(-1)} />}
         {videoOpen && draperyVideos.length > 0 && (
           <CinemaPlayer videos={draperyVideos} startIndex={videoStartIndex} onClose={() => setVideoOpen(false)} />
         )}
@@ -297,7 +346,7 @@ export default function HandcraftedDraperyPage() {
               src={`${IMG}/04_fa469c_c8ae22a6dc774d28a6e6e3b637ad406c~mv2.jpeg`}
               alt="Pinch Pleat and Tailored Pleat styles"
               className="w-full aspect-[4/5] shadow-xl"
-              onOpen={open}
+              onOpen={() => openLightbox(stylesImages, 0)}
             />
           </Reveal>
 
@@ -345,7 +394,7 @@ export default function HandcraftedDraperyPage() {
               src={`${IMG}/05_fa469c_9d6c408529b640c0b7bdb6ab0277d248~mv2.jpg`}
               alt="Ripple Fold and Grommet styles"
               className="w-full aspect-[4/5] shadow-xl"
-              onOpen={open}
+              onOpen={() => openLightbox(stylesImages, 1)}
             />
           </div>
         </Reveal>
@@ -421,7 +470,7 @@ export default function HandcraftedDraperyPage() {
                   whileHover={{ scale: 1.03 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="relative group cursor-zoom-in"
-                  onClick={() => open(step.src)}
+                  onClick={() => openLightbox(processImages, idx)}
                 >
                   <img src={step.src} alt={step.title}
                     className="w-full h-[320px] md:h-[380px] object-cover rounded-sm shadow-xl transition-shadow duration-500 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.18)]" />
@@ -458,7 +507,7 @@ export default function HandcraftedDraperyPage() {
             { src: `${IMG}/FullSizeRender.JPG`, alt: 'Ceiling-mounted pleated panels' },
           ].map((img, idx) => (
             <Reveal key={idx} delay={idx * 0.04}>
-              <TactileImg src={img.src} alt={img.alt} className="w-full shadow-lg break-inside-avoid" onOpen={open} />
+              <TactileImg src={img.src} alt={img.alt} className="w-full shadow-lg break-inside-avoid" onOpen={() => openLightbox(installationImages, idx)} />
             </Reveal>
           ))}
         </div>
@@ -513,7 +562,7 @@ export default function HandcraftedDraperyPage() {
         <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
           <Reveal className="md:col-span-7">
             <TactileImg src={`${IMG}/IMG_1304.jpg`} alt="Fabric samples on decorative rod"
-              className="w-full shadow-2xl" onOpen={open} />
+              className="w-full shadow-2xl" onOpen={() => openLightbox(fabricImages, 0)} />
           </Reveal>
           <Reveal delay={0.15} className="md:col-span-5 space-y-8">
             <span className="text-[#ef8200] font-bold text-xs tracking-[0.3em] uppercase">Materials</span>
@@ -526,7 +575,7 @@ export default function HandcraftedDraperyPage() {
               and mounting hardware to create a polished, coordinated look.
             </p>
             <TactileImg src={`${IMG}/IMG_1310.WEBP`} alt="Patterned drapery on decorative rod"
-              className="w-full aspect-[3/2] shadow-lg" onOpen={open} />
+              className="w-full aspect-[3/2] shadow-lg" onOpen={() => openLightbox(fabricImages, 1)} />
           </Reveal>
         </div>
       </TactileBg>
@@ -547,7 +596,7 @@ export default function HandcraftedDraperyPage() {
             { src: `${IMG}/IMG_0993.jpg`, alt: 'Drapery production process' },
           ].map((img, idx) => (
             <Reveal key={idx} delay={idx * 0.1}>
-              <TactileImg src={img.src} alt={img.alt} className="w-full aspect-[4/3] shadow-lg" onOpen={open} />
+              <TactileImg src={img.src} alt={img.alt} className="w-full aspect-[4/3] shadow-lg" onOpen={() => openLightbox(behindScenesImages, idx)} />
             </Reveal>
           ))}
         </div>
