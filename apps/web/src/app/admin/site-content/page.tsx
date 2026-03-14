@@ -131,6 +131,8 @@ export default function SiteContentPage() {
       if (data.success) {
         setDirtyIds(prev => { const n = new Set(prev); n.delete(item.id); return n })
         flash('Saved')
+      } else {
+        flash('Save failed: ' + (data.error?.message || 'Unknown error'), 'error')
       }
     } catch (e: any) {
       flash('Save failed: ' + e.message, 'error')
@@ -206,7 +208,7 @@ export default function SiteContentPage() {
     setDirtyIds(prev => new Set(prev).add(id))
   }
 
-  // Upload image
+  // Upload image / video / media
   const uploadImage = async (item: ContentItem, file: File) => {
     setSaving(item.id)
     try {
@@ -224,6 +226,9 @@ export default function SiteContentPage() {
         const updated = { ...item, image_url: data.data.url }
         updateItem(item.id, { image_url: data.data.url })
         await saveField(updated)
+        flash('Uploaded and saved')
+      } else {
+        flash('Upload failed: ' + (data.error?.message || data.error || 'Unknown error'), 'error')
       }
     } catch (e: any) {
       flash('Upload failed: ' + e.message, 'error')
