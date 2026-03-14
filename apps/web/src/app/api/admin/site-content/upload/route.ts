@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const safeExt = ALLOWED_TYPES[file.type]
     if (!safeExt) {
       return NextResponse.json(
-        { success: false, error: { message: `File type not allowed: ${file.type}. Allowed: JPEG, PNG, WebP, GIF, MP4` } },
+        { success: false, error: { message: `File type not allowed: ${file.type}. Allowed: JPEG, PNG, WebP, GIF, MP4, MOV, WebM` } },
         { status: 400 }
       )
     }

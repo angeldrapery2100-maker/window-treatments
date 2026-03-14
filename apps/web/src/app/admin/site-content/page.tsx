@@ -10,7 +10,7 @@ interface ContentItem {
   page: string
   section: string
   field_key: string
-  field_type: string // text | richtext | image | video
+  field_type: string // text | richtext | image | video | media
   content: string
   image_url: string
   image_width: number
@@ -438,7 +438,7 @@ function SectionPanel({
   onAddProject: () => void
   onDeleteProject: (num: number) => void
 }) {
-  const imageCount = items.filter(i => i.field_type === 'image' || i.field_type === 'video').length
+  const imageCount = items.filter(i => i.field_type === 'image' || i.field_type === 'video' || i.field_type === 'media').length
   const textCount = items.filter(i => i.field_type === 'text' || i.field_type === 'richtext').length
   const isProjectsSection = activePage === 'gallery' && sectionKey === 'projects'
 
@@ -564,9 +564,9 @@ function FieldEditor({
   isSaving: boolean
 }) {
   const fileRef = useRef<HTMLInputElement>(null)
-  const isImage = item.field_type === 'image' || item.field_type === 'video'
+  const isImage = item.field_type === 'image' || item.field_type === 'video' || item.field_type === 'media'
 
-  const typeLabel = item.field_type === 'image' ? 'IMAGE' : item.field_type === 'video' ? 'VIDEO' : item.field_type === 'richtext' ? 'RICH TEXT' : 'TEXT'
+  const typeLabel = item.field_type === 'image' ? 'IMAGE' : item.field_type === 'video' ? 'VIDEO' : item.field_type === 'media' ? 'MEDIA' : item.field_type === 'richtext' ? 'RICH TEXT' : 'TEXT'
 
   return (
     <div className="px-5 py-3.5 hover:bg-gray-50/50">
@@ -665,6 +665,10 @@ function ImageEditor({
     if (file) onUpload(item, file)
   }
 
+  // Detect if a URL points to a video by extension
+  const isVideoUrl = (url: string) => /\.(mp4|mov|webm)(\?|$)/i.test(url)
+  const urlIsVideo = item.image_url ? isVideoUrl(item.image_url) : false
+
   return (
     <div className="space-y-3">
       <div className="flex items-start gap-4">
@@ -678,7 +682,7 @@ function ImageEditor({
           onClick={() => fileRef.current?.click()}
         >
           {item.image_url ? (
-            item.field_type === 'video' ? (
+            (item.field_type === 'video' || urlIsVideo) ? (
               <video
                 src={item.image_url}
                 muted
@@ -759,12 +763,17 @@ function ImageEditor({
               onClick={() => fileRef.current?.click()}
               className="text-xs px-3 py-1.5 border border-gray-200 hover:bg-gray-50 rounded-md transition-colors"
             >
-              {item.image_url ? (item.field_type === 'video' ? 'Replace Video' : 'Replace Image') : (item.field_type === 'video' ? 'Upload Video' : 'Upload Image')}
+              {item.field_type === 'media'
+                ? (item.image_url ? 'Replace' : 'Upload Image/Video')
+                : item.field_type === 'video'
+                  ? (item.image_url ? 'Replace Video' : 'Upload Video')
+                  : (item.image_url ? 'Replace Image' : 'Upload Image')
+              }
             </button>
             <input
               ref={fileRef}
               type="file"
-              accept={item.field_type === 'video' ? 'video/mp4,video/quicktime,video/webm' : 'image/*'}
+              accept={item.field_type === 'media' ? 'image/*,video/mp4,video/quicktime,video/webm' : item.field_type === 'video' ? 'video/mp4,video/quicktime,video/webm' : 'image/*'}
               className="hidden"
               onChange={handleFileChange}
             />

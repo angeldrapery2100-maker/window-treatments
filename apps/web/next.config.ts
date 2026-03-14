@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL?.replace(/\/$/, '') || ''
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '200mb',
+    },
+  },
   transpilePackages: ["@window-treatments/shared"],
   serverExternalPackages: ["pg", "pg-pool", "pg-connection-string", "stripe"],
   images: {
