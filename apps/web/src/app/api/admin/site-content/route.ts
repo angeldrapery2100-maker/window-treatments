@@ -65,6 +65,24 @@ const PAGE_DEFAULTS: Record<string, Array<{ section: string; field_key: string; 
 async function autoSeedDefaults(page: string) {
   const defaults = PAGE_DEFAULTS[page]
   if (!defaults) return
+
+  // Migrate: if old 'video' field exists for home hero, copy its URL to new 'background' field
+  if (page === 'home') {
+    const oldVideo = (await pool.query(
+      `SELECT image_url FROM site_content WHERE page = 'home' AND section = 'hero' AND field_key = 'video'`
+    )).rows[0]
+    if (oldVideo && oldVideo.image_url) {
+      // Seed 'background' with the old video URL (if background doesn't exist yet)
+      await pool.query(`
+        INSERT INTO site_content (page, section, field_key, field_type, content, image_url, image_width, image_height, image_fit, sort_order)
+        VALUES ('home', 'hero', 'background', 'media', 'Hero Background (Image or Video)', $1, 1920, 1080, 'cover', 0)
+        ON CONFLICT (page, section, field_key) DO NOTHING
+      `, [oldVideo.image_url])
+      // Delete old fields
+      await pool.query(`DELETE FROM site_content WHERE page = 'home' AND section = 'hero' AND field_key IN ('video', 'bg_image')`)
+    }
+  }
+
   for (const item of defaults) {
     await pool.query(`
       INSERT INTO site_content (page, section, field_key, field_type, content, image_url, image_width, image_height, image_fit, sort_order)
