@@ -1520,18 +1520,18 @@ export default function HomeClient({ hero, gallery, about, process: processData,
         .radar-sweep-overlay {
           -webkit-mask-image: linear-gradient(
             45deg,
-            rgba(0,0,0,0) calc(50% - 75px),
-            rgba(0,0,0,1) calc(50% - 38px),
-            rgba(0,0,0,1) calc(50% + 38px),
-            rgba(0,0,0,0) calc(50% + 75px)
+            rgba(0,0,0,0) calc(50% - 150px),
+            rgba(0,0,0,1) calc(50% - 76px),
+            rgba(0,0,0,1) calc(50% + 76px),
+            rgba(0,0,0,0) calc(50% + 150px)
           );
           -webkit-mask-size: 300% 300%;
           mask-image: linear-gradient(
             45deg,
-            rgba(0,0,0,0) calc(50% - 75px),
-            rgba(0,0,0,1) calc(50% - 38px),
-            rgba(0,0,0,1) calc(50% + 38px),
-            rgba(0,0,0,0) calc(50% + 75px)
+            rgba(0,0,0,0) calc(50% - 150px),
+            rgba(0,0,0,1) calc(50% - 76px),
+            rgba(0,0,0,1) calc(50% + 76px),
+            rgba(0,0,0,0) calc(50% + 150px)
           );
           mask-size: 300% 300%;
           animation: radar-sweep-anim 6s infinite ease-in-out alternate;
