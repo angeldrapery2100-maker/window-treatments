@@ -24,7 +24,7 @@ interface ImageData {
 }
 
 interface Props {
-  hero: { video: string; titleCn: string; subtitle: string; tagline: string }
+  hero: { video: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string }
   gallery: GalleryImage[]
   about: {
     title: string; highlight: string; subtitle: string; description: string
@@ -216,7 +216,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
           <div className="absolute inset-0 bg-black/40" />
         </div>
 
-        <SiteNav activePage="Home" />
+        <SiteNav activePage="Home" brandName={hero.titleEn} />
 
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div

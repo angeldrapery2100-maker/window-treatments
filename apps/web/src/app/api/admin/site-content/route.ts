@@ -34,6 +34,46 @@ async function ensureTable() {
   `)
 }
 
+// Default content blocks that should always exist for each page
+// These will be auto-seeded on first admin visit if missing
+const PAGE_DEFAULTS: Record<string, Array<{ section: string; field_key: string; field_type: string; content: string; image_url?: string; sort_order: number; image_width?: number; image_height?: number; image_fit?: string }>> = {
+  home: [
+    { section: 'hero', field_key: 'video',    field_type: 'video', content: 'Hero Background Video', image_url: '/videos/hero-background.mp4', sort_order: 0, image_width: 1920, image_height: 1080 },
+    { section: 'hero', field_key: 'title_cn', field_type: 'text',  content: '天使窗簾', sort_order: 1 },
+    { section: 'hero', field_key: 'title_en', field_type: 'text',  content: 'ANGEL DRAPERY, INC', sort_order: 2 },
+    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '专业窗簾設計、訂造、安裝', sort_order: 3 },
+    { section: 'hero', field_key: 'tagline',  field_type: 'text',  content: 'Since 1984 • 40 Years Experience', sort_order: 4 },
+  ],
+  about: [
+    { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'About Us', sort_order: 0 },
+    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '40 Years of Excellence in Custom Window Treatments', sort_order: 1 },
+    { section: 'hero', field_key: 'bg_image', field_type: 'image', content: 'About Hero Background', image_url: '', sort_order: 2, image_width: 1920, image_height: 800, image_fit: 'cover' },
+  ],
+  gallery: [
+    { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'Our Gallery', sort_order: 0 },
+    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: 'Explore Our Portfolio of Stunning Projects', sort_order: 1 },
+    { section: 'hero', field_key: 'bg_image', field_type: 'image', content: 'Gallery Hero Background', image_url: '', sort_order: 2, image_width: 1920, image_height: 800, image_fit: 'cover' },
+  ],
+  products: [
+    { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'Our Products', sort_order: 0 },
+    { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: 'Premium Window Treatments & Solutions', sort_order: 1 },
+    { section: 'hero', field_key: 'bg_image', field_type: 'image', content: 'Products Hero Background', image_url: '', sort_order: 2, image_width: 1920, image_height: 800, image_fit: 'cover' },
+  ],
+}
+
+// Auto-seed missing default content for a page
+async function autoSeedDefaults(page: string) {
+  const defaults = PAGE_DEFAULTS[page]
+  if (!defaults) return
+  for (const item of defaults) {
+    await pool.query(`
+      INSERT INTO site_content (page, section, field_key, field_type, content, image_url, image_width, image_height, image_fit, sort_order)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      ON CONFLICT (page, section, field_key) DO NOTHING
+    `, [page, item.section, item.field_key, item.field_type, item.content, item.image_url || '', item.image_width || 0, item.image_height || 0, item.image_fit || 'cover', item.sort_order])
+  }
+}
+
 // GET  /api/admin/site-content?page=home&include_drafts=true
 export async function GET(request: Request) {
   try {
@@ -41,6 +81,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page')
     const includeDrafts = searchParams.get('include_drafts') !== 'false' // admin always sees drafts by default
+
+    // Auto-seed defaults for this page if needed
+    if (page) await autoSeedDefaults(page)
 
     let rows
     if (page) {

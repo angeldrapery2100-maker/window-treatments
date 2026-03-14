@@ -15,9 +15,10 @@ const ALL_NAV_ITEMS = [
 
 interface SiteNavProps {
   activePage?: string
+  brandName?: string
 }
 
-export default function SiteNav({ activePage }: SiteNavProps) {
+export default function SiteNav({ activePage, brandName }: SiteNavProps) {
   const [hoveredNav, setHoveredNav]           = useState<string | null>(null)
   const [menuOpen,   setMenuOpen]             = useState(false)
   const [onlineStoreEnabled, setOnlineStoreEnabled] = useState<boolean>(true)
@@ -43,7 +44,7 @@ export default function SiteNav({ activePage }: SiteNavProps) {
       <div className="absolute top-6 left-6 md:top-8 md:left-8 z-50">
         <Link href="/" onClick={() => setMenuOpen(false)}>
           <h1 className="text-lg md:text-2xl lg:text-3xl font-light tracking-[0.2em] text-white drop-shadow-lg cursor-pointer hover:text-gray-300 transition-colors">
-            ANGEL DRAPERY, INC
+            {brandName || 'ANGEL DRAPERY, INC'}
           </h1>
         </Link>
       </div>
