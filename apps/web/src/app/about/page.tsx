@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { getPageContent, getText, getImage } from '@/lib/content'
-import pool from '@/lib/db'
 import AboutClient from './AboutClient'
 
 export const metadata: Metadata = {
@@ -33,22 +32,8 @@ async function getFeaturedProducts() {
     console.warn('HD products load failed:', e)
   }
 
-  // 2. Showcase products from DB
-  try {
-    const result = await pool.query(
-      "SELECT id, name, cover_image, sort_order FROM showcase_products WHERE status = 'active' ORDER BY sort_order, id"
-    )
-    for (const p of result.rows) {
-      all.push({
-        name: p.name,
-        desc: '',
-        image: p.cover_image || null,
-        href: '/store',
-      })
-    }
-  } catch (e) {
-    console.warn('showcase_products load failed:', (e as any).message)
-  }
+  // Only show products from the Products page (Hunter Douglas).
+  // Online Store items are intentionally excluded.
 
   // Shuffle and pick 10
   for (let i = all.length - 1; i > 0; i--) {
