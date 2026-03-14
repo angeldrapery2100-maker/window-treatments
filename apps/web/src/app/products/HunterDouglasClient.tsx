@@ -36,11 +36,16 @@ interface ShowcaseProduct {
   image: { url: string; alt: string; width: number; height: number; fit: string } | null
 }
 
+interface ImageData {
+  url: string; alt: string; width: number; height: number; fit: string
+}
+
 interface Props {
   products: Product[]
   showcaseProducts?: ShowcaseProduct[]
   /** When true, products come from DB catalog and use product.href for links */
   useDbCatalog?: boolean
+  hero?: { title: string; subtitle: string; bgImage: ImageData | null }
   footer: { copyright: string; youtube: string; etsy: string; tiktok: string; instagram: string }
 }
 
@@ -68,7 +73,7 @@ const HD_SLUGS = new Set([
   'screen-skyline','silhouette','sonnette','us-banded','verticals','vignette',
 ])
 
-export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, footer }: Props) {
+export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, hero, footer }: Props) {
   const [activeFilter, setActiveFilter] = useState<string>('all')
 
   // When DB catalog is active, filter to only Hunter Douglas products for the HD grid.
@@ -126,11 +131,24 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
 
       {/* ═══════════════════════ HERO ═══════════════════════ */}
       <section className="relative w-full h-[65vh] min-h-[500px] overflow-hidden bg-[#3d3d3d]">
-        <img
-          src={`${CDN_BASE}/hunter-douglas/pirouette/page009_img01_5986x3009.jpeg`}
-          alt="Premium window treatments"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        {(() => {
+          const bgUrl = hero?.bgImage?.url || `${CDN_BASE}/hunter-douglas/pirouette/page009_img01_5986x3009.jpeg`
+          const isVideo = /\.(mp4|mov|webm)(\?|$)/i.test(bgUrl)
+          if (isVideo) {
+            return (
+              <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+                <source src={bgUrl} type="video/mp4" />
+              </video>
+            )
+          }
+          return (
+            <img
+              src={bgUrl}
+              alt="Premium window treatments"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )
+        })()}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
         <SiteNav activePage="Products" />
@@ -143,9 +161,9 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <span className="text-white/50 text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">Premium Window Treatments</span>
+              <span className="text-white/50 text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">{hero?.subtitle || 'Premium Window Treatments'}</span>
               <h2 className="text-5xl md:text-7xl font-light tracking-tighter text-white leading-[1.05]">
-                Our<br />Products
+                {hero?.title ? hero.title : <>Our<br />Products</>}
               </h2>
             </motion.div>
           </div>

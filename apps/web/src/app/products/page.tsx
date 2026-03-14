@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { promises as fs } from 'fs'
 import path from 'path'
 import HunterDouglasClient from './HunterDouglasClient'
-import { getPageContent, getText } from '@/lib/content'
+import { getPageContent, getText, getImage } from '@/lib/content'
 import pool from '@/lib/db'
 
 export const metadata: Metadata = {
@@ -52,7 +52,15 @@ async function getCatalogProducts() {
 }
 
 export default async function ProductsPage() {
+  const pageData = await getPageContent('products')
   const globalData = await getPageContent('global')
+
+  const hero = {
+    title: getText(pageData, 'hero', 'title', 'Our Products'),
+    subtitle: getText(pageData, 'hero', 'subtitle', 'Premium Window Treatments'),
+    bgImage: getImage(pageData, 'hero', 'bg_image'),
+  }
+
   const footer = {
     copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
     youtube:   getText(globalData, 'footer', 'youtube_url', '#'),
@@ -83,6 +91,7 @@ export default async function ProductsPage() {
         products={catalogProducts}
         showcaseProducts={[]}   // unified: all products are in products prop now
         useDbCatalog={true}     // tells the client to use href instead of /products/{slug}
+        hero={hero}
         footer={footer}
       />
     )
@@ -95,6 +104,7 @@ export default async function ProductsPage() {
       products={hdProducts}
       showcaseProducts={[]}
       useDbCatalog={false}
+      hero={hero}
       footer={footer}
     />
   )
