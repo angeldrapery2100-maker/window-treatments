@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -18,7 +18,6 @@ interface VideoRow {
   isPublished: boolean
   isDirty: boolean
   isSaving: boolean
-  isCustom: false
 }
 
 interface CustomVideoRow {
@@ -30,13 +29,7 @@ interface CustomVideoRow {
   orientation: 'landscape' | 'portrait'
   poster: string
   video: string
-  isPublished: boolean
-  isDirty: boolean
-  isSaving: boolean
-  isCustom: true
 }
-
-type AnyVideoRow = VideoRow | CustomVideoRow
 
 type Override = { title?: string; location?: string; tag?: string; description?: string; is_published?: boolean }
 
@@ -50,13 +43,13 @@ export default function GalleryVideosPage() {
   const [savingAll, setSavingAll] = useState(false)
   const [flash, setFlash] = useState<{ text: string; ok: boolean } | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [showDeleted, setShowDeleted] = useState(false)
 
   const showFlash = (text: string, ok = true) => {
     setFlash({ text, ok })
     setTimeout(() => setFlash(null), 2500)
   }
 
-  // Load overrides from DB and merge with defaults
   const load = useCallback(async () => {
     setLoading(true)
     try {
@@ -80,7 +73,6 @@ export default function GalleryVideosPage() {
             isPublished: o.is_published !== undefined ? o.is_published : true,
             isDirty:     false,
             isSaving:    false,
-            isCustom:    false as const,
           }
         })
       )
@@ -95,13 +87,9 @@ export default function GalleryVideosPage() {
           orientation: c.orientation || 'landscape',
           poster:      c.poster_url,
           video:       c.video_url,
-          isPublished: c.is_published !== false,
-          isDirty:     false,
-          isSaving:    false,
-          isCustom:    true as const,
         }))
       )
-    } catch (e) {
+    } catch {
       showFlash('Failed to load video data', false)
     } finally {
       setLoading(false)
@@ -110,12 +98,12 @@ export default function GalleryVideosPage() {
 
   useEffect(() => { load() }, [load])
 
-  // Update a field on a default row locally
+  // ── Default video actions ──
+
   const updateDefaultRow = (id: number, field: 'title' | 'location' | 'tag' | 'description', value: string) => {
     setDefaultRows(prev => prev.map(r => r.id === id ? { ...r, [field]: value, isDirty: true } : r))
   }
 
-  // Save a single default row
   const saveDefaultRow = async (row: VideoRow) => {
     setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isSaving: true } : r))
     try {
@@ -123,48 +111,72 @@ export default function GalleryVideosPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          video_id:     row.id,
-          title:        row.title,
-          location:     row.location,
-          tag:          row.tag,
-          description:  row.description,
-          is_published: row.isPublished,
+          video_id: row.id, title: row.title, location: row.location,
+          tag: row.tag, description: row.description, is_published: row.isPublished,
         }),
       })
       const data = await res.json()
       if (data.success) {
         setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isDirty: false, isSaving: false } : r))
-        showFlash('Saved')
-      } else {
-        throw new Error(data.error)
-      }
+        showFlash('已保存')
+      } else throw new Error(data.error)
     } catch (e: any) {
       setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isSaving: false } : r))
-      showFlash('Save failed: ' + e.message, false)
+      showFlash('保存失败: ' + e.message, false)
     }
   }
 
-  // Toggle visibility for a default video
-  const toggleDefaultPublish = async (row: VideoRow) => {
-    const newVal = !row.isPublished
-    setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isPublished: newVal, isDirty: true } : r))
-  }
-
-  // Delete a custom video
-  const deleteCustomVideo = async (dbId: number) => {
-    if (!confirm('确定删除这个视频？')) return
+  // Delete a default video = hide it (set is_published=false) and auto-save
+  const deleteDefaultVideo = async (row: VideoRow) => {
+    if (!confirm(`确定删除「${row.title}」？删除后可在底部「已删除」中恢复。`)) return
     try {
-      const res = await fetch(`/api/admin/gallery-videos?id=${dbId}`, { method: 'DELETE' })
+      const res = await fetch('/api/admin/gallery-videos', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          video_id: row.id, title: row.title, location: row.location,
+          tag: row.tag, description: row.description, is_published: false,
+        }),
+      })
       const data = await res.json()
-      if (!data.success) throw new Error(data.error)
-      setCustomRows(prev => prev.filter(r => r.dbId !== dbId))
-      showFlash('已删除')
+      if (data.success) {
+        setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isPublished: false, isDirty: false } : r))
+        showFlash('已删除')
+      } else throw new Error(data.error)
     } catch (e: any) {
       showFlash('删除失败: ' + e.message, false)
     }
   }
 
-  // Save all dirty default rows
+  // Restore a deleted default video
+  const restoreDefaultVideo = async (row: VideoRow) => {
+    try {
+      const res = await fetch('/api/admin/gallery-videos', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          video_id: row.id, title: row.title, location: row.location,
+          tag: row.tag, description: row.description, is_published: true,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setDefaultRows(prev => prev.map(r => r.id === row.id ? { ...r, isPublished: true, isDirty: false } : r))
+        showFlash('已恢复')
+      } else throw new Error(data.error)
+    } catch (e: any) {
+      showFlash('恢复失败: ' + e.message, false)
+    }
+  }
+
+  const resetRow = (id: number) => {
+    const def = DEFAULT_VIDEOS.find(v => v.id === id)!
+    setDefaultRows(prev => prev.map(r => r.id === id
+      ? { ...r, title: def.title, location: def.location, tag: def.tag, description: def.description, isDirty: true }
+      : r
+    ))
+  }
+
   const saveAll = async () => {
     const dirty = defaultRows.filter(r => r.isDirty)
     if (!dirty.length) return
@@ -186,21 +198,28 @@ export default function GalleryVideosPage() {
       } catch { fail++ }
     }
     setSavingAll(false)
-    showFlash(fail ? `Saved ${ok}, failed ${fail}` : `Saved ${ok} video${ok > 1 ? 's' : ''}`, fail === 0)
+    showFlash(fail ? `保存 ${ok} 个，失败 ${fail} 个` : `已保存 ${ok} 个视频`, fail === 0)
   }
 
-  // Reset a row to hardcoded defaults
-  const resetRow = (id: number) => {
-    const def = DEFAULT_VIDEOS.find(v => v.id === id)!
-    setDefaultRows(prev => prev.map(r => r.id === id
-      ? { ...r, title: def.title, location: def.location, tag: def.tag, description: def.description, isPublished: true, isDirty: true }
-      : r
-    ))
+  // ── Custom video actions ──
+
+  const deleteCustomVideo = async (dbId: number) => {
+    if (!confirm('确定删除这个自定义视频？此操作不可恢复。')) return
+    try {
+      const res = await fetch(`/api/admin/gallery-videos?id=${dbId}`, { method: 'DELETE' })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setCustomRows(prev => prev.filter(r => r.dbId !== dbId))
+      showFlash('已删除')
+    } catch (e: any) {
+      showFlash('删除失败: ' + e.message, false)
+    }
   }
 
+  // ── Computed ──
+  const activeDefaults = defaultRows.filter(r => r.isPublished)
+  const deletedDefaults = defaultRows.filter(r => !r.isPublished)
   const dirtyCount = defaultRows.filter(r => r.isDirty).length
-  const publishedDefault = defaultRows.filter(r => r.isPublished).length
-  const hiddenDefault = defaultRows.filter(r => !r.isPublished).length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -211,8 +230,8 @@ export default function GalleryVideosPage() {
           <div>
             <h1 className="text-lg font-semibold text-gray-900">Gallery Videos</h1>
             <p className="text-sm text-gray-400 mt-0.5">
-              管理视频：编辑信息、显示/隐藏、添加新视频
-              {hiddenDefault > 0 && <span className="text-orange-500 ml-2">({hiddenDefault} 个已隐藏)</span>}
+              共 {activeDefaults.length + customRows.length} 个视频
+              {deletedDefaults.length > 0 && <span className="text-red-400 ml-1">· {deletedDefaults.length} 个已删除</span>}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -235,22 +254,20 @@ export default function GalleryVideosPage() {
               </svg>
               添加视频
             </button>
-            <button
-              onClick={saveAll}
-              disabled={dirtyCount === 0 || savingAll}
-              className={`px-5 py-2 text-sm rounded-md font-medium transition-colors ${
-                dirtyCount > 0
-                  ? 'bg-[#3d3d3d] text-white hover:bg-gray-700'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              {savingAll ? 'Saving...' : 'Save All Changes'}
-            </button>
+            {dirtyCount > 0 && (
+              <button
+                onClick={saveAll}
+                disabled={savingAll}
+                className="px-5 py-2 text-sm rounded-md font-medium bg-[#3d3d3d] text-white hover:bg-gray-700 transition-colors"
+              >
+                {savingAll ? '保存中...' : '保存全部'}
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Add Video Form Modal */}
+      {/* Add Video Modal */}
       {showAddForm && (
         <AddVideoModal
           onClose={() => setShowAddForm(false)}
@@ -276,25 +293,67 @@ export default function GalleryVideosPage() {
               </div>
             )}
 
-            {/* Default videos */}
+            {/* Active default videos */}
             <div>
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                默认视频 ({publishedDefault} 显示 / {defaultRows.length} 总计)
+                默认视频 ({activeDefaults.length})
               </h2>
-              <div className="space-y-3">
-                {defaultRows.map(row => (
-                  <DefaultVideoCard
-                    key={row.id}
-                    row={row}
-                    defaultVideo={DEFAULT_VIDEOS.find(v => v.id === row.id)!}
-                    onUpdate={updateDefaultRow}
-                    onSave={saveDefaultRow}
-                    onReset={resetRow}
-                    onTogglePublish={toggleDefaultPublish}
-                  />
-                ))}
-              </div>
+              {activeDefaults.length === 0 ? (
+                <div className="text-center py-12 text-gray-300 text-sm border-2 border-dashed border-gray-200 rounded-xl">
+                  所有默认视频已删除
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {activeDefaults.map(row => (
+                    <DefaultVideoCard
+                      key={row.id}
+                      row={row}
+                      defaultVideo={DEFAULT_VIDEOS.find(v => v.id === row.id)!}
+                      onUpdate={updateDefaultRow}
+                      onSave={saveDefaultRow}
+                      onReset={resetRow}
+                      onDelete={deleteDefaultVideo}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
+
+            {/* Deleted default videos */}
+            {deletedDefaults.length > 0 && (
+              <div className="mt-8">
+                <button
+                  onClick={() => setShowDeleted(s => !s)}
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors mb-3"
+                >
+                  <svg className={`w-4 h-4 transition-transform ${showDeleted ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  已删除 ({deletedDefaults.length})
+                </button>
+                {showDeleted && (
+                  <div className="space-y-2">
+                    {deletedDefaults.map(row => (
+                      <div key={row.id} className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-md px-5 py-3 opacity-60">
+                        <div className={`flex-shrink-0 overflow-hidden rounded bg-gray-100 ${row.orientation === 'landscape' ? 'w-16 h-10' : 'w-7 h-10'}`}>
+                          <img src={row.poster} alt={row.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-gray-500 truncate">{row.title}</p>
+                          <p className="text-[10px] text-gray-400">{row.location} · {row.tag}</p>
+                        </div>
+                        <button
+                          onClick={() => restoreDefaultVideo(row)}
+                          className="px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
+                        >
+                          恢复
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>
@@ -306,20 +365,20 @@ export default function GalleryVideosPage() {
 // Default Video Card
 // ─────────────────────────────────────────────────────────────────────────────
 function DefaultVideoCard({
-  row, defaultVideo, onUpdate, onSave, onReset, onTogglePublish,
+  row, defaultVideo, onUpdate, onSave, onReset, onDelete,
 }: {
   row: VideoRow
   defaultVideo: ProjectVideo
   onUpdate: (id: number, field: 'title' | 'location' | 'tag' | 'description', value: string) => void
   onSave: (row: VideoRow) => void
   onReset: (id: number) => void
-  onTogglePublish: (row: VideoRow) => void
+  onDelete: (row: VideoRow) => void
 }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
     <div className={`bg-white rounded-md border transition-colors overflow-hidden ${
-      !row.isPublished ? 'border-red-200 bg-red-50/30 opacity-60' : row.isDirty ? 'border-amber-300' : 'border-gray-200'
+      row.isDirty ? 'border-amber-300' : 'border-gray-200'
     }`}>
       {/* Row Header */}
       <div className="flex items-center gap-4 px-5 py-3.5">
@@ -336,7 +395,6 @@ function DefaultVideoCard({
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-mono text-gray-400">No.{String(row.id).padStart(2, '0')}</span>
             {row.isDirty && <span className="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide">Unsaved</span>}
-            {!row.isPublished && <span className="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide">已隐藏</span>}
             <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide ${row.orientation === 'landscape' ? 'bg-sky-50 text-sky-600' : 'bg-purple-50 text-purple-600'}`}>
               {row.orientation}
             </span>
@@ -347,21 +405,13 @@ function DefaultVideoCard({
 
         {/* Action buttons */}
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          {/* Toggle publish */}
+          {/* Delete */}
           <button
-            onClick={() => onTogglePublish(row)}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-              row.isPublished
-                ? 'text-green-600 hover:bg-green-50'
-                : 'text-red-500 hover:bg-red-50'
-            }`}
-            title={row.isPublished ? '点击隐藏' : '点击显示'}
+            onClick={() => onDelete(row)}
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-all"
+            title="删除视频"
           >
-            {row.isPublished ? (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-            ) : (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" /></svg>
-            )}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
           </button>
 
           {/* Chevron */}
@@ -399,14 +449,13 @@ function DefaultVideoCard({
                 row.isDirty ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
-              {row.isSaving ? 'Saving...' : 'Save'}
+              {row.isSaving ? '保存中...' : '保存'}
             </button>
             <button
               onClick={() => onReset(row.id)}
               className="px-4 py-2 text-sm text-gray-500 border border-gray-200 rounded-md hover:bg-white transition-colors"
-              title="Restore default values"
             >
-              Reset to Default
+              恢复默认值
             </button>
           </div>
         </div>
@@ -422,12 +471,9 @@ function CustomVideoCard({ row, onDelete }: { row: CustomVideoRow; onDelete: (db
   return (
     <div className="bg-white rounded-md border border-blue-200 overflow-hidden">
       <div className="flex items-center gap-4 px-5 py-3.5">
-        {/* Poster thumbnail */}
         <div className={`relative flex-shrink-0 overflow-hidden rounded bg-gray-100 ${row.orientation === 'landscape' ? 'w-20 h-12' : 'w-9 h-12'}`}>
           <img src={row.poster} alt={row.title} className="w-full h-full object-cover" />
         </div>
-
-        {/* Identity */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide">自定义</span>
@@ -438,8 +484,6 @@ function CustomVideoCard({ row, onDelete }: { row: CustomVideoRow; onDelete: (db
           <p className="text-sm font-medium text-gray-900 mt-0.5 truncate">{row.title || '(未命名)'}</p>
           <p className="text-[11px] text-gray-400 truncate">{row.location || '–'} · {row.tag || '–'}</p>
         </div>
-
-        {/* Delete */}
         <button
           onClick={() => onDelete(row.dbId)}
           className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-all"
@@ -473,7 +517,6 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
     }
     setUploading(true)
     try {
-      // Upload video
       setProgress('上传视频中...')
       const videoForm = new FormData()
       videoForm.append('file', videoFile)
@@ -482,7 +525,6 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
       const videoJson = await videoRes.json()
       if (!videoJson.success) throw new Error(videoJson.error?.message || '视频上传失败')
 
-      // Upload poster
       setProgress('上传封面中...')
       const posterForm = new FormData()
       posterForm.append('file', posterFile)
@@ -491,7 +533,6 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
       const posterJson = await posterRes.json()
       if (!posterJson.success) throw new Error(posterJson.error?.message || '封面上传失败')
 
-      // Save to DB
       setProgress('保存中...')
       const saveRes = await fetch('/api/admin/gallery-videos', {
         method: 'POST',
