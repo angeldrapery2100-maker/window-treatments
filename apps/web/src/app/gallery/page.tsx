@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getPageContent, getText } from '@/lib/content'
 import GalleryClient from './GalleryClient'
 import { DEFAULT_VIDEOS } from '@/lib/gallery-videos-data'
+import pool from '@/lib/db'
 
 export const metadata: Metadata = {
   title: 'Our Projects',
@@ -12,12 +13,23 @@ export const dynamic = 'force-dynamic'
 
 async function getVideoMeta(): Promise<Record<number, { title?: string; location?: string; tag?: string; description?: string }>> {
   try {
-    // Internal fetch — works in both dev and prod since we call our own API
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/admin/gallery-videos`, { cache: 'no-store' })
-    if (!res.ok) return {}
-    const data = await res.json()
-    return data.success ? data.data : {}
+    // Direct DB query — works reliably in both dev and Vercel production
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS gallery_video_meta (
+        id          SERIAL PRIMARY KEY,
+        video_id    INTEGER NOT NULL UNIQUE,
+        title       TEXT,
+        location    TEXT,
+        tag         TEXT,
+        description TEXT,
+        is_published BOOLEAN DEFAULT true,
+        updated_at  TIMESTAMPTZ DEFAULT now()
+      )
+    `)
+    const { rows } = await pool.query('SELECT * FROM gallery_video_meta ORDER BY video_id')
+    const map: Record<number, typeof rows[0]> = {}
+    for (const row of rows) map[row.video_id] = row
+    return map
   } catch {
     return {}
   }

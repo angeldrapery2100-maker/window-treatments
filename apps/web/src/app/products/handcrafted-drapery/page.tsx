@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import SiteNav from '@/components/SiteNav'
+import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 
 const IMG = '/drapery/handcrafted-drapery'
+
+/* ─── Drapery keyword filter ─── */
+const DRAPERY_KEYWORDS = /drapery|drape|sheer|pleat|linen|curtain/i
 
 /* ─── Linen texture background wrapper ─── */
 function TactileBg({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -37,6 +41,136 @@ function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
   )
 }
 
+/* ─── Cinema-style Video Lightbox ─── */
+function CinemaPlayer({ videos, startIndex = 0, onClose }: { videos: ProjectVideo[]; startIndex?: number; onClose: () => void }) {
+  const [index, setIndex] = useState(startIndex)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const item = videos[index]
+
+  // Keyboard navigation
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handler)
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', handler) }
+  }, [onClose])
+
+  // Auto-play when switching
+  useEffect(() => {
+    const v = videoRef.current
+    if (v) { v.currentTime = 0; v.play().catch(() => {}) }
+  }, [index])
+
+  if (!item) return null
+  const isPortrait = item.orientation === 'portrait'
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] bg-black flex flex-col"
+      style={{ isolation: 'isolate' }}
+    >
+      {/* ── Top bar ── */}
+      <div className="flex items-center justify-between px-6 md:px-10 py-4 shrink-0">
+        <div className="flex items-center gap-3">
+          <span className="text-[#ef8200] text-[10px] font-bold tracking-[0.3em] uppercase">Angel Drapery</span>
+          <span className="text-white/20">|</span>
+          <span className="text-white/40 text-xs">{index + 1} / {videos.length}</span>
+        </div>
+        <button
+          onClick={onClose}
+          className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors"
+        >
+          <span className="text-xs tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity">Close</span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      {/* ── Main video area ── */}
+      <div className="flex-1 min-h-0 flex items-center justify-center px-6 md:px-10">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.35 }}
+          className={`relative ${isPortrait ? 'h-full max-h-[68vh] aspect-[9/16]' : 'w-full max-w-5xl aspect-video'}`}
+        >
+          <video
+            ref={videoRef}
+            src={item.video}
+            poster={item.poster}
+            controls
+            autoPlay
+            playsInline
+            className="w-full h-full object-contain rounded-lg"
+          />
+        </motion.div>
+      </div>
+
+      {/* ── Title ── */}
+      <motion.div
+        key={`t-${index}`}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        className="text-center py-2 shrink-0"
+      >
+        <h3 className="text-white text-sm md:text-base font-light tracking-wide">{item.title}</h3>
+      </motion.div>
+
+      {/* ── Thumbnail row — equal height, natural aspect ratio ── */}
+      <div className="shrink-0 px-6 md:px-10 pb-4 pt-1">
+        <div className="flex gap-2 md:gap-3 justify-center items-center overflow-x-auto scrollbar-hide">
+          {videos.map((v, i) => {
+            const active = i === index
+            // All thumbnails same height, width adapts to aspect ratio
+            const aspect = v.orientation === 'landscape' ? 16 / 9 : 9 / 16
+            const h = 64 // base height in px
+            const w = Math.round(h * aspect)
+
+            return (
+              <button
+                key={v.id}
+                onClick={() => setIndex(i)}
+                className="group relative shrink-0 overflow-hidden rounded-md transition-all duration-300"
+                style={{ width: w, height: h }}
+              >
+                {/* Poster */}
+                <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />
+
+                {/* Overlay */}
+                <div className={`absolute inset-0 transition-all duration-300 ${
+                  active
+                    ? 'bg-transparent ring-2 ring-[#ef8200] ring-inset rounded-md'
+                    : 'bg-black/50 group-hover:bg-black/20'
+                }`} />
+
+                {/* Play icon on active */}
+                {active && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-[#ef8200] flex items-center justify-center shadow-lg">
+                      <svg className="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    </div>
+                  </div>
+                )}
+
+                {/* Title below on hover */}
+                <div className={`absolute bottom-0 left-0 right-0 px-1 py-0.5 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 ${
+                  active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}>
+                  <p className="text-white text-[8px] leading-tight truncate text-center">{v.title}</p>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 /* ─── Tactile clickable image ─── */
 function TactileImg({ src, alt, className, onOpen }: { src: string; alt: string; className?: string; onOpen: (s: string) => void }) {
   return (
@@ -64,12 +198,43 @@ function Reveal({ children, className, delay = 0 }: { children: React.ReactNode;
 
 export default function HandcraftedDraperyPage() {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+  const [videoOpen, setVideoOpen] = useState(false)
+  const [videoStartIndex, setVideoStartIndex] = useState(0)
+  const [draperyVideos, setDraperyVideos] = useState<ProjectVideo[]>([])
   const open = (s: string) => setLightboxSrc(s)
+
+  // Fetch admin-edited video data and filter drapery-related ones
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/gallery-videos')
+        const data = await res.json()
+        const overrides: Record<number, any> = data.success ? data.data : {}
+
+        const merged = DEFAULT_VIDEOS.map(v => {
+          const o = overrides[v.id]
+          if (!o) return v
+          return { ...v, title: o.title ?? v.title, location: o.location ?? v.location, tag: o.tag ?? v.tag, description: o.description ?? v.description }
+        })
+
+        // Filter for drapery-related videos by title
+        const filtered = merged.filter(v => DRAPERY_KEYWORDS.test(v.title))
+        setDraperyVideos(filtered.length > 0 ? filtered : merged.slice(0, 7))
+      } catch {
+        // Fallback to all defaults
+        const filtered = DEFAULT_VIDEOS.filter(v => DRAPERY_KEYWORDS.test(v.title))
+        setDraperyVideos(filtered.length > 0 ? filtered : DEFAULT_VIDEOS.slice(0, 7))
+      }
+    })()
+  }, [])
 
   return (
     <main className="min-h-screen bg-white text-[#111827]">
       <AnimatePresence>
         {lightboxSrc && <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />}
+        {videoOpen && draperyVideos.length > 0 && (
+          <CinemaPlayer videos={draperyVideos} startIndex={videoStartIndex} onClose={() => setVideoOpen(false)} />
+        )}
       </AnimatePresence>
 
       {/* ═══════════ 1. Hero: Tactile Close-up (IMG_0547) ═══════════ */}
@@ -272,7 +437,7 @@ export default function HandcraftedDraperyPage() {
         </div>
       </TactileBg>
 
-      {/* ═══════════ 5. Installation Gallery — Masonry ═══════════ */}
+      {/* ═══════════ 5. Installation Gallery + Videos ═══════════ */}
       <TactileBg className="bg-[#F3F2EF]">
         <Reveal>
           <div className="text-center mb-16">
@@ -281,6 +446,7 @@ export default function HandcraftedDraperyPage() {
           </div>
         </Reveal>
 
+        {/* Photo gallery — masonry */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
           {[
             { src: `${IMG}/IMG_2531.PNG`, alt: 'Contemporary living room with custom drapery' },
@@ -296,6 +462,50 @@ export default function HandcraftedDraperyPage() {
             </Reveal>
           ))}
         </div>
+
+        {/* Video row */}
+        {draperyVideos.length > 0 && (
+          <div className="mt-16">
+            <Reveal>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-px flex-1 bg-gray-300" />
+                <span className="text-[#ef8200] font-bold text-[11px] tracking-[0.3em] uppercase whitespace-nowrap">Drapery in Motion</span>
+                <div className="h-px flex-1 bg-gray-300" />
+              </div>
+            </Reveal>
+
+            <div className="flex gap-3 md:gap-4 justify-center items-center overflow-x-auto pb-2 scrollbar-hide">
+              {draperyVideos.map((v, i) => {
+                const aspect = v.orientation === 'landscape' ? 16 / 9 : 9 / 16
+                const h = 390
+                const w = Math.round(h * aspect)
+
+                return (
+                  <Reveal key={v.id} delay={i * 0.08}>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.3 }}
+                      className="relative shrink-0 overflow-hidden rounded-lg cursor-pointer group shadow-lg"
+                      style={{ width: w, height: h }}
+                      onClick={() => { setVideoOpen(true); setVideoStartIndex(i) }}
+                    >
+                      <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-all duration-400" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center group-hover:bg-[#ef8200]/80 group-hover:border-[#ef8200] transition-all duration-300">
+                          <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                        <p className="text-white text-[11px] font-medium leading-tight line-clamp-2">{v.title}</p>
+                      </div>
+                    </motion.div>
+                  </Reveal>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </TactileBg>
 
       {/* ═══════════ 6. Fabric & Hardware — Split Editorial ═══════════ */}
@@ -343,37 +553,7 @@ export default function HandcraftedDraperyPage() {
         </div>
       </TactileBg>
 
-      {/* ═══════════ 8. Motorized — Cinematic CTA ═══════════ */}
-      <section className="relative w-full aspect-[21/9] min-h-[400px] overflow-hidden flex items-center justify-center">
-        <img src={`${IMG}/01_fa469c_27a57877e027418e9939f2ea06f204c3f002.jpg`}
-          alt="Motorized Sheer" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-        <div className="relative z-10 text-center space-y-6 px-4">
-          <Reveal>
-            <p className="text-white/50 tracking-[0.4em] text-xs uppercase mb-2">Angel Drapery, Inc</p>
-            <h3 className="text-4xl md:text-6xl font-serif italic text-white tracking-tight drop-shadow-2xl">
-              Motorized Sheer.<br />Controlled by Siri.
-            </h3>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <a href="https://youtube.com/@angeldrapery1544" target="_blank" rel="noopener noreferrer">
-                <motion.button whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}
-                  className="bg-[#ef8200] px-10 py-4 text-white text-sm uppercase tracking-widest font-bold shadow-lg hover:bg-[#d97706] transition-colors">
-                  <span className="inline-flex items-center gap-3">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>
-                    Play Video
-                  </span>
-                </motion.button>
-              </a>
-              <motion.button whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}
-                className="border-2 border-white/40 px-10 py-4 text-white text-sm uppercase tracking-widest font-bold hover:bg-white hover:text-gray-900 transition-all duration-400 shadow-lg">
-                Order Fabric Swatches
-              </motion.button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ═══════════ 9. Footer ═══════════ */}
+      {/* ═══════════ 8. Footer ═══════════ */}
       <footer className="py-16 px-8 md:px-20 bg-[#3d3d3d]"
         style={{
           backgroundImage:
