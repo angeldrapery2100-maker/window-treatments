@@ -22,6 +22,34 @@ const PRODUCT_TYPES = [
   { key: 'handcrafted-top-treatment', label: 'Top Treatment' },
 ] as const
 
+// Default hardcoded images per product type (for seeding)
+const DEFAULT_IMAGES: Record<string, string[]> = {
+  'handcrafted-drapery': [
+    '/drapery/handcrafted-drapery/IMG_2531.PNG',
+    '/drapery/handcrafted-drapery/IMG_0547.JPG',
+    '/drapery/handcrafted-drapery/IMG_9864.JPG',
+    '/drapery/handcrafted-drapery/IMG_3146.jpg',
+    '/drapery/handcrafted-drapery/IMG_6600.jpg',
+    '/drapery/handcrafted-drapery/IMG_9865.JPG',
+    '/drapery/handcrafted-drapery/FullSizeRender.JPG',
+  ],
+  'handcrafted-roman-shade': [
+    '/roman-shade/IMG_0077.JPG',
+    '/roman-shade/IMG_0078.JPG',
+    '/roman-shade/IMG_4114.JPG',
+    '/roman-shade/微信图片_20190609163607_Original.JPG',
+    '/roman-shade/IMG_0298_Original.JPG',
+  ],
+  'handcrafted-top-treatment': [
+    '/top-treatments/swags/photo_001.jpg',
+    '/top-treatments/swags/photo_002.jpg',
+    '/top-treatments/swags/photo_003.jpg',
+    '/top-treatments/swags/photo_004.jpg',
+    '/top-treatments/swags/photo_005.jpg',
+    '/top-treatments/swags/photo_006.jpg',
+  ],
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
@@ -30,6 +58,7 @@ export default function InstallationImagesPage() {
   const [images, setImages] = useState<InstallationImage[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [seeding, setSeeding] = useState(false)
   const [flash, setFlash] = useState<{ text: string; ok: boolean } | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -61,7 +90,6 @@ export default function InstallationImagesPage() {
     setUploading(true)
     try {
       for (const file of Array.from(files)) {
-        // 1. Upload to R2
         const form = new FormData()
         form.append('file', file)
         form.append('productType', activeTab)
@@ -69,7 +97,6 @@ export default function InstallationImagesPage() {
         const upJson = await upRes.json()
         if (!upJson.success) throw new Error(upJson.error?.message || '上传失败')
 
-        // 2. Save record to DB
         const saveRes = await fetch('/api/admin/installation-images', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -85,6 +112,29 @@ export default function InstallationImagesPage() {
     } finally {
       setUploading(false)
       if (fileRef.current) fileRef.current.value = ''
+    }
+  }
+
+  // ── Seed default images into DB ──
+  const seedDefaults = async () => {
+    const defaults = DEFAULT_IMAGES[activeTab]
+    if (!defaults) return
+    if (!confirm(`将导入 ${defaults.length} 张默认图片到数据库，导入后可以在此管理。继续？`)) return
+    setSeeding(true)
+    try {
+      for (const url of defaults) {
+        await fetch('/api/admin/installation-images', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product_type: activeTab, image_url: url }),
+        })
+      }
+      showFlash(`已导入 ${defaults.length} 张默认图片`)
+      load()
+    } catch (e: any) {
+      showFlash('导入失败: ' + e.message, false)
+    } finally {
+      setSeeding(false)
     }
   }
 
@@ -175,7 +225,7 @@ export default function InstallationImagesPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-light text-gray-900">Installation Images</h1>
-          <p className="text-sm text-gray-500 mt-1">管理三个手工产品页面的 Our Installations 板块图片</p>
+          <p className="text-sm text-gray-500 mt-1">管理产品页面 Our Installations 板块的图片，支持添加、删除、排序</p>
         </div>
       </div>
 
@@ -196,8 +246,9 @@ export default function InstallationImagesPage() {
         ))}
       </div>
 
-      {/* Upload area */}
-      <div className="mb-8 border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-gray-400 transition-colors">
+      {/* Action buttons */}
+      <div className="flex gap-3 mb-6">
+        {/* Upload */}
         <input
           ref={fileRef}
           type="file"
@@ -207,111 +258,129 @@ export default function InstallationImagesPage() {
           className="hidden"
           id="file-upload"
         />
-        <label htmlFor="file-upload" className="cursor-pointer">
-          <svg className="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <label htmlFor="file-upload" className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-all ${
+          uploading ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'
+        }`}>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          {uploading ? (
-            <p className="text-gray-500 text-sm">上传中...</p>
-          ) : (
-            <>
-              <p className="text-gray-600 text-sm font-medium">点击上传图片</p>
-              <p className="text-gray-400 text-xs mt-1">支持 JPG、PNG、WebP、GIF，最大 20MB，可多选</p>
-            </>
-          )}
+          {uploading ? '上传中...' : '上传图片'}
         </label>
+
+        {/* Seed defaults */}
+        {images.length === 0 && (
+          <button
+            onClick={seedDefaults}
+            disabled={seeding}
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              seeding ? 'bg-gray-100 text-gray-400' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            {seeding ? '导入中...' : '导入默认图片'}
+          </button>
+        )}
       </div>
 
       {/* Image grid */}
       {loading ? (
         <div className="text-center py-20 text-gray-400">加载中...</div>
       ) : images.length === 0 ? (
-        <div className="text-center py-20">
+        <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-xl">
+          <svg className="w-12 h-12 text-gray-200 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           <p className="text-gray-400 text-sm">暂无图片</p>
-          <p className="text-gray-300 text-xs mt-1">上传图片后将显示在产品页面的 Our Installations 板块</p>
+          <p className="text-gray-300 text-xs mt-1">点击「上传图片」添加新图片，或点击「导入默认图片」加载现有图片到数据库管理</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="space-y-3">
           {images.map((img, idx) => (
             <div
               key={img.id}
-              className={`group relative bg-white border rounded-xl overflow-hidden transition-all ${
-                img.is_published ? 'border-gray-200' : 'border-orange-300 opacity-60'
+              className={`flex items-center gap-4 bg-white border rounded-xl p-3 transition-all ${
+                img.is_published ? 'border-gray-200' : 'border-orange-300 bg-orange-50/30'
               }`}
             >
-              {/* Image */}
-              <div className="aspect-square overflow-hidden bg-gray-100">
-                <img src={img.image_url} alt={img.caption || ''} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-
-              {/* Controls overlay */}
-              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                {/* Move up */}
-                {idx > 0 && (
-                  <button
-                    onClick={() => moveImage(img, 'up')}
-                    className="w-7 h-7 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-gray-600 hover:bg-white shadow-sm"
-                    title="上移"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
-                  </button>
-                )}
-                {/* Move down */}
-                {idx < images.length - 1 && (
-                  <button
-                    onClick={() => moveImage(img, 'down')}
-                    className="w-7 h-7 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-gray-600 hover:bg-white shadow-sm"
-                    title="下移"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                  </button>
-                )}
-                {/* Toggle publish */}
-                <button
-                  onClick={() => togglePublish(img)}
-                  className={`w-7 h-7 backdrop-blur rounded-full flex items-center justify-center shadow-sm ${
-                    img.is_published ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-                  }`}
-                  title={img.is_published ? '点击隐藏' : '点击显示'}
-                >
-                  {img.is_published ? (
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                  ) : (
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" /></svg>
-                  )}
-                </button>
-                {/* Delete */}
-                <button
-                  onClick={() => deleteImage(img)}
-                  className="w-7 h-7 bg-red-100 backdrop-blur rounded-full flex items-center justify-center text-red-600 hover:bg-red-200 shadow-sm"
-                  title="删除"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                </button>
-              </div>
-
-              {/* Sort order badge */}
-              <div className="absolute top-2 left-2 w-6 h-6 bg-black/50 backdrop-blur text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {/* Sort number */}
+              <div className="w-8 text-center text-sm font-bold text-gray-300 flex-shrink-0">
                 {idx + 1}
               </div>
 
-              {/* Unpublished badge */}
-              {!img.is_published && (
-                <div className="absolute bottom-12 left-2 bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  隐藏
-                </div>
-              )}
+              {/* Thumbnail */}
+              <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                <img src={img.image_url} alt={img.caption || ''} className="w-full h-full object-cover" loading="lazy" />
+              </div>
 
-              {/* Caption input */}
-              <div className="p-3">
+              {/* Info */}
+              <div className="flex-1 min-w-0">
                 <input
                   type="text"
                   placeholder="添加备注..."
                   value={img.caption || ''}
                   onChange={e => setImages(prev => prev.map(i => i.id === img.id ? { ...i, caption: e.target.value } : i))}
                   onBlur={e => updateCaption(img, e.target.value)}
-                  className="w-full text-xs text-gray-600 bg-transparent border-b border-transparent focus:border-gray-300 outline-none pb-1 placeholder-gray-300"
+                  className="w-full text-sm text-gray-700 bg-transparent border-b border-gray-100 focus:border-gray-400 outline-none pb-1 placeholder-gray-300"
                 />
+                <p className="text-[10px] text-gray-300 mt-1 truncate">{img.image_url}</p>
+              </div>
+
+              {/* Controls - always visible */}
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                {/* Move up */}
+                <button
+                  onClick={() => moveImage(img, 'up')}
+                  disabled={idx === 0}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                    idx === 0 ? 'text-gray-200' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                  }`}
+                  title="上移"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
+                </button>
+
+                {/* Move down */}
+                <button
+                  onClick={() => moveImage(img, 'down')}
+                  disabled={idx === images.length - 1}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                    idx === images.length - 1 ? 'text-gray-200' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                  }`}
+                  title="下移"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+
+                {/* Divider */}
+                <div className="w-px h-5 bg-gray-200 mx-1" />
+
+                {/* Toggle publish */}
+                <button
+                  onClick={() => togglePublish(img)}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                    img.is_published
+                      ? 'text-green-600 hover:bg-green-50'
+                      : 'text-orange-500 hover:bg-orange-50'
+                  }`}
+                  title={img.is_published ? '点击隐藏' : '点击显示'}
+                >
+                  {img.is_published ? (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  ) : (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" /></svg>
+                  )}
+                </button>
+
+                {/* Delete */}
+                <button
+                  onClick={() => deleteImage(img)}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-all"
+                  title="删除"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
               </div>
             </div>
           ))}
