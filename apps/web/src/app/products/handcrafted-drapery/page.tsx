@@ -495,19 +495,11 @@ export default function HandcraftedDraperyPage() {
           </div>
         </Reveal>
 
-        {/* Photo gallery — masonry */}
+        {/* Photo gallery — masonry (driven by admin-managed installationImages) */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
-          {[
-            { src: `${IMG}/IMG_2531.PNG`, alt: 'Contemporary living room with custom drapery' },
-            { src: `${IMG}/IMG_0547.JPG`, alt: 'Pleated drapery on decorative rod' },
-            { src: `${IMG}/IMG_9864.JPG`, alt: 'Elegant living space with floor-to-ceiling drapery' },
-            { src: `${IMG}/IMG_3146.jpg`, alt: 'White sheer pinch-pleat drapery' },
-            { src: `${IMG}/IMG_6600.jpg`, alt: 'Textured drapery on black rod' },
-            { src: `${IMG}/IMG_9865.JPG`, alt: 'Modern entryway with custom drapery' },
-            { src: `${IMG}/FullSizeRender.JPG`, alt: 'Ceiling-mounted pleated panels' },
-          ].map((img, idx) => (
+          {installationImages.map((img, idx) => (
             <Reveal key={idx} delay={idx * 0.04}>
-              <TactileImg src={img.src} alt={img.alt} className="w-full shadow-lg break-inside-avoid" onOpen={() => openLightbox(installationImages, idx)} />
+              <TactileImg src={img.src} alt={img.caption || 'Drapery installation'} className="w-full shadow-lg break-inside-avoid" onOpen={() => openLightbox(installationImages, idx)} />
             </Reveal>
           ))}
         </div>
