@@ -31,6 +31,9 @@ export type AuditAction =
   | 'auth.login_failed'
   | 'auth.logout'
   | 'auth.force_logout'
+  | 'installation_image.created'
+  | 'installation_image.updated'
+  | 'installation_image.deleted'
 
 export interface AuditEntry {
   action: AuditAction

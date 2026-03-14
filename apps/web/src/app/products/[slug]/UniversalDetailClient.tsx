@@ -675,15 +675,15 @@ function ShadeStylesSection({ section, imgBase, onImg }: { section: any; imgBase
 
 function MountingProfilesSection({ section, imgBase, onImg }: { section: any; imgBase: string; onImg: (images: LightboxImage[], index: number) => void }) {
   // Build flat array of all images
-  const sectionImgs: LightboxImage[] = []
+  const sectionImgs: LightboxImage[] = [];
   (section.topTreatments || []).forEach((t: any) => {
     if (t.insideMount) sectionImgs.push({ src: resolveImg(imgBase, t.insideMount) })
     if (t.outsideMount) sectionImgs.push({ src: resolveImg(imgBase, t.outsideMount) })
   })
   if (section.bottomBar?.image) sectionImgs.push({ src: resolveImg(imgBase, section.bottomBar.image) })
 
-  let currentIndex = 0
-  const treatmentIndices: Record<number, { inside?: number; outside?: number }> = {}
+  let currentIndex = 0;
+  const treatmentIndices: Record<number, { inside?: number; outside?: number }> = {};
   (section.topTreatments || []).forEach((t: any, ti: number) => {
     treatmentIndices[ti] = {}
     if (t.insideMount) treatmentIndices[ti].inside = currentIndex++
@@ -738,12 +738,12 @@ function ReverseRollSection({ section, imgBase, onImg }: { section: any; imgBase
   const itemImgIndices: Record<number, number> = {}
   const variationImgIndices: Record<number, number> = {}
 
-  let currentIdx: number = 0
+  let currentIdx: number = 0;
   (section.items || []).forEach((item: any, i: number) => {
     itemImgIndices[i] = currentIdx
     sectionImgs.push({ src: resolveImg(imgBase, item.image) })
     currentIdx++
-  })
+  });
   (section.variations || []).forEach((v: any, i: number) => {
     variationImgIndices[i] = currentIdx
     sectionImgs.push({ src: resolveImg(imgBase, v.image) })
@@ -783,12 +783,12 @@ function EdgeBandingSection({ data, imgBase, onImg }: { data: any; imgBase: stri
   const widthImgIndices: Record<number, number> = {}
   const colorImgIndices: Record<number, number> = {}
 
-  let currentIdx: number = 0
+  let currentIdx: number = 0;
   (data.widths || []).forEach((w: any, i: number) => {
     widthImgIndices[i] = currentIdx
     sectionImgs.push({ src: resolveImg(imgBase, w.image) })
     currentIdx++
-  })
+  });
   (data.colors || []).forEach((c: any, i: number) => {
     colorImgIndices[i] = currentIdx
     sectionImgs.push({ src: resolveImg(imgBase, c.image) })
@@ -1296,7 +1296,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
             // Build flat array of all liner colors for this section
             const linerColors: LightboxImage[] = []
             const groupSubgroupColorIndices: Record<string, Record<string, Record<number, number>>> = {}
-            let colorIdx = 0
+            let colorIdx = 0;
             (layout.liner as any).groups.forEach((group: any, gi: number) => {
               groupSubgroupColorIndices[gi] = {}
               group.subgroups.forEach((sg: any, si: number) => {

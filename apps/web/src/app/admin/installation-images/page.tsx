@@ -22,6 +22,8 @@ const PRODUCT_TYPES = [
   { key: 'handcrafted-top-treatment', label: 'Top Treatment' },
 ] as const
 
+type ProductTypeKey = typeof PRODUCT_TYPES[number]['key']
+
 // Default hardcoded images per product type (for seeding)
 const DEFAULT_IMAGES: Record<string, string[]> = {
   'handcrafted-drapery': [
@@ -54,7 +56,7 @@ const DEFAULT_IMAGES: Record<string, string[]> = {
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
 export default function InstallationImagesPage() {
-  const [activeTab, setActiveTab] = useState(PRODUCT_TYPES[0].key)
+  const [activeTab, setActiveTab] = useState<ProductTypeKey>(PRODUCT_TYPES[0].key)
   const [images, setImages] = useState<InstallationImage[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
