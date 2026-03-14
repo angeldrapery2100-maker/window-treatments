@@ -99,7 +99,7 @@ export async function PUT(request: Request) {
     let adminUser: any
     try { adminUser = requireAdmin(request) } catch {}
 
-    const { id, caption, sort_order, is_published } = await request.json()
+    const { id, caption, sort_order, is_published, image_url } = await request.json()
 
     if (!id) {
       return NextResponse.json({ success: false, error: 'id required' }, { status: 400 })
@@ -109,6 +109,7 @@ export async function PUT(request: Request) {
     const vals: any[] = []
     let idx = 1
 
+    if (image_url !== undefined) { sets.push(`image_url = $${idx++}`); vals.push(image_url) }
     if (caption !== undefined) { sets.push(`caption = $${idx++}`); vals.push(caption) }
     if (sort_order !== undefined) { sets.push(`sort_order = $${idx++}`); vals.push(sort_order) }
     if (is_published !== undefined) { sets.push(`is_published = $${idx++}`); vals.push(is_published) }
