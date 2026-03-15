@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
+import { uploadGalleryFile } from './actions'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -517,30 +518,31 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
     }
     setUploading(true)
     try {
+      // Upload video via Server Action (bypasses Vercel 4.5MB API route limit)
       setProgress('上传视频中...')
       const videoForm = new FormData()
       videoForm.append('file', videoFile)
       videoForm.append('fileType', 'video')
-      const videoRes = await fetch('/api/admin/gallery-videos/upload', { method: 'POST', body: videoForm })
-      const videoJson = await videoRes.json()
-      if (!videoJson.success) throw new Error(videoJson.error?.message || '视频上传失败')
+      const videoResult = await uploadGalleryFile(videoForm)
+      if (!videoResult.success) throw new Error(videoResult.error || '视频上传失败')
 
+      // Upload poster via Server Action
       setProgress('上传封面中...')
       const posterForm = new FormData()
       posterForm.append('file', posterFile)
       posterForm.append('fileType', 'poster')
-      const posterRes = await fetch('/api/admin/gallery-videos/upload', { method: 'POST', body: posterForm })
-      const posterJson = await posterRes.json()
-      if (!posterJson.success) throw new Error(posterJson.error?.message || '封面上传失败')
+      const posterResult = await uploadGalleryFile(posterForm)
+      if (!posterResult.success) throw new Error(posterResult.error || '封面上传失败')
 
+      // Save metadata via API route (small JSON payload, no size issue)
       setProgress('保存中...')
       const saveRes = await fetch('/api/admin/gallery-videos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title, location, tag, description, orientation,
-          video_url: videoJson.data.url,
-          poster_url: posterJson.data.url,
+          video_url: videoResult.data!.url,
+          poster_url: posterResult.data!.url,
         }),
       })
       const saveJson = await saveRes.json()

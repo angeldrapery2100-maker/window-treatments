@@ -1,0 +1,68 @@
+'use server'
+
+import { uploadToR2 } from '@/lib/r2'
+
+const ALLOWED_VIDEO_TYPES: Record<string, string> = {
+  'video/mp4':       'mp4',
+  'video/quicktime': 'mov',
+  'video/webm':      'webm',
+  'video/x-msvideo': 'avi',
+}
+
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/jpg':  'jpg',
+  'image/png':  'png',
+  'image/webp': 'webp',
+}
+
+const MAX_VIDEO_SIZE = 200 * 1024 * 1024  // 200 MB
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024   // 20 MB
+
+/**
+ * Server Action to upload gallery video/poster files to R2.
+ * Uses the 200mb bodySizeLimit configured in next.config (server actions bypass
+ * the 4.5MB Vercel serverless function limit that applies to API routes).
+ */
+export async function uploadGalleryFile(formData: FormData): Promise<{
+  success: boolean
+  data?: { url: string; filename: string; originalName: string }
+  error?: string
+}> {
+  try {
+    const file = formData.get('file') as File
+    const fileType = (formData.get('fileType') as string) || 'video'
+
+    if (!file) {
+      return { success: false, error: '请选择文件' }
+    }
+
+    const isVideo = fileType === 'video'
+    const allowedTypes = isVideo ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES
+    const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE
+
+    if (file.size > maxSize) {
+      return { success: false, error: `文件太大 (最大 ${Math.round(maxSize / 1024 / 1024)} MB)` }
+    }
+
+    const safeExt = allowedTypes[file.type]
+    if (!safeExt) {
+      return { success: false, error: `不支持的文件类型: ${file.type}` }
+    }
+
+    const bytes  = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${safeExt}`
+    const folder = isVideo ? 'gallery-videos' : 'gallery-posters'
+    const key = `${folder}/${filename}`
+
+    const url = await uploadToR2(key, buffer, file.type)
+
+    return {
+      success: true,
+      data: { url, filename, originalName: file.name },
+    }
+  } catch (error: any) {
+    return { success: false, error: '上传失败: ' + error.message }
+  }
+}
