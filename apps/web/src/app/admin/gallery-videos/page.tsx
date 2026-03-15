@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
-import { uploadGalleryFile } from './actions'
+// uploadGalleryFile server action removed — presigned URL used instead
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -511,6 +511,32 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState('')
 
+  /**
+   * Upload a file directly to R2 via presigned URL (bypasses Vercel 4.5 MB limit).
+   * 1. Ask the server for a presigned PUT URL
+   * 2. PUT the file straight to R2 from the browser
+   */
+  const uploadFile = async (file: File, fileType: 'video' | 'poster'): Promise<string> => {
+    // Step 1 – get presigned URL (small JSON request, no size issue)
+    const presignRes = await fetch('/api/admin/gallery-videos/presign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fileType, contentType: file.type, fileSize: file.size }),
+    })
+    const presignJson = await presignRes.json()
+    if (!presignJson.success) throw new Error(presignJson.error || '获取上传链接失败')
+
+    // Step 2 – PUT file directly to R2
+    const putRes = await fetch(presignJson.data.presignedUrl, {
+      method: 'PUT',
+      headers: { 'Content-Type': file.type },
+      body: file,
+    })
+    if (!putRes.ok) throw new Error(`上传失败 (${putRes.status})`)
+
+    return presignJson.data.publicUrl
+  }
+
   const handleSubmit = async () => {
     if (!videoFile || !posterFile) {
       alert('请选择视频文件和封面图片')
@@ -518,31 +544,23 @@ function AddVideoModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
     }
     setUploading(true)
     try {
-      // Upload video via Server Action (bypasses Vercel 4.5MB API route limit)
+      // Upload video directly to R2
       setProgress('上传视频中...')
-      const videoForm = new FormData()
-      videoForm.append('file', videoFile)
-      videoForm.append('fileType', 'video')
-      const videoResult = await uploadGalleryFile(videoForm)
-      if (!videoResult.success) throw new Error(videoResult.error || '视频上传失败')
+      const videoUrl = await uploadFile(videoFile, 'video')
 
-      // Upload poster via Server Action
+      // Upload poster directly to R2
       setProgress('上传封面中...')
-      const posterForm = new FormData()
-      posterForm.append('file', posterFile)
-      posterForm.append('fileType', 'poster')
-      const posterResult = await uploadGalleryFile(posterForm)
-      if (!posterResult.success) throw new Error(posterResult.error || '封面上传失败')
+      const posterUrl = await uploadFile(posterFile, 'poster')
 
-      // Save metadata via API route (small JSON payload, no size issue)
+      // Save metadata via API route (small JSON payload)
       setProgress('保存中...')
       const saveRes = await fetch('/api/admin/gallery-videos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title, location, tag, description, orientation,
-          video_url: videoResult.data!.url,
-          poster_url: posterResult.data!.url,
+          video_url: videoUrl,
+          poster_url: posterUrl,
         }),
       })
       const saveJson = await saveRes.json()

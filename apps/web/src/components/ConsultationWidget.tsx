@@ -12,8 +12,8 @@ export default function ConsultationWidget() {
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
-  // Hide on store pages
-  if (pathname.startsWith('/store')) {
+  // Hide on store and admin pages
+  if (pathname.startsWith('/store') || pathname.startsWith('/admin')) {
     return null
   }
 
