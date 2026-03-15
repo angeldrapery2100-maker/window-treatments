@@ -287,7 +287,14 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
     setActiveIndex(idx >= 0 ? idx : 0)
   }
 
-  const NAV_ITEMS = [
+  const [onlineStoreEnabled, setOnlineStoreEnabled] = useState(true)
+  useEffect(() => {
+    fetch('/api/site-settings').then(r => r.json()).then(d => {
+      if (d.success && d.data?.online_store_enabled === false) setOnlineStoreEnabled(false)
+    }).catch(() => {})
+  }, [])
+
+  const ALL_NAV = [
     { name: 'Home',         href: '/' },
     { name: 'About',        href: '/about' },
     { name: 'Our Projects', href: '/gallery' },
@@ -295,6 +302,7 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
     { name: 'Online Store', href: '/store' },
     { name: 'Contact',      href: '/#contact' },
   ]
+  const NAV_ITEMS = onlineStoreEnabled ? ALL_NAV : ALL_NAV.filter(i => i.name !== 'Online Store')
 
   return (
     <main className="min-h-screen bg-transparent selection:bg-[#3d3d3d] selection:text-white">

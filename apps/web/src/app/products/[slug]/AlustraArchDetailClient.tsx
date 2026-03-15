@@ -1,7 +1,7 @@
 "use client"
 
 import { CDN_BASE } from '@/lib/cdn'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { alustraArchLayout } from "./alustra-arch-layout"
@@ -336,13 +336,20 @@ export default function AlustraArchDetailClient({ product, related, footer }: Pr
     setLbIndex(index)
   }
   const closeLightbox = () => setLbIndex(-1)
-  const nav = [
+  const [storeOn, setStoreOn] = useState(true)
+  useEffect(() => {
+    fetch('/api/site-settings').then(r => r.json()).then(d => {
+      if (d.success && d.data?.online_store_enabled === false) setStoreOn(false)
+    }).catch(() => {})
+  }, [])
+  const allNav = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Gallery", href: "/gallery" },
     { name: "Products", href: "/products" },
     { name: "Online Store", href: "/store" },
   ]
+  const nav = storeOn ? allNav : allNav.filter(n => n.name !== 'Online Store')
   const totalSwatches = L.swatchCollections.reduce((s, c) => s + c.swatches.length, 0)
 
   return (
