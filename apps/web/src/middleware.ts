@@ -53,6 +53,19 @@ function getJwtSecret(): string | null {
   return null
 }
 
+// Paths that must never be indexed by search engines. The X-Robots-Tag
+// response header is authoritative: it overrides any <meta name="robots">
+// that might leak through, covers API responses (which have no <head>),
+// and applies even when the admin page is behind a redirect.
+const NOINDEX_PREFIXES = ['/admin', '/api/admin', '/angel-preview']
+
+function applyNoindex(response: NextResponse, pathname: string): NextResponse {
+  if (NOINDEX_PREFIXES.some(p => pathname === p || pathname.startsWith(p + '/') || pathname.startsWith(p))) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow')
+  }
+  return response
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const JWT_SECRET = getJwtSecret()
@@ -60,10 +73,10 @@ export async function middleware(request: NextRequest) {
   // Reject all protected requests when JWT_SECRET is not configured in production
   if (!JWT_SECRET) {
     console.error('[middleware] JWT_SECRET is not set — rejecting protected request')
-    return NextResponse.json(
+    return applyNoindex(NextResponse.json(
       { success: false, error: 'Server misconfiguration: authentication unavailable' },
       { status: 500 }
-    )
+    ), pathname)
   }
 
   // ── API routes: /api/admin/* ─────────────────────────────────
@@ -74,11 +87,11 @@ export async function middleware(request: NextRequest) {
   ) {
     const token = request.cookies.get('auth_token')?.value
     if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+      return applyNoindex(NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 }), pathname)
     }
     const user = await verifyJWT(token, JWT_SECRET)
     if (!user || user.role !== 'admin') {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+      return applyNoindex(NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 }), pathname)
     }
   }
 
@@ -90,17 +103,19 @@ export async function middleware(request: NextRequest) {
   ) {
     const token = request.cookies.get('auth_token')?.value
     if (!token) {
-      return NextResponse.redirect(new URL('/admin/login', request.url))
+      return applyNoindex(NextResponse.redirect(new URL('/admin/login', request.url)), pathname)
     }
     const user = await verifyJWT(token, JWT_SECRET)
     if (!user || user.role !== 'admin') {
-      return NextResponse.redirect(new URL('/admin/login', request.url))
+      return applyNoindex(NextResponse.redirect(new URL('/admin/login', request.url)), pathname)
     }
   }
 
-  return NextResponse.next()
+  return applyNoindex(NextResponse.next(), pathname)
 }
 
 export const config = {
-  matcher: ['/api/admin/:path*', '/admin/:path*'],
+  // Matches every admin path, every admin API path, and the internal
+  // /angel-preview tool — all of which get X-Robots-Tag: noindex.
+  matcher: ['/api/admin/:path*', '/admin/:path*', '/angel-preview/:path*', '/angel-preview'],
 }
