@@ -7,6 +7,7 @@ import pool from '@/lib/db'
 export const metadata: Metadata = {
   title: 'Our Projects',
   description: 'Explore our portfolio of stunning custom window treatment projects across Los Angeles. Drapery, roman shades, blinds, and more.',
+  alternates: { canonical: '/gallery' },
 }
 
 export const dynamic = 'force-dynamic'

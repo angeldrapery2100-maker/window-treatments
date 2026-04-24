@@ -24,16 +24,36 @@ export const metadata: Metadata = {
     title: 'Angel Drapery, Inc — Custom Window Treatments Since 1984',
     description:
       'Premium custom window treatments in Los Angeles. Handcrafted drapery, roman shades, Hunter Douglas blinds & shutters.',
-    url: 'https://angeldrapery.com',
+    url: 'https://angel-drapery.com',
     siteName: 'Angel Drapery',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Angel Drapery — Custom window treatments in Los Angeles since 1984',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Angel Drapery, Inc — Custom Window Treatments Since 1984',
+    description:
+      'Premium custom window treatments in Los Angeles. Handcrafted drapery, roman shades, Hunter Douglas blinds & shutters.',
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
     follow: true,
   },
-  metadataBase: new URL('https://angeldrapery.com'),
+  metadataBase: new URL('https://angel-drapery.com'),
+  // Root-level canonical covers the homepage. Per-page metadata overrides this
+  // (e.g. /about → alternates.canonical '/about') so every page publishes its
+  // own canonical URL; without this default, the homepage emits no canonical
+  // and risks being deduped against trailing-slash or query variants.
+  alternates: { canonical: '/' },
 }
 
 export default function RootLayout({

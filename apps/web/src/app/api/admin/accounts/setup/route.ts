@@ -2,10 +2,41 @@ import { NextResponse } from 'next/server'
 import { query, queryOne } from '@/lib/db'
 import { ensureUsersTable, hashPassword } from '@/lib/auth'
 
-// POST: Bootstrap — create the first admin account if none exists
-// Once an admin exists, this endpoint is permanently locked
+// Constant-time string compare so that a wrong SETUP_TOKEN header can't be
+// distinguished from a correct-length-but-wrong one by timing. Matters because
+// this endpoint is unauthenticated by definition — a timing oracle against an
+// attacker with a fast network path is the only guard between them and admin.
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let diff = 0
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return diff === 0
+}
+
+// POST: Bootstrap — create the first admin account if none exists.
+// Once an admin exists, this endpoint is permanently locked.
+//
+// SECURITY: even before any admin exists, this endpoint must NOT be open to
+// the public internet — otherwise whoever hits it first (including bots
+// scanning for common admin-setup paths) becomes the permanent admin. We
+// require a SETUP_TOKEN env var and a matching `x-setup-token` header. If
+// SETUP_TOKEN is unset in the environment, the endpoint is disabled entirely
+// (fail-closed), so a forgotten config never leaves bootstrap wide open.
 export async function POST(request: Request) {
   try {
+    // ── Gate: SETUP_TOKEN must be configured and supplied ──────────────
+    const configuredToken = process.env.SETUP_TOKEN
+    if (!configuredToken) {
+      return NextResponse.json({
+        success: false,
+        error: 'Setup endpoint is disabled. Set the SETUP_TOKEN environment variable to enable one-time bootstrap.',
+      }, { status: 403 })
+    }
+    const providedToken = request.headers.get('x-setup-token') || ''
+    if (!safeEqual(providedToken, configuredToken)) {
+      return NextResponse.json({ success: false, error: 'Invalid setup token' }, { status: 403 })
+    }
+
     await ensureUsersTable()
 
     // Check if any admin already exists

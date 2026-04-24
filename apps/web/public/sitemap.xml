@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://angeldrapery.com/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://angeldrapery.com/about</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://angeldrapery.com/gallery</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://angeldrapery.com/products</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://angeldrapery.com/products/handcrafted-drapery</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://angeldrapery.com/products/handcrafted-roman-shade</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://angeldrapery.com/store</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://angel-drapery.com/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://angel-drapery.com/about</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://angel-drapery.com/gallery</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://angel-drapery.com/products</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://angel-drapery.com/products/handcrafted-drapery</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://angel-drapery.com/products/handcrafted-roman-shade</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://angel-drapery.com/store</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
 </urlset>

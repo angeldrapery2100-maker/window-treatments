@@ -3,10 +3,27 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { query, queryOne } from './db'
 
-if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
-  throw new Error('JWT_SECRET environment variable must be set in production')
+// JWT secret resolution — matches apps/web/src/middleware.ts to ensure both
+// sign and verify with the identical key.
+// - Always: JWT_SECRET env var wins if set.
+// - Production: missing JWT_SECRET throws (fail-closed).
+// - Non-production: missing JWT_SECRET *also* throws unless the developer
+//   explicitly opts into the well-known dev fallback via ALLOW_DEV_JWT=1.
+//   Why the extra opt-in? A misdetected NODE_ENV (e.g. Vercel preview,
+//   unusual deploy target) would silently fall back to the hardcoded dev
+//   key, which is public knowledge and would let anyone forge admin tokens.
+//   Forcing an explicit flag makes that failure mode impossible by accident.
+const DEV_JWT_FALLBACK = 'dev_only_fallback_do_not_use_in_prod'
+function getJwtSecret(): string {
+  if (process.env.JWT_SECRET) return process.env.JWT_SECRET
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET environment variable must be set in production')
+  }
+  if (process.env.ALLOW_DEV_JWT === '1') {
+    return DEV_JWT_FALLBACK
+  }
+  throw new Error('JWT_SECRET is not set. For local dev, set ALLOW_DEV_JWT=1 to use the insecure dev fallback.')
 }
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_only_fallback_do_not_use_in_prod'
 const TOKEN_EXPIRY = '30d'
 
 export interface AuthUser {
@@ -50,7 +67,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 export function generateToken(user: AuthUser): string {
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name, role: user.role },
-    JWT_SECRET,
+    getJwtSecret(),
     { expiresIn: TOKEN_EXPIRY }
   )
 }
@@ -58,7 +75,7 @@ export function generateToken(user: AuthUser): string {
 // Verify JWT - returns user payload or null
 export function verifyToken(token: string): AuthUser | null {
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as any
+    const payload = jwt.verify(token, getJwtSecret()) as any
     return { id: payload.id, email: payload.email, name: payload.name, phone: '', role: payload.role || 'customer' }
   } catch {
     return null

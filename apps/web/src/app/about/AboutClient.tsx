@@ -76,7 +76,7 @@ export default function AboutClient({ hero, story, values, services, brands, foo
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center z-10">
-            <h2 className="text-5xl md:text-6xl font-light tracking-wide text-white mb-4 drop-shadow-2xl">{hero.title}</h2>
+            <h1 className="text-5xl md:text-6xl font-light tracking-wide text-white mb-4 drop-shadow-2xl">{hero.title}</h1>
             <p className="text-white/90 text-lg tracking-wide drop-shadow-lg">{hero.subtitle}</p>
           </div>
         </div>

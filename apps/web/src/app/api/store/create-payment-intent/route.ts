@@ -106,13 +106,23 @@ export async function POST(request: Request) {
     // ── Step 1: Server-side baseline pricing (subtotal, discount, shipping) ──
     // calcServerTotals also computes a local tax estimate as fallback.
     // If Stripe Tax succeeds below, its tax figure replaces the local one.
-    const localPricing = await calcServerTotals({
-      items,
-      discountCode,
-      shippingCost,
-      state,
-      zip,
-    })
+    // Any unknown/inactive product throws — surface as a 400 instead of a 500.
+    let localPricing
+    try {
+      localPricing = await calcServerTotals({
+        items,
+        discountCode,
+        shippingCost,
+        state,
+        zip,
+      })
+    } catch (e: any) {
+      console.warn('[create-payment-intent] pricing rejected:', e?.message)
+      return NextResponse.json(
+        { success: false, error: 'One or more items in your cart are no longer available. Please refresh and try again.' },
+        { status: 400 }
+      )
+    }
 
     // ── Step 2: Attempt Stripe Tax for authoritative tax amount ──────────────
     // taxableAmountCents = line-item value AFTER discount, BEFORE tax

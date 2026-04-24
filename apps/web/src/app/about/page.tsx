@@ -8,6 +8,7 @@ import AboutClient from './AboutClient'
 export const metadata: Metadata = {
   title: 'About Us',
   description: '40 years of excellence in custom window treatments. Angel Drapery has been serving the greater Los Angeles area since 1984 with premium drapery, blinds, and shades.',
+  alternates: { canonical: '/about' },
 }
 
 export const dynamic = 'force-dynamic'

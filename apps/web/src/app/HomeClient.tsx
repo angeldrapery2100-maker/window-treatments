@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
 import { motion, AnimatePresence, useMotionValue } from 'framer-motion'
@@ -204,36 +205,56 @@ export default function HomeClient({ hero, gallery, about, process: processData,
   }
 
   const lightboxItem = lightboxImage !== null ? gallery.find(g => g.id === lightboxImage) : null
+  const heroTitleCn = hero.titleCn.trim() || '天使窗簾'
+  const heroSubtitle = hero.subtitle.trim() || '专业窗簾設計、訂造、安裝'
+  const heroTagline = hero.tagline.trim() || 'Since 1984 · 40 Years of Excellence'
+  const mobileSmartPlatforms = ['Home Assistant', 'Matter', 'Apple HomeKit', 'Google Home']
+  const mobilePartnerBrands = ['Somfy', 'ALTA', 'Rowley', 'Kirsch', 'Sundance', 'Forest', 'Norman', 'Kaslen']
 
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-full min-h-screen overflow-hidden">
         <div className="absolute inset-0 w-full h-full bg-gray-800">
           {/\.(mp4|mov|webm)(\?|$)/i.test(hero.background) ? (
             <video autoPlay loop muted playsInline className="w-full h-full object-cover">
               <source src={hero.background} type="video/mp4" />
             </video>
           ) : (
-            <img src={hero.background} alt="" className="w-full h-full object-cover" />
+            // Hero LCP image — use next/image with priority + fill so Next
+            // emits a preload link, generates responsive srcset, and serves
+            // WebP/AVIF when the browser supports it. Drops the source 4032x3024
+            // originals (~8MB) down to ~100–200KB at the rendered viewport.
+            <Image
+              src={hero.background}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
           )}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/45 md:bg-black/40" />
         </div>
 
         <SiteNav activePage="Home" brandName={hero.titleEn} />
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center px-6 pt-20 md:px-0 md:pt-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
-            className="text-center z-10"
+            className="z-10 max-w-[92vw] text-center md:max-w-4xl"
           >
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-[0.3em] text-white mb-6 drop-shadow-2xl">
-              {hero.titleCn}
-            </h2>
-            <p className="text-white/90 text-lg md:text-xl tracking-wider mb-4 drop-shadow-lg">{hero.subtitle}</p>
-            <p className="text-gray-300 text-sm tracking-wider drop-shadow-lg">{hero.tagline}</p>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.18em] md:tracking-[0.3em] leading-tight text-white mb-4 md:mb-6 drop-shadow-2xl text-balance">
+              {heroTitleCn}
+            </h1>
+            <p className="text-sm sm:text-base md:text-xl text-white/90 tracking-[0.18em] md:tracking-wider mb-3 md:mb-4 drop-shadow-lg text-balance">
+              {heroSubtitle}
+            </p>
+            <p className="mx-auto max-w-[26rem] text-[11px] sm:text-xs md:text-sm text-gray-300 tracking-[0.14em] md:tracking-wider drop-shadow-lg">
+              {heroTagline}
+            </p>
           </motion.div>
         </div>
 
@@ -241,7 +262,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden sm:block md:bottom-12"
         >
           <div className="flex flex-col items-center gap-2 animate-bounce">
             <span className="text-white text-sm tracking-wider drop-shadow-lg">SCROLL</span>
@@ -253,8 +274,47 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       </section>
 
       {/* Brand Grid & Smart Ecosystem - Unified & Compact with Radar Sweep */}
-      <section className="w-full bg-white py-24 border-y border-gray-100 overflow-hidden relative">
+      <section className="w-full bg-white py-16 md:py-24 border-y border-gray-100 overflow-hidden relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center relative">
+
+          <div className="w-full md:hidden rounded-[2rem] border border-gray-100 bg-[#F8F8F6] px-5 py-8 shadow-sm">
+            <div className="text-center">
+              <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-gray-500">Smart Ecosystem</p>
+              <div className="mt-5 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-5 py-3 shadow-sm">
+                <span className="text-[10px] uppercase tracking-[0.28em] text-gray-400">Powered by</span>
+                <span className="ml-3 text-lg font-semibold tracking-tight text-[#12141C]">Hunter Douglas</span>
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-gray-600">
+                Works with the platforms your clients already use, while keeping premium drapery and shade brands within reach.
+              </p>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              {mobileSmartPlatforms.map((platform) => (
+                <motion.div
+                  key={platform}
+                  whileTap={{ scale: 0.97 }}
+                  className="rounded-2xl border border-[#5BC1F5]/15 bg-white px-3 py-3 text-center text-xs font-semibold tracking-[0.12em] text-[#12141C] shadow-sm"
+                >
+                  {platform}
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-6 border-t border-gray-200 pt-6">
+              <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-gray-500 text-center">Trusted Brands</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                {mobilePartnerBrands.map((brand) => (
+                  <span
+                    key={brand}
+                    className="rounded-full border border-gray-200 bg-white px-3 py-2 text-[11px] font-medium tracking-[0.14em] text-gray-700 shadow-sm"
+                  >
+                    {brand}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {(() => {
             const renderLogoGrid = (isOverlay = false) => (
@@ -449,7 +509,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
             </div>
             );
             return (
-              <div className="relative w-full">
+              <div className="relative hidden w-full md:block">
                 {renderLogoGrid(false)}
                 <div className="radar-sweep-overlay absolute inset-0 z-10" style={{pointerEvents:'none'}}>
                   {renderLogoGrid(true)}
@@ -489,7 +549,17 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               className="md:col-span-2 overflow-hidden border-r border-white/10"
             >
               {about.image?.url ? (
-                <img src={about.image.url} alt={about.image.alt} className="w-full aspect-video object-cover" style={{ objectFit: about.image.fit as any }} />
+                // About image — below the fold, so no priority. Uses width/height
+                // from CMS data so Next can reserve layout space and emit srcset.
+                <Image
+                  src={about.image.url}
+                  alt={about.image.alt}
+                  width={about.image.width || 1600}
+                  height={about.image.height || 900}
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                  className="w-full aspect-video object-cover"
+                  style={{ objectFit: about.image.fit as any }}
+                />
               ) : (
                 <div className="w-full aspect-video bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
                   <span className="text-gray-500 text-lg">Workshop Image</span>
@@ -523,19 +593,19 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       </section>
 
       {/* Projects Gallery Section */}
-      <section className="w-full bg-white py-32">
+      <section className="w-full bg-white py-20 md:py-32">
         <div className="w-full px-0">
           <motion.h2
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-50px' }}
             variants={fadeInUp}
-            className="text-4xl md:text-5xl font-light text-center mb-16 tracking-wide px-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-light text-center mb-10 md:mb-16 tracking-wide px-4"
           >
             OUR PROJECTS
           </motion.h2>
           <div className="relative group">
-            <button onClick={() => scroll('left')} className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button onClick={() => scroll('left')} className="absolute left-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-black/55 p-2.5 text-white opacity-100 transition-opacity duration-300 md:left-4 md:p-3 md:opacity-0 md:group-hover:opacity-100 hover:bg-black/70">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
             <motion.div
@@ -543,8 +613,8 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-50px' }}
-              className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth px-8 items-stretch"
-              style={{ height: '400px' }}
+              className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth px-4 md:px-8 items-stretch"
+              style={{ height: 'clamp(280px, 62vw, 400px)' }}
             >
               {gallery.map((img, index) => (
                 <motion.div
@@ -552,22 +622,22 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   custom={index}
                   variants={galleryItem}
                   onClick={() => setLightboxImage(img.id)}
-                  className="flex-shrink-0 h-full rounded-lg shadow-2xl hover:scale-105 transition-transform duration-1000 cursor-pointer overflow-hidden relative"
+                  className="relative h-full max-w-[78vw] flex-shrink-0 overflow-hidden rounded-lg shadow-2xl transition-transform duration-1000 hover:scale-105 md:max-w-none"
                 >
                   {img.url ? (
-                    <img src={img.url} alt={img.alt} className="h-full w-auto object-contain" />
+                    <img src={img.url} alt={img.alt} className="h-full w-auto max-w-[78vw] object-contain md:max-w-none" />
                   ) : (
                     <div className="h-full w-[300px] bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center">
                       <span className="text-gray-400 text-lg">{img.alt}</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                    <span className="text-white opacity-0 hover:opacity-100 transition-opacity text-sm">Click to enlarge</span>
+                    <span className="hidden text-sm text-white opacity-0 transition-opacity hover:opacity-100 md:block">Click to enlarge</span>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
-            <button onClick={() => scroll('right')} className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button onClick={() => scroll('right')} className="absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-black/55 p-2.5 text-white opacity-100 transition-opacity duration-300 md:right-4 md:p-3 md:opacity-0 md:group-hover:opacity-100 hover:bg-black/70">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
           </div>
@@ -632,7 +702,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
         const groupW = currentDrapeW / numGroups
 
         return (
-          <section className="relative w-full pt-12 pb-6 bg-[#3d3d3d] text-white overflow-hidden flex justify-center">
+          <section className="relative flex w-full justify-center overflow-hidden bg-[#3d3d3d] pt-12 pb-8 md:pb-6 text-white">
             {/* 背景光晕 */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#5BC1F5] rounded-full mix-blend-overlay blur-[250px] opacity-15" />
@@ -640,15 +710,55 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
             <div className="relative z-10 w-full max-w-[1600px] px-4">
 
-              <div className="mb-6 px-8">
+              <div className="mb-6 px-2 md:px-8">
                 <span className="text-[#5BC1F5] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Dual Ecosystem Integration</span>
-                <h2 className="text-4xl md:text-5xl font-light tracking-tighter text-white">
+                <h2 className="text-3xl md:text-5xl font-light tracking-tighter text-white">
                   Seamless Vision. <span className="font-bold">Complete Control.</span>
                 </h2>
               </div>
 
+              <div className="md:hidden px-1 pb-4">
+                <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-2xl backdrop-blur-sm">
+                  <p className="text-sm leading-relaxed text-white/72">
+                    Pair motorized shades and handcrafted drapery with voice control, mobile scenes, and automated routines without crowding the mobile experience.
+                  </p>
+
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    {['Voice Control', 'Phone App', 'Automations', 'Premium Hardware'].map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3 text-center text-[11px] font-medium uppercase tracking-[0.16em] text-white/80"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-[0.3em] text-white/45">Scene openness</span>
+                      <span className="text-lg font-semibold text-[#5BC1F5]">{openPercentage}%</span>
+                    </div>
+                    <input
+                      aria-label="Adjust shade openness"
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={openPercentage}
+                      onChange={(e) => setOpenPercentage(parseInt(e.target.value, 10))}
+                      className="mt-4 w-full accent-[#5BC1F5]"
+                    />
+                    <div className="mt-2 flex justify-between text-xs text-white/55">
+                      <span>Privacy</span>
+                      <span>Balanced</span>
+                      <span>Open View</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* 核心巨型 SVG — iPhone + 卷帘 + 滑块 + 9褶帘 全在同一坐标系 */}
-              <svg viewBox="0 0 1600 590" className="w-full h-auto drop-shadow-2xl font-sans">
+              <svg viewBox="0 0 1600 590" className="hidden w-full h-auto drop-shadow-2xl font-sans md:block">
                 <defs>
                   {/* 面料渐变：浅蓝灰，参照真实卷帘面料色调 */}
                   <linearGradient id="shadeGrad" x1="0" y1="0" x2="1" y2="0">
@@ -1218,9 +1328,19 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 variants={slideInLeft}
                 className="bg-[#3d3d3d] rounded-2xl shadow-xl overflow-hidden flex flex-col"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[4/3] overflow-hidden">
                   {step.image?.url ? (
-                    <img src={step.image.url} alt={step.image.alt} className="w-full h-full object-cover" style={{ objectFit: step.image.fit as any }} />
+                    // Process step image — below fold, use fill so the Image
+                    // fits the aspect-ratio container exactly. `sizes` matches
+                    // the 3-column grid at md+ / full width on mobile.
+                    <Image
+                      src={step.image.url}
+                      alt={step.image.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                      style={{ objectFit: step.image.fit as any }}
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-500 flex items-center justify-center aspect-[4/3]">
                       <span className="text-white/40 text-sm tracking-widest uppercase">0{index + 1}</span>
@@ -1240,20 +1360,20 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
       {/* Contact Section */}
       {/* Contact Section - Advanced SVG Interactions */}
-      <section id="contact" className="w-full bg-white py-32 overflow-hidden border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-[100px]">
+      <section id="contact" className="w-full bg-white py-20 md:py-32 overflow-hidden border-t border-gray-100">
+        <div className="max-w-6xl mx-auto mt-0 px-4 sm:px-6 lg:px-8 md:-mt-[100px]">
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="text-center mb-16"
+            className="text-center mb-12 md:mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">{contact.title}</h2>
-            <p className="text-gray-500 tracking-wider text-sm uppercase">{contact.subtitle}</p>
+            <h2 className="text-3xl md:text-5xl font-light mb-4 tracking-wide">{contact.title}</h2>
+            <p className="px-4 text-[11px] md:text-sm text-gray-500 tracking-[0.16em] md:tracking-wider uppercase">{contact.subtitle}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-start">
+          <div className="grid items-start gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
 
             {/* Left: Contact Info with SVG Animations */}
             <motion.div
@@ -1261,7 +1381,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="flex flex-col justify-center space-y-10"
+              className="flex flex-col justify-center space-y-8 md:space-y-10"
             >
               <div className="space-y-8">
                 {/* Radar ping location pin + address */}
@@ -1277,7 +1397,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       <circle cx="12" cy="10" r="3" />
                     </svg>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-lg pt-1">{contact.address}</p>
+                  <p className="pt-1 text-base leading-relaxed text-gray-700 md:text-lg">{contact.address}</p>
                 </div>
 
                 {/* Phone numbers with SMS icons */}
@@ -1289,7 +1409,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       <div key={i} className="group flex items-center gap-4 py-2 border-b border-transparent hover:border-gray-100 transition-all">
                         <div className="flex flex-col">
                           <span className="text-[10px] uppercase tracking-widest text-gray-400">{labels[i] || `Line ${i + 1}`}</span>
-                          <a href={`tel:${phone}`} className="text-xl font-medium text-[#12141C] hover:text-[#4DB6E8] transition-colors">
+                          <a href={`tel:${phone}`} className="text-lg md:text-xl font-medium text-[#12141C] hover:text-[#4DB6E8] transition-colors">
                             {phone}
                           </a>
                         </div>
@@ -1323,7 +1443,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                           </svg>
 
                           {/* Hover tooltip */}
-                          <span className="absolute left-full ml-2 px-2 py-1 bg-[#12141C] text-white text-[10px] whitespace-nowrap rounded opacity-0 group-hover/sms:opacity-100 transition-opacity pointer-events-none uppercase tracking-wider">
+                          <span className="absolute left-full ml-2 hidden rounded bg-[#12141C] px-2 py-1 text-[10px] uppercase tracking-wider text-white opacity-0 transition-opacity pointer-events-none whitespace-nowrap group-hover/sms:opacity-100 sm:block">
                             Text for Quote
                           </span>
 
@@ -1352,12 +1472,12 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       />
                     </svg>
                   </div>
-                  <p className="text-lg text-gray-700 group-hover:text-[#4A90E2] transition-colors">{contact.email}</p>
+                  <p className="text-base md:text-lg text-gray-700 group-hover:text-[#4A90E2] transition-colors break-all sm:break-normal">{contact.email}</p>
                 </motion.div>
               </div>
 
               {/* QR Codes with laser scan effect */}
-              <div className="flex gap-8 pt-6 border-t border-gray-100">
+              <div className="flex flex-col items-center gap-6 border-t border-gray-100 pt-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-8">
                 {/* LINE QR */}
                 <div className="text-center group">
                   <motion.div
@@ -1382,7 +1502,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 </div>
 
                 {/* WeChat QR */}
-                <div className="text-center group ml-[150px]">
+                <div className="text-center group">
                   <motion.div
                     whileHover="hover"
                     className="relative w-32 h-32 bg-gray-50 rounded-lg flex items-center justify-center mb-3 shadow-sm overflow-hidden border border-gray-200"
@@ -1412,7 +1532,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="bg-gray-50 p-8 md:p-10 rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/50"
+              className="rounded-2xl border border-gray-100 bg-gray-50 p-6 shadow-xl shadow-gray-200/50 sm:p-8 md:p-10"
             >
               <form className="space-y-6" onSubmit={handleContactSubmit}>
                 <div className="space-y-5">

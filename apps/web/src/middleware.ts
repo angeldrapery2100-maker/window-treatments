@@ -35,12 +35,22 @@ async function verifyJWT(token: string, secret: string): Promise<{ id: string; r
   }
 }
 
-// Shared helper: returns the JWT secret or rejects the request in production.
-// Matches the same logic as apps/web/src/lib/auth.ts so both use identical secrets.
+// Shared helper: returns the JWT secret or null if misconfigured (request is
+// then rejected with 500). Matches apps/web/src/lib/auth.ts EXACTLY so sign
+// and verify use the same key; any divergence here silently breaks auth.
+//
+// Fallback rules:
+//   - JWT_SECRET set              → use it
+//   - production, no JWT_SECRET   → null (reject)
+//   - non-prod, ALLOW_DEV_JWT=1   → well-known dev fallback
+//   - non-prod, no opt-in         → null (reject — fail closed against
+//                                     misdetected NODE_ENV leaking the
+//                                     public dev key as a real secret)
 function getJwtSecret(): string | null {
   if (process.env.JWT_SECRET) return process.env.JWT_SECRET
-  if (process.env.NODE_ENV === 'production') return null  // misconfiguration — must reject
-  return 'dev_only_fallback_do_not_use_in_prod'
+  if (process.env.NODE_ENV === 'production') return null
+  if (process.env.ALLOW_DEV_JWT === '1') return 'dev_only_fallback_do_not_use_in_prod'
+  return null
 }
 
 export async function middleware(request: NextRequest) {

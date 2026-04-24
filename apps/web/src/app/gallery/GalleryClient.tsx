@@ -311,10 +311,10 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
       <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-12 transition-all duration-500 ${
         isScrolled ? 'py-4 bg-white/95 backdrop-blur-md border-b border-gray-100' : 'py-7 bg-transparent'
       }`}>
-        <Link href="/">
-          <h1 className="text-xl md:text-2xl font-light tracking-[0.2em] text-[#3d3d3d] uppercase">
+        <Link href="/" aria-label="Angel Drapery — home">
+          <span className="block text-xl md:text-2xl font-light tracking-[0.2em] text-[#3d3d3d] uppercase">
             ANGEL DRAPERY, INC
-          </h1>
+          </span>
         </Link>
         <nav className="hidden md:block">
           <ul className="flex flex-wrap gap-3 justify-end">
@@ -342,9 +342,9 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
       <section className="pt-52 pb-16 px-8 lg:px-16 max-w-[1800px] mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
           <span className="text-[#ef8200] text-[10px] font-bold uppercase tracking-[0.4em] block mb-6">Since 1984</span>
-          <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-light tracking-tighter text-[#3d3d3d] leading-none">
+          <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-light tracking-tighter text-[#3d3d3d] leading-none">
             Handcrafted <span className="font-serif italic text-gray-400">Stories.</span>
-          </h2>
+          </h1>
         </motion.div>
       </section>
 

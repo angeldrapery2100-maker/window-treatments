@@ -8,4 +8,4 @@ Disallow: /store/checkout
 Disallow: /store/account
 Disallow: /store/order-confirmation
 
-Sitemap: https://angeldrapery.com/sitemap.xml
+Sitemap: https://angel-drapery.com/sitemap.xml

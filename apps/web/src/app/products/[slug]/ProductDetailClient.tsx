@@ -74,7 +74,7 @@ export default function ProductDetailClient({ product, related, footer }: Props)
       <section className="w-full bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/"><h1 className="text-lg md:text-xl font-light tracking-[0.2em] text-gray-900 cursor-pointer hover:text-gray-600 transition-colors">ANGEL DRAPERY, INC</h1></Link>
+            <Link href="/" aria-label="Angel Drapery — home"><span className="block text-lg md:text-xl font-light tracking-[0.2em] text-gray-900 cursor-pointer hover:text-gray-600 transition-colors">ANGEL DRAPERY, INC</span></Link>
             <nav>
               <ul className="flex flex-wrap gap-3">
                 {navigation.map((item) => (

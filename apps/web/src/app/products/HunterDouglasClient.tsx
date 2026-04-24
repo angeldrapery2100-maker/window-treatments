@@ -162,9 +162,9 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
               transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <span className="text-white/50 text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">{hero?.subtitle || 'Premium Window Treatments'}</span>
-              <h2 className="text-5xl md:text-7xl font-light tracking-tighter text-white leading-[1.05]">
+              <h1 className="text-5xl md:text-7xl font-light tracking-tighter text-white leading-[1.05]">
                 {hero?.title ? hero.title : <>Our<br />Products</>}
-              </h2>
+              </h1>
             </motion.div>
           </div>
         </div>

@@ -13,15 +13,21 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
+  const canonical = `/products/${slug}`
   const product = await getProductBySlug(slug)
   if (product) {
     return {
       title: product.name || slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
       description: product.tagline || `Explore ${product.name} window treatments by Hunter Douglas at Angel Drapery.`,
+      alternates: { canonical },
     }
   }
   const name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
-  return { title: name, description: `Explore ${name} window treatments at Angel Drapery.` }
+  return {
+    title: name,
+    description: `Explore ${name} window treatments at Angel Drapery.`,
+    alternates: { canonical },
+  }
 }
 
 /* ─── Hunter Douglas: slug-based JSON lookup ─── */

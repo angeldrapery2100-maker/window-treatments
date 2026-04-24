@@ -1,20 +1,10 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { query } from '@/lib/db'
+import { escapeHtml } from '@/lib/html'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
-
-// Escape user-supplied text before interpolating into HTML email bodies.
-// Prevents HTML/phishing injection via name/phone/email/address/message fields.
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
 
 // Create / migrate table on first access
 async function ensureTable() {

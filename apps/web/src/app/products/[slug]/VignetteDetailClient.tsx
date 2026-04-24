@@ -347,7 +347,7 @@ export default function VignetteDetailClient({ product, related, footer }: Props
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
 
         <div className="absolute top-8 left-8 z-20">
-          <Link href="/"><h1 className="text-xl md:text-2xl font-light tracking-[0.2em] text-white drop-shadow-lg hover:text-gray-300 transition-colors">ANGEL DRAPERY, INC</h1></Link>
+          <Link href="/" aria-label="Angel Drapery — home"><span className="block text-xl md:text-2xl font-light tracking-[0.2em] text-white drop-shadow-lg hover:text-gray-300 transition-colors">ANGEL DRAPERY, INC</span></Link>
         </div>
         <nav className="absolute top-8 right-8 z-20">
           <ul className="flex flex-wrap gap-3 justify-end">
@@ -372,7 +372,7 @@ export default function VignetteDetailClient({ product, related, footer }: Props
               <span>/</span>
               <span className="text-white/80">{layout.name}</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-light text-white mb-3">{layout.name}</h2>
+            <h1 className="text-3xl md:text-5xl font-light text-white mb-3">{layout.name}</h1>
             <p className="text-white/70 text-base md:text-lg max-w-2xl">{layout.description}</p>
           </div>
         </div>

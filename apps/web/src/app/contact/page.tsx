@@ -5,6 +5,7 @@ import ContactClient from './ContactClient'
 export const metadata: Metadata = {
   title: 'Contact Us',
   description: 'Contact Angel Drapery for a free in-home consultation. Located in Temple City, CA. Serving the greater Los Angeles area since 1984.',
+  alternates: { canonical: '/contact' },
 }
 
 export const dynamic = 'force-dynamic'

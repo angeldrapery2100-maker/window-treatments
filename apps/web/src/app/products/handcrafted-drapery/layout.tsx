@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Handcrafted Drapery',
   description: 'Explore our handcrafted drapery collection — premium fabrics, custom designs, and expert craftsmanship from Angel Drapery.',
+  alternates: { canonical: '/products/handcrafted-drapery' },
 }
 
 export default function HandcraftedDraperyLayout({ children }: { children: React.ReactNode }) {

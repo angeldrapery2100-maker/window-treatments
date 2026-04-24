@@ -8,6 +8,7 @@ import pool from '@/lib/db'
 export const metadata: Metadata = {
   title: 'Products',
   description: 'Browse our complete collection of premium window treatments — Hunter Douglas blinds, shades, shutters, handcrafted drapery, and custom roman shades.',
+  alternates: { canonical: '/products' },
 }
 
 export const dynamic = 'force-dynamic'

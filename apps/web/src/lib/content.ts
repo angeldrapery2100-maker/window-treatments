@@ -48,7 +48,11 @@ export function getText(
   key: string,
   fallback = ''
 ): string {
-  return data?.[section]?.[key]?.content || fallback
+  const value = data?.[section]?.[key]?.content
+  if (typeof value !== 'string') return fallback
+
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : fallback
 }
 
 /**

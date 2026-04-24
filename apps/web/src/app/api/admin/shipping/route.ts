@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { query, queryOne } from '@/lib/db'
 import { Resend } from 'resend'
 import { requireAdmin } from '@/lib/auth'
+import { escapeHtml, safeUrl } from '@/lib/html'
 
 const SHIPPO_API = 'https://api.goshippo.com'
 const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY || ''
@@ -48,7 +49,12 @@ async function ensureShipmentsTable() {
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS shippo_transaction_id varchar(256) DEFAULT NULL`).catch(() => {})
 }
 
-// Send consolidated notification email (all shipments in one email)
+// Send consolidated notification email (all shipments in one email).
+// IMPORTANT: every ${...} below must be escaped — `order.customer_name`,
+// `order.order_number`, `item.productName`, `s.carrier`, `s.tracking_number`
+// are all controlled by the customer at checkout or by a third-party API
+// (Shippo). Without escaping, a malicious name like `<script>...</script>` or
+// a crafted tracking URL would execute / phish on the customer's mail client.
 async function sendConsolidatedEmail(order: any, shipments: any[]) {
   const parcelsHtml = shipments.map((s, i) => {
     const items = order.items || []
@@ -59,36 +65,42 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
       const item = items[idx]
       if (!item) return ''
       const qty = qtys[String(idx)] || item.quantity
-      return `<div style="padding:4px 0;font-size:13px;color:#333;">${item.productName}${item.width ? ` (W:${item.width}"` : ''}${item.height ? ` × H:${item.height}"` : ''}${item.width ? ')' : ''} × ${qty}</div>`
+      const dims = item.width
+        ? ` (W:${escapeHtml(item.width)}"${item.height ? ` × H:${escapeHtml(item.height)}"` : ''})`
+        : ''
+      return `<div style="padding:4px 0;font-size:13px;color:#333;">${escapeHtml(item.productName)}${dims} × ${escapeHtml(qty)}</div>`
     }).filter(Boolean).join('')
 
     return `
       <div style="background:#f8f9fa;border-radius:8px;padding:16px;margin-bottom:12px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <span style="font-weight:600;font-size:14px;color:#1a1a1a;">Package ${i + 1}</span>
-          <span style="font-size:12px;color:#666;background:#e9ecef;padding:2px 8px;border-radius:12px;">${s.carrier || ''}</span>
+          <span style="font-size:12px;color:#666;background:#e9ecef;padding:2px 8px;border-radius:12px;">${escapeHtml(s.carrier || '')}</span>
         </div>
         ${itemLines}
         <div style="margin-top:10px;padding-top:10px;border-top:1px solid #dee2e6;">
-          <p style="margin:0 0 4px;font-size:13px;color:#666;">Tracking #: <strong style="font-family:monospace;">${s.tracking_number}</strong></p>
-          ${s.tracking_url ? `<a href="${s.tracking_url}" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#1a1a1a;color:#fff;text-decoration:none;border-radius:5px;font-size:12px;">Track Package →</a>` : ''}
+          <p style="margin:0 0 4px;font-size:13px;color:#666;">Tracking #: <strong style="font-family:monospace;">${escapeHtml(s.tracking_number)}</strong></p>
+          ${s.tracking_url ? `<a href="${safeUrl(s.tracking_url)}" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#1a1a1a;color:#fff;text-decoration:none;border-radius:5px;font-size:12px;">Track Package →</a>` : ''}
         </div>
       </div>
     `
   }).join('')
 
+  const esName    = escapeHtml(order.customer_name)
+  const esOrderNo = escapeHtml(order.order_number)
+
   const html = `
     <div style="font-family:-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:32px 20px;">
       <h2 style="font-size:22px;font-weight:300;color:#1a1a1a;margin-bottom:4px;">Angel Drapery</h2>
       <p style="color:#888;font-size:12px;margin-bottom:24px;">8827 Las Tunas Dr, Temple City, CA 91780</p>
-      
+
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:24px;">
         <p style="margin:0;font-size:16px;font-weight:600;color:#166534;">📦 Your order has been shipped!</p>
       </div>
 
-      <p style="font-size:14px;color:#333;margin-bottom:8px;">Hi ${order.customer_name},</p>
+      <p style="font-size:14px;color:#333;margin-bottom:8px;">Hi ${esName},</p>
       <p style="font-size:14px;color:#555;margin-bottom:20px;">
-        Great news! Your order <strong>${order.order_number}</strong> has been shipped in ${shipments.length} package${shipments.length > 1 ? 's' : ''}:
+        Great news! Your order <strong>${esOrderNo}</strong> has been shipped in ${shipments.length} package${shipments.length > 1 ? 's' : ''}:
       </p>
 
       ${parcelsHtml}
@@ -97,12 +109,22 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
     </div>
   `
 
-  await getResend().emails.send({
-    from: 'Angel Drapery <onboarding@resend.dev>',
+  // Subject line is interpreted as plain text by mail clients but we still
+  // sanitise to avoid weird unicode tricks landing in folder previews.
+  const subject = `Your order ${esOrderNo} has been shipped! 📦`
+
+  const { data, error } = await getResend().emails.send({
+    from: process.env.EMAIL_FROM || 'Angel Drapery <onboarding@resend.dev>',
     to: order.customer_email,
-    subject: `Your order ${order.order_number} has been shipped! 📦`,
+    subject,
     html,
   })
+  if (error) {
+    const msg = `${(error as any).name || 'ResendError'}: ${(error as any).message || JSON.stringify(error)}`
+    console.error('[shipping] Resend API returned error:', error)
+    throw new Error(msg)
+  }
+  console.log('[shipping] Shipment email queued, id=', data?.id)
 }
 
 export async function POST(request: Request) {

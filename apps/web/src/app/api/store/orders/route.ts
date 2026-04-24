@@ -164,19 +164,34 @@ export async function POST(request: Request) {
 
     } else {
       // ── PATH B: Local tax fallback — re-compute and verify against PI ────
+      //
+      // Client-supplied unitPrice is used only as an INPUT to calcServerTotals,
+      // which re-queries the `products` table by id, enforces base_price as
+      // the floor, caps configured prices at UNIT_PRICE_CAP_MULT × base_price,
+      // and throws for any unknown/inactive productId. The ±$0.50 reconciliation
+      // against the actual Stripe charge below is the bottom-line check.
       const pricingItems = (items as any[]).map(i => ({
         productId: i.productId,
         quantity:  i.quantity,
         price:     i.unitPrice ?? i.price ?? 0,
       }))
 
-      const serverPricing = await calcServerTotals({
-        items:        pricingItems,
-        discountCode: discount?.code || null,
-        shippingCost: shipping?.cost || 0,
-        state:        customer?.address?.state || '',
-        zip:          customer?.address?.zip   || '',
-      })
+      let serverPricing
+      try {
+        serverPricing = await calcServerTotals({
+          items:        pricingItems,
+          discountCode: discount?.code || null,
+          shippingCost: shipping?.cost || 0,
+          state:        customer?.address?.state || '',
+          zip:          customer?.address?.zip   || '',
+        })
+      } catch (e: any) {
+        console.error('[orders] server pricing rejected:', e?.message)
+        return NextResponse.json(
+          { success: false, error: 'Order items could not be verified. Please contact support with your order payment reference.' },
+          { status: 400 }
+        )
+      }
 
       // Verify server total matches PI (within $0.50)
       if (Math.abs(serverPricing.total - piTotal) > 0.50) {

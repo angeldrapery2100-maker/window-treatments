@@ -40,12 +40,17 @@ export default function SiteNav({ activePage, brandName }: SiteNavProps) {
 
   return (
     <>
-      {/* ── Brand — top-left ── */}
-      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-50">
-        <Link href="/" onClick={() => setMenuOpen(false)}>
-          <h1 className="text-lg md:text-2xl lg:text-3xl font-light tracking-[0.2em] text-white drop-shadow-lg cursor-pointer hover:text-gray-300 transition-colors">
+      {/* ── Brand — top-left.
+           NOTE: this is a <span>, NOT an <h1>. SiteNav renders on every
+           page, and each page should have exactly one semantic H1 that
+           describes THAT page's content (the product, gallery, etc.) — not
+           the brand. Repeating the brand as H1 sitewide dilutes per-page
+           SEO and confuses screen readers. */}
+      <div className="absolute top-5 left-4 md:top-8 md:left-8 z-50 max-w-[calc(100vw-5.5rem)] md:max-w-none">
+        <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Angel Drapery — home">
+          <span className="block text-[13px] sm:text-base md:text-2xl lg:text-3xl font-light tracking-[0.16em] md:tracking-[0.2em] leading-tight text-white drop-shadow-lg cursor-pointer hover:text-gray-300 transition-colors">
             {brandName || 'ANGEL DRAPERY, INC'}
-          </h1>
+          </span>
         </Link>
       </div>
 
@@ -75,7 +80,7 @@ export default function SiteNav({ activePage, brandName }: SiteNavProps) {
       <button
         onClick={() => setMenuOpen(v => !v)}
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-        className="md:hidden absolute top-6 right-6 z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+        className="md:hidden absolute top-4 right-4 z-50 flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border border-white/15 bg-black/20 backdrop-blur-sm"
       >
         <motion.span
           animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
@@ -106,7 +111,7 @@ export default function SiteNav({ activePage, brandName }: SiteNavProps) {
             className="md:hidden fixed inset-0 z-40 bg-[#3d3d3d]/97 backdrop-blur-md flex flex-col"
           >
             {/* Nav items — centered vertically */}
-            <nav className="flex flex-col items-start justify-center flex-1 px-10 gap-1">
+            <nav className="flex flex-col items-start justify-center flex-1 px-6 sm:px-8 gap-1">
               {NAV_ITEMS.map((item, i) => (
                 <motion.div
                   key={item.name}
@@ -117,7 +122,7 @@ export default function SiteNav({ activePage, brandName }: SiteNavProps) {
                   <Link
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block py-3 text-4xl font-light tracking-tight transition-colors ${
+                    className={`block py-2.5 text-3xl sm:text-4xl font-light tracking-tight transition-colors ${
                       item.name === activePage
                         ? 'text-white'
                         : 'text-white/40 hover:text-white'
@@ -134,7 +139,7 @@ export default function SiteNav({ activePage, brandName }: SiteNavProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="px-10 pb-12 pt-6 border-t border-white/10"
+              className="px-6 sm:px-8 pb-10 pt-6 border-t border-white/10"
             >
               <p className="text-white/25 text-xs tracking-widest uppercase">
                 Angel Drapery, Inc &nbsp;·&nbsp; Custom Window Treatments Since 1984

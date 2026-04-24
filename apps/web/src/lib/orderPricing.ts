@@ -17,9 +17,13 @@
  *     launch or as a safety net.
  *
  * ── Security properties ───────────────────────────────────────────────────
- *  - Item unit prices: client value is accepted as a FLOOR; DB base_price
- *    is enforced as minimum.  Custom-configured prices may exceed base_price,
- *    which is intentional.
+ *  - Product IDs: MUST resolve to an ACTIVE row in `products`. Any unknown
+ *    or inactive ID throws — we never silently treat a missing product as
+ *    base_price=0 (which would let the client set the unit price freely).
+ *  - Item unit prices: DB base_price is the MINIMUM floor. Custom-configured
+ *    prices may exceed base_price (intentional for made-to-measure items),
+ *    but are hard-capped at UNIT_PRICE_CAP_MULT × base_price to stop a client
+ *    from inflating a single line to an absurd amount.
  *  - Discount amount: computed from DB using discount CODE — client-supplied
  *    discount amounts are never trusted.
  *  - Tax: derived from state code via server-side lookup table — client-supplied
@@ -78,25 +82,50 @@ export interface PricingResult {
 
 const MAX_SHIPPING_DOLLARS = 500  // sanity cap — well above any realistic rate
 
+// Max multiplier a client-supplied unit price may exceed the DB base_price by.
+// Custom-configured drapery legitimately scales above base (fabric upgrades,
+// oversized panels, etc.), but 5× is a comfortable ceiling — even our largest
+// blackout drapery configurator tops out under 3×.
+const UNIT_PRICE_CAP_MULT = 5
+
 export async function calcServerTotals(input: PricingInput): Promise<PricingResult> {
   const { items, discountCode, state, zip: _zip } = input
 
   if (!items?.length) throw new Error('Cart is empty')
 
   // ── 1. Subtotal ────────────────────────────────────────────────────────────
+  // Every productId MUST map to an active DB row. A missing/unknown id is
+  // treated as a hard error — never fall through to base_price=0, which would
+  // let the client dictate the unit price unchecked.
   const ids = items.map(i => i.productId).filter(Boolean)
+  if (ids.length !== items.length) {
+    throw new Error('Cart contains an item with no productId')
+  }
+
   const rows: { id: string; base_price: number }[] = ids.length
-    ? await query(`SELECT id, base_price FROM products WHERE id = ANY($1::uuid[])`, [ids]).catch(() => [])
+    ? await query(
+        `SELECT id, base_price FROM products
+         WHERE id = ANY($1::uuid[]) AND is_active = true`,
+        [ids]
+      ).catch(() => [])
     : []
   const basePriceMap: Record<string, number> = {}
   for (const r of rows) basePriceMap[r.id] = Number(r.base_price) || 0
 
   let subtotal = 0
   for (const item of items) {
+    if (!(item.productId in basePriceMap)) {
+      // Fail-closed: unknown or inactive product — do NOT proceed with a
+      // client-supplied price.
+      throw new Error(`Product not available: ${item.productId}`)
+    }
+    const basePrice   = basePriceMap[item.productId]
     const clientPrice = Math.max(0, Number(item.price) || 0)
-    const basePrice   = basePriceMap[item.productId] || 0
-    // base_price is the MINIMUM — custom-configured prices are accepted when higher
-    const unitPrice   = Math.max(clientPrice, basePrice)
+    // base_price is the MINIMUM. Custom configurations may legitimately raise
+    // the unit price, but cap it at UNIT_PRICE_CAP_MULT × base_price so a
+    // single line item cannot be inflated to arbitrary amounts.
+    const cappedClient = Math.min(clientPrice, basePrice * UNIT_PRICE_CAP_MULT)
+    const unitPrice   = Math.max(cappedClient, basePrice)
     subtotal += unitPrice * Math.max(1, Math.floor(Number(item.quantity) || 1))
   }
   subtotal = Math.round(subtotal * 100) / 100

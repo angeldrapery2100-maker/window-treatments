@@ -1231,7 +1231,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
               <span>/</span>
               <span className="text-white/80">{layout.name}</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-light text-white mb-3">{layout.name}</h2>
+            <h1 className="text-3xl md:text-5xl font-light text-white mb-3">{layout.name}</h1>
             <p className="text-white/70 text-base md:text-lg max-w-2xl">{layout.description}</p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { uploadToR2 } from '@/lib/r2'
+import { compressImage } from '@/lib/image'
 
 // Allowed MIME types and their safe extensions
 const ALLOWED_TYPES: Record<string, string> = {
@@ -52,14 +53,32 @@ export async function POST(request: Request) {
       )
     }
 
-    const bytes    = await file.arrayBuffer()
-    const buffer   = Buffer.from(bytes)
-    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${safeExt}`
-    const key      = `site/${page}/${filename}`
+    const bytes = await file.arrayBuffer()
+    const raw   = Buffer.from(bytes)
 
-    const url = await uploadToR2(key, buffer, file.type)
+    // Re-encode / resize images before upload. Videos pass through untouched.
+    const compressed = await compressImage(raw, file.type)
+    const filename   = `${Date.now()}-${Math.random().toString(36).slice(2)}.${compressed.extension}`
+    const key        = `site/${page}/${filename}`
 
-    return NextResponse.json({ success: true, data: { url, filename, originalName: file.name } })
+    const url = await uploadToR2(key, compressed.buffer, compressed.contentType)
+
+    if (compressed.finalBytes < compressed.originalBytes) {
+      console.log(
+        `[site-content upload] compressed ${file.name}: ${(compressed.originalBytes / 1024).toFixed(0)}KB → ${(compressed.finalBytes / 1024).toFixed(0)}KB`,
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        url,
+        filename,
+        originalName: file.name,
+        originalBytes: compressed.originalBytes,
+        finalBytes: compressed.finalBytes,
+      },
+    })
   } catch (error: any) {
     console.error('Upload error:', error)
     return NextResponse.json(
