@@ -305,13 +305,13 @@ export default function HandcraftedDraperyPage() {
             className="text-white/70 tracking-[0.4em] text-xs uppercase mb-6 drop-shadow-md">
             Handcrafted in Temple City, CA
           </motion.p>
-          <motion.h2
+          <motion.h1
             initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="text-6xl md:text-8xl font-serif text-white leading-[0.95] italic mb-8 drop-shadow-2xl"
           >
             Tactile <br /><span className="ml-12 md:ml-32 not-italic">Artistry.</span>
-          </motion.h2>
+          </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
             className="text-white/80 text-lg max-w-xl mb-8 font-light drop-shadow-md">
             Experience the fine texture and precision of our bespoke drapery. Over 3,000 fabrics. 40 years of local expertise.
