@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
 
+# Allow the public site-settings XHR so Googlebot can render SiteNav
+# correctly during indexing — SiteNav fetches this on hydration to decide
+# whether the "Online Store" link is shown. The longer-path Allow wins
+# over the shorter-path Disallow: /api below. The response itself sets
+# X-Robots-Tag: noindex so the JSON isn't indexed as its own document.
+Allow: /api/site-settings
+
 Disallow: /admin
 Disallow: /api
 Disallow: /store/cart

@@ -12,12 +12,16 @@ export async function GET() {
     // Cache at Vercel's edge for 5 min; serve stale for up to 1 h while
     // revalidating in the background. Site settings change rarely — the
     // only flag consumers use is `online_store_enabled` for nav toggling,
-    // and a 5-min delay on that is fine. Before this, `no-store` meant
-    // every SiteNav hydration hit Postgres, which caused Google Rich
-    // Results Test to report `/api/site-settings` as a failed resource
-    // (Googlebot's per-page fetch budget was blown on cold DB round-trips).
+    // and a 5-min delay on that is fine.
+    //
+    // X-Robots-Tag: noindex — robots.txt whitelists this path so Googlebot
+    // can fetch it while rendering SiteNav, but we don't want the raw JSON
+    // indexed as a standalone document.
     return NextResponse.json({ success: true, data: settings }, {
-      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' },
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+        'X-Robots-Tag':  'noindex',
+      },
     })
   } catch {
     // If table doesn't exist yet, return safe defaults
