@@ -6,8 +6,17 @@ dist
 .env
 .env.local
 .env.*.local
-*.tsbuildinfonode_modules/
+*.tsbuildinfo
+node_modules/
 .next/
+
+# Stray nested-workspace cruft (happens when a `cp -r` or move lands one level too deep)
+apps/web/apps/
+
+# Local scratch / generated output, not part of the app
+database/
+output/
+
 *.pack
 Video/
 Hunter Douglas Digital Samples  PDF/
