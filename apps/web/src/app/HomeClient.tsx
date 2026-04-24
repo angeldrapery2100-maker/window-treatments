@@ -625,7 +625,22 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   className="relative h-full max-w-[78vw] flex-shrink-0 overflow-hidden rounded-lg shadow-2xl transition-transform duration-1000 hover:scale-105 md:max-w-none"
                 >
                   {img.url ? (
-                    <img src={img.url} alt={img.alt} className="h-full w-auto max-w-[78vw] object-contain md:max-w-none" />
+                    // next/image routes through /_next/image, which downsamples
+                    // the 3024×4032 iPhone originals (~8 MB each) to ~100 KB
+                    // AVIF/WebP at the srcset width the browser actually uses.
+                    // Before this, Googlebot timed out fetching the hero gallery
+                    // (see Rich Results Test — "無法載入 7 項資源") and real
+                    // users paid the full bytes too. width/height come from the
+                    // CMS so aspect ratio is preserved and CLS stays at 0.
+                    <Image
+                      src={img.url}
+                      alt={img.alt}
+                      width={img.width}
+                      height={img.height}
+                      sizes="(max-width: 768px) 78vw, 400px"
+                      className="h-full w-auto max-w-[78vw] object-contain md:max-w-none"
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                    />
                   ) : (
                     <div className="h-full w-[300px] bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center">
                       <span className="text-gray-400 text-lg">{img.alt}</span>
@@ -663,7 +678,16 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               className="relative max-w-5xl w-full aspect-[3/4] rounded-lg shadow-2xl overflow-hidden"
             >
               {lightboxItem.url ? (
-                <img src={lightboxItem.url} alt={lightboxItem.alt} className="w-full h-full" style={{ objectFit: lightboxItem.fit as any }} />
+                // Lightbox image: parent has explicit aspect-[3/4] max-w-5xl so
+                // fill + sizes gives next/image enough to pick the right srcset
+                // width (~1024px on desktop) instead of serving the 8 MB raw.
+                <Image
+                  src={lightboxItem.url}
+                  alt={lightboxItem.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1024px"
+                  style={{ objectFit: lightboxItem.fit as any }}
+                />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center">
                   <span className="text-gray-400 text-2xl">{lightboxItem.alt}</span>
