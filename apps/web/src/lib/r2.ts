@@ -7,8 +7,13 @@
  *   R2_ACCESS_KEY_ID        – R2 API token (Access Key ID)
  *   R2_SECRET_ACCESS_KEY    – R2 API token (Secret Access Key)
  *   R2_BUCKET_NAME          – name of your R2 bucket
- *   R2_PUBLIC_URL           – public URL for the bucket, e.g. https://pub-xxx.r2.dev
- *                             (or your custom domain if you set one)
+ *
+ * Note on public URLs:
+ *   We no longer serve assets from pub-xxx.r2.dev — that subdomain is
+ *   rate-limited and returns 503 under production load. Instead, upload
+ *   helpers return a relative /media/<key> path that is served by the
+ *   Next.js route at src/app/media/[...path]/route.ts (proxied through
+ *   the R2 S3 API + cached at Vercel Edge).
  */
 
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
@@ -30,7 +35,7 @@ export const r2 = new S3Client({
  * @param key  The storage path, e.g. "products/abc123/image.webp"
  * @param body The file buffer
  * @param contentType MIME type, e.g. "image/webp"
- * @returns The public URL of the uploaded file
+ * @returns A site-relative URL under /media/ that the proxy route will serve.
  */
 export async function uploadToR2(
   key: string,
@@ -44,19 +49,28 @@ export async function uploadToR2(
     ContentType: contentType,
   }))
 
-  const publicBase = process.env.R2_PUBLIC_URL!.replace(/\/$/, '')
-  return `${publicBase}/${key}`
+  // Served by /media/[...path]/route.ts → R2 S3 GetObject, edge-cached.
+  return `/media/${key}`
 }
 
 /**
- * Delete a file from R2 by its public URL or storage key.
+ * Delete a file from R2 by its /media/ URL, legacy pub-xxx.r2.dev URL,
+ * or bare storage key.
  */
 export async function deleteFromR2(keyOrUrl: string): Promise<void> {
-  // Strip the public base URL if a full URL was passed
-  const publicBase = process.env.R2_PUBLIC_URL!.replace(/\/$/, '')
-  const key = keyOrUrl.startsWith(publicBase)
-    ? keyOrUrl.slice(publicBase.length + 1)
-    : keyOrUrl
+  let key = keyOrUrl
+
+  if (key.startsWith('/media/')) {
+    key = key.slice('/media/'.length)
+  } else if (key.startsWith('http://') || key.startsWith('https://')) {
+    // Legacy pub-xxx.r2.dev or custom-domain URLs — strip scheme+host.
+    try {
+      const u = new URL(key)
+      key = u.pathname.replace(/^\/+/, '')
+    } catch {
+      // Fall through with the original string if it somehow isn't a URL.
+    }
+  }
 
   await r2.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }))
 }

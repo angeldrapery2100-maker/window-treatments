@@ -67,8 +67,9 @@ export async function POST(request: Request) {
 
     const presignedUrl = await getSignedUrl(r2, command, { expiresIn: 600 }) // 10 min
 
-    const publicBase = process.env.R2_PUBLIC_URL!.replace(/\/$/, '')
-    const publicUrl = `${publicBase}/${key}`
+    // Served via the /media proxy route so we don't hit the rate-limited
+    // pub-xxx.r2.dev subdomain. See src/app/media/[...path]/route.ts.
+    const publicUrl = `/media/${key}`
 
     return NextResponse.json({
       success: true,
