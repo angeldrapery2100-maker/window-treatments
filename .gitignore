@@ -17,6 +17,12 @@ apps/web/apps/
 database/
 output/
 
+# Stray video files at repo root (compression test artifacts, downloaded
+# samples, etc.). Real app videos live under apps/web/public/videos/.
+/*.mp4
+/*.mov
+/*.webm
+
 *.pack
 Video/
 Hunter Douglas Digital Samples  PDF/
