@@ -32,14 +32,58 @@
  */
 
 import pg from 'pg'
+import fs from 'node:fs'
+import path from 'node:path'
 
 const OLD_PREFIX = 'https://pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev/'
 const NEW_PREFIX = '/media/'
 
 const DRY_RUN = process.argv.includes('--dry-run')
 
+/**
+ * Load DATABASE_URL from .env.production.local (or another file passed via
+ * --env-file=...) ourselves. Doing it here avoids three landmines:
+ *   1. shell `source` reinterpreting `$` etc. inside the connection string,
+ *   2. older Node versions that don't support `--env-file`,
+ *   3. CRLF line endings from the Vercel CLI on macOS.
+ *
+ * If DATABASE_URL is already set in the environment, we use that directly.
+ */
+function loadEnvFile(file) {
+  if (!fs.existsSync(file)) return {}
+  const raw = fs.readFileSync(file, 'utf8')
+  const out = {}
+  for (const lineRaw of raw.split(/\r?\n/)) {
+    const line = lineRaw.trim()
+    if (!line || line.startsWith('#')) continue
+    const eq = line.indexOf('=')
+    if (eq <= 0) continue
+    const key = line.slice(0, eq).trim()
+    let val = line.slice(eq + 1).trim()
+    // Strip a single matched pair of surrounding quotes, if present.
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1)
+    }
+    out[key] = val
+  }
+  return out
+}
+
+const envFileArg = process.argv.find((a) => a.startsWith('--env-file='))
+const envFile = envFileArg
+  ? envFileArg.slice('--env-file='.length)
+  : path.resolve(process.cwd(), '.env.production.local')
+
 if (!process.env.DATABASE_URL) {
-  console.error('DATABASE_URL is not set')
+  const fileEnv = loadEnvFile(envFile)
+  if (fileEnv.DATABASE_URL) process.env.DATABASE_URL = fileEnv.DATABASE_URL
+}
+
+if (!process.env.DATABASE_URL) {
+  console.error(`DATABASE_URL is not set (also tried ${envFile})`)
   process.exit(1)
 }
 
