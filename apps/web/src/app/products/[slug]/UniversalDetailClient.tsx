@@ -85,22 +85,22 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string;
   const sectionImgs: LightboxImage[] = filtered.map(s => ({ src: resolveImg(imgBase, s.image) }))
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {filtered.map((scene, i) => {
         const dir = i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
         return (
-          <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
-            {/* Image: 4/5 width on desktop, natural aspect ratio */}
-            <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(sectionImgs, i)}>
-              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
+          <div key={i} className={`flex flex-col ${dir} rounded-xl overflow-hidden shadow-sm`}>
+            {/* Image: 3/4 width on desktop, natural height from aspect ratio */}
+            <div className="md:flex-[3] relative cursor-zoom-in overflow-hidden" onClick={() => onImg(sectionImgs, i)}>
+              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto block" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                   <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
                 </div>
               )}
             </div>
-            {/* Text: 1/5 width on desktop, stacks below on mobile */}
-            <div className="md:flex-[1] flex items-center justify-center p-6 md:p-8">
+            {/* Text: 1/4 width on desktop, full width on mobile */}
+            <div className="md:flex-[1] flex flex-col justify-center p-8 md:p-10 bg-[#fafaf8]">
               {scene.text && <p className="text-base md:text-lg font-light text-gray-700 leading-relaxed">{scene.text}</p>}
             </div>
           </div>
@@ -385,7 +385,6 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
     })
   })
 
-  const scenePortrait = sceneImage ? !isLandscape(sceneImage) : false
   let sceneImgIndex = 0
   const panelImgIndices: Record<number, number> = {}
   const itemImgIndices: Record<number, Record<number, number>> = {}
@@ -412,17 +411,18 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, imgBase, onImg 
   return (
     <div>
       <h3 className="text-3xl font-light text-gray-800 mb-8">{sceneLabel || 'Operating Systems'}</h3>
-      <div className="flex flex-col md:flex-row rounded-lg overflow-hidden">
-        {/* Scene image side */}
+      <div className="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-sm">
+        {/* Scene image side — stretches to match content column height */}
         {sceneImage && (
-          <div className={`md:flex-[1] relative cursor-zoom-in overflow-hidden flex items-center justify-center ${scenePortrait ? 'md:max-h-[600px]' : ''}`}
+          <div className="md:flex-[1] cursor-zoom-in overflow-hidden min-h-[280px]"
             onClick={() => onImg(sectionImgs, sceneImgIndex)}>
-            <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel} className={`object-contain ${scenePortrait ? 'h-full w-auto max-h-[600px]' : 'w-full h-auto'}`} loading="lazy" />
+            <img src={resolveImg(imgBase, sceneImage)} alt={sceneLabel}
+              className="w-full h-full object-cover min-h-[280px] block" loading="lazy" />
           </div>
         )}
         {/* Operating system panels side */}
         {sceneImage ? (
-          <div className="md:flex-[1] p-6 md:p-8 space-y-8 flex flex-col justify-center">
+          <div className="md:flex-[1] p-8 md:p-10 space-y-8 flex flex-col justify-center bg-[#fafaf8]">
             {panels.map((panel, pi) => (
               <div key={pi}>
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
@@ -941,9 +941,6 @@ function SplitSceneSection({ title, sceneImage, sceneLabel, sceneSide, items, im
   const flexDir = isRight ? 'md:flex-row' : 'md:flex-row-reverse'
   /* Detail grid: 1 col if ≤2 items, 2 cols if more */
   const gridCols = items.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'
-  /* Check if scene image is portrait (tall) */
-  const scenePortrait = !isLandscape(sceneImage)
-
   const sectionImgs: LightboxImage[] = [
     ...items.map(item => ({ src: resolveImg(imgBase, item.image) })),
     { src: resolveImg(imgBase, sceneImage), caption: sceneLabel }
@@ -1217,7 +1214,7 @@ export default function UniversalDetailClient({ layout, product, related, footer
 
       {/* ─── Hero (2:1) ─── */}
       <section className="relative w-full overflow-hidden aspect-[2/1]">
-        <img src={resolveImg(imgBase, layout.heroImage)} alt={layout.name} className="absolute inset-0 w-full h-full object-contain bg-[#f5f4f0]" />
+        <img src={resolveImg(imgBase, layout.heroImage)} alt={layout.name} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
 
         <SiteNav activePage="Products" />
