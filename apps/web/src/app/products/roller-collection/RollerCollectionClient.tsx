@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -166,10 +167,13 @@ export default function RollerCollectionClient() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="relative w-full h-[70vh] min-h-[540px] overflow-hidden bg-[#1a1a1a]">
-        <img
+        <Image
           src={`${BASE}/lifestyle-floor-to-ceiling.png`}
           alt="Luma Roller Shades"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/65" />
         <SiteNav activePage="Products" />
@@ -245,8 +249,8 @@ export default function RollerCollectionClient() {
                 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.12 } } }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm"
               >
-                <div className="overflow-hidden aspect-square">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
+                <div className="relative overflow-hidden aspect-square">
+                  <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                 </div>
                 <div className="p-7">
                   <span className="text-[#4DB6E8] text-[10px] font-bold tracking-[0.3em] uppercase block mb-1">{item.subtitle}</span>
@@ -345,8 +349,8 @@ export default function RollerCollectionClient() {
                 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.12 } } }}
                 className="bg-white/5 border border-white/8 rounded-2xl overflow-hidden"
               >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img src={d.img} alt={d.title} className="w-full h-full object-cover" />
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image src={d.img} alt={d.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-white text-lg font-light tracking-tight mb-2">{d.title}</h3>
@@ -388,11 +392,13 @@ export default function RollerCollectionClient() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeIn}
               className="md:w-[60%]"
             >
-              <div className="rounded-3xl overflow-hidden aspect-square">
-                <img
+              <div className="relative rounded-3xl overflow-hidden aspect-square">
+                <Image
                   src={`${BASE}/lifestyle-smart-home.png`}
                   alt="Smart home controlled roller shades"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -417,7 +423,7 @@ export default function RollerCollectionClient() {
                 onClick={() => openLightbox(galleryImages.map(g => g.src), i, 'Gallery')}
                 className="rounded-2xl overflow-hidden aspect-[16/9] relative group cursor-zoom-in"
               >
-                <img src={img.src} alt={img.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <Image src={img.src} alt={img.alt} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-all duration-300 flex items-center justify-center">
                   <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607zM10.5 7.5v6m3-3h-6"/>
@@ -479,7 +485,7 @@ export default function RollerCollectionClient() {
                       className="w-full group relative aspect-square overflow-hidden bg-gray-100 block cursor-zoom-in"
                       onClick={() => openLightbox(allSrcs, selectedIdx, `${pattern} — ${tabLabel}`)}
                     >
-                      <img src={mainSrc} alt={pattern} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <Image src={mainSrc} alt={pattern} fill sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                         <svg className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607zM10.5 7.5v6m3-3h-6"/>
@@ -497,11 +503,11 @@ export default function RollerCollectionClient() {
                                 setSelectedColors(prev => ({ ...prev, [pattern]: idx }))
                                 openLightbox(allSrcs, idx, `${pattern} — ${tabLabel}`)
                               }}
-                              className={`w-7 h-7 rounded-lg overflow-hidden border-2 transition-all duration-150 hover:scale-105 ${
+                              className={`relative w-7 h-7 rounded-lg overflow-hidden border-2 transition-all duration-150 hover:scale-105 ${
                                 idx === selectedIdx ? 'border-[#4DB6E8] shadow-sm' : 'border-transparent'
                               }`}
                             >
-                              <img src={`${SW}/${c}`} alt={c} className="w-full h-full object-cover" />
+                              <Image src={`${SW}/${c}`} alt={c} fill sizes="28px" className="object-cover" />
                             </button>
                           ))}
                         </div>
@@ -571,10 +577,13 @@ export default function RollerCollectionClient() {
                     </svg>
                   </button>
                 )}
-                <img
+                <Image
                   src={lightbox.srcs[lightbox.idx]}
                   alt={lightbox.label}
-                  className="w-full max-h-[75vh] rounded-2xl object-contain shadow-2xl"
+                  width={1440}
+                  height={1080}
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                  className="w-full h-auto max-h-[75vh] rounded-2xl object-contain shadow-2xl"
                 />
                 {lightbox.srcs.length > 1 && (
                   <button onClick={lbNext} className="absolute right-0 translate-x-12 text-white/50 hover:text-white transition-colors hidden md:block">
@@ -593,11 +602,11 @@ export default function RollerCollectionClient() {
                     <button
                       key={s}
                       onClick={() => setLightbox(prev => prev ? { ...prev, idx: i } : null)}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
                         i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'
                       }`}
                     >
-                      <img src={s} alt="" className="w-full h-full object-cover" />
+                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

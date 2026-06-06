@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LAYOUT RULES:
@@ -31,27 +32,27 @@ export interface ProjectVideo {
 
 export const PROJECT_VIDEOS: ProjectVideo[] = [
   // ── Row 1: 2 landscape ───────────────────────────────────────────────────
-  { id: 1,  orientation: 'landscape', title: 'Custom Drapery',       subtitle: 'Living Room Installation',    video: '/videos/projects/landscape-01.mov', poster: '/videos/projects/posters/landscape-01.jpg' },
-  { id: 2,  orientation: 'landscape', title: 'Smart Roller Shades',   subtitle: 'HomeKit Motorized System',    video: '/videos/projects/landscape-02.mov', poster: '/videos/projects/posters/landscape-02.jpg' },
+  { id: 1,  orientation: 'landscape', title: 'Custom Drapery',       subtitle: 'Living Room Installation',    video: '/videos/projects/landscape-01.mp4', poster: '/videos/projects/posters/landscape-01.jpg' },
+  { id: 2,  orientation: 'landscape', title: 'Smart Roller Shades',   subtitle: 'HomeKit Motorized System',    video: '/videos/projects/landscape-02.mp4', poster: '/videos/projects/posters/landscape-02.jpg' },
   // ── Row 2: 4 portrait ────────────────────────────────────────────────────
-  { id: 3,  orientation: 'portrait',  title: 'Roman Shades',          subtitle: 'Handcrafted · San Marino',    video: '/videos/projects/portrait-01.mov',  poster: '/videos/projects/posters/portrait-01.jpg' },
-  { id: 4,  orientation: 'portrait',  title: 'Sheer Panels',          subtitle: 'Floor to Ceiling',            video: '/videos/projects/portrait-02.mov',  poster: '/videos/projects/posters/portrait-02.jpg' },
-  { id: 5,  orientation: 'portrait',  title: 'Blackout Drapery',      subtitle: 'Master Suite',                video: '/videos/projects/portrait-03.mov',  poster: '/videos/projects/posters/portrait-03.jpg' },
-  { id: 6,  orientation: 'portrait',  title: 'Velvet Drapes',         subtitle: 'Formal Dining Room',          video: '/videos/projects/portrait-04.mov',  poster: '/videos/projects/posters/portrait-04.jpg' },
+  { id: 3,  orientation: 'portrait',  title: 'Roman Shades',          subtitle: 'Handcrafted · San Marino',    video: '/videos/projects/portrait-01.mp4',  poster: '/videos/projects/posters/portrait-01.jpg' },
+  { id: 4,  orientation: 'portrait',  title: 'Sheer Panels',          subtitle: 'Floor to Ceiling',            video: '/videos/projects/portrait-02.mp4',  poster: '/videos/projects/posters/portrait-02.jpg' },
+  { id: 5,  orientation: 'portrait',  title: 'Blackout Drapery',      subtitle: 'Master Suite',                video: '/videos/projects/portrait-03.mp4',  poster: '/videos/projects/posters/portrait-03.jpg' },
+  { id: 6,  orientation: 'portrait',  title: 'Velvet Drapes',         subtitle: 'Formal Dining Room',          video: '/videos/projects/portrait-04.mp4',  poster: '/videos/projects/posters/portrait-04.jpg' },
   // ── Row 3: 2 landscape ───────────────────────────────────────────────────
-  { id: 7,  orientation: 'landscape', title: 'Layered Window Treatments', subtitle: 'Arcadia Residence',       video: '/videos/projects/landscape-03.mov', poster: '/videos/projects/posters/landscape-03.jpg' },
-  { id: 8,  orientation: 'landscape', title: '4K Showcase',           subtitle: 'Premium Installation',        video: '/videos/projects/landscape-04.mov', poster: '/videos/projects/posters/landscape-04.jpg' },
+  { id: 7,  orientation: 'landscape', title: 'Layered Window Treatments', subtitle: 'Arcadia Residence',       video: '/videos/projects/landscape-03.mp4', poster: '/videos/projects/posters/landscape-03.jpg' },
+  { id: 8,  orientation: 'landscape', title: '4K Showcase',           subtitle: 'Premium Installation',        video: '/videos/projects/landscape-04.mp4', poster: '/videos/projects/posters/landscape-04.jpg' },
   // ── Row 4: 4 portrait ────────────────────────────────────────────────────
-  { id: 9,  orientation: 'portrait',  title: 'Linen Curtains',        subtitle: 'Temple City Home',            video: '/videos/projects/portrait-05.mov',  poster: '/videos/projects/posters/portrait-05.jpg' },
-  { id: 10, orientation: 'portrait',  title: 'Motorized Blinds',      subtitle: 'Smart Home Integration',      video: '/videos/projects/portrait-06.mov',  poster: '/videos/projects/posters/portrait-06.jpg' },
-  { id: 11, orientation: 'portrait',  title: 'Pinch Pleat Drapery',   subtitle: 'Classic Style · Monrovia',    video: '/videos/projects/portrait-07.mov',  poster: '/videos/projects/posters/portrait-07.jpg' },
-  { id: 12, orientation: 'portrait',  title: 'Sheer Overlay',         subtitle: 'Dining Area · Alhambra',      video: '/videos/projects/portrait-08.mov',  poster: '/videos/projects/posters/portrait-08.jpg' },
+  { id: 9,  orientation: 'portrait',  title: 'Linen Curtains',        subtitle: 'Temple City Home',            video: '/videos/projects/portrait-05.mp4',  poster: '/videos/projects/posters/portrait-05.jpg' },
+  { id: 10, orientation: 'portrait',  title: 'Motorized Blinds',      subtitle: 'Smart Home Integration',      video: '/videos/projects/portrait-06.mp4',  poster: '/videos/projects/posters/portrait-06.jpg' },
+  { id: 11, orientation: 'portrait',  title: 'Pinch Pleat Drapery',   subtitle: 'Classic Style · Monrovia',    video: '/videos/projects/portrait-07.mp4',  poster: '/videos/projects/posters/portrait-07.jpg' },
+  { id: 12, orientation: 'portrait',  title: 'Sheer Overlay',         subtitle: 'Dining Area · Alhambra',      video: '/videos/projects/portrait-08.mp4',  poster: '/videos/projects/posters/portrait-08.jpg' },
   // ── Row 5: 2 landscape + 1 portrait ─────────────────────────────────────
-  { id: 13, orientation: 'landscape', title: 'Living Room Reveal',    subtitle: 'Full Installation · Pasadena', video: '/videos/projects/landscape-05.mov', poster: '/videos/projects/posters/landscape-05.jpg' },
-  { id: 14, orientation: 'landscape', title: 'Workshop Process',      subtitle: 'Behind the Craft',             video: '/videos/projects/landscape-06.mov', poster: '/videos/projects/posters/landscape-06.jpg' },
+  { id: 13, orientation: 'landscape', title: 'Living Room Reveal',    subtitle: 'Full Installation · Pasadena', video: '/videos/projects/landscape-05.mp4', poster: '/videos/projects/posters/landscape-05.jpg' },
+  { id: 14, orientation: 'landscape', title: 'Workshop Process',      subtitle: 'Behind the Craft',             video: '/videos/projects/landscape-06.mp4', poster: '/videos/projects/posters/landscape-06.jpg' },
   // ── Row 6: remaining ─────────────────────────────────────────────────────
-  { id: 15, orientation: 'portrait',  title: 'Eyelet Curtains',       subtitle: 'Modern Style',                 video: '/videos/projects/portrait-09.mov',  poster: '/videos/projects/posters/portrait-09.jpg' },
-  { id: 16, orientation: 'landscape', title: 'Before & After',        subtitle: 'Full Room Transformation',     video: '/videos/projects/landscape-07.mov', poster: '/videos/projects/posters/landscape-07.jpg' },
+  { id: 15, orientation: 'portrait',  title: 'Eyelet Curtains',       subtitle: 'Modern Style',                 video: '/videos/projects/portrait-09.mp4',  poster: '/videos/projects/posters/portrait-09.jpg' },
+  { id: 16, orientation: 'landscape', title: 'Before & After',        subtitle: 'Full Room Transformation',     video: '/videos/projects/landscape-07.mp4', poster: '/videos/projects/posters/landscape-07.jpg' },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -105,10 +106,12 @@ function VideoCard({
       <div className={`relative ${aspectClass} overflow-hidden rounded-sm shadow-md group-hover:shadow-2xl transition-all duration-500`}>
 
         {/* Poster */}
-        <img
+        <Image
           src={item.poster}
           alt={item.title}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className={`object-cover transition-opacity duration-500 ${
             isHovered && isLoaded ? 'opacity-0' : 'opacity-100'
           }`}
         />
@@ -121,7 +124,7 @@ function VideoCard({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           onLoadedData={() => setIsLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
             isHovered ? 'opacity-100' : 'opacity-0'

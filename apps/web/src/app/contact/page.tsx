@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contact' },
 }
 
-export const dynamic = 'force-dynamic'
+// ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
+export const revalidate = 300
 
 export default async function ContactPage() {
   const [data, globalData] = await Promise.all([

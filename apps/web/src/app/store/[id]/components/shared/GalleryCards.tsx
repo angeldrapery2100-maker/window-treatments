@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { GalleryImage } from './useProductData'
 
 export default function GalleryCards({ galleryImages }: { galleryImages: GalleryImage[] }) {
@@ -12,10 +13,12 @@ export default function GalleryCards({ galleryImages }: { galleryImages: Gallery
           {/* 左：16:9 图片 */}
           <div className="w-1/2 flex-shrink-0">
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <img
+              <Image
                 src={img.url}
                 alt={img.title}
-                className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover rounded-2xl"
               />
             </div>
           </div>

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { query } from '@/lib/db'
 import { escapeHtml } from '@/lib/html'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
@@ -24,6 +25,16 @@ async function ensureTable() {
 
 export async function POST(request: Request) {
   try {
+    // Throttle submissions: max 5 per hour per IP to prevent spam / email bombing.
+    const ip = getClientIp(request)
+    const limit = await rateLimit('consultation', ip, { max: 5, windowSeconds: 3600 })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     await ensureTable()
 
     // Accept both new fields (address, message) and legacy field (notes).

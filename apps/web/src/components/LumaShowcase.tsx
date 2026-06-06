@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 export interface LumaCardData {
@@ -99,10 +100,12 @@ export default function LumaShowcase({ cards }: LumaShowcaseProps) {
                 className="group block relative overflow-hidden rounded-2xl h-[500px] md:h-[560px] bg-gray-100"
               >
                 {/* Image */}
-                <img
+                <Image
                   src={p.image}
                   alt={p.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 
                 {/* Gradient overlay — darker at bottom */}

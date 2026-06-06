@@ -1,7 +1,8 @@
 import { getPageContent, getText, getImage } from '@/lib/content'
 import HomeClient from './HomeClient'
 
-export const dynamic = 'force-dynamic'
+// ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
+export const revalidate = 300
 
 export default async function HomePage() {
   const data = await getPageContent('home')

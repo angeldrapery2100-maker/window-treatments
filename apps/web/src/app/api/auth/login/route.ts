@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { loginUser, generateToken } from '@/lib/auth'
 import { isRateLimited, recordAttempt, lockoutRemainingMinutes } from '@/lib/loginRateLimit'
 import { recordAudit } from '@/lib/audit'
+import { errorResponse } from '@/lib/apiError'
 
 export async function POST(request: Request) {
   try {
@@ -61,8 +62,8 @@ export async function POST(request: Request) {
       path: '/',
     })
     return res
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 401 })
+  } catch (e) {
+    return errorResponse('Login failed. Please try again.', 500, e)
   }
 }
 

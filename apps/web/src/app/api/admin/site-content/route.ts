@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import pool from '@/lib/db'
 import { snapshotContent } from '@/lib/contentVersions'
 import { recordAudit } from '@/lib/audit'
 import { requireAdmin } from '@/lib/auth'
+
+// Invalidate the ISR cache for all public pages after a content change so admin
+// edits appear immediately instead of waiting for the revalidate window.
+function revalidatePublicPages() {
+  try { revalidatePath('/', 'layout') } catch (e) { console.error('revalidate failed', e) }
+}
 
 // ──────────────────────────────────────────────────────────────────────────────
 // site_content table — with is_published and required field validation
@@ -206,6 +213,7 @@ export async function POST(request: Request) {
       })
     }
 
+    revalidatePublicPages()
     return NextResponse.json({ success: true, data: result.rows[0] })
   } catch (e: any) {
     console.error('POST site-content error:', e)
@@ -246,6 +254,7 @@ export async function PATCH(request: Request) {
       })
     }
 
+    revalidatePublicPages()
     return NextResponse.json({ success: true })
   } catch (e: any) {
     console.error('PATCH site-content error:', e)
@@ -263,6 +272,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ success: false, error: { message: 'id required' } }, { status: 400 })
     }
     await pool.query('DELETE FROM site_content WHERE id = $1', [id])
+    revalidatePublicPages()
     return NextResponse.json({ success: true })
   } catch (e: any) {
     console.error('DELETE site-content error:', e)

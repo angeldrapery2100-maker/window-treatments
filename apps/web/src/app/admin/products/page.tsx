@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface Product {
@@ -329,8 +330,8 @@ export default function StoreProductsPage() {
                       <svg className="w-4 h-4 text-gray-300 mx-auto" fill="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="5" r="1.5" /><circle cx="15" cy="5" r="1.5" /><circle cx="9" cy="12" r="1.5" /><circle cx="15" cy="12" r="1.5" /><circle cx="9" cy="19" r="1.5" /><circle cx="15" cy="19" r="1.5" /></svg>
                     </td>
                     <td className="px-3 py-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                        {p.main_image_url ? <img src={p.main_image_url} alt={p.name} className="w-full h-full object-cover" />
+                      <div className="relative w-10 h-10 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                        {p.main_image_url ? <Image src={p.main_image_url} alt={p.name} fill sizes="40px" className="object-cover" />
                           : <div className="w-full h-full flex items-center justify-center text-gray-300 text-[9px]">No img</div>}
                       </div>
                     </td>
@@ -398,7 +399,7 @@ export default function StoreProductsPage() {
                 className={`group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-gray-300 transition-all cursor-grab active:cursor-grabbing ${
                   draggingIdx === index ? 'opacity-30 scale-95' : ''} ${p.status !== 'active' ? 'opacity-60' : ''}`}>
                 <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
-                  {p.main_image_url ? <img src={p.main_image_url} alt={p.name} className="w-full h-full object-cover" />
+                  {p.main_image_url ? <Image src={p.main_image_url} alt={p.name} fill sizes="(max-width: 768px) 100vw, 300px" className="object-cover" />
                     : <div className="w-full h-full flex items-center justify-center text-gray-300 text-sm">{p.name}</div>}
                   {/* Overlay actions */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">

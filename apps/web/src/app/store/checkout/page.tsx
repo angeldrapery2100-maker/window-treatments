@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getCart, clearCart, type Cart, type CartItem } from '@/lib/cart'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
@@ -463,8 +464,8 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-4 max-h-[280px] overflow-y-auto">
                 {cart.items.map(item => (
                   <div key={item.id} className="flex gap-3">
-                    <div className="w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      {item.mainImageUrl ? <img src={item.mainImageUrl} alt={item.productName} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-300 text-[10px]">No Img</div>}
+                    <div className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                      {item.mainImageUrl ? <Image src={item.mainImageUrl} alt={item.productName} fill sizes="56px" className="object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-300 text-[10px]">No Img</div>}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{item.productName}</p>

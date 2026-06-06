@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Image from 'next/image'
 
 // ============================================================
 // Types
@@ -679,7 +680,7 @@ function ImageEditor({
       <div className="flex items-start gap-4">
         {/* Preview */}
         <div
-          className="border border-gray-200 border-dashed rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center bg-gray-50 cursor-pointer hover:border-gray-400 transition-colors"
+          className="relative border border-gray-200 border-dashed rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center bg-gray-50 cursor-pointer hover:border-gray-400 transition-colors"
           style={{
             width: Math.min(item.image_width || 160, 200),
             height: Math.min(item.image_height || 120, 150),
@@ -695,10 +696,11 @@ function ImageEditor({
                 style={{ objectFit: item.image_fit as any || 'cover' }}
               />
             ) : (
-              <img
+              <Image
                 src={item.image_url}
                 alt={item.content}
-                className="w-full h-full"
+                fill
+                sizes="200px"
                 style={{ objectFit: item.image_fit as any || 'cover' }}
               />
             )

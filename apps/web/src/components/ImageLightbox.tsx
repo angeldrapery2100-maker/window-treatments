@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 
 export interface LightboxImage {
   src: string
@@ -124,24 +125,33 @@ export default function ImageLightbox({
       )}
 
       {/* Image */}
-      <div className="relative" onClick={e => e.stopPropagation()}>
-        <motion.img
-          key={item.src}
-          initial={{ opacity: 0.6, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2 }}
+      <motion.div
+        key={item.src}
+        initial={{ opacity: 0.6, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+        className="relative w-[92vw] h-[88vh]"
+        onClick={e => e.stopPropagation()}
+      >
+        <Image
           src={item.src}
           alt=""
-          className="max-w-[92vw] max-h-[88vh] object-contain"
+          fill
+          sizes="100vw"
+          className="object-contain"
         />
         {/* Caption */}
         {(item.caption || item.chipSrc) && (
           <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded px-3 py-2 max-w-xs text-right flex items-center gap-2">
-            {item.chipSrc && <img src={item.chipSrc} alt="" className="w-8 h-8 rounded-full object-cover" />}
+            {item.chipSrc && (
+              <span className="relative w-8 h-8 flex-shrink-0">
+                <Image src={item.chipSrc} alt="" fill sizes="32px" className="rounded-full object-cover" />
+              </span>
+            )}
             {item.caption && <p className="text-white/90 text-sm whitespace-pre-line leading-snug">{item.caption}</p>}
           </div>
         )}
-      </div>
+      </motion.div>
     </motion.div>
   )
 }

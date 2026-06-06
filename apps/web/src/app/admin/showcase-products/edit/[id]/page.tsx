@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, use } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import ImageCropper from '@/app/admin/products/edit/[id]/components/ImageCropper'
 
 interface ProductImage {
@@ -294,10 +295,10 @@ export default function EditShowcaseProductPage({ params }: { params: Promise<{ 
           <h2 className="text-sm font-semibold text-gray-900 mb-4">Cover Image</h2>
           <p className="text-xs text-gray-400 mb-3">Displayed on the Products listing page</p>
           <div className="flex items-start gap-5">
-            <div className="w-36 h-36 border border-gray-200 border-dashed rounded-md overflow-hidden flex-shrink-0 cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-50 transition-colors"
+            <div className="relative w-36 h-36 border border-gray-200 border-dashed rounded-md overflow-hidden flex-shrink-0 cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-50 transition-colors"
               onClick={() => coverRef.current?.click()}>
               {product.cover_image ? (
-                <img src={product.cover_image} alt="" className="w-full h-full object-cover" />
+                <Image src={product.cover_image} alt="" fill sizes="144px" className="object-cover" />
               ) : (
                 <div className="text-center">
                   <svg className="w-6 h-6 mx-auto text-gray-300 mb-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -328,8 +329,8 @@ export default function EditShowcaseProductPage({ params }: { params: Promise<{ 
               <div className="grid grid-cols-5 gap-3 mb-4">
                 {product.images.map(img => (
                   <div key={img.id} className="relative group">
-                    <div className="aspect-square border border-gray-200 rounded-md overflow-hidden">
-                      <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                    <div className="relative aspect-square border border-gray-200 rounded-md overflow-hidden">
+                      <Image src={img.image_url} alt="" fill sizes="(max-width: 768px) 20vw, 120px" className="object-cover" />
                     </div>
                     <button onClick={() => handleDeleteImage(img.id)}
                       className="absolute -top-1.5 -right-1.5 bg-[#3d3d3d] text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -400,7 +401,7 @@ export default function EditShowcaseProductPage({ params }: { params: Promise<{ 
                   </div>
                   <div className="space-y-3">
                     <label className="block text-xs text-gray-500 mb-1">Background Image</label>
-                    <div className="border border-gray-200 border-dashed rounded-md overflow-hidden cursor-pointer hover:border-gray-400 bg-gray-50 flex items-center justify-center transition-colors"
+                    <div className="relative border border-gray-200 border-dashed rounded-md overflow-hidden cursor-pointer hover:border-gray-400 bg-gray-50 flex items-center justify-center transition-colors"
                       style={{ aspectRatio: section.image_width && section.image_height ? `${section.image_width}/${section.image_height}` : '16/9' }}
                       onClick={() => {
                         const input = document.createElement('input')
@@ -409,7 +410,7 @@ export default function EditShowcaseProductPage({ params }: { params: Promise<{ 
                         input.click()
                       }}>
                       {section.image_url ? (
-                        <img src={section.image_url} alt="" className="w-full h-full object-cover" />
+                        <Image src={section.image_url} alt="" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover" />
                       ) : (
                         <div className="text-center py-6">
                           <svg className="w-5 h-5 mx-auto text-gray-300 mb-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">

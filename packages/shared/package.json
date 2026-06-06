@@ -3,10 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-"exports": {
-  ".": "./src/index.ts",
-  "./pricing": "./src/pricing/index.ts",
-  "./pricing/engines": "./src/pricing/engines/index.ts",
-  "./pricing/explainers": "./src/pricing/explainers/index.ts"
-}
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./pricing": "./src/pricing/index.ts",
+    "./pricing/engines": "./src/pricing/engines/index.ts",
+    "./pricing/explainers": "./src/pricing/explainers/index.ts"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.9"
+  }
 }

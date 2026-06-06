@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 // ─── Value card data ──────────────────────────────────────────────────────────
 const values = [
@@ -75,10 +76,12 @@ export const AboutSection = () => {
             viewport={{ once: true, margin: '-80px' }}
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-sm shadow-2xl">
-              <img
+              <Image
                 src="/drapery/handcrafted-drapery/IMG_5390.jpg"
                 alt="Our Workshop — Temple City, CA"
-                className="w-full h-full object-cover grayscale-[0.25] hover:grayscale-0 transition-all duration-700"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover grayscale-[0.25] hover:grayscale-0 transition-all duration-700"
               />
               {/* Inner decorative frame */}
               <div className="absolute inset-4 border border-white/20 pointer-events-none rounded-sm" />

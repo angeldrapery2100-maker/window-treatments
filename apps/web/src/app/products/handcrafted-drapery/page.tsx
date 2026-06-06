@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import SiteNav from '@/components/SiteNav'
@@ -126,7 +127,7 @@ function CinemaPlayer({ videos, startIndex = 0, onClose }: { videos: ProjectVide
                 style={{ width: w, height: h }}
               >
                 {/* Poster */}
-                <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />
+                <Image src={v.poster} alt={v.title} fill sizes="120px" className="object-cover" />
 
                 {/* Overlay */}
                 <div className={`absolute inset-0 transition-all duration-300 ${
@@ -164,7 +165,7 @@ function TactileImg({ src, alt, className, onOpen }: { src: string; alt: string;
   return (
     <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={`cursor-zoom-in overflow-hidden rounded-sm ${className || ''}`} onClick={onOpen}>
-      <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+      <Image src={src} alt={alt} width={1200} height={1500} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" loading="lazy" />
     </motion.div>
   )
 }
@@ -288,13 +289,20 @@ export default function HandcraftedDraperyPage() {
 
       {/* ═══════════ 1. Hero: Tactile Close-up (IMG_0547) ═══════════ */}
       <section className="relative h-[80vh] overflow-hidden flex items-end pb-20 md:pb-24 px-8 md:px-20 border-b-[12px] border-[#1A1D29]">
-        <motion.img
+        <motion.div
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-          src={`${IMG}/IMG_0547.JPG`}
-          alt="French pleat drapery close-up"
-          className="absolute inset-0 w-full h-full object-cover scale-110"
-        />
+          className="absolute inset-0 scale-110"
+        >
+          <Image
+            src={`${IMG}/IMG_0547.JPG`}
+            alt="French pleat drapery close-up"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
 
         <SiteNav activePage="Products" />
@@ -472,7 +480,9 @@ export default function HandcraftedDraperyPage() {
                   className="relative group cursor-zoom-in"
                   onClick={() => openLightbox(processImages, idx)}
                 >
-                  <img src={step.src} alt={step.title}
+                  <Image src={step.src} alt={step.title}
+                    width={600} height={380}
+                    sizes="(max-width: 1024px) 50vw, 33vw"
                     className="w-full h-[320px] md:h-[380px] object-cover rounded-sm shadow-xl transition-shadow duration-500 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.18)]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent group-hover:from-black/70 transition-colors duration-500 rounded-sm flex flex-col justify-end p-5 md:p-6">
                     <span className="text-3xl font-serif italic text-white/20 mb-1">0{idx + 1}</span>
@@ -530,7 +540,7 @@ export default function HandcraftedDraperyPage() {
                       style={{ width: w, height: h }}
                       onClick={() => { setVideoOpen(true); setVideoStartIndex(i) }}
                     >
-                      <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />
+                      <Image src={v.poster} alt={v.title} fill sizes="(max-width: 768px) 220px, 390px" className="object-cover" />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-all duration-400" />
                       <div className="absolute inset-0 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center group-hover:bg-[#ef8200]/80 group-hover:border-[#ef8200] transition-all duration-300">

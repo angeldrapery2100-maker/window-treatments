@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import ImageCropper from './ImageCropper'
 
 interface MainImage {
@@ -325,8 +326,8 @@ export default function ImageManager({ productId, onChange }: ImageManagerProps)
                     : <span className="text-xs text-gray-400">#{index + 1}</span>}
                   <span className="text-gray-300 text-sm">⠿⠿</span>
                 </div>
-                <div className="aspect-square bg-gray-100 rounded mb-2 overflow-hidden pointer-events-none">
-                  <img src={image.url} alt={image.name} className="w-full h-full object-cover" />
+                <div className="relative aspect-square bg-gray-100 rounded mb-2 overflow-hidden pointer-events-none">
+                  <Image src={image.url} alt={image.name} fill sizes="(max-width: 768px) 50vw, 200px" className="object-cover" />
                 </div>
                 <input
                   type="text"
@@ -366,8 +367,8 @@ export default function ImageManager({ productId, onChange }: ImageManagerProps)
           <div className="space-y-4">
             {galleryImages.map((image) => (
               <div key={image.id} className="border border-gray-300 rounded-lg p-4 bg-white flex gap-4">
-                <div className="w-32 h-32 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                  <img src={image.url} alt={image.title} className="w-full h-full object-cover" />
+                <div className="relative w-32 h-32 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                  <Image src={image.url} alt={image.title} fill sizes="128px" className="object-cover" />
                 </div>
                 <div className="flex-1 space-y-3">
                   <input type="text" value={image.title} onChange={(e) => updateGallery(image.id, 'title', e.target.value)} placeholder="标题（可选）" className="w-full px-3 py-2 border border-gray-300 rounded" />

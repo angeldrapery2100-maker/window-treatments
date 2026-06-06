@@ -1,6 +1,7 @@
 "use client"
 
 import { CDN_BASE } from '@/lib/cdn'
+import Image from 'next/image'
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -56,7 +57,7 @@ function ScenePairBlock({ scene, index, scenes, onImg }: {
   return (
     <div className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} gap-6`}>
       <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, index)}>
-        <img src={`${IMG}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+        <Image src={`${IMG}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
         {scene.label && (
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -80,7 +81,7 @@ function CardGrid({ title, cols, cards, onImg }: { title: string; cols: number; 
         {cards.map((c, i) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${c.image}`} alt={c.title} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${c.image}`} alt={c.title} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <h4 className="font-semibold text-sm text-gray-900 mb-1">{c.title}</h4>
             <p className="text-xs text-gray-500 leading-relaxed">{c.desc}</p>
@@ -101,7 +102,7 @@ function ComparisonGrid({ title, cols, items, onImg }: { title: string; cols: nu
         {items.map((item, i) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${item.image}`} alt={item.label} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900 whitespace-pre-line">{item.label}</p>
             {item.sublabel && <p className="text-xs text-gray-500 mt-0.5 whitespace-pre-line">{item.sublabel}</p>}
@@ -126,7 +127,7 @@ function MountingGrid({ title, rows, onImg }: { title: string; rows: { items: an
               return (
                 <div key={i}>
                   <div className="rounded-md overflow-hidden bg-gray-200 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, currentIndex)}>
-                    <img src={`${IMG}/${item.image}`} alt={`${item.label} ${item.sublabel || ''}`} className="w-full h-auto" loading="lazy" />
+                    <Image src={`${IMG}/${item.image}`} alt={`${item.label} ${item.sublabel || ''}`} width={400} height={400} sizes="(max-width: 768px) 33vw, 25vw" className="w-full h-auto" />
                   </div>
                   <p className="text-xs font-semibold text-gray-900">{item.label}</p>
                   {item.sublabel && <p className="text-xs text-gray-500 italic">{item.sublabel}</p>}
@@ -163,7 +164,7 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
                 return (
                   <div key={i}>
                     <div className="rounded-md overflow-hidden bg-gray-200 cursor-zoom-in mb-2" onClick={() => onImg(allImgs, currentIndex)}>
-                      <img src={`${IMG}/${item.image}`} alt={`${item.label} ${item.sublabel}`} className="w-full h-auto" loading="lazy" />
+                      <Image src={`${IMG}/${item.image}`} alt={`${item.label} ${item.sublabel}`} width={400} height={400} sizes="(max-width: 768px) 33vw, 25vw" className="w-full h-auto" />
                     </div>
                     <p className="text-xs font-semibold text-gray-900">{item.label}</p>
                     <p className="text-xs text-gray-500 italic">{item.sublabel}</p>
@@ -199,8 +200,8 @@ function HardwareColors({ title, brandLabel, items }: { title: string; brandLabe
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
         {items.map((item, i) => (
           <div key={i} className="text-center">
-            <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
-              <img src={`${IMG}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
+              <Image src={`${IMG}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 25vw, 12vw" className="object-cover" />
             </div>
             <p className="text-[10px] text-gray-600 leading-tight">{item.label}</p>
           </div>
@@ -240,8 +241,8 @@ function LinerSection({ data, onImg }: { data: any; onImg: (images: LightboxImag
         const currentIndex = imgIndex++
         return (
           <div key={i} className="text-center cursor-zoom-in" onClick={() => onImg(allImgs, currentIndex)}>
-            <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
-              <img src={`${IMG}/${c.image}`} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
+              <Image src={`${IMG}/${c.image}`} alt={c.label} fill sizes="(max-width: 768px) 33vw, 16vw" className="object-cover" />
             </div>
             <p className="text-[10px] text-gray-600 leading-tight whitespace-pre-line">{c.label}</p>
           </div>
@@ -261,7 +262,7 @@ function LinerSection({ data, onImg }: { data: any; onImg: (images: LightboxImag
             return (
               <div key={i}>
                 <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(allImgs, currentIndex)}>
-                  <img src={`${IMG}/${img.image}`} alt={img.label} className="w-full h-auto" loading="lazy" />
+                  <Image src={`${IMG}/${img.image}`} alt={img.label} width={600} height={400} sizes="(max-width: 768px) 50vw, 30vw" className="w-full h-auto" />
                 </div>
                 {img.label && <p className="text-xs text-gray-600 whitespace-pre-line">{img.label}</p>}
               </div>
@@ -289,7 +290,7 @@ function LinerSection({ data, onImg }: { data: any; onImg: (images: LightboxImag
             return (
               <div key={i}>
                 <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(allImgs, currentIndex)}>
-                  <img src={`${IMG}/${st.image}`} alt={st.label} className="w-full h-auto" loading="lazy" />
+                  <Image src={`${IMG}/${st.image}`} alt={st.label} width={400} height={400} sizes="(max-width: 768px) 33vw, 20vw" className="w-full h-auto" />
                 </div>
                 <p className="text-xs text-gray-600 whitespace-pre-line">{st.label}</p>
               </div>
@@ -306,7 +307,7 @@ function LinerSection({ data, onImg }: { data: any; onImg: (images: LightboxImag
               return (
                 <div key={i}>
                   <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(allImgs, currentIndex)}>
-                    <img src={`${IMG}/${opt.image}`} alt={opt.title} className="w-full h-auto" loading="lazy" />
+                    <Image src={`${IMG}/${opt.image}`} alt={opt.title} width={400} height={400} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
                   </div>
                   <p className="text-xs font-semibold text-gray-900">{opt.title}</p>
                   <p className="text-[11px] text-gray-500">{opt.desc}</p>
@@ -341,7 +342,7 @@ function ShadeStylesSection({ section, onImg }: { section: any; onImg: (images: 
       <div className="flex justify-end gap-6 mb-6">
         {(section.topImages || []).map((img: any, i: number) => (
           <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
-            <img src={`${IMG}/${img.image}`} alt="" className="h-80 w-auto object-contain" loading="lazy" />
+            <Image src={`${IMG}/${img.image}`} alt="" width={400} height={320} sizes="(max-width: 768px) 50vw, 25vw" className="h-80 w-auto object-contain" />
           </div>
         ))}
       </div>
@@ -350,7 +351,7 @@ function ShadeStylesSection({ section, onImg }: { section: any; onImg: (images: 
         {(section.lineDrawings || []).map((d: any, i: number) => (
           <div key={i}>
             <div className="cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, imgIndex + i)}>
-              <img src={`${IMG}/${d.image}`} alt={d.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${d.image}`} alt={d.label} width={400} height={400} sizes="(max-width: 768px) 33vw, 25vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{d.label}</p>
             {d.desc && <p className="text-xs text-gray-500 mt-1 leading-relaxed italic">{d.desc}</p>}
@@ -376,7 +377,7 @@ function EdgeBandingSection({ data, onImg }: { data: any; onImg: (images: Lightb
         {(data.widths || []).map((w: any, i: number) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${w.image}`} alt={w.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${w.image}`} alt={w.label} width={600} height={400} sizes="(max-width: 768px) 50vw, 30vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900 text-center">{w.label}</p>
             {w.sublabel && <p className="text-xs text-gray-500 text-center italic">{w.sublabel}</p>}
@@ -389,8 +390,8 @@ function EdgeBandingSection({ data, onImg }: { data: any; onImg: (images: Lightb
       <div className="grid grid-cols-2 gap-x-8 gap-y-3">
         {(data.colors || []).map((c: any, i: number) => (
           <div key={i} className="flex items-center gap-3 cursor-zoom-in" onClick={() => onImg(sectionImgs, widthCount + i)}>
-            <div className="w-20 h-12 rounded-sm overflow-hidden border border-gray-200 flex-shrink-0">
-              <img src={`${IMG}/${c.image}`} alt={c.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative w-20 h-12 rounded-sm overflow-hidden border border-gray-200 flex-shrink-0">
+              <Image src={`${IMG}/${c.image}`} alt={c.label} fill sizes="80px" className="object-cover" />
             </div>
             <p className="text-sm text-gray-700">{c.label}</p>
           </div>
@@ -409,7 +410,7 @@ function GalleryGrid({ scenes, onImg }: { scenes: { image: string; text: string;
       {scenes.map((s, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? "md:col-span-2" : ""}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <img src={`${IMG}/${s.image}`} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          <Image src={`${IMG}/${s.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(s.text || s.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {s.text && <p className="text-white/90 text-sm leading-relaxed">{s.text}</p>}
@@ -433,7 +434,7 @@ function SwatchPanel({ collection, onImg }: { collection: SwatchCollection; onIm
         {collection.swatches.map((sw, i) => (
           <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
             <div className="rounded-md overflow-hidden bg-gray-50 border border-gray-200 hover:border-gray-400 transition-colors mb-2">
-              <img src={`${IMG}/${sw.image}`} alt={sw.colorName} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${sw.image}`} alt={sw.colorName} width={400} height={400} sizes="(max-width: 768px) 50vw, 16vw" className="w-full h-auto" />
             </div>
             <p className="text-xs font-bold text-gray-800 tracking-wide">{sw.colorName}</p>
             {sw.specs.map((spec, j) => (
@@ -515,7 +516,7 @@ export default function ProvenanceDetailClient({ product, related, footer }: Pro
 
       {/* ─── Hero ─── */}
       <section className="relative w-full overflow-hidden">
-        <img src={`${IMG}/${L.heroImage}`} alt={L.name} className="w-full h-auto" />
+        <Image src={`${IMG}/${L.heroImage}`} alt={L.name} width={1920} height={1080} priority sizes="100vw" className="w-full h-auto" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
         <div className="absolute top-8 left-8 z-20">
           <Link href="/" aria-label="Angel Drapery — home"><span className="block text-xl md:text-2xl font-light tracking-[0.2em] text-white drop-shadow-lg hover:text-gray-300 transition-colors">ANGEL DRAPERY, INC</span></Link>
@@ -615,9 +616,10 @@ export default function ProvenanceDetailClient({ product, related, footer }: Pro
                   className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {r.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`${CDN_BASE}/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image src={`${CDN_BASE}/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
+                          fill sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100"><span className="text-gray-400 text-xs">{r.name}</span></div>

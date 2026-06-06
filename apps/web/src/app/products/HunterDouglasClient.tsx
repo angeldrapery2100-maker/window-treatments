@@ -3,6 +3,7 @@
 import { CDN_BASE } from '@/lib/cdn'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion } from 'framer-motion'
@@ -142,10 +143,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
             )
           }
           return (
-            <img
+            <Image
               src={bgUrl}
               alt="Premium window treatments"
-              className="absolute inset-0 w-full h-full object-cover"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
           )
         })()}
@@ -192,10 +196,12 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/handcrafted-drapery"
                 className="group block relative rounded-[20px] overflow-hidden aspect-[4/5] bg-gray-100"
               >
-                <img
+                <Image
                   src="/drapery/handcrafted-drapery/IMG_0547.JPG"
                   alt="Handcrafted Drapery"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
@@ -220,10 +226,12 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/handcrafted-roman-shade"
                 className="group block relative rounded-[20px] overflow-hidden aspect-[4/5] bg-gray-100"
               >
-                <img
+                <Image
                   src="/roman-shade/IMG_0298_Original.JPG"
                   alt="Handcrafted Roman Shade"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
@@ -248,10 +256,12 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/handcrafted-top-treatment"
                 className="group block relative rounded-[20px] overflow-hidden aspect-[4/5] bg-gray-100"
               >
-                <img
+                <Image
                   src="/top-treatments/cover.jpg"
                   alt="Handcrafted Top Treatment"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
@@ -337,10 +347,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8] relative">
                     {imgSrc ? (
                       <div className="w-full h-full flex items-center justify-center p-3">
-                        <img
+                        <Image
                           src={imgSrc}
                           alt={product.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                          width={400}
+                          height={300}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 25vw"
+                          className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-700"
                           loading="lazy"
                         />
                       </div>
@@ -413,11 +426,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/lutron-palladiom"
                 className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#1E1E1C] border border-white/5 hover:border-white/15 transition-all duration-500 shadow-2xl hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)] h-full"
               >
-                <div className="aspect-square overflow-hidden">
-                  <img
+                <div className="relative aspect-square overflow-hidden">
+                  <Image
                     src="/lutron/palladiom/hero.jpg"
                     alt="Lutron PALLADIOM Shading System"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <div className="flex flex-col justify-center p-7 md:p-8 flex-1">
@@ -514,11 +529,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/luma-collection"
                 className="group block relative rounded-[20px] overflow-hidden bg-white border border-gray-100 hover:border-gray-200 transition-all duration-500 shadow-sm hover:shadow-xl"
               >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
                     src="/luma-collection/lifestyle-dining-room.png"
                     alt="Luma Collection Zebra Shades"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <div className="p-7 md:p-8">
@@ -547,11 +564,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/roller-collection"
                 className="group block relative rounded-[20px] overflow-hidden bg-white border border-gray-100 hover:border-gray-200 transition-all duration-500 shadow-sm hover:shadow-xl"
               >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
                     src="/roller-collection/lifestyle-floor-to-ceiling.png"
                     alt="Luma Roller Shades"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <div className="p-7 md:p-8">
@@ -580,11 +599,13 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                 href="/products/sheer-collection"
                 className="group block relative rounded-[20px] overflow-hidden bg-white border border-gray-100 hover:border-gray-200 transition-all duration-500 shadow-sm hover:shadow-xl"
               >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
                     src="/sheer-collection/lifestyle-sheer-living-room.png"
                     alt="Luma Sheer Shades"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <div className="p-7 md:p-8">

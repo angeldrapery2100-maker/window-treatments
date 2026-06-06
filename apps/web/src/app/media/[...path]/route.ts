@@ -31,6 +31,21 @@ import { GetObjectCommand, NoSuchKey } from '@aws-sdk/client-s3'
 // front.
 export const runtime = 'nodejs'
 
+// Defense-in-depth: only allow proxying objects under known top-level prefixes,
+// so this route can never be used to enumerate/exfiltrate other objects if a
+// non-public key ever lands in the bucket. Override via MEDIA_ALLOWED_PREFIXES
+// (comma-separated) if new collections are added.
+const DEFAULT_PREFIXES = [
+  'site', 'products', 'uploads',
+  'gallery-videos', 'gallery-posters',
+  'roller', 'sheer', 'luma', 'lutron', 'zebra', 'shangrila', 'roman', 'hunter-douglas',
+]
+const ALLOWED_PREFIXES = new Set(
+  (process.env.MEDIA_ALLOWED_PREFIXES
+    ? process.env.MEDIA_ALLOWED_PREFIXES.split(',').map((p) => p.trim()).filter(Boolean)
+    : DEFAULT_PREFIXES)
+)
+
 type Ctx = { params: Promise<{ path: string[] }> }
 
 export async function GET(_request: Request, ctx: Ctx) {
@@ -46,6 +61,11 @@ export async function GET(_request: Request, ctx: Ctx) {
     if (!seg || seg === '..' || seg.includes('\0')) {
       return NextResponse.json({ error: 'Invalid key' }, { status: 400 })
     }
+  }
+
+  // Enforce the top-level prefix allowlist.
+  if (!ALLOWED_PREFIXES.has(path[0])) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   const key = path.join('/')

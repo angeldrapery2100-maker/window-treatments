@@ -9,7 +9,8 @@ import { loadLayout } from './layoutFactory'
 import { getPageContent, getText } from '@/lib/content'
 import pool from '@/lib/db'
 
-export const dynamic = 'force-dynamic'
+// ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
+export const revalidate = 300
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 
 interface ImageData {
@@ -27,7 +28,11 @@ interface Props {
 
 function CmsImg({ data, className, placeholder }: { data: ImageData | null; className?: string; placeholder?: string }) {
   if (data?.url) {
-    return <img src={data.url} alt={data.alt} className={className} style={{ objectFit: data.fit as any }} />
+    return (
+      <div className={`relative ${className || ''}`}>
+        <Image src={data.url} alt={data.alt} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: data.fit as any }} />
+      </div>
+    )
   }
   return (
     <div className={`bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center ${className || ''}`}>
@@ -65,7 +70,7 @@ export default function AboutClient({ hero, story, values, services, brands, foo
       <section className="relative w-full h-[60vh] overflow-hidden">
         <div className="absolute inset-0">
           {hero.bgImage?.url ? (
-            <img src={hero.bgImage.url} alt="" className="w-full h-full object-cover" />
+            <Image src={hero.bgImage.url} alt="" fill priority sizes="100vw" className="object-cover" />
           ) : (
             <div className="w-full h-full bg-gradient-to-b from-gray-900 to-gray-800" />
           )}
@@ -149,12 +154,14 @@ export default function AboutClient({ hero, story, values, services, brands, foo
             <div ref={productsScrollRef} className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide scroll-smooth px-8">
               {featuredProducts.map((product, i) => (
                 <Link key={i} href={product.href} className="flex-shrink-0 w-[280px] md:w-[320px] text-center group cursor-pointer">
-                  <div className="aspect-square rounded-lg shadow-xl mb-4 overflow-hidden group-hover:shadow-2xl transition-all group-hover:scale-105 duration-300 bg-gradient-to-br from-gray-200 to-gray-100">
+                  <div className="relative aspect-square rounded-lg shadow-xl mb-4 overflow-hidden group-hover:shadow-2xl transition-all group-hover:scale-105 duration-300 bg-gradient-to-br from-gray-200 to-gray-100">
                     {product.image ? (
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="(max-width: 768px) 280px, 320px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

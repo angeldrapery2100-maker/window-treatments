@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { queryOne, query } from '@/lib/db'
+import { errorResponse } from '@/lib/apiError'
 
 export async function POST(request: Request) {
   try {
@@ -72,8 +73,8 @@ export async function POST(request: Request) {
         description: discount.description,
       }
     })
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+  } catch (e) {
+    return errorResponse('Could not validate discount code.', 500, e)
   }
 }
 

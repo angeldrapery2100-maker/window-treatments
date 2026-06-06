@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // ============================================================
 // Types
@@ -582,9 +583,9 @@ export default function AccountPage() {
                           <div className="px-5 py-4 space-y-2.5">
                             {order.items.map((item, idx) => (
                               <div key={idx} className="flex gap-3 p-3 bg-gray-50 rounded-md">
-                                <div className="w-12 h-12 flex-shrink-0 rounded-md overflow-hidden bg-gray-200">
+                                <div className="relative w-12 h-12 flex-shrink-0 rounded-md overflow-hidden bg-gray-200">
                                   {item.mainImageUrl ? (
-                                    <img src={item.mainImageUrl} alt={item.productName} className="w-full h-full object-cover" />
+                                    <Image src={item.mainImageUrl} alt={item.productName} fill sizes="48px" className="object-cover" />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-300 text-[9px]">No img</div>
                                   )}

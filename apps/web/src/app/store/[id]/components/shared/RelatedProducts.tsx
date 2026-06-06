@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 
 interface RelatedProduct {
   id: string
@@ -78,9 +79,9 @@ export default function RelatedProducts({ currentId }: { currentId: string }) {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {products.map(p => (
             <a key={p.id} href={`/store/${p.id}`} className="group/card block flex-shrink-0 w-[calc(25%-12px)]" style={{ minWidth: '200px' }}>
-              <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
+              <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
                 {p.main_image_url ? (
-                  <img src={p.main_image_url} alt={p.name} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
+                  <Image src={p.main_image_url} alt={p.name} fill sizes="(max-width: 768px) 50vw, 200px" className="object-cover group-hover/card:scale-105 transition-transform duration-300" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-300 text-3xl">📷</div>
                 )}

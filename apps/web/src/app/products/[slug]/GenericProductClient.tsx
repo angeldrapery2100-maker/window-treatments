@@ -2,6 +2,7 @@
 
 import { CDN_BASE } from '@/lib/cdn'
 
+import Image from 'next/image'
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -129,11 +130,11 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
             {section.items.slice(0, 4).map((item: any, i: number) => (
               <div key={i} className="flex flex-col">
                 <div
-                  className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
+                  className="relative rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
                   style={{ aspectRatio: '4/3' }}
                   onClick={() => onImg(sectionImgs, i)}
                 >
-                  <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+                  <Image src={`${imgBase}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
                 </div>
                 <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">{item.sublabel}</p>
@@ -146,11 +147,11 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
             {section.items.slice(4, 7).map((item: any, i: number) => (
               <div key={i + 4} className="flex flex-col">
                 <div
-                  className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
+                  className="relative rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3"
                   style={{ aspectRatio: '4/3' }}
                   onClick={() => onImg(sectionImgs, i + 4)}
                 >
-                  <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+                  <Image src={`${imgBase}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
                 </div>
                 <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">{item.sublabel}</p>
@@ -162,8 +163,8 @@ function ComparisonGridSection({ section, imgBase, onImg }: { section: any; imgB
         <div className={`grid grid-cols-2 ${cols >= 4 ? 'md:grid-cols-4' : cols >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6`}>
           {section.items.map((item: any, i: number) => (
             <div key={i} className={isVignettePowerView ? 'h-full flex flex-col' : ''}>
-              <div className="rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3" style={{ aspectRatio: '4/3' }} onClick={() => onImg(sectionImgs, i)}>
-                <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+              <div className="relative rounded-md overflow-hidden bg-gray-50 cursor-zoom-in mb-3" style={{ aspectRatio: '4/3' }} onClick={() => onImg(sectionImgs, i)}>
+                <Image src={`${imgBase}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
               </div>
               <div className={isVignettePowerView ? 'mt-auto' : ''}>
                 <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
@@ -199,8 +200,8 @@ function HardwareColorsSection({ data, imgBase }: { data: any; imgBase: string }
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
         {data.items.map((item: any, i: number) => (
           <div key={i} className="text-center">
-            <div className="rounded-full overflow-hidden bg-gray-50 border border-gray-200 mb-1.5 mx-auto w-14 h-14">
-              <img src={`${imgBase}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative rounded-full overflow-hidden bg-gray-50 border border-gray-200 mb-1.5 mx-auto w-14 h-14">
+              <Image src={`${imgBase}/${item.image}`} alt={item.label} fill sizes="56px" className="object-cover" />
             </div>
             <p className="text-[9px] text-gray-600 leading-tight">{item.label}</p>
           </div>
@@ -315,7 +316,7 @@ export default function GenericProductClient({ product, related, footer }: Props
 
       <section className="relative w-full overflow-hidden">
         <div className="relative w-full" style={{ paddingBottom: '42%' }}>
-          <img src={`${imgBase}/${layout.heroImage}`} alt={layout.name} className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+          <Image src={`${imgBase}/${layout.heroImage}`} alt={layout.name} fill sizes="100vw" priority className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
         </div>
         <div className="absolute inset-0 flex items-end pb-12 md:pb-16">
@@ -401,12 +402,13 @@ export default function GenericProductClient({ product, related, footer }: Props
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image
                           src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`}
                           alt={item.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                     ) : (

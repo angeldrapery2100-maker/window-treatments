@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/gallery' },
 }
 
-export const dynamic = 'force-dynamic'
+// ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
+export const revalidate = 300
 
 async function getVideoData(): Promise<{ meta: Record<number, any>; customVideos: ProjectVideo[] }> {
   try {

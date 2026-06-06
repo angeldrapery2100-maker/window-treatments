@@ -2,6 +2,7 @@
 
 import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // ────────────────────────────────────────────────
 // Accordion 折叠块
@@ -47,12 +48,14 @@ function RelatedProductCard({ product }: { product: RelatedProduct }) {
   }
   return (
     <Link href={`/store/${product.id}`} className="group block">
-      <div className="aspect-square bg-gray-50 overflow-hidden mb-3 rounded-sm">
+      <div className="relative aspect-square bg-gray-50 overflow-hidden mb-3 rounded-sm">
         {product.main_image_url ? (
-          <img
+          <Image
             src={product.main_image_url}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-200 text-4xl">□</div>

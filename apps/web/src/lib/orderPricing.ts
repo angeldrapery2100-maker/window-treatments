@@ -138,10 +138,18 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
 
   if (discountCode?.trim()) {
     const dc = await queryOne<any>(
-      `SELECT code, type, value, min_order, is_active, max_uses, used_count, starts_at, expires_at
+      // NOTE: table columns are discount_type / discount_value — aliased here so
+      // the rest of this block can read dc.type / dc.value.
+      `SELECT code, discount_type AS type, discount_value AS value,
+              min_order, is_active, max_uses, used_count, starts_at, expires_at
        FROM discount_codes WHERE UPPER(code) = UPPER($1)`,
       [discountCode.trim()]
-    ).catch(() => null)
+    ).catch((err) => {
+      // A real query failure must not be silently treated as "code not found".
+      // Log it server-side; fail closed (no discount) but make the error visible.
+      console.error('[orderPricing] discount lookup failed:', err)
+      return null
+    })
 
     if (dc && dc.is_active) {
       const now    = new Date()

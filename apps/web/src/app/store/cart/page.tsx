@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   getCart, saveCart, removeCartItem, updateCartItemQuantity,
   type Cart, type CartItem
@@ -147,8 +148,8 @@ export default function CartPage() {
                     {/* Product Image - 1:1 rounded */}
                     <div className="w-28 h-28 sm:w-36 sm:h-36 flex-shrink-0 m-3">
                       {item.mainImageUrl ? (
-                        <Link href={`/store/${item.productId}`}>
-                          <img src={item.mainImageUrl} alt={item.productName} className="w-full h-full object-cover rounded-lg hover:opacity-90 transition-opacity" />
+                        <Link href={`/store/${item.productId}`} className="relative block w-full h-full">
+                          <Image src={item.mainImageUrl} alt={item.productName} fill sizes="(max-width: 640px) 112px, 144px" className="object-cover rounded-lg hover:opacity-90 transition-opacity" />
                         </Link>
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs bg-gray-100 rounded-lg">No Image</div>

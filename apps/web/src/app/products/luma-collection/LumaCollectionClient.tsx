@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -166,10 +167,13 @@ export default function LumaCollectionClient() {
 
       {/* ══ HERO ══ */}
       <section className="relative w-full h-[85vh] min-h-[580px] overflow-hidden bg-[#1a1a1a]">
-        <img
+        <Image
           src={`${BASE}/lifestyle-trio-dining.png`}
           alt="Luma Collection Zebra Shades"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/20" />
         <SiteNav activePage="Products" />
@@ -247,11 +251,13 @@ export default function LumaCollectionClient() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
               variants={fadeIn}
             >
-              <div className="aspect-square rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-square rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/lifestyle-dark-livingroom.png`}
                   alt="Zebra shade close-up showing dual layer bands"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -306,8 +312,8 @@ export default function LumaCollectionClient() {
                 transition={{ delay: i * 0.1 } as any}
               >
                 <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={`${BASE}/${item.img}`} alt={item.title} className="w-full h-full object-cover" />
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image src={`${BASE}/${item.img}`} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                   <div className="p-7">
                     <span className={`text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${item.badgeColor}`}>
@@ -394,8 +400,8 @@ export default function LumaCollectionClient() {
                 transition={{ duration: 0.6, delay: i * 0.12 }}
                 className="bg-white/5 border border-white/8 rounded-2xl overflow-hidden"
               >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img src={d.img} alt={d.title} className="w-full h-full object-cover" />
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image src={d.img} alt={d.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-white text-lg font-light tracking-tight mb-2">{d.title}</h3>
@@ -445,11 +451,13 @@ export default function LumaCollectionClient() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
               variants={fadeIn}
             >
-              <div className="aspect-square rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-square rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/lifestyle-remote-living.png`}
                   alt="Motorized zebra shade with smart remote control"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
                 />
               </div>
               {/* Feature callouts */}
@@ -494,10 +502,12 @@ export default function LumaCollectionClient() {
                 className="rounded-2xl overflow-hidden aspect-[16/9] relative group cursor-zoom-in"
                 onClick={() => openLightbox(galleryImages.map(g => `${BASE}/${g.src}`), i, img.alt)}
               >
-                <img
+                <Image
                   src={`${BASE}/${img.src}`}
                   alt={img.alt}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">
@@ -581,10 +591,12 @@ export default function LumaCollectionClient() {
                           onClick={() => openLightbox(colors.map(c => `${SW}/${c}`), selIdx, pattern)}
                           title="Click to zoom"
                         >
-                          <img
+                          <Image
                             src={`${SW}/${colors[selIdx]}`}
                             alt={`${pattern} fabric`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                           {/* Zoom hint */}
                           <span className="absolute bottom-2 right-2 bg-black/50 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -626,12 +638,12 @@ export default function LumaCollectionClient() {
                                     setSelectedColors(prev => ({ ...prev, [pattern]: ci }))
                                     openLightbox(colors.map(x => `${SW}/${x}`), ci, pattern)
                                   }}
-                                  className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-150 hover:scale-105 ${
+                                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all duration-150 hover:scale-105 ${
                                     selIdx === ci ? 'border-[#4DB6E8] shadow-md' : 'border-transparent hover:border-gray-300'
                                   }`}
                                   title={`${pattern} color ${ci + 1}`}
                                 >
-                                  <img src={`${SW}/${c}`} alt={`${pattern} color ${ci + 1}`} className="w-full h-full object-cover" />
+                                  <Image src={`${SW}/${c}`} alt={`${pattern} color ${ci + 1}`} fill sizes="80px" className="object-cover" />
                                 </button>
                               ))}
                             </div>
@@ -737,16 +749,22 @@ export default function LumaCollectionClient() {
               </button>
 
               {/* Main image */}
-              <motion.img
+              <motion.div
                 key={lightbox.idx}
-                src={lightbox.srcs[lightbox.idx]}
-                alt={`${lightbox.patternName} color ${lightbox.idx + 1}`}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="w-full max-h-[75vh] rounded-2xl object-contain shadow-2xl"
-              />
+              >
+                <Image
+                  src={lightbox.srcs[lightbox.idx]}
+                  alt={`${lightbox.patternName} color ${lightbox.idx + 1}`}
+                  width={1440}
+                  height={1080}
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                  className="w-full h-auto max-h-[75vh] rounded-2xl object-contain shadow-2xl"
+                />
+              </motion.div>
 
               {/* Caption */}
               <p className="text-white/60 text-center text-sm mt-4 tracking-wide">
@@ -778,11 +796,11 @@ export default function LumaCollectionClient() {
                     <button
                       key={i}
                       onClick={() => setLightbox(prev => prev ? { ...prev, idx: i } : null)}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
                         lightbox.idx === i ? 'border-[#4DB6E8] scale-110' : 'border-transparent opacity-50 hover:opacity-80'
                       }`}
                     >
-                      <img src={s} alt="" className="w-full h-full object-cover" />
+                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

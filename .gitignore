@@ -47,3 +47,7 @@ apps/web/public/lutron/
 apps/web/public/drapery/
 apps/web/public/roman-shade/
 apps/web/public/top-treatments/
+
+# Optimized media output from scripts/optimize-media.mjs — uploaded to R2,
+# never committed (~1.9GB of avif/webp/mp4).
+apps/web/public-optimized/

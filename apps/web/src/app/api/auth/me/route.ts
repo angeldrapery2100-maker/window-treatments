@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getUserFromRequest } from '@/lib/auth'
 import { queryOne, query } from '@/lib/db'
+import { errorResponse } from '@/lib/apiError'
 
 export async function GET(request: Request) {
   try {
@@ -18,8 +19,8 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: { user } })
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+  } catch (e) {
+    return errorResponse('Could not load profile.', 500, e)
   }
 }
 
@@ -50,8 +51,8 @@ export async function PATCH(request: Request) {
     await queryOne(`UPDATE users SET ${fields.join(', ')} WHERE id = $${idx}`, values)
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+  } catch (e) {
+    return errorResponse('Could not update profile.', 500, e)
   }
 }
 

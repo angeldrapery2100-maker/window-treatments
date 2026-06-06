@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -112,8 +113,10 @@ function StyleGrid({
               onClick={() => onOpen(srcs, i)}
             >
               <div className="overflow-hidden">
-                <img
+                <Image
                   src={style.image} alt={style.name} loading="lazy"
+                  width={600} height={450}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   className="w-full h-auto block group-hover:scale-[1.03] transition-transform duration-500"
                 />
               </div>
@@ -160,10 +163,13 @@ export default function HandcraftedTopTreatmentPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="relative w-full h-[70vh] min-h-[520px] overflow-hidden bg-[#2a2a2a]">
-        <img
+        <Image
           src={`${BASE}/cover.jpg`}
           alt="Handcrafted Top Treatment"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/65" />
         <SiteNav activePage="Products" />
@@ -246,11 +252,13 @@ export default function HandcraftedTopTreatmentPage() {
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeIn}
             >
-              <div className="rounded-3xl overflow-hidden aspect-[4/3]">
-                <img
+              <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
+                <Image
                   src={`${BASE}/board-mounted-valances/image_013.jpg`}
                   alt="Board mounted valance in a bright interior"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -306,7 +314,7 @@ export default function HandcraftedTopTreatmentPage() {
                 className="rounded-2xl overflow-hidden cursor-zoom-in group"
                 onClick={() => openLightbox([`${BASE}/cornices/image_014.jpg`, `${BASE}/cornices/image_015.jpg`], i)}
               >
-                <img src={src} alt={`Cornice installation ${i + 1}`} className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
+                <Image src={src} alt={`Cornice installation ${i + 1}`} width={800} height={600} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
               </motion.div>
             ))}
           </div>
@@ -337,7 +345,7 @@ export default function HandcraftedTopTreatmentPage() {
                 className="rounded-2xl overflow-hidden cursor-zoom-in group"
                 onClick={() => openLightbox([`${BASE}/board-mounted-valances/image_013.jpg`, `${BASE}/board-mounted-valances/image_014.jpg`], i)}
               >
-                <img src={src} alt={`Board mounted valance ${i + 1}`} className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
+                <Image src={src} alt={`Board mounted valance ${i + 1}`} width={800} height={600} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
               </motion.div>
             ))}
           </div>
@@ -368,7 +376,7 @@ export default function HandcraftedTopTreatmentPage() {
                 className="rounded-2xl overflow-hidden cursor-zoom-in group"
                 onClick={() => openLightbox([`${BASE}/rod-mounted-valances/image_010.jpg`, `${BASE}/rod-mounted-valances/image_011.jpg`], i)}
               >
-                <img src={src} alt={`Rod mounted valance ${i + 1}`} className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
+                <Image src={src} alt={`Rod mounted valance ${i + 1}`} width={800} height={600} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
               </motion.div>
             ))}
           </div>
@@ -403,7 +411,7 @@ export default function HandcraftedTopTreatmentPage() {
                   className="rounded-2xl overflow-hidden cursor-zoom-in group"
                   onClick={() => openLightbox(swagInstallations, i)}
                 >
-                  <img src={src} alt={`Swag installation ${i + 1}`} className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
+                  <Image src={src} alt={`Swag installation ${i + 1}`} width={800} height={1000} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500" loading="lazy" />
                 </motion.div>
               </div>
             ))}
@@ -458,7 +466,7 @@ export default function HandcraftedTopTreatmentPage() {
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
                   </button>
                 )}
-                <img src={lightbox.srcs[lightbox.idx]} alt="" className="w-full max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
+                <Image src={lightbox.srcs[lightbox.idx]} alt="" width={1440} height={1080} sizes="(max-width: 1440px) 100vw, 1440px" className="w-full h-auto max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
                 {lightbox.srcs.length > 1 && (
                   <button onClick={lbNext} className="absolute right-0 translate-x-12 text-white/50 hover:text-white hidden md:block">
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
@@ -471,9 +479,9 @@ export default function HandcraftedTopTreatmentPage() {
                     <button
                       key={s}
                       onClick={() => setLightbox(prev => prev ? { ...prev, idx: i } : null)}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                      className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'}`}
                     >
-                      <img src={s} alt="" className="w-full h-full object-cover" />
+                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

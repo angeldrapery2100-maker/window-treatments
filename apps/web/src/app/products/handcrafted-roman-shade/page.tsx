@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -91,10 +92,13 @@ export default function HandcraftedRomanShadePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="relative w-full h-[70vh] min-h-[520px] overflow-hidden bg-[#2a2a2a]">
-        <img
+        <Image
           src={`${IMG}/IMG_0298_Original.JPG`}
           alt="Handcrafted Roman Shade"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/65" />
         <SiteNav activePage="Products" />
@@ -157,11 +161,13 @@ export default function HandcraftedRomanShadePage() {
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeIn}
             >
-              <div className="rounded-3xl overflow-hidden aspect-[4/3]">
-                <img
+              <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
+                <Image
                   src={`${IMG}/Front_Fold_Roman_Shade_2.jpg`}
                   alt="Front Fold Roman Shade"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -226,8 +232,8 @@ export default function HandcraftedRomanShadePage() {
                 initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }} variants={fadeUp}
                 className={`flex flex-col ${step.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 items-center`}
               >
-                <div className="md:w-1/2 rounded-3xl overflow-hidden aspect-square cursor-zoom-in" onClick={() => openLightbox(styleSrcs, i)}>
-                  <img src={step.img} alt={step.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                <div className="relative md:w-1/2 rounded-3xl overflow-hidden aspect-square cursor-zoom-in" onClick={() => openLightbox(styleSrcs, i)}>
+                  <Image src={step.img} alt={step.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="md:w-1/2 space-y-4">
                   <h3 className="text-2xl md:text-3xl font-light tracking-tighter text-[#12141C]">{step.title}</h3>
@@ -258,8 +264,8 @@ export default function HandcraftedRomanShadePage() {
                 className="bg-white rounded-2xl overflow-hidden shadow-sm cursor-zoom-in group"
                 onClick={() => openLightbox(styleSrcs, i)}
               >
-                <div className="aspect-square overflow-hidden">
-                  <img src={style.image} alt={style.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="relative aspect-square overflow-hidden">
+                  <Image src={style.image} alt={style.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-base font-semibold text-[#12141C] mb-2 tracking-tight">{style.name}</h3>
@@ -284,10 +290,10 @@ export default function HandcraftedRomanShadePage() {
                 key={img.src}
                 initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-30px' }}
                 variants={{ hidden: { opacity: 0, scale: 0.97 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: i * 0.07 } } }}
-                className="rounded-2xl overflow-hidden aspect-[3/4] cursor-zoom-in group"
+                className="relative rounded-2xl overflow-hidden aspect-[3/4] cursor-zoom-in group"
                 onClick={() => openLightbox(installSrcs, i)}
               >
-                <img src={img.src} alt={img.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <Image src={img.src} alt={img.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
               </motion.div>
             ))}
           </div>
@@ -341,7 +347,7 @@ export default function HandcraftedRomanShadePage() {
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                   </button>
                 )}
-                <img src={lightbox.srcs[lightbox.idx]} alt="" className="w-full max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
+                <Image src={lightbox.srcs[lightbox.idx]} alt="" width={1440} height={1080} sizes="(max-width: 1440px) 100vw, 1440px" className="w-full h-auto max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
                 {lightbox.srcs.length > 1 && (
                   <button onClick={lbNext} className="absolute right-0 translate-x-12 text-white/50 hover:text-white hidden md:block">
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
@@ -352,8 +358,8 @@ export default function HandcraftedRomanShadePage() {
                 <div className="flex justify-center gap-2 mt-4 flex-wrap">
                   {lightbox.srcs.map((s, i) => (
                     <button key={s} onClick={() => setLightbox(prev => prev ? { ...prev, idx: i } : null)}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'}`}>
-                      <img src={s} alt="" className="w-full h-full object-cover" />
+                      className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'}`}>
+                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

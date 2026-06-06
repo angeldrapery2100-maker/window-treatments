@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { motion } from 'framer-motion'
@@ -136,11 +137,13 @@ export default function LutronPalladiomClient() {
               variants={fadeIn}
               className="relative"
             >
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p2-machining.jpg`}
                   alt="Precision machining of PALLADIOM bracket"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-[#12141C] text-white px-6 py-4 rounded-2xl shadow-2xl hidden md:block">
@@ -175,12 +178,14 @@ export default function LutronPalladiomClient() {
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
               variants={fadeIn}
-              className="aspect-[4/3] rounded-3xl overflow-hidden"
+              className="relative aspect-[4/3] rounded-3xl overflow-hidden"
             >
-              <img
+              <Image
                 src={`${BASE}/p3-keypads.jpg`}
                 alt="Lutron smart keypads and thermostat on wall"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
               />
             </motion.div>
 
@@ -190,11 +195,13 @@ export default function LutronPalladiomClient() {
               variants={fadeUp}
               className="flex flex-col justify-between gap-6"
             >
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p3-mount-closeup.jpg`}
                   alt="PALLADIOM ceiling mount close-up"
-                  className="w-full h-full object-cover object-top"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover object-top"
                 />
               </div>
               <div className="bg-white rounded-3xl p-8 md:p-10">
@@ -214,15 +221,21 @@ export default function LutronPalladiomClient() {
           SECTION 3 — FULL-WIDTH LIFESTYLE (VIEW)
       ══════════════════════════════════════════ */}
       <section className="relative w-full h-[70vh] min-h-[500px] overflow-hidden">
-        <motion.img
+        <motion.div
           initial={{ scale: 1.05 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-          src={`${BASE}/p4-living-room.jpg`}
-          alt="PALLADIOM shades in a modern open-plan living room"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
+          className="absolute inset-0"
+        >
+          <Image
+            src={`${BASE}/p4-living-room.jpg`}
+            alt="PALLADIOM shades in a modern open-plan living room"
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-16 w-full">
@@ -252,11 +265,13 @@ export default function LutronPalladiomClient() {
               variants={fadeIn}
               className="order-2 md:order-1"
             >
-              <div className="aspect-[16/10] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[16/10] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p5-room-shades.jpg`}
                   alt="PALLADIOM shades fully deployed in glass-wall living room"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -334,11 +349,13 @@ export default function LutronPalladiomClient() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
               variants={fadeIn}
             >
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p6-interior-large.jpg`}
                   alt="PALLADIOM shades in a bright modern interior"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -369,11 +386,13 @@ export default function LutronPalladiomClient() {
               variants={fadeIn}
               className="relative"
             >
-              <div className="aspect-[3/4] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p7-fabric-closeup.jpg`}
                   alt="PALLADIOM fabric texture close-up"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -384,11 +403,13 @@ export default function LutronPalladiomClient() {
               variants={fadeUp}
               className="flex flex-col gap-6"
             >
-              <div className="aspect-[16/10] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[16/10] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p7-kitchen.jpg`}
                   alt="PALLADIOM shades installed in a modern kitchen"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
               <div className="bg-[#F7F6F3] rounded-3xl p-8 md:p-10 flex-1">
@@ -413,12 +434,14 @@ export default function LutronPalladiomClient() {
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true }}
             variants={fadeIn}
-            className="aspect-[4/3] md:aspect-auto md:min-h-[600px] overflow-hidden"
+            className="relative aspect-[4/3] md:aspect-auto md:min-h-[600px] overflow-hidden"
           >
-            <img
+            <Image
               src={`${BASE}/p8-loft.jpg`}
               alt="PALLADIOM shades in an industrial loft with large windows"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
           </motion.div>
 
@@ -437,10 +460,13 @@ export default function LutronPalladiomClient() {
                 Lutron automated shades are already the quietest in the industry. PALLADIOM continues the tradition: it is all but imperceptible.
               </p>
               <div className="border-t border-white/10 pt-8">
-                <img
+                <Image
                   src={`${BASE}/p8-bracket-overhead.jpg`}
                   alt="PALLADIOM bracket overhead close-up"
-                  className="w-full rounded-2xl"
+                  width={800}
+                  height={600}
+                  sizes="(max-width: 768px) 100vw, 384px"
+                  className="w-full h-auto rounded-2xl"
                 />
               </div>
             </div>
@@ -472,9 +498,12 @@ export default function LutronPalladiomClient() {
               className="md:w-[45%] shrink-0"
             >
               <div className="rounded-3xl overflow-hidden">
-                <img
+                <Image
                   src={`${BASE}/p9-brackets-4up.jpg`}
                   alt="PALLADIOM bracket open/close mechanism — four views"
+                  width={900}
+                  height={1100}
+                  sizes="(max-width: 768px) 100vw, 45vw"
                   className="w-full h-auto"
                 />
               </div>
@@ -558,10 +587,13 @@ export default function LutronPalladiomClient() {
               <div className="mt-12">
                 <p className="text-white/40 text-[11px] font-bold tracking-[0.3em] uppercase mb-6">Bracket Types</p>
                 <div className="rounded-2xl overflow-hidden">
-                  <img
+                  <Image
                     src={`${BASE}/p10-diagrams.jpg`}
                     alt="PALLADIOM end bracket, center bracket, and jamb bracket diagrams"
-                    className="w-full object-cover"
+                    width={900}
+                    height={600}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="w-full h-auto object-cover"
                   />
                 </div>
               </div>
@@ -582,11 +614,13 @@ export default function LutronPalladiomClient() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
               variants={fadeIn}
             >
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden">
-                <img
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+                <Image
                   src={`${BASE}/p10-precision.jpg`}
                   alt="Precision manufacturing of PALLADIOM components"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             </motion.div>

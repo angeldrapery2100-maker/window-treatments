@@ -1,6 +1,7 @@
 'use client'
 
 import { use, useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface OrderItem {
   productName: string
@@ -94,8 +95,8 @@ function DraperyItem({ item, index, fabricWidth }: { item: OrderItem; index: num
   return (
     <div style={{ borderBottom: '1px solid #d1d5db', paddingBottom: 14, marginBottom: 14 }}>
       <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
-          {item.mainImageUrl ? <img src={item.mainImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
+        <div style={{ position: 'relative', width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
+          {item.mainImageUrl ? <Image src={item.mainImageUrl} alt="" fill sizes="75px" style={{ objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontWeight: 700, fontSize: 12 }}>{index}. {item.productName}</p>
@@ -122,8 +123,8 @@ function SheerItem({ item, index, fabricWidth }: { item: OrderItem; index: numbe
   return (
     <div style={{ borderBottom: '1px solid #d1d5db', paddingBottom: 14, marginBottom: 14 }}>
       <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
-          {item.mainImageUrl ? <img src={item.mainImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
+        <div style={{ position: 'relative', width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
+          {item.mainImageUrl ? <Image src={item.mainImageUrl} alt="" fill sizes="75px" style={{ objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontWeight: 700, fontSize: 12 }}>{index}. {item.productName}</p>
@@ -151,8 +152,8 @@ function ShadeItem({ item, index }: { item: OrderItem; index: number }) {
   return (
     <div style={{ borderBottom: '1px solid #d1d5db', paddingBottom: 14, marginBottom: 14 }}>
       <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
-          {item.mainImageUrl ? <img src={item.mainImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
+        <div style={{ position: 'relative', width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
+          {item.mainImageUrl ? <Image src={item.mainImageUrl} alt="" fill sizes="75px" style={{ objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontWeight: 700, fontSize: 12 }}>{index}. {item.productName}</p>
@@ -180,8 +181,8 @@ function HardwareItem({ item, index }: { item: OrderItem; index: number }) {
   return (
     <div style={{ borderBottom: '1px solid #d1d5db', paddingBottom: 14, marginBottom: 14 }}>
       <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
-          {item.mainImageUrl ? <img src={item.mainImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
+        <div style={{ position: 'relative', width: 75, height: 75, flexShrink: 0, border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
+          {item.mainImageUrl ? <Image src={item.mainImageUrl} alt="" fill sizes="75px" style={{ objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#9ca3af' }}>No Img</div>}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontWeight: 700, fontSize: 12 }}>{index}. {item.productName}</p>

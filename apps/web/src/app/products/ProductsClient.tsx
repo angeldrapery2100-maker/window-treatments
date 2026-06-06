@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 
@@ -87,11 +88,13 @@ export default function ProductsClient({ hero, products, footer }: Props) {
                 className="group block rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-xl transition-all"
               >
                 <div className="grid md:grid-cols-2">
-                  <div className="aspect-[4/3] md:aspect-auto">
-                    <img
+                  <div className="relative aspect-[4/3] md:aspect-auto">
+                    <Image
                       src="/drapery/handcrafted-drapery/IMG_0547.JPG"
                       alt="Handcrafted Drapery"
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   </div>
                   <div className="p-8 flex flex-col justify-center">

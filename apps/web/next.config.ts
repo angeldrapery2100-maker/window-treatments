@@ -11,6 +11,15 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@window-treatments/shared"],
   serverExternalPackages: ["pg", "pg-pool", "pg-connection-string", "stripe"],
   images: {
+    // Serve next-gen formats. AVIF first (best compression), WebP fallback.
+    // The browser picks the smallest format it supports automatically.
+    formats: ['image/avif', 'image/webp'],
+    // Responsive breakpoints used to generate srcset for <Image>. Keeps phones
+    // from downloading desktop-resolution photos.
+    deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
+    imageSizes: [64, 96, 128, 256, 384],
+    // Cache optimized variants at the edge for 30 days.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {
         protocol: 'https',

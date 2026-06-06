@@ -222,23 +222,23 @@ export default function ContactClient({ contact, footer }: Props) {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <input
-                name="name" type="text" required placeholder="Your Name *"
+                name="name" type="text" required placeholder="Your Name *" aria-label="Your Name"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all"
               />
               <input
-                name="email" type="email" required placeholder="Email Address *"
+                name="email" type="email" required placeholder="Email Address *" aria-label="Email Address"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all"
               />
               <input
-                name="phone" type="tel" required placeholder="Phone Number *"
+                name="phone" type="tel" required placeholder="Phone Number *" aria-label="Phone Number"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all"
               />
               <input
-                name="address" type="text" placeholder="Project Address (Optional)"
+                name="address" type="text" placeholder="Project Address (Optional)" aria-label="Project Address (optional)"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all"
               />
               <textarea
-                name="message" rows={4} placeholder="Tell us about your window treatment project..."
+                name="message" rows={4} placeholder="Tell us about your window treatment project..." aria-label="Project details"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none"
               />
 

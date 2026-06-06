@@ -2,6 +2,7 @@
 
 import { CDN_BASE } from '@/lib/cdn'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import Link from 'next/link'
@@ -469,7 +470,7 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
       <section className="relative w-full h-[55vh] min-h-[400px] overflow-hidden">
         <div className="absolute inset-0">
           {product.cover_image ? (
-            <img src={`${imgBase}/${product.cover_image}`} alt={product.name} className="w-full h-full object-cover" />
+            <Image src={`${imgBase}/${product.cover_image}`} alt={product.name} fill sizes="100vw" priority className="object-cover" />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#1a2332] to-[#2a3a4e]" />
           )}
@@ -569,9 +570,10 @@ export default function HunterDouglasDetailClient({ product, related, footer }: 
                   className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                          fill sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100"><span className="text-gray-400 text-xs">{item.name}</span></div>

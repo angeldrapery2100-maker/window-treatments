@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import Image from 'next/image'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -401,7 +402,7 @@ export default function InstallationImagesPage() {
 
                 {/* Thumbnail */}
                 <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
-                  <img src={img.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  <Image src={img.image_url} alt="" fill sizes="80px" className="object-cover" />
                   {isDefault && (
                     <div className="absolute top-1 left-1 bg-amber-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
                       默认

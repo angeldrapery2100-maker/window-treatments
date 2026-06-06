@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { registerUser, generateToken } from '@/lib/auth'
+import { errorResponse } from '@/lib/apiError'
 
 export async function POST(request: Request) {
   try {
@@ -8,8 +9,8 @@ export async function POST(request: Request) {
     if (!email || !password || !name) {
       return NextResponse.json({ success: false, error: 'Name, email and password are required' }, { status: 400 })
     }
-    if (password.length < 6) {
-      return NextResponse.json({ success: false, error: 'Password must be at least 6 characters' }, { status: 400 })
+    if (password.length < 8) {
+      return NextResponse.json({ success: false, error: 'Password must be at least 8 characters' }, { status: 400 })
     }
 
     const user = await registerUser(email, password, name, phone)
@@ -25,8 +26,10 @@ export async function POST(request: Request) {
     })
     return res
   } catch (e: any) {
-    const status = e.message?.includes('already registered') ? 409 : 500
-    return NextResponse.json({ success: false, error: e.message }, { status })
+    if (e?.message?.includes('already registered')) {
+      return NextResponse.json({ success: false, error: 'Email already registered' }, { status: 409 })
+    }
+    return errorResponse('Registration failed. Please try again.', 500, e)
   }
 }
 

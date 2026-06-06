@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface OrderItem {
@@ -460,9 +461,9 @@ export default function AdminOrdersPage() {
                           <div className="space-y-3 max-h-[680px] overflow-y-auto pr-1">
                             {order.items.map((item, idx) => (
                               <div key={idx} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
-                                <div className="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
+                                <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
                                   {item.mainImageUrl ? (
-                                    <img src={item.mainImageUrl} alt={item.productName} className="w-full h-full object-cover" />
+                                    <Image src={item.mainImageUrl} alt={item.productName} fill sizes="64px" className="object-cover" />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">No Img</div>
                                   )}

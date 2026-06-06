@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import { getCartCount } from '@/lib/cart'
 
@@ -30,7 +31,7 @@ function ProductCard({ p }: { p: StoreProduct }) {
       className="group cursor-pointer bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 block">
       <div className="aspect-square rounded-t-lg overflow-hidden relative">
         {p.main_image_url ? (
-          <img src={p.main_image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <Image src={p.main_image_url} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center"><span className="text-gray-400 text-lg">{p.name}</span></div>
         )}

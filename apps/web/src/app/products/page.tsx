@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/products' },
 }
 
-export const dynamic = 'force-dynamic'
+// ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
+export const revalidate = 300
 
 // ── Fallback: read HD products from JSON (used if DB catalog is empty) ────────
 async function getHunterDouglasProductsFromJson() {

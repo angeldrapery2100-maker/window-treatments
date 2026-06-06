@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface Product {
@@ -195,7 +196,7 @@ export default function ShowcaseProductsListPage() {
                   {/* Image */}
                   <div className="aspect-square rounded-t-md overflow-hidden relative">
                     {p.cover_image ? (
-                      <img src={p.cover_image} alt={p.name} className="w-full h-full object-cover" />
+                      <Image src={p.cover_image} alt={p.name} fill sizes="(max-width: 768px) 100vw, 350px" className="object-cover" />
                     ) : (
                       <div className="w-full h-full bg-gray-100 flex items-center justify-center">
                         <span className="text-gray-300 text-sm text-center px-4">{p.name}</span>

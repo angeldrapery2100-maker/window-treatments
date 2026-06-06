@@ -1,6 +1,7 @@
 'use client'
 
 import { CDN_BASE } from '@/lib/cdn'
+import Image from 'next/image'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -56,7 +57,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: { image: string; text: st
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
           <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-            <img src={`${IMG_BASE}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+            <Image src={`${IMG_BASE}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
             {scene.label && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                 <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -82,7 +83,7 @@ function CardGridSection({ title, cols, cards, onImg }: { title: string; cols: n
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3"
               onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG_BASE}/${card.image}`} alt={card.title} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG_BASE}/${card.image}`} alt={card.title} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <h4 className="font-semibold text-sm text-gray-900 mb-1">{card.title}</h4>
             <p className="text-xs text-gray-500 leading-relaxed">{card.desc}</p>
@@ -103,7 +104,7 @@ function ComparisonGridSection({ title, cols, items, onImg }: { title: string; c
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3"
               onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG_BASE}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG_BASE}/${item.image}`} alt={item.label} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
             {item.sublabel && <p className="text-xs text-gray-500 mt-0.5">{item.sublabel}</p>}
@@ -130,7 +131,7 @@ function MountingGridSection({ title, rows, onImg }: { title: string; rows: { it
                 <div key={i}>
                   <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2"
                     onClick={() => onImg(sectionImgs, currentIndex)}>
-                    <img src={`${IMG_BASE}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+                    <Image src={`${IMG_BASE}/${item.image}`} alt={item.label} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
                   </div>
                   <p className="text-xs text-gray-600">{item.label}</p>
                 </div>
@@ -156,7 +157,7 @@ function CellSizeSection({ title, brandLabel, items, onImg }: { title: string; b
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2"
               onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG_BASE}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG_BASE}/${item.image}`} alt={item.label} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900">{item.label}</p>
           </div>
@@ -176,8 +177,8 @@ function HardwareColorsSection({ title, brandLabel, items }: { title: string; br
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
         {items.map((item, i) => (
           <div key={i} className="text-center">
-            <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
-              <img src={`${IMG_BASE}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
+              <Image src={`${IMG_BASE}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 25vw, 12vw" className="object-cover" />
             </div>
             <p className="text-[10px] text-gray-600 leading-tight">{item.label}</p>
           </div>
@@ -211,10 +212,10 @@ function SwatchCollectionSection({ collection, onImg }: { collection: any; onImg
                 <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, currentIndex)}>
                   {/* 竖图 + chip叠加 */}
                   <div className="relative rounded-md overflow-hidden bg-gray-50 border border-gray-200 hover:border-gray-400 transition-colors mb-2">
-                    <img src={`${IMG_BASE}/${sw.image}`} alt={sw.colorName} className="w-full h-auto" loading="lazy" />
+                    <Image src={`${IMG_BASE}/${sw.image}`} alt={sw.colorName} width={400} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
                     {sw.chip && (
                       <div className="absolute bottom-3 left-3 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden border-2 border-white shadow-md">
-                        <img src={`${IMG_BASE}/${sw.chip}`} alt={sw.colorName} className="w-full h-full object-cover" loading="lazy" />
+                        <Image src={`${IMG_BASE}/${sw.chip}`} alt={sw.colorName} fill sizes="(max-width: 768px) 256px, 320px" className="object-cover" />
                       </div>
                     )}
                   </div>
@@ -254,7 +255,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, onImg }: {
         <div className="flex flex-col sm:flex-row gap-6 items-start">
           {leftPanel.image && (
             <div className="shrink-0 cursor-zoom-in" onClick={() => onImg(sectionImgs, 0)}>
-              <img src={`${IMG_BASE}/${leftPanel.image}`} alt={leftPanel.title} className="w-36 h-auto rounded-md" loading="lazy" />
+              <Image src={`${IMG_BASE}/${leftPanel.image}`} alt={leftPanel.title} width={144} height={216} sizes="144px" className="w-36 h-auto rounded-md" />
             </div>
           )}
           <div className="flex-1 grid grid-cols-2 gap-x-8 gap-y-3">
@@ -282,7 +283,7 @@ function ControlSystemsSection({ panels, sceneImage, sceneLabel, onImg }: {
             <div key={i}>
               <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2"
                 onClick={() => onImg(sectionImgs, (leftPanel.image ? 1 : 0) + i)}>
-                <img src={`${IMG_BASE}/${item.image}`} alt={item.title} className="w-full h-auto" loading="lazy" />
+                <Image src={`${IMG_BASE}/${item.image}`} alt={item.title} width={400} height={400} sizes="(max-width: 768px) 33vw, 20vw" className="w-full h-auto" />
               </div>
               <p className="font-semibold text-xs text-gray-900">{item.title}</p>
               <p className="text-[11px] text-gray-500 leading-relaxed mt-0.5">{item.desc}</p>
@@ -301,7 +302,7 @@ function GallerySection({ scenes, onImg }: { scenes: { image: string; text: stri
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <img src={`${IMG_BASE}/${scene.image}`} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          <Image src={`${IMG_BASE}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {scene.text && <p className="text-white/90 text-sm leading-relaxed">{scene.text}</p>}
@@ -367,7 +368,7 @@ export default function SilhouetteDetailClient({ product, related, footer }: Pro
 
       {/* ─── Hero ─── */}
       <section className="relative w-full overflow-hidden">
-        <img src={`${IMG_BASE}/${layout.heroImage}`} alt={layout.name} className="w-full h-auto" />
+        <Image src={`${IMG_BASE}/${layout.heroImage}`} alt={layout.name} width={1920} height={1080} priority sizes="100vw" className="w-full h-auto" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
 
         {/* Nav */}
@@ -469,9 +470,10 @@ export default function SilhouetteDetailClient({ product, related, footer }: Pro
                   className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                          fill sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100"><span className="text-gray-400 text-xs">{item.name}</span></div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 // uploadGalleryFile server action removed — presigned URL used instead
 
@@ -336,8 +337,8 @@ export default function GalleryVideosPage() {
                   <div className="space-y-2">
                     {deletedDefaults.map(row => (
                       <div key={row.id} className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-md px-5 py-3 opacity-60">
-                        <div className={`flex-shrink-0 overflow-hidden rounded bg-gray-100 ${row.orientation === 'landscape' ? 'w-16 h-10' : 'w-7 h-10'}`}>
-                          <img src={row.poster} alt={row.title} className="w-full h-full object-cover" />
+                        <div className={`relative flex-shrink-0 overflow-hidden rounded bg-gray-100 ${row.orientation === 'landscape' ? 'w-16 h-10' : 'w-7 h-10'}`}>
+                          <Image src={row.poster} alt={row.title} fill sizes="64px" className="object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-gray-500 truncate">{row.title}</p>
@@ -388,7 +389,7 @@ function DefaultVideoCard({
           className={`relative flex-shrink-0 overflow-hidden rounded bg-gray-100 cursor-pointer ${row.orientation === 'landscape' ? 'w-20 h-12' : 'w-9 h-12'}`}
           onClick={() => setExpanded(e => !e)}
         >
-          <img src={row.poster} alt={row.title} className="w-full h-full object-cover" />
+          <Image src={row.poster} alt={row.title} fill sizes="80px" className="object-cover" />
         </div>
 
         {/* Identity */}
@@ -473,7 +474,7 @@ function CustomVideoCard({ row, onDelete }: { row: CustomVideoRow; onDelete: (db
     <div className="bg-white rounded-md border border-blue-200 overflow-hidden">
       <div className="flex items-center gap-4 px-5 py-3.5">
         <div className={`relative flex-shrink-0 overflow-hidden rounded bg-gray-100 ${row.orientation === 'landscape' ? 'w-20 h-12' : 'w-9 h-12'}`}>
-          <img src={row.poster} alt={row.title} className="w-full h-full object-cover" />
+          <Image src={row.poster} alt={row.title} fill sizes="80px" className="object-cover" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">

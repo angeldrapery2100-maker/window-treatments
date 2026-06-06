@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { type ProjectVideo, DEFAULT_VIDEOS } from '@/lib/gallery-videos-data'
 
@@ -44,10 +45,12 @@ function VideoFrame({ item, onClick }: { item: ProjectVideo; onClick: () => void
         className="relative overflow-hidden rounded-xl"
         style={{ aspectRatio: item.orientation === 'landscape' ? '16/9' : '9/16' }}
       >
-        <img
+        <Image
           src={item.poster}
           alt={item.title}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className={`object-cover transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
         />
         <video
           ref={videoRef}

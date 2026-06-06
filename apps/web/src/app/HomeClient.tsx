@@ -1517,7 +1517,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       className="absolute left-0 right-0 h-[2px] bg-[#06C755] shadow-[0_0_8px_#06C755] z-20 opacity-0"
                     />
                     {contact.qrLine?.url ? (
-                      <img src={contact.qrLine.url} alt="LINE QR" className="w-[85%] h-[85%] object-contain relative z-10" />
+                      <Image src={contact.qrLine.url} alt="LINE QR" width={108} height={108} className="w-[85%] h-[85%] object-contain relative z-10" />
                     ) : (
                       <span className="text-xs text-gray-400">LINE QR</span>
                     )}
@@ -1540,7 +1540,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                       className="absolute left-0 right-0 h-[2px] bg-[#07C160] shadow-[0_0_8px_#07C160] z-20 opacity-0"
                     />
                     {contact.qrWechat?.url ? (
-                      <img src={contact.qrWechat.url} alt="WeChat QR" className="w-[85%] h-[85%] object-contain relative z-10" />
+                      <Image src={contact.qrWechat.url} alt="WeChat QR" width={108} height={108} className="w-[85%] h-[85%] object-contain relative z-10" />
                     ) : (
                       <span className="text-xs text-gray-400">WeChat QR</span>
                     )}

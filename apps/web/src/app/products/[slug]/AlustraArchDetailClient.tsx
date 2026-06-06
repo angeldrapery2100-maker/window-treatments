@@ -1,6 +1,7 @@
 "use client"
 
 import { CDN_BASE } from '@/lib/cdn'
+import Image from 'next/image'
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -56,7 +57,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: SceneRow[]; onImg: (image
         return (
           <div key={i} className={`flex flex-col ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'} gap-6`}>
             <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative aspect-[16/9]" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${scene.image}`} alt="" className="w-full h-full object-cover" loading="lazy" />
+              <Image src={`${IMG}/${scene.image}`} alt="" fill sizes="(max-width: 768px) 100vw, 75vw" className="object-cover" />
               {scene.label && (
                 <div className="absolute bottom-3 right-3 bg-black/65 backdrop-blur-sm px-3 py-2 rounded max-w-[70%]">
                   <p className="text-[15px] text-white/90 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -86,7 +87,7 @@ function CardGrid({ title, cols, cards, onImg }: { title: string; cols: number; 
         {cards.map((c: any, i: number) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${c.image}`} alt={c.title} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${c.image}`} alt={c.title} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <h4 className="font-semibold text-sm text-gray-900 mb-1">{c.title}</h4>
             <p className="text-sm text-gray-500 leading-relaxed">{c.desc}</p>
@@ -108,7 +109,7 @@ function ComparisonGrid({ title, cols, items, onImg }: { title: string; cols: nu
         {items.map((item: any, i: number) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${item.image}`} alt={item.label} width={600} height={600} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-auto" />
             </div>
             <p className="font-semibold text-sm text-gray-900 whitespace-pre-line">{item.label}</p>
             {item.sublabel && <p className="text-[15px] text-gray-500 mt-0.5 whitespace-pre-line">{item.sublabel}</p>}
@@ -130,8 +131,8 @@ function HardwareColors({ data }: { data: any }) {
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
         {data.items.map((item: any, i: number) => (
           <div key={i} className="text-center">
-            <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
-              <img src={`${IMG}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
+              <Image src={`${IMG}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 25vw, 12vw" className="object-cover" />
             </div>
             <p className="text-[15px] text-gray-600 leading-tight">{item.label}</p>
           </div>
@@ -153,7 +154,7 @@ function SwatchPanel({ collection, onImg }: { collection: any; onImg: (images: L
         {collection.swatches.map((sw: any, i: number) => (
           <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
             <div className="rounded-md overflow-hidden bg-gray-50 border border-gray-200 hover:border-gray-400 transition-colors mb-2">
-              <img src={`${IMG}/${sw.image}`} alt={sw.colorName} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${sw.image}`} alt={sw.colorName} width={400} height={400} sizes="(max-width: 768px) 50vw, 16vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] font-bold text-gray-800 tracking-wide">{sw.colorName}</p>
             {sw.specs.map((spec: string, j: number) => (
@@ -174,7 +175,7 @@ function GalleryGrid({ scenes, onImg }: { scenes: { image: string; text: string;
       {scenes.map((s, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? "md:col-span-2" : ""}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <img src={`${IMG}/${s.image}`} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          <Image src={`${IMG}/${s.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(s.text || s.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {s.text && <p className="text-white/90 text-sm leading-relaxed">{s.text}</p>}
@@ -210,21 +211,21 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
       <div className="grid grid-cols-3 gap-6 mb-10">
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(cassette.insideMount))}>
-            <img src={`${IMG}/${cassette.insideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+            <Image src={`${IMG}/${cassette.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{cassette.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{cassette.desc}</p>
         </div>
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(valance.outsideMount))}>
-            <img src={`${IMG}/${valance.outsideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+            <Image src={`${IMG}/${valance.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{valance.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{valance.desc}</p>
         </div>
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(clutch.insideMount))}>
-            <img src={`${IMG}/${clutch.insideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+            <Image src={`${IMG}/${clutch.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{clutch.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{clutch.desc}</p>
@@ -241,13 +242,13 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <div className="grid grid-cols-2 gap-6 mb-5">
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(cassette.insideMount))}>
-              <img src={`${IMG}/${cassette.insideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${cassette.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">{cassette.title}</p>
           </div>
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(cassette.outsideMount))}>
-              <img src={`${IMG}/${cassette.outsideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${cassette.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">{cassette.title}</p>
           </div>
@@ -256,13 +257,13 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <div className="grid grid-cols-2 gap-6">
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(clutch.insideMount))}>
-              <img src={`${IMG}/${clutch.insideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${clutch.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">Custom Clutch Bracket</p>
           </div>
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(clutch.outsideMount))}>
-              <img src={`${IMG}/${clutch.outsideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${clutch.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">Custom Clutch Bracket</p>
           </div>
@@ -274,7 +275,7 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <p className="flex-1 text-2xl md:text-3xl font-light text-gray-600 leading-snug italic">{section.description}</p>
         <div className="md:w-[30%] shrink-0">
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(valance.outsideMount))}>
-            <img src={`${IMG}/${valance.outsideMount}`} alt="" className="w-full h-auto" loading="lazy" />
+            <Image src={`${IMG}/${valance.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{valance.title}</h4>
           <p className="text-[15px] text-gray-500">Outside Mount Valance over Inside Mount Shade</p>
@@ -296,7 +297,7 @@ function ReverseRollSection({ section, onImg }: { section: any; onImg: (images: 
         {section.items.map((item: any, i: number) => (
           <div key={i}>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-3" onClick={() => onImg(sectionImgs, i)}>
-              <img src={`${IMG}/${item.image}`} alt={item.label} className="w-full h-auto" loading="lazy" />
+              <Image src={`${IMG}/${item.image}`} alt={item.label} width={800} height={600} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto" />
             </div>
             <h4 className="font-semibold text-sm text-gray-900 mb-1">{item.label}</h4>
             <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
@@ -358,7 +359,7 @@ export default function AlustraArchDetailClient({ product, related, footer }: Pr
 
       {/* ─── Hero ─── */}
       <section className="relative w-full aspect-[16/5.4] overflow-hidden">
-        <img src={`${IMG}/${L.heroImage}`} alt={L.name} className="w-full h-full object-cover" />
+        <Image src={`${IMG}/${L.heroImage}`} alt={L.name} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
         <div className="absolute top-8 left-8 z-20">
           <Link href="/" aria-label="Angel Drapery — home"><span className="block text-xl md:text-2xl font-light tracking-[0.2em] text-white drop-shadow-lg hover:text-gray-300 transition-colors">ANGEL DRAPERY, INC</span></Link>
@@ -450,9 +451,10 @@ export default function AlustraArchDetailClient({ product, related, footer }: Pr
                   className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {r.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`${CDN_BASE}/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image src={`${CDN_BASE}/hunter-douglas/${r.slug}/${r.cover_image}`} alt={r.name}
+                          fill sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100"><span className="text-gray-400 text-xs">{r.name}</span></div>

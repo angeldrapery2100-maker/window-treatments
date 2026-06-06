@@ -2,6 +2,7 @@
 
 import { CDN_BASE } from '@/lib/cdn'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -182,8 +183,8 @@ function HardwareColorsSection({ title, brandLabel, items }: { title: string; br
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
         {items.map((item, i) => (
           <div key={i} className="text-center">
-            <div className="aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
-              <img src={`${IMG_BASE}/${item.image}`} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square rounded-sm overflow-hidden border border-gray-200 mb-1">
+              <Image src={`${IMG_BASE}/${item.image}`} alt={item.label} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             </div>
             <p className="text-[10px] text-gray-600 leading-tight">{item.label}</p>
           </div>
@@ -456,9 +457,10 @@ export default function ApplauseDetailClient({ product, related, footer }: Props
                   className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
                   <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8]">
                     {item.cover_image ? (
-                      <div className="w-full h-full flex items-center justify-center p-2">
-                        <img src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image src={`${CDN_BASE}/hunter-douglas/${item.slug}/${item.cover_image}`} alt={item.name}
+                          fill sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-100"><span className="text-gray-400 text-xs">{item.name}</span></div>

@@ -25,6 +25,10 @@ function getJwtSecret(): string {
   throw new Error('JWT_SECRET is not set. For local dev, set ALLOW_DEV_JWT=1 to use the insecure dev fallback.')
 }
 const TOKEN_EXPIRY = '30d'
+// Pin the signing/verification algorithm. Without an explicit algorithm
+// whitelist, jsonwebtoken can be tricked into algorithm-confusion if the key
+// source ever changes. HS256 (HMAC-SHA256) matches middleware.ts.
+const JWT_ALG = 'HS256' as const
 
 export interface AuthUser {
   id: string
@@ -68,14 +72,14 @@ export function generateToken(user: AuthUser): string {
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name, role: user.role },
     getJwtSecret(),
-    { expiresIn: TOKEN_EXPIRY }
+    { expiresIn: TOKEN_EXPIRY, algorithm: JWT_ALG }
   )
 }
 
 // Verify JWT - returns user payload or null
 export function verifyToken(token: string): AuthUser | null {
   try {
-    const payload = jwt.verify(token, getJwtSecret()) as any
+    const payload = jwt.verify(token, getJwtSecret(), { algorithms: [JWT_ALG] }) as any
     return { id: payload.id, email: payload.email, name: payload.name, phone: '', role: payload.role || 'customer' }
   } catch {
     return null
