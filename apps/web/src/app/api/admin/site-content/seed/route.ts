@@ -56,7 +56,7 @@ const SEED_DATA = [
   { page: 'home', section: 'contact', field_key: 'title', field_type: 'text', content: 'Contact', sort_order: 0 },
   { page: 'home', section: 'contact', field_key: 'subtitle', field_type: 'text', content: 'Thank you for visiting our website. For more information and special requests, please contact us today.', sort_order: 1 },
   { page: 'home', section: 'contact', field_key: 'address', field_type: 'text', content: '8831 E Las Tunas Dr, Temple City, CA, 91780', sort_order: 2 },
-  { page: 'home', section: 'contact', field_key: 'email', field_type: 'text', content: 'angeldrapery2100@yahoo.com', sort_order: 3 },
+  { page: 'home', section: 'contact', field_key: 'email', field_type: 'text', content: 'admin@angel-drapery.com', sort_order: 3 },
   { page: 'home', section: 'contact', field_key: 'phone_1', field_type: 'text', content: '626-451-9841', sort_order: 4 },
   { page: 'home', section: 'contact', field_key: 'phone_2', field_type: 'text', content: '626-451-9840', sort_order: 5 },
   { page: 'home', section: 'contact', field_key: 'phone_3', field_type: 'text', content: '626-703-2929', sort_order: 6 },

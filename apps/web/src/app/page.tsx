@@ -51,7 +51,7 @@ export default async function HomePage() {
     title: getText(data, 'contact', 'title', 'Contact'),
     subtitle: getText(data, 'contact', 'subtitle', 'Thank you for visiting our website. For more information and special requests, please contact us today.'),
     address: getText(data, 'contact', 'address', '8831 E Las Tunas Dr, Temple City, CA, 91780'),
-    email: getText(data, 'contact', 'email', 'angeldrapery2100@yahoo.com'),
+    email: getText(data, 'contact', 'email', 'admin@angel-drapery.com'),
     phones: [
       getText(data, 'contact', 'phone_1', '626-451-9841'),
       getText(data, 'contact', 'phone_2', '626-451-9840'),

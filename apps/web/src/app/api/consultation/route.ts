@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     try {
       const { data, error } = await getResend().emails.send({
         from: process.env.EMAIL_FROM || 'Angel Drapery <onboarding@resend.dev>',
-        to: process.env.NOTIFICATION_EMAIL || 'angeldrapery2100@yahoo.com',
+        to: process.env.NOTIFICATION_EMAIL || 'admin@angel-drapery.com',
         subject: `New Consultation Request from ${cleanName}`,
         html: `
           <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">

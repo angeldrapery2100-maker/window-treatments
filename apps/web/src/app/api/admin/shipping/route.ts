@@ -105,7 +105,7 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
 
       ${parcelsHtml}
 
-      <p style="color:#999;font-size:12px;margin-top:24px;">If you have any questions, please contact us at angeldrapery2100@gmail.com or call (626) 703-2929.</p>
+      <p style="color:#999;font-size:12px;margin-top:24px;">If you have any questions, please contact us at admin@angel-drapery.com or call (626) 703-2929.</p>
     </div>
   `
 
@@ -147,7 +147,7 @@ export async function POST(request: Request) {
         address_from: {
           name: 'Angel Drapery', company: 'Angel Drapery Inc',
           street1: '8827 Las Tunas Dr', city: 'Temple City', state: 'CA', zip: '91780', country: 'US',
-          phone: '6267032929', email: 'angeldrapery2100@gmail.com',
+          phone: '6267032929', email: 'admin@angel-drapery.com',
         },
         address_to: {
           name: order.customer_name,
