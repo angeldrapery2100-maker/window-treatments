@@ -1,12 +1,18 @@
 import Stripe from 'stripe'
 
-// httpClient: the SDK's default Node http client was consistently throwing
-// StripeConnectionError ("An error occurred with our connection to Stripe")
-// for ALL API calls (tax calculations, payment intents) in the Vercel
-// serverless runtime, while plain fetch (Shippo, etc.) worked fine. The
-// fetch-based client uses the platform's native fetch (undici) and is the
-// reliable choice in serverless environments.
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Sanitize the key: env values pasted into dashboards often pick up a trailing
+// newline/space or surrounding quotes. Any such character makes the
+// Authorization header invalid — with the old Node http client that surfaced
+// as a misleading StripeConnectionError; with the fetch client it's a
+// TypeError("Invalid character in header content"). Trim + strip quotes.
+const STRIPE_KEY = (process.env.STRIPE_SECRET_KEY || '')
+  .trim()
+  .replace(/^["']|["']$/g, '')
+
+// httpClient: the SDK's default Node http client wrapped header errors as
+// generic connection failures in the Vercel runtime; the fetch-based client
+// (native fetch/undici) is the reliable choice in serverless environments.
+export const stripe = new Stripe(STRIPE_KEY, {
   apiVersion: '2025-01-27.acacia' as any,
   httpClient: Stripe.createFetchHttpClient(),
   maxNetworkRetries: 2,
