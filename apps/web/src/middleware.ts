@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Edge-compatible HS256 JWT verification (no external packages needed)
-async function verifyJWT(token: string, secret: string): Promise<{ id: string; role: string } | null> {
+async function verifyJWT(token: string, secret: string): Promise<{ id: string; role: string; jti?: string } | null> {
   try {
     const parts = token.split('.')
     if (parts.length !== 3) return null
@@ -29,9 +29,31 @@ async function verifyJWT(token: string, secret: string): Promise<{ id: string; r
     const payload = JSON.parse(payloadJson)
 
     if (payload.exp && payload.exp * 1000 < Date.now()) return null
-    return { id: payload.id, role: payload.role }
+    return { id: payload.id, role: payload.role, jti: payload.jti }
   } catch {
     return null
+  }
+}
+
+// Revocation check. The middleware runs on the edge and can't query Postgres,
+// so it asks the internal Node endpoint whether this token's jti was revoked.
+//
+// OPT-IN: only active when INTERNAL_REVOCATION_SECRET is set. When unset, this
+// returns false immediately (feature off) and middleware behaves exactly as
+// before. Fails OPEN on any error so a transient blip never locks admins out —
+// the signature/role/expiry checks still apply regardless.
+async function isTokenRevoked(request: NextRequest, jti?: string): Promise<boolean> {
+  const secret = process.env.INTERNAL_REVOCATION_SECRET
+  if (!secret || !jti) return false
+  try {
+    const url = new URL('/api/internal/token-status', request.url)
+    url.searchParams.set('jti', jti)
+    const res = await fetch(url, { headers: { 'x-internal-secret': secret } })
+    if (!res.ok) return false
+    const data = await res.json()
+    return data?.revoked === true
+  } catch {
+    return false
   }
 }
 
@@ -93,6 +115,9 @@ export async function middleware(request: NextRequest) {
     if (!user || user.role !== 'admin') {
       return applyNoindex(NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 }), pathname)
     }
+    if (await isTokenRevoked(request, user.jti)) {
+      return applyNoindex(NextResponse.json({ success: false, error: 'Session ended. Please sign in again.' }, { status: 401 }), pathname)
+    }
   }
 
   // ── Admin pages: /admin/* ────────────────────────────────────
@@ -107,6 +132,9 @@ export async function middleware(request: NextRequest) {
     }
     const user = await verifyJWT(token, JWT_SECRET)
     if (!user || user.role !== 'admin') {
+      return applyNoindex(NextResponse.redirect(new URL('/admin/login', request.url)), pathname)
+    }
+    if (await isTokenRevoked(request, user.jti)) {
       return applyNoindex(NextResponse.redirect(new URL('/admin/login', request.url)), pathname)
     }
   }

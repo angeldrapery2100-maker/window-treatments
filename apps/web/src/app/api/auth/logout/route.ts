@@ -1,12 +1,25 @@
 import { NextResponse } from 'next/server'
 import { errorResponse } from '@/lib/apiError'
 import { recordAudit } from '@/lib/audit'
-import { requireAdmin } from '@/lib/auth'
+import { requireAdmin, getTokenFromRequest, getTokenClaims } from '@/lib/auth'
+import { revokeToken } from '@/lib/tokenBlocklist'
 
 export async function POST(request: Request) {
   try {
     let adminUser: any
     try { adminUser = requireAdmin(request) } catch {}
+
+    // Revoke this token server-side so it can't be reused even before expiry
+    // (e.g. if it was captured). Best-effort — never block logout on this.
+    try {
+      const token = getTokenFromRequest(request)
+      const claims = token ? getTokenClaims(token) : null
+      if (claims?.jti && claims.exp) {
+        await revokeToken(claims.jti, claims.id || '', new Date(claims.exp * 1000))
+      }
+    } catch (revErr) {
+      console.error('[logout] token revocation failed:', revErr)
+    }
 
     if (adminUser) {
       await recordAudit({

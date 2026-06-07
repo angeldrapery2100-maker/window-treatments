@@ -1,6 +1,7 @@
 // Auth utility - JWT based authentication
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import { randomUUID } from 'crypto'
 import { query, queryOne } from './db'
 
 // JWT secret resolution — matches apps/web/src/middleware.ts to ensure both
@@ -67,13 +68,33 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash)
 }
 
-// Generate JWT
+// Generate JWT. Every token gets a unique `jti` (JWT ID) so individual tokens
+// can be revoked server-side before they expire (see tokenBlocklist + logout +
+// middleware revocation check).
 export function generateToken(user: AuthUser): string {
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name, role: user.role },
     getJwtSecret(),
-    { expiresIn: TOKEN_EXPIRY, algorithm: JWT_ALG }
+    { expiresIn: TOKEN_EXPIRY, algorithm: JWT_ALG, jwtid: randomUUID() }
   )
+}
+
+// Verify a token and return the claims needed for revocation (jti + exp + id).
+// Used by the logout route to add the current token's jti to the blocklist.
+export function getTokenClaims(token: string): { id?: string; jti?: string; exp?: number } | null {
+  try {
+    const p = jwt.verify(token, getJwtSecret(), { algorithms: [JWT_ALG] }) as any
+    return { id: p.id, jti: p.jti, exp: p.exp }
+  } catch {
+    return null
+  }
+}
+
+// Pull the auth_token cookie value out of a request (shared helper).
+export function getTokenFromRequest(request: Request): string | null {
+  const cookie = request.headers.get('cookie') || ''
+  const match = cookie.match(/auth_token=([^;]+)/)
+  return match ? match[1] : null
 }
 
 // Verify JWT - returns user payload or null
