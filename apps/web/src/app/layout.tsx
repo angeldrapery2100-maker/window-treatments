@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import ConsultationWidget from '@/components/ConsultationWidget'
+import ConsultationWidget from '@/components/ConsultationWidgetLoader'
 
 // ─── schema.org LocalBusiness ─────────────────────────────────────────────
 // Surfaces the shop in Google's local results, Knowledge Panel and Maps.
@@ -112,6 +112,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        {/* Warm up the connection to the R2 CDN that serves all images/videos,
+            so the first asset fetch skips DNS + TLS negotiation (helps LCP). */}
+        <link rel="preconnect" href="https://pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev" />
         {/* schema.org LocalBusiness — feeds Google Knowledge Panel, Maps,
             and "near me" local results. Rendered once, in the root layout,
             so every page inherits the same business identity. */}
