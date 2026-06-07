@@ -227,7 +227,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
             // originals (~8MB) down to ~100–200KB at the rendered viewport.
             <Image
               src={hero.background}
-              alt=""
+              alt={hero.titleEn ? `${hero.titleEn} window treatments showroom` : 'Window treatments showroom'}
               fill
               priority
               sizes="100vw"

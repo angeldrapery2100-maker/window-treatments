@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 
 // Public read-only endpoint — returns active store products with category info.
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, data: { products } })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load products.', 500, e)
   }
 }
 

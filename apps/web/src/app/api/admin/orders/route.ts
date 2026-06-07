@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { stripe } from '@/lib/stripe'
 import { recordAudit } from '@/lib/audit'
@@ -106,7 +107,7 @@ export async function GET(request: Request) {
     if (e.message?.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [], pagination: { page: 1, limit: 20, total: 0, pages: 0 } })
     }
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load orders.', 500, e)
   }
 }
 
@@ -210,7 +211,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -277,7 +278,7 @@ export async function DELETE(request: Request) {
     })
   } catch (e: any) {
     console.error('[cancel] Error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not delete the order. Please try again.', 500, e)
   }
 }
 

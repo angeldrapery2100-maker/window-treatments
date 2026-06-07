@@ -197,7 +197,7 @@ export async function POST(request: Request) {
     })
   } catch (e: any) {
     console.error('Seed error:', e)
-    return NextResponse.json({ success: false, error: { message: e.message } }, { status: 500 })
+    return NextResponse.json({ success: false, error: { message: 'Could not seed site content. Please try again.' } }, { status: 500 })
   }
 }
 

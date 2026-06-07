@@ -57,7 +57,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: SceneRow[]; onImg: (image
         return (
           <div key={i} className={`flex flex-col ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'} gap-6`}>
             <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative aspect-[16/9]" onClick={() => onImg(sectionImgs, i)}>
-              <Image src={`${IMG}/${scene.image}`} alt="" fill sizes="(max-width: 768px) 100vw, 75vw" className="object-cover" />
+              <Image src={`${IMG}/${scene.image}`} alt={scene.label || scene.text || 'Alustra Architectural shade scene'} fill sizes="(max-width: 768px) 100vw, 75vw" className="object-cover" />
               {scene.label && (
                 <div className="absolute bottom-3 right-3 bg-black/65 backdrop-blur-sm px-3 py-2 rounded max-w-[70%]">
                   <p className="text-[15px] text-white/90 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -175,7 +175,7 @@ function GalleryGrid({ scenes, onImg }: { scenes: { image: string; text: string;
       {scenes.map((s, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? "md:col-span-2" : ""}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <Image src={`${IMG}/${s.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
+          <Image src={`${IMG}/${s.image}`} alt={s.text || s.label || 'Alustra Architectural shade photo'} width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(s.text || s.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {s.text && <p className="text-white/90 text-sm leading-relaxed">{s.text}</p>}
@@ -211,21 +211,21 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
       <div className="grid grid-cols-3 gap-6 mb-10">
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(cassette.insideMount))}>
-            <Image src={`${IMG}/${cassette.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+            <Image src={`${IMG}/${cassette.insideMount}`} alt={`${cassette.title} — inside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{cassette.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{cassette.desc}</p>
         </div>
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(valance.outsideMount))}>
-            <Image src={`${IMG}/${valance.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+            <Image src={`${IMG}/${valance.outsideMount}`} alt={`${valance.title} — outside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{valance.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{valance.desc}</p>
         </div>
         <div>
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-2" onClick={() => onImg(sectionImgs, getImgIndex(clutch.insideMount))}>
-            <Image src={`${IMG}/${clutch.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+            <Image src={`${IMG}/${clutch.insideMount}`} alt={`${clutch.title} — inside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{clutch.title}</h4>
           <p className="text-sm text-gray-500 leading-relaxed mt-1">{clutch.desc}</p>
@@ -242,13 +242,13 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <div className="grid grid-cols-2 gap-6 mb-5">
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(cassette.insideMount))}>
-              <Image src={`${IMG}/${cassette.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+              <Image src={`${IMG}/${cassette.insideMount}`} alt={`${cassette.title} — inside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">{cassette.title}</p>
           </div>
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(cassette.outsideMount))}>
-              <Image src={`${IMG}/${cassette.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+              <Image src={`${IMG}/${cassette.outsideMount}`} alt={`${cassette.title} — outside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">{cassette.title}</p>
           </div>
@@ -257,13 +257,13 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <div className="grid grid-cols-2 gap-6">
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(clutch.insideMount))}>
-              <Image src={`${IMG}/${clutch.insideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+              <Image src={`${IMG}/${clutch.insideMount}`} alt={`${clutch.title} — inside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">Custom Clutch Bracket</p>
           </div>
           <div>
             <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(clutch.outsideMount))}>
-              <Image src={`${IMG}/${clutch.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+              <Image src={`${IMG}/${clutch.outsideMount}`} alt={`${clutch.title} — outside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
             </div>
             <p className="text-[15px] text-gray-500 mt-1">Custom Clutch Bracket</p>
           </div>
@@ -275,7 +275,7 @@ function MountingProfilesSection({ section, onImg }: { section: any; onImg: (ima
         <p className="flex-1 text-2xl md:text-3xl font-light text-gray-600 leading-snug italic">{section.description}</p>
         <div className="md:w-[30%] shrink-0">
           <div className="rounded-md overflow-hidden bg-gray-100 cursor-zoom-in mb-1" onClick={() => onImg(sectionImgs, getImgIndex(valance.outsideMount))}>
-            <Image src={`${IMG}/${valance.outsideMount}`} alt="" width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
+            <Image src={`${IMG}/${valance.outsideMount}`} alt={`${valance.title} — outside mount`} width={500} height={500} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-auto" />
           </div>
           <h4 className="font-semibold text-sm text-gray-900">{valance.title}</h4>
           <p className="text-[15px] text-gray-500">Outside Mount Valance over Inside Mount Shade</p>

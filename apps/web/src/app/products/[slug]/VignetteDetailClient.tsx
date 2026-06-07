@@ -57,7 +57,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: { image: string; text: st
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
           <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-            <img src={`${IMG_BASE}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+            <img src={`${IMG_BASE}/${scene.image}`} alt={scene.label || scene.text || 'Vignette Roman Shade scene'} className="w-full h-auto" loading="lazy" />
             {scene.label && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                 <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -275,7 +275,7 @@ function GallerySection({ scenes, onImg }: { scenes: { image: string; text: stri
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <img src={`${IMG_BASE}/${scene.image}`} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          <img src={`${IMG_BASE}/${scene.image}`} alt={scene.text || scene.label || 'Vignette Roman Shade photo'} className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {scene.text && <p className="text-white/90 text-sm leading-relaxed">{scene.text}</p>}

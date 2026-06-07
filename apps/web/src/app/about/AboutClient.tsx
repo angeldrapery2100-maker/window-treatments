@@ -70,7 +70,7 @@ export default function AboutClient({ hero, story, values, services, brands, foo
       <section className="relative w-full h-[60vh] overflow-hidden">
         <div className="absolute inset-0">
           {hero.bgImage?.url ? (
-            <Image src={hero.bgImage.url} alt="" fill priority sizes="100vw" className="object-cover" />
+            <Image src={hero.bgImage.url} alt={hero.title || 'About us'} fill priority sizes="100vw" className="object-cover" />
           ) : (
             <div className="w-full h-full bg-gradient-to-b from-gray-900 to-gray-800" />
           )}

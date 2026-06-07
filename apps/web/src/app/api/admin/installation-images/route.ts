@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import pool from '@/lib/db'
 import { recordAudit } from '@/lib/audit'
 import { requireAdmin } from '@/lib/auth'
@@ -41,7 +42,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: rows })
   } catch (e: any) {
     console.error('GET installation-images error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load installation images.', 500, e)
   }
 }
 
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: rows[0] })
   } catch (e: any) {
     console.error('POST installation-images error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -143,7 +144,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: rows[0] })
   } catch (e: any) {
     console.error('PUT installation-images error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -176,7 +177,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true, deleted: rowCount })
   } catch (e: any) {
     console.error('DELETE installation-images error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not delete the image. Please try again.', 500, e)
   }
 }
 

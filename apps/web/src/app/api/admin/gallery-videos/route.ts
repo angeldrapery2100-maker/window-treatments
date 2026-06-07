@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import pool from '@/lib/db'
 import { recordAudit } from '@/lib/audit'
 import { requireAdmin } from '@/lib/auth'
@@ -55,7 +56,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: map, customVideos: customRows })
   } catch (e: any) {
     console.error('GET gallery-videos error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load gallery videos.', 500, e)
   }
 }
 
@@ -101,7 +102,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: rows[0] })
   } catch (e: any) {
     console.error('PUT gallery-videos error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -144,7 +145,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: rows[0] })
   } catch (e: any) {
     console.error('POST gallery-videos error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -183,7 +184,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true })
   } catch (e: any) {
     console.error('DELETE gallery-videos error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not delete the video. Please try again.', 500, e)
   }
 }
 

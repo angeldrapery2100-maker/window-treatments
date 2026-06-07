@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 
 // Public read-only endpoint — returns active store categories with product counts
@@ -17,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({ success: true, data: categories })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load categories.', 500, e)
   }
 }
 

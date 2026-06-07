@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
@@ -35,7 +36,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     )
     return NextResponse.json({ success: true, data: rules })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load parcel data.', 500, e)
   }
 }
 
@@ -66,7 +67,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 

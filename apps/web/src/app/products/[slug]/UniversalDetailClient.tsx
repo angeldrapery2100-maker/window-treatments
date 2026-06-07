@@ -93,7 +93,7 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: { image: string;
           <div key={i} className={`flex flex-col ${dir} rounded-xl overflow-hidden shadow-sm`}>
             {/* Image: 3/4 width on desktop, natural height from aspect ratio */}
             <div className="md:flex-[3] relative cursor-zoom-in overflow-hidden" onClick={() => onImg(sectionImgs, i)}>
-              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto block" loading="lazy" />
+              <img src={resolveImg(imgBase, scene.image)} alt={scene.label || scene.text || 'Window treatment scene'} className="w-full h-auto block" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                   <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -122,7 +122,7 @@ function AlustraSceneSection({ scenes, imgBase, onImg }: { scenes: SceneRow[]; i
         return (
           <div key={i} className={`flex flex-col ${dir} rounded-lg overflow-hidden`}>
             <div className="md:flex-[4] relative cursor-zoom-in overflow-hidden flex items-center justify-center" onClick={() => onImg(sectionImgs, i)}>
-              <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto object-contain" loading="lazy" />
+              <img src={resolveImg(imgBase, scene.image)} alt={scene.label || scene.text || 'Window treatment scene'} className="w-full h-auto object-contain" loading="lazy" />
               {scene.label && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                   <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -610,7 +610,7 @@ function GallerySection({ scenes, imgBase, onImg }: { scenes: { image: string; t
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <img src={resolveImg(imgBase, scene.image)} alt="" className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
+          <img src={resolveImg(imgBase, scene.image)} alt={scene.text || scene.label || 'Window treatment photo'} className="w-full h-auto group-hover:opacity-95 transition-opacity" loading="lazy" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {scene.text && <p className="text-white/90 text-sm leading-relaxed">{scene.text}</p>}
@@ -724,7 +724,7 @@ function MountingProfilesSection({ section, imgBase, onImg }: { section: any; im
         {section.bottomBar && (
           <div className="flex gap-6 items-start">
             <div className="w-32 cursor-zoom-in" onClick={() => onImg(sectionImgs, bottomBarIndex)}>
-              <img src={resolveImg(imgBase, section.bottomBar.image)} alt="" className="w-full h-auto rounded-md" loading="lazy" />
+              <img src={resolveImg(imgBase, section.bottomBar.image)} alt={section.title ? `${section.title} bottom bar` : 'Bottom bar detail'} className="w-full h-auto rounded-md" loading="lazy" />
             </div>
             <p className="text-sm text-gray-600 flex-1">{section.bottomBar.desc}</p>
           </div>

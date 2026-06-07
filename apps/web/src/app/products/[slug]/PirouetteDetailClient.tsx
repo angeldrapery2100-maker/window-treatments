@@ -57,7 +57,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: { image: string; text: st
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
           <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-            <Image src={`${IMG_BASE}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
+            <Image src={`${IMG_BASE}/${scene.image}`} alt={scene.label || scene.text || 'Pirouette Window Shading scene'} width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
             {scene.label && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                 <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -300,7 +300,7 @@ function GallerySection({ scenes, onImg }: { scenes: { image: string; text: stri
       {scenes.map((scene, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? 'md:col-span-2' : ''}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <Image src={`${IMG_BASE}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
+          <Image src={`${IMG_BASE}/${scene.image}`} alt={scene.text || scene.label || 'Pirouette Window Shading photo'} width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(scene.text || scene.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {scene.text && <p className="text-white/90 text-sm leading-relaxed">{scene.text}</p>}

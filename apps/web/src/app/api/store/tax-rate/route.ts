@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /api/store/tax-rate  — ESTIMATE ONLY, NOT AUTHORITATIVE
@@ -99,7 +100,7 @@ export async function POST(request: Request) {
     })
   } catch (e: any) {
     console.error('Tax rate error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not calculate tax. Please try again.', 500, e)
   }
 }
 

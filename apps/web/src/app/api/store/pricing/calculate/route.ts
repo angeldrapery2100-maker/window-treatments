@@ -5,6 +5,17 @@ import { explainDrapery, explainSheer, explainShade } from '@window-treatments/s
 
 type ProductType = 'drapery' | 'sheer' | 'shade'
 
+// optionKey → selectedValue → { paramName: number }
+type OptionValues = Record<string, Record<string, Record<string, number>>>
+
+interface CalcRequestBody {
+  productType: ProductType
+  input: { width: number; height: number }
+  baseParams?: Record<string, number>
+  options?: Record<string, string>
+  optionValues?: OptionValues
+}
+
 // 确保 pricing_configs 表存在，并初始化默认配置
 async function ensurePricingConfigs() {
   // 建表
@@ -61,7 +72,7 @@ async function ensurePricingConfigs() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    const body = await request.json() as CalcRequestBody
     const { productType, input, baseParams = {}, options = {}, optionValues = {} } = body
 
     if (!productType || input?.width == null || input?.height == null) {
@@ -84,9 +95,9 @@ export async function POST(request: Request) {
     // 解析 optionValues，注入选项数值参数
     const resolvedOptionValues: Record<string, number> = {}
     for (const [optionKey, selectedValue] of Object.entries(options)) {
-      const optionConfig = (optionValues as any)[optionKey]
+      const optionConfig = optionValues[optionKey]
       if (!optionConfig) continue
-      const selectedConfig = optionConfig[selectedValue as string]
+      const selectedConfig = optionConfig[selectedValue]
       if (selectedConfig) Object.assign(resolvedOptionValues, selectedConfig)
     }
 
@@ -102,17 +113,17 @@ export async function POST(request: Request) {
     const mappedOptionValues: Record<string, number> = {}
     for (const [k, v] of Object.entries(resolvedOptionValues)) {
       const mapped = KEY_MAP[k] ?? k
-      mappedOptionValues[mapped] = v as number
+      mappedOptionValues[mapped] = v
     }
 
     // optionValues 里的每个 value 也要做 key 映射，保证 engine 注入 scope 时 key 名正确
-    const mappedOptionValues2: typeof optionValues = {}
-    for (const [optKey, valMap] of Object.entries(optionValues as any)) {
+    const mappedOptionValues2: OptionValues = {}
+    for (const [optKey, valMap] of Object.entries(optionValues)) {
       const newValMap: Record<string, Record<string, number>> = {}
-      for (const [val, paramObj] of Object.entries(valMap as any)) {
+      for (const [val, paramObj] of Object.entries(valMap)) {
         const newParams: Record<string, number> = {}
-        for (const [k, v] of Object.entries(paramObj as any)) {
-          newParams[KEY_MAP[k] ?? k] = v as number
+        for (const [k, v] of Object.entries(paramObj)) {
+          newParams[KEY_MAP[k] ?? k] = v
         }
         newValMap[val] = newParams
       }
@@ -150,7 +161,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, result, explain })
   } catch (e: any) {
     console.error('[pricing/calculate]', e.message)
-    return NextResponse.json({ ok: false, error: e.message }, { status: 400 })
+    return NextResponse.json({ ok: false, error: 'Could not calculate price. Please try again.' }, { status: 400 })
   }
 }
 

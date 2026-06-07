@@ -96,7 +96,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: products })
   } catch (e: any) {
     console.error('GET showcase-products error:', e)
-    return NextResponse.json({ success: false, error: { message: e.message } }, { status: 500 })
+    return NextResponse.json({ success: false, error: { message: 'Could not load showcase products.' } }, { status: 500 })
   }
 }
 
@@ -146,7 +146,7 @@ export async function POST(request: Request) {
     }
   } catch (e: any) {
     console.error('POST showcase-products error:', e)
-    return NextResponse.json({ success: false, error: { message: e.message } }, { status: 500 })
+    return NextResponse.json({ success: false, error: { message: 'Could not save changes. Please try again.' } }, { status: 500 })
   }
 }
 
@@ -163,7 +163,8 @@ export async function DELETE(request: Request) {
     await pool.query('DELETE FROM showcase_products WHERE id = $1', [id])
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: { message: e.message } }, { status: 500 })
+    console.error('DELETE showcase-products error:', e)
+    return NextResponse.json({ success: false, error: { message: 'Could not delete the showcase product. Please try again.' } }, { status: 500 })
   }
 }
 

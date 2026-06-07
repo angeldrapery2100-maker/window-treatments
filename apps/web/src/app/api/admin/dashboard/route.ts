@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { queryOne } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
@@ -61,7 +62,7 @@ export async function GET(request: Request) {
         }
       })
     }
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load dashboard data.', 500, e)
   }
 }
 

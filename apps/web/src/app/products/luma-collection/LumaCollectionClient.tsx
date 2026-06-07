@@ -800,7 +800,7 @@ export default function LumaCollectionClient() {
                         lightbox.idx === i ? 'border-[#4DB6E8] scale-110' : 'border-transparent opacity-50 hover:opacity-80'
                       }`}
                     >
-                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
+                      <Image src={s} alt={`${lightbox.patternName} thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

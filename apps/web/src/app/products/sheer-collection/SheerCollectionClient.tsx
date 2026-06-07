@@ -586,7 +586,7 @@ export default function SheerCollectionClient() {
                         i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'
                       }`}
                     >
-                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
+                      <Image src={s} alt={`${lightbox.label} thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

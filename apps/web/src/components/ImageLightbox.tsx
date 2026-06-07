@@ -135,7 +135,7 @@ export default function ImageLightbox({
       >
         <Image
           src={item.src}
-          alt=""
+          alt={item.caption || 'Product photo'}
           fill
           sizes="100vw"
           className="object-contain"
@@ -145,7 +145,7 @@ export default function ImageLightbox({
           <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded px-3 py-2 max-w-xs text-right flex items-center gap-2">
             {item.chipSrc && (
               <span className="relative w-8 h-8 flex-shrink-0">
-                <Image src={item.chipSrc} alt="" fill sizes="32px" className="rounded-full object-cover" />
+                <Image src={item.chipSrc} alt="Fabric swatch" fill sizes="32px" className="rounded-full object-cover" />
               </span>
             )}
             {item.caption && <p className="text-white/90 text-sm whitespace-pre-line leading-snug">{item.caption}</p>}

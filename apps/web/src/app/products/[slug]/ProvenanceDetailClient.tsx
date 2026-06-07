@@ -57,7 +57,7 @@ function ScenePairBlock({ scene, index, scenes, onImg }: {
   return (
     <div className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} gap-6`}>
       <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, index)}>
-        <Image src={`${IMG}/${scene.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
+        <Image src={`${IMG}/${scene.image}`} alt={scene.label || scene.text || 'Provenance Woven Wood shade scene'} width={1200} height={800} sizes="(max-width: 768px) 100vw, 75vw" className="w-full h-auto" />
         {scene.label && (
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -342,7 +342,7 @@ function ShadeStylesSection({ section, onImg }: { section: any; onImg: (images: 
       <div className="flex justify-end gap-6 mb-6">
         {(section.topImages || []).map((img: any, i: number) => (
           <div key={i} className="cursor-zoom-in" onClick={() => onImg(sectionImgs, i)}>
-            <Image src={`${IMG}/${img.image}`} alt="" width={400} height={320} sizes="(max-width: 768px) 50vw, 25vw" className="h-80 w-auto object-contain" />
+            <Image src={`${IMG}/${img.image}`} alt={img.label || `${section.title} product photo`} width={400} height={320} sizes="(max-width: 768px) 50vw, 25vw" className="h-80 w-auto object-contain" />
           </div>
         ))}
       </div>
@@ -410,7 +410,7 @@ function GalleryGrid({ scenes, onImg }: { scenes: { image: string; text: string;
       {scenes.map((s, i) => (
         <div key={i} className={`group rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in relative ${i === 0 ? "md:col-span-2" : ""}`}
           onClick={() => onImg(sectionImgs, i)}>
-          <Image src={`${IMG}/${s.image}`} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
+          <Image src={`${IMG}/${s.image}`} alt={s.text || s.label || 'Provenance Woven Wood shade photo'} width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto group-hover:opacity-95 transition-opacity" />
           {(s.text || s.label) && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               {s.text && <p className="text-white/90 text-sm leading-relaxed">{s.text}</p>}

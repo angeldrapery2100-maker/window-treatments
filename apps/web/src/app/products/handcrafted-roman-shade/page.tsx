@@ -347,7 +347,7 @@ export default function HandcraftedRomanShadePage() {
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                   </button>
                 )}
-                <Image src={lightbox.srcs[lightbox.idx]} alt="" width={1440} height={1080} sizes="(max-width: 1440px) 100vw, 1440px" className="w-full h-auto max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
+                <Image src={lightbox.srcs[lightbox.idx]} alt={`Handcrafted Roman shade, image ${lightbox.idx + 1}`} width={1440} height={1080} sizes="(max-width: 1440px) 100vw, 1440px" className="w-full h-auto max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
                 {lightbox.srcs.length > 1 && (
                   <button onClick={lbNext} className="absolute right-0 translate-x-12 text-white/50 hover:text-white hidden md:block">
                     <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
@@ -359,7 +359,7 @@ export default function HandcraftedRomanShadePage() {
                   {lightbox.srcs.map((s, i) => (
                     <button key={s} onClick={() => setLightbox(prev => prev ? { ...prev, idx: i } : null)}
                       className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${i === lightbox.idx ? 'border-white/80' : 'border-transparent opacity-50 hover:opacity-80'}`}>
-                      <Image src={s} alt="" fill sizes="48px" className="object-cover" />
+                      <Image src={s} alt={`Handcrafted Roman shade thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
                     </button>
                   ))}
                 </div>

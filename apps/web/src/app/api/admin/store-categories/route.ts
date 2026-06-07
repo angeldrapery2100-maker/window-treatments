@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
@@ -41,7 +42,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: rows })
   } catch (e: any) {
     console.error('GET store-categories error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load categories.', 500, e)
   }
 }
 
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: rows[0] }, { status: 201 })
   } catch (e: any) {
     console.error('POST store-categories error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -99,7 +100,7 @@ export async function PATCH(request: Request) {
     )
     return NextResponse.json({ success: true, data: rows[0] })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -119,7 +120,7 @@ export async function DELETE(request: Request) {
     await query(`DELETE FROM store_categories WHERE id = $1`, [body.id])
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not delete the category. Please try again.', 500, e)
   }
 }
 

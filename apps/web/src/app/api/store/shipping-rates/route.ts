@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 
 const SHIPPO_API = 'https://api.goshippo.com'
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: { rates } })
   } catch (e: any) {
     console.error('Shipping rates error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not fetch shipping rates. Please try again.', 500, e)
   }
 }
 

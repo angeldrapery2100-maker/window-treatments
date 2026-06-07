@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { recordSettingChange } from '@/lib/settingsHistory'
 import { recordAudit } from '@/lib/audit'
@@ -38,7 +39,7 @@ export async function GET() {
       groups: SETTING_GROUPS,
     })
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+    return errorResponse('Could not load site settings.', 500, err)
   }
 }
 
@@ -79,7 +80,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({ success: true })
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, err)
   }
 }
 

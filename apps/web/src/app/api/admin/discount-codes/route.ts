@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { recordAudit } from '@/lib/audit'
 import { requireAdmin } from '@/lib/auth'
@@ -83,7 +84,7 @@ export async function GET(request: Request) {
     `)
     return NextResponse.json({ success: true, data: codes })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load discount codes.', 500, e)
   }
 }
 
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: row })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -189,7 +190,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 
@@ -212,7 +213,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not delete the discount code. Please try again.', 500, e)
   }
 }
 

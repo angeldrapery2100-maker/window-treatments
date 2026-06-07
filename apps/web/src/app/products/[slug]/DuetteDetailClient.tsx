@@ -58,7 +58,7 @@ function ScenePairSection({ scenes, onImg }: { scenes: { image: string; text: st
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
           <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-            <img src={`${IMG_BASE}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+            <img src={`${IMG_BASE}/${scene.image}`} alt={scene.label || scene.text || 'Duette honeycomb shade scene'} className="w-full h-auto" loading="lazy" />
             {scene.label && (
               <div className="absolute bottom-3 right-3 bg-black/65 backdrop-blur-sm px-3 py-2 rounded max-w-[70%]">
                 <p className="text-[11px] text-white/90 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -623,7 +623,7 @@ function GallerySection({ scenes, onImg }: { scenes: { image: string; text: stri
           <div className={`relative w-full ${i === 0 ? 'aspect-[16/9]' : 'aspect-[4/3]'}`}>
             <Image
               src={`${IMG_BASE}/${scene.image}`}
-              alt=""
+              alt={scene.text || scene.label || 'Duette honeycomb shade photo'}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:opacity-95 transition-opacity"

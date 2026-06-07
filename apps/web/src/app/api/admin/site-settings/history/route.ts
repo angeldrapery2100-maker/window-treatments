@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
     if (e.message?.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [] })
     }
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load settings history.', 500, e)
   }
 }
 

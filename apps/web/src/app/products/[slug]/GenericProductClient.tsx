@@ -72,7 +72,7 @@ function ScenePairSection({ scenes, imgBase, onImg }: { scenes: Array<{ image: s
       {scenes.map((scene, i) => (
         <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6`}>
           <div className="flex-[3] cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-            <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+            <img src={`${imgBase}/${scene.image}`} alt={scene.label || scene.text || 'Window treatment scene'} className="w-full h-auto" loading="lazy" />
             {scene.label && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 py-3">
                 <p className="text-[10px] text-white/80 whitespace-pre-line leading-relaxed">{scene.label}</p>
@@ -245,7 +245,7 @@ function GallerySection({ scenes, imgBase, onImg }: { scenes: Array<{ image: str
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {scenes.map((scene, i) => (
         <div key={i} className="cursor-zoom-in rounded-lg overflow-hidden relative" onClick={() => onImg(sectionImgs, i)}>
-          <img src={`${imgBase}/${scene.image}`} alt="" className="w-full h-auto" loading="lazy" />
+          <img src={`${imgBase}/${scene.image}`} alt={scene.label || scene.text || 'Window treatment photo'} className="w-full h-auto" loading="lazy" />
           {scene.label && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-3 py-2">
               <p className="text-[9px] text-white/70 whitespace-pre-line">{scene.label}</p>

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { requireAdmin } from '@/lib/auth'
 
 // POST /api/admin/gallery-videos/check
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: results })
   } catch (e: any) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not check gallery videos.', 500, e)
   }
 }
 

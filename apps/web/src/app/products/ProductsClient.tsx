@@ -40,7 +40,7 @@ export default function ProductsClient({ hero, products, footer }: Props) {
       <section className="relative w-full h-[60vh] overflow-hidden">
         <div className="absolute inset-0">
           {hero.bgImage?.url ? (
-            <img src={hero.bgImage.url} alt="" className="w-full h-full object-cover" />
+            <img src={hero.bgImage.url} alt={hero.title || 'Our products'} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-gradient-to-b from-gray-900 to-gray-800" />
           )}

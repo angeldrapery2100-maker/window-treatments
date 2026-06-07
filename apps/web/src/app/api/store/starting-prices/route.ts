@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query } from '@/lib/db'
 
 export async function GET() {
@@ -24,7 +25,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: prices })
   } catch (e: any) {
     console.error('GET starting-prices error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load starting prices.', 500, e)
   }
 }
 

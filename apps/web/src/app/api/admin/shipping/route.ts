@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { Resend } from 'resend'
 import { requireAdmin } from '@/lib/auth'
@@ -442,7 +443,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 })
   } catch (e: any) {
     console.error('Shipping API error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
 

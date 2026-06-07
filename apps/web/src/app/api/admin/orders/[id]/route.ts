@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { queryOne, query } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
@@ -34,7 +35,7 @@ export async function GET(
     return NextResponse.json({ success: true, data: { order, shipments } })
   } catch (e: any) {
     console.error(`GET /api/admin/orders/${id} error:`, e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return errorResponse('Could not load the order.', 500, e)
   }
 }
 

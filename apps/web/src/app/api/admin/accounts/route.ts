@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { requireAdmin, hashPassword, ensureUsersTable } from '@/lib/auth'
 
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: users })
   } catch (e: any) {
     const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
-    return NextResponse.json({ success: false, error: e.message }, { status })
+    return errorResponse('Could not load accounts.', status, e)
   }
 }
 
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: user })
   } catch (e: any) {
     const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
-    return NextResponse.json({ success: false, error: e.message }, { status })
+    return errorResponse('Could not create the account. Please try again.', status, e)
   }
 }
 
@@ -116,7 +117,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ success: true, data: updated })
   } catch (e: any) {
     const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
-    return NextResponse.json({ success: false, error: e.message }, { status })
+    return errorResponse('Could not save changes. Please try again.', status, e)
   }
 }
 
@@ -145,7 +146,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true })
   } catch (e: any) {
     const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
-    return NextResponse.json({ success: false, error: e.message }, { status })
+    return errorResponse('Could not remove the account. Please try again.', status, e)
   }
 }
 

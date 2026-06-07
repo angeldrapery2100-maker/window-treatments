@@ -7,7 +7,27 @@ import GenericProductClient from './GenericProductClient'
 import ProductDetailClient from './ProductDetailClient'
 import { loadLayout } from './layoutFactory'
 import { getPageContent, getText } from '@/lib/content'
+import { CDN_BASE } from '@/lib/cdn'
+import { buildProductJsonLd, buildBreadcrumbJsonLd } from '@/lib/productJsonLd'
 import pool from '@/lib/db'
+
+// Renders one or more JSON-LD <script> blocks (server component).
+function JsonLd({ blocks }: { blocks: any[] }) {
+  return (
+    <>
+      {blocks.map((b, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(b) }} />
+      ))}
+    </>
+  )
+}
+
+// Turn a stored cover image (path or absolute URL) into an absolute URL.
+function toAbsoluteImage(src?: string): string | undefined {
+  if (!src) return undefined
+  if (/^https?:\/\//.test(src)) return src
+  return `${CDN_BASE}${src.startsWith('/') ? '' : '/'}${src}`
+}
 
 // ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
 export const revalidate = 300
@@ -101,10 +121,24 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const productIndex = await getProductIndex()
     const related = productIndex.filter((p: any) => p.slug !== slug).slice(0, 4)
     const layout = loadLayout(slug, product)
-    if (layout) {
-      return <UniversalDetailClient layout={layout} product={product} related={related} footer={footer} />
-    }
-    return <GenericProductClient product={product} related={related} footer={footer} />
+    const jsonLd = [
+      buildProductJsonLd({
+        name: product.name,
+        description: product.description,
+        image: toAbsoluteImage(product.cover_image ? `/hunter-douglas/${slug}/${product.cover_image}` : undefined),
+        slug,
+        brand: 'Hunter Douglas',
+      }),
+      buildBreadcrumbJsonLd(product.name, slug),
+    ]
+    return (
+      <>
+        <JsonLd blocks={jsonLd} />
+        {layout
+          ? <UniversalDetailClient layout={layout} product={product} related={related} footer={footer} />
+          : <GenericProductClient product={product} related={related} footer={footer} />}
+      </>
+    )
   }
 
   /* 2) Fallback: try DB-based numeric ID lookup */
@@ -112,7 +146,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const dbProduct = await getDbProduct(slug)
     if (dbProduct) {
       const related = await getRelatedDbProducts(slug)
-      return <ProductDetailClient product={dbProduct} related={related} footer={footer} />
+      const jsonLd = [
+        buildProductJsonLd({
+          name: dbProduct.name,
+          description: dbProduct.description || dbProduct.tagline,
+          image: toAbsoluteImage(dbProduct.cover_image),
+          slug,
+          brand: 'Angel Drapery',
+        }),
+        buildBreadcrumbJsonLd(dbProduct.name, slug),
+      ]
+      return (
+        <>
+          <JsonLd blocks={jsonLd} />
+          <ProductDetailClient product={dbProduct} related={related} footer={footer} />
+        </>
+      )
     }
   }
 

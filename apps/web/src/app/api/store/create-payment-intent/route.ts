@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { calcServerTotals } from '@/lib/orderPricing'
+import { getUserFromRequest } from '@/lib/auth'
+import { savePendingCheckout } from '@/lib/pendingCheckouts'
 
 // ─── Stripe Tax product tax codes ─────────────────────────────────────────────
 // These map our product categories to Stripe's tax code system.
@@ -192,6 +194,28 @@ export async function POST(request: Request) {
       },
     })
 
+    // ── Step 5: Persist the checkout payload so the Stripe webhook can rebuild
+    // the order if the browser never reaches /api/store/orders (tab closed,
+    // network drop). Best-effort — never block checkout on this.
+    try {
+      const authUser = getUserFromRequest(request)
+      await savePendingCheckout(paymentIntent.id, {
+        customer: {
+          name:  customerName  || '',
+          email: customerEmail || '',
+          phone: '',
+          address: { street: street || '', city: city || '', state: state || '', zip: zip || '' },
+        },
+        items,
+        shipping: { cost: localPricing.shippingCost },
+        discount: { code: localPricing.discountCode || null },
+        notes: '',
+        userId: authUser?.id || null,
+      })
+    } catch (saveErr: any) {
+      console.warn('[create-payment-intent] could not save pending checkout:', saveErr?.message)
+    }
+
     return NextResponse.json({
       success: true,
       data: {
@@ -214,7 +238,7 @@ export async function POST(request: Request) {
     })
   } catch (e: any) {
     console.error('[create-payment-intent] error:', e)
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 })
+    return NextResponse.json({ success: false, error: 'Could not start payment. Please try again.' }, { status: 500 })
   }
 }
 

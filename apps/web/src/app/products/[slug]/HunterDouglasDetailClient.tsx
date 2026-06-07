@@ -222,7 +222,7 @@ function PageRenderer({
               >
                 <img
                   src={`${imgBase}/${img.filename}`}
-                  alt=""
+                  alt={i < labels.length ? labels[i].text : 'Hunter Douglas shade'}
                   className="w-full h-auto hover:opacity-90 transition-opacity"
                   loading="lazy"
                 />
@@ -277,7 +277,7 @@ function PageRenderer({
               >
                 <img
                   src={`${imgBase}/${img.filename}`}
-                  alt=""
+                  alt={parsed.find(p => p.type === 'heading')?.text || 'Hunter Douglas shade'}
                   className="w-full h-auto hover:opacity-90 transition-opacity"
                   loading="lazy"
                 />
@@ -346,7 +346,7 @@ function GalleryGrid({
           >
             <img
               src={`${imgBase}/${mainImg.filename}`}
-              alt=""
+              alt={textLines[0] || 'Hunter Douglas shade photo'}
               className="w-full h-auto group-hover:opacity-95 transition-opacity"
               loading="lazy"
             />

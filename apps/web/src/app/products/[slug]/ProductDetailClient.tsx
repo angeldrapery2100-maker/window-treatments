@@ -134,7 +134,7 @@ export default function ProductDetailClient({ product, related, footer }: Props)
                         selectedImage === index ? 'border-gray-900' : 'border-transparent hover:border-gray-400'
                       }`}>
                       {img.url ? (
-                        <img src={img.url} alt="" className="w-full h-full object-cover" />
+                        <img src={img.url} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-200 flex items-center justify-center">
                           <span className="text-gray-400 text-xs">{index + 1}</span>
