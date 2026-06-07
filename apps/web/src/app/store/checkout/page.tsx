@@ -217,7 +217,18 @@ export default function CheckoutPage() {
       const res = await fetch('/api/store/create-payment-intent', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items:        cart.items.map(i => ({ productId: i.productId, quantity: i.quantity, price: i.unitPrice })),
+          // Full config included: the server recomputes the authoritative price
+          // for custom items from width/height/options via the pricing engine.
+          items:        cart.items.map(i => ({
+            productId: i.productId,
+            quantity:  i.quantity,
+            price:     i.unitPrice,
+            width:          i.width,
+            height:         i.height,
+            widthFraction:  i.widthFraction,
+            heightFraction: i.heightFraction,
+            options:        i.options,
+          })),
           discountCode: cart.discountCode || null,
           shippingCost,
           // Full address — needed by Stripe Tax for jurisdiction detection

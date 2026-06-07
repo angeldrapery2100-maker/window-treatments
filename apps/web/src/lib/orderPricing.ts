@@ -34,6 +34,7 @@
  */
 
 import { query, queryOne } from './db'
+import { computeServerUnitPrice } from './productPricing'
 
 // ── State-level combined average sales-tax rates ──────────────────────────────
 // LOCAL FALLBACK ONLY — not authoritative for tax compliance.
@@ -56,7 +57,15 @@ const STATE_TAX_RATES: Record<string, number> = {
 export interface PricingItem {
   productId: string
   quantity:  number
-  price:     number  // client-supplied unit price (base_price is the floor)
+  price:     number  // client-supplied unit price (display/reference only)
+  // Configuration for custom-priced products (base_price = 0). REQUIRED for
+  // those: the server recomputes the authoritative price from this config via
+  // the pricing engine (see lib/productPricing.ts).
+  width?:          number | string
+  height?:         number | string
+  widthFraction?:  string | number
+  heightFraction?: string | number
+  options?:        Array<{ name: string; value: string }> | Record<string, string>
 }
 
 export interface PricingInput {
@@ -121,11 +130,28 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
     }
     const basePrice   = basePriceMap[item.productId]
     const clientPrice = Math.max(0, Number(item.price) || 0)
-    // base_price is the MINIMUM. Custom configurations may legitimately raise
-    // the unit price, but cap it at UNIT_PRICE_CAP_MULT × base_price so a
-    // single line item cannot be inflated to arbitrary amounts.
-    const cappedClient = Math.min(clientPrice, basePrice * UNIT_PRICE_CAP_MULT)
-    const unitPrice   = Math.max(cappedClient, basePrice)
+
+    let unitPrice: number
+    if (basePrice > 0) {
+      // Fixed-price products: base_price is the MINIMUM; cap client price at
+      // UNIT_PRICE_CAP_MULT × base_price so a line item can't be inflated.
+      const cappedClient = Math.min(clientPrice, basePrice * UNIT_PRICE_CAP_MULT)
+      unitPrice = Math.max(cappedClient, basePrice)
+    } else {
+      // Custom-priced products (base_price = 0): the old cap logic zeroed the
+      // price (min(client, 5×0) = 0 → customers were charged shipping only).
+      // The server is the price authority: recompute from the item's
+      // dimensions/options via the same pricing engine the product page uses.
+      // Throws if the item lacks config or can't be priced (fail-closed).
+      const server = await computeServerUnitPrice(item)
+      unitPrice = server.unitPrice
+      if (clientPrice > 0 && Math.abs(clientPrice - unitPrice) > 1) {
+        console.warn(
+          `[orderPricing] client price $${clientPrice} != server price $${unitPrice} ` +
+          `for product ${item.productId} — using server price`
+        )
+      }
+    }
     subtotal += unitPrice * Math.max(1, Math.floor(Number(item.quantity) || 1))
   }
   subtotal = Math.round(subtotal * 100) / 100

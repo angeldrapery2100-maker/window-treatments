@@ -163,6 +163,13 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
       productId: i.productId,
       quantity:  i.quantity,
       price:     i.unitPrice ?? i.price ?? 0,
+      // Config for custom-priced products — calcServerTotals recomputes the
+      // authoritative price from these via the pricing engine.
+      width:          i.width,
+      height:         i.height,
+      widthFraction:  i.widthFraction,
+      heightFraction: i.heightFraction,
+      options:        i.options,
     }))
 
     let serverPricing
