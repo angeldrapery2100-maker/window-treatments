@@ -123,7 +123,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: rows })
-  } catch (e: any) {
+  } catch (e) {
     console.error('GET site-content error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not load site content.' } }, { status: 500 })
   }
@@ -215,7 +215,7 @@ export async function POST(request: Request) {
 
     revalidatePublicPages()
     return NextResponse.json({ success: true, data: result.rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('POST site-content error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not save changes. Please try again.' } }, { status: 500 })
   }
@@ -256,7 +256,7 @@ export async function PATCH(request: Request) {
 
     revalidatePublicPages()
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     console.error('PATCH site-content error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not save changes. Please try again.' } }, { status: 500 })
   }
@@ -274,7 +274,7 @@ export async function DELETE(request: Request) {
     await pool.query('DELETE FROM site_content WHERE id = $1', [id])
     revalidatePublicPages()
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     console.error('DELETE site-content error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not delete the content. Please try again.' } }, { status: 500 })
   }

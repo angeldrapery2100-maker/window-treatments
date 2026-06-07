@@ -18,7 +18,7 @@ export async function PATCH(request: Request) {
       [body.store_category_id || null, body.product_id]
     )
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }

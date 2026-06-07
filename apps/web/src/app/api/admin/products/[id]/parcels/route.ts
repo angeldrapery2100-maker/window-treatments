@@ -35,7 +35,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       [id]
     )
     return NextResponse.json({ success: true, data: rules })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not load parcel data.', 500, e)
   }
 }
@@ -66,7 +66,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }

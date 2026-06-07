@@ -77,12 +77,12 @@ async function tryStripeTaxCalculation(params: {
       taxAmountCents:   calc.tax_amount_exclusive,  // exclusive = on top of price
       amountTotal:      calc.amount_total,           // total incl. tax
     }
-  } catch (err: any) {
+  } catch (err) {
     // This is expected when Stripe Tax is not yet configured.
     // Log at warn level; caller uses local fallback automatically.
     console.warn(
       '[create-payment-intent] Stripe Tax unavailable (configure in Dashboard to enable):',
-      err?.message ?? err
+      err
     )
     return null
   }
@@ -118,8 +118,8 @@ export async function POST(request: Request) {
         state,
         zip,
       })
-    } catch (e: any) {
-      console.warn('[create-payment-intent] pricing rejected:', e?.message)
+    } catch (e) {
+      console.warn('[create-payment-intent] pricing rejected:', e)
       return NextResponse.json(
         { success: false, error: 'One or more items in your cart are no longer available. Please refresh and try again.' },
         { status: 400 }
@@ -236,7 +236,7 @@ export async function POST(request: Request) {
         taxCalculationId,                           // null when local fallback
       },
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('[create-payment-intent] error:', e)
     return NextResponse.json({ success: false, error: 'Could not start payment. Please try again.' }, { status: 500 })
   }

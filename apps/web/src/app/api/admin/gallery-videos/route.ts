@@ -54,7 +54,7 @@ export async function GET() {
     )
 
     return NextResponse.json({ success: true, data: map, customVideos: customRows })
-  } catch (e: any) {
+  } catch (e) {
     console.error('GET gallery-videos error:', e)
     return errorResponse('Could not load gallery videos.', 500, e)
   }
@@ -100,7 +100,7 @@ export async function PUT(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('PUT gallery-videos error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
@@ -143,7 +143,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('POST gallery-videos error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
@@ -182,7 +182,7 @@ export async function DELETE(request: Request) {
     }
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     console.error('DELETE gallery-videos error:', e)
     return errorResponse('Could not delete the video. Please try again.', 500, e)
   }

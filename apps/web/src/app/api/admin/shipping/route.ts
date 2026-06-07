@@ -255,7 +255,7 @@ export async function POST(request: Request) {
           await sendConsolidatedEmail(order, [{
             ...emailShipment, item_indices: indices, item_quantities: qtys,
           }])
-        } catch (e: any) { console.error('[shipping] email error:', e.message) }
+        } catch (e) { console.error('[shipping] email error:', e) }
       }
 
       return NextResponse.json({
@@ -420,8 +420,8 @@ export async function POST(request: Request) {
             s.status = 'delivered'
             anyUpdated = true
           }
-        } catch (e: any) {
-          console.error(`[shipping] track check failed for ${s.tracking_number}:`, e.message)
+        } catch (e) {
+          console.error(`[shipping] track check failed for ${s.tracking_number}:`, e)
         }
       }
 
@@ -441,7 +441,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Shipping API error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }

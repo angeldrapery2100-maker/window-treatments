@@ -147,7 +147,7 @@ export async function POST(request: Request) {
       emailSent,
       ...(emailError ? { emailError } : {}),
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Consultation request error:', e)
     return NextResponse.json({ error: 'Failed to submit consultation request' }, { status: 500 })
   }

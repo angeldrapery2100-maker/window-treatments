@@ -159,8 +159,8 @@ export async function POST(request: Request) {
     else if (productType === 'shade') explain = explainShade(result.breakdown as any)
 
     return NextResponse.json({ ok: true, result, explain })
-  } catch (e: any) {
-    console.error('[pricing/calculate]', e.message)
+  } catch (e) {
+    console.error('[pricing/calculate]', e)
     return NextResponse.json({ ok: false, error: 'Could not calculate price. Please try again.' }, { status: 400 })
   }
 }

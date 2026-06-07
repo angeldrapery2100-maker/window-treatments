@@ -195,7 +195,7 @@ export async function POST(request: Request) {
       message: `Seed complete: ${inserted} inserted, ${skipped} already existed`,
       total: SEED_DATA.length
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Seed error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not seed site content. Please try again.' } }, { status: 500 })
   }

@@ -25,7 +25,7 @@ export async function PATCH(
       [JSON.stringify(updatedConfig), id]
     )
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }

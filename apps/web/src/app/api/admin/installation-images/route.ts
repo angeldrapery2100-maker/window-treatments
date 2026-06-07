@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 
     const { rows } = await pool.query(query, params)
     return NextResponse.json({ success: true, data: rows })
-  } catch (e: any) {
+  } catch (e) {
     console.error('GET installation-images error:', e)
     return errorResponse('Could not load installation images.', 500, e)
   }
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('POST installation-images error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
@@ -142,7 +142,7 @@ export async function PUT(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('PUT installation-images error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
@@ -175,7 +175,7 @@ export async function DELETE(request: Request) {
     }
 
     return NextResponse.json({ success: true, deleted: rowCount })
-  } catch (e: any) {
+  } catch (e) {
     console.error('DELETE installation-images error:', e)
     return errorResponse('Could not delete the image. Please try again.', 500, e)
   }

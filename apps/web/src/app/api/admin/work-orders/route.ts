@@ -39,8 +39,8 @@ export async function GET(request: Request) {
     )
 
     return NextResponse.json({ success: true, data: { workOrder } })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: { workOrder: null } })
     }
     return errorResponse('Could not load work orders.', 500, e)
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, data: { workOrder, statusUpdated: order?.status === 'pending' } })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }

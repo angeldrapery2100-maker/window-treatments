@@ -47,8 +47,8 @@ export async function GET(request: Request) {
     }))
 
     return NextResponse.json({ success: true, data })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [] })
     }
     return errorResponse('Could not load your orders.', 500, e)

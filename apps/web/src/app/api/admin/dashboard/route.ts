@@ -51,8 +51,8 @@ export async function GET(request: Request) {
         discounts: discountStats,
       }
     })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({
         success: true,
         data: {

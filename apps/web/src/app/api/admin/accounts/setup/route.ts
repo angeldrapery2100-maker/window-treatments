@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     )
 
     return NextResponse.json({ success: true, message: `Admin account created: ${email}` })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not set up the account. Please try again.', 500, e)
   }
 }

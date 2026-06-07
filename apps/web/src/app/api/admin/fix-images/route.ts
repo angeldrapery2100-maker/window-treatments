@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       message: '已修复 ' + result.length + ' 个产品的主图',
       data: result.map((r: any) => ({ id: r.id, name: r.name, images: r.images }))
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Fix images error:', e)
     return errorResponse('Could not process images. Please try again.', 500, e)
   }

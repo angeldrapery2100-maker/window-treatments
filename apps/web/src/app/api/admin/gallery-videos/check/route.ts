@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     )
 
     return NextResponse.json({ success: true, data: results })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not check gallery videos.', 500, e)
   }
 }

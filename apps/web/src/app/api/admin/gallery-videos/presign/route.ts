@@ -75,10 +75,10 @@ export async function POST(request: Request) {
       success: true,
       data: { presignedUrl, publicUrl, key, filename },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Presign error:', error)
     return NextResponse.json(
-      { success: false, error: '生成上传链接失败: ' + error.message },
+      { success: false, error: '生成上传链接失败: ' + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     )
   }

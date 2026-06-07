@@ -17,8 +17,8 @@ export async function GET(request: Request) {
       [content_id]
     )
     return NextResponse.json({ success: true, data: versions })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [] })
     }
     return errorResponse('Could not load version history.', 500, e)
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json({ success: true, restored: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }

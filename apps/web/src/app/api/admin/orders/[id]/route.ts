@@ -33,7 +33,7 @@ export async function GET(
     ).catch(() => [])
 
     return NextResponse.json({ success: true, data: { order, shipments } })
-  } catch (e: any) {
+  } catch (e) {
     console.error(`GET /api/admin/orders/${id} error:`, e)
     return errorResponse('Could not load the order.', 500, e)
   }

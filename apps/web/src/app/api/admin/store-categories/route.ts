@@ -40,7 +40,7 @@ export async function GET(request: Request) {
       ORDER BY sc.sort_order ASC, sc.created_at ASC
     `)
     return NextResponse.json({ success: true, data: rows })
-  } catch (e: any) {
+  } catch (e) {
     console.error('GET store-categories error:', e)
     return errorResponse('Could not load categories.', 500, e)
   }
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       [body.name, slug, sortOrder]
     )
     return NextResponse.json({ success: true, data: rows[0] }, { status: 201 })
-  } catch (e: any) {
+  } catch (e) {
     console.error('POST store-categories error:', e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
@@ -99,7 +99,7 @@ export async function PATCH(request: Request) {
       params
     )
     return NextResponse.json({ success: true, data: rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
@@ -119,7 +119,7 @@ export async function DELETE(request: Request) {
     await query(`UPDATE products SET store_category_id = NULL WHERE store_category_id = $1`, [body.id])
     await query(`DELETE FROM store_categories WHERE id = $1`, [body.id])
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not delete the category. Please try again.', 500, e)
   }
 }

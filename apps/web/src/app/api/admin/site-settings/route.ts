@@ -38,7 +38,7 @@ export async function GET() {
       data: settings,
       groups: SETTING_GROUPS,
     })
-  } catch (err: any) {
+  } catch (err) {
     return errorResponse('Could not load site settings.', 500, err)
   }
 }
@@ -79,7 +79,7 @@ export async function PUT(req: Request) {
     }
 
     return NextResponse.json({ success: true })
-  } catch (err: any) {
+  } catch (err) {
     return errorResponse('Could not save changes. Please try again.', 500, err)
   }
 }

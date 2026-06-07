@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     `, [product_id, image_url, image_width, image_height, image_fit, caption, image_type, sort_order])
 
     return NextResponse.json({ success: true, data: result.rows[0] })
-  } catch (e: any) {
+  } catch (e) {
     console.error('POST showcase-products/images error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not save changes. Please try again.' } }, { status: 500 })
   }
@@ -39,7 +39,7 @@ export async function DELETE(request: Request) {
     if (!id) return NextResponse.json({ success: false, error: { message: 'id required' } }, { status: 400 })
     await pool.query('DELETE FROM showcase_product_images WHERE id = $1', [id])
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     console.error('DELETE showcase-products/images error:', e)
     return NextResponse.json({ success: false, error: { message: 'Could not delete the image. Please try again.' } }, { status: 500 })
   }

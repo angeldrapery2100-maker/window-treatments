@@ -15,8 +15,9 @@ export async function GET(request: Request) {
        ORDER BY created_at ASC`
     )
     return NextResponse.json({ success: true, data: users })
-  } catch (e: any) {
-    const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : ''
+    const status = msg.includes('Not authenticated') ? 401 : msg.includes('Admin') ? 403 : 500
     return errorResponse('Could not load accounts.', status, e)
   }
 }
@@ -50,8 +51,9 @@ export async function POST(request: Request) {
     )
 
     return NextResponse.json({ success: true, data: user })
-  } catch (e: any) {
-    const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : ''
+    const status = msg.includes('Not authenticated') ? 401 : msg.includes('Admin') ? 403 : 500
     return errorResponse('Could not create the account. Please try again.', status, e)
   }
 }
@@ -115,8 +117,9 @@ export async function PATCH(request: Request) {
     )
 
     return NextResponse.json({ success: true, data: updated })
-  } catch (e: any) {
-    const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : ''
+    const status = msg.includes('Not authenticated') ? 401 : msg.includes('Admin') ? 403 : 500
     return errorResponse('Could not save changes. Please try again.', status, e)
   }
 }
@@ -144,8 +147,9 @@ export async function DELETE(request: Request) {
     await query('UPDATE users SET role = $1, is_active = false, updated_at = NOW() WHERE id = $2', ['customer', id])
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
-    const status = e.message?.includes('Not authenticated') ? 401 : e.message?.includes('Admin') ? 403 : 500
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : ''
+    const status = msg.includes('Not authenticated') ? 401 : msg.includes('Admin') ? 403 : 500
     return errorResponse('Could not remove the account. Please try again.', status, e)
   }
 }

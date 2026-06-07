@@ -83,7 +83,7 @@ export async function GET(request: Request) {
       FROM discount_codes dc ORDER BY created_at DESC
     `)
     return NextResponse.json({ success: true, data: codes })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not load discount codes.', 500, e)
   }
 }
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json({ success: true, data: row })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
@@ -189,7 +189,7 @@ export async function PATCH(request: Request) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
@@ -212,7 +212,7 @@ export async function DELETE(request: Request) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not delete the discount code. Please try again.', 500, e)
   }
 }

@@ -57,10 +57,35 @@ const nextConfig: NextConfig = {
   // ── Security headers ──────────────────────────────────────────────────────
   // Applied to every response the app origin emits. HSTS is already injected
   // by Vercel's edge; we layer on the MIME, framing, referrer and permissions
-  // protections that aren't set by default. No CSP yet — Stripe / Resend /
-  // framer-motion inline styles would each need a targeted source entry and
-  // a mis-tuned CSP breaks checkout silently. Left as a follow-up.
+  // protections that aren't set by default.
+  //
+  // CSP is shipped in REPORT-ONLY mode first: it never blocks anything, it only
+  // makes the browser log (and optionally report) what a real enforcing policy
+  // WOULD block. Watch the browser console / reports for a week across the whole
+  // site — especially checkout (Stripe) — then, once it's clean, flip the header
+  // key to 'Content-Security-Policy' to enforce. Sources below cover Stripe,
+  // the R2 media CDN, and Next/Tailwind/framer inline styles.
   async headers() {
+    const R2 = 'https://pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev'
+    const cspReportOnly = [
+      `default-src 'self'`,
+      // Next.js injects inline bootstrap scripts; Stripe.js is loaded for checkout.
+      `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com`,
+      // Tailwind / framer-motion / Next set inline styles.
+      `style-src 'self' 'unsafe-inline'`,
+      `img-src 'self' data: blob: ${R2} https://www.carolefabrics.com https://q.stripe.com`,
+      `media-src 'self' blob: ${R2}`,
+      `font-src 'self' data:`,
+      // XHR/fetch to our APIs, Stripe, and the media CDN.
+      `connect-src 'self' ${R2} https://api.stripe.com https://api.goshippo.com`,
+      // Stripe payment element iframes.
+      `frame-src https://js.stripe.com https://hooks.stripe.com`,
+      `object-src 'none'`,
+      `base-uri 'self'`,
+      `form-action 'self'`,
+      `frame-ancestors 'self'`,
+    ].join('; ')
+
     const securityHeaders = [
       // Prevent MIME-sniffing uploaded files into executable content
       { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -75,6 +100,8 @@ const nextConfig: NextConfig = {
         key: 'Permissions-Policy',
         value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()',
       },
+      // Report-only CSP — observe before enforcing (see comment above).
+      { key: 'Content-Security-Policy-Report-Only', value: cspReportOnly },
     ]
     return [
       { source: '/:path*', headers: securityHeaders },

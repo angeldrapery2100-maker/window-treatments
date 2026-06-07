@@ -40,8 +40,8 @@ export async function GET(request: Request) {
       data: logs,
       pagination: { page, limit, total, pages: Math.ceil(total / limit) }
     })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } })
     }
     return errorResponse('Could not load audit logs.', 500, e)

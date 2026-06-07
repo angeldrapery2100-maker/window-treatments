@@ -18,8 +18,8 @@ export async function GET(request: Request) {
       [order_id]
     )
     return NextResponse.json({ success: true, data: history })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [] })
     }
     return errorResponse('Could not load order history.', 500, e)

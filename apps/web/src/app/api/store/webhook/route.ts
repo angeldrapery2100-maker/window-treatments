@@ -36,8 +36,8 @@ export async function POST(request: Request) {
   let event: any
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, secret)
-  } catch (err: any) {
-    console.error('[webhook] signature verification failed:', err?.message)
+  } catch (err) {
+    console.error('[webhook] signature verification failed:', err)
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
@@ -73,9 +73,9 @@ export async function POST(request: Request) {
         // staff follow-up; ack with 200 so Stripe doesn't retry forever.
         console.error('[webhook] could not create order for PI', pi.id, '-', result.error)
       }
-    } catch (e: any) {
+    } catch (e) {
       // Unexpected (likely transient, e.g. DB). Return 500 so Stripe retries.
-      console.error('[webhook] handler error for PI', pi.id, '-', e?.message)
+      console.error('[webhook] handler error for PI', pi.id, '-', e)
       return NextResponse.json({ error: 'handler error' }, { status: 500 })
     }
   }

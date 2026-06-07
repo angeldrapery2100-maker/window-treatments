@@ -46,7 +46,7 @@ export async function GET(
       success: true,
       data: { ...order, shipments },
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error(`GET /api/store/my-orders/${id} error:`, e)
     return errorResponse('Could not load the order.', 500, e)
   }

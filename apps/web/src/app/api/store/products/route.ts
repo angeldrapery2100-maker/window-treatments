@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     `, queryArgs).catch(() => [])
 
     return NextResponse.json({ success: true, data: { products } })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not load products.', 500, e)
   }
 }

@@ -103,8 +103,8 @@ export async function GET(request: Request) {
         pages: Math.ceil(total / limit),
       }
     })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [], pagination: { page: 1, limit: 20, total: 0, pages: 0 } })
     }
     return errorResponse('Could not load orders.', 500, e)
@@ -210,7 +210,7 @@ export async function PATCH(request: Request) {
     }
 
     return NextResponse.json({ success: true })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }
 }
@@ -276,7 +276,7 @@ export async function DELETE(request: Request) {
       success: true,
       data: { cancelled: true, refund: refundResult, paymentStatus }
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('[cancel] Error:', e)
     return errorResponse('Could not delete the order. Please try again.', 500, e)
   }

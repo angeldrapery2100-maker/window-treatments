@@ -79,10 +79,10 @@ export async function POST(request: Request) {
         finalBytes: compressed.finalBytes,
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Upload error:', error)
     return NextResponse.json(
-      { success: false, error: { message: 'Upload failed: ' + error.message } },
+      { success: false, error: { message: 'Upload failed: ' + (error instanceof Error ? error.message : String(error)) } },
       { status: 500 }
     )
   }

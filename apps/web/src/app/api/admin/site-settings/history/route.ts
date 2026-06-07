@@ -21,8 +21,8 @@ export async function GET(request: Request) {
 
     const history = await query(sql, params)
     return NextResponse.json({ success: true, data: history })
-  } catch (e: any) {
-    if (e.message?.includes('does not exist')) {
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('does not exist')) {
       return NextResponse.json({ success: true, data: [] })
     }
     return errorResponse('Could not load settings history.', 500, e)

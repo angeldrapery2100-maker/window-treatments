@@ -64,8 +64,8 @@ export async function POST(request: Request) {
       success: true,
       data: { url, filename, originalName: file.name }
     })
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: { message: '上传失败: ' + error.message } }, { status: 500 })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: { message: '上传失败: ' + (error instanceof Error ? error.message : String(error)) } }, { status: 500 })
   }
 }
 

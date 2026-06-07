@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       isEstimate: true,
       data: { rate: 0, source: 'default', zip: zip || '', state: stateCode || '', city: '' }
     })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Tax rate error:', e)
     return errorResponse('Could not calculate tax. Please try again.', 500, e)
   }

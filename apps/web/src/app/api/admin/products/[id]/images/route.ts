@@ -82,9 +82,9 @@ export async function PUT(
       message: 'Images saved successfully',
       debug: { id, mainCount: mainImages.length, galleryCount: galleryImages.length, updated: !!result }
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[images PUT] error:', error)
-    return NextResponse.json({ success: false, error: { message: error.message || '保存图片失败' } }, { status: 500 })
+    return NextResponse.json({ success: false, error: { message: (error instanceof Error ? error.message : '') || '保存图片失败' } }, { status: 500 })
   }
 }
 

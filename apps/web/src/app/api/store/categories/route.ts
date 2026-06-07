@@ -17,7 +17,7 @@ export async function GET() {
     `).catch(() => [])
 
     return NextResponse.json({ success: true, data: categories })
-  } catch (e: any) {
+  } catch (e) {
     return errorResponse('Could not load categories.', 500, e)
   }
 }

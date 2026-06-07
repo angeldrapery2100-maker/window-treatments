@@ -41,7 +41,7 @@ export async function PATCH(
     )
 
     return NextResponse.json({ success: true, data: { starting_price: startingPrice } })
-  } catch (e: any) {
+  } catch (e) {
     console.error(`PATCH starting-price error:`, e)
     return errorResponse('Could not save changes. Please try again.', 500, e)
   }

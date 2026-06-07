@@ -115,7 +115,7 @@ export async function POST(request: Request) {
       }))
 
     return NextResponse.json({ success: true, data: { rates } })
-  } catch (e: any) {
+  } catch (e) {
     console.error('Shipping rates error:', e)
     return errorResponse('Could not fetch shipping rates. Please try again.', 500, e)
   }

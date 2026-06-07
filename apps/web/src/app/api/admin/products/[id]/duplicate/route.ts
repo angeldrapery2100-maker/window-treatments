@@ -44,10 +44,10 @@ export async function POST(
     )
 
     return NextResponse.json({ success: true, data: { new_product_id: newProduct!.id } })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Duplicate product error:', error)
     return NextResponse.json(
-      { success: false, error: { message: error.message || '复制产品失败' } },
+      { success: false, error: { message: (error instanceof Error ? error.message : '') || '复制产品失败' } },
       { status: 500 }
     )
   }
