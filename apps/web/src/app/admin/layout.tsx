@@ -41,6 +41,14 @@ function NavItem({ item, pathname }: { item: typeof WEBSITE_NAV[0]; pathname: st
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
+  // Sign out: revokes this token server-side (jti -> blocklist) and clears the
+  // cookie, then hard-redirects to the login page (full reload drops any
+  // client-side admin state).
+  const handleSignOut = async () => {
+    try { await fetch('/api/auth/logout', { method: 'POST' }) } catch { /* still redirect */ }
+    window.location.href = '/admin/login'
+  }
+
   // Full-width pages (no sidebar)
   const fullWidthPaths = ['/admin/orders/shipping/', '/admin/orders/work-order/', '/admin/login']
   const isFullWidth = fullWidthPaths.some(p => pathname.startsWith(p))
@@ -95,13 +103,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </nav>
 
-        <div className="px-3 py-3 border-t border-gray-100">
+        <div className="px-3 py-3 border-t border-gray-100 space-y-0.5">
           <Link href="/" target="_blank" className="flex items-center gap-2 px-3 py-2 text-[12px] text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-50 transition-colors">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
               <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
             View Site
           </Link>
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-gray-400 hover:text-red-600 rounded-md hover:bg-red-50 transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Sign Out
+          </button>
         </div>
       </aside>
 
