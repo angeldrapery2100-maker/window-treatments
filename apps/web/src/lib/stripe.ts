@@ -5,8 +5,10 @@ import Stripe from 'stripe'
 // Authorization header invalid — with the old Node http client that surfaced
 // as a misleading StripeConnectionError; with the fetch client it's a
 // TypeError("Invalid character in header content"). Trim + strip quotes.
+// Strip ALL whitespace (keys never contain any): handles not just trailing
+// newlines but also mid-string line breaks from copying a wrapped long key.
 const STRIPE_KEY = (process.env.STRIPE_SECRET_KEY || '')
-  .trim()
+  .replace(/\s+/g, '')
   .replace(/^["']|["']$/g, '')
 
 // httpClient: the SDK's default Node http client wrapped header errors as
