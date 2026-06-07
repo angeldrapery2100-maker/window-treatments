@@ -28,7 +28,12 @@ export type CreateOrderResult =
   | { ok: true; orderId: string; orderNumber: string; createdAt: any }
   | { ok: false; status: number; error: string; existingOrderId?: string }
 
+// Memoized per serverless instance — schema statements are idempotent but
+// there's no need to re-run a dozen DDLs on every single order.
+let schemaEnsured = false
+
 async function ensureOrdersTable() {
+  if (schemaEnsured) return
   await query(`CREATE TABLE IF NOT EXISTS orders (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     order_number varchar(32) NOT NULL UNIQUE,
@@ -61,6 +66,42 @@ async function ensureOrdersTable() {
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS tax_rate numeric(6,4) DEFAULT 0`).catch(() => {})
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS tax_amount numeric(10,2) DEFAULT 0`).catch(() => {})
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS tax_source varchar(16) DEFAULT 'local'`).catch(() => {})
+
+  // ── Dedup hardening ────────────────────────────────────────────────────────
+  // The SELECT-then-INSERT dedup check has an inherent race: the browser's
+  // POST /api/store/orders and Stripe's webhook can both pass the check before
+  // either inserts (observed in production: two orders 17ms apart for one PI).
+  // The fix is a real DB constraint. Before creating it, neutralize any
+  // existing duplicates (keep the earliest row per PI; mark later ones as
+  // cancelled duplicates and detach their PI so refunds can't double-fire).
+  await query(
+    `UPDATE orders SET
+       status            = 'cancelled',
+       payment_status    = 'duplicate',
+       payment_intent_id = NULL,
+       admin_notes       = TRIM(COALESCE(admin_notes, '') || ' [auto-cancelled: duplicate order for the same payment]'),
+       updated_at        = now()
+     WHERE id IN (
+       SELECT id FROM (
+         SELECT id, ROW_NUMBER() OVER (
+           PARTITION BY payment_intent_id ORDER BY created_at ASC, id ASC
+         ) AS rn
+         FROM orders WHERE payment_intent_id IS NOT NULL
+       ) d WHERE d.rn > 1
+     )`
+  ).catch((e) => console.error('[orders] dedup migration failed:', e))
+  await query(
+    `CREATE UNIQUE INDEX IF NOT EXISTS orders_payment_intent_id_uniq
+     ON orders (payment_intent_id) WHERE payment_intent_id IS NOT NULL`
+  ).catch((e) => console.error('[orders] unique index creation failed:', e))
+
+  schemaEnsured = true
+}
+
+// Exported so read paths (e.g. the admin orders list) can apply the schema /
+// dedup migration without waiting for the next checkout.
+export async function ensureOrdersSchema(): Promise<void> {
+  await ensureOrdersTable()
 }
 
 function generateOrderNumber(): string {

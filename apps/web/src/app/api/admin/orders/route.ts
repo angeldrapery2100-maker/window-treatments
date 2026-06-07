@@ -5,6 +5,7 @@ import { stripe } from '@/lib/stripe'
 import { recordAudit } from '@/lib/audit'
 import { recordOrderHistory } from '@/lib/orderHistory'
 import { requireAdmin } from '@/lib/auth'
+import { ensureOrdersSchema } from '@/lib/createOrder'
 
 // ─── Valid status transitions ─────────────────────────────────────────────────
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -22,6 +23,10 @@ function canTransition(from: string, to: string): boolean {
 // ─── GET: list orders with pagination, search, filter, sort ──────────────────
 export async function GET(request: Request) {
   try {
+    // Applies the orders schema / dedup migration on read paths too, so fixes
+    // land as soon as the admin opens the orders page (not on next checkout).
+    await ensureOrdersSchema().catch(() => {})
+
     const { searchParams } = new URL(request.url)
     const status      = searchParams.get('status')
     const search      = searchParams.get('search')       // order_number / customer name / email
