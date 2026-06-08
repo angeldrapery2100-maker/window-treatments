@@ -25,7 +25,20 @@ function PaymentForm({ onSuccess, submitting, setSubmitting }: {
   const handlePay = async () => {
     if (!stripe || !elements) return
     setSubmitting(true); setPayError('')
-    const { error, paymentIntent } = await stripe.confirmPayment({ elements, redirect: 'if_required' })
+    // A return_url is REQUIRED whenever the PaymentIntent enables any
+    // redirect-based method (Link, Cash App, US bank, etc. via
+    // automatic_payment_methods). With redirect:'if_required' a card payment
+    // still completes inline and never uses this URL, but its presence stops
+    // Stripe from rejecting the confirm with a generic "an error occurred"
+    // when a redirect method is available. Redirect methods land here, where
+    // the webhook will have created the order.
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/store/order-confirmation`,
+      },
+      redirect: 'if_required',
+    })
     if (error) { setPayError(error.message || 'Payment failed'); setSubmitting(false) }
     else if (paymentIntent?.status === 'succeeded') onSuccess(paymentIntent.id)
     else { setPayError('Payment not completed'); setSubmitting(false) }
