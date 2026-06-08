@@ -6,6 +6,7 @@ import { recordAudit } from '@/lib/audit'
 import { recordOrderHistory } from '@/lib/orderHistory'
 import { requireAdmin } from '@/lib/auth'
 import { ensureOrdersSchema } from '@/lib/createOrder'
+import { sendOrderStatusEmail } from '@/lib/orderEmails'
 
 // ─── Valid status transitions ─────────────────────────────────────────────────
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -204,6 +205,16 @@ export async function PATCH(request: Request) {
         before: { status: order.status },
         after: { status },
       })
+      // Customer status email (best-effort). 'shipped' is handled by the
+      // shipping route with tracking details, so skip it here.
+      if (status === 'in_production' || status === 'completed') {
+        await sendOrderStatusEmail({
+          kind: status,
+          orderNumber: order.order_number,
+          customerName: order.customer_name,
+          customerEmail: order.customer_email,
+        }).catch(() => {})
+      }
     }
     if (admin_notes !== undefined) {
       await recordOrderHistory({
@@ -276,6 +287,14 @@ export async function DELETE(request: Request) {
       before: { status: order.status, payment_status: order.payment_status },
       after: { status: 'cancelled', payment_status: paymentStatus },
     })
+
+    // Customer cancellation/refund email (best-effort)
+    await sendOrderStatusEmail({
+      kind: 'cancelled',
+      orderNumber: order.order_number,
+      customerName: order.customer_name,
+      customerEmail: order.customer_email,
+    }).catch(() => {})
 
     return NextResponse.json({
       success: true,

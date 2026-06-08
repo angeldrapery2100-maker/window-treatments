@@ -88,6 +88,11 @@ export default function AdminOrdersPage() {
   const [orderShipments, setOrderShipments] = useState<Record<string, Shipment[]>>({})
   const [orderWorkOrders, setOrderWorkOrders] = useState<Record<string, { version: number; created_at: string } | null>>({})
   const [cancellingId, setCancellingId] = useState<string | null>(null)
+  const [confirmCancelId, setConfirmCancelId] = useState<string | null>(null)  // in-page confirm (replaces window.confirm)
+  const [refundOpenId, setRefundOpenId] = useState<string | null>(null)         // which order's partial-refund panel is open
+  const [refundAmount, setRefundAmount] = useState('')
+  const [refundReason, setRefundReason] = useState('')
+  const [refundingId, setRefundingId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -168,14 +173,14 @@ export default function AdminOrdersPage() {
     fetchOrders()
   }
 
+  // Confirmation is handled by an in-page panel (setConfirmCancelId), not the
+  // native window.confirm() — native dialogs can be permanently suppressed by
+  // the browser ("prevent this page from creating more dialogs"), which would
+  // silently disable cancellation. This runs once the admin confirms in-page.
   const cancelOrder = async (id: string) => {
     const order = orders.find(o => o.id === id)
     if (!order) return
-    const hasPaid = order.payment_status === 'paid' && order.payment_intent_id
-    const msg = hasPaid
-      ? `Cancel order ${order.order_number} and refund ${Number(order.total).toLocaleString()}?\n\nThis will issue a full refund via Stripe. This action cannot be undone.`
-      : `Cancel order ${order.order_number}?`
-    if (!confirm(msg)) return
+    setConfirmCancelId(null)
 
     setCancellingId(id)
     try {
@@ -201,6 +206,36 @@ export default function AdminOrdersPage() {
       setTimeout(() => setMessage(''), 4000)
     } finally {
       setCancellingId(null)
+    }
+  }
+
+  // Partial (or remaining-full) refund WITHOUT cancelling the order.
+  const partialRefund = async (id: string) => {
+    setRefundingId(id)
+    try {
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: refundAmount.trim() === '' ? undefined : Number(refundAmount),
+          reason: refundReason.trim() || undefined,
+        }),
+      })
+      const data = await res.json() as any
+      if (data.success) {
+        setMessage(`Refunded $${Number(data.data.refunded).toFixed(2)} (total refunded $${Number(data.data.totalRefunded).toFixed(2)})`)
+        setRefundOpenId(null); setRefundAmount(''); setRefundReason('')
+        setTimeout(() => setMessage(''), 5000)
+        fetchOrders()
+      } else {
+        setMessage(`Error: ${data.error || 'Refund failed'}`)
+        setTimeout(() => setMessage(''), 5000)
+      }
+    } catch (e: any) {
+      setMessage(`Error: ${e.message}`)
+      setTimeout(() => setMessage(''), 4000)
+    } finally {
+      setRefundingId(null)
     }
   }
 
@@ -701,31 +736,96 @@ export default function AdminOrdersPage() {
                               className="mt-2 px-4 py-1.5 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700">Save Notes</button>
                           </div>
 
-                          {/* ─── Cancel Order ─── */}
-                          {order.status !== 'cancelled' && order.status !== 'completed' && (
+                          {/* ─── Partial Refund (order stays open) ─── */}
+                          {order.status !== 'cancelled' && (order.payment_status === 'paid' || order.payment_status === 'partially_refunded') && order.payment_intent_id && (
                             <div className="pt-3 mt-1 border-t border-gray-200">
-                              <button
-                                onClick={() => cancelOrder(order.id)}
-                                disabled={cancellingId === order.id}
-                                className="w-full px-3 py-2 text-xs rounded-lg font-medium border border-red-200 text-red-600 hover:bg-red-50 disabled:opacity-50 flex items-center justify-center gap-1.5"
-                              >
-                                {cancellingId === order.id ? (
-                                  'Cancelling...'
-                                ) : (
-                                  <>
-                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                                    Cancel Order{order.payment_status === 'paid' ? ' & Refund' : ''}
-                                  </>
-                                )}
-                              </button>
-                              {order.payment_status === 'paid' && (
-                                <p className="text-[10px] text-gray-400 mt-1.5 text-center">Full refund will be issued via Stripe</p>
+                              {refundOpenId === order.id ? (
+                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2">
+                                  <p className="text-xs font-medium text-gray-700">Issue a refund</p>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-gray-400 text-sm">$</span>
+                                    <input
+                                      type="number" min="0" step="0.01"
+                                      value={refundAmount}
+                                      onChange={e => setRefundAmount(e.target.value)}
+                                      placeholder={`Amount (max ${(Number(order.total) - (Number((order as any).refunded_amount) || 0)).toFixed(2)})`}
+                                      className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                    />
+                                  </div>
+                                  <input
+                                    type="text"
+                                    value={refundReason}
+                                    onChange={e => setRefundReason(e.target.value)}
+                                    placeholder="Reason (optional)"
+                                    className="w-full border border-gray-200 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                  />
+                                  <p className="text-[10px] text-gray-400">Leave amount blank to refund the full remaining balance. The order stays open.</p>
+                                  <div className="flex gap-2">
+                                    <button onClick={() => partialRefund(order.id)} disabled={refundingId === order.id}
+                                      className="flex-1 px-3 py-1.5 text-xs rounded font-medium bg-[#3d3d3d] text-white hover:bg-gray-700 disabled:opacity-50">
+                                      {refundingId === order.id ? 'Refunding…' : 'Issue Refund'}
+                                    </button>
+                                    <button onClick={() => { setRefundOpenId(null); setRefundAmount(''); setRefundReason('') }}
+                                      className="px-3 py-1.5 text-xs rounded font-medium border border-gray-200 text-gray-500 hover:bg-gray-100">
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <button onClick={() => { setRefundOpenId(order.id); setRefundAmount(''); setRefundReason('') }}
+                                  className="w-full px-3 py-2 text-xs rounded-lg font-medium border border-gray-200 text-gray-600 hover:bg-gray-50">
+                                  Issue Refund (Partial / Full)
+                                </button>
+                              )}
+                              {order.payment_status === 'partially_refunded' && (
+                                <p className="text-[10px] text-amber-600 mt-1.5 text-center">
+                                  Partially refunded: ${(Number((order as any).refunded_amount) || 0).toFixed(2)} of ${Number(order.total).toFixed(2)}
+                                </p>
                               )}
                             </div>
                           )}
-                          {order.status === 'cancelled' && order.payment_status === 'refunded' && (
+
+                          {/* ─── Cancel Order ─── */}
+                          {order.status !== 'cancelled' && order.status !== 'completed' && (
+                            <div className="pt-3 mt-1 border-t border-gray-200">
+                              {confirmCancelId === order.id ? (
+                                <div className="bg-red-50 border border-red-200 rounded-lg p-3 space-y-2">
+                                  <p className="text-xs text-red-700">
+                                    Cancel order <span className="font-mono font-semibold">{order.order_number}</span>
+                                    {order.payment_status === 'paid' ? ` and refund $${Number(order.total).toFixed(2)} via Stripe?` : '?'}
+                                    {' '}This cannot be undone.
+                                  </p>
+                                  <div className="flex gap-2">
+                                    <button onClick={() => cancelOrder(order.id)} disabled={cancellingId === order.id}
+                                      className="flex-1 px-3 py-1.5 text-xs rounded font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-50">
+                                      {cancellingId === order.id ? 'Cancelling…' : 'Yes, Cancel Order'}
+                                    </button>
+                                    <button onClick={() => setConfirmCancelId(null)}
+                                      className="px-3 py-1.5 text-xs rounded font-medium border border-red-200 text-red-600 hover:bg-red-100">
+                                      Keep Order
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <button
+                                    onClick={() => setConfirmCancelId(order.id)}
+                                    disabled={cancellingId === order.id}
+                                    className="w-full px-3 py-2 text-xs rounded-lg font-medium border border-red-200 text-red-600 hover:bg-red-50 disabled:opacity-50 flex items-center justify-center gap-1.5"
+                                  >
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                    Cancel Order{order.payment_status === 'paid' ? ' & Refund' : ''}
+                                  </button>
+                                  {order.payment_status === 'paid' && (
+                                    <p className="text-[10px] text-gray-400 mt-1.5 text-center">Full refund will be issued via Stripe</p>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          )}
+                          {order.status === 'cancelled' && (order.payment_status === 'refunded' || order.payment_status === 'duplicate') && (
                             <div className="bg-red-50 border border-red-200 rounded-lg p-2.5 text-xs text-red-600">
-                              Order cancelled and refunded
+                              {order.payment_status === 'duplicate' ? 'Duplicate order — auto-cancelled' : 'Order cancelled and refunded'}
                             </div>
                           )}
                           {order.status === 'cancelled' && order.payment_status === 'refund_failed' && (

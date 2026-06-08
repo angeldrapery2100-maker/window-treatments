@@ -140,6 +140,65 @@ async function sendAdminNotification(d: OrderEmailData): Promise<void> {
   if (error) throw new Error(`${(error as any).name || 'ResendError'}: ${(error as any).message || JSON.stringify(error)}`)
 }
 
+// ── Customer: order status change ────────────────────────────────────────────
+// Sent on meaningful transitions. 'shipped' is intentionally NOT handled here —
+// the shipping route sends a richer email with tracking numbers when a label is
+// purchased, and we don't want to double-send.
+type StatusEmailKind = 'in_production' | 'completed' | 'cancelled'
+
+const STATUS_COPY: Record<StatusEmailKind, { subject: (n: string) => string; heading: string; body: string }> = {
+  in_production: {
+    subject: (n) => `Your order ${n} is now in production`,
+    heading: 'Your order is in production',
+    body: 'Good news — we\'ve started making your custom window treatments. We\'ll let you know as soon as your order ships.',
+  },
+  completed: {
+    subject: (n) => `Your order ${n} is complete`,
+    heading: 'Your order is complete',
+    body: 'Your order has been completed. Thank you for choosing Angel Drapery — we hope you love your new window treatments!',
+  },
+  cancelled: {
+    subject: (n) => `Your order ${n} has been cancelled`,
+    heading: 'Your order has been cancelled',
+    body: 'Your order has been cancelled. If a payment was made, a full refund has been issued and will appear on your statement within 5–10 business days. Questions? Just reply to this email.',
+  },
+}
+
+export async function sendOrderStatusEmail(args: {
+  kind: StatusEmailKind
+  orderNumber: string
+  customerName: string
+  customerEmail: string
+}): Promise<void> {
+  if (!process.env.RESEND_API_KEY) return
+  const copy = STATUS_COPY[args.kind]
+  if (!copy) return
+  const esNo = escapeHtml(args.orderNumber)
+  const trackUrl = safeUrl(`${SITE_URL()}/store/track?order=${encodeURIComponent(args.orderNumber)}`)
+  const html = `
+  <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;">
+    <h2 style="font-weight:300;letter-spacing:1px;color:#222;">${escapeHtml(copy.heading)}</h2>
+    <p style="color:#555;font-size:14px;">Hi ${escapeHtml(args.customerName || 'there')}, ${escapeHtml(copy.body)}</p>
+    <div style="background:#f7f7f7;border-radius:8px;padding:14px 18px;margin:18px 0;">
+      <p style="margin:0;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Order Number</p>
+      <p style="margin:4px 0 0;font-size:18px;font-weight:700;font-family:monospace;color:#222;">${esNo}</p>
+    </div>
+    ${args.kind !== 'cancelled' ? `<p style="margin-top:8px;"><a href="${trackUrl}" style="display:inline-block;background:#3d3d3d;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:13px;letter-spacing:1px;">TRACK YOUR ORDER</a></p>` : ''}
+    ${FOOTER}
+  </div>`
+  try {
+    const { error } = await getResend().emails.send({
+      from: FROM(),
+      to: args.customerEmail,
+      subject: copy.subject(esNo),
+      html,
+    })
+    if (error) throw new Error((error as any).message || JSON.stringify(error))
+  } catch (e: any) {
+    console.error(`[orderEmails] status '${args.kind}' email FAILED for ${args.orderNumber}:`, e?.message || e)
+  }
+}
+
 /**
  * Send both order emails. Best-effort: each failure is logged with the order
  * number for manual follow-up, and never throws.

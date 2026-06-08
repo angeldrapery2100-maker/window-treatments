@@ -8,6 +8,7 @@ export type AuditAction =
   | 'order.notes_updated'
   | 'order.cancelled'
   | 'order.refunded'
+  | 'order.partial_refund'
   | 'product.created'
   | 'product.updated'
   | 'product.status_changed'
