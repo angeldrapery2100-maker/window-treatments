@@ -94,6 +94,11 @@ async function ensureOrdersTable() {
     `CREATE UNIQUE INDEX IF NOT EXISTS orders_payment_intent_id_uniq
      ON orders (payment_intent_id) WHERE payment_intent_id IS NOT NULL`
   ).catch((e) => console.error('[orders] unique index creation failed:', e))
+  // One-time cleanup: earlier webhook-created orders stored the literal label
+  // "undefined - undefined" for shipping_method.
+  await query(
+    `UPDATE orders SET shipping_method = NULL WHERE shipping_method LIKE '%undefined%'`
+  ).catch(() => {})
 
   schemaEnsured = true
 }
@@ -279,7 +284,9 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
         'paid',
         notes || '',
         finalShipping,
-        shipping ? `${shipping.carrier} - ${shipping.service}` : null,
+        // Only when both parts exist — webhook-path shipping may carry cost only,
+        // and `${undefined} - ${undefined}` would store a junk label.
+        shipping?.carrier && shipping?.service ? `${shipping.carrier} - ${shipping.service}` : null,
         shipping?.rateId || null,
       ]
     )

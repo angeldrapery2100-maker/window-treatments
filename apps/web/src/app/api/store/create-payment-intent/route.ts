@@ -95,6 +95,12 @@ export async function POST(request: Request) {
       items,
       discountCode = null,
       shippingCost = 0,
+      // Shipping method details + phone — display-only, persisted to
+      // pending_checkouts so WEBHOOK-created orders are complete.
+      shippingCarrier,
+      shippingService,
+      shippingRateId,
+      customerPhone,
       // Address — needed by Stripe Tax for accurate jurisdiction detection
       street,
       city,
@@ -203,11 +209,16 @@ export async function POST(request: Request) {
         customer: {
           name:  customerName  || '',
           email: customerEmail || '',
-          phone: '',
+          phone: typeof customerPhone === 'string' ? customerPhone : '',
           address: { street: street || '', city: city || '', state: state || '', zip: zip || '' },
         },
         items,
-        shipping: { cost: localPricing.shippingCost },
+        shipping: {
+          cost:    localPricing.shippingCost,
+          carrier: typeof shippingCarrier === 'string' ? shippingCarrier : undefined,
+          service: typeof shippingService === 'string' ? shippingService : undefined,
+          rateId:  typeof shippingRateId  === 'string' ? shippingRateId  : undefined,
+        },
         discount: { code: localPricing.discountCode || null },
         notes: '',
         userId: authUser?.id || null,

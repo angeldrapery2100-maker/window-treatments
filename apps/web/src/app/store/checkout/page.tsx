@@ -239,6 +239,12 @@ export default function CheckoutPage() {
           })),
           discountCode: cart.discountCode || null,
           shippingCost,
+          // Shipping method + phone — persisted to pending_checkouts so a
+          // webhook-created order carries complete display data.
+          shippingCarrier: selectedRate?.carrier,
+          shippingService: selectedRate?.service,
+          shippingRateId:  selectedRate?.rateId,
+          customerPhone:   phone.trim(),
           // Full address — needed by Stripe Tax for jurisdiction detection
           street: address,
           city,
