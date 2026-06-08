@@ -35,6 +35,7 @@ export type AuditAction =
   | 'installation_image.created'
   | 'installation_image.updated'
   | 'installation_image.deleted'
+  | 'support.updated'
 
 export interface AuditEntry {
   action: AuditAction

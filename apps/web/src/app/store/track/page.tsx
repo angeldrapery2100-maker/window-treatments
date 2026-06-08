@@ -68,6 +68,34 @@ function TrackContent() {
   const [error, setError] = useState('')
   const [data, setData] = useState<TrackData | null>(null)
 
+  // Support ticket ("Report a problem")
+  const [supportOpen, setSupportOpen] = useState(false)
+  const [supportCategory, setSupportCategory] = useState('damaged')
+  const [supportMessage, setSupportMessage] = useState('')
+  const [supportSubmitting, setSupportSubmitting] = useState(false)
+  const [supportDone, setSupportDone] = useState(false)
+  const [supportError, setSupportError] = useState('')
+
+  const submitSupport = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (supportMessage.trim().length < 5) { setSupportError('Please describe the issue.'); return }
+    setSupportSubmitting(true); setSupportError('')
+    try {
+      const res = await fetch('/api/store/support', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderNumber: orderNumber.trim(), email: email.trim(), category: supportCategory, message: supportMessage.trim() }),
+      })
+      const json = await res.json()
+      if (json.success) { setSupportDone(true); setSupportOpen(false); setSupportMessage('') }
+      else setSupportError(json.error || 'Could not submit. Please try again.')
+    } catch {
+      setSupportError('Something went wrong. Please try again.')
+    } finally {
+      setSupportSubmitting(false)
+    }
+  }
+
   // Prefill order number from ?order= (e.g. from the confirmation email link).
   useEffect(() => {
     const o = searchParams.get('order')
@@ -237,6 +265,63 @@ function TrackContent() {
               <div className="flex justify-between text-gray-500"><span>Shipping{data.shippingMethod ? ` (${data.shippingMethod})` : ''}</span><span>{data.shippingCost > 0 ? `$${data.shippingCost.toFixed(2)}` : 'Free'}</span></div>
               <div className="flex justify-between text-gray-500"><span>Tax</span><span>${data.taxAmount.toFixed(2)}</span></div>
               <div className="flex justify-between font-semibold text-gray-900 text-base border-t border-gray-100 pt-2 mt-2"><span>Total</span><span>${data.total.toFixed(2)}</span></div>
+            </div>
+
+            {/* ── Report a problem ── */}
+            <div className="border-t border-gray-100 mt-6 pt-5">
+              {supportDone ? (
+                <div className="bg-green-50 border border-green-100 text-green-700 text-sm rounded-lg px-4 py-3">
+                  Thanks — we've received your request and will be in touch by email shortly.
+                </div>
+              ) : supportOpen ? (
+                <form onSubmit={submitSupport} className="space-y-3">
+                  <p className="text-sm font-medium text-gray-700">Report a problem with this order</p>
+                  <div>
+                    <label htmlFor="support-cat" className="block text-xs text-gray-500 uppercase tracking-wider mb-1.5">Issue type</label>
+                    <select
+                      id="support-cat"
+                      value={supportCategory}
+                      onChange={e => setSupportCategory(e.target.value)}
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
+                    >
+                      <option value="damaged">Arrived damaged</option>
+                      <option value="wrong_size">Wrong size</option>
+                      <option value="defect">Defect / quality issue</option>
+                      <option value="missing_item">Missing item</option>
+                      <option value="wrong_item">Wrong item</option>
+                      <option value="late">Late / not received</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="support-msg" className="block text-xs text-gray-500 uppercase tracking-wider mb-1.5">Describe the issue</label>
+                    <textarea
+                      id="support-msg"
+                      value={supportMessage}
+                      onChange={e => setSupportMessage(e.target.value)}
+                      rows={4}
+                      placeholder="Tell us what's wrong and how we can help…"
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
+                    />
+                  </div>
+                  {supportError && <p className="text-sm text-red-600" role="alert">{supportError}</p>}
+                  <div className="flex gap-2">
+                    <button type="submit" disabled={supportSubmitting}
+                      className="flex-1 py-2.5 bg-[#3d3d3d] text-white text-sm font-medium rounded-lg hover:bg-gray-700 disabled:opacity-50">
+                      {supportSubmitting ? 'Submitting…' : 'Submit Request'}
+                    </button>
+                    <button type="button" onClick={() => { setSupportOpen(false); setSupportError('') }}
+                      className="px-4 py-2.5 border border-gray-200 text-gray-500 text-sm rounded-lg hover:bg-gray-50">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <button onClick={() => setSupportOpen(true)}
+                  className="text-sm text-gray-600 underline underline-offset-2 hover:text-gray-900">
+                  Report a problem with this order
+                </button>
+              )}
             </div>
           </div>
         )}
