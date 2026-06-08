@@ -275,25 +275,25 @@ export default function OrderPrintPage({ params }: { params: Promise<{ id: strin
                   <tr key={idx} className="align-top">
                     <td className="py-3 text-gray-400 text-xs">{idx + 1}</td>
                     <td className="py-3 pr-4">
-                      <p className="font-medium text-gray-900">{item.productName}</p>
+                      <p className="font-medium text-gray-900">{item.productName || 'Custom Item'}</p>
                       <p className="text-xs text-gray-400 mt-0.5">
                         {item.productType?.toUpperCase()}
                         {formatDimensions(item) ? `  ·  ${formatDimensions(item)}` : ''}
                       </p>
                       {item.options?.length > 0 && (
                         <div className="mt-1 space-y-0.5">
-                          {item.options.map((opt, i) => (
+                          {item.options.map((opt: any, i: number) => (
                             <p key={i} className="text-xs text-gray-500">
-                              <span className="text-gray-400">{opt.displayLabel}:</span> {opt.valueLabel}
+                              <span className="text-gray-400">{opt.displayLabel || opt.name}:</span> {opt.valueLabel || opt.value}
                             </p>
                           ))}
                         </div>
                       )}
                     </td>
                     <td className="py-3 text-center text-gray-700">{item.quantity}</td>
-                    <td className="py-3 text-right text-gray-700">${Number(item.unitPrice).toFixed(2)}</td>
+                    <td className="py-3 text-right text-gray-700">${(Number(item.unitPrice ?? (item as any).price) || 0).toFixed(2)}</td>
                     <td className="py-3 text-right font-medium text-gray-900">
-                      ${(Number(item.unitPrice) * item.quantity).toFixed(2)}
+                      ${((Number(item.unitPrice ?? (item as any).price) || 0) * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}

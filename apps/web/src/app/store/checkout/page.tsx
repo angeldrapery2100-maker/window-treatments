@@ -228,6 +228,14 @@ export default function CheckoutPage() {
             widthFraction:  i.widthFraction,
             heightFraction: i.heightFraction,
             options:        i.options,
+            // Display fields: these items are persisted to pending_checkouts and
+            // become the order's items when the WEBHOOK creates the order (i.e.
+            // the browser never reached /api/store/orders). Without them the
+            // admin order view has no product name/type/price to render.
+            productName:  i.productName,
+            productType:  i.productType,
+            mainImageUrl: i.mainImageUrl,
+            unitPrice:    i.unitPrice,
           })),
           discountCode: cart.discountCode || null,
           shippingCost,

@@ -5,16 +5,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface OrderItem {
-  productName: string
-  productType: string
-  mainImageUrl: string | null
+  // Display fields are OPTIONAL: orders created by the Stripe webhook fallback
+  // carry the leaner create-payment-intent item shape ({productId, price, ...}).
+  productName?: string
+  productType?: string
+  mainImageUrl?: string | null
   width?: number
   height?: number
   heightFraction?: string
   widthFraction?: string
-  options: { displayLabel: string; valueLabel: string }[]
+  // Browser path: {name, displayLabel, value, valueLabel}; webhook path may
+  // only have {name, value}.
+  options?: { name?: string; displayLabel?: string; value?: string; valueLabel?: string }[]
   quantity: number
-  unitPrice: number
+  unitPrice?: number
+  price?: number   // webhook-path alias for unitPrice
 }
 
 interface Order {
@@ -463,31 +468,31 @@ export default function AdminOrdersPage() {
                               <div key={idx} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
                                 <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
                                   {item.mainImageUrl ? (
-                                    <Image src={item.mainImageUrl} alt={item.productName} fill sizes="64px" className="object-cover" />
+                                    <Image src={item.mainImageUrl} alt={item.productName || 'Product'} fill sizes="64px" className="object-cover" />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">No Img</div>
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-900">{item.productName}</p>
+                                  <p className="text-sm font-medium text-gray-900">{item.productName || 'Custom Item'}</p>
                                   <p className="text-xs text-gray-400">
-                                    {item.productType.toUpperCase()}
+                                    {(item.productType || 'item').toUpperCase()}
                                     {formatDimensions(item) && ` · ${formatDimensions(item)}`}
                                     {` · Qty: ${item.quantity}`}
                                   </p>
-                                  {item.options?.length > 0 && (
+                                  {(item.options?.length ?? 0) > 0 && (
                                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
-                                      {item.options.map((opt, i) => (
+                                      {item.options!.map((opt, i) => (
                                         <span key={i} className="text-xs text-gray-500">
-                                          <span className="text-gray-400">{opt.displayLabel}:</span> {opt.valueLabel}
+                                          <span className="text-gray-400">{opt.displayLabel || opt.name}:</span> {opt.valueLabel || opt.value}
                                         </span>
                                       ))}
                                     </div>
                                   )}
                                 </div>
                                 <div className="text-sm font-medium text-gray-900 flex-shrink-0">
-                                  ${(item.unitPrice * item.quantity).toLocaleString()}
-                                  {item.quantity > 1 && <p className="text-[11px] text-gray-400 text-right">${item.unitPrice}/ea</p>}
+                                  ${((Number(item.unitPrice ?? item.price) || 0) * item.quantity).toLocaleString()}
+                                  {item.quantity > 1 && <p className="text-[11px] text-gray-400 text-right">${Number(item.unitPrice ?? item.price) || 0}/ea</p>}
                                 </div>
                               </div>
                             ))}
@@ -582,7 +587,8 @@ export default function AdminOrdersPage() {
                                             const item = order.items[idx]
                                             if (!item) return null
                                             const qty = (s.item_quantities || {})[String(idx)] || item.quantity
-                                            return <span key={idx} className="mr-2">{item.productName.length > 15 ? item.productName.slice(0, 15) + '..' : item.productName} ×{qty}</span>
+                                            const pname = item.productName || 'Custom Item'
+                                            return <span key={idx} className="mr-2">{pname.length > 15 ? pname.slice(0, 15) + '..' : pname} ×{qty}</span>
                                           })}
                                         </div>
                                       </div>
@@ -619,7 +625,8 @@ export default function AdminOrdersPage() {
                                           const item = order.items[idx]
                                           if (!item) return null
                                           const qty = (s.item_quantities || {})[String(idx)] || item.quantity
-                                          return <span key={idx} className="mr-2">{item.productName.length > 15 ? item.productName.slice(0, 15) + '..' : item.productName} ×{qty}</span>
+                                          const pname = item.productName || 'Custom Item'
+                                          return <span key={idx} className="mr-2">{pname.length > 15 ? pname.slice(0, 15) + '..' : pname} ×{qty}</span>
                                         })}
                                       </div>
                                     </div>
