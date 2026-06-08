@@ -199,6 +199,43 @@ export async function sendOrderStatusEmail(args: {
   }
 }
 
+// ── Merchant: shipping/delivery exception alert ──────────────────────────────
+export async function sendShippingAlertEmail(args: {
+  orderNumber: string
+  trackingNumber: string
+  carrier?: string
+  status: string
+  detail?: string
+}): Promise<void> {
+  if (!process.env.RESEND_API_KEY) return
+  const esNo = escapeHtml(args.orderNumber)
+  const adminUrl = safeUrl(`${SITE_URL()}/admin/orders`)
+  const html = `
+  <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;">
+    <h2 style="color:#b91c1c;">⚠️ Shipment issue — order ${esNo}</h2>
+    <p style="font-size:14px;color:#555;">A tracked shipment reported a problem status and may need attention.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;color:#333;margin-top:8px;">
+      <tr><td style="padding:4px 0;color:#888;">Order</td><td style="padding:4px 0;text-align:right;font-family:monospace;">${esNo}</td></tr>
+      <tr><td style="padding:4px 0;color:#888;">Carrier</td><td style="padding:4px 0;text-align:right;">${escapeHtml(args.carrier || '—')}</td></tr>
+      <tr><td style="padding:4px 0;color:#888;">Tracking</td><td style="padding:4px 0;text-align:right;font-family:monospace;">${escapeHtml(args.trackingNumber)}</td></tr>
+      <tr><td style="padding:4px 0;color:#888;">Status</td><td style="padding:4px 0;text-align:right;font-weight:700;color:#b91c1c;">${escapeHtml(args.status)}</td></tr>
+      ${args.detail ? `<tr><td style="padding:4px 0;color:#888;">Detail</td><td style="padding:4px 0;text-align:right;">${escapeHtml(args.detail)}</td></tr>` : ''}
+    </table>
+    <p style="margin-top:20px;"><a href="${adminUrl}" style="display:inline-block;background:#3d3d3d;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:13px;letter-spacing:1px;">OPEN ADMIN ORDERS</a></p>
+  </div>`
+  try {
+    const { error } = await getResend().emails.send({
+      from: FROM(),
+      to: ADMIN_TO(),
+      subject: `⚠️ Shipment issue — order ${esNo} (${escapeHtml(args.status)})`,
+      html,
+    })
+    if (error) throw new Error((error as any).message || JSON.stringify(error))
+  } catch (e: any) {
+    console.error(`[orderEmails] shipping alert FAILED for ${args.orderNumber}:`, e?.message || e)
+  }
+}
+
 /**
  * Send both order emails. Best-effort: each failure is logged with the order
  * number for manual follow-up, and never throws.
