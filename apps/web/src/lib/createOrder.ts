@@ -13,6 +13,7 @@
 import { query, queryOne } from '@/lib/db'
 import { stripe } from '@/lib/stripe'
 import { calcServerTotals } from '@/lib/orderPricing'
+import { sendOrderEmails } from '@/lib/orderEmails'
 
 export interface CreateOrderInput {
   paymentIntentId: string
@@ -310,6 +311,22 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
       [finalDiscountCode]
     ).catch(() => {})
   }
+
+  // Transactional emails (customer confirmation + merchant notification).
+  // Awaited so serverless doesn't kill the send, but failures never fail the
+  // order — it is already paid and persisted.
+  await sendOrderEmails({
+    orderNumber:    row.order_number,
+    customer,
+    items,
+    subtotal:       finalSubtotal,
+    discountAmount: finalDiscountAmt,
+    shippingCost:   finalShipping,
+    taxAmount:      finalTaxAmount,
+    total:          piTotal,
+    shippingMethod: shipping?.carrier && shipping?.service ? `${shipping.carrier} - ${shipping.service}` : null,
+    notes,
+  }).catch(() => {})
 
   return { ok: true, orderId: row.id, orderNumber: row.order_number, createdAt: row.created_at }
 }

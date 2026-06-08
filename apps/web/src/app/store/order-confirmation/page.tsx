@@ -41,11 +41,16 @@ function ConfirmationContent() {
             </div>
             <div className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#3d3d3d] text-white text-xs flex items-center justify-center">3</span>
-              <p>We will arrange payment and begin production.</p>
+              <p>We will begin production and notify you when your order ships.</p>
             </div>
+            <p className="text-xs text-gray-400 pt-1">A confirmation email with your order details has been sent to your inbox.</p>
           </div>
 
           <div className="space-y-3">
+            <Link href={orderNumber ? `/store/track?order=${encodeURIComponent(orderNumber)}` : '/store/track'}
+              className="block w-full py-3 border border-gray-300 text-gray-700 text-sm font-medium tracking-widest uppercase hover:bg-gray-50 transition-colors rounded">
+              Track Your Order
+            </Link>
             <Link href="/store"
               className="block w-full py-3 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded">
               Continue Shopping
