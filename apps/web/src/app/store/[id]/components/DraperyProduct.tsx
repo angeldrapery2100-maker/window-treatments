@@ -8,6 +8,8 @@ import GalleryCards from './shared/GalleryCards'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
+import { parseConfigFromUrl } from './shared/configLink'
+import CopyConfigLink from './shared/CopyConfigLink'
 import { addToCart } from '@/lib/cart'
 
 export default function DraperyProduct({ productId }: { productId: string }) {
@@ -35,10 +37,25 @@ export default function DraperyProduct({ productId }: { productId: string }) {
     { value: '1/2', label: '1/2' }, { value: '3/4', label: '3/4' },
   ]
 
+  // Restore dimensions/qty from a shared link (once, on mount).
+  useEffect(() => {
+    const c = parseConfigFromUrl()
+    if (c.width) setWidth(c.width)
+    if (c.height) setHeight(c.height)
+    if (c.heightFraction) setHeightFraction(c.heightFraction)
+    if (c.quantity) setQuantity(c.quantity)
+  }, [])
+
   useEffect(() => {
     if (options.length > 0) {
       const defaults: Record<string, string> = {}
       options.forEach(opt => { if (opt.values?.[0]) defaults[opt.name] = opt.values[0].value })
+      // Merge validated options from a shared link over the defaults.
+      const urlOpts = parseConfigFromUrl().options
+      options.forEach(opt => {
+        const v = urlOpts[opt.name]
+        if (v && opt.values?.some((o: any) => o.value === v)) defaults[opt.name] = v
+      })
       setSelectedOptions(defaults)
     }
   }, [options])
@@ -199,6 +216,7 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                       className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit && unitPrice > 0 ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
+                    <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
                   </div>
                 </div>
               </div>

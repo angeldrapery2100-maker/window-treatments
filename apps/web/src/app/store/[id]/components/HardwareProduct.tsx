@@ -8,6 +8,8 @@ import GalleryCards from './shared/GalleryCards'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
+import { parseConfigFromUrl } from './shared/configLink'
+import CopyConfigLink from './shared/CopyConfigLink'
 import { addToCart } from '@/lib/cart'
 
 export default function HardwareProduct({ productId }: { productId: string }) {
@@ -31,9 +33,21 @@ export default function HardwareProduct({ productId }: { productId: string }) {
     ({ '0': 0, '1/4': 0.25, '1/2': 0.5, '3/4': 0.75 }[f] ?? 0)
 
   useEffect(() => {
+    const c = parseConfigFromUrl()
+    if (c.width) setWidth(parseInt(c.width, 10) || '')
+    if (c.widthFraction) setWidthFraction(c.widthFraction)
+    if (c.quantity) setQuantity(c.quantity)
+  }, [])
+
+  useEffect(() => {
     if (options.length > 0) {
       const defaults: Record<string, string> = {}
       options.forEach(opt => { if (opt.values?.[0]) defaults[opt.name] = opt.values[0].value })
+      const urlOpts = parseConfigFromUrl().options
+      options.forEach(opt => {
+        const v = urlOpts[opt.name]
+        if (v && opt.values?.some((o: any) => o.value === v)) defaults[opt.name] = v
+      })
       setSelectedOptions(defaults)
     }
   }, [options])
@@ -164,6 +178,7 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                         setTimeout(() => setAddedMsg(false), 2000)
                       }}
                       className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit() && unitPrice > 0 ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>{addedMsg ? '✓ Added to Cart' : 'Add to Cart'}</button>
+                    <CopyConfigLink productId={productId} config={{ width: typeof width === 'number' ? String(width) : '', widthFraction, quantity, options: selectedOptions }} />
                   </div>
                 </div>
               </div>

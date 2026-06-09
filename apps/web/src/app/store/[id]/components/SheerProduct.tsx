@@ -8,6 +8,8 @@ import GalleryCards from './shared/GalleryCards'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
+import { parseConfigFromUrl } from './shared/configLink'
+import CopyConfigLink from './shared/CopyConfigLink'
 import { addToCart } from '@/lib/cart'
 
 export default function SheerProduct({ productId }: { productId: string }) {
@@ -32,9 +34,22 @@ export default function SheerProduct({ productId }: { productId: string }) {
   ]
 
   useEffect(() => {
+    const c = parseConfigFromUrl()
+    if (c.width) setWidth(c.width)
+    if (c.height) setHeight(c.height)
+    if (c.heightFraction) setHeightFraction(c.heightFraction)
+    if (c.quantity) setQuantity(c.quantity)
+  }, [])
+
+  useEffect(() => {
     if (options.length > 0) {
       const defaults: Record<string, string> = {}
       options.forEach(opt => { if (opt.values?.[0]) defaults[opt.name] = opt.values[0].value })
+      const urlOpts = parseConfigFromUrl().options
+      options.forEach(opt => {
+        const v = urlOpts[opt.name]
+        if (v && opt.values?.some((o: any) => o.value === v)) defaults[opt.name] = v
+      })
       setSelectedOptions(defaults)
     }
   }, [options])
@@ -226,6 +241,7 @@ export default function SheerProduct({ productId }: { productId: string }) {
                     >
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
+                    <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
                   </div>
                 </div>
               </div>
