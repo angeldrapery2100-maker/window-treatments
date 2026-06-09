@@ -15,10 +15,53 @@ export default function CartPage() {
   const [discountError, setDiscountError] = useState('')
   const [discountLoading, setDiscountLoading] = useState(false)
   const [removeAnim, setRemoveAnim] = useState<string | null>(null)
+  const [priceNotice, setPriceNotice] = useState('')
+  const [unavailableIds, setUnavailableIds] = useState<string[]>([])
 
   useEffect(() => {
-    setCart(getCart())
+    const c = getCart()
+    setCart(c)
     setLoading(false)
+
+    // Re-validate against current server prices/availability. The cart lives in
+    // localStorage and can be stale (re-priced or deactivated products).
+    if (c.items.length > 0) {
+      fetch('/api/store/cart/validate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: c.items.map(i => ({
+          id: i.id, productId: i.productId, width: i.width, height: i.height,
+          widthFraction: i.widthFraction, heightFraction: i.heightFraction,
+          options: i.options, unitPrice: i.unitPrice,
+        })) }),
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (!res.success) return
+          const byId: Record<string, any> = {}
+          for (const r of res.data.items) if (r.id) byId[r.id] = r
+          const dead: string[] = []
+          let priceChanged = false
+          const cur = getCart()
+          cur.items = cur.items.map(it => {
+            const v = byId[it.id]
+            if (!v) return it
+            if (!v.available) { dead.push(it.id); return it }
+            if (v.changed && v.unitPrice > 0) { priceChanged = true; return { ...it, unitPrice: v.unitPrice } }
+            return it
+          })
+          if (priceChanged || dead.length) {
+            saveCart(cur)
+            setCart(getCart())
+            setUnavailableIds(dead)
+            setPriceNotice(
+              dead.length
+                ? 'Some items are no longer available and must be removed before checkout.'
+                : 'Some prices were updated to current rates.'
+            )
+          }
+        })
+        .catch(() => { /* non-blocking */ })
+    }
   }, [])
 
   const refresh = () => setCart(getCart())
@@ -133,12 +176,23 @@ export default function CartPage() {
         </div>
       ) : (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {priceNotice && (
+            <div className={`mb-6 px-4 py-3 rounded-lg text-sm border ${unavailableIds.length ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
+              {priceNotice}
+            </div>
+          )}
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cart.items.map((item, idx) => (
                 <div key={item.id}
-                  className={`bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 ${removeAnim === item.id ? 'opacity-0 -translate-x-8 scale-95' : ''}`}>
+                  className={`bg-white rounded-lg shadow-sm border overflow-hidden transition-all duration-300 ${unavailableIds.includes(item.id) ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-100'} ${removeAnim === item.id ? 'opacity-0 -translate-x-8 scale-95' : ''}`}>
+                  {unavailableIds.includes(item.id) && (
+                    <div className="bg-red-50 text-red-600 text-xs px-4 py-2 flex items-center justify-between">
+                      <span>No longer available</span>
+                      <button onClick={() => handleRemove(item.id)} className="underline hover:text-red-700">Remove</button>
+                    </div>
+                  )}
                   <div className="flex items-center">
                     {/* Index Number */}
                     <div className="flex-shrink-0 w-10 flex items-center justify-center bg-gray-50 text-gray-400 font-medium text-sm border-r border-gray-100 self-stretch">
@@ -263,9 +317,15 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Link href="/store/checkout" className="block w-full mt-6 py-3.5 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded text-center">
-                  Proceed to Checkout
-                </Link>
+                {unavailableIds.length > 0 ? (
+                  <button disabled className="block w-full mt-6 py-3.5 bg-gray-200 text-gray-400 text-sm font-medium tracking-widest uppercase rounded text-center cursor-not-allowed">
+                    Remove Unavailable Items
+                  </button>
+                ) : (
+                  <Link href="/store/checkout" className="block w-full mt-6 py-3.5 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded text-center">
+                    Proceed to Checkout
+                  </Link>
+                )}
 
                 <Link href="/store" className="block text-center mt-3 text-xs text-gray-400 hover:text-gray-600 underline underline-offset-4">
                   Continue Shopping
