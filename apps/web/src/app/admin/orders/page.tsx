@@ -53,7 +53,7 @@ interface Order {
 
 interface Shipment {
   id: string; order_id: string; item_indices: number[]; item_quantities?: Record<string, number>; tracking_number: string; tracking_url: string;
-  label_url: string; carrier: string; service: string; status: string; created_at: string
+  label_url: string; carrier: string; service: string; status: string; created_at: string; label_cost?: number | null
 }
 
 const STATUS_OPTIONS = [
@@ -704,6 +704,21 @@ export default function AdminOrdersPage() {
                                 </button>
                               </>
                             )}
+                            {/* Shipping cost reconciliation */}
+                            {(() => {
+                              const paid = shipments.reduce((s, sh) => s + (Number(sh.label_cost) || 0), 0)
+                              if (paid <= 0) return null
+                              const charged = Number(order.shipping_cost) || 0
+                              const margin = charged - paid
+                              return (
+                                <div className="mt-3 pt-2 border-t border-gray-100 text-[11px] text-gray-500 flex items-center justify-between">
+                                  <span>Shipping: charged ${charged.toFixed(2)} · label ${paid.toFixed(2)}</span>
+                                  <span className={margin >= 0 ? 'text-green-600' : 'text-red-500'}>
+                                    {margin >= 0 ? '+' : '−'}${Math.abs(margin).toFixed(2)}
+                                  </span>
+                                </div>
+                              )
+                            })()}
                           </div>
 
                           {/* ─── Order Status (fully auto-managed) ─── */}

@@ -42,6 +42,8 @@ async function ensureShipmentsTable() {
   `).catch(() => {})
   // Add item_quantities column if missing (for existing tables)
   await query(`ALTER TABLE order_shipments ADD COLUMN IF NOT EXISTS item_quantities JSONB DEFAULT '{}'`).catch(() => {})
+  // Label cost paid to Shippo/carrier — for shipping-cost reconciliation/margin.
+  await query(`ALTER TABLE order_shipments ADD COLUMN IF NOT EXISTS label_cost numeric(10,2) DEFAULT NULL`).catch(() => {})
   // Legacy columns on orders
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipping_label_url text DEFAULT NULL`).catch(() => {})
   await query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_number varchar(128) DEFAULT NULL`).catch(() => {})
@@ -205,13 +207,16 @@ export async function POST(request: Request) {
       const indices = itemIndices || []
       const qtys = itemQuantities || {}
 
+      const labelCost = Number(transaction.rate?.amount) || null
+
       await query(
-        `INSERT INTO order_shipments (order_id, item_indices, item_quantities, tracking_number, tracking_url, label_url, carrier, service, shippo_transaction_id, status)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'shipped')`,
+        `INSERT INTO order_shipments (order_id, item_indices, item_quantities, tracking_number, tracking_url, label_url, carrier, service, shippo_transaction_id, label_cost, status)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'shipped')`,
         [
           orderId, indices, JSON.stringify(qtys),
           transaction.tracking_number, transaction.tracking_url_provider, transaction.label_url,
           transaction.rate?.provider || '', transaction.rate?.servicelevel?.name || '', transaction.object_id,
+          labelCost,
         ]
       )
 
