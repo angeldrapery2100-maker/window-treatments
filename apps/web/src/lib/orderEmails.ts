@@ -155,7 +155,7 @@ const STATUS_COPY: Record<StatusEmailKind, { subject: (n: string) => string; hea
   completed: {
     subject: (n) => `Your order ${n} is complete`,
     heading: 'Your order is complete',
-    body: 'Your order has been completed. Thank you for choosing Angel Drapery — we hope you love your new window treatments!',
+    body: 'Your order has been completed. Thank you for choosing Angel Drapery — we hope you love your new window treatments! If you have a moment, we\'d love to hear what you think.',
   },
   cancelled: {
     subject: (n) => `Your order ${n} has been cancelled`,
@@ -174,7 +174,8 @@ export async function sendOrderStatusEmail(args: {
   const copy = STATUS_COPY[args.kind]
   if (!copy) return
   const esNo = escapeHtml(args.orderNumber)
-  const trackUrl = safeUrl(`${SITE_URL()}/store/track?order=${encodeURIComponent(args.orderNumber)}`)
+  const trackUrl  = safeUrl(`${SITE_URL()}/store/track?order=${encodeURIComponent(args.orderNumber)}`)
+  const reviewUrl = safeUrl(`${SITE_URL()}/store/review?order=${encodeURIComponent(args.orderNumber)}`)
   const html = `
   <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;">
     <h2 style="font-weight:300;letter-spacing:1px;color:#222;">${escapeHtml(copy.heading)}</h2>
@@ -183,7 +184,11 @@ export async function sendOrderStatusEmail(args: {
       <p style="margin:0;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">Order Number</p>
       <p style="margin:4px 0 0;font-size:18px;font-weight:700;font-family:monospace;color:#222;">${esNo}</p>
     </div>
-    ${args.kind !== 'cancelled' ? `<p style="margin-top:8px;"><a href="${trackUrl}" style="display:inline-block;background:#3d3d3d;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:13px;letter-spacing:1px;">TRACK YOUR ORDER</a></p>` : ''}
+    ${args.kind === 'completed'
+      ? `<p style="margin-top:8px;"><a href="${reviewUrl}" style="display:inline-block;background:#3d3d3d;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:13px;letter-spacing:1px;">LEAVE A REVIEW</a></p>`
+      : args.kind !== 'cancelled'
+        ? `<p style="margin-top:8px;"><a href="${trackUrl}" style="display:inline-block;background:#3d3d3d;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:13px;letter-spacing:1px;">TRACK YOUR ORDER</a></p>`
+        : ''}
     ${FOOTER}
   </div>`
   try {

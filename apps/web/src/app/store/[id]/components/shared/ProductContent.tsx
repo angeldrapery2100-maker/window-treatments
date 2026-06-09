@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { DEFAULT_BLOCKS, ContentBlock } from '@/app/admin/products/edit/[id]/components/ContentEditor'
+import ProductReviews from './ProductReviews'
 
 interface ProductContentProps {
   productId: string
@@ -102,10 +103,13 @@ export default function ProductContent({ productId, productType, extraContent }:
   if (loading) return <div className="text-gray-400 text-sm py-4">Loading...</div>
 
   return (
-    <div className="border-t-2 border-black">
-      {blocks.map((block, i) => (
-        <AccordionBlock key={block.id} block={block} extraContent={extraContent} defaultOpen={i === 0} />
-      ))}
-    </div>
+    <>
+      <div className="border-t-2 border-black">
+        {blocks.map((block, i) => (
+          <AccordionBlock key={block.id} block={block} extraContent={extraContent} defaultOpen={i === 0} />
+        ))}
+      </div>
+      <ProductReviews productId={productId} />
+    </>
   )
 }
