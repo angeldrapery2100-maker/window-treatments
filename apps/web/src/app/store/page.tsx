@@ -119,6 +119,7 @@ export default function OnlineStorePage() {
   const [loading, setLoading] = useState(true)
   const [recentProducts, setRecentProducts] = useState<StoreProduct[]>([])
   const [cartCount, setCartCount] = useState(0)
+  const [search, setSearch] = useState('')
 
   // Check if store is enabled
   useEffect(() => {
@@ -182,6 +183,15 @@ export default function OnlineStorePage() {
     document.getElementById(`cat-${name}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
+  // Search across name + product type + category name.
+  const q = search.trim().toLowerCase()
+  const searchResults = q
+    ? products.filter(p =>
+        (p.name || '').toLowerCase().includes(q) ||
+        (p.type || '').toLowerCase().includes(q) ||
+        (p.store_category_name || '').toLowerCase().includes(q))
+    : []
+
   // Coming Soon screen
   if (storeEnabled === false) {
     return (
@@ -238,24 +248,54 @@ export default function OnlineStorePage() {
         </div>
       </section>
 
-      {/* Category Nav */}
-      {displayCategoryNames.length > 0 && (
+      {/* Search + Category Nav */}
+      {!loading && products.length > 0 && (
         <section className="w-full bg-white py-4 border-b border-gray-200 sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap justify-center gap-3">
-              {displayCategoryNames.map(name => (
-                <button key={name} onClick={() => scrollToCategory(name)}
-                  className="px-6 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-all duration-300">
-                  {name}
-                </button>
-              ))}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+            <div className="max-w-md mx-auto relative">
+              <svg className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" /></svg>
+              <input
+                type="search"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search products…"
+                className="w-full border border-gray-200 rounded-full pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
             </div>
+            {!q && displayCategoryNames.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-3">
+                {displayCategoryNames.map(name => (
+                  <button key={name} onClick={() => scrollToCategory(name)}
+                    className="px-6 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-all duration-300">
+                    {name}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {loading ? (
         <div className="py-20 text-center text-gray-400">Loading...</div>
+      ) : q ? (
+        /* ── Search results (flat grid) ── */
+        <section className="w-full bg-white py-12 min-h-[40vh]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p className="text-sm text-gray-500 mb-6">
+              {searchResults.length} result{searchResults.length === 1 ? '' : 's'} for “{search.trim()}”
+            </p>
+            {searchResults.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {searchResults.map(p => <ProductCard key={p.id} p={p} />)}
+              </div>
+            ) : (
+              <div className="text-center text-gray-400 py-16">
+                No products match your search. <button onClick={() => setSearch('')} className="underline hover:text-gray-600">Clear</button>
+              </div>
+            )}
+          </div>
+        </section>
       ) : (
         <>
           {/* Recommended */}
