@@ -64,6 +64,24 @@ const STATUS_OPTIONS = [
   { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-600' },
 ]
 
+// Human-readable label for an order_history entry.
+function historyLabel(action: string, from?: string | null, to?: string | null): string {
+  const S: Record<string, string> = {
+    pending: 'Pending', in_production: 'In Production', shipped: 'Shipped',
+    completed: 'Completed', cancelled: 'Cancelled',
+  }
+  switch (action) {
+    case 'status_changed':            return `Status → ${S[to || ''] || to || '—'}`
+    case 'notes_updated':             return 'Notes updated'
+    case 'cancelled':                 return 'Order cancelled'
+    case 'cancelled_with_refund':     return 'Cancelled & refunded'
+    case 'refunded_partial':          return 'Partial refund issued'
+    case 'refunded_full':             return 'Refund issued'
+    case 'shipment_tracking_update':  return 'Tracking update'
+    default:                          return action.replace(/_/g, ' ')
+  }
+}
+
 // Helper: calculate shipment coverage
 function getShipmentCoverage(order: Order, shipments: Shipment[]) {
   const totalQty = order.items.reduce((s, i) => s + i.quantity, 0)
@@ -87,6 +105,7 @@ export default function AdminOrdersPage() {
 
   const [orderShipments, setOrderShipments] = useState<Record<string, Shipment[]>>({})
   const [orderWorkOrders, setOrderWorkOrders] = useState<Record<string, { version: number; created_at: string } | null>>({})
+  const [orderHistory, setOrderHistory] = useState<Record<string, Array<{ id: string; action: string; from_status: string | null; to_status: string | null; actor_email: string | null; note: string | null; created_at: string }>>>({})
   const [cancellingId, setCancellingId] = useState<string | null>(null)
   const [confirmCancelId, setConfirmCancelId] = useState<string | null>(null)  // in-page confirm (replaces window.confirm)
   const [refundOpenId, setRefundOpenId] = useState<string | null>(null)         // which order's partial-refund panel is open
@@ -143,6 +162,7 @@ export default function AdminOrdersPage() {
       if (expandedId) {
         loadWorkOrder(expandedId)
         loadShipments(expandedId)
+        loadHistory(expandedId)
       }
     }
     window.addEventListener('focus', onFocus)
@@ -276,6 +296,14 @@ export default function AdminOrdersPage() {
       if (data.success) {
         setOrderWorkOrders(prev => ({ ...prev, [orderId]: data.data.workOrder || null }))
       }
+    } catch {}
+  }
+
+  const loadHistory = async (orderId: string) => {
+    try {
+      const res = await fetch(`/api/admin/orders/history?order_id=${orderId}`)
+      const data = await res.json() as any
+      if (data.success) setOrderHistory(prev => ({ ...prev, [orderId]: data.data || [] }))
     } catch {}
   }
 
@@ -414,6 +442,7 @@ export default function AdminOrdersPage() {
                       if (newId) {
                         loadShipments(newId)
                         loadWorkOrder(newId)
+                        loadHistory(newId)
                       }
                     }}>
                     <svg className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${expanded ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -735,6 +764,28 @@ export default function AdminOrdersPage() {
                             <button onClick={() => saveNotes(order.id)}
                               className="mt-2 px-4 py-1.5 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700">Save Notes</button>
                           </div>
+
+                          {/* ─── Order Timeline (history) ─── */}
+                          {(orderHistory[order.id]?.length ?? 0) > 0 && (
+                            <div className="pt-3 mt-1 border-t border-gray-200">
+                              <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Timeline</h3>
+                              <ol className="relative border-l border-gray-200 ml-1.5 space-y-3">
+                                {orderHistory[order.id].map((h) => (
+                                  <li key={h.id} className="ml-4">
+                                    <span className="absolute -left-[5px] mt-1 w-2.5 h-2.5 rounded-full bg-gray-300 border-2 border-white" />
+                                    <p className="text-xs text-gray-700">
+                                      {historyLabel(h.action, h.from_status, h.to_status)}
+                                      {h.note ? <span className="text-gray-400"> — {h.note}</span> : null}
+                                    </p>
+                                    <p className="text-[10px] text-gray-400">
+                                      {new Date(h.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                                      {h.actor_email && h.actor_email !== 'system@shippo' ? ` · ${h.actor_email}` : h.actor_email === 'system@shippo' ? ' · auto' : ''}
+                                    </p>
+                                  </li>
+                                ))}
+                              </ol>
+                            </div>
+                          )}
 
                           {/* ─── Partial Refund (order stays open) ─── */}
                           {order.status !== 'cancelled' && (order.payment_status === 'paid' || order.payment_status === 'partially_refunded') && order.payment_intent_id && (
