@@ -9,6 +9,8 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [needTotp, setNeedTotp] = useState(false)
+  const [totpCode, setTotpCode] = useState('')
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,11 +21,17 @@ export default function AdminLoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, totpCode: needTotp ? totpCode : undefined })
       })
       const data = await res.json()
 
       if (!data.success) {
+        // Account has 2FA — show the code field (or report a wrong code).
+        if (data.requiresTotp) {
+          setNeedTotp(true)
+          setError(data.error || '')
+          return
+        }
         setError(data.error || 'Login failed')
         return
       }
@@ -81,6 +89,21 @@ export default function AdminLoginPage() {
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:ring-1 focus:ring-gray-400 focus:border-gray-400 outline-none transition-colors"
               />
             </div>
+
+            {needTotp && (
+              <div>
+                <label className="block text-[11px] text-gray-400 uppercase tracking-wide font-medium mb-1.5">Authentication Code</label>
+                <input
+                  type="text" inputMode="numeric" autoComplete="one-time-code"
+                  value={totpCode}
+                  onChange={e => { setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6)); setError('') }}
+                  placeholder="6-digit code"
+                  autoFocus
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm tracking-[0.3em] font-mono focus:ring-1 focus:ring-gray-400 focus:border-gray-400 outline-none transition-colors"
+                />
+                <p className="text-[11px] text-gray-400 mt-1.5">Enter the code from your authenticator app.</p>
+              </div>
+            )}
 
             {error && (
               <p className="text-sm text-red-500 bg-red-50 rounded-md px-3 py-2">{error}</p>

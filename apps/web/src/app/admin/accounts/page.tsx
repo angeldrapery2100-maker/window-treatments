@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import TwoFactorSettings from './TwoFactorSettings'
 
 interface AdminUser {
   id: string
@@ -154,6 +155,7 @@ export default function AdminAccountsPage() {
 
       {/* Table */}
       <div className="px-8 py-6">
+        <TwoFactorSettings />
         {loading ? (
           <div className="py-16 text-center text-gray-400 text-sm">Loading...</div>
         ) : users.length === 0 ? (
