@@ -122,9 +122,12 @@ export default function AboutClient({ hero, story, values, services, brands, foo
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 {story.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
               </div>
-              <div className="mt-8 aspect-[16/9] rounded-lg shadow-xl overflow-hidden">
-                <CmsImg data={story.image2} className="w-full h-full" placeholder="[待补充: 新主理人/团队照片]" />
-              </div>
+              {/* Owner/team photo — only rendered once the CMS image (story.image_2) is uploaded */}
+              {story.image2?.url && (
+                <div className="mt-8 aspect-[16/9] rounded-lg shadow-xl overflow-hidden">
+                  <CmsImg data={story.image2} className="w-full h-full" />
+                </div>
+              )}
             </div>
           </div>
         </div>
