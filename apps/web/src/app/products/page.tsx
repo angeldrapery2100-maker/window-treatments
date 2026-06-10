@@ -4,6 +4,7 @@ import path from 'path'
 import HunterDouglasClient from './HunterDouglasClient'
 import { getPageContent, getText, getImage } from '@/lib/content'
 import pool from '@/lib/db'
+import { COPYRIGHT } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Products',
@@ -64,7 +65,7 @@ export default async function ProductsPage() {
   }
 
   const footer = {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    copyright: COPYRIGHT,
     youtube:   getText(globalData, 'footer', 'youtube_url', '#'),
     etsy:      getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok:    getText(globalData, 'footer', 'tiktok_url', '#'),

@@ -1,4 +1,5 @@
 import { getPageContent, getText, getImage } from '@/lib/content'
+import { COPYRIGHT } from '@/lib/site'
 import HomeClient from './HomeClient'
 
 // ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
@@ -15,6 +16,10 @@ export default async function HomePage() {
     titleEn: getText(data, 'hero', 'title_en', 'ANGEL DRAPERY, INC'),
     subtitle: getText(data, 'hero', 'subtitle', '专业窗簾設計、訂造、安裝'),
     tagline: getText(data, 'hero', 'tagline', 'Since 1984 · 40 Years of Excellence'),
+    // English-first hero copy (SEO). The Chinese title/subtitle above stay in
+    // the data layer for the upcoming /zh locale (P1 双语化), not shown here.
+    titleSeo: getText(data, 'hero', 'title_seo', 'Custom Window Treatments in Los Angeles — Handcrafted Since 1984'),
+    subtitleEn: getText(data, 'hero', 'subtitle_en', 'Drapery, shades & smart motorized blinds — designed, made, and installed by our own team.'),
   }
 
   const galleryImages = Array.from({ length: 11 }, (_, i) => {
@@ -62,7 +67,8 @@ export default async function HomePage() {
   }
 
   const footer = {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    // Dynamic ©1984–<year> — intentionally not CMS-driven so it never goes stale.
+    copyright: COPYRIGHT,
     youtube: getText(globalData, 'footer', 'youtube_url', '#'),
     etsy: getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok: getText(globalData, 'footer', 'tiktok_url', '#'),

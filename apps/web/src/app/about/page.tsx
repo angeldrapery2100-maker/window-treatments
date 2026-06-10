@@ -4,6 +4,7 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { getPageContent, getText, getImage } from '@/lib/content'
 import AboutClient from './AboutClient'
+import { COPYRIGHT } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -58,21 +59,26 @@ export default async function AboutPage() {
     bgImage: getImage(data, 'hero', 'bg_image'),
   }
 
+  // "老店传承 + 新人焕新" narrative — heritage workroom, renewed in 2022.
   const story = {
     title: getText(data, 'story', 'title', 'Our Story'),
     paragraphs: [
-      getText(data, 'story', 'paragraph_1', 'Founded in 1984, Angel Drapery has been serving the greater Los Angeles area for over 40 years. What started as a small family business has grown into one of the most trusted names in custom window treatments.'),
-      getText(data, 'story', 'paragraph_2', 'Our commitment to quality craftsmanship and exceptional customer service has remained unchanged throughout the years. Every piece we create is handcrafted with meticulous attention to detail.'),
-      getText(data, 'story', 'paragraph_3', 'Today, we continue to combine traditional techniques with modern technology, working with the finest brands in the industry to deliver stunning results for our clients.'),
+      getText(data, 'story', 'paragraph_1', 'Angel Drapery opened its doors in 1984 in the San Gabriel Valley. For four decades, our workroom has hand-sewn custom drapery for thousands of homes across greater Los Angeles — through every style era, one window at a time.'),
+      getText(data, 'story', 'paragraph_2', 'In 2022, [待补充: 店主名字] took over the business with a simple promise: keep everything that made Angel Drapery trusted for 40 years — the in-house workroom, the meticulous craftsmanship, the personal service — and bring it into the modern home. Since then, we\'ve opened a new showroom, built out a smart-shade ecosystem that works with Apple HomeKit, Google Home, and Matter, and invested in tools that make the design-to-installation process faster and more transparent.'),
+      getText(data, 'story', 'paragraph_3', 'Some things haven\'t changed: we still measure every window ourselves, sew in our own workroom, and stand behind every installation.'),
     ],
     image: getImage(data, 'story', 'image'),
+    // Second image slot: new owner / team photo (CMS key story.image_2).
+    image2: getImage(data, 'story', 'image_2'),
   }
 
   const values = {
     title: getText(data, 'values', 'title', 'Our Values'),
+    // icon: legacy CMS field may hold an emoji — AboutClient ignores emoji
+    // values and renders a line icon instead (no emoji on brand pages).
     items: [1, 2, 3, 4].map(i => ({
-      icon: getText(data, 'values', `item_${i}_icon`, ['🎨', '👥', '⭐', '💎'][i - 1]),
-      title: getText(data, 'values', `item_${i}_title`, ['Quality Craftsmanship', 'Customer First', 'Expert Team', 'Premium Materials'][i - 1]),
+      icon: getText(data, 'values', `item_${i}_icon`, ''),
+      title: getText(data, 'values', `item_${i}_title`, ['Quality Craftsmanship', 'Customer First', 'Serving LA Since 1984', 'Premium Materials'][i - 1]),
       desc: getText(data, 'values', `item_${i}_desc`, ''),
     })),
   }
@@ -117,7 +123,7 @@ export default async function AboutPage() {
   }
 
   const footer = {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    copyright: COPYRIGHT,
     youtube: getText(globalData, 'footer', 'youtube_url', '#'),
     etsy: getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok: getText(globalData, 'footer', 'tiktok_url', '#'),

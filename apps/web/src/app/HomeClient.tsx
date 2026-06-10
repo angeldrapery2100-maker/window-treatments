@@ -5,6 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
+import TrustSection from '@/components/home/TrustSection'
+import FooterSocial from '@/components/FooterSocial'
+import { MAPS_EMBED_URL } from '@/lib/site'
 import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
 
 interface GalleryImage {
@@ -25,7 +28,7 @@ interface ImageData {
 }
 
 interface Props {
-  hero: { background: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string }
+  hero: { background: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string; titleSeo: string; subtitleEn: string }
   gallery: GalleryImage[]
   about: {
     title: string; highlight: string; subtitle: string; description: string
@@ -205,8 +208,10 @@ export default function HomeClient({ hero, gallery, about, process: processData,
   }
 
   const lightboxItem = lightboxImage !== null ? gallery.find(g => g.id === lightboxImage) : null
-  const heroTitleCn = hero.titleCn.trim() || '天使窗簾'
-  const heroSubtitle = hero.subtitle.trim() || '专业窗簾設計、訂造、安裝'
+  // English-first hero (SEO). The Chinese title (hero.titleCn) is reserved for
+  // the upcoming /zh locale and intentionally not rendered here.
+  const heroTitle = hero.titleSeo.trim() || 'Custom Window Treatments in Los Angeles — Handcrafted Since 1984'
+  const heroSubtitle = hero.subtitleEn.trim() || 'Drapery, shades & smart motorized blinds — designed, made, and installed by our own team.'
   const heroTagline = hero.tagline.trim() || 'Since 1984 · 40 Years of Excellence'
   const mobileSmartPlatforms = ['Home Assistant', 'Matter', 'Apple HomeKit', 'Google Home']
   const mobilePartnerBrands = ['Somfy', 'ALTA', 'Rowley', 'Kirsch', 'Sundance', 'Forest', 'Norman', 'Kaslen']
@@ -246,15 +251,24 @@ export default function HomeClient({ hero, gallery, about, process: processData,
             transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
             className="z-10 max-w-[92vw] text-center md:max-w-4xl"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.18em] md:tracking-[0.3em] leading-tight text-white mb-4 md:mb-6 drop-shadow-2xl text-balance">
-              {heroTitleCn}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.04em] md:tracking-[0.08em] leading-tight text-white mb-4 md:mb-6 drop-shadow-2xl text-balance">
+              {heroTitle}
             </h1>
-            <p className="text-sm sm:text-base md:text-xl text-white/90 tracking-[0.18em] md:tracking-wider mb-3 md:mb-4 drop-shadow-lg text-balance">
+            <p className="mx-auto max-w-2xl text-sm sm:text-base md:text-xl text-white/90 tracking-[0.04em] md:tracking-wide mb-3 md:mb-4 drop-shadow-lg text-balance">
               {heroSubtitle}
             </p>
             <p className="mx-auto max-w-[26rem] text-[11px] sm:text-xs md:text-sm text-gray-300 tracking-[0.14em] md:tracking-wider drop-shadow-lg">
               {heroTagline}
             </p>
+            <a
+              href="#contact"
+              className="mt-7 md:mt-9 inline-flex items-center gap-3 rounded-full bg-white px-7 py-3.5 md:px-9 md:py-4 text-sm md:text-base font-semibold tracking-[0.06em] text-[#12141C] shadow-xl transition-all hover:bg-[#4DB6E8] hover:text-white hover:shadow-2xl"
+            >
+              Book a Free In-Home Consultation
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
           </motion.div>
         </div>
 
@@ -273,6 +287,9 @@ export default function HomeClient({ hero, gallery, about, process: processData,
         </motion.div>
       </section>
 
+      {/* Trust & Reviews — rating, curated review cards, licensing badges */}
+      <TrustSection />
+
       {/* Brand Grid & Smart Ecosystem - Unified & Compact with Radar Sweep */}
       <section className="w-full bg-white py-16 md:py-24 border-y border-gray-100 overflow-hidden relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center relative">
@@ -285,7 +302,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 <span className="ml-3 text-lg font-semibold tracking-tight text-[#12141C]">Hunter Douglas</span>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-gray-600">
-                Works with the platforms your clients already use, while keeping premium drapery and shade brands within reach.
+                Works with the platforms you already use at home, while keeping premium drapery and shade brands within reach.
               </p>
             </div>
 
@@ -1424,16 +1441,16 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   <p className="pt-1 text-base leading-relaxed text-gray-700 md:text-lg">{contact.address}</p>
                 </div>
 
-                {/* Phone numbers with SMS icons */}
+                {/* One primary phone — keeps the call-to-action unambiguous.
+                    Additional lines are available via the contact page if ever needed. */}
                 <div className="space-y-4">
-                  {contact.phones.map((phone, i) => {
-                    const labels = ['Primary', 'Service', 'Office']
+                  {contact.phones.slice(0, 1).map((phone, i) => {
                     const cleanNum = phone.replace(/[^0-9]/g, '')
                     return (
                       <div key={i} className="group flex items-center gap-4 py-2 border-b border-transparent hover:border-gray-100 transition-all">
                         <div className="flex flex-col">
-                          <span className="text-[10px] uppercase tracking-widest text-gray-400">{labels[i] || `Line ${i + 1}`}</span>
-                          <a href={`tel:${phone}`} className="text-lg md:text-xl font-medium text-[#12141C] hover:text-[#4DB6E8] transition-colors">
+                          <span className="text-[10px] uppercase tracking-widest text-gray-400">Call or Text</span>
+                          <a href={`tel:${phone}`} className="text-2xl md:text-3xl font-medium text-[#12141C] hover:text-[#4DB6E8] transition-colors">
                             {phone}
                           </a>
                         </div>
@@ -1630,7 +1647,8 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       <section className="w-full bg-[#F8F8F6] relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-gray-200" />
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.701551791684!2d-118.06089492346504!3d34.10985441611823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c3e8c3e8c3e8%3A0x3e8c3e8c3e8c3e8c!2s8831%20Las%20Tunas%20Dr%2C%20Temple%20City%2C%20CA%2091780!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus&style=feature:all|element:geometry|color:0xf5f5f5&style=feature:all|element:labels.text.fill|color:0x616161&style=feature:all|element:labels.text.stroke|color:0xf5f5f5&style=feature:water|element:geometry|color:0xc9c9c9&style=feature:road|element:geometry|color:0xffffff&style=feature:poi|visibility:off"
+          src={MAPS_EMBED_URL}
+          title="Angel Drapery — 8831 E Las Tunas Dr, Temple City, CA 91780"
           width="100%" height="400" style={{ border: 0, filter: 'grayscale(100%) contrast(0.9) brightness(1.05)' }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
         />
       </section>
@@ -1639,20 +1657,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       <footer className="w-full bg-white border-t border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center space-y-4">
-            <div className="flex gap-6">
-              <a href={footer.youtube} className="text-red-600 hover:text-red-700 transition-colors">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              </a>
-              <a href={footer.etsy} className="text-orange-500 hover:text-orange-600 transition-colors">
-                <span className="text-xl font-bold">Etsy</span>
-              </a>
-              <a href={footer.tiktok} className="text-gray-900 hover:text-gray-700 transition-colors">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-              </a>
-              <a href={footer.instagram} className="text-pink-500 hover:text-pink-600 transition-colors" target="_blank" rel="noopener noreferrer">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                </a>
-            </div>
+            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
             <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
           </div>
         </div>

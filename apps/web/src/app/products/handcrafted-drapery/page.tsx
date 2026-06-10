@@ -7,6 +7,7 @@ import { m as motion, AnimatePresence } from 'framer-motion'
 import SiteNav from '@/components/SiteNav'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
+import { COPYRIGHT } from '@/lib/site'
 
 const IMG = '/drapery/handcrafted-drapery'
 
@@ -615,7 +616,7 @@ export default function HandcraftedDraperyPage() {
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-8">
             <div>
               <h4 className="text-white font-serif italic text-xl tracking-tight">Angel Drapery</h4>
-              <p className="text-white/30 text-sm mt-2">&copy;2025 by Angel Drapery, Inc</p>
+              <p className="text-white/30 text-sm mt-2">{COPYRIGHT}</p>
             </div>
             <div className="flex items-center gap-8">
               <a href="https://youtube.com/@angeldrapery1544" target="_blank" rel="noopener noreferrer"

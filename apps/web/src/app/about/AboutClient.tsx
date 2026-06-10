@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
+import FooterSocial from '@/components/FooterSocial'
 
 interface ImageData {
   url: string; alt: string; width: number; height: number; fit: string
@@ -18,13 +19,35 @@ interface FeaturedProduct {
 
 interface Props {
   hero: { title: string; subtitle: string; bgImage: ImageData | null }
-  story: { title: string; paragraphs: string[]; image: ImageData | null }
+  story: { title: string; paragraphs: string[]; image: ImageData | null; image2: ImageData | null }
   values: { title: string; items: { icon: string; title: string; desc: string }[] }
   services: { title: string; items: { title: string; desc: string; image: ImageData | null }[] }
   brands: { title: string; items: { name: string; logo: ImageData | null }[] }
   footer: { copyright: string; youtube: string; etsy: string; tiktok: string; instagram: string }
   featuredProducts?: FeaturedProduct[]
 }
+
+// Line icons for the Values cards (replaces the old emoji set 🎨👥⭐💎).
+const VALUE_ICONS: React.ReactNode[] = [
+  // Quality Craftsmanship — scissors
+  <svg key="craft" viewBox="0 0 24 24" className="w-9 h-9 fill-none stroke-current stroke-[1.5]" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" />
+    <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12" />
+  </svg>,
+  // Customer First — people
+  <svg key="people" viewBox="0 0 24 24" className="w-9 h-9 fill-none stroke-current stroke-[1.5]" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>,
+  // Serving LA Since 1984 — clock
+  <svg key="since" viewBox="0 0 24 24" className="w-9 h-9 fill-none stroke-current stroke-[1.5]" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+  </svg>,
+  // Premium Materials — layers
+  <svg key="materials" viewBox="0 0 24 24" className="w-9 h-9 fill-none stroke-current stroke-[1.5]" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2l10 6-10 6L2 8l10-6zM2 16l10 6 10-6" />
+  </svg>,
+]
 
 function CmsImg({ data, className, placeholder }: { data: ImageData | null; className?: string; placeholder?: string }) {
   if (data?.url) {
@@ -92,12 +115,15 @@ export default function AboutClient({ hero, story, values, services, brands, foo
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={storyRef} className="grid md:grid-cols-2 gap-12 items-center slide-in-left">
             <div className="aspect-[3/4] rounded-lg shadow-2xl overflow-hidden">
-              <CmsImg data={story.image} className="w-full h-full" placeholder="Company History" />
+              <CmsImg data={story.image} className="w-full h-full" placeholder="[待补充: 1980s 老照片或老师傅工坊照]" />
             </div>
             <div>
               <h2 className="text-3xl md:text-4xl font-light tracking-wide mb-6">{story.title}</h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 {story.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+              </div>
+              <div className="mt-8 aspect-[16/9] rounded-lg shadow-xl overflow-hidden">
+                <CmsImg data={story.image2} className="w-full h-full" placeholder="[待补充: 新主理人/团队照片]" />
               </div>
             </div>
           </div>
@@ -113,7 +139,8 @@ export default function AboutClient({ hero, story, values, services, brands, foo
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.items.map((v, i) => (
                 <div key={i} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300" style={{ transitionDelay: `${i * 100}ms` }}>
-                  <div className="text-4xl mb-4">{v.icon}</div>
+                  {/* Line icons (brand style) — legacy emoji values from the CMS are ignored */}
+                  <div className="mb-4 text-[#4DB6E8]">{VALUE_ICONS[i % VALUE_ICONS.length]}</div>
                   <h3 className="text-xl font-medium mb-3">{v.title}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{v.desc}</p>
                 </div>
@@ -198,14 +225,7 @@ export default function AboutClient({ hero, story, values, services, brands, foo
       <footer className="w-full bg-white border-t border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center space-y-4">
-            <div className="flex gap-6">
-              <a href={footer.youtube} className="text-red-600 hover:text-red-700 transition-colors"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-              <a href={footer.etsy} className="text-orange-500 hover:text-orange-600 transition-colors"><span className="text-xl font-bold">Etsy</span></a>
-              <a href={footer.tiktok} className="text-gray-900 hover:text-gray-700 transition-colors"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
-              <a href={footer.instagram} className="text-pink-500 hover:text-pink-600 transition-colors" target="_blank" rel="noopener noreferrer">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                </a>
-            </div>
+            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
             <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
           </div>
         </div>

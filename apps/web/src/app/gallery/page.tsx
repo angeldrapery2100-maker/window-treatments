@@ -3,6 +3,7 @@ import { getPageContent, getText } from '@/lib/content'
 import GalleryClient from './GalleryClient'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 import pool from '@/lib/db'
+import { COPYRIGHT } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Our Projects',
@@ -102,7 +103,7 @@ export default async function GalleryPage() {
   const videos = [...defaultVideos, ...customVideos]
 
   const footer = {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    copyright: COPYRIGHT,
     youtube:   getText(globalData, 'footer', 'youtube_url',  '#'),
     etsy:      getText(globalData, 'footer', 'etsy_url',     '#'),
     tiktok:    getText(globalData, 'footer', 'tiktok_url',   '#'),

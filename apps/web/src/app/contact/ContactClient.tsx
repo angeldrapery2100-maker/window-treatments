@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
+import { CA_LICENSE, MAPS_EMBED_URL } from '@/lib/site'
 
 interface ContactData {
   title: string
@@ -59,8 +60,6 @@ export default function ContactClient({ contact, footer }: Props) {
       setIsSubmitting(false)
     }
   }
-
-  const phoneLabels = ['Primary', 'Service', 'Office']
 
   return (
     <main className="min-h-screen bg-white text-[#12141C]">
@@ -134,15 +133,15 @@ export default function ContactClient({ contact, footer }: Props) {
               </div>
             </div>
 
-            {/* Phones */}
+            {/* Phones — one prominent primary line; extra lines stay quiet to avoid confusion */}
             <div className="space-y-4">
-              {contact.phones.map((phone, i) => {
+              {contact.phones.slice(0, 1).map((phone, i) => {
                 const clean = phone.replace(/[^0-9]/g, '')
                 return (
                   <div key={i} className="flex items-center gap-4 py-2 border-b border-gray-100">
                     <div className="flex flex-col">
-                      <span className="text-[10px] uppercase tracking-widest text-gray-400">{phoneLabels[i] || `Line ${i + 1}`}</span>
-                      <a href={`tel:${phone}`} className="text-xl font-medium hover:text-[#4DB6E8] transition-colors">
+                      <span className="text-[10px] uppercase tracking-widest text-gray-400">Call or Text</span>
+                      <a href={`tel:${phone}`} className="text-2xl md:text-3xl font-medium hover:text-[#4DB6E8] transition-colors">
                         {phone}
                       </a>
                     </div>
@@ -159,6 +158,17 @@ export default function ContactClient({ contact, footer }: Props) {
                   </div>
                 )
               })}
+              {contact.phones.length > 1 && (
+                <p className="text-xs text-gray-400">
+                  Workroom &amp; office lines:{' '}
+                  {contact.phones.slice(1).map((p, i) => (
+                    <span key={p}>
+                      {i > 0 && ' · '}
+                      <a href={`tel:${p}`} className="hover:text-gray-600 transition-colors">{p}</a>
+                    </span>
+                  ))}
+                </p>
+              )}
             </div>
 
             {/* Email */}
@@ -205,7 +215,7 @@ export default function ContactClient({ contact, footer }: Props) {
                 loading="lazy"
                 style={{ border: 0 }}
                 referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.5!2d-118.0568!3d34.0939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2d03b5e000001%3A0x1!2s8831+E+Las+Tunas+Dr%2C+Temple+City%2C+CA+91780!5e0!3m2!1sen!2sus!4v1"
+                src={MAPS_EMBED_URL}
               />
             </div>
           </motion.div>
@@ -268,6 +278,27 @@ export default function ContactClient({ contact, footer }: Props) {
               </p>
             </form>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Licensing & Warranty ── */}
+      <section className="w-full border-t border-gray-100 bg-[#F8F8F6] py-14 px-6 md:px-10">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-gray-500 mb-6">Licensing, Insurance & Warranty</p>
+          <div className="grid gap-8 md:grid-cols-3 text-sm leading-relaxed text-gray-600">
+            <div>
+              <h3 className="text-base font-medium text-[#12141C] mb-2">Licensed &amp; Insured</h3>
+              <p>Angel Drapery, Inc is a licensed California contractor — CA License #{CA_LICENSE}. We carry full liability insurance on every project. [待补充: 保险承保范围说明]</p>
+            </div>
+            <div>
+              <h3 className="text-base font-medium text-[#12141C] mb-2">Installation Warranty</h3>
+              <p>Every installation is backed by our workmanship warranty. [待补充: 保修年限与条款细节]</p>
+            </div>
+            <div>
+              <h3 className="text-base font-medium text-[#12141C] mb-2">Free In-Home Measurement</h3>
+              <p>We measure every window ourselves before fabrication — precise fit is on us, not you. Consultations and measurements are always free within our service area.</p>
+            </div>
+          </div>
         </div>
       </section>
 

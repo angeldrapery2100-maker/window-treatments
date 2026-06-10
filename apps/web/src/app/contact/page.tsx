@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageContent, getText, getImage } from '@/lib/content'
 import ContactClient from './ContactClient'
+import { COPYRIGHT } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -32,7 +33,7 @@ export default async function ContactPage() {
   }
 
   const footer = {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    copyright: COPYRIGHT,
     youtube: getText(globalData, 'footer', 'youtube_url', '#'),
     etsy: getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok: getText(globalData, 'footer', 'tiktok_url', '#'),

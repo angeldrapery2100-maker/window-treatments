@@ -10,6 +10,7 @@ import { getPageContent, getText } from '@/lib/content'
 import { CDN_BASE } from '@/lib/cdn'
 import { buildProductJsonLd, buildBreadcrumbJsonLd } from '@/lib/productJsonLd'
 import pool from '@/lib/db'
+import { COPYRIGHT } from '@/lib/site'
 
 // Renders one or more JSON-LD <script> blocks (server component).
 function JsonLd({ blocks }: { blocks: any[] }) {
@@ -103,7 +104,7 @@ async function getRelatedDbProducts(currentId: string) {
 async function getFooter() {
   const globalData = await getPageContent('global')
   return {
-    copyright: getText(globalData, 'footer', 'copyright', '©2025 by Angel Drapery'),
+    copyright: COPYRIGHT,
     youtube: getText(globalData, 'footer', 'youtube_url', '#'),
     etsy: getText(globalData, 'footer', 'etsy_url', '#'),
     tiktok: getText(globalData, 'footer', 'tiktok_url', '#'),
