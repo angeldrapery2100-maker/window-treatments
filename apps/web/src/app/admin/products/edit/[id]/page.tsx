@@ -254,7 +254,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                   saving
                     ? 'bg-blue-400 text-white cursor-not-allowed'
                     : isDirty && isBasicComplete
-                    ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                    ? 'bg-gray-900 text-white hover:bg-black shadow-sm'
                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
               >
@@ -438,7 +438,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => resolveDialog('save')}
-                className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                className="w-full px-4 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-black font-medium"
               >
                 保存并退出
               </button>

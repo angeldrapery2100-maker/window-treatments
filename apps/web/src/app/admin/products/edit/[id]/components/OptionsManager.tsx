@@ -177,7 +177,7 @@ export default function OptionsManager({ productType, productId, onChange }: Opt
               </div>
               <button
                 onClick={() => { setEditingOption(editingOption === option.id ? null : option.id); setNewValue({ value: '', label: '' }) }}
-                className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-3 py-1.5 text-sm bg-gray-900 text-white rounded-lg hover:bg-black"
               >
                 + 添加选项值
               </button>
@@ -199,7 +199,7 @@ export default function OptionsManager({ productType, productId, onChange }: Opt
                   </div>
                   <button onClick={() => addOptionValue(option.id)}
                     disabled={!newValue.value.trim() || !newValue.label.trim()}
-                    className="px-4 py-1.5 text-sm bg-blue-600 text-white rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-700">
+                    className="px-4 py-1.5 text-sm bg-gray-900 text-white rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-black">
                     添加
                   </button>
                   <button onClick={() => setEditingOption(null)} className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">取消</button>

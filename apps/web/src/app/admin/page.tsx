@@ -142,12 +142,13 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-8">
               {[
                 { label: 'Total Orders',   value: stats.totalOrders,        color: 'text-gray-900' },
-                { label: 'Pending',        value: stats.pendingOrders,      color: stats.pendingOrders > 0      ? 'text-amber-600'   : 'text-gray-400' },
-                { label: 'In Production',  value: stats.inProductionOrders, color: stats.inProductionOrders > 0 ? 'text-violet-600'  : 'text-gray-400' },
-                { label: 'Shipped',        value: stats.shippedOrders,      color: stats.shippedOrders > 0      ? 'text-sky-600'     : 'text-gray-400' },
-                { label: 'Completed',      value: stats.completedOrders,    color: stats.completedOrders > 0    ? 'text-emerald-600' : 'text-gray-400' },
+                // Apple-style: numbers stay black; zero-counts fade to gray.
+                { label: 'Pending',        value: stats.pendingOrders,      color: stats.pendingOrders > 0      ? 'text-gray-900' : 'text-gray-400' },
+                { label: 'In Production',  value: stats.inProductionOrders, color: stats.inProductionOrders > 0 ? 'text-gray-900' : 'text-gray-400' },
+                { label: 'Shipped',        value: stats.shippedOrders,      color: stats.shippedOrders > 0      ? 'text-gray-900' : 'text-gray-400' },
+                { label: 'Completed',      value: stats.completedOrders,    color: stats.completedOrders > 0    ? 'text-gray-900' : 'text-gray-400' },
                 { label: 'Total Revenue',  value: `$${stats.totalRevenue.toLocaleString()}`, color: 'text-gray-900' },
-                { label: 'This Month',     value: `$${stats.revenueThisMonth?.toLocaleString() ?? 0}`, color: 'text-emerald-700' },
+                { label: 'This Month',     value: `$${stats.revenueThisMonth?.toLocaleString() ?? 0}`, color: 'text-gray-900' },
                 { label: 'Orders / Month', value: stats.ordersThisMonth ?? 0, color: 'text-gray-600' },
               ].map(s => (
                 <div key={s.label} className="bg-white border border-gray-200 rounded-lg px-4 py-3.5">
@@ -161,7 +162,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
               {[
                 { label: 'Total Products', value: stats.totalProducts,                              color: 'text-gray-900' },
-                { label: 'Active',         value: stats.activeProducts,                             color: 'text-emerald-600' },
+                { label: 'Active',         value: stats.activeProducts,                             color: 'text-gray-900' },
                 { label: 'Inactive',       value: stats.totalProducts - stats.activeProducts,       color: stats.totalProducts - stats.activeProducts > 0 ? 'text-gray-500' : 'text-gray-400' },
               ].map(s => (
                 <div key={s.label} className="bg-white border border-gray-200 rounded-lg px-4 py-3.5">

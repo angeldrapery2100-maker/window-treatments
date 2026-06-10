@@ -38,6 +38,17 @@ const STATUS_FILTERS = [
   { id: 'inactive', name: 'Inactive' },
 ]
 
+
+// List price: products configure real prices in options; base_price is often 0.
+// Prefer the configured starting price so the list doesn't show a misleading $0.00.
+function displayPrice(p: any): string {
+  const sp = Number(p?.default_config?.starting_price)
+  if (Number.isFinite(sp) && sp > 0) return `From $${sp.toFixed(2)}`
+  const bp = Number(p?.base_price)
+  if (Number.isFinite(bp) && bp > 0) return `$${bp.toFixed(2)}`
+  return '—'
+}
+
 export default function StoreProductsPage() {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
@@ -353,12 +364,12 @@ export default function StoreProductsPage() {
                       </select>
                     </td>
                     <td className="px-3 py-3 text-sm text-gray-900 font-medium tabular-nums">
-                      {p.base_price != null ? `$${Number(p.base_price).toFixed(2)}` : '—'}
+                      {displayPrice(p)}
                     </td>
                     <td className="px-3 py-3 text-center">
                       <input type="checkbox" checked={!!p.default_config?.is_featured}
                         onChange={(e) => toggleFeatured(e, p.id, !!p.default_config?.is_featured)}
-                        className="w-3.5 h-3.5 text-gray-900 border-gray-300 rounded focus:ring-gray-400 cursor-pointer" />
+                        className="w-3.5 h-3.5 accent-gray-900 border-gray-300 rounded focus:ring-gray-400 cursor-pointer" />
                     </td>
                     <td className="px-3 py-3 text-center">
                       <button onClick={(e) => handleStatusToggle(e, p.id, p.status)}
@@ -430,7 +441,7 @@ export default function StoreProductsPage() {
                       <p className="text-[10px] text-gray-400 uppercase tracking-wide mt-0.5">{TYPE_LABELS[p.type] || p.type}{p.store_category_name ? ` · ${p.store_category_name}` : ''}</p>
                     </div>
                     {p.base_price != null && (
-                      <span className="text-sm font-semibold text-gray-900 flex-shrink-0">${Number(p.base_price).toFixed(2)}</span>
+                      <span className="text-sm font-semibold text-gray-900 flex-shrink-0">{displayPrice(p)}</span>
                     )}
                   </div>
                   <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-gray-100">

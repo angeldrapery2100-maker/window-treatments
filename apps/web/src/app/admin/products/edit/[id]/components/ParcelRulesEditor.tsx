@@ -81,7 +81,7 @@ export default function ParcelRulesEditor({ productId, onChange }: Props) {
         <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-8 text-center">
           <p className="text-gray-400 mb-4">暂无包裹规则，将使用默认尺寸计算运费</p>
           <button onClick={addRule}
-            className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">
+            className="px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-black">
             + 添加第一个规则
           </button>
         </div>

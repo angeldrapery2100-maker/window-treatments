@@ -120,7 +120,7 @@ export default function AdminReviewsPage() {
                 <div className="flex gap-1.5 flex-shrink-0">
                   {r.status !== 'approved' && (
                     <button onClick={() => moderate(r.id, 'approved')} disabled={busyId === r.id}
-                      className="px-3 py-1.5 text-xs rounded-lg bg-green-500 text-white hover:bg-green-600 disabled:opacity-50">Approve</button>
+                      className="px-3 py-1.5 text-xs rounded-lg bg-gray-900 text-white hover:bg-black disabled:opacity-50">Approve</button>
                   )}
                   {r.status !== 'rejected' && (
                     <button onClick={() => moderate(r.id, 'rejected')} disabled={busyId === r.id}

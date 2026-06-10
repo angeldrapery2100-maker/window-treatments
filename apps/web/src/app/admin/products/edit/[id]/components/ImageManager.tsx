@@ -288,7 +288,7 @@ export default function ImageManager({ productId, onChange }: ImageManagerProps)
               {statusText && <span className={`ml-3 ${statusColor}`}>{statusText}</span>}
             </p>
           </div>
-          <label className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors ${mainImages.length >= 40 ? 'opacity-50 cursor-not-allowed' : ''}`}>
+          <label className={`px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-black cursor-pointer transition-colors ${mainImages.length >= 40 ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <input type="file" multiple accept="image/*" onChange={handleMainFileSelect} className="hidden" disabled={mainImages.length >= 40} />
             + 添加图片
           </label>

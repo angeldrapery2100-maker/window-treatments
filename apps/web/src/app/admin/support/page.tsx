@@ -145,7 +145,7 @@ export default function AdminSupportPage() {
                     />
                     <div className="flex items-center gap-3 mt-2">
                       <button onClick={() => update(t.id, { admin_notes: notesDraft[t.id] ?? t.admin_notes })} disabled={savingId === t.id}
-                        className="px-3 py-1.5 bg-blue-500 text-white text-xs rounded-lg hover:bg-blue-600 disabled:opacity-50">
+                        className="px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg hover:bg-black disabled:opacity-50">
                         Save Notes
                       </button>
                       {t.order_id && (

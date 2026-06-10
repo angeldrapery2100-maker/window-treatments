@@ -25,6 +25,27 @@ interface ContentItem {
 // ============================================================
 // Page / section labels
 // ============================================================
+
+// Friendly names for raw field keys ("title cn" reads poorly for non-technical
+// users). Unmapped keys fall back to the underscore→space rendering.
+const FIELD_LABELS: Record<string, string> = {
+  title_cn: 'Chinese Title (中文标题, for /zh)',
+  title_en: 'Brand Name (nav logo text)',
+  title_seo: 'Homepage Headline (English H1)',
+  subtitle_en: 'Homepage Subtitle (English)',
+  subtitle: 'Subtitle',
+  tagline: 'Tagline (small line under subtitle)',
+  background: 'Background (image or video)',
+  bg_image: 'Background Image',
+  image_2: 'Owner / Team Photo (shown under story text)',
+  qr_line: 'LINE QR Code',
+  qr_wechat: 'WeChat QR Code',
+  phone_1: 'Primary Phone',
+  phone_2: 'Workroom Phone',
+  phone_3: 'Office Phone',
+}
+const fieldLabel = (key: string) => FIELD_LABELS[key] || key.replace(/_/g, ' ')
+
 const PAGE_LABELS: Record<string, string> = {
   home: 'Home',
   about: 'About',
@@ -579,7 +600,7 @@ function FieldEditor({
       <div className="flex items-start gap-4">
         {/* Label */}
         <div className="w-36 flex-shrink-0 pt-2">
-          <div className="text-sm font-medium text-gray-700">{item.field_key.replace(/_/g, ' ')}</div>
+          <div className="text-sm font-medium text-gray-700">{fieldLabel(item.field_key)}</div>
           <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wide">{typeLabel}</div>
         </div>
 

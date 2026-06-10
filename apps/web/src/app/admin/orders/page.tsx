@@ -512,14 +512,14 @@ export default function AdminOrdersPage() {
                                         Re-export Work Order
                                       </button>
                                       <button onClick={() => window.open(`/admin/orders/work-order/${order.id}`, '_blank')}
-                                        className="px-3 py-1.5 bg-blue-500 text-white text-xs rounded-lg hover:bg-blue-600 flex items-center gap-1">
+                                        className="px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg hover:bg-black flex items-center gap-1">
                                         View Work Order
                                       </button>
                                       <span className="text-[10px] text-gray-400">v{wo.version}</span>
                                     </>
                                   ) : (
                                     <button onClick={() => window.open(`/admin/orders/work-order/${order.id}`, '_blank')}
-                                      className="px-3 py-1.5 bg-orange-500 text-white text-xs rounded-lg hover:bg-orange-600 flex items-center gap-1">
+                                      className="px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg hover:bg-black flex items-center gap-1">
                                         Export Work Order
                                     </button>
                                   )}
@@ -777,7 +777,7 @@ export default function AdminOrdersPage() {
                               rows={3} placeholder="Internal notes..."
                               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" />
                             <button onClick={() => saveNotes(order.id)}
-                              className="mt-2 px-4 py-1.5 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700">Save Notes</button>
+                              className="mt-2 px-4 py-1.5 bg-gray-900 text-white text-xs rounded-lg hover:bg-black">Save Notes</button>
                           </div>
 
                           {/* ─── Order Timeline (history) ─── */}

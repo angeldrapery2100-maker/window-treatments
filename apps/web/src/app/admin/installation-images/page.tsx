@@ -349,7 +349,7 @@ export default function InstallationImagesPage() {
           id="file-upload"
         />
         <label htmlFor="file-upload" className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-all ${
-          uploading ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'
+          uploading ? 'bg-gray-100 text-gray-400' : 'bg-gray-900 text-white hover:bg-black'
         }`}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
