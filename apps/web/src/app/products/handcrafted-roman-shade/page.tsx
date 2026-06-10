@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 
 const IMG = '/roman-shade'
 const CF = 'https://www.carolefabrics.com/wp-content/uploads/2025/04'

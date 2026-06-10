@@ -22,7 +22,10 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ success: true, data: prices })
+    return NextResponse.json(
+      { success: true, data: prices },
+      { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } }
+    )
   } catch (e) {
     console.error('GET starting-prices error:', e)
     return errorResponse('Could not load starting prices.', 500, e)

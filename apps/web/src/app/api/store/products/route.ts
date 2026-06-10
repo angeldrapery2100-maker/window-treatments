@@ -32,7 +32,11 @@ export async function GET(request: Request) {
       ORDER BY p.created_at DESC
     `, queryArgs).catch(() => [])
 
-    return NextResponse.json({ success: true, data: { products } })
+    return NextResponse.json(
+      { success: true, data: { products } },
+      // Catalog changes rarely; let the edge serve it for 5 min.
+      { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } }
+    )
   } catch (e) {
     return errorResponse('Could not load products.', 500, e)
   }

@@ -5,7 +5,7 @@ import { CDN_BASE } from '@/lib/cdn'
 import Image from 'next/image'
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m as motion } from 'framer-motion'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 
 interface RelatedProduct {

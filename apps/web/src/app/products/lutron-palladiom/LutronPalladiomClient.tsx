@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 36 },

@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import ConsultationWidget from '@/components/ConsultationWidgetLoader'
+import MotionProvider from '@/components/MotionProvider'
 
 // ─── schema.org LocalBusiness ─────────────────────────────────────────────
 // Surfaces the shop in Google's local results, Knowledge Panel and Maps.
@@ -125,8 +126,10 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        {children}
-        <ConsultationWidget />
+        <MotionProvider>
+          {children}
+          <ConsultationWidget />
+        </MotionProvider>
       </body>
     </html>
   )

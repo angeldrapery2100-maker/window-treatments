@@ -10,8 +10,8 @@
 //  - Shippo does not sign webhook payloads. We gate on a shared secret passed
 //    in the URL (?token=) and ONLY act on tracking numbers that already exist
 //    in our order_shipments table, so a forged POST can do nothing useful.
-//  - If SHIPPO_WEBHOOK_SECRET is unset we log and accept (lets you wire it up
-//    before setting the secret), but setting it is strongly recommended.
+//  - If SHIPPO_WEBHOOK_SECRET is unset: production rejects the webhook
+//    (fail-closed); development logs and accepts for easy local wiring.
 
 import { NextResponse } from 'next/server'
 import { query, queryOne } from '@/lib/db'
@@ -41,8 +41,13 @@ export async function POST(request: Request) {
       if (url.searchParams.get('token') !== secret) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       }
+    } else if (process.env.NODE_ENV === 'production') {
+      // Fail closed in production: an unauthenticated webhook could forge
+      // delivery statuses and trigger customer emails.
+      console.error('[shippo-webhook] SHIPPO_WEBHOOK_SECRET not set — rejecting webhook (fail-closed in production)')
+      return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 503 })
     } else {
-      console.warn('[shippo-webhook] SHIPPO_WEBHOOK_SECRET not set — accepting unauthenticated webhook')
+      console.warn('[shippo-webhook] SHIPPO_WEBHOOK_SECRET not set — accepting unauthenticated webhook (dev only)')
     }
 
     const body = await request.json().catch(() => null) as any

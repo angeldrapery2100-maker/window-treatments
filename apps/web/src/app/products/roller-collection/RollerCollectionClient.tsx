@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import PriceEstimator from '@/components/PriceEstimator'
 
 const BASE = '/roller-collection'

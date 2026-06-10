@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
-import { motion, AnimatePresence, useMotionValue } from 'framer-motion'
+import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
 
 interface GalleryImage {
   id: number

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 
 /* ─── Types ─── */
 interface PageSection {

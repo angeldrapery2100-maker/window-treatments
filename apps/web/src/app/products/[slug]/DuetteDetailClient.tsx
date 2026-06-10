@@ -5,7 +5,7 @@ import { CDN_BASE } from '@/lib/cdn'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { buildDuetteLayout } from './duette-layout'
 import type { SectionLayout, CardItem, ImageLabel, SwatchCollection, ControlSystemPanel } from './applause-layout'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'

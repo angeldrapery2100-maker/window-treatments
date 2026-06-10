@@ -4,7 +4,7 @@ import { CDN_BASE } from '@/lib/cdn'
 import Image from 'next/image'
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { m as motion, AnimatePresence } from "framer-motion"
 import { provenanceLayout } from "./provenance-layout"
 import type { CardItem, ImageLabel, SwatchCollection } from "./applause-layout"
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'

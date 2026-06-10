@@ -6,7 +6,7 @@ import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { luminetteLayout } from './luminette-layout'
 import type { SectionLayout, CardItem, ImageLabel, SwatchCollection, ControlSystemPanel } from './applause-layout'
 

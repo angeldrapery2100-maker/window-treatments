@@ -7,7 +7,7 @@ import { useState, useCallback } from 'react'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import type { ProductLayout, SectionLayout, CardItem, ImageLabel, SwatchCollection, ControlSystemPanel, SceneRow } from './types'
 
 interface RelatedProduct {

@@ -1,0 +1,70 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import DraperyProduct from './components/DraperyProduct'
+import SheerProduct from './components/SheerProduct'
+import ShadeProduct from './components/ShadeProduct'
+import HardwareProduct from './components/HardwareProduct'
+
+// Interactive part of the store product page. The server wrapper (page.tsx)
+// provides metadata + JSON-LD and passes the product type it already fetched,
+// so we skip the extra round-trip unless the type is unknown.
+export default function StoreProductClient({ id, initialType }: { id: string; initialType: string | null }) {
+  const [productType, setProductType] = useState<string | null>(initialType)
+  const [loading, setLoading] = useState(initialType === null)
+
+  // Record browsing history
+  useEffect(() => {
+    try {
+      const key = 'store_recently_viewed'
+      const recent: string[] = JSON.parse(localStorage.getItem(key) || '[]')
+      const updated = [id, ...recent.filter(x => x !== id)].slice(0, 20)
+      localStorage.setItem(key, JSON.stringify(updated))
+    } catch {}
+  }, [id])
+
+  // Fallback: if the server couldn't resolve the type (e.g. DB hiccup), try client-side.
+  useEffect(() => {
+    if (initialType !== null) return
+    fetch(`/api/store/products/${id}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) setProductType(data.data.product?.type || null)
+      })
+      .catch(() => setProductType(null))
+      .finally(() => setLoading(false))
+  }, [id, initialType])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-400">
+        Loading...
+      </div>
+    )
+  }
+
+  if (!productType) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-light mb-4">Product Not Found</h1>
+          <p className="text-gray-600">The product you're looking for doesn't exist.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (productType === 'drapery') return <DraperyProduct productId={id} />
+  if (productType === 'sheer')   return <SheerProduct productId={id} />
+  if (productType === 'shade')   return <ShadeProduct productId={id} />
+  if (productType === 'hardware') return <HardwareProduct productId={id} />
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-light mb-4">Unknown Product Type</h1>
+        <p className="text-gray-600">Product type "{productType}" is not supported.</p>
+      </div>
+    </div>
+  )
+}

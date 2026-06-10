@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { type ProjectVideo, DEFAULT_VIDEOS } from '@/lib/gallery-videos-data'
 
 // Re-export for backward-compat with gallery/page.tsx

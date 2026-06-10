@@ -5,6 +5,7 @@ import { recordAudit } from '@/lib/audit'
 import { errorResponse } from '@/lib/apiError'
 import { isTotpEnabledForEmail } from '@/lib/twoFactor'
 import { verifyTotp } from '@/lib/totp'
+import { rateLimit } from '@/lib/rateLimit'
 
 export async function POST(request: Request) {
   try {
@@ -50,6 +51,16 @@ export async function POST(request: Request) {
       if (!totpCode) {
         // Password was correct; UI should now prompt for the 6-digit code.
         return NextResponse.json({ success: false, requiresTotp: true }, { status: 401 })
+      }
+      // Dedicated brute-force limit on code attempts: even with the correct
+      // password, an attacker gets at most 5 TOTP guesses per 5 minutes.
+      const totpLimit = await rateLimit('totp:email', email.toLowerCase(), { max: 5, windowSeconds: 300 })
+      if (!totpLimit.allowed) {
+        await recordAudit({ action: 'auth.login_failed', actor_email: user.email, ip, note: '2FA rate limited' })
+        return NextResponse.json(
+          { success: false, requiresTotp: true, error: 'Too many code attempts. Please wait a few minutes and try again.' },
+          { status: 429 }
+        )
       }
       if (!totp.secret || !verifyTotp(totp.secret, String(totpCode))) {
         await recordAttempt(email.toLowerCase(), ip, false)
