@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
-import TrustSection from '@/components/home/TrustSection'
 import FooterSocial from '@/components/FooterSocial'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
@@ -286,9 +285,6 @@ export default function HomeClient({ hero, gallery, about, process: processData,
           </div>
         </motion.div>
       </section>
-
-      {/* Trust & Reviews — rating, curated review cards, licensing badges */}
-      <TrustSection />
 
       {/* Brand Grid & Smart Ecosystem - Unified & Compact with Radar Sweep */}
       <section className="w-full bg-white py-16 md:py-24 border-y border-gray-100 overflow-hidden relative">
