@@ -50,11 +50,17 @@ const PAGE_DEFAULTS: Record<string, Array<{ section: string; field_key: string; 
     { section: 'hero', field_key: 'title_en', field_type: 'text',  content: 'ANGEL DRAPERY, INC', sort_order: 2 },
     { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '专业窗簾設計、訂造、安裝', sort_order: 3 },
     { section: 'hero', field_key: 'tagline',  field_type: 'text',  content: 'Since 1984 • 40 Years Experience', sort_order: 4 },
+    // English-first hero copy rendered as the homepage H1/subtitle (SEO).
+    // The Chinese title_cn/subtitle above are reserved for the future /zh locale.
+    { section: 'hero', field_key: 'title_seo',   field_type: 'text', content: 'Custom Window Treatments in Los Angeles — Handcrafted Since 1984', sort_order: 5 },
+    { section: 'hero', field_key: 'subtitle_en', field_type: 'text', content: 'Drapery, shades & smart motorized blinds — designed, made, and installed by our own team.', sort_order: 6 },
   ],
   about: [
     { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'About Us', sort_order: 0 },
     { section: 'hero', field_key: 'subtitle', field_type: 'text',  content: '40 Years of Excellence in Custom Window Treatments', sort_order: 1 },
     { section: 'hero', field_key: 'bg_image', field_type: 'image', content: 'About Hero Background', image_url: '', sort_order: 2, image_width: 1920, image_height: 800, image_fit: 'cover' },
+    // Second story image slot (owner / team photo) — hidden on the site until uploaded.
+    { section: 'story', field_key: 'image_2', field_type: 'image', content: 'Owner / Team Photo (新主理人/团队照片)', image_url: '', sort_order: 10, image_width: 1600, image_height: 900, image_fit: 'cover' },
   ],
   gallery: [
     { section: 'hero', field_key: 'title',    field_type: 'text',  content: 'Our Gallery', sort_order: 0 },
