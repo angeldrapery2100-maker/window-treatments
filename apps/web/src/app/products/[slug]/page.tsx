@@ -66,14 +66,19 @@ function sanitizeSwatches(product: any) {
   if (!swatchMap || typeof swatchMap !== 'object') return product
   for (const colors of Object.values(swatchMap) as any[]) {
     if (!Array.isArray(colors)) continue
-    const specCount = new Map<string, number>()
+    // Track which DISTINCT color names share each exact spec list. Two entries
+    // with the SAME name sharing specs is legitimate (e.g. aria has two photos
+    // per color); different names sharing specs means mis-attributed SKUs.
+    const namesBySpec = new Map<string, Set<string>>()
     for (const c of colors) {
       const k = (c?.specs || []).join('|')
-      if (k) specCount.set(k, (specCount.get(k) || 0) + 1)
+      if (!k) continue
+      if (!namesBySpec.has(k)) namesBySpec.set(k, new Set())
+      namesBySpec.get(k)!.add((c?.color_name || '').trim().toLowerCase())
     }
     for (const c of colors) {
       const k = (c?.specs || []).join('|')
-      if (k && (specCount.get(k) || 0) > 1) c.specs = []
+      if (k && (namesBySpec.get(k)?.size || 0) > 1) c.specs = []
       if (typeof c?.color_name === 'string' && /^color \d+$/i.test(c.color_name.trim())) c.color_name = ''
     }
   }

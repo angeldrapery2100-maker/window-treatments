@@ -386,14 +386,18 @@ function SwatchCollection({
   // lists. Those codes are order SKUs — showing the wrong one is worse than
   // showing none. Suppress specs whose exact spec list appears on more than
   // one color in this collection; unambiguous specs still display.
-  const specCount = new Map<string, number>()
+  const namesBySpec = new Map<string, Set<string>>()
   for (const s of swatches) {
     const k = (s.specs || []).join('|')
-    if (k) specCount.set(k, (specCount.get(k) || 0) + 1)
+    if (!k) continue
+    if (!namesBySpec.has(k)) namesBySpec.set(k, new Set())
+    namesBySpec.get(k)!.add((s.color_name || '').trim().toLowerCase())
   }
+  // Same-name duplicates (two photos of one color) legitimately share specs;
+  // only hide when DIFFERENT colors claim the same codes (mis-attribution).
   const showSpecs = (s: Swatch) => {
     const k = (s.specs || []).join('|')
-    return !!k && specCount.get(k) === 1
+    return !!k && (namesBySpec.get(k)?.size || 0) === 1
   }
   // "Color 3" / "Color 4" are extraction placeholders, not real HD names.
   const isPlaceholderName = (n: string) => /^color \d+$/i.test(n.trim())
