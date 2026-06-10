@@ -64,7 +64,7 @@ export default async function AboutPage() {
     title: getText(data, 'story', 'title', 'Our Story'),
     paragraphs: [
       getText(data, 'story', 'paragraph_1', 'Angel Drapery opened its doors in 1984 in the San Gabriel Valley. For four decades, our workroom has hand-sewn custom drapery for thousands of homes across greater Los Angeles — through every style era, one window at a time.'),
-      getText(data, 'story', 'paragraph_2', 'In 2022, [待补充: 店主名字] took over the business with a simple promise: keep everything that made Angel Drapery trusted for 40 years — the in-house workroom, the meticulous craftsmanship, the personal service — and bring it into the modern home. Since then, we\'ve opened a new showroom, built out a smart-shade ecosystem that works with Apple HomeKit, Google Home, and Matter, and invested in tools that make the design-to-installation process faster and more transparent.'),
+      getText(data, 'story', 'paragraph_2', 'In 2022, the business passed to a new generation with a simple promise: keep everything that made Angel Drapery trusted for forty years — the in-house workroom, the meticulous craftsmanship, the personal service — and bring it into the modern home. Since then, we\'ve opened a new showroom, built a smart-shade ecosystem that works with Apple HomeKit, Google Home, and Matter, and made the design-to-installation process faster and more transparent.'),
       getText(data, 'story', 'paragraph_3', 'Some things haven\'t changed: we still measure every window ourselves, sew in our own workroom, and stand behind every installation.'),
     ],
     image: getImage(data, 'story', 'image'),
