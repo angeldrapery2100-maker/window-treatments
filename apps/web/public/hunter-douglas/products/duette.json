@@ -1,2672 +1,2510 @@
 {
-  "id": "hd-duette-digital-sample-book",
-  "name": "Duette® Honeycomb Shades",
-  "slug": "duette",
-  "description": "Duette® Honeycomb Shades set the standard for energy-efficient window fashions with their patented honeycomb construction that traps air to insulate your home.",
-  "cover_image": "page002_img01_2105x1505.jpeg",
-  "benefits": [
+ "id": "hd-duette-digital-sample-book",
+ "name": "Duette® Honeycomb Shades",
+ "slug": "duette",
+ "description": "Duette® Honeycomb Shades set the standard for energy-efficient window fashions with their patented honeycomb construction that traps air to insulate your home.",
+ "cover_image": "page002_img01_2105x1505.jpeg",
+ "benefits": [
+  {
+   "page": 15,
+   "category": "benefits",
+   "text": "Extensive Offering\nMost pleat sizes and opacities are available in every fabric. Choose from \na broad selection of beautiful colors, as well as operating systems and \ndesign options, to discover your perfect Duette shade.  \nEasy Care and Cleaning\nTo ensure lasting beauty, all Duette shades are anti-static, dust and \nsoil resistant and easy to clean.\nLarger Sizes with Small Stack\nDuette shades are engineered to provide a low profile when \nfully raised on taller windows, allowing for unobstructed views.\nOutstanding UV Protection\nProtect your furniture, flooring and artwork from harmful \nUV rays with Duette shades.\nNoise Reduction\nDuette® shades absorb sound energy, helping to create a more \ntranquil room.\nBenefits\nCoordinating Headrail Finishes\nTextured matte headrails are color coordinated to the fabric for a \ncohesive design.\nSustainable Fabrics\nDuette Architella Alexa™ and Thea™ outer cell fabrics are \ninnovatively crafted with 90% recycled materials.  \nSuperior Energy Efficiency\nDesigned with three insulating pockets, Duette® Architella® shades help \nsave more energy at the window, no matter the outdoor climate.",
+   "images": [
     {
-      "page": 15,
-      "category": "benefits",
-      "text": "Extensive Offering\nMost pleat sizes and opacities are available in every fabric. Choose from \na broad selection of beautiful colors, as well as operating systems and \ndesign options, to discover your perfect Duette shade.  \nEasy Care and Cleaning\nTo ensure lasting beauty, all Duette shades are anti-static, dust and \nsoil resistant and easy to clean.\nLarger Sizes with Small Stack\nDuette shades are engineered to provide a low profile when \nfully raised on taller windows, allowing for unobstructed views.\nOutstanding UV Protection\nProtect your furniture, flooring and artwork from harmful \nUV rays with Duette shades.\nNoise Reduction\nDuette® shades absorb sound energy, helping to create a more \ntranquil room.\nBenefits\nCoordinating Headrail Finishes\nTextured matte headrails are color coordinated to the fabric for a \ncohesive design.\nSustainable Fabrics\nDuette Architella Alexa™ and Thea™ outer cell fabrics are \ninnovatively crafted with 90% recycled materials.  \nSuperior Energy Efficiency\nDesigned with three insulating pockets, Duette® Architella® shades help \nsave more energy at the window, no matter the outdoor climate.",
-      "images": [
-        {
-          "filename": "page015_img01_772x449.jpeg",
-          "width": 772,
-          "height": 449
-        },
-        {
-          "filename": "page015_img02_762x436.jpeg",
-          "width": 762,
-          "height": 436
-        },
-        {
-          "filename": "page015_img03_761x437.jpeg",
-          "width": 761,
-          "height": 437
-        },
-        {
-          "filename": "page015_img04_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page015_img05_764x427.jpeg",
-          "width": 764,
-          "height": 427
-        },
-        {
-          "filename": "page015_img06_764x427.jpeg",
-          "width": 764,
-          "height": 427
-        },
-        {
-          "filename": "page015_img07_764x427.jpeg",
-          "width": 764,
-          "height": 427
-        },
-        {
-          "filename": "page015_img08_764x427.jpeg",
-          "width": 764,
-          "height": 427
-        }
-      ]
+     "filename": "page015_img01_772x449.jpeg",
+     "width": 772,
+     "height": 449
+    },
+    {
+     "filename": "page015_img02_762x436.jpeg",
+     "width": 762,
+     "height": 436
+    },
+    {
+     "filename": "page015_img03_761x437.jpeg",
+     "width": 761,
+     "height": 437
+    },
+    {
+     "filename": "page015_img04_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page015_img05_764x427.jpeg",
+     "width": 764,
+     "height": 427
+    },
+    {
+     "filename": "page015_img06_764x427.jpeg",
+     "width": 764,
+     "height": 427
+    },
+    {
+     "filename": "page015_img07_764x427.jpeg",
+     "width": 764,
+     "height": 427
+    },
+    {
+     "filename": "page015_img08_764x427.jpeg",
+     "width": 764,
+     "height": 427
     }
-  ],
-  "control_options": [
-    {
-      "page": 8,
-      "category": "control",
-      "text": "Duette® Duolite® with \nClearView® Sheer \ncombines superior \nview-through while \nfiltering sunlight and \nprotecting interiors \nfrom harsh UV rays. \nSheer Fabric ClearView® Sheer    Color Black Magic\nFabric Architella® Alexa™    Color Modern Gray\nOperating System PowerView® Automation \nDesign Option Duolite® with ClearView Sheer",
-      "images": [
-        {
-          "filename": "page008_img01_3044x1505.jpeg",
-          "width": 3044,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "control",
-      "text": "Fabric Architella® Alexa™    Color Modern Gray\nOperating System PowerView® Automation, LightLock®\nDesign Option Top-Down/Bottom-Up (Not available in Canada)\nAchieve unparalleled \ndarkness with the \nDuette® LightLock® \nsystem, the only one \nof its kind to deliver \ntrue darkening effects.",
-      "images": [
-        {
-          "filename": "page009_img01_3043x1505.jpeg",
-          "width": 3043,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "control",
-      "text": "Layer your Duette® \nshades with \ncoordinating Design \nStudio™ drapery, \navailable in an array \nof on-trend colors, \npatterns and \nexclusive designs.\nFabric Architella® Batiste Bamboo    Color  White Truffle\nDesign Studio™ Drapery Fabric Elys    Color Meditative\nOperating System UltraGlide®",
-      "images": [
-        {
-          "filename": "page012_img01_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "control",
-      "text": "As part of The Whole \nHouse Solution™, \nDuette® shades can \naccommodate \na variety of window \nshapes and sizes.\nFabric Architella® Elan®    Color  Cider\nOperating System PowerView® Automation, \nTrackGlide™, Vertiglide™ Left Stack",
-      "images": [
-        {
-          "filename": "page013_img01_2996x1505.jpeg",
-          "width": 2996,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "control",
-      "text": "Our antimicrobial \nfabric, Commercial \nwith Microshield\n™, \nresists the growth \nof bacteria, mold \nand mildew on  \nDuette® shades. \nFabric Commercial     Color Beach Shells\nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page014_img01_3043x1505.jpeg",
-          "width": 3043,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "control",
-      "text": "Red indicates \nwindows \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nYear-Round Comfort\nScan for AERC\nEnergy Ratings\nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the summer.\nFabric Architella® Alexa™    Color Skye\nOperating System PowerView® Automation \nEnergy Efficiency\nCost Savings\nShades help control the indoor temperature, so you can spend less to \nheat and cool your home. \nSuperior Insulation\nAn innovative, insulating design features an extra layer that protects your home \nfrom harsh outdoor temperatures.\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according to \nthe sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by softly diffusing \nnatural sunlight within a room.",
-      "images": [
-        {
-          "filename": "page016_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page016_img02_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page016_img03_764x434.jpeg",
-          "width": 764,
-          "height": 434
-        },
-        {
-          "filename": "page016_img04_59x88.jpeg",
-          "width": 59,
-          "height": 88
-        },
-        {
-          "filename": "page016_img05_59x88.jpeg",
-          "width": 59,
-          "height": 88
-        },
-        {
-          "filename": "page016_img06_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page016_img07_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "control",
-      "text": "STRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.  \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nLiteRise®\nThis cordless system lifts and \nlowers shades with the touch \nof a finger.\nUltraGlide®\nGently pull a single retractable \nwand to lift and lower shades. \nOperating Systems",
-      "images": [
-        {
-          "filename": "page019_img01_1092x1505.jpeg",
-          "width": 1092,
-          "height": 1505
-        },
-        {
-          "filename": "page019_img02_337x578.jpeg",
-          "width": 337,
-          "height": 578
-        },
-        {
-          "filename": "page019_img03_319x901.jpeg",
-          "width": 319,
-          "height": 901
-        },
-        {
-          "filename": "page019_img04_319x903.jpeg",
-          "width": 319,
-          "height": 903
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "control",
-      "text": "A Day With PowerView®  \n10:30 PM Bedtime\nShades close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nFabric Architella® Elan® Metallic    Color Polished Pearl\nOperating System PowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation",
-      "images": [
-        {
-          "filename": "page020_img01_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        },
-        {
-          "filename": "page020_img02_337x578.jpeg",
-          "width": 337,
-          "height": 578
-        },
-        {
-          "filename": "page020_img03_779x537.jpeg",
-          "width": 779,
-          "height": 537
-        },
-        {
-          "filename": "page020_img04_727x455.jpeg",
-          "width": 727,
-          "height": 455
-        },
-        {
-          "filename": "page020_img05_728x456.jpeg",
-          "width": 728,
-          "height": 456
-        },
-        {
-          "filename": "page020_img06_728x455.jpeg",
-          "width": 728,
-          "height": 455
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "control",
-      "text": "Vertiglide™ \nFor vertical applications such as patio doors, this \nsystem provides side-to-side operation. Offered in \nfour stacking configurations.\nSkyLift™*\nThis system covers large skylights. Available with manual \nor motorized operation in top stack only.\nAdditional Operating Options\nSimplicity™** \nThis manual system is designed for skylights and other hard-to-reach \nwindows. Can be oriented for top, bottom or side stack.\nVertiglide Split Stack\nShades operate individually.\nVertiglide Left Stack or Right Stack\nLeft stack opens from right to left. Right stack \nopens from left to right.\nVertiglide Duolite®\nA center-opening design combines two opacities \nin one. Each fabric can span the full width of \nthe opening.\nVertiglide Traveling Center Stack\nShades open from the sides and stack in the center.\nPowerView® Operable Specialty Shapes\nAutomate high and hard-to-reach arched and angled windows.\n*Available in Canada as a Duolite® option only.\n**Not available in Canada.",
-      "images": [
-        {
-          "filename": "page021_img01_765x462.jpeg",
-          "width": 765,
-          "height": 462
-        },
-        {
-          "filename": "page021_img02_480x461.jpeg",
-          "width": 480,
-          "height": 461
-        },
-        {
-          "filename": "page021_img03_480x461.jpeg",
-          "width": 480,
-          "height": 461
-        },
-        {
-          "filename": "page021_img04_480x461.jpeg",
-          "width": 480,
-          "height": 461
-        },
-        {
-          "filename": "page021_img05_480x461.jpeg",
-          "width": 480,
-          "height": 461
-        },
-        {
-          "filename": "page021_img06_480x1081.jpeg",
-          "width": 480,
-          "height": 1081
-        },
-        {
-          "filename": "page021_img07_765x461.jpeg",
-          "width": 765,
-          "height": 461
-        },
-        {
-          "filename": "page021_img08_365x461.jpeg",
-          "width": 365,
-          "height": 461
-        },
-        {
-          "filename": "page021_img09_365x461.jpeg",
-          "width": 365,
-          "height": 461
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "control",
-      "text": "Top-Down/Bottom-Up\nOperate shades from top-down or bottom-up to achieve desired level \nof light and privacy. (Top-Down/Bottom-Up not available in Canada)\nStreetside Fabric\nArchitella® Elan® fabrics have an off-white streetside color \nthat reflects sunlight and provides a more neutral look.\nDesign Options\nPleat Size and Construction\nChoose from a wide selection of pleat sizes and constructions, \nensuring the best product for your needs. \nSpecialty Shapes\nEasily cover windows in your home that have unusual shapes or sizes.\nDoors and Sidelights\nDuette® shades are an ideal solution for French doors and sidelights.\nTwo-On-One Headrail\nTwo independently operated shades can share the same headrail. \nLightLock® and LightLock Flex\nThe LightLock® and LightLock Flex system utilizes channels with specially \nshaped micro-ridges to absorb and deflect incoming light.\nTrackGlide™ with LiteRise®\nFor European-style tilt-turn windows or French Doors, this operating \nsystem keeps shades in place during window operation.",
-      "images": [
-        {
-          "filename": "page022_img01_1099x627.jpeg",
-          "width": 1099,
-          "height": 627
-        },
-        {
-          "filename": "page022_img02_765x437.jpeg",
-          "width": 765,
-          "height": 437
-        },
-        {
-          "filename": "page022_img03_762x436.jpeg",
-          "width": 762,
-          "height": 436
-        },
-        {
-          "filename": "page022_img04_762x436.jpeg",
-          "width": 762,
-          "height": 436
-        },
-        {
-          "filename": "page022_img05_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page022_img06_764x437.jpeg",
-          "width": 764,
-          "height": 437
-        },
-        {
-          "filename": "page022_img07_765x437.jpeg",
-          "width": 765,
-          "height": 437
-        },
-        {
-          "filename": "page022_img08_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        }
-      ]
-    }
-  ],
-  "design_options": [],
-  "mounting": [
-    {
-      "page": 23,
-      "category": "mounting",
-      "text": "Mounting Profiles\nOutside Mount 11/4\" \nInside Mount 11/4\" \nPartial Mount 11/4\" \nInside Mount 3/4\" \nOutside Mount 3/4\"  \nPartial Mount and 3/4\" \nVertiglide™ Inside Mount 3/4\" and 11/4\" \nVertiglide Grandover™ Valance\nVertiglide Outside Mount 3/4\" and 11/4\"\nVertiglide Sydney Valance Standard Option",
-      "images": [
-        {
-          "filename": "page023_img01_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img02_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img03_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img04_480x512.jpeg",
-          "width": 480,
-          "height": 512
-        },
-        {
-          "filename": "page023_img05_480x512.jpeg",
-          "width": 480,
-          "height": 512
-        },
-        {
-          "filename": "page023_img06_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img07_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img08_479x511.jpeg",
-          "width": 479,
-          "height": 511
-        },
-        {
-          "filename": "page023_img09_1048x221.jpeg",
-          "width": 1048,
-          "height": 221
-        },
-        {
-          "filename": "page023_img10_1050x221.jpeg",
-          "width": 1050,
-          "height": 221
-        }
-      ]
-    }
-  ],
-  "product_details": [
-    {
-      "page": 11,
-      "category": "opacity",
-      "text": "Fabric Architella® Classic™    Color Desert Sands\nOpacity Light Filtering\nOperating System PowerView® Automation \nRoom Darkening",
-      "images": [
-        {
-          "filename": "page011_img01_1956x1505.jpeg",
-          "width": 1956,
-          "height": 1505
-        },
-        {
-          "filename": "page011_img02_1236x836.jpeg",
-          "width": 1236,
-          "height": 836
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "opacity",
-      "text": "Light Filtering\nGently filters light and offers moderate privacy.\nClearView® Sheer\nProvides the most natural light and view-through with minimal privacy.\nSemi-Sheer\nProvides view-through with increased privacy.\nRoom Darkening\nBlocks most incoming light with maximum privacy.\nLight Control and Privacy\nFabric Whisper™ Sheer    Color Daisy White\nFabric Architella® Reception    Color Oxford\nOperating System PowerView® Automation \nDesign Option Duolite®",
-      "images": [
-        {
-          "filename": "page017_img01_1954x1505.jpeg",
-          "width": 1954,
-          "height": 1505
-        },
-        {
-          "filename": "page017_img02_765x455.jpeg",
-          "width": 765,
-          "height": 455
-        },
-        {
-          "filename": "page017_img03_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page017_img04_765x455.jpeg",
-          "width": 765,
-          "height": 455
-        },
-        {
-          "filename": "page017_img05_765x455.jpeg",
-          "width": 765,
-          "height": 455
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "opacity",
-      "text": "Duolite® with ClearView® Sheer\nCombine a ClearView® sheer fabric with a light-filtering \nor room-darkening fabric in a single shade. \nDuolite® Dual Opacity Option with Semi-Sheer  \nCombine a semi-sheer fabric with a light-filtering \nor room-darkening fabric in a single shade.\nDuolite® Design Option\nDuolite Dual Opacity Option with Light Filtering  \nCombine a light-filtering fabric with a room-darkening \nfabric in a single shade.\nDuolite Dual Opacity Option with Whisper Sheer™     \nCombine a Whisper sheer fabric with a light-filtering \nor room-darkening fabric in a single shade.",
-      "images": [
-        {
-          "filename": "page018_img01_762x932.jpeg",
-          "width": 762,
-          "height": 932
-        },
-        {
-          "filename": "page018_img02_762x932.jpeg",
-          "width": 762,
-          "height": 932
-        },
-        {
-          "filename": "page018_img03_763x934.jpeg",
-          "width": 763,
-          "height": 934
-        },
-        {
-          "filename": "page018_img04_763x934.jpeg",
-          "width": 763,
-          "height": 934
-        }
-      ]
-    },
-    {
-      "page": 37,
-      "category": "opacity",
-      "text": "Cell Sizes and Opacity\n¾\" Light Filtering\n1¼\" Light Filtering\n¾\" Room Darkening\n1¼\" Room Darkening",
-      "images": [
-        {
-          "filename": "page037_img01_1195x1206.jpeg",
-          "width": 1195,
-          "height": 1206
-        },
-        {
-          "filename": "page037_img02_1195x1200.jpeg",
-          "width": 1195,
-          "height": 1200
-        },
-        {
-          "filename": "page037_img03_1198x1200.jpeg",
-          "width": 1198,
-          "height": 1200
-        },
-        {
-          "filename": "page037_img04_1198x1202.jpeg",
-          "width": 1198,
-          "height": 1202
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page005_img02_980x1505.jpeg",
-          "width": 980,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Fabric Architella® India Silk    Color Temple\nOperating System PowerView® Automation, TrackGlide™",
-      "images": [
-        {
-          "filename": "page006_img01_2930x1505.jpeg",
-          "width": 2930,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "Fabric Architella® Thea™    Color Clover\nDuette® Architella® \nHoneycomb Shades \nare the industry’s \nmost energy-efficient \nwindow treatments. \nCrafted with \ninsulating layers, \nthese shades provide \nthe perfect level of \ncomfort throughout \nevery season.",
-      "images": [
-        {
-          "filename": "page007_img01_2996x1505.jpeg",
-          "width": 2996,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "Fabric Architella® Elan®    Color Platinum\nOperating System PowerView® Automation, TrackGlide™ \nPowerView® App with Gateway",
-      "images": [
-        {
-          "filename": "page010_img01_2617x1505.jpeg",
-          "width": 2617,
-          "height": 1505
-        },
-        {
-          "filename": "page010_img02_764x1013.jpeg",
-          "width": 764,
-          "height": 1013
-        }
-      ]
-    },
-    {
-      "page": 26,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page026_img01_3008x2427.jpeg",
-          "width": 3008,
-          "height": 2427
-        }
-      ]
-    },
-    {
-      "page": 27,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page027_img01_3009x3010.jpeg",
-          "width": 3009,
-          "height": 3010
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [
-    {
-      "page": 38,
-      "category": "hardware",
-      "text": "Hardware Color Guide\n048 Black V\n082 Camel V\n135 Whispering \nHeather\n180 Dove Gray V\n202 Paprika\n205 Fawn\n218 Peppercorn\n219 Eiffel Tower\n221 Aspen Snow\n222 Bliss\n276 Silverado V\n320 Rich Cream V\n323 Pumpkin V\n324 Stone V\n405 Gray Flannel\n478 Winter Pear\n496 Twilight V\n502 Glaze\n575 Gray Cloud\n580 Midnight Oil V\n609 Falcon Gray\n661 White Tiara V\n669 Beijing Gray\n683 Pearl\n685 Blue Sky V\n689 Ash\n758 Shimmering \nOcean V\n785 Aspen White V\n810 Mushroom V\n841 Dark Blonde V\n849 Mocha\n862 Gardenia \nWhite V\n878 Frosted Ice V\n882 Honey  \nBisque V\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nV  \u0007Offered for both Horizontal and Vertical Hardware.",
-      "images": [
-        {
-          "filename": "page038_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img10_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img11_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img12_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img13_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img14_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img15_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img16_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img17_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img18_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img19_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img20_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img21_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img22_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img23_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img24_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img25_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img26_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img27_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img28_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img29_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img30_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img31_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img32_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img33_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page038_img34_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    },
-    {
-      "page": 39,
-      "category": "hardware",
-      "text": "Hardware Color Guide\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\n064 Bronze\n785 Aspen White\n862 Gardenia \nWhite\nLightLock® System\n048 Black\n064 Bronze\n221 Aspen Snow\n320 Rich Cream\n661 White Tiara\n785 Aspen White\nLightLock Flex System\n048 Black\n520 Brass\n528 Bronze\n534 Pewter\n785 White\nTrackGlide\nTM System",
-      "images": [
-        {
-          "filename": "page039_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img10_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img11_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img12_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img13_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page039_img14_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    },
-    {
-      "page": 40,
-      "category": "hardware",
-      "text": "Hardware Color Coordination\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nClearView® Sheer \nHorizontal Hardware \nVertical Hardware \n682 Platinum \n180 Dove Gray \n180 Dove Gray\n702 Almond Mist \n862 Gardenia White \n862 Gardenia White\n748 Black Magic \n048 Black \n048 Black\n951 Daisy White \n661 White Tiara \n661 White Tiara\nWhisper™ Sheer   \nHorizontal Hardware  \nVertical Hardware \n588 Eiffel Tower \n219 Eiffel Tower \n048 Black \n682 Platinum \n180 Dove Gray \n180 Dove Gray\n700 White Organdy \n661 White Tiara \n661 White Tiara\n701 Chiffon \n320 Rich Cream \n320 Rich Cream\n702 Almond Mist \n862 Gardenia White \n862 Gardenia White\n748 Black Magic \n048 Black \n048 Black\n760 Tea Light \n841 Dark Blonde \n841 Dark Blonde\n762 Evening Fog \n580 Midnight Oil \n580 Midnight Oil\n763 Coconut Husk \n810 Mushroom \n810 Mushroom\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n951 Daisy White \n661 White Tiara \n661 White Tiara\n977 Dovetail \n502 Glaze \n276 Silverado\nIndia Silk™ \nHorizontal Hardware \nVertical Hardware \n817 Taj \n862 Gardenia White \n862 Gardenia White\n818 Raja \n082 Camel \n082 Camel\n820 Tiger Eye \n082 Camel \n082 Camel\n822 Temple \n478 Winter Pear \n862 Gardenia White\n823 Arani \n205 Fawn \n862 Gardenia White\n840 Sira \n580 Midnight Oil \n580 Midnight Oil\n1234 Goa \n222 Bliss \n661 White Tiara\n1235 Thar \n320 Rich Cream \n320 Rich Cream\nThea™ \nHorizontal Hardware \nVertical Hardware \n1260 Ivory Pearl \n221 Aspen Snow \n661 White Tiara\n1261 Glidden \n785 Aspen White \n785 Aspen White\n1262 Hudson Gray \n221 Aspen Snow \n862 Gardenia White\n1263 Cerise \n320 Rich Cream \n320 Rich Cream\n1264 Clover \n669 Beijing Gray \n661 White Tiara\n1265 Cypher \n669 Beijing Gray \n320 Rich Cream\n1266 Veridian \n135 Whispering Heather 320 Rich Cream\n1267 Asher \n502 Glaze \n580 Midnight Oil\nAlexa™ \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n682 Platinum \n180 Dove Gray \n180 Dove Gray\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n971 Skye \n276 Silverado \n276 Silverado\n992 Biscotti \n841 Dark Blonde \n841 Dark Blonde\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1258 Alpine \n609 Falcon Gray \n276 Silverado\nBatiste Semi-Sheer \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n718 Renaissance Gold 882 Honey Bisque \n882 Honey Bisque\n748 Black Magic \n048 Black \n048 Black\n790 Rich Mocha \n810 Mushroom \n810 Mushroom\n936 Burnt Ember \n405 Gray Flannel \n276 Silverado\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\nBatiste Bamboo \nHorizontal Hardware \nVertical Hardware \n502 Peppercorn \n218 Peppercorn \n276 Silverado\n504 White Truffle \n669 Beijing Gray \n862 Gardenia White\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1251 Salem \n609 Falcon Gray \n276 Silverado\nElan® Metallic \nHorizontal Hardware \nVertical Hardware \n086 Wish \n862 Gardenia White \n862 Gardenia White\n087 Serenity \n222 Bliss \n661 White Tiara\n600 Frost \n862 Gardenia White \n862 Gardenia White\n601 Mica \n180 Dove Gray \n180 Dove Gray\n604 Lightning \n689 Ash \n180 Dove Gray\n605 Starlight \n580 Midnight Oil \n580 Midnight Oil\n616 Diamond \n661 White Tiara \n661 White Tiara\n1005 Polished Pearl \n669 Beijing Gray \n862 Gardenia White\nElan  \nHorizontal Hardware \nVertical Hardware \n258 Cider \n323 Pumpkin \n323 Pumpkin\n457 Journal \n785 Aspen White \n785 Aspen White\n479 Moonstruck \n862 Gardenia White \n862 Gardenia White\n480 Solitude \n785 Aspen White \n785 Aspen White\n481 Julep \n135 Whispering Heather 324 Stone\n482 Indigo Mood \n496 Twilight \n496 Twilight\n496 Dark Chocolate \n849 Mocha \n810 Mushroom\n682 Platinum \n180 Dove Gray \n180 Dove Gray\n686 Truffle \n810 Mushroom \n810 Mushroom\n687 Toasted Almond \n082 Camel \n082 Camel\n688 Volcanic Ash \n689 Ash \n180 Dove Gray\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n733 Patina Gray \n685 Blue Sky \n685 Blue Sky\n737 Stone Hearth \n180 Dove Gray \n180 Dove Gray\n749 Black Onyx \n048 Black \n048 Black\n750 Graphite \n580 Midnight Oil \n580 Midnight Oil\n752 Barley \n841 Dark Blonde \n841 Dark Blonde\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n922 Aspen Snow \n221 Aspen Snow \n661 White Tiara \n948 Whipped Cream \n683 Pearl \n320 Rich Cream\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n985 Birch Bark \n669 Beijing Gray \n862 Gardenia White\n986 Polar Gray \n609 Falcon Gray \n276 Silverado\n989 Bisque \n882 Honey Bisque \n882 Honey Bisque\n992 Biscotti \n841 Dark Blonde \n841 Dark Blonde\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1226 Swan \n221 Aspen Snow \n785 Aspen White\n1227 Dandelion \n882 Honey Bisque \n882 Honey Bisque\n1228 Seaglass \n758 Shimmering Ocean \n758 Shimmering Ocean\n1229 Fern \n324 Stone \n324 Stone\n1230 Arugula \n689 Ash \n180 Dove Gray\n1231 Revive \n575 Gray Cloud \n276 Silverado\n1232 Bellini \n878 Frosted Ice \n878 Frosted Ice\n1233 Wild Berry \n202 Paprika \n320 Rich Cream\nClassic™ \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n480 Solitude \n785 Aspen White \n785 Aspen White\n718 Renaissance Gold 882 Honey Bisque \n882 Honey Bisque\n738 London Sky \n276 Silverado \n276 Silverado\n933 Sunflower Seed \n841 Dark Blonde \n841 Dark Blonde\n951 Daisy White \n661 White Tiara \n661 White Tiara\n952 Blue White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n975 Aged Beige \n575 Gray Cloud \n785 Aspen White\n1224 Freshwater Pearl 862 Gardenia White \n862 Gardenia White\n1252 Haven \n849 Mocha \n810 Mushroom\nReception \nHorizontal Hardware \nVertical Hardware \n509 Harbor \n222 Bliss \n661 White Tiara\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n737 Stone Hearth \n180 Dove Gray \n180 Dove Gray\n938 Oxford \n661 White Tiara \n661 White Tiara\n939 Powder \n785 Aspen White \n785 Aspen White\n940 Capri \n320 Rich Cream \n320 Rich Cream\n941 Flax \n862 Gardenia White \n862 Gardenia White\n943 Briar \n180 Dove Gray \n180 Dove Gray\n944 Sterling \n575 Gray Cloud \n276 Silverado\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1236 Barely There \n669 Beijing Gray \n320 Rich Cream\n1253 Lumber \n849 Mocha \n810 Mushroom\nCommercial   \nHorizontal Hardware  \n457 Journal \n785 Aspen White\n713 Pearl Gray \n575 Gray Cloud\n749 Black Onyx \n048 Black\n750 Graphite \n580 Midnight Oil\n907 Beach Shells \n862 Gardenia White\n951 Daisy White \n661 White Tiara\nAlustra Solasta™ \nHorizontal Hardware \nVertical Hardware \n1254 Snowfall \n661 White Tiara \n661 White Tiara\n1255 Neul \n609 Falcon Gray \n661 White Tiara\n1256 Mire \n180 Dove Gray \n180 Dove Gray\n1257 Gloaming \n580 Midnight Oil \n580 Midnight Oil\nAlustra Leela™ \nHorizontal Hardware \nVertical Hardware \n740 Cloud \n661 White Tiara \n661 White Tiara\n881 Illusion \n661 White Tiara \n661 White Tiara\n882 Inspire \n669 Beijing Gray \n276 Silverado\n883 Escape \n180 Dove Gray \n180 Dove Gray\nAlustra Macon™ \nHorizontal Hardware \nVertical Hardware \n581 Chardonnay \n661 White Tiara \n661 White Tiara\n582 Albarino \n862 Gardenia White \n862 Gardenia White\n588 Vintage \n218 Peppercorn \n276 Silverado\n1259 Beech \n180 Dove Gray \n180 Dove Gray",
-      "images": []
-    }
-  ],
-  "fabric_swatches": {
-    "Alustra® Architella® Solasta": [
-      {
-        "image": "page041_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Snowfall",
-        "specs": [
-          "Light Filtering U28/U48-1254 (¾\" & 1¼\")",
-          "Room Darkening U29/U49-1254 (¾\" & 1¼\")",
-          "Light Filtering U28/U48-1255 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Solasta"
-      },
-      {
-        "image": "page041_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Neul",
-        "specs": [
-          "Light Filtering U28/U48-1254 (¾\" & 1¼\")",
-          "Room Darkening U29/U49-1254 (¾\" & 1¼\")",
-          "Light Filtering U28/U48-1255 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Solasta"
-      },
-      {
-        "image": "page042_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Mire",
-        "specs": [
-          "Light Filtering U28/U48-1256 (¾\" & 1¼\")",
-          "Room Darkening U29/U49-1256 (¾\" & 1¼\")",
-          "Light Filtering U28/U48-1257 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Solasta"
-      },
-      {
-        "image": "page042_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Gloaming",
-        "specs": [
-          "Light Filtering U28/U48-1256 (¾\" & 1¼\")",
-          "Room Darkening U29/U49-1256 (¾\" & 1¼\")",
-          "Light Filtering U28/U48-1257 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Solasta"
-      }
-    ],
-    "Alustra® Architella® Leela": [
-      {
-        "image": "page043_img01_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Cloud",
-        "specs": [
-          "Light Filtering U24/U44-740 (¾\" & 1¼\")",
-          "Room Darkening U25/U45-740 (¾\" & 1¼\")",
-          "Light Filtering U24/U44-881 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Leela"
-      },
-      {
-        "image": "page043_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Illusion",
-        "specs": [
-          "Light Filtering U24/U44-740 (¾\" & 1¼\")",
-          "Room Darkening U25/U45-740 (¾\" & 1¼\")",
-          "Light Filtering U24/U44-881 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Leela"
-      }
-    ],
-    "Alustra® Architella® Macon": [
-      {
-        "image": "page044_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Inspire",
-        "specs": [
-          "Light Filtering U24/U44-882 (¾\" & 1¼\")",
-          "Room Darkening U25/U45-882 (¾\" & 1¼\")",
-          "Light Filtering U24/U44-883 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      },
-      {
-        "image": "page044_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Escape",
-        "specs": [
-          "Light Filtering U24/U44-882 (¾\" & 1¼\")",
-          "Room Darkening U25/U45-882 (¾\" & 1¼\")",
-          "Light Filtering U24/U44-883 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      },
-      {
-        "image": "page045_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Chardonnay",
-        "specs": [
-          "Light Filtering U26/U46-581 (¾\" & 1¼\")",
-          "Room Darkening U27/U47-581 (¾\" & 1¼\")",
-          "Light Filtering U26/U46-582 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      },
-      {
-        "image": "page045_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Albarino",
-        "specs": [
-          "Light Filtering U26/U46-581 (¾\" & 1¼\")",
-          "Room Darkening U27/U47-581 (¾\" & 1¼\")",
-          "Light Filtering U26/U46-582 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      },
-      {
-        "image": "page046_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Beech",
-        "specs": [
-          "Light Filtering U26/U46-1259 (¾\" & 1¼\")",
-          "Room Darkening U27/U47-1259 (¾\" & 1¼\")",
-          "Light Filtering U26/U46-588 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      },
-      {
-        "image": "page046_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Vintage",
-        "specs": [
-          "Light Filtering U26/U46-1259 (¾\" & 1¼\")",
-          "Room Darkening U27/U47-1259 (¾\" & 1¼\")",
-          "Light Filtering U26/U46-588 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Alustra® Architella® Macon"
-      }
-    ],
-    "ClearView® Sheer": [
-      {
-        "image": "page047_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Sheer V01/V02-951 (¾\" & 1¼\")",
-          "Sheer V01/V02-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "ClearView® Sheer"
-      },
-      {
-        "image": "page047_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Platinum",
-        "specs": [
-          "Sheer V01/V02-951 (¾\" & 1¼\")",
-          "Sheer V01/V02-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "ClearView® Sheer"
-      },
-      {
-        "image": "page048_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Almond Mist",
-        "specs": [
-          "Sheer V01/V02-702 (¾\" & 1¼\")",
-          "Sheer V01/V02-748 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "ClearView® Sheer"
-      },
-      {
-        "image": "page048_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Black Magic",
-        "specs": [
-          "Sheer V01/V02-702 (¾\" & 1¼\")",
-          "Sheer V01/V02-748 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "ClearView® Sheer"
-      }
-    ],
-    "Other Colors": [
-      {
-        "image": "page049_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Sheer D8/D40-951 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-701 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page049_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Chiffon",
-        "specs": [
-          "Sheer D8/D40-951 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-701 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page050_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Almond Mist",
-        "specs": [
-          "Sheer D8/D40-702 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-760 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page050_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Tea Light",
-        "specs": [
-          "Sheer D8/D40-702 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-760 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page051_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "White Organdy",
-        "specs": [
-          "Sheer D8/D40-700 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-682 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page051_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Platinum",
-        "specs": [
-          "Sheer D8/D40-700 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-682 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page052_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Dovetail",
-        "specs": [
-          "Sheer D9/D49-977 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-762 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page052_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Evening Fog",
-        "specs": [
-          "Sheer D9/D49-977 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-762 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page053_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Gingersnap",
-        "specs": [
-          "Sheer D8/D40-916 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-763 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page053_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Coconut Husk",
-        "specs": [
-          "Sheer D8/D40-916 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D8/D40-763 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page054_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Eiffel Tower",
-        "specs": [
-          "Sheer D9/D49-588 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D9/D49-748 (¾\" & 1¼\")"
-        ]
-      },
-      {
-        "image": "page054_img02_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Black Magic",
-        "specs": [
-          "Sheer D9/D49-588 (¾\" & 1¼\")",
-          "Sheer",
-          "Sheer D9/D49-748 (¾\" & 1¼\")"
-        ]
-      }
-    ],
-    "Architella® India Silk": [
-      {
-        "image": "page055_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Goa",
-        "specs": [
-          "Light Filtering U22/U42-1234 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-1234 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-822 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page055_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Temple",
-        "specs": [
-          "Light Filtering U22/U42-1234 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-1234 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-822 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page056_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Arani",
-        "specs": [
-          "Light Filtering U22/U42-823 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-823 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-840 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page056_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Sira",
-        "specs": [
-          "Light Filtering U22/U42-823 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-823 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-840 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page057_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Thar",
-        "specs": [
-          "Light Filtering U22/U42-1235 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-1235 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-817 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page057_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Taj",
-        "specs": [
-          "Light Filtering U22/U42-1235 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-1235 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-817 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page058_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Raja",
-        "specs": [
-          "Light Filtering U22/U42-818 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-818 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-820 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      },
-      {
-        "image": "page058_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Tiger Eye",
-        "specs": [
-          "Light Filtering U22/U42-818 (¾\" & 1¼\")",
-          "Room Darkening U23/U43-818 (¾\" & 1¼\")",
-          "Light Filtering U22/U42-820 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® India Silk"
-      }
-    ],
-    "Architella® Thea": [
-      {
-        "image": "page059_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Ivory Pearl",
-        "specs": [
-          "Light Filtering C58/C60-1260 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1260 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1261 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page059_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Glidden",
-        "specs": [
-          "Light Filtering C58/C60-1260 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1260 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1261 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page060_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Hudson Gray",
-        "specs": [
-          "Light Filtering C58/C60-1262 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1262 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1263 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page060_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Cerise",
-        "specs": [
-          "Light Filtering C58/C60-1262 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1262 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1263 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page061_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Clover",
-        "specs": [
-          "Light Filtering C58/C60-1264 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1264 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1265 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page061_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Cypher",
-        "specs": [
-          "Light Filtering C58/C60-1264 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1264 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1265 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page062_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Veridian",
-        "specs": [
-          "Light Filtering C58/C60-1266 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1266 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1267 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      },
-      {
-        "image": "page062_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Asher",
-        "specs": [
-          "Light Filtering C58/C60-1266 (¾\" & 1¼\")",
-          "Room Darkening C59/C61-1266 (¾\" & 1¼\")",
-          "Light Filtering C58/C60-1267 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Thea"
-      }
-    ],
-    "Architella® Alexa": [
-      {
-        "image": "page063_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering C93/C88-457 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-457 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page063_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Linen",
-        "specs": [
-          "Light Filtering C93/C88-457 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-457 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page064_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Light Filtering C93/C88-955 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-955 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-992 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page064_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Biscotti",
-        "specs": [
-          "Light Filtering C93/C88-955 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-955 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-992 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page065_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Skye",
-        "specs": [
-          "Light Filtering C93/C88-971 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-971 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page065_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Platinum",
-        "specs": [
-          "Light Filtering C93/C88-971 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-971 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page066_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Alpine",
-        "specs": [
-          "Light Filtering C93/C88-1258 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-1258 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-994 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      },
-      {
-        "image": "page066_img02_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Modern Gray",
-        "specs": [
-          "Light Filtering C93/C88-1258 (¾\" & 1¼\")",
-          "Room Darkening C94/C89-1258 (¾\" & 1¼\")",
-          "Light Filtering C93/C88-994 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Alexa"
-      }
-    ],
-    "Architella® Batiste Semi-Sheer": [
-      {
-        "image": "page067_img01_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Semi-Sheer Y10/Y09-951 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-457 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page067_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Semi-Sheer Y10/Y09-951 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-457 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page068_img01_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Burnt Ember",
-        "specs": [
-          "Semi-Sheer Y10/Y09-936 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-748 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page068_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Black Magic",
-        "specs": [
-          "Semi-Sheer Y10/Y09-936 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-748 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page069_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Linen",
-        "specs": [
-          "Semi-Sheer Y10/Y09-953 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page069_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Semi-Sheer Y10/Y09-953 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page070_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Renaissance Gold",
-        "specs": [
-          "Semi-Sheer Y10/Y09-718 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-790 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      },
-      {
-        "image": "page070_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Rich Mocha",
-        "specs": [
-          "Semi-Sheer Y10/Y09-718 (¾\" & 1¼\")",
-          "Semi-Sheer Y10/Y09-790 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Semi-Sheer"
-      }
-    ],
-    "Architella® Batiste Bamboo": [
-      {
-        "image": "page071_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering C95/C97-951 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-951 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page071_img02_499x858.jpeg",
-        "width": 499,
-        "height": 858,
-        "color_name": "Linen",
-        "specs": [
-          "Light Filtering C95/C97-951 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-951 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page072_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "White Truffle",
-        "specs": [
-          "Light Filtering C95/C97-504 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-504 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page072_img02_499x858.jpeg",
-        "width": 499,
-        "height": 858,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Light Filtering C95/C97-504 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-504 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page073_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Peppercorn",
-        "specs": [
-          "Light Filtering C95/C97-502 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-502 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-1251 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page073_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Salem",
-        "specs": [
-          "Light Filtering C95/C97-502 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-502 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-1251 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page074_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Modern Gray",
-        "specs": [
-          "Light Filtering C95/C97-994 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-994 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-916 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      },
-      {
-        "image": "page074_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Gingersnap",
-        "specs": [
-          "Light Filtering C95/C97-994 (¾\" & 1¼\")",
-          "Room Darkening C96/C98-994 (¾\" & 1¼\")",
-          "Light Filtering C95/C97-916 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Batiste Bamboo"
-      }
-    ],
-    "Architella® Elan® Metallic": [
-      {
-        "image": "page075_img01_498x858.jpeg",
-        "width": 498,
-        "height": 858,
-        "color_name": "Diamond",
-        "specs": [
-          "Light Filtering C22/C42-616 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-616 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-087 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page075_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Serenity",
-        "specs": [
-          "Light Filtering C22/C42-616 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-616 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-087 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page076_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Polished Pearl",
-        "specs": [
-          "Light Filtering C22/C42-1005 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1005 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-086 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page076_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Wish",
-        "specs": [
-          "Light Filtering C22/C42-1005 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1005 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-086 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page077_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Frost",
-        "specs": [
-          "Light Filtering C22/C42-600 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-600 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-601 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page077_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Mica",
-        "specs": [
-          "Light Filtering C22/C42-600 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-600 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-601 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page078_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Lightning",
-        "specs": [
-          "Light Filtering C22/C42-604 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-604 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-605 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      },
-      {
-        "image": "page078_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Starlight",
-        "specs": [
-          "Light Filtering C22/C42-604 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-604 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-605 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan® Metallic"
-      }
-    ],
-    "Architella® Elan®": [
-      {
-        "image": "page079_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering C22/C42-951 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-951 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-922 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page079_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Aspen Snow",
-        "specs": [
-          "Light Filtering C22/C42-951 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-951 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-922 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page080_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering C22/C42-457 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-457 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page080_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Linen",
-        "specs": [
-          "Light Filtering C22/C42-457 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-457 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-953 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page081_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Swan",
-        "specs": [
-          "Light Filtering C22/C42-1226 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1226 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-479 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page081_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Moonstruck",
-        "specs": [
-          "Light Filtering C22/C42-1226 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1226 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-479 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page082_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Polar Gray",
-        "specs": [
-          "Light Filtering C22/C42-986 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-986 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-480 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page082_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Solitude",
-        "specs": [
-          "Light Filtering C22/C42-986 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-986 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-480 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page083_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Light Filtering C22/C42-713 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-713 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-994 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page083_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Modern Gray",
-        "specs": [
-          "Light Filtering C22/C42-713 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-713 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-994 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page084_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Graphite",
-        "specs": [
-          "Light Filtering C22/C42-750 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-750 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-749 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page084_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Black Onyx",
-        "specs": [
-          "Light Filtering C22/C42-750 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-750 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-749 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page085_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Birch Bark",
-        "specs": [
-          "Light Filtering C22/C42-985 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-985 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page085_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Light Filtering C22/C42-985 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-985 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-955 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page086_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Gingersnap",
-        "specs": [
-          "Light Filtering C22/C42-916 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-916 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page086_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Platinum",
-        "specs": [
-          "Light Filtering C22/C42-916 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-916 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-682 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page087_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Stone Hearth",
-        "specs": [
-          "Light Filtering C22/C42-737 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-737 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-688 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page087_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Volcanic Ash",
-        "specs": [
-          "Light Filtering C22/C42-737 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-737 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-688 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page088_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Whipped Cream",
-        "specs": [
-          "Light Filtering C22/C42-948 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-948 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1227 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page088_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Dandelion",
-        "specs": [
-          "Light Filtering C22/C42-948 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-948 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1227 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page089_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Bisque",
-        "specs": [
-          "Light Filtering C22/C42-989 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-989 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-992 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page089_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Biscotti",
-        "specs": [
-          "Light Filtering C22/C42-989 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-989 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-992 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page090_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Barley",
-        "specs": [
-          "Light Filtering C22/C42-752 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-752 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-687 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page090_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Toasted Almond",
-        "specs": [
-          "Light Filtering C22/C42-752 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-752 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-687 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page091_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Julep",
-        "specs": [
-          "Light Filtering C22/C42-481 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-481 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1228 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page091_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Seaglass",
-        "specs": [
-          "Light Filtering C22/C42-481 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-481 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1228 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page092_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Patina Gray",
-        "specs": [
-          "Light Filtering C22/C42-733 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-733 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-482 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page092_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Indigo Mood",
-        "specs": [
-          "Light Filtering C22/C42-733 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-733 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-482 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page093_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Fern",
-        "specs": [
-          "Light Filtering C22/C42-1229 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1229 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1230 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page093_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Arugula",
-        "specs": [
-          "Light Filtering C22/C42-1229 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1229 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1230 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page094_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Revive",
-        "specs": [
-          "Light Filtering C22/C42-1231 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1231 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1232 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page094_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Bellini",
-        "specs": [
-          "Light Filtering C22/C42-1231 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-1231 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1232 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page095_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Cider",
-        "specs": [
-          "Light Filtering C22/C42-258 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-258 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1233 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page095_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Wild Berry",
-        "specs": [
-          "Light Filtering C22/C42-258 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-258 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-1233 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page096_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Truffle",
-        "specs": [
-          "Light Filtering C22/C42-686 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-686 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-496 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      },
-      {
-        "image": "page096_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Dark Chocolate",
-        "specs": [
-          "Light Filtering C22/C42-686 (¾\" & 1¼\")",
-          "Room Darkening C23/C43-686 (¾\" & 1¼\")",
-          "Light Filtering C22/C42-496 (¾\" & 1¼\")"
-        ],
-        "fabric_collection": "Architella® Elan®"
-      }
-    ],
-    "Architella® Elan® Streetside": [
-      {
-        "image": "page097_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering C22-951955 (¾\")",
-          "Room Darkening C23-951955 (¾\")",
-          "Light Filtering C22-948955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page097_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Whipped Cream",
-        "specs": [
-          "Light Filtering C22-951955 (¾\")",
-          "Room Darkening C23-951955 (¾\")",
-          "Light Filtering C22-948955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page098_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Barley",
-        "specs": [
-          "Light Filtering C22-752955 (¾\")",
-          "Room Darkening C23-752955 (¾\")",
-          "Light Filtering C22-687955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page098_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Toasted Almond",
-        "specs": [
-          "Light Filtering C22-752955 (¾\")",
-          "Room Darkening C23-752955 (¾\")",
-          "Light Filtering C22-687955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page099_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering C22-457955 (¾\")",
-          "Room Darkening C23-457955 (¾\")",
-          "Light Filtering C22-953955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page099_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Linen",
-        "specs": [
-          "Light Filtering C22-457955 (¾\")",
-          "Room Darkening C23-457955 (¾\")",
-          "Light Filtering C22-953955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page100_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Light Filtering C22-955955 (¾\")",
-          "Room Darkening C23-955955 (¾\")",
-          "Light Filtering C22-989955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      },
-      {
-        "image": "page100_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Bisque",
-        "specs": [
-          "Light Filtering C22-955955 (¾\")",
-          "Room Darkening C23-955955 (¾\")",
-          "Light Filtering C22-989955 (¾\")"
-        ],
-        "fabric_collection": "Architella® Elan® Streetside"
-      }
-    ],
-    "Architella® Classic": [
-      {
-        "image": "page101_img01_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering D1/D2/C50-951 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-951 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-952 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page101_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Blue White",
-        "specs": [
-          "Light Filtering D1/D2/C50-951 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-951 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-952 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page102_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering D1/D2/C50-457 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-457 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-953 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page102_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Linen",
-        "specs": [
-          "Light Filtering D1/D2/C50-457 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-457 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-953 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page103_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Light Filtering D1/D2/C50-955 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-955 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-480 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page103_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Solitude",
-        "specs": [
-          "Light Filtering D1/D2/C50-955 (3⁄8\" & ¾\" single, ¾\")",
-          "Room Darkening H7/D7/C51-955 (3⁄8\" & ¾\" single, ¾\")",
-          "Light Filtering D1/D2/C50-480 (3⁄8\" & ¾\" single, ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page104_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Aged Beige",
-        "specs": [
-          "Light Filtering D2/C50-975 (¾\" single & ¾\")",
-          "Room Darkening D7/C51-975 (¾\" single & ¾\")",
-          "Light Filtering D2/C50-1224 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page104_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Freshwater Pearl",
-        "specs": [
-          "Light Filtering D2/C50-975 (¾\" single & ¾\")",
-          "Room Darkening D7/C51-975 (¾\" single & ¾\")",
-          "Light Filtering D2/C50-1224 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page105_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Sunflower Seed",
-        "specs": [
-          "Light Filtering D2/C50-933 (¾\" single & ¾\")",
-          "Room Darkening D7/C51-933 (¾\" single & ¾\")",
-          "Light Filtering D2/C50-738 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page105_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "London Sky",
-        "specs": [
-          "Light Filtering D2/C50-933 (¾\" single & ¾\")",
-          "Room Darkening D7/C51-933 (¾\" single & ¾\")",
-          "Light Filtering D2/C50-738 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page106_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Renaissance Gold",
-        "specs": [
-          "Light Filtering D2/C50-718 (¾\"single & ¾\")",
-          "Room Darkening D7/C51-718 (¾\"single & ¾\")",
-          "Light Filtering D2/C50-1252 (¾\"single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      },
-      {
-        "image": "page106_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Haven",
-        "specs": [
-          "Light Filtering D2/C50-718 (¾\"single & ¾\")",
-          "Room Darkening D7/C51-718 (¾\"single & ¾\")",
-          "Light Filtering D2/C50-1252 (¾\"single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Classic"
-      }
-    ],
-    "Architella® Reception": [
-      {
-        "image": "page107_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Oxford",
-        "specs": [
-          "Light Filtering D56/C56-938 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-938 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-939 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page107_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Powder",
-        "specs": [
-          "Light Filtering D56/C56-938 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-938 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-939 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page108_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Capri",
-        "specs": [
-          "Light Filtering D56/C56-940 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-940 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-941 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page108_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Flax",
-        "specs": [
-          "Light Filtering D56/C56-940 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-940 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-941 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page109_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Barely There",
-        "specs": [
-          "Light Filtering D56/C56-1236 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-1236 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-509 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page109_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Harbor",
-        "specs": [
-          "Light Filtering D56/C56-1236 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-1236 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-509 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page110_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Briar",
-        "specs": [
-          "Light Filtering D56/C56-943 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-943 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-944 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page110_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Sterling",
-        "specs": [
-          "Light Filtering D56/C56-943 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-943 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-944 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page111_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Modern Gray",
-        "specs": [
-          "Light Filtering D56/C56-994 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-994 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-713 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page111_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Light Filtering D56/C56-994 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-994 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-713 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page112_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Stone Hearth",
-        "specs": [
-          "Light Filtering D56/C56-737 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-737 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-1253 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      },
-      {
-        "image": "page112_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Lumber",
-        "specs": [
-          "Light Filtering D56/C56-737 (¾\" single & ¾\")",
-          "Room Darkening D57/C57-737 (¾\" single & ¾\")",
-          "Light Filtering D56/C56-1253 (¾\" single & ¾\")"
-        ],
-        "fabric_collection": "Architella® Reception"
-      }
-    ],
-    "®": [
-      {
-        "image": "page113_img01_498x857.png",
-        "width": 498,
-        "height": 857,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering D22-951 (¾\")",
-          "Room Darkening D23-951 (¾\")",
-          "Light Filtering D22-457 (¾\")"
-        ],
-        "fabric_collection": "®"
-      },
-      {
-        "image": "page113_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering D22-951 (¾\")",
-          "Room Darkening D23-951 (¾\")",
-          "Light Filtering D22-457 (¾\")"
-        ],
-        "fabric_collection": "®"
-      },
-      {
-        "image": "page114_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Beach Shells",
-        "specs": [
-          "Light Filtering D22-907 (¾\")",
-          "Room Darkening D23-907 (¾\")",
-          "Light Filtering D22-713 (¾\")"
-        ],
-        "fabric_collection": "®"
-      },
-      {
-        "image": "page114_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Light Filtering D22-907 (¾\")",
-          "Room Darkening D23-907 (¾\")",
-          "Light Filtering D22-713 (¾\")"
-        ],
-        "fabric_collection": "®"
-      },
-      {
-        "image": "page115_img01_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Graphite",
-        "specs": [
-          "Light Filtering D22-750 (¾\")",
-          "Room Darkening D23-750 (¾\")",
-          "Light Filtering D22-749 (¾\")"
-        ],
-        "fabric_collection": "®"
-      },
-      {
-        "image": "page115_img02_498x857.jpeg",
-        "width": 498,
-        "height": 857,
-        "color_name": "Black Onyx",
-        "specs": [
-          "Light Filtering D22-750 (¾\")",
-          "Room Darkening D23-750 (¾\")",
-          "Light Filtering D22-749 (¾\")"
-        ],
-        "fabric_collection": "®"
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 6,
-    "benefits": 1,
-    "control": 10,
-    "design": 0,
-    "mounting": 1,
-    "details": 4,
-    "vane": 0,
-    "hardware": 3,
-    "swatch_collections": 16,
-    "swatch_colors": 150
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 6,
-    "control": 10,
-    "opacity": 4,
-    "benefits": 1,
-    "mounting": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_table": 9,
-    "hardware": 3,
-    "swatch": 75
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 8,
+   "category": "control",
+   "text": "Duette® Duolite® with \nClearView® Sheer \ncombines superior \nview-through while \nfiltering sunlight and \nprotecting interiors \nfrom harsh UV rays. \nSheer Fabric ClearView® Sheer    Color Black Magic\nFabric Architella® Alexa™    Color Modern Gray\nOperating System PowerView® Automation \nDesign Option Duolite® with ClearView Sheer",
+   "images": [
+    {
+     "filename": "page008_img01_3044x1505.jpeg",
+     "width": 3044,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "control",
+   "text": "Fabric Architella® Alexa™    Color Modern Gray\nOperating System PowerView® Automation, LightLock®\nDesign Option Top-Down/Bottom-Up (Not available in Canada)\nAchieve unparalleled \ndarkness with the \nDuette® LightLock® \nsystem, the only one \nof its kind to deliver \ntrue darkening effects.",
+   "images": [
+    {
+     "filename": "page009_img01_3043x1505.jpeg",
+     "width": 3043,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "control",
+   "text": "Layer your Duette® \nshades with \ncoordinating Design \nStudio™ drapery, \navailable in an array \nof on-trend colors, \npatterns and \nexclusive designs.\nFabric Architella® Batiste Bamboo    Color  White Truffle\nDesign Studio™ Drapery Fabric Elys    Color Meditative\nOperating System UltraGlide®",
+   "images": [
+    {
+     "filename": "page012_img01_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "control",
+   "text": "As part of The Whole \nHouse Solution™, \nDuette® shades can \naccommodate \na variety of window \nshapes and sizes.\nFabric Architella® Elan®    Color  Cider\nOperating System PowerView® Automation, \nTrackGlide™, Vertiglide™ Left Stack",
+   "images": [
+    {
+     "filename": "page013_img01_2996x1505.jpeg",
+     "width": 2996,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "control",
+   "text": "Our antimicrobial \nfabric, Commercial \nwith Microshield\n™, \nresists the growth \nof bacteria, mold \nand mildew on  \nDuette® shades. \nFabric Commercial     Color Beach Shells\nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page014_img01_3043x1505.jpeg",
+     "width": 3043,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "control",
+   "text": "Red indicates \nwindows \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nYear-Round Comfort\nScan for AERC\nEnergy Ratings\nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the summer.\nFabric Architella® Alexa™    Color Skye\nOperating System PowerView® Automation \nEnergy Efficiency\nCost Savings\nShades help control the indoor temperature, so you can spend less to \nheat and cool your home. \nSuperior Insulation\nAn innovative, insulating design features an extra layer that protects your home \nfrom harsh outdoor temperatures.\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according to \nthe sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by softly diffusing \nnatural sunlight within a room.",
+   "images": [
+    {
+     "filename": "page016_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page016_img02_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page016_img03_764x434.jpeg",
+     "width": 764,
+     "height": 434
+    },
+    {
+     "filename": "page016_img04_59x88.jpeg",
+     "width": 59,
+     "height": 88
+    },
+    {
+     "filename": "page016_img05_59x88.jpeg",
+     "width": 59,
+     "height": 88
+    },
+    {
+     "filename": "page016_img06_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page016_img07_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "control",
+   "text": "STRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.  \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nLiteRise®\nThis cordless system lifts and \nlowers shades with the touch \nof a finger.\nUltraGlide®\nGently pull a single retractable \nwand to lift and lower shades. \nOperating Systems",
+   "images": [
+    {
+     "filename": "page019_img01_1092x1505.jpeg",
+     "width": 1092,
+     "height": 1505
+    },
+    {
+     "filename": "page019_img02_337x578.jpeg",
+     "width": 337,
+     "height": 578
+    },
+    {
+     "filename": "page019_img03_319x901.jpeg",
+     "width": 319,
+     "height": 901
+    },
+    {
+     "filename": "page019_img04_319x903.jpeg",
+     "width": 319,
+     "height": 903
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "control",
+   "text": "A Day With PowerView®  \n10:30 PM Bedtime\nShades close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nFabric Architella® Elan® Metallic    Color Polished Pearl\nOperating System PowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation",
+   "images": [
+    {
+     "filename": "page020_img01_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    },
+    {
+     "filename": "page020_img02_337x578.jpeg",
+     "width": 337,
+     "height": 578
+    },
+    {
+     "filename": "page020_img03_779x537.jpeg",
+     "width": 779,
+     "height": 537
+    },
+    {
+     "filename": "page020_img04_727x455.jpeg",
+     "width": 727,
+     "height": 455
+    },
+    {
+     "filename": "page020_img05_728x456.jpeg",
+     "width": 728,
+     "height": 456
+    },
+    {
+     "filename": "page020_img06_728x455.jpeg",
+     "width": 728,
+     "height": 455
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "control",
+   "text": "Vertiglide™ \nFor vertical applications such as patio doors, this \nsystem provides side-to-side operation. Offered in \nfour stacking configurations.\nSkyLift™*\nThis system covers large skylights. Available with manual \nor motorized operation in top stack only.\nAdditional Operating Options\nSimplicity™** \nThis manual system is designed for skylights and other hard-to-reach \nwindows. Can be oriented for top, bottom or side stack.\nVertiglide Split Stack\nShades operate individually.\nVertiglide Left Stack or Right Stack\nLeft stack opens from right to left. Right stack \nopens from left to right.\nVertiglide Duolite®\nA center-opening design combines two opacities \nin one. Each fabric can span the full width of \nthe opening.\nVertiglide Traveling Center Stack\nShades open from the sides and stack in the center.\nPowerView® Operable Specialty Shapes\nAutomate high and hard-to-reach arched and angled windows.\n*Available in Canada as a Duolite® option only.\n**Not available in Canada.",
+   "images": [
+    {
+     "filename": "page021_img01_765x462.jpeg",
+     "width": 765,
+     "height": 462
+    },
+    {
+     "filename": "page021_img02_480x461.jpeg",
+     "width": 480,
+     "height": 461
+    },
+    {
+     "filename": "page021_img03_480x461.jpeg",
+     "width": 480,
+     "height": 461
+    },
+    {
+     "filename": "page021_img04_480x461.jpeg",
+     "width": 480,
+     "height": 461
+    },
+    {
+     "filename": "page021_img05_480x461.jpeg",
+     "width": 480,
+     "height": 461
+    },
+    {
+     "filename": "page021_img06_480x1081.jpeg",
+     "width": 480,
+     "height": 1081
+    },
+    {
+     "filename": "page021_img07_765x461.jpeg",
+     "width": 765,
+     "height": 461
+    },
+    {
+     "filename": "page021_img08_365x461.jpeg",
+     "width": 365,
+     "height": 461
+    },
+    {
+     "filename": "page021_img09_365x461.jpeg",
+     "width": 365,
+     "height": 461
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "control",
+   "text": "Top-Down/Bottom-Up\nOperate shades from top-down or bottom-up to achieve desired level \nof light and privacy. (Top-Down/Bottom-Up not available in Canada)\nStreetside Fabric\nArchitella® Elan® fabrics have an off-white streetside color \nthat reflects sunlight and provides a more neutral look.\nDesign Options\nPleat Size and Construction\nChoose from a wide selection of pleat sizes and constructions, \nensuring the best product for your needs. \nSpecialty Shapes\nEasily cover windows in your home that have unusual shapes or sizes.\nDoors and Sidelights\nDuette® shades are an ideal solution for French doors and sidelights.\nTwo-On-One Headrail\nTwo independently operated shades can share the same headrail. \nLightLock® and LightLock Flex\nThe LightLock® and LightLock Flex system utilizes channels with specially \nshaped micro-ridges to absorb and deflect incoming light.\nTrackGlide™ with LiteRise®\nFor European-style tilt-turn windows or French Doors, this operating \nsystem keeps shades in place during window operation.",
+   "images": [
+    {
+     "filename": "page022_img01_1099x627.jpeg",
+     "width": 1099,
+     "height": 627
+    },
+    {
+     "filename": "page022_img02_765x437.jpeg",
+     "width": 765,
+     "height": 437
+    },
+    {
+     "filename": "page022_img03_762x436.jpeg",
+     "width": 762,
+     "height": 436
+    },
+    {
+     "filename": "page022_img04_762x436.jpeg",
+     "width": 762,
+     "height": 436
+    },
+    {
+     "filename": "page022_img05_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page022_img06_764x437.jpeg",
+     "width": 764,
+     "height": 437
+    },
+    {
+     "filename": "page022_img07_765x437.jpeg",
+     "width": 765,
+     "height": 437
+    },
+    {
+     "filename": "page022_img08_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    }
+   ]
+  }
+ ],
+ "design_options": [],
+ "mounting": [
+  {
+   "page": 23,
+   "category": "mounting",
+   "text": "Mounting Profiles\nOutside Mount 11/4\" \nInside Mount 11/4\" \nPartial Mount 11/4\" \nInside Mount 3/4\" \nOutside Mount 3/4\"  \nPartial Mount and 3/4\" \nVertiglide™ Inside Mount 3/4\" and 11/4\" \nVertiglide Grandover™ Valance\nVertiglide Outside Mount 3/4\" and 11/4\"\nVertiglide Sydney Valance Standard Option",
+   "images": [
+    {
+     "filename": "page023_img01_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img02_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img03_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img04_480x512.jpeg",
+     "width": 480,
+     "height": 512
+    },
+    {
+     "filename": "page023_img05_480x512.jpeg",
+     "width": 480,
+     "height": 512
+    },
+    {
+     "filename": "page023_img06_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img07_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img08_479x511.jpeg",
+     "width": 479,
+     "height": 511
+    },
+    {
+     "filename": "page023_img09_1048x221.jpeg",
+     "width": 1048,
+     "height": 221
+    },
+    {
+     "filename": "page023_img10_1050x221.jpeg",
+     "width": 1050,
+     "height": 221
+    }
+   ]
+  }
+ ],
+ "product_details": [
+  {
+   "page": 11,
+   "category": "opacity",
+   "text": "Fabric Architella® Classic™    Color Desert Sands\nOpacity Light Filtering\nOperating System PowerView® Automation \nRoom Darkening",
+   "images": [
+    {
+     "filename": "page011_img01_1956x1505.jpeg",
+     "width": 1956,
+     "height": 1505
+    },
+    {
+     "filename": "page011_img02_1236x836.jpeg",
+     "width": 1236,
+     "height": 836
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "opacity",
+   "text": "Light Filtering\nGently filters light and offers moderate privacy.\nClearView® Sheer\nProvides the most natural light and view-through with minimal privacy.\nSemi-Sheer\nProvides view-through with increased privacy.\nRoom Darkening\nBlocks most incoming light with maximum privacy.\nLight Control and Privacy\nFabric Whisper™ Sheer    Color Daisy White\nFabric Architella® Reception    Color Oxford\nOperating System PowerView® Automation \nDesign Option Duolite®",
+   "images": [
+    {
+     "filename": "page017_img01_1954x1505.jpeg",
+     "width": 1954,
+     "height": 1505
+    },
+    {
+     "filename": "page017_img02_765x455.jpeg",
+     "width": 765,
+     "height": 455
+    },
+    {
+     "filename": "page017_img03_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page017_img04_765x455.jpeg",
+     "width": 765,
+     "height": 455
+    },
+    {
+     "filename": "page017_img05_765x455.jpeg",
+     "width": 765,
+     "height": 455
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "opacity",
+   "text": "Duolite® with ClearView® Sheer\nCombine a ClearView® sheer fabric with a light-filtering \nor room-darkening fabric in a single shade. \nDuolite® Dual Opacity Option with Semi-Sheer  \nCombine a semi-sheer fabric with a light-filtering \nor room-darkening fabric in a single shade.\nDuolite® Design Option\nDuolite Dual Opacity Option with Light Filtering  \nCombine a light-filtering fabric with a room-darkening \nfabric in a single shade.\nDuolite Dual Opacity Option with Whisper Sheer™     \nCombine a Whisper sheer fabric with a light-filtering \nor room-darkening fabric in a single shade.",
+   "images": [
+    {
+     "filename": "page018_img01_762x932.jpeg",
+     "width": 762,
+     "height": 932
+    },
+    {
+     "filename": "page018_img02_762x932.jpeg",
+     "width": 762,
+     "height": 932
+    },
+    {
+     "filename": "page018_img03_763x934.jpeg",
+     "width": 763,
+     "height": 934
+    },
+    {
+     "filename": "page018_img04_763x934.jpeg",
+     "width": 763,
+     "height": 934
+    }
+   ]
+  },
+  {
+   "page": 37,
+   "category": "opacity",
+   "text": "Cell Sizes and Opacity\n¾\" Light Filtering\n1¼\" Light Filtering\n¾\" Room Darkening\n1¼\" Room Darkening",
+   "images": [
+    {
+     "filename": "page037_img01_1195x1206.jpeg",
+     "width": 1195,
+     "height": 1206
+    },
+    {
+     "filename": "page037_img02_1195x1200.jpeg",
+     "width": 1195,
+     "height": 1200
+    },
+    {
+     "filename": "page037_img03_1198x1200.jpeg",
+     "width": 1198,
+     "height": 1200
+    },
+    {
+     "filename": "page037_img04_1198x1202.jpeg",
+     "width": 1198,
+     "height": 1202
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page005_img02_980x1505.jpeg",
+     "width": 980,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Fabric Architella® India Silk    Color Temple\nOperating System PowerView® Automation, TrackGlide™",
+   "images": [
+    {
+     "filename": "page006_img01_2930x1505.jpeg",
+     "width": 2930,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "Fabric Architella® Thea™    Color Clover\nDuette® Architella® \nHoneycomb Shades \nare the industry’s \nmost energy-efficient \nwindow treatments. \nCrafted with \ninsulating layers, \nthese shades provide \nthe perfect level of \ncomfort throughout \nevery season.",
+   "images": [
+    {
+     "filename": "page007_img01_2996x1505.jpeg",
+     "width": 2996,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "Fabric Architella® Elan®    Color Platinum\nOperating System PowerView® Automation, TrackGlide™ \nPowerView® App with Gateway",
+   "images": [
+    {
+     "filename": "page010_img01_2617x1505.jpeg",
+     "width": 2617,
+     "height": 1505
+    },
+    {
+     "filename": "page010_img02_764x1013.jpeg",
+     "width": 764,
+     "height": 1013
+    }
+   ]
+  },
+  {
+   "page": 26,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page026_img01_3008x2427.jpeg",
+     "width": 3008,
+     "height": 2427
+    }
+   ]
+  },
+  {
+   "page": 27,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page027_img01_3009x3010.jpeg",
+     "width": 3009,
+     "height": 3010
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [
+  {
+   "page": 38,
+   "category": "hardware",
+   "text": "Hardware Color Guide\n048 Black V\n082 Camel V\n135 Whispering \nHeather\n180 Dove Gray V\n202 Paprika\n205 Fawn\n218 Peppercorn\n219 Eiffel Tower\n221 Aspen Snow\n222 Bliss\n276 Silverado V\n320 Rich Cream V\n323 Pumpkin V\n324 Stone V\n405 Gray Flannel\n478 Winter Pear\n496 Twilight V\n502 Glaze\n575 Gray Cloud\n580 Midnight Oil V\n609 Falcon Gray\n661 White Tiara V\n669 Beijing Gray\n683 Pearl\n685 Blue Sky V\n689 Ash\n758 Shimmering \nOcean V\n785 Aspen White V\n810 Mushroom V\n841 Dark Blonde V\n849 Mocha\n862 Gardenia \nWhite V\n878 Frosted Ice V\n882 Honey  \nBisque V\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nV  \u0007Offered for both Horizontal and Vertical Hardware.",
+   "images": [
+    {
+     "filename": "page038_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img10_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img11_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img12_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img13_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img14_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img15_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img16_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img17_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img18_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img19_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img20_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img21_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img22_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img23_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img24_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img25_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img26_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img27_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img28_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img29_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img30_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img31_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img32_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img33_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page038_img34_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  },
+  {
+   "page": 39,
+   "category": "hardware",
+   "text": "Hardware Color Guide\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\n064 Bronze\n785 Aspen White\n862 Gardenia \nWhite\nLightLock® System\n048 Black\n064 Bronze\n221 Aspen Snow\n320 Rich Cream\n661 White Tiara\n785 Aspen White\nLightLock Flex System\n048 Black\n520 Brass\n528 Bronze\n534 Pewter\n785 White\nTrackGlide\nTM System",
+   "images": [
+    {
+     "filename": "page039_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img10_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img11_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img12_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img13_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page039_img14_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  },
+  {
+   "page": 40,
+   "category": "hardware",
+   "text": "Hardware Color Coordination\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nClearView® Sheer \nHorizontal Hardware \nVertical Hardware \n682 Platinum \n180 Dove Gray \n180 Dove Gray\n702 Almond Mist \n862 Gardenia White \n862 Gardenia White\n748 Black Magic \n048 Black \n048 Black\n951 Daisy White \n661 White Tiara \n661 White Tiara\nWhisper™ Sheer   \nHorizontal Hardware  \nVertical Hardware \n588 Eiffel Tower \n219 Eiffel Tower \n048 Black \n682 Platinum \n180 Dove Gray \n180 Dove Gray\n700 White Organdy \n661 White Tiara \n661 White Tiara\n701 Chiffon \n320 Rich Cream \n320 Rich Cream\n702 Almond Mist \n862 Gardenia White \n862 Gardenia White\n748 Black Magic \n048 Black \n048 Black\n760 Tea Light \n841 Dark Blonde \n841 Dark Blonde\n762 Evening Fog \n580 Midnight Oil \n580 Midnight Oil\n763 Coconut Husk \n810 Mushroom \n810 Mushroom\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n951 Daisy White \n661 White Tiara \n661 White Tiara\n977 Dovetail \n502 Glaze \n276 Silverado\nIndia Silk™ \nHorizontal Hardware \nVertical Hardware \n817 Taj \n862 Gardenia White \n862 Gardenia White\n818 Raja \n082 Camel \n082 Camel\n820 Tiger Eye \n082 Camel \n082 Camel\n822 Temple \n478 Winter Pear \n862 Gardenia White\n823 Arani \n205 Fawn \n862 Gardenia White\n840 Sira \n580 Midnight Oil \n580 Midnight Oil\n1234 Goa \n222 Bliss \n661 White Tiara\n1235 Thar \n320 Rich Cream \n320 Rich Cream\nThea™ \nHorizontal Hardware \nVertical Hardware \n1260 Ivory Pearl \n221 Aspen Snow \n661 White Tiara\n1261 Glidden \n785 Aspen White \n785 Aspen White\n1262 Hudson Gray \n221 Aspen Snow \n862 Gardenia White\n1263 Cerise \n320 Rich Cream \n320 Rich Cream\n1264 Clover \n669 Beijing Gray \n661 White Tiara\n1265 Cypher \n669 Beijing Gray \n320 Rich Cream\n1266 Veridian \n135 Whispering Heather 320 Rich Cream\n1267 Asher \n502 Glaze \n580 Midnight Oil\nAlexa™ \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n682 Platinum \n180 Dove Gray \n180 Dove Gray\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n971 Skye \n276 Silverado \n276 Silverado\n992 Biscotti \n841 Dark Blonde \n841 Dark Blonde\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1258 Alpine \n609 Falcon Gray \n276 Silverado\nBatiste Semi-Sheer \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n718 Renaissance Gold 882 Honey Bisque \n882 Honey Bisque\n748 Black Magic \n048 Black \n048 Black\n790 Rich Mocha \n810 Mushroom \n810 Mushroom\n936 Burnt Ember \n405 Gray Flannel \n276 Silverado\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\nBatiste Bamboo \nHorizontal Hardware \nVertical Hardware \n502 Peppercorn \n218 Peppercorn \n276 Silverado\n504 White Truffle \n669 Beijing Gray \n862 Gardenia White\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1251 Salem \n609 Falcon Gray \n276 Silverado\nElan® Metallic \nHorizontal Hardware \nVertical Hardware \n086 Wish \n862 Gardenia White \n862 Gardenia White\n087 Serenity \n222 Bliss \n661 White Tiara\n600 Frost \n862 Gardenia White \n862 Gardenia White\n601 Mica \n180 Dove Gray \n180 Dove Gray\n604 Lightning \n689 Ash \n180 Dove Gray\n605 Starlight \n580 Midnight Oil \n580 Midnight Oil\n616 Diamond \n661 White Tiara \n661 White Tiara\n1005 Polished Pearl \n669 Beijing Gray \n862 Gardenia White\nElan  \nHorizontal Hardware \nVertical Hardware \n258 Cider \n323 Pumpkin \n323 Pumpkin\n457 Journal \n785 Aspen White \n785 Aspen White\n479 Moonstruck \n862 Gardenia White \n862 Gardenia White\n480 Solitude \n785 Aspen White \n785 Aspen White\n481 Julep \n135 Whispering Heather 324 Stone\n482 Indigo Mood \n496 Twilight \n496 Twilight\n496 Dark Chocolate \n849 Mocha \n810 Mushroom\n682 Platinum \n180 Dove Gray \n180 Dove Gray\n686 Truffle \n810 Mushroom \n810 Mushroom\n687 Toasted Almond \n082 Camel \n082 Camel\n688 Volcanic Ash \n689 Ash \n180 Dove Gray\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n733 Patina Gray \n685 Blue Sky \n685 Blue Sky\n737 Stone Hearth \n180 Dove Gray \n180 Dove Gray\n749 Black Onyx \n048 Black \n048 Black\n750 Graphite \n580 Midnight Oil \n580 Midnight Oil\n752 Barley \n841 Dark Blonde \n841 Dark Blonde\n916 Gingersnap \n810 Mushroom \n810 Mushroom\n922 Aspen Snow \n221 Aspen Snow \n661 White Tiara \n948 Whipped Cream \n683 Pearl \n320 Rich Cream\n951 Daisy White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n985 Birch Bark \n669 Beijing Gray \n862 Gardenia White\n986 Polar Gray \n609 Falcon Gray \n276 Silverado\n989 Bisque \n882 Honey Bisque \n882 Honey Bisque\n992 Biscotti \n841 Dark Blonde \n841 Dark Blonde\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1226 Swan \n221 Aspen Snow \n785 Aspen White\n1227 Dandelion \n882 Honey Bisque \n882 Honey Bisque\n1228 Seaglass \n758 Shimmering Ocean \n758 Shimmering Ocean\n1229 Fern \n324 Stone \n324 Stone\n1230 Arugula \n689 Ash \n180 Dove Gray\n1231 Revive \n575 Gray Cloud \n276 Silverado\n1232 Bellini \n878 Frosted Ice \n878 Frosted Ice\n1233 Wild Berry \n202 Paprika \n320 Rich Cream\nClassic™ \nHorizontal Hardware \nVertical Hardware \n457 Journal \n785 Aspen White \n785 Aspen White\n480 Solitude \n785 Aspen White \n785 Aspen White\n718 Renaissance Gold 882 Honey Bisque \n882 Honey Bisque\n738 London Sky \n276 Silverado \n276 Silverado\n933 Sunflower Seed \n841 Dark Blonde \n841 Dark Blonde\n951 Daisy White \n661 White Tiara \n661 White Tiara\n952 Blue White \n661 White Tiara \n661 White Tiara\n953 Linen \n320 Rich Cream \n320 Rich Cream\n955 Desert Sands \n862 Gardenia White \n862 Gardenia White\n975 Aged Beige \n575 Gray Cloud \n785 Aspen White\n1224 Freshwater Pearl 862 Gardenia White \n862 Gardenia White\n1252 Haven \n849 Mocha \n810 Mushroom\nReception \nHorizontal Hardware \nVertical Hardware \n509 Harbor \n222 Bliss \n661 White Tiara\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n737 Stone Hearth \n180 Dove Gray \n180 Dove Gray\n938 Oxford \n661 White Tiara \n661 White Tiara\n939 Powder \n785 Aspen White \n785 Aspen White\n940 Capri \n320 Rich Cream \n320 Rich Cream\n941 Flax \n862 Gardenia White \n862 Gardenia White\n943 Briar \n180 Dove Gray \n180 Dove Gray\n944 Sterling \n575 Gray Cloud \n276 Silverado\n994 Modern Gray \n580 Midnight Oil \n580 Midnight Oil\n1236 Barely There \n669 Beijing Gray \n320 Rich Cream\n1253 Lumber \n849 Mocha \n810 Mushroom\nCommercial   \nHorizontal Hardware  \n457 Journal \n785 Aspen White\n713 Pearl Gray \n575 Gray Cloud\n749 Black Onyx \n048 Black\n750 Graphite \n580 Midnight Oil\n907 Beach Shells \n862 Gardenia White\n951 Daisy White \n661 White Tiara\nAlustra Solasta™ \nHorizontal Hardware \nVertical Hardware \n1254 Snowfall \n661 White Tiara \n661 White Tiara\n1255 Neul \n609 Falcon Gray \n661 White Tiara\n1256 Mire \n180 Dove Gray \n180 Dove Gray\n1257 Gloaming \n580 Midnight Oil \n580 Midnight Oil\nAlustra Leela™ \nHorizontal Hardware \nVertical Hardware \n740 Cloud \n661 White Tiara \n661 White Tiara\n881 Illusion \n661 White Tiara \n661 White Tiara\n882 Inspire \n669 Beijing Gray \n276 Silverado\n883 Escape \n180 Dove Gray \n180 Dove Gray\nAlustra Macon™ \nHorizontal Hardware \nVertical Hardware \n581 Chardonnay \n661 White Tiara \n661 White Tiara\n582 Albarino \n862 Gardenia White \n862 Gardenia White\n588 Vintage \n218 Peppercorn \n276 Silverado\n1259 Beech \n180 Dove Gray \n180 Dove Gray",
+   "images": []
+  }
+ ],
+ "fabric_swatches": {
+  "Alustra® Architella® Solasta": [
+   {
+    "image": "page041_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Snowfall",
+    "specs": [
+     "Light Filtering U28/U48-1254 (¾\" & 1¼\")",
+     "Room Darkening U29/U49-1254 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Solasta"
+   },
+   {
+    "image": "page041_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Neul",
+    "specs": [
+     "Light Filtering U28/U48-1255 (¾\" & 1¼\")",
+     "Room Darkening U29/U49-1255 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Solasta"
+   },
+   {
+    "image": "page042_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Mire",
+    "specs": [
+     "Light Filtering U28/U48-1256 (¾\" & 1¼\")",
+     "Room Darkening U29/U49-1256 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Solasta"
+   },
+   {
+    "image": "page042_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Gloaming",
+    "specs": [
+     "Light Filtering U28/U48-1257 (¾\" & 1¼\")",
+     "Room Darkening U29/U49-1257 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Solasta"
+   }
+  ],
+  "Alustra® Architella® Leela": [
+   {
+    "image": "page043_img01_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Cloud",
+    "specs": [
+     "Light Filtering U24/U44-740 (¾\" & 1¼\")",
+     "Room Darkening U25/U45-740 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Leela"
+   },
+   {
+    "image": "page043_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Illusion",
+    "specs": [
+     "Light Filtering U24/U44-881 (¾\" & 1¼\")",
+     "Room Darkening U25/U45-881 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Leela"
+   }
+  ],
+  "Alustra® Architella® Macon": [
+   {
+    "image": "page044_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Inspire",
+    "specs": [
+     "Light Filtering U24/U44-882 (¾\" & 1¼\")",
+     "Room Darkening U25/U45-882 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   },
+   {
+    "image": "page044_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Escape",
+    "specs": [
+     "Light Filtering U24/U44-883 (¾\" & 1¼\")",
+     "Room Darkening U25/U45-883 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   },
+   {
+    "image": "page045_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Chardonnay",
+    "specs": [
+     "Light Filtering U26/U46-581 (¾\" & 1¼\")",
+     "Room Darkening U27/U47-581 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   },
+   {
+    "image": "page045_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Albarino",
+    "specs": [
+     "Light Filtering U26/U46-582 (¾\" & 1¼\")",
+     "Room Darkening U27/U47-582 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   },
+   {
+    "image": "page046_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Beech",
+    "specs": [
+     "Light Filtering U26/U46-1259 (¾\" & 1¼\")",
+     "Room Darkening U27/U47-1259 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   },
+   {
+    "image": "page046_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Vintage",
+    "specs": [
+     "Light Filtering U26/U46-588 (¾\" & 1¼\")",
+     "Room Darkening U27/U47-588 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Alustra® Architella® Macon"
+   }
+  ],
+  "ClearView® Sheer": [
+   {
+    "image": "page047_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Sheer V01/V02-951 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "ClearView® Sheer"
+   },
+   {
+    "image": "page047_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Platinum",
+    "specs": [
+     "Sheer V01/V02-682 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "ClearView® Sheer"
+   },
+   {
+    "image": "page048_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Almond Mist",
+    "specs": [
+     "Sheer V01/V02-702 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "ClearView® Sheer"
+   },
+   {
+    "image": "page048_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Black Magic",
+    "specs": [
+     "Sheer V01/V02-748 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "ClearView® Sheer"
+   }
+  ],
+  "Other Colors": [
+   {
+    "image": "page049_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Sheer D8/D40-951 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page049_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Chiffon",
+    "specs": [
+     "Sheer D8/D40-701 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page050_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Almond Mist",
+    "specs": [
+     "Sheer D8/D40-702 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page050_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Tea Light",
+    "specs": [
+     "Sheer D8/D40-760 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page051_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "White Organdy",
+    "specs": [
+     "Sheer D8/D40-700 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page051_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Platinum",
+    "specs": [
+     "Sheer D8/D40-682 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page052_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Dovetail",
+    "specs": [
+     "Sheer D9/D49-977 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page052_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Evening Fog",
+    "specs": [
+     "Sheer D8/D40-762 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page053_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Gingersnap",
+    "specs": [
+     "Sheer D8/D40-916 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page053_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Coconut Husk",
+    "specs": [
+     "Sheer D8/D40-763 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page054_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Eiffel Tower",
+    "specs": [
+     "Sheer D9/D49-588 (¾\" & 1¼\")"
+    ]
+   },
+   {
+    "image": "page054_img02_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Black Magic",
+    "specs": [
+     "Sheer D9/D49-748 (¾\" & 1¼\")"
+    ]
+   }
+  ],
+  "Architella® India Silk": [
+   {
+    "image": "page055_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Goa",
+    "specs": [
+     "Light Filtering U22/U42-1234 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-1234 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page055_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Temple",
+    "specs": [
+     "Light Filtering U22/U42-822 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-822 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page056_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Arani",
+    "specs": [
+     "Light Filtering U22/U42-823 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-823 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page056_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Sira",
+    "specs": [
+     "Light Filtering U22/U42-840 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-840 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page057_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Thar",
+    "specs": [
+     "Light Filtering U22/U42-1235 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-1235 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page057_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Taj",
+    "specs": [
+     "Light Filtering U22/U42-817 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-817 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page058_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Raja",
+    "specs": [
+     "Light Filtering U22/U42-818 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-818 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   },
+   {
+    "image": "page058_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Tiger Eye",
+    "specs": [
+     "Light Filtering U22/U42-820 (¾\" & 1¼\")",
+     "Room Darkening U23/U43-820 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® India Silk"
+   }
+  ],
+  "Architella® Thea": [
+   {
+    "image": "page059_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Ivory Pearl",
+    "specs": [
+     "Light Filtering C58/C60-1260 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1260 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page059_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Glidden",
+    "specs": [
+     "Light Filtering C58/C60-1261 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1261 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page060_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Hudson Gray",
+    "specs": [
+     "Light Filtering C58/C60-1262 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1262 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page060_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Cerise",
+    "specs": [
+     "Light Filtering C58/C60-1263 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1263 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page061_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Clover",
+    "specs": [
+     "Light Filtering C58/C60-1264 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1264 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page061_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Cypher",
+    "specs": [
+     "Light Filtering C58/C60-1265 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1265 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page062_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Veridian",
+    "specs": [
+     "Light Filtering C58/C60-1266 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1266 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   },
+   {
+    "image": "page062_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Asher",
+    "specs": [
+     "Light Filtering C58/C60-1267 (¾\" & 1¼\")",
+     "Room Darkening C59/C61-1267 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Thea"
+   }
+  ],
+  "Architella® Alexa": [
+   {
+    "image": "page063_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering C93/C88-457 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-457 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page063_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Linen",
+    "specs": [
+     "Light Filtering C93/C88-953 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-953 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page064_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Light Filtering C93/C88-955 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-955 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page064_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Biscotti",
+    "specs": [
+     "Light Filtering C93/C88-992 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-992 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page065_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Skye",
+    "specs": [
+     "Light Filtering C93/C88-971 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-971 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page065_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Platinum",
+    "specs": [
+     "Light Filtering C93/C88-682 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-682 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page066_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Alpine",
+    "specs": [
+     "Light Filtering C93/C88-1258 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-1258 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   },
+   {
+    "image": "page066_img02_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Modern Gray",
+    "specs": [
+     "Light Filtering C93/C88-994 (¾\" & 1¼\")",
+     "Room Darkening C94/C89-994 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Alexa"
+   }
+  ],
+  "Architella® Batiste Semi-Sheer": [
+   {
+    "image": "page067_img01_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Semi-Sheer Y10/Y09-951 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page067_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Semi-Sheer Y10/Y09-457 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page068_img01_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Burnt Ember",
+    "specs": [
+     "Semi-Sheer Y10/Y09-936 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page068_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Black Magic",
+    "specs": [
+     "Semi-Sheer Y10/Y09-748 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page069_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Linen",
+    "specs": [
+     "Semi-Sheer Y10/Y09-953 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page069_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Semi-Sheer Y10/Y09-955 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page070_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Renaissance Gold",
+    "specs": [
+     "Semi-Sheer Y10/Y09-718 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   },
+   {
+    "image": "page070_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Rich Mocha",
+    "specs": [
+     "Semi-Sheer Y10/Y09-790 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Semi-Sheer"
+   }
+  ],
+  "Architella® Batiste Bamboo": [
+   {
+    "image": "page071_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering C95/C97-951 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-951 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page071_img02_499x858.jpeg",
+    "width": 499,
+    "height": 858,
+    "color_name": "Linen",
+    "specs": [
+     "Light Filtering C95/C97-953 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-953 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page072_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "White Truffle",
+    "specs": [
+     "Light Filtering C95/C97-504 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-504 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page072_img02_499x858.jpeg",
+    "width": 499,
+    "height": 858,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Light Filtering C95/C97-955 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-955 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page073_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Peppercorn",
+    "specs": [
+     "Light Filtering C95/C97-502 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-502 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page073_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Salem",
+    "specs": [
+     "Light Filtering C95/C97-1251 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-1251 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page074_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Modern Gray",
+    "specs": [
+     "Light Filtering C95/C97-994 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-994 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   },
+   {
+    "image": "page074_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Gingersnap",
+    "specs": [
+     "Light Filtering C95/C97-916 (¾\" & 1¼\")",
+     "Room Darkening C96/C98-916 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Batiste Bamboo"
+   }
+  ],
+  "Architella® Elan® Metallic": [
+   {
+    "image": "page075_img01_498x858.jpeg",
+    "width": 498,
+    "height": 858,
+    "color_name": "Diamond",
+    "specs": [
+     "Light Filtering C22/C42-616 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-616 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page075_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Serenity",
+    "specs": [
+     "Light Filtering C22/C42-087 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-087 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page076_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Polished Pearl",
+    "specs": [
+     "Light Filtering C22/C42-1005 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1005 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page076_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Wish",
+    "specs": [
+     "Light Filtering C22/C42-086 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-086 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page077_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Frost",
+    "specs": [
+     "Light Filtering C22/C42-600 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-600 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page077_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Mica",
+    "specs": [
+     "Light Filtering C22/C42-601 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-601 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page078_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Lightning",
+    "specs": [
+     "Light Filtering C22/C42-604 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-604 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   },
+   {
+    "image": "page078_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Starlight",
+    "specs": [
+     "Light Filtering C22/C42-605 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-605 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan® Metallic"
+   }
+  ],
+  "Architella® Elan®": [
+   {
+    "image": "page079_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering C22/C42-951 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-951 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page079_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Aspen Snow",
+    "specs": [
+     "Light Filtering C22/C42-922 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-922 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page080_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering C22/C42-457 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-457 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page080_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Linen",
+    "specs": [
+     "Light Filtering C22/C42-953 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-953 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page081_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Swan",
+    "specs": [
+     "Light Filtering C22/C42-1226 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1226 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page081_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Moonstruck",
+    "specs": [
+     "Light Filtering C22/C42-479 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-479 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page082_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Polar Gray",
+    "specs": [
+     "Light Filtering C22/C42-986 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-986 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page082_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Solitude",
+    "specs": [
+     "Light Filtering C22/C42-480 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-480 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page083_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Light Filtering C22/C42-713 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-713 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page083_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Modern Gray",
+    "specs": [
+     "Light Filtering C22/C42-994 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-994 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page084_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Graphite",
+    "specs": [
+     "Light Filtering C22/C42-750 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-750 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page084_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Black Onyx",
+    "specs": [
+     "Light Filtering C22/C42-749 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-749 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page085_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Birch Bark",
+    "specs": [
+     "Light Filtering C22/C42-985 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-985 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page085_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Light Filtering C22/C42-955 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-955 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page086_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Gingersnap",
+    "specs": [
+     "Light Filtering C22/C42-916 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-916 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page086_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Platinum",
+    "specs": [
+     "Light Filtering C22/C42-682 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-682 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page087_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Stone Hearth",
+    "specs": [
+     "Light Filtering C22/C42-737 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-737 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page087_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Volcanic Ash",
+    "specs": [
+     "Light Filtering C22/C42-688 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-688 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page088_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Whipped Cream",
+    "specs": [
+     "Light Filtering C22/C42-948 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-948 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page088_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Dandelion",
+    "specs": [
+     "Light Filtering C22/C42-1227 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1227 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page089_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Bisque",
+    "specs": [
+     "Light Filtering C22/C42-989 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-989 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page089_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Biscotti",
+    "specs": [
+     "Light Filtering C22/C42-992 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-992 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page090_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Barley",
+    "specs": [
+     "Light Filtering C22/C42-752 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-752 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page090_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Toasted Almond",
+    "specs": [
+     "Light Filtering C22/C42-687 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-687 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page091_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Julep",
+    "specs": [
+     "Light Filtering C22/C42-481 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-481 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page091_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Seaglass",
+    "specs": [
+     "Light Filtering C22/C42-1228 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1228 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page092_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Patina Gray",
+    "specs": [
+     "Light Filtering C22/C42-733 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-733 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page092_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Indigo Mood",
+    "specs": [
+     "Light Filtering C22/C42-482 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-482 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page093_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Fern",
+    "specs": [
+     "Light Filtering C22/C42-1229 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1229 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page093_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Arugula",
+    "specs": [
+     "Light Filtering C22/C42-1230 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1230 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page094_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Revive",
+    "specs": [
+     "Light Filtering C22/C42-1231 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1231 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page094_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Bellini",
+    "specs": [
+     "Light Filtering C22/C42-1232 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1232 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page095_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Cider",
+    "specs": [
+     "Light Filtering C22/C42-258 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-258 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page095_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Wild Berry",
+    "specs": [
+     "Light Filtering C22/C42-1233 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-1233 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page096_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Truffle",
+    "specs": [
+     "Light Filtering C22/C42-686 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-686 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   },
+   {
+    "image": "page096_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Dark Chocolate",
+    "specs": [
+     "Light Filtering C22/C42-496 (¾\" & 1¼\")",
+     "Room Darkening C23/C43-496 (¾\" & 1¼\")"
+    ],
+    "fabric_collection": "Architella® Elan®"
+   }
+  ],
+  "Architella® Elan® Streetside": [
+   {
+    "image": "page097_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering C22-951955 (¾\")",
+     "Room Darkening C23-951955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page097_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Whipped Cream",
+    "specs": [
+     "Light Filtering C22-948955 (¾\")",
+     "Room Darkening C23-948955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page098_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Barley",
+    "specs": [
+     "Light Filtering C22-752955 (¾\")",
+     "Room Darkening C23-752955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page098_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Toasted Almond",
+    "specs": [
+     "Light Filtering C22-687955 (¾\")",
+     "Room Darkening C23-687955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page099_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering C22-457955 (¾\")",
+     "Room Darkening C23-457955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page099_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Linen",
+    "specs": [
+     "Light Filtering C22-953955 (¾\")",
+     "Room Darkening C23-953955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page100_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Light Filtering C22-955955 (¾\")",
+     "Room Darkening C23-955955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   },
+   {
+    "image": "page100_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Bisque",
+    "specs": [
+     "Light Filtering C22-989955 (¾\")",
+     "Room Darkening C23-989955 (¾\")"
+    ],
+    "fabric_collection": "Architella® Elan® Streetside"
+   }
+  ],
+  "Architella® Classic": [
+   {
+    "image": "page101_img01_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering D1/D2/C50-951 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-951 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page101_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Blue White",
+    "specs": [
+     "Light Filtering D1/D2/C50-952 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-952 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page102_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering D1/D2/C50-457 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-457 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page102_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Linen",
+    "specs": [
+     "Light Filtering D1/D2/C50-953 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-953 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page103_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Light Filtering D1/D2/C50-955 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-955 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page103_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Solitude",
+    "specs": [
+     "Light Filtering D1/D2/C50-480 (3⁄8\" & ¾\" single, ¾\")",
+     "Room Darkening H7/D7/C51-480 (3⁄8\" & ¾\" single, ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page104_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Aged Beige",
+    "specs": [
+     "Light Filtering D2/C50-975 (¾\" single & ¾\")",
+     "Room Darkening D7/C51-975 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page104_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Freshwater Pearl",
+    "specs": [
+     "Light Filtering D2/C50-1224 (¾\" single & ¾\")",
+     "Room Darkening D7/C51-1224 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page105_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Sunflower Seed",
+    "specs": [
+     "Light Filtering D2/C50-933 (¾\" single & ¾\")",
+     "Room Darkening D7/C51-933 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page105_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "London Sky",
+    "specs": [
+     "Light Filtering D2/C50-738 (¾\" single & ¾\")",
+     "Room Darkening D7/C51-738 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page106_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Renaissance Gold",
+    "specs": [
+     "Light Filtering D2/C50-718 (¾\"single & ¾\")",
+     "Room Darkening D7/C51-718 (¾\"single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   },
+   {
+    "image": "page106_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Haven",
+    "specs": [
+     "Light Filtering D2/C50-1252 (¾\"single & ¾\")",
+     "Room Darkening D7/C51-1252 (¾\"single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Classic"
+   }
+  ],
+  "Architella® Reception": [
+   {
+    "image": "page107_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Oxford",
+    "specs": [
+     "Light Filtering D56/C56-938 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-938 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page107_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Powder",
+    "specs": [
+     "Light Filtering D56/C56-939 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-939 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page108_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Capri",
+    "specs": [
+     "Light Filtering D56/C56-940 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-940 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page108_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Flax",
+    "specs": [
+     "Light Filtering D56/C56-941 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-941 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page109_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Barely There",
+    "specs": [
+     "Light Filtering D56/C56-1236 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-1236 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page109_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Harbor",
+    "specs": [
+     "Light Filtering D56/C56-509 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-509 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page110_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Briar",
+    "specs": [
+     "Light Filtering D56/C56-943 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-943 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page110_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Sterling",
+    "specs": [
+     "Light Filtering D56/C56-944 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-944 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page111_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Modern Gray",
+    "specs": [
+     "Light Filtering D56/C56-994 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-994 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page111_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Light Filtering D56/C56-713 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-713 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page112_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Stone Hearth",
+    "specs": [
+     "Light Filtering D56/C56-737 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-737 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   },
+   {
+    "image": "page112_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Lumber",
+    "specs": [
+     "Light Filtering D56/C56-1253 (¾\" single & ¾\")",
+     "Room Darkening D57/C57-1253 (¾\" single & ¾\")"
+    ],
+    "fabric_collection": "Architella® Reception"
+   }
+  ],
+  "®": [
+   {
+    "image": "page113_img01_498x857.png",
+    "width": 498,
+    "height": 857,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering D22-951 (¾\")",
+     "Room Darkening D23-951 (¾\")"
+    ],
+    "fabric_collection": "®"
+   },
+   {
+    "image": "page113_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering D22-457 (¾\")",
+     "Room Darkening D23-457 (¾\")"
+    ],
+    "fabric_collection": "®"
+   },
+   {
+    "image": "page114_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Beach Shells",
+    "specs": [
+     "Light Filtering D22-907 (¾\")",
+     "Room Darkening D23-907 (¾\")"
+    ],
+    "fabric_collection": "®"
+   },
+   {
+    "image": "page114_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Light Filtering D22-713 (¾\")",
+     "Room Darkening D23-713 (¾\")"
+    ],
+    "fabric_collection": "®"
+   },
+   {
+    "image": "page115_img01_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Graphite",
+    "specs": [
+     "Light Filtering D22-750 (¾\")",
+     "Room Darkening D23-750 (¾\")"
+    ],
+    "fabric_collection": "®"
+   },
+   {
+    "image": "page115_img02_498x857.jpeg",
+    "width": 498,
+    "height": 857,
+    "color_name": "Black Onyx",
+    "specs": [
+     "Light Filtering D22-749 (¾\")",
+     "Room Darkening D23-749 (¾\")"
+    ],
+    "fabric_collection": "®"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 6,
+  "benefits": 1,
+  "control": 10,
+  "design": 0,
+  "mounting": 1,
+  "details": 4,
+  "vane": 0,
+  "hardware": 3,
+  "swatch_collections": 16,
+  "swatch_colors": 150
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 6,
+  "control": 10,
+  "opacity": 4,
+  "benefits": 1,
+  "mounting": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_table": 9,
+  "hardware": 3,
+  "swatch": 75
+ }
 }

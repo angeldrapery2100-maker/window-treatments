@@ -1,684 +1,684 @@
 {
-  "id": "hd-aria-digital-sample-book",
-  "name": "Aria™ On & Off Track Blinds",
-  "slug": "aria",
-  "description": "Aria™ On & Off Track Blinds offer a versatile, modern solution with curved vanes that rotate to adjust light and slide effortlessly along a track.",
-  "cover_image": "page002_img01_2105x1505.jpeg",
-  "benefits": [
+ "id": "hd-aria-digital-sample-book",
+ "name": "Aria™ On & Off Track Blinds",
+ "slug": "aria",
+ "description": "Aria™ On & Off Track Blinds offer a versatile, modern solution with curved vanes that rotate to adjust light and slide effortlessly along a track.",
+ "cover_image": "page002_img01_2105x1505.jpeg",
+ "benefits": [
+  {
+   "page": 15,
+   "category": "benefits",
+   "text": "Expansive View\nStreamlined design provides an optimal view, \nwithout lifting the blind.\nExtensive Fabric Selection\nLuxurious fabrics in a curated selection of neutral colors and textures \ncomplement every design style.  \nEnhanced Privacy\nEnjoy enhanced privacy thanks to the routeless design \ncombined with tight closing fabric slats.\nSoft, Natural Light\nUnique fabric slats create a soft, even glow—unlike \nthe slats of traditional blinds. \nEasy Operation\nAdjust slats with an innovative, new tilt bar—no twisting necessary.\nLightweight fabric slats make lifting effortless.\nBenefits\nFlexible Light Control\nCreate just the right amount of light by tilting \nthe fabric slats in either direction.\nFits Extra Large Windows \nThe wider widths of Aria™ blinds make them distinctly different—and perfect \nfor dramatically large windows.",
+   "images": [
     {
-      "page": 15,
-      "category": "benefits",
-      "text": "Expansive View\nStreamlined design provides an optimal view, \nwithout lifting the blind.\nExtensive Fabric Selection\nLuxurious fabrics in a curated selection of neutral colors and textures \ncomplement every design style.  \nEnhanced Privacy\nEnjoy enhanced privacy thanks to the routeless design \ncombined with tight closing fabric slats.\nSoft, Natural Light\nUnique fabric slats create a soft, even glow—unlike \nthe slats of traditional blinds. \nEasy Operation\nAdjust slats with an innovative, new tilt bar—no twisting necessary.\nLightweight fabric slats make lifting effortless.\nBenefits\nFlexible Light Control\nCreate just the right amount of light by tilting \nthe fabric slats in either direction.\nFits Extra Large Windows \nThe wider widths of Aria™ blinds make them distinctly different—and perfect \nfor dramatically large windows.",
-      "images": [
-        {
-          "filename": "page015_img01_1618x436.jpeg",
-          "width": 1618,
-          "height": 436
-        },
-        {
-          "filename": "page015_img02_1755x1575.jpeg",
-          "width": 1755,
-          "height": 1575
-        },
-        {
-          "filename": "page015_img03_762x436.jpeg",
-          "width": 762,
-          "height": 436
-        },
-        {
-          "filename": "page015_img04_774x453.jpeg",
-          "width": 774,
-          "height": 453
-        },
-        {
-          "filename": "page015_img05_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page015_img06_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page015_img07_760x436.jpeg",
-          "width": 760,
-          "height": 436
-        }
-      ]
+     "filename": "page015_img01_1618x436.jpeg",
+     "width": 1618,
+     "height": 436
+    },
+    {
+     "filename": "page015_img02_1755x1575.jpeg",
+     "width": 1755,
+     "height": 1575
+    },
+    {
+     "filename": "page015_img03_762x436.jpeg",
+     "width": 762,
+     "height": 436
+    },
+    {
+     "filename": "page015_img04_774x453.jpeg",
+     "width": 774,
+     "height": 453
+    },
+    {
+     "filename": "page015_img05_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page015_img06_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page015_img07_760x436.jpeg",
+     "width": 760,
+     "height": 436
     }
-  ],
-  "control_options": [
-    {
-      "page": 7,
-      "category": "control",
-      "text": "after\nFabric Elan®    Color Pearl Gray\nControl Option LiteRise® with EasyTilt™ control\nOur window\ntreatments do more\nthan look good.\nThey transform \nnatural light, creating \nbeautiful spaces \nfor comfortable, \neveryday living.",
-      "images": [
-        {
-          "filename": "page007_img01_165x1507.jpeg",
-          "width": 165,
-          "height": 1507
-        },
-        {
-          "filename": "page007_img02_3049x1505.jpeg",
-          "width": 3049,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "category": "control",
-      "text": "A first of its kind, \nAria™ Soft Blinds are \ncrafted of elegantly \ntextured fabric, giving \nyou a variety of \nopacity options for \ngently filtering sunlight. \nFabric Name    Color Name\nOperating System Name \nFabric Highline®    Color Daisy White\nControl Option LiteRise® with EasyTilt™ control",
-      "images": [
-        {
-          "filename": "page008_img01_3061x1505.jpeg",
-          "width": 3061,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "control",
-      "text": "Create a cohesive \nlook in a room with \nThe Whole House \nSolution™, which \npairs horizontal \nwindow treatments \nwith complementary \nvertical ones. \nFabric Elan®    Color Birch Bark\nAria™ Control Option LiteRise® \nwith PowerView® Automation\nDuette®  Control Option   Vertiglide™",
-      "images": [
-        {
-          "filename": "page014_img01_3040x1504.jpeg",
-          "width": 3040,
-          "height": 1504
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "control",
-      "text": "A Day With PowerView®  \n10:30 PM Bedtime\nBlinds close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule blinds to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, blinds open to reveal your best view.\n2:00 PM Afternoon\nBlinds adjust to protect furnishings from harsh midday sunlight.\nPowerView® Automation \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule blinds to close whenever you prefer\nEnergy Efficiency \nProgram blinds to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView®  Automation, open the opposite \npage and visit hunterdouglas.com/powerview-design-options  \nFabric Elan®    Color Birch Bark\nControl Option LiteRise® with PowerView® Automation",
-      "images": [
-        {
-          "filename": "page018_img01_779x537.jpeg",
-          "width": 779,
-          "height": 537
-        },
-        {
-          "filename": "page018_img02_727x455.jpeg",
-          "width": 727,
-          "height": 455
-        },
-        {
-          "filename": "page018_img03_728x456.jpeg",
-          "width": 728,
-          "height": 456
-        },
-        {
-          "filename": "page018_img04_728x455.jpeg",
-          "width": 728,
-          "height": 455
-        },
-        {
-          "filename": "page018_img05_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        },
-        {
-          "filename": "page018_img06_337x578.jpeg",
-          "width": 337,
-          "height": 578
-        }
-      ]
-    }
-  ],
-  "design_options": [],
-  "mounting": [
-    {
-      "page": 19,
-      "category": "mounting",
-      "text": "Fabric Highline®    Color Calvary\nControl Option LiteRise® with PowerView® Automation \nMounting Profiles  \nOutside mount\nPartial mount\nInside mount",
-      "images": [
-        {
-          "filename": "page019_img01_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page019_img02_1973x1505.jpeg",
-          "width": 1973,
-          "height": 1505
-        },
-        {
-          "filename": "page019_img03_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page019_img04_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        }
-      ]
-    }
-  ],
-  "product_details": [
-    {
-      "page": 16,
-      "category": "opacity",
-      "text": "Opacity\nSlats open, tilted down 75%\nSlats tilted open 50%\nSlats open, tilted down 25%\nSlats closed, tilted down 100%\nLight Control and Privacy\nLight Filtering Shade Option\nSoft fabric slats transform light into a gentle radiance.\nLight Dimming Shade Option\nTwo opacities in one: Tilt slats down for dimming and up for room darkening.\nTILT DOWN\nTILT UP\nTILT DOWN\nTILT UP",
-      "images": [
-        {
-          "filename": "page016_img01_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img02_573x1038.jpeg",
-          "width": 573,
-          "height": 1038
-        },
-        {
-          "filename": "page016_img03_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img04_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img05_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img06_953x1038.jpeg",
-          "width": 953,
-          "height": 1038
-        }
-      ]
-    },
-    {
-      "page": 25,
-      "category": "opacity",
-      "text": "Light Dimming\nLight Filtering\nAria\n™\nSoft Blinds\nOpacity",
-      "images": [
-        {
-          "filename": "page025_img01_1194x1200.jpeg",
-          "width": 1194,
-          "height": 1200
-        },
-        {
-          "filename": "page025_img02_1194x1200.jpeg",
-          "width": 1194,
-          "height": 1200
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1984x1546.jpeg",
-          "width": 1984,
-          "height": 1546
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Our window\ntreatments do more\nthan look good.\nThey transform \nnatural light, creating \nbeautiful spaces \nfor comfortable, \neveryday living.\nbefore",
-      "images": [
-        {
-          "filename": "page006_img01_2181x1505.jpeg",
-          "width": 2181,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "gallery",
-      "text": "The unique light \ndimming feature \nprovides two opacities \nin one blind, for \nversatile light control.\nFabric Highline®    Color Calvary\nControl Option LiteRise® with PowerView® Automation",
-      "images": [
-        {
-          "filename": "page009_img01_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "Aria™ blinds are free \nof operating cords, \nmaking this blind \na safer option for \nhomes with children. \nFabric Highline®   Color Swan\nControl Option LiteRise® with EasyTilt™ control",
-      "images": [
-        {
-          "filename": "page010_img01_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "gallery",
-      "text": "Fabric Elan®   Color Solitude\nControl Option LiteRise® with EasyTilt™ control",
-      "images": [
-        {
-          "filename": "page011_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "gallery",
-      "text": "Fabric Elan®   Color Aspen Snow\nControl Option LiteRise® with EasyTilt™ control",
-      "images": [
-        {
-          "filename": "page012_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "gallery",
-      "text": "Fabric Highline®    Color Desert Sands\nControl Option LiteRise® with EasyTilt™ control",
-      "images": [
-        {
-          "filename": "page013_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "gallery",
-      "text": "Aria\n™",
-      "images": [
-        {
-          "filename": "page022_img01_3009x2427.jpeg",
-          "width": 3009,
-          "height": 2427
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [
-    {
-      "page": 26,
-      "category": "hardware",
-      "text": "Hardware Color Guide\n066 Almost White\n180 Dove Gray\n320 Rich Cream\n375 Khaki\n575 Gray Cloud\n661 White Tiara\n669 Beijing Gray\n707 Moonbeam\n981 Platinum Gray\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nAria\n™\nSoft Blinds",
-      "images": [
-        {
-          "filename": "page026_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page026_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    }
-  ],
-  "fabric_swatches": {
-    "LiteRise® System (manual lifting)": [
-      {
-        "image": "page017_img03_455x1038.jpeg",
-        "width": 455,
-        "height": 1038,
-        "color_name": "Color 1",
-        "specs": [],
-        "fabric_collection": "LiteRise® System (manual lifting)"
-      },
-      {
-        "image": "page017_img04_455x1038.jpeg",
-        "width": 455,
-        "height": 1038,
-        "color_name": "Color 2",
-        "specs": [],
-        "fabric_collection": "LiteRise® System (manual lifting)"
-      }
-    ],
-    "™": [
-      {
-        "image": "page027_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Daisy White",
-        "specs": [
-          "Highline Light Dimming AR02-951",
-          "Elan Light Dimming AR04-951"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page027_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Daisy White",
-        "specs": [
-          "Highline Light Dimming AR02-951",
-          "Elan Light Dimming AR04-951"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page028_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Aspen Snow",
-        "specs": [
-          "Highline Light Dimming AR02-922",
-          "Elan Light Dimming AR04-922"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page028_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Aspen Snow",
-        "specs": [
-          "Highline Light Dimming AR02-922",
-          "Elan Light Dimming AR04-922"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page029_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Wind Chill",
-        "specs": [
-          "Highline Light Dimming AR02-1278",
-          "Elan Light Dimming AR04-1278"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page029_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Wind Chill",
-        "specs": [
-          "Highline Light Dimming AR02-1278",
-          "Elan Light Dimming AR04-1278"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page030_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Journal",
-        "specs": [
-          "Highline Light Dimming AR02-457",
-          "Elan Light Dimming AR04-457"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page030_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Journal",
-        "specs": [
-          "Highline Light Dimming AR02-457",
-          "Elan Light Dimming AR04-457"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page031_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Linen",
-        "specs": [
-          "Highline Light Dimming AR02-953",
-          "Elan Light Dimming AR04-953"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page031_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Linen",
-        "specs": [
-          "Highline Light Dimming AR02-953",
-          "Elan Light Dimming AR04-953"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page032_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Swan",
-        "specs": [
-          "Highline Light Dimming AR02-1226",
-          "Elan Light Dimming AR04-1226"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page032_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Swan",
-        "specs": [
-          "Highline Light Dimming AR02-1226",
-          "Elan Light Dimming AR04-1226"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page033_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Birch Bark",
-        "specs": [
-          "Highline Light Dimming AR02-985",
-          "Elan Light Dimming AR04-985"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page033_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Birch Bark",
-        "specs": [
-          "Highline Light Dimming AR02-985",
-          "Elan Light Dimming AR04-985"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page034_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Highline Light Dimming AR02-955",
-          "Elan Light Dimming AR04-955"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page034_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Desert Sands",
-        "specs": [
-          "Highline Light Dimming AR02-955",
-          "Elan Light Dimming AR04-955"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page035_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Platinum",
-        "specs": [
-          "Highline Light Dimming AR02-682",
-          "Elan Light Dimming AR04-682"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page035_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Platinum",
-        "specs": [
-          "Highline Light Dimming AR02-682",
-          "Elan Light Dimming AR04-682"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page036_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Solitude",
-        "specs": [
-          "Highline Light Dimming AR02-480",
-          "Elan Light Dimming AR04-480"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page036_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Solitude",
-        "specs": [
-          "Highline Light Dimming AR02-480",
-          "Elan Light Dimming AR04-480"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page037_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Calvary",
-        "specs": [
-          "Highline Light Dimming AR02-1279",
-          "Elan Light Dimming AR04-1279"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page037_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Calvary",
-        "specs": [
-          "Highline Light Dimming AR02-1279",
-          "Elan Light Dimming AR04-1279"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page038_img01_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Highline Light Dimming AR02-713",
-          "Elan Light Dimming AR04-713"
-        ],
-        "fabric_collection": "™"
-      },
-      {
-        "image": "page038_img02_618x1028.jpeg",
-        "width": 618,
-        "height": 1028,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Highline Light Dimming AR02-713",
-          "Elan Light Dimming AR04-713"
-        ],
-        "fabric_collection": "™"
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 8,
-    "benefits": 1,
-    "control": 4,
-    "design": 0,
-    "mounting": 1,
-    "details": 2,
-    "vane": 0,
-    "hardware": 1,
-    "swatch_collections": 2,
-    "swatch_colors": 26
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 8,
-    "control": 4,
-    "benefits": 1,
-    "opacity": 2,
-    "swatch": 13,
-    "mounting": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_cover": 1,
-    "long_text": 1,
-    "hardware": 1
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 7,
+   "category": "control",
+   "text": "after\nFabric Elan®    Color Pearl Gray\nControl Option LiteRise® with EasyTilt™ control\nOur window\ntreatments do more\nthan look good.\nThey transform \nnatural light, creating \nbeautiful spaces \nfor comfortable, \neveryday living.",
+   "images": [
+    {
+     "filename": "page007_img01_165x1507.jpeg",
+     "width": 165,
+     "height": 1507
+    },
+    {
+     "filename": "page007_img02_3049x1505.jpeg",
+     "width": 3049,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "category": "control",
+   "text": "A first of its kind, \nAria™ Soft Blinds are \ncrafted of elegantly \ntextured fabric, giving \nyou a variety of \nopacity options for \ngently filtering sunlight. \nFabric Name    Color Name\nOperating System Name \nFabric Highline®    Color Daisy White\nControl Option LiteRise® with EasyTilt™ control",
+   "images": [
+    {
+     "filename": "page008_img01_3061x1505.jpeg",
+     "width": 3061,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "control",
+   "text": "Create a cohesive \nlook in a room with \nThe Whole House \nSolution™, which \npairs horizontal \nwindow treatments \nwith complementary \nvertical ones. \nFabric Elan®    Color Birch Bark\nAria™ Control Option LiteRise® \nwith PowerView® Automation\nDuette®  Control Option   Vertiglide™",
+   "images": [
+    {
+     "filename": "page014_img01_3040x1504.jpeg",
+     "width": 3040,
+     "height": 1504
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "control",
+   "text": "A Day With PowerView®  \n10:30 PM Bedtime\nBlinds close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule blinds to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, blinds open to reveal your best view.\n2:00 PM Afternoon\nBlinds adjust to protect furnishings from harsh midday sunlight.\nPowerView® Automation \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule blinds to close whenever you prefer\nEnergy Efficiency \nProgram blinds to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView®  Automation, open the opposite \npage and visit hunterdouglas.com/powerview-design-options  \nFabric Elan®    Color Birch Bark\nControl Option LiteRise® with PowerView® Automation",
+   "images": [
+    {
+     "filename": "page018_img01_779x537.jpeg",
+     "width": 779,
+     "height": 537
+    },
+    {
+     "filename": "page018_img02_727x455.jpeg",
+     "width": 727,
+     "height": 455
+    },
+    {
+     "filename": "page018_img03_728x456.jpeg",
+     "width": 728,
+     "height": 456
+    },
+    {
+     "filename": "page018_img04_728x455.jpeg",
+     "width": 728,
+     "height": 455
+    },
+    {
+     "filename": "page018_img05_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    },
+    {
+     "filename": "page018_img06_337x578.jpeg",
+     "width": 337,
+     "height": 578
+    }
+   ]
+  }
+ ],
+ "design_options": [],
+ "mounting": [
+  {
+   "page": 19,
+   "category": "mounting",
+   "text": "Fabric Highline®    Color Calvary\nControl Option LiteRise® with PowerView® Automation \nMounting Profiles  \nOutside mount\nPartial mount\nInside mount",
+   "images": [
+    {
+     "filename": "page019_img01_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page019_img02_1973x1505.jpeg",
+     "width": 1973,
+     "height": 1505
+    },
+    {
+     "filename": "page019_img03_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page019_img04_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    }
+   ]
+  }
+ ],
+ "product_details": [
+  {
+   "page": 16,
+   "category": "opacity",
+   "text": "Opacity\nSlats open, tilted down 75%\nSlats tilted open 50%\nSlats open, tilted down 25%\nSlats closed, tilted down 100%\nLight Control and Privacy\nLight Filtering Shade Option\nSoft fabric slats transform light into a gentle radiance.\nLight Dimming Shade Option\nTwo opacities in one: Tilt slats down for dimming and up for room darkening.\nTILT DOWN\nTILT UP\nTILT DOWN\nTILT UP",
+   "images": [
+    {
+     "filename": "page016_img01_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img02_573x1038.jpeg",
+     "width": 573,
+     "height": 1038
+    },
+    {
+     "filename": "page016_img03_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img04_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img05_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img06_953x1038.jpeg",
+     "width": 953,
+     "height": 1038
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "category": "opacity",
+   "text": "Light Dimming\nLight Filtering\nAria\n™\nSoft Blinds\nOpacity",
+   "images": [
+    {
+     "filename": "page025_img01_1194x1200.jpeg",
+     "width": 1194,
+     "height": 1200
+    },
+    {
+     "filename": "page025_img02_1194x1200.jpeg",
+     "width": 1194,
+     "height": 1200
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1984x1546.jpeg",
+     "width": 1984,
+     "height": 1546
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Our window\ntreatments do more\nthan look good.\nThey transform \nnatural light, creating \nbeautiful spaces \nfor comfortable, \neveryday living.\nbefore",
+   "images": [
+    {
+     "filename": "page006_img01_2181x1505.jpeg",
+     "width": 2181,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "gallery",
+   "text": "The unique light \ndimming feature \nprovides two opacities \nin one blind, for \nversatile light control.\nFabric Highline®    Color Calvary\nControl Option LiteRise® with PowerView® Automation",
+   "images": [
+    {
+     "filename": "page009_img01_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "Aria™ blinds are free \nof operating cords, \nmaking this blind \na safer option for \nhomes with children. \nFabric Highline®   Color Swan\nControl Option LiteRise® with EasyTilt™ control",
+   "images": [
+    {
+     "filename": "page010_img01_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "gallery",
+   "text": "Fabric Elan®   Color Solitude\nControl Option LiteRise® with EasyTilt™ control",
+   "images": [
+    {
+     "filename": "page011_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "gallery",
+   "text": "Fabric Elan®   Color Aspen Snow\nControl Option LiteRise® with EasyTilt™ control",
+   "images": [
+    {
+     "filename": "page012_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "gallery",
+   "text": "Fabric Highline®    Color Desert Sands\nControl Option LiteRise® with EasyTilt™ control",
+   "images": [
+    {
+     "filename": "page013_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "gallery",
+   "text": "Aria\n™",
+   "images": [
+    {
+     "filename": "page022_img01_3009x2427.jpeg",
+     "width": 3009,
+     "height": 2427
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [
+  {
+   "page": 26,
+   "category": "hardware",
+   "text": "Hardware Color Guide\n066 Almost White\n180 Dove Gray\n320 Rich Cream\n375 Khaki\n575 Gray Cloud\n661 White Tiara\n669 Beijing Gray\n707 Moonbeam\n981 Platinum Gray\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nAria\n™\nSoft Blinds",
+   "images": [
+    {
+     "filename": "page026_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page026_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  }
+ ],
+ "fabric_swatches": {
+  "LiteRise® System (manual lifting)": [
+   {
+    "image": "page017_img03_455x1038.jpeg",
+    "width": 455,
+    "height": 1038,
+    "color_name": "Color 1",
+    "specs": [],
+    "fabric_collection": "LiteRise® System (manual lifting)"
+   },
+   {
+    "image": "page017_img04_455x1038.jpeg",
+    "width": 455,
+    "height": 1038,
+    "color_name": "Color 2",
+    "specs": [],
+    "fabric_collection": "LiteRise® System (manual lifting)"
+   }
+  ],
+  "™": [
+   {
+    "image": "page027_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Daisy White",
+    "specs": [
+     "Elan® Light Filtering AR03-951",
+     "Elan Light Dimming AR04-951"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page027_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Daisy White",
+    "specs": [
+     "Elan® Light Filtering AR03-951",
+     "Elan Light Dimming AR04-951"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page028_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Aspen Snow",
+    "specs": [
+     "Elan® Light Filtering AR03-922",
+     "Elan Light Dimming AR04-922"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page028_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Aspen Snow",
+    "specs": [
+     "Elan® Light Filtering AR03-922",
+     "Elan Light Dimming AR04-922"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page029_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Wind Chill",
+    "specs": [
+     "Elan® Light Filtering AR03-1278",
+     "Elan Light Dimming AR04-1278"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page029_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Wind Chill",
+    "specs": [
+     "Elan® Light Filtering AR03-1278",
+     "Elan Light Dimming AR04-1278"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page030_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Journal",
+    "specs": [
+     "Elan® Light Filtering AR03-457",
+     "Elan Light Dimming AR04-457"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page030_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Journal",
+    "specs": [
+     "Elan® Light Filtering AR03-457",
+     "Elan Light Dimming AR04-457"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page031_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Linen",
+    "specs": [
+     "Elan® Light Filtering AR03-953",
+     "Elan Light Dimming AR04-953"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page031_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Linen",
+    "specs": [
+     "Elan® Light Filtering AR03-953",
+     "Elan Light Dimming AR04-953"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page032_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Swan",
+    "specs": [
+     "Elan® Light Filtering AR03-1226",
+     "Elan Light Dimming AR04-1226"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page032_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Swan",
+    "specs": [
+     "Elan® Light Filtering AR03-1226",
+     "Elan Light Dimming AR04-1226"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page033_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Birch Bark",
+    "specs": [
+     "Elan® Light Filtering AR03-985",
+     "Elan Light Dimming AR04-985"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page033_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Birch Bark",
+    "specs": [
+     "Elan® Light Filtering AR03-985",
+     "Elan Light Dimming AR04-985"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page034_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Elan® Light Filtering AR03-955",
+     "Elan Light Dimming AR04-955"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page034_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Desert Sands",
+    "specs": [
+     "Elan® Light Filtering AR03-955",
+     "Elan Light Dimming AR04-955"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page035_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Platinum",
+    "specs": [
+     "Elan® Light Filtering AR03-682",
+     "Elan Light Dimming AR04-682"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page035_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Platinum",
+    "specs": [
+     "Elan® Light Filtering AR03-682",
+     "Elan Light Dimming AR04-682"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page036_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Solitude",
+    "specs": [
+     "Elan® Light Filtering AR03-480",
+     "Elan Light Dimming AR04-480"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page036_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Solitude",
+    "specs": [
+     "Elan® Light Filtering AR03-480",
+     "Elan Light Dimming AR04-480"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page037_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Calvary",
+    "specs": [
+     "Elan® Light Filtering AR03-1279",
+     "Elan Light Dimming AR04-1279"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page037_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Calvary",
+    "specs": [
+     "Elan® Light Filtering AR03-1279",
+     "Elan Light Dimming AR04-1279"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page038_img01_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Elan® Light Filtering AR03-713",
+     "Elan Light Dimming AR04-713"
+    ],
+    "fabric_collection": "™"
+   },
+   {
+    "image": "page038_img02_618x1028.jpeg",
+    "width": 618,
+    "height": 1028,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Elan® Light Filtering AR03-713",
+     "Elan Light Dimming AR04-713"
+    ],
+    "fabric_collection": "™"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 8,
+  "benefits": 1,
+  "control": 4,
+  "design": 0,
+  "mounting": 1,
+  "details": 2,
+  "vane": 0,
+  "hardware": 1,
+  "swatch_collections": 2,
+  "swatch_colors": 26
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 8,
+  "control": 4,
+  "benefits": 1,
+  "opacity": 2,
+  "swatch": 13,
+  "mounting": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_cover": 1,
+  "long_text": 1,
+  "hardware": 1
+ }
 }

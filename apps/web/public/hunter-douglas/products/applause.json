@@ -1,1623 +1,1540 @@
 {
-  "id": "hd-applause-digital-sample-book",
-  "name": "Applause® Honeycomb Shades",
-  "slug": "applause",
-  "description": "Applause® Honeycomb Shades feature a unique two-cell construction that provides extra insulation and a sophisticated look with an extensive palette of colors.",
-  "cover_image": "page002_img01_2105x1505.jpeg",
-  "benefits": [
+ "id": "hd-applause-digital-sample-book",
+ "name": "Applause® Honeycomb Shades",
+ "slug": "applause",
+ "description": "Applause® Honeycomb Shades feature a unique two-cell construction that provides extra insulation and a sophisticated look with an extensive palette of colors.",
+ "cover_image": "page002_img01_2105x1505.jpeg",
+ "benefits": [
+  {
+   "page": 14,
+   "category": "benefits",
+   "text": "Simplified Offering\nEasily find your perfect Applause® shade with a streamlined selection \nof pleat sizes, opacities and operating systems. \nCare and Cleaning\nTo ensure lasting beauty, all Applause shades are anti-static, \ndust and soil resistent, and easy to clean.\nSpecialty Shapes\nFrom arches to angles to trapezoids, Applause shades can cover a \nwide variety of window shapes and sizes. \nSustainability\nThe Applause Vintage™ fabric collection is innovatively crafted \nwith 40% recycled materials.\nNoise Reduction\nApplause® shades absorb sound energy, helping to create \na more tranquil room.\nBenefits\nDurable Headrail Finishes\nTextured matte headrails are color coordinated to the \nfabric for a cohesive design.\nExpansive Sizes, Small Stack\nApplause shades are engineered to fit expansive windows with \nminimal stack, allowing for unobstructed views.\nStylish Fabrics\nChoose from an on-trend collection of fabrics in a \ncontemporary color palette.",
+   "images": [
     {
-      "page": 14,
-      "category": "benefits",
-      "text": "Simplified Offering\nEasily find your perfect Applause® shade with a streamlined selection \nof pleat sizes, opacities and operating systems. \nCare and Cleaning\nTo ensure lasting beauty, all Applause shades are anti-static, \ndust and soil resistent, and easy to clean.\nSpecialty Shapes\nFrom arches to angles to trapezoids, Applause shades can cover a \nwide variety of window shapes and sizes. \nSustainability\nThe Applause Vintage™ fabric collection is innovatively crafted \nwith 40% recycled materials.\nNoise Reduction\nApplause® shades absorb sound energy, helping to create \na more tranquil room.\nBenefits\nDurable Headrail Finishes\nTextured matte headrails are color coordinated to the \nfabric for a cohesive design.\nExpansive Sizes, Small Stack\nApplause shades are engineered to fit expansive windows with \nminimal stack, allowing for unobstructed views.\nStylish Fabrics\nChoose from an on-trend collection of fabrics in a \ncontemporary color palette.",
-      "images": [
-        {
-          "filename": "page014_img01_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page014_img02_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page014_img03_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page014_img04_763x436.jpeg",
-          "width": 763,
-          "height": 436
-        },
-        {
-          "filename": "page014_img05_764x433.jpeg",
-          "width": 764,
-          "height": 433
-        },
-        {
-          "filename": "page014_img06_764x437.jpeg",
-          "width": 764,
-          "height": 437
-        },
-        {
-          "filename": "page014_img07_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page014_img08_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        }
-      ]
+     "filename": "page014_img01_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page014_img02_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page014_img03_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page014_img04_763x436.jpeg",
+     "width": 763,
+     "height": 436
+    },
+    {
+     "filename": "page014_img05_764x433.jpeg",
+     "width": 764,
+     "height": 433
+    },
+    {
+     "filename": "page014_img06_764x437.jpeg",
+     "width": 764,
+     "height": 437
+    },
+    {
+     "filename": "page014_img07_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page014_img08_764x436.jpeg",
+     "width": 764,
+     "height": 436
     }
-  ],
-  "control_options": [
-    {
-      "page": 12,
-      "category": "control",
-      "text": "Combine your \nApplause® shades \nwith coordinating \nDesign Studio™ drapery \nor side panels for \nadded energy efficiency \nand a layered look at \nthe window.\nFabric Sunterra™    Color Cornucopia\nDesign Studio™ Drapery Fabric Esmery    Color Cottage\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)",
-      "images": [
-        {
-          "filename": "page012_img01_3042x1505.jpeg",
-          "width": 3042,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "control",
-      "text": "Red indicates \nwindows \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nEnergy Efficiency\nCost Savings\nShades help control the indoor temperature, so you can spend less \nto heat and cool your home. \nInsulation\nAn innovative, insulating design features an extra layer that protects your home \nfrom harsh outdoor temperatures.\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according \nto the sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by softly diffusing \nnatural sunlight within a room.\nYear-Round Comfort\nFabric Kinship™    Color Beach Glass\nOperating System LiteRise® \nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the summer.\nScan for AERC\nEnergy Ratings",
-      "images": [
-        {
-          "filename": "page015_img01_1953x1504.jpeg",
-          "width": 1953,
-          "height": 1504
-        },
-        {
-          "filename": "page015_img02_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page015_img03_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page015_img04_765x437.jpeg",
-          "width": 765,
-          "height": 437
-        },
-        {
-          "filename": "page015_img05_763x433.jpeg",
-          "width": 763,
-          "height": 433
-        },
-        {
-          "filename": "page015_img06_59x88.jpeg",
-          "width": 59,
-          "height": 88
-        },
-        {
-          "filename": "page015_img07_59x88.jpeg",
-          "width": 59,
-          "height": 88
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "control",
-      "text": "Fabric Sunterra™    Color Lavender Calm\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)      \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nLiteRise®\nThis cordless system lifts and \nlowers shades with the touch \nof a finger. \nUltraGlide®\nGently pull a single wand to \nlift and lower shades.\nOperating Systems\nChild Safety Labels on \nCorded Systems\nThese warning labels appear \non window fashions with \ncords to make consumers \naware of window cord \nhazards for children and pets.",
-      "images": [
-        {
-          "filename": "page018_img01_1094x1505.jpeg",
-          "width": 1094,
-          "height": 1505
-        },
-        {
-          "filename": "page018_img02_484x829.jpeg",
-          "width": 484,
-          "height": 829
-        },
-        {
-          "filename": "page018_img03_319x900.jpeg",
-          "width": 319,
-          "height": 900
-        },
-        {
-          "filename": "page018_img04_319x903.jpeg",
-          "width": 319,
-          "height": 903
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "control",
-      "text": "A Day With PowerView®  \n10:30 PM Bedtime\nShades close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nFabric Sunterra™    Color Lavender Calm\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)      \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation",
-      "images": [
-        {
-          "filename": "page019_img01_777x537.jpeg",
-          "width": 777,
-          "height": 537
-        },
-        {
-          "filename": "page019_img02_727x455.jpeg",
-          "width": 727,
-          "height": 455
-        },
-        {
-          "filename": "page019_img03_727x455.jpeg",
-          "width": 727,
-          "height": 455
-        },
-        {
-          "filename": "page019_img04_726x455.jpeg",
-          "width": 726,
-          "height": 455
-        },
-        {
-          "filename": "page019_img05_3044x1505.jpeg",
-          "width": 3044,
-          "height": 1505
-        },
-        {
-          "filename": "page019_img06_484x829.jpeg",
-          "width": 484,
-          "height": 829
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "control",
-      "text": "Simplicity™** \nThis manual system is designed for skylights and other hard-to-reach windows. \nCan be oriented for top, bottom or side stack.\nVertiglide Traveling Center Stack \nShades open from the sides and close from the center. \n\nVertiglide Split Stack \nShades operate individually.\nSkyLift™*  \nThis system covers large skylights. Available with manual or \nmotorized operation, and in top stack only.\nVertiglide Right Stack \nRight stack opens from left to right.\n\nVertiglide™\nFor vertical applications such as patio doors, this system provides side-to-side \noperation. Offered in four stacking configurations.\nAdditional Operating Options\nVertiglide™ Left Stack\nLeft stack opens from right to left.\n*Available in Canada as a Duolite® option only.\n**Not available in Canada.\nEasyView™ Arch**  \nManual system for arched shaped window openings. An optional \nextension pole is available for hard-to-reach windows.",
-      "images": [
-        {
-          "filename": "page020_img01_765x437.jpeg",
-          "width": 765,
-          "height": 437
-        },
-        {
-          "filename": "page020_img02_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page020_img03_761x436.jpeg",
-          "width": 761,
-          "height": 436
-        },
-        {
-          "filename": "page020_img04_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page020_img05_766x439.jpeg",
-          "width": 766,
-          "height": 439
-        },
-        {
-          "filename": "page020_img06_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page020_img07_764x437.jpeg",
-          "width": 764,
-          "height": 437
-        },
-        {
-          "filename": "page020_img08_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        }
-      ]
-    }
-  ],
-  "design_options": [
-    {
-      "page": 9,
-      "category": "design",
-      "text": "Fabric Crystalline™ Sheer    Color Rock Crystal\nFabric Legends™    Color Lakehouse\nOperating System PowerView® Automation \nDesign Option Duolite®",
-      "images": [
-        {
-          "filename": "page009_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    }
-  ],
-  "mounting": [
-    {
-      "page": 22,
-      "category": "mounting",
-      "text": "Mounting Profiles\nFully Recessed\nVertiglide™ Sydney Valance \nVertiglide Grandover™ Valance \nPartially Recessed\nVertiglide™ Fully Recessed \nOutside Mount\nVertiglide Outside Mount",
-      "images": [
-        {
-          "filename": "page022_img01_764x454.jpeg",
-          "width": 764,
-          "height": 454
-        },
-        {
-          "filename": "page022_img02_764x454.jpeg",
-          "width": 764,
-          "height": 454
-        },
-        {
-          "filename": "page022_img03_765x454.jpeg",
-          "width": 765,
-          "height": 454
-        },
-        {
-          "filename": "page022_img04_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page022_img05_765x455.jpeg",
-          "width": 765,
-          "height": 455
-        },
-        {
-          "filename": "page022_img06_764x453.jpeg",
-          "width": 764,
-          "height": 453
-        },
-        {
-          "filename": "page022_img07_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        }
-      ]
-    }
-  ],
-  "product_details": [
-    {
-      "page": 11,
-      "category": "opacity",
-      "text": "Room Darkening\nFabric Vintage™   Color Café Au Lait\nOpacity Light Filtering\nOperating System LiteRise®  \nRoom Darkening",
-      "images": [
-        {
-          "filename": "page011_img01_1236x836.jpeg",
-          "width": 1236,
-          "height": 836
-        },
-        {
-          "filename": "page011_img02_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "opacity",
-      "text": "Room Darkening\nBlocks most incoming light with maximum privacy \nSheer\nProvides the most natural light and view-through with minimal privacy \nLight Filtering\nGently filters light and offers moderate privacy \nDuolite® Dual Opacity Design Option\nFeatures two opacities in one shade \nLight Control and Privacy\nFabric Crystalline™ Sheer    Color Rock Crystal\nFabric Legends™    Color Pearl\nOperating System PowerView® Automation, Vertiglide™ Split Stack \nDesign Option Duolite®",
-      "images": [
-        {
-          "filename": "page016_img01_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img02_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img03_762x455.jpeg",
-          "width": 762,
-          "height": 455
-        },
-        {
-          "filename": "page016_img04_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page016_img05_1952x1503.jpeg",
-          "width": 1952,
-          "height": 1503
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "opacity",
-      "text": "Duolite® with Sheer\nCombine a sheer fabric with a light-filtering or room-darkening fabric \nin a single shade. \nDuolite with Light Filtering\nCombine a light-filtering fabric with a room-darkening fabric \nin a single shade. \nDuolite® Design Option\nFabric Crystalline™ Sheer    Color Rock Crystal\nFabric Vintage™    Color Aged Onyx\nOperating System PowerView® Automation \nDesign Option Duolite®",
-      "images": [
-        {
-          "filename": "page017_img01_765x1015.jpeg",
-          "width": 765,
-          "height": 1015
-        },
-        {
-          "filename": "page017_img02_765x1017.jpeg",
-          "width": 765,
-          "height": 1017
-        },
-        {
-          "filename": "page017_img03_1951x1505.jpeg",
-          "width": 1951,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "opacity",
-      "text": "Dual Opacity\nThe Duolite® design option combines two opacities in one shade. \nThe exposed middle moving rail allows you to easily cover larger windows.\nTwo-On-One Headrail\nTwo independently operated shades can share the same headrail.\nSidelights\nOperable and non-operable Applause shades are available for sidelights. \n(Operable sidelights not available in Canada) \nDouble Cell\nConserve more energy at the window with a double-cell construction.\nTop-Down/Bottom-Up\nOpen the shade from the top or bottom for a greater range \nof light control. (Top-Down/Bottom-Up is not available in Canada) \nSpecialty Shapes\nCover windows in your home that have unusual shapes or sizes.\nDesign Options\nFrench Doors\nApplause® shades are a perfect solution for French doors. Secure the \nbottom rail with magnetic hold-down brackets.",
-      "images": [
-        {
-          "filename": "page021_img01_765x436.jpeg",
-          "width": 765,
-          "height": 436
-        },
-        {
-          "filename": "page021_img02_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page021_img03_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page021_img04_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page021_img05_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page021_img06_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page021_img07_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        }
-      ]
-    },
-    {
-      "page": 32,
-      "category": "opacity",
-      "text": "Cell Size and Opacity\n¾\" Light Filtering\n¾\" Room Darkening",
-      "images": [
-        {
-          "filename": "page032_img01_1194x1206.jpeg",
-          "width": 1194,
-          "height": 1206
-        },
-        {
-          "filename": "page032_img02_1194x1200.jpeg",
-          "width": 1194,
-          "height": 1200
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1955x1506.jpeg",
-          "width": 1955,
-          "height": 1506
-        },
-        {
-          "filename": "page005_img02_978x1505.jpeg",
-          "width": 978,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Fabric Sunterra™    Color New Noir\nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page006_img01_2930x1506.jpeg",
-          "width": 2930,
-          "height": 1506
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "Fabric Amity™    Color Grayscale\nFrom the makers \nof Duette®, \nenergy-efficient \nApplause® \nHoneycomb Shades \nare available in \na selection of \non-trend fabrics.",
-      "images": [
-        {
-          "filename": "page007_img01_3043x1505.jpeg",
-          "width": 3043,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "category": "gallery",
-      "text": "The Applause® Amity™  \nfabric collection \nfeatures an innovative \nprint providing the \nlook of stunning texture.\nFabric Amity™    Color Grayscale\nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page008_img01_3045x1505.jpeg",
-          "width": 3045,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "Fabric Legends™    Color Rolling Fog\nOperating System PowerView® Automation \nPowerView® App with Scene Controller",
-      "images": [
-        {
-          "filename": "page010_img01_2618x1505.jpeg",
-          "width": 2618,
-          "height": 1505
-        },
-        {
-          "filename": "page010_img02_764x1013.jpeg",
-          "width": 764,
-          "height": 1013
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "gallery",
-      "text": "Applause® shades are \noffered as a Whole \nHouse Solution™ for \nvertical and horizontal \napplications. \nFabric Kinship™    Color Mystic\nOperating System PowerView® Automation, Vertiglide™",
-      "images": [
-        {
-          "filename": "page013_img01_3047x1507.jpeg",
-          "width": 3047,
-          "height": 1507
-        }
-      ]
-    },
-    {
-      "page": 25,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page025_img01_3009x2428.jpeg",
-          "width": 3009,
-          "height": 2428
-        }
-      ]
-    },
-    {
-      "page": 26,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page026_img01_3009x3010.jpeg",
-          "width": 3009,
-          "height": 3010
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [
-    {
-      "page": 33,
-      "category": "hardware",
-      "text": "Hardware Color Guide\n048 Black V\n135 Whispering \nHeather\n180 Dove Gray V\n202 Paprika\n205 Fawn\n218 Peppercorn\n221 Aspen Snow\n276 Silverado V\n320 Rich Cream V\n323 Pumpkin V\n324 Stone V\n466 Honey Maple\n556 Woven Basket\n575 Gray Cloud\n578 Mediterranean \nBreeze\n580 Midnight Oil V\n609 Falcon Gray\n661 White Tiara V\n669 Beijing Gray\n683 Pearl Gray\n685 Blue Sky V\n689 Ash\n758 Shimmering \nOcean V\n785 Aspen White V\n810 Mushroom V\n841 Dark Blonde V\n849 Mocha\n862 Gardenia \nWhite V\n878 Frosted Ice V\n882 Honey  \nBisque V\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nV  \u0007Offered for both Horizontal and Vertical Hardware.",
-      "images": [
-        {
-          "filename": "page033_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img10_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img11_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img12_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img13_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img14_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img15_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img16_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img17_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img18_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img19_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img20_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img21_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img22_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img23_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img24_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img25_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img26_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img27_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img28_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img29_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page033_img30_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    },
-    {
-      "page": 34,
-      "category": "hardware",
-      "text": "Hardware Color Coordination\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nCrystalline™   \nHorizontal Hardware  \nVertical Hardware \n513 Rock Crystal \n661 White Tiara \n661 White Tiara\n514 Rose Quartz \n878 Frosted Ice \n878 Frosted Ice\n515 Sheer Citrine \n862 Gardenia White \n862 Gardenia White\nVintage™   \nHorizontal Hardware  \nVertical Hardware \n300 Retro White \n320 Rich Cream \n320 Rich Cream\n303 Tea Biscuit \n882 Honey Bisque \n882 Honey Bisque\n308 Tintype \n180 Dove Gray \n180 Dove Gray\n309 Potpourri \n556 Woven Basket \n556 Woven Basket\n310 Sepia \n849 Mocha \n810 Mushroom\n311 Aged Onyx \n580 Midnight Oil \n580 Midnight Oil\n312 Weathered Windmill \n609 Falcon Gray \n276 Silverado\n313 Pencil Sketch \n580 Midnight Oil \n580 Midnight Oil \n327 Café Au Lait \n689 Ash \n180 Dove Gray\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n1248 Igloo \n221 Aspen Snow \n785 Aspen White\n1249 Cadium \n135 Whispering Heather \n324 Stone\nAmity™   \nHorizontal Hardware  \nVertical Hardware \n1270 Bay Salt \n669 Beijing Gray \n862 Gardenia White\n1271 Soft Wool \n221 Aspen Snow \n785 Aspen White\n1272 Grayscale \n609 Falcon Gray \n276 Silverado\n1273 Aiden \n669 Beijing Gray \n862 Gardenia White\n1274 Tash \n689 Ash \n180 Dove Gray\n1275 Young Cedar \n580 Midnight Oil \n580 Midnight Oil\nLegends™   \nHorizontal Hardware  \nVertical Hardware  \n401 Porcelain \n661 White Tiara \n661 White Tiara\n402 Pearl \n683 Pearl \n320 Rich Cream\n403 Parchment \n320 Rich Cream \n320 Rich Cream\n408 Putty \n862 Gardenia White \n862 Gardenia White\n410 Camel \n556 Woven Basket \n556 Woven Basket\n411 Rolling Fog \n218 Peppercorn \n276 Silverado\n424 Sandcastle \n862 Gardenia White \n862 Gardenia White\n442 Buttercream \n320 Rich Cream \n320 Rich Cream\n460 Espresso \n810 Mushroom \n810 Mushroom\n1238 Gold Rush \n882 Honey Bisque \n882 Honey Bisque\n1239 Wooded Mist \n135 Whispering Heather \n324 Stone\n1240 Lakehouse \n609 Falcon Gray \n276 Silverado\nSunterra™   \nHorizontal Hardware  \nVertical Hardware \n599 Frostline \n661 White Tiara \n661 White Tiara\n600 Moonlight \n221 Aspen Snow \n661 White Tiara\n630 Honey Wheat \n882 Honey Bisque \n882 Honey Bisque\n635 Driftwood \n862 Gardenia White \n862 Gardenia White\n640 Chestnut \n810 Mushroom \n810 Mushroom\n652 Aqua Spray \n785 Aspen White \n785 Aspen White\n653 Twilight Blue \n685 Blue Sky \n685 Blue Sky\n656 Creamy Oat \n878 Frosted Ice \n878 Frosted Ice\n657 Cloud \n320 Rich Cream \n320 Rich Cream\n658 Sea Salt \n320 Rich Cream \n320 Rich Cream\n659 Sand Dune \n882 Honey Bisque \n882 Honey Bisque\n660 Mushroom \n205 Fawn \n556 Woven Basket\n661 Pinecone \n841 Dark Blonde \n841 Dark Blonde\n663 Reef \n758 Shimmering Ocean \n758 Shimmering Ocean\n669 Desert \n466 Honey Maple \n882 Honey Bisque\n689 Silver Lining \n669 Beijing Gray \n276 Silverado\n1241 Zirconia \n785 Aspen White \n785 Aspen White\n1242 Lavender Calm \n575 Gray Cloud \n276 Silverado\n1250 Kobi \n878 Frosted Ice \n878 Frosted Ice\n1243 Cornucopia \n323 Pumpkin \n323 Pumpkin\n1244 Cranberry \n202 Paprika \n320 Rich Cream\n1245 Cielo \n609 Falcon Gray \n276 Silverado\n1246 Laurel \n135 Whispering Heather \n324 Stone\n1247 New Noir \n048 Black \n048 Black\nKinship™   \nHorizontal Hardware  \nVertical Hardware  \n753 Twilight \n575 Gray Cloud \n276 Silverado\n754 Warm Stone \n180 Dove Gray \n180 Dove Gray\n755 Ocean Dusk \n580 Midnight Oil \n580 Midnight Oil\n756 Beach Glass \n578 Mediterranean Breeze \n785 Aspen White\n766 Calm \n661 White Tiara \n661 White Tiara\n767 Summer Wish \n862 Gardenia White \n862 Gardenia White\n768 Sun Light \n882 Honey Bisque \n882 Honey Bisque\n769 Honeysuckle \n882 Honey Bisque \n882 Honey Bisque\n770 Canoe \n841 Dark Blonde \n841 Dark Blonde\n772 Gelato \n862 Gardenia White \n862 Gardenia White\n776 Sun Tea \n556 Woven Basket \n556 Woven Basket\n1237 Mystic \n221 Aspen Snow \n785 Aspen White",
-      "images": []
-    }
-  ],
-  "fabric_swatches": {
-    "Other Colors": [
-      {
-        "image": "page035_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Rock Crystal",
-        "specs": [
-          "Sheer E20-513 (¾\")",
-          "TM Sheer",
-          "Sheer E20-514 (¾\")"
-        ]
-      },
-      {
-        "image": "page035_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Rose Quartz",
-        "specs": [
-          "Sheer E20-513 (¾\")",
-          "TM Sheer",
-          "Sheer E20-514 (¾\")"
-        ]
-      },
-      {
-        "image": "page036_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sheer Citrine",
-        "specs": [
-          "Sheer E20-515 (¾\")",
-          "TM Sheer"
-        ]
-      },
-      {
-        "image": "page037_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Igloo",
-        "specs": [
-          "Light Filtering E50-1248 (¾\")",
-          "Room Darkening E51-1248 (¾\")",
-          "Light Filtering E50-300 (¾\")"
-        ]
-      },
-      {
-        "image": "page037_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Retro White",
-        "specs": [
-          "Light Filtering E50-1248 (¾\")",
-          "Room Darkening E51-1248 (¾\")",
-          "Light Filtering E50-300 (¾\")"
-        ]
-      },
-      {
-        "image": "page038_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Tea Biscuit",
-        "specs": [
-          "Light Filtering E50-303 (¾\")",
-          "Room Darkening E51-303 (¾\")",
-          "Light Filtering E50-309 (¾\")"
-        ]
-      },
-      {
-        "image": "page038_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Potpourri",
-        "specs": [
-          "Light Filtering E50-303 (¾\")",
-          "Room Darkening E51-303 (¾\")",
-          "Light Filtering E50-309 (¾\")"
-        ]
-      },
-      {
-        "image": "page039_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Tintype",
-        "specs": [
-          "Light Filtering E50-308 (¾\")",
-          "Room Darkening E51-308 (¾\")",
-          "Light Filtering E50-327 (¾\")"
-        ]
-      },
-      {
-        "image": "page039_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Café Au Lait",
-        "specs": [
-          "Light Filtering E50-308 (¾\")",
-          "Room Darkening E51-308 (¾\")",
-          "Light Filtering E50-327 (¾\")"
-        ]
-      },
-      {
-        "image": "page040_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Cadium",
-        "specs": [
-          "Light Filtering E50-1249 (¾\")",
-          "Room Darkening E51-1249 (¾\")",
-          "Light Filtering E50-713 (¾\")"
-        ]
-      },
-      {
-        "image": "page040_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Light Filtering E50-1249 (¾\")",
-          "Room Darkening E51-1249 (¾\")",
-          "Light Filtering E50-713 (¾\")"
-        ]
-      },
-      {
-        "image": "page041_img01_475x825.png",
-        "width": 475,
-        "height": 825,
-        "color_name": "Pencil Sketch",
-        "specs": [
-          "Light Filtering E50-313 (¾\")",
-          "Room Darkening E51-313 (¾\")",
-          "Light Filtering E50-312 (¾\")"
-        ]
-      },
-      {
-        "image": "page041_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Weathered Windmill",
-        "specs": [
-          "Light Filtering E50-313 (¾\")",
-          "Room Darkening E51-313 (¾\")",
-          "Light Filtering E50-312 (¾\")"
-        ]
-      },
-      {
-        "image": "page042_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Aged Onyx",
-        "specs": [
-          "Light Filtering E50-311 (¾\")",
-          "Room Darkening E51-311 (¾\")",
-          "Light Filtering E50-310 (¾\")"
-        ]
-      },
-      {
-        "image": "page042_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sepia",
-        "specs": [
-          "Light Filtering E50-311 (¾\")",
-          "Room Darkening E51-311 (¾\")",
-          "Light Filtering E50-310 (¾\")"
-        ]
-      },
-      {
-        "image": "page043_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Bay Salt",
-        "specs": [
-          "Light Filtering E54-1270 (¾\")",
-          "Room Darkening E55-1270 (¾\")",
-          "Light Filtering E54-1271 (¾\")"
-        ]
-      },
-      {
-        "image": "page043_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Soft Wool",
-        "specs": [
-          "Light Filtering E54-1270 (¾\")",
-          "Room Darkening E55-1270 (¾\")",
-          "Light Filtering E54-1271 (¾\")"
-        ]
-      },
-      {
-        "image": "page044_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Grayscale",
-        "specs": [
-          "Light Filtering E54-1272 (¾\")",
-          "Room Darkening E55-1272 (¾\")",
-          "Light Filtering E54-1273 (¾\")"
-        ]
-      },
-      {
-        "image": "page044_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Aiden",
-        "specs": [
-          "Light Filtering E54-1272 (¾\")",
-          "Room Darkening E55-1272 (¾\")",
-          "Light Filtering E54-1273 (¾\")"
-        ]
-      },
-      {
-        "image": "page045_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Tash",
-        "specs": [
-          "Light Filtering E54-1274 (¾\")",
-          "Room Darkening E55-1274 (¾\")",
-          "Light Filtering E54-1275 (¾\")"
-        ]
-      },
-      {
-        "image": "page045_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Young Cedar",
-        "specs": [
-          "Light Filtering E54-1274 (¾\")",
-          "Room Darkening E55-1274 (¾\")",
-          "Light Filtering E54-1275 (¾\")"
-        ]
-      },
-      {
-        "image": "page046_img01_475x825.png",
-        "width": 475,
-        "height": 825,
-        "color_name": "Porcelain",
-        "specs": [
-          "Light Filtering E6/E5-401 (¾\" & Double)",
-          "Room Darkening E3-401 (¾\")",
-          "Light Filtering E6/E5-402 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page046_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Pearl",
-        "specs": [
-          "Light Filtering E6/E5-401 (¾\" & Double)",
-          "Room Darkening E3-401 (¾\")",
-          "Light Filtering E6/E5-402 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page047_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Parchment",
-        "specs": [
-          "Light Filtering E6/E5-403 (¾\" & Double)",
-          "Room Darkening E3-403 (¾\")",
-          "Light Filtering E6/E5-442 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page047_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Buttercream",
-        "specs": [
-          "Light Filtering E6/E5-403 (¾\" & Double)",
-          "Room Darkening E3-403 (¾\")",
-          "Light Filtering E6/E5-442 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page048_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sandcastle",
-        "specs": [
-          "Light Filtering E6/E5-424 (¾\" & Double)",
-          "Room Darkening E3-424 (¾\")",
-          "Light Filtering E6/E5-410 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page048_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Camel",
-        "specs": [
-          "Light Filtering E6/E5-424 (¾\" & Double)",
-          "Room Darkening E3-424 (¾\")",
-          "Light Filtering E6/E5-410 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page049_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Putty",
-        "specs": [
-          "Light Filtering E6-408 (¾\")",
-          "Room Darkening E3-408 (¾\")",
-          "Light Filtering E6-1238 (¾\")"
-        ]
-      },
-      {
-        "image": "page049_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Gold Rush",
-        "specs": [
-          "Light Filtering E6-408 (¾\")",
-          "Room Darkening E3-408 (¾\")",
-          "Light Filtering E6-1238 (¾\")"
-        ]
-      },
-      {
-        "image": "page050_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Wooded Mist",
-        "specs": [
-          "Light Filtering E6-1239 (¾\")",
-          "Room Darkening E3-1239 (¾\")",
-          "Light Filtering E6-1240 (¾\")"
-        ]
-      },
-      {
-        "image": "page050_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Lakehouse",
-        "specs": [
-          "Light Filtering E6-1239 (¾\")",
-          "Room Darkening E3-1239 (¾\")",
-          "Light Filtering E6-1240 (¾\")"
-        ]
-      },
-      {
-        "image": "page051_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Rolling Fog",
-        "specs": [
-          "Light Filtering E6-411 (¾\")",
-          "Room Darkening E3-411 (¾\")",
-          "Light Filtering E6-460 (¾\")"
-        ]
-      },
-      {
-        "image": "page051_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Espresso",
-        "specs": [
-          "Light Filtering E6-411 (¾\")",
-          "Room Darkening E3-411 (¾\")",
-          "Light Filtering E6-460 (¾\")"
-        ]
-      },
-      {
-        "image": "page052_img01_475x825.png",
-        "width": 475,
-        "height": 825,
-        "color_name": "Frostline",
-        "specs": [
-          "Light Filtering E40-599 (¾\")",
-          "Room Darkening E41-599 (¾\")",
-          "Light Filtering E40-657 (¾\")"
-        ]
-      },
-      {
-        "image": "page052_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Cloud",
-        "specs": [
-          "Light Filtering E40-599 (¾\")",
-          "Room Darkening E41-599 (¾\")",
-          "Light Filtering E40-657 (¾\")"
-        ]
-      },
-      {
-        "image": "page053_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sea Salt",
-        "specs": [
-          "Light Filtering E40-658 (¾\")",
-          "Room Darkening E41-658 (¾\")",
-          "Light Filtering E40-659 (¾\")"
-        ]
-      },
-      {
-        "image": "page053_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sand Dune",
-        "specs": [
-          "Light Filtering E40-658 (¾\")",
-          "Room Darkening E41-658 (¾\")",
-          "Light Filtering E40-659 (¾\")"
-        ]
-      },
-      {
-        "image": "page054_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Mushroom",
-        "specs": [
-          "Light Filtering E40-660 (¾\")",
-          "Room Darkening E41-660 (¾\")",
-          "Light Filtering E40-1241 (¾\")"
-        ]
-      },
-      {
-        "image": "page054_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Zirconia",
-        "specs": [
-          "Light Filtering E40-660 (¾\")",
-          "Room Darkening E41-660 (¾\")",
-          "Light Filtering E40-1241 (¾\")"
-        ]
-      },
-      {
-        "image": "page055_img01_475x825.png",
-        "width": 475,
-        "height": 825,
-        "color_name": "Moonlight",
-        "specs": [
-          "Light Filtering E40-600 (¾\")",
-          "Room Darkening E41-600 (¾\")",
-          "Light Filtering E40-635 (¾\")"
-        ]
-      },
-      {
-        "image": "page055_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Driftwood",
-        "specs": [
-          "Light Filtering E40-600 (¾\")",
-          "Room Darkening E41-600 (¾\")",
-          "Light Filtering E40-635 (¾\")"
-        ]
-      },
-      {
-        "image": "page056_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Silver Lining",
-        "specs": [
-          "Light Filtering E40-689 (¾\")",
-          "Room Darkening E41-689 (¾\")",
-          "Light Filtering E40-630 (¾\")"
-        ]
-      },
-      {
-        "image": "page056_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Honey Wheat",
-        "specs": [
-          "Light Filtering E40-689 (¾\")",
-          "Room Darkening E41-689 (¾\")",
-          "Light Filtering E40-630 (¾\")"
-        ]
-      },
-      {
-        "image": "page057_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Pinecone",
-        "specs": [
-          "Light Filtering E40-661 (¾\")",
-          "Room Darkening E41-661 (¾\")",
-          "Light Filtering E40-640 (¾\")"
-        ]
-      },
-      {
-        "image": "page057_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Chestnut",
-        "specs": [
-          "Light Filtering E40-661 (¾\")",
-          "Room Darkening E41-661 (¾\")",
-          "Light Filtering E40-640 (¾\")"
-        ]
-      },
-      {
-        "image": "page058_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Lavender Calm",
-        "specs": [
-          "Light Filtering E40-1242 (¾\")",
-          "Room Darkening E41-1242 (¾\")",
-          "Light Filtering E40-1250 (¾\")"
-        ]
-      },
-      {
-        "image": "page058_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Kobi",
-        "specs": [
-          "Light Filtering E40-1242 (¾\")",
-          "Room Darkening E41-1242 (¾\")",
-          "Light Filtering E40-1250 (¾\")"
-        ]
-      },
-      {
-        "image": "page059_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Creamy Oat",
-        "specs": [
-          "Light Filtering E40-656 (¾\")",
-          "Room Darkening E41-656 (¾\")",
-          "Light Filtering E40-669 (¾\")"
-        ]
-      },
-      {
-        "image": "page059_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Desert",
-        "specs": [
-          "Light Filtering E40-656 (¾\")",
-          "Room Darkening E41-656 (¾\")",
-          "Light Filtering E40-669 (¾\")"
-        ]
-      },
-      {
-        "image": "page060_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Cornucopia",
-        "specs": [
-          "Light Filtering E40-1243 (¾\")",
-          "Room Darkening E41-1243 (¾\")",
-          "Light Filtering E40-1244 (¾\")"
-        ]
-      },
-      {
-        "image": "page060_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Cranberry",
-        "specs": [
-          "Light Filtering E40-1243 (¾\")",
-          "Room Darkening E41-1243 (¾\")",
-          "Light Filtering E40-1244 (¾\")"
-        ]
-      },
-      {
-        "image": "page061_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Cielo",
-        "specs": [
-          "Light Filtering E40-1245 (¾\")",
-          "Room Darkening E41-1245 (¾\")",
-          "Light Filtering E40-1246 (¾\")"
-        ]
-      },
-      {
-        "image": "page061_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Laurel",
-        "specs": [
-          "Light Filtering E40-1245 (¾\")",
-          "Room Darkening E41-1245 (¾\")",
-          "Light Filtering E40-1246 (¾\")"
-        ]
-      },
-      {
-        "image": "page062_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Aqua Spray",
-        "specs": [
-          "Light Filtering E40-652 (¾\")",
-          "Room Darkening E41-652 (¾\")",
-          "Light Filtering E40-663 (¾\")"
-        ]
-      },
-      {
-        "image": "page062_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Reef",
-        "specs": [
-          "Light Filtering E40-652 (¾\")",
-          "Room Darkening E41-652 (¾\")",
-          "Light Filtering E40-663 (¾\")"
-        ]
-      },
-      {
-        "image": "page063_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Twilight Blue",
-        "specs": [
-          "Light Filtering E40-653 (¾\")",
-          "Room Darkening E41-653 (¾\")",
-          "Light Filtering E40-1247 (¾\")"
-        ]
-      },
-      {
-        "image": "page063_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "New Noir",
-        "specs": [
-          "Light Filtering E40-653 (¾\")",
-          "Room Darkening E41-653 (¾\")",
-          "Light Filtering E40-1247 (¾\")"
-        ]
-      },
-      {
-        "image": "page064_img01_475x825.png",
-        "width": 475,
-        "height": 825,
-        "color_name": "Calm",
-        "specs": [
-          "Light Filtering E26/E28-766 (¾\" & Double)",
-          "Room Darkening E27-766 (¾\")",
-          "Light Filtering E26/E28-767 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page064_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Summer Wish",
-        "specs": [
-          "Light Filtering E26/E28-766 (¾\" & Double)",
-          "Room Darkening E27-766 (¾\")",
-          "Light Filtering E26/E28-767 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page065_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Gelato",
-        "specs": [
-          "Light Filtering E26/E28-772 (¾\" & Double)",
-          "Room Darkening E27-772 (¾\")",
-          "Light Filtering E26/E28-753 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page065_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Twilight",
-        "specs": [
-          "Light Filtering E26/E28-772 (¾\" & Double)",
-          "Room Darkening E27-772 (¾\")",
-          "Light Filtering E26/E28-753 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page066_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Canoe",
-        "specs": [
-          "Light Filtering E26/E28-770 (¾\" & Double)",
-          "Room Darkening E27-770 (¾\")",
-          "Light Filtering E26/E28-754 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page066_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Warm Stone",
-        "specs": [
-          "Light Filtering E26/E28-770 (¾\" & Double)",
-          "Room Darkening E27-770 (¾\")",
-          "Light Filtering E26/E28-754 (¾\" & Double)"
-        ]
-      },
-      {
-        "image": "page067_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Mystic",
-        "specs": [
-          "Light Filtering E26-1237 (¾\")",
-          "Room Darkening E27-1237 (¾\")",
-          "Light Filtering E26-768 (¾\")"
-        ]
-      },
-      {
-        "image": "page067_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sun Light",
-        "specs": [
-          "Light Filtering E26-1237 (¾\")",
-          "Room Darkening E27-1237 (¾\")",
-          "Light Filtering E26-768 (¾\")"
-        ]
-      },
-      {
-        "image": "page068_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Honeysuckle",
-        "specs": [
-          "Light Filtering E26-769 (¾\")",
-          "Room Darkening E27-769 (¾\")",
-          "Light Filtering E26-776 (¾\")"
-        ]
-      },
-      {
-        "image": "page068_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Sun Tea",
-        "specs": [
-          "Light Filtering E26-769 (¾\")",
-          "Room Darkening E27-769 (¾\")",
-          "Light Filtering E26-776 (¾\")"
-        ]
-      },
-      {
-        "image": "page069_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Beach Glass",
-        "specs": [
-          "Light Filtering E26-756 (¾\")",
-          "Room Darkening E27-756 (¾\")",
-          "Light Filtering E26-755 (¾\")"
-        ]
-      },
-      {
-        "image": "page069_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Ocean Dusk",
-        "specs": [
-          "Light Filtering E26-756 (¾\")",
-          "Room Darkening E27-756 (¾\")",
-          "Light Filtering E26-755 (¾\")"
-        ]
-      }
-    ],
-    "HDOrigins® Esprit": [
-      {
-        "image": "page070_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Free Spirit",
-        "specs": [
-          "Light Filtering E36-326 (¾\")",
-          "Room Darkening E37-326 (¾\")",
-          "Light Filtering E36-327 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page070_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Whimsy",
-        "specs": [
-          "Light Filtering E36-326 (¾\")",
-          "Room Darkening E37-326 (¾\")",
-          "Light Filtering E36-327 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page071_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Soul Shine",
-        "specs": [
-          "Light Filtering E36-328 (¾\")",
-          "Room Darkening E37-328 (¾\")",
-          "Light Filtering E36-329 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page071_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Hidden Gem",
-        "specs": [
-          "Light Filtering E36-328 (¾\")",
-          "Room Darkening E37-328 (¾\")",
-          "Light Filtering E36-329 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page072_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Barefoot Dreams",
-        "specs": [
-          "Light Filtering E36-330 (¾\")",
-          "Room Darkening E37-330 (¾\")",
-          "Light Filtering E36-331 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page072_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Wild Oats",
-        "specs": [
-          "Light Filtering E36-330 (¾\")",
-          "Room Darkening E37-330 (¾\")",
-          "Light Filtering E36-331 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page073_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Wildflower",
-        "specs": [
-          "Light Filtering E36-332 (¾\")",
-          "Room Darkening E37-332 (¾\")",
-          "Light Filtering E36-333 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page073_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Wanderlust",
-        "specs": [
-          "Light Filtering E36-332 (¾\")",
-          "Room Darkening E37-332 (¾\")",
-          "Light Filtering E36-333 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page074_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Imagine",
-        "specs": [
-          "Light Filtering E36-334 (¾\")",
-          "Room Darkening E37-334 (¾\")",
-          "Light Filtering E36-335 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page074_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Adventurous",
-        "specs": [
-          "Light Filtering E36-334 (¾\")",
-          "Room Darkening E37-334 (¾\")",
-          "Light Filtering E36-335 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page075_img01_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Dreamcatcher",
-        "specs": [
-          "Light Filtering E36-336 (¾\")",
-          "Room Darkening E37-336 (¾\")",
-          "Light Filtering E36-337 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      },
-      {
-        "image": "page075_img02_475x825.jpeg",
-        "width": 475,
-        "height": 825,
-        "color_name": "Gypsy Love",
-        "specs": [
-          "Light Filtering E36-336 (¾\")",
-          "Room Darkening E37-336 (¾\")",
-          "Light Filtering E36-337 (¾\")"
-        ],
-        "fabric_collection": "HDOrigins® Esprit"
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 8,
-    "benefits": 1,
-    "control": 5,
-    "design": 1,
-    "mounting": 1,
-    "details": 5,
-    "vane": 0,
-    "hardware": 2,
-    "swatch_collections": 2,
-    "swatch_colors": 81
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 8,
-    "design": 1,
-    "opacity": 5,
-    "control": 5,
-    "benefits": 1,
-    "mounting": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_table": 5,
-    "hardware": 2,
-    "swatch": 41
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 12,
+   "category": "control",
+   "text": "Combine your \nApplause® shades \nwith coordinating \nDesign Studio™ drapery \nor side panels for \nadded energy efficiency \nand a layered look at \nthe window.\nFabric Sunterra™    Color Cornucopia\nDesign Studio™ Drapery Fabric Esmery    Color Cottage\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)",
+   "images": [
+    {
+     "filename": "page012_img01_3042x1505.jpeg",
+     "width": 3042,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "control",
+   "text": "Red indicates \nwindows \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nEnergy Efficiency\nCost Savings\nShades help control the indoor temperature, so you can spend less \nto heat and cool your home. \nInsulation\nAn innovative, insulating design features an extra layer that protects your home \nfrom harsh outdoor temperatures.\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according \nto the sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by softly diffusing \nnatural sunlight within a room.\nYear-Round Comfort\nFabric Kinship™    Color Beach Glass\nOperating System LiteRise® \nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the summer.\nScan for AERC\nEnergy Ratings",
+   "images": [
+    {
+     "filename": "page015_img01_1953x1504.jpeg",
+     "width": 1953,
+     "height": 1504
+    },
+    {
+     "filename": "page015_img02_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page015_img03_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page015_img04_765x437.jpeg",
+     "width": 765,
+     "height": 437
+    },
+    {
+     "filename": "page015_img05_763x433.jpeg",
+     "width": 763,
+     "height": 433
+    },
+    {
+     "filename": "page015_img06_59x88.jpeg",
+     "width": 59,
+     "height": 88
+    },
+    {
+     "filename": "page015_img07_59x88.jpeg",
+     "width": 59,
+     "height": 88
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "control",
+   "text": "Fabric Sunterra™    Color Lavender Calm\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)      \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nLiteRise®\nThis cordless system lifts and \nlowers shades with the touch \nof a finger. \nUltraGlide®\nGently pull a single wand to \nlift and lower shades.\nOperating Systems\nChild Safety Labels on \nCorded Systems\nThese warning labels appear \non window fashions with \ncords to make consumers \naware of window cord \nhazards for children and pets.",
+   "images": [
+    {
+     "filename": "page018_img01_1094x1505.jpeg",
+     "width": 1094,
+     "height": 1505
+    },
+    {
+     "filename": "page018_img02_484x829.jpeg",
+     "width": 484,
+     "height": 829
+    },
+    {
+     "filename": "page018_img03_319x900.jpeg",
+     "width": 319,
+     "height": 900
+    },
+    {
+     "filename": "page018_img04_319x903.jpeg",
+     "width": 319,
+     "height": 903
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "control",
+   "text": "A Day With PowerView®  \n10:30 PM Bedtime\nShades close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nFabric Sunterra™    Color Lavender Calm\nOperating System PowerView® Automation     \nDesign Option Top-Down/Bottom-Up (Not available in Canada)      \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon \nand night\nEffortless Control\nCompatible with voice assistants and many home \nautomation systems*\nPrivacy and Security\nSchedule shades to move automatically, when you’re \nhome or away\nEnergy Efficiency \nProgram shades to be in the best positions to heat and \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable \nbattery, internal rechargeable battery and hardwiring capability\n*\u0007Some features require additional hardware and/or third-party equipment. \nVisit hunterdouglas.com for details.\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation",
+   "images": [
+    {
+     "filename": "page019_img01_777x537.jpeg",
+     "width": 777,
+     "height": 537
+    },
+    {
+     "filename": "page019_img02_727x455.jpeg",
+     "width": 727,
+     "height": 455
+    },
+    {
+     "filename": "page019_img03_727x455.jpeg",
+     "width": 727,
+     "height": 455
+    },
+    {
+     "filename": "page019_img04_726x455.jpeg",
+     "width": 726,
+     "height": 455
+    },
+    {
+     "filename": "page019_img05_3044x1505.jpeg",
+     "width": 3044,
+     "height": 1505
+    },
+    {
+     "filename": "page019_img06_484x829.jpeg",
+     "width": 484,
+     "height": 829
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "control",
+   "text": "Simplicity™** \nThis manual system is designed for skylights and other hard-to-reach windows. \nCan be oriented for top, bottom or side stack.\nVertiglide Traveling Center Stack \nShades open from the sides and close from the center. \n\nVertiglide Split Stack \nShades operate individually.\nSkyLift™*  \nThis system covers large skylights. Available with manual or \nmotorized operation, and in top stack only.\nVertiglide Right Stack \nRight stack opens from left to right.\n\nVertiglide™\nFor vertical applications such as patio doors, this system provides side-to-side \noperation. Offered in four stacking configurations.\nAdditional Operating Options\nVertiglide™ Left Stack\nLeft stack opens from right to left.\n*Available in Canada as a Duolite® option only.\n**Not available in Canada.\nEasyView™ Arch**  \nManual system for arched shaped window openings. An optional \nextension pole is available for hard-to-reach windows.",
+   "images": [
+    {
+     "filename": "page020_img01_765x437.jpeg",
+     "width": 765,
+     "height": 437
+    },
+    {
+     "filename": "page020_img02_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page020_img03_761x436.jpeg",
+     "width": 761,
+     "height": 436
+    },
+    {
+     "filename": "page020_img04_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page020_img05_766x439.jpeg",
+     "width": 766,
+     "height": 439
+    },
+    {
+     "filename": "page020_img06_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page020_img07_764x437.jpeg",
+     "width": 764,
+     "height": 437
+    },
+    {
+     "filename": "page020_img08_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    }
+   ]
+  }
+ ],
+ "design_options": [
+  {
+   "page": 9,
+   "category": "design",
+   "text": "Fabric Crystalline™ Sheer    Color Rock Crystal\nFabric Legends™    Color Lakehouse\nOperating System PowerView® Automation \nDesign Option Duolite®",
+   "images": [
+    {
+     "filename": "page009_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  }
+ ],
+ "mounting": [
+  {
+   "page": 22,
+   "category": "mounting",
+   "text": "Mounting Profiles\nFully Recessed\nVertiglide™ Sydney Valance \nVertiglide Grandover™ Valance \nPartially Recessed\nVertiglide™ Fully Recessed \nOutside Mount\nVertiglide Outside Mount",
+   "images": [
+    {
+     "filename": "page022_img01_764x454.jpeg",
+     "width": 764,
+     "height": 454
+    },
+    {
+     "filename": "page022_img02_764x454.jpeg",
+     "width": 764,
+     "height": 454
+    },
+    {
+     "filename": "page022_img03_765x454.jpeg",
+     "width": 765,
+     "height": 454
+    },
+    {
+     "filename": "page022_img04_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page022_img05_765x455.jpeg",
+     "width": 765,
+     "height": 455
+    },
+    {
+     "filename": "page022_img06_764x453.jpeg",
+     "width": 764,
+     "height": 453
+    },
+    {
+     "filename": "page022_img07_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    }
+   ]
+  }
+ ],
+ "product_details": [
+  {
+   "page": 11,
+   "category": "opacity",
+   "text": "Room Darkening\nFabric Vintage™   Color Café Au Lait\nOpacity Light Filtering\nOperating System LiteRise®  \nRoom Darkening",
+   "images": [
+    {
+     "filename": "page011_img01_1236x836.jpeg",
+     "width": 1236,
+     "height": 836
+    },
+    {
+     "filename": "page011_img02_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "opacity",
+   "text": "Room Darkening\nBlocks most incoming light with maximum privacy \nSheer\nProvides the most natural light and view-through with minimal privacy \nLight Filtering\nGently filters light and offers moderate privacy \nDuolite® Dual Opacity Design Option\nFeatures two opacities in one shade \nLight Control and Privacy\nFabric Crystalline™ Sheer    Color Rock Crystal\nFabric Legends™    Color Pearl\nOperating System PowerView® Automation, Vertiglide™ Split Stack \nDesign Option Duolite®",
+   "images": [
+    {
+     "filename": "page016_img01_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img02_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img03_762x455.jpeg",
+     "width": 762,
+     "height": 455
+    },
+    {
+     "filename": "page016_img04_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page016_img05_1952x1503.jpeg",
+     "width": 1952,
+     "height": 1503
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "opacity",
+   "text": "Duolite® with Sheer\nCombine a sheer fabric with a light-filtering or room-darkening fabric \nin a single shade. \nDuolite with Light Filtering\nCombine a light-filtering fabric with a room-darkening fabric \nin a single shade. \nDuolite® Design Option\nFabric Crystalline™ Sheer    Color Rock Crystal\nFabric Vintage™    Color Aged Onyx\nOperating System PowerView® Automation \nDesign Option Duolite®",
+   "images": [
+    {
+     "filename": "page017_img01_765x1015.jpeg",
+     "width": 765,
+     "height": 1015
+    },
+    {
+     "filename": "page017_img02_765x1017.jpeg",
+     "width": 765,
+     "height": 1017
+    },
+    {
+     "filename": "page017_img03_1951x1505.jpeg",
+     "width": 1951,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "opacity",
+   "text": "Dual Opacity\nThe Duolite® design option combines two opacities in one shade. \nThe exposed middle moving rail allows you to easily cover larger windows.\nTwo-On-One Headrail\nTwo independently operated shades can share the same headrail.\nSidelights\nOperable and non-operable Applause shades are available for sidelights. \n(Operable sidelights not available in Canada) \nDouble Cell\nConserve more energy at the window with a double-cell construction.\nTop-Down/Bottom-Up\nOpen the shade from the top or bottom for a greater range \nof light control. (Top-Down/Bottom-Up is not available in Canada) \nSpecialty Shapes\nCover windows in your home that have unusual shapes or sizes.\nDesign Options\nFrench Doors\nApplause® shades are a perfect solution for French doors. Secure the \nbottom rail with magnetic hold-down brackets.",
+   "images": [
+    {
+     "filename": "page021_img01_765x436.jpeg",
+     "width": 765,
+     "height": 436
+    },
+    {
+     "filename": "page021_img02_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page021_img03_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page021_img04_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page021_img05_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page021_img06_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page021_img07_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    }
+   ]
+  },
+  {
+   "page": 32,
+   "category": "opacity",
+   "text": "Cell Size and Opacity\n¾\" Light Filtering\n¾\" Room Darkening",
+   "images": [
+    {
+     "filename": "page032_img01_1194x1206.jpeg",
+     "width": 1194,
+     "height": 1206
+    },
+    {
+     "filename": "page032_img02_1194x1200.jpeg",
+     "width": 1194,
+     "height": 1200
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1955x1506.jpeg",
+     "width": 1955,
+     "height": 1506
+    },
+    {
+     "filename": "page005_img02_978x1505.jpeg",
+     "width": 978,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Fabric Sunterra™    Color New Noir\nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page006_img01_2930x1506.jpeg",
+     "width": 2930,
+     "height": 1506
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "Fabric Amity™    Color Grayscale\nFrom the makers \nof Duette®, \nenergy-efficient \nApplause® \nHoneycomb Shades \nare available in \na selection of \non-trend fabrics.",
+   "images": [
+    {
+     "filename": "page007_img01_3043x1505.jpeg",
+     "width": 3043,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "category": "gallery",
+   "text": "The Applause® Amity™  \nfabric collection \nfeatures an innovative \nprint providing the \nlook of stunning texture.\nFabric Amity™    Color Grayscale\nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page008_img01_3045x1505.jpeg",
+     "width": 3045,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "Fabric Legends™    Color Rolling Fog\nOperating System PowerView® Automation \nPowerView® App with Scene Controller",
+   "images": [
+    {
+     "filename": "page010_img01_2618x1505.jpeg",
+     "width": 2618,
+     "height": 1505
+    },
+    {
+     "filename": "page010_img02_764x1013.jpeg",
+     "width": 764,
+     "height": 1013
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "gallery",
+   "text": "Applause® shades are \noffered as a Whole \nHouse Solution™ for \nvertical and horizontal \napplications. \nFabric Kinship™    Color Mystic\nOperating System PowerView® Automation, Vertiglide™",
+   "images": [
+    {
+     "filename": "page013_img01_3047x1507.jpeg",
+     "width": 3047,
+     "height": 1507
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page025_img01_3009x2428.jpeg",
+     "width": 3009,
+     "height": 2428
+    }
+   ]
+  },
+  {
+   "page": 26,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page026_img01_3009x3010.jpeg",
+     "width": 3009,
+     "height": 3010
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [
+  {
+   "page": 33,
+   "category": "hardware",
+   "text": "Hardware Color Guide\n048 Black V\n135 Whispering \nHeather\n180 Dove Gray V\n202 Paprika\n205 Fawn\n218 Peppercorn\n221 Aspen Snow\n276 Silverado V\n320 Rich Cream V\n323 Pumpkin V\n324 Stone V\n466 Honey Maple\n556 Woven Basket\n575 Gray Cloud\n578 Mediterranean \nBreeze\n580 Midnight Oil V\n609 Falcon Gray\n661 White Tiara V\n669 Beijing Gray\n683 Pearl Gray\n685 Blue Sky V\n689 Ash\n758 Shimmering \nOcean V\n785 Aspen White V\n810 Mushroom V\n841 Dark Blonde V\n849 Mocha\n862 Gardenia \nWhite V\n878 Frosted Ice V\n882 Honey  \nBisque V\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nV  \u0007Offered for both Horizontal and Vertical Hardware.",
+   "images": [
+    {
+     "filename": "page033_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img10_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img11_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img12_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img13_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img14_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img15_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img16_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img17_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img18_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img19_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img20_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img21_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img22_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img23_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img24_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img25_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img26_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img27_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img28_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img29_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page033_img30_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  },
+  {
+   "page": 34,
+   "category": "hardware",
+   "text": "Hardware Color Coordination\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26\nCrystalline™   \nHorizontal Hardware  \nVertical Hardware \n513 Rock Crystal \n661 White Tiara \n661 White Tiara\n514 Rose Quartz \n878 Frosted Ice \n878 Frosted Ice\n515 Sheer Citrine \n862 Gardenia White \n862 Gardenia White\nVintage™   \nHorizontal Hardware  \nVertical Hardware \n300 Retro White \n320 Rich Cream \n320 Rich Cream\n303 Tea Biscuit \n882 Honey Bisque \n882 Honey Bisque\n308 Tintype \n180 Dove Gray \n180 Dove Gray\n309 Potpourri \n556 Woven Basket \n556 Woven Basket\n310 Sepia \n849 Mocha \n810 Mushroom\n311 Aged Onyx \n580 Midnight Oil \n580 Midnight Oil\n312 Weathered Windmill \n609 Falcon Gray \n276 Silverado\n313 Pencil Sketch \n580 Midnight Oil \n580 Midnight Oil \n327 Café Au Lait \n689 Ash \n180 Dove Gray\n713 Pearl Gray \n575 Gray Cloud \n276 Silverado\n1248 Igloo \n221 Aspen Snow \n785 Aspen White\n1249 Cadium \n135 Whispering Heather \n324 Stone\nAmity™   \nHorizontal Hardware  \nVertical Hardware \n1270 Bay Salt \n669 Beijing Gray \n862 Gardenia White\n1271 Soft Wool \n221 Aspen Snow \n785 Aspen White\n1272 Grayscale \n609 Falcon Gray \n276 Silverado\n1273 Aiden \n669 Beijing Gray \n862 Gardenia White\n1274 Tash \n689 Ash \n180 Dove Gray\n1275 Young Cedar \n580 Midnight Oil \n580 Midnight Oil\nLegends™   \nHorizontal Hardware  \nVertical Hardware  \n401 Porcelain \n661 White Tiara \n661 White Tiara\n402 Pearl \n683 Pearl \n320 Rich Cream\n403 Parchment \n320 Rich Cream \n320 Rich Cream\n408 Putty \n862 Gardenia White \n862 Gardenia White\n410 Camel \n556 Woven Basket \n556 Woven Basket\n411 Rolling Fog \n218 Peppercorn \n276 Silverado\n424 Sandcastle \n862 Gardenia White \n862 Gardenia White\n442 Buttercream \n320 Rich Cream \n320 Rich Cream\n460 Espresso \n810 Mushroom \n810 Mushroom\n1238 Gold Rush \n882 Honey Bisque \n882 Honey Bisque\n1239 Wooded Mist \n135 Whispering Heather \n324 Stone\n1240 Lakehouse \n609 Falcon Gray \n276 Silverado\nSunterra™   \nHorizontal Hardware  \nVertical Hardware \n599 Frostline \n661 White Tiara \n661 White Tiara\n600 Moonlight \n221 Aspen Snow \n661 White Tiara\n630 Honey Wheat \n882 Honey Bisque \n882 Honey Bisque\n635 Driftwood \n862 Gardenia White \n862 Gardenia White\n640 Chestnut \n810 Mushroom \n810 Mushroom\n652 Aqua Spray \n785 Aspen White \n785 Aspen White\n653 Twilight Blue \n685 Blue Sky \n685 Blue Sky\n656 Creamy Oat \n878 Frosted Ice \n878 Frosted Ice\n657 Cloud \n320 Rich Cream \n320 Rich Cream\n658 Sea Salt \n320 Rich Cream \n320 Rich Cream\n659 Sand Dune \n882 Honey Bisque \n882 Honey Bisque\n660 Mushroom \n205 Fawn \n556 Woven Basket\n661 Pinecone \n841 Dark Blonde \n841 Dark Blonde\n663 Reef \n758 Shimmering Ocean \n758 Shimmering Ocean\n669 Desert \n466 Honey Maple \n882 Honey Bisque\n689 Silver Lining \n669 Beijing Gray \n276 Silverado\n1241 Zirconia \n785 Aspen White \n785 Aspen White\n1242 Lavender Calm \n575 Gray Cloud \n276 Silverado\n1250 Kobi \n878 Frosted Ice \n878 Frosted Ice\n1243 Cornucopia \n323 Pumpkin \n323 Pumpkin\n1244 Cranberry \n202 Paprika \n320 Rich Cream\n1245 Cielo \n609 Falcon Gray \n276 Silverado\n1246 Laurel \n135 Whispering Heather \n324 Stone\n1247 New Noir \n048 Black \n048 Black\nKinship™   \nHorizontal Hardware  \nVertical Hardware  \n753 Twilight \n575 Gray Cloud \n276 Silverado\n754 Warm Stone \n180 Dove Gray \n180 Dove Gray\n755 Ocean Dusk \n580 Midnight Oil \n580 Midnight Oil\n756 Beach Glass \n578 Mediterranean Breeze \n785 Aspen White\n766 Calm \n661 White Tiara \n661 White Tiara\n767 Summer Wish \n862 Gardenia White \n862 Gardenia White\n768 Sun Light \n882 Honey Bisque \n882 Honey Bisque\n769 Honeysuckle \n882 Honey Bisque \n882 Honey Bisque\n770 Canoe \n841 Dark Blonde \n841 Dark Blonde\n772 Gelato \n862 Gardenia White \n862 Gardenia White\n776 Sun Tea \n556 Woven Basket \n556 Woven Basket\n1237 Mystic \n221 Aspen Snow \n785 Aspen White",
+   "images": []
+  }
+ ],
+ "fabric_swatches": {
+  "Other Colors": [
+   {
+    "image": "page035_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Rock Crystal",
+    "specs": [
+     "Sheer E20-513 (¾\")"
+    ]
+   },
+   {
+    "image": "page035_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Rose Quartz",
+    "specs": [
+     "Sheer E20-514 (¾\")"
+    ]
+   },
+   {
+    "image": "page036_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sheer Citrine",
+    "specs": [
+     "Sheer E20-515 (¾\")"
+    ]
+   },
+   {
+    "image": "page037_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Igloo",
+    "specs": [
+     "Light Filtering E50-1248 (¾\")",
+     "Room Darkening E51-1248 (¾\")"
+    ]
+   },
+   {
+    "image": "page037_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Retro White",
+    "specs": [
+     "Light Filtering E50-300 (¾\")",
+     "Room Darkening E51-300 (¾\")"
+    ]
+   },
+   {
+    "image": "page038_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Tea Biscuit",
+    "specs": [
+     "Light Filtering E50-303 (¾\")",
+     "Room Darkening E51-303 (¾\")"
+    ]
+   },
+   {
+    "image": "page038_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Potpourri",
+    "specs": [
+     "Light Filtering E50-309 (¾\")",
+     "Room Darkening E51-309 (¾\")"
+    ]
+   },
+   {
+    "image": "page039_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Tintype",
+    "specs": [
+     "Light Filtering E50-308 (¾\")",
+     "Room Darkening E51-308 (¾\")"
+    ]
+   },
+   {
+    "image": "page039_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Café Au Lait",
+    "specs": [
+     "Light Filtering E50-327 (¾\")",
+     "Room Darkening E51-327 (¾\")"
+    ]
+   },
+   {
+    "image": "page040_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Cadium",
+    "specs": [
+     "Light Filtering E50-1249 (¾\")",
+     "Room Darkening E51-1249 (¾\")"
+    ]
+   },
+   {
+    "image": "page040_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Light Filtering E50-713 (¾\")",
+     "Room Darkening E51-713 (¾\")"
+    ]
+   },
+   {
+    "image": "page041_img01_475x825.png",
+    "width": 475,
+    "height": 825,
+    "color_name": "Pencil Sketch",
+    "specs": [
+     "Light Filtering E50-313 (¾\")",
+     "Room Darkening E51-313 (¾\")"
+    ]
+   },
+   {
+    "image": "page041_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Weathered Windmill",
+    "specs": [
+     "Light Filtering E50-312 (¾\")",
+     "Room Darkening E51-312 (¾\")"
+    ]
+   },
+   {
+    "image": "page042_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Aged Onyx",
+    "specs": [
+     "Light Filtering E50-311 (¾\")",
+     "Room Darkening E51-311 (¾\")"
+    ]
+   },
+   {
+    "image": "page042_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sepia",
+    "specs": [
+     "Light Filtering E50-310 (¾\")",
+     "Room Darkening E51-310 (¾\")"
+    ]
+   },
+   {
+    "image": "page043_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Bay Salt",
+    "specs": [
+     "Light Filtering E54-1270 (¾\")",
+     "Room Darkening E55-1270 (¾\")"
+    ]
+   },
+   {
+    "image": "page043_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Soft Wool",
+    "specs": [
+     "Light Filtering E54-1271 (¾\")",
+     "Room Darkening E55-1271 (¾\")"
+    ]
+   },
+   {
+    "image": "page044_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Grayscale",
+    "specs": [
+     "Light Filtering E54-1272 (¾\")",
+     "Room Darkening E55-1272 (¾\")"
+    ]
+   },
+   {
+    "image": "page044_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Aiden",
+    "specs": [
+     "Light Filtering E54-1273 (¾\")",
+     "Room Darkening E55-1273 (¾\")"
+    ]
+   },
+   {
+    "image": "page045_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Tash",
+    "specs": [
+     "Light Filtering E54-1274 (¾\")",
+     "Room Darkening E55-1274 (¾\")"
+    ]
+   },
+   {
+    "image": "page045_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Young Cedar",
+    "specs": [
+     "Light Filtering E54-1275 (¾\")",
+     "Room Darkening E55-1275 (¾\")"
+    ]
+   },
+   {
+    "image": "page046_img01_475x825.png",
+    "width": 475,
+    "height": 825,
+    "color_name": "Porcelain",
+    "specs": [
+     "Light Filtering E6/E5-401 (¾\" & Double)",
+     "Room Darkening E3-401 (¾\")"
+    ]
+   },
+   {
+    "image": "page046_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Pearl",
+    "specs": [
+     "Light Filtering E6/E5-402 (¾\" & Double)",
+     "Room Darkening E3-402 (¾\")"
+    ]
+   },
+   {
+    "image": "page047_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Parchment",
+    "specs": [
+     "Light Filtering E6/E5-403 (¾\" & Double)",
+     "Room Darkening E3-403 (¾\")"
+    ]
+   },
+   {
+    "image": "page047_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Buttercream",
+    "specs": [
+     "Light Filtering E6/E5-442 (¾\" & Double)",
+     "Room Darkening E3-442 (¾\")"
+    ]
+   },
+   {
+    "image": "page048_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sandcastle",
+    "specs": [
+     "Light Filtering E6/E5-424 (¾\" & Double)",
+     "Room Darkening E3-424 (¾\")"
+    ]
+   },
+   {
+    "image": "page048_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Camel",
+    "specs": [
+     "Light Filtering E6/E5-410 (¾\" & Double)",
+     "Room Darkening E3-410 (¾\")"
+    ]
+   },
+   {
+    "image": "page049_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Putty",
+    "specs": [
+     "Light Filtering E6-408 (¾\")",
+     "Room Darkening E3-408 (¾\")"
+    ]
+   },
+   {
+    "image": "page049_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Gold Rush",
+    "specs": [
+     "Light Filtering E6-1238 (¾\")",
+     "Room Darkening E3-1238 (¾\")"
+    ]
+   },
+   {
+    "image": "page050_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Wooded Mist",
+    "specs": [
+     "Light Filtering E6-1239 (¾\")",
+     "Room Darkening E3-1239 (¾\")"
+    ]
+   },
+   {
+    "image": "page050_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Lakehouse",
+    "specs": [
+     "Light Filtering E6-1240 (¾\")",
+     "Room Darkening E3-1240 (¾\")"
+    ]
+   },
+   {
+    "image": "page051_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Rolling Fog",
+    "specs": [
+     "Light Filtering E6-411 (¾\")",
+     "Room Darkening E3-411 (¾\")"
+    ]
+   },
+   {
+    "image": "page051_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Espresso",
+    "specs": [
+     "Light Filtering E6-460 (¾\")",
+     "Room Darkening E3-460 (¾\")"
+    ]
+   },
+   {
+    "image": "page052_img01_475x825.png",
+    "width": 475,
+    "height": 825,
+    "color_name": "Frostline",
+    "specs": [
+     "Light Filtering E40-599 (¾\")",
+     "Room Darkening E41-599 (¾\")"
+    ]
+   },
+   {
+    "image": "page052_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Cloud",
+    "specs": [
+     "Light Filtering E40-657 (¾\")",
+     "Room Darkening E41-657 (¾\")"
+    ]
+   },
+   {
+    "image": "page053_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sea Salt",
+    "specs": [
+     "Light Filtering E40-658 (¾\")",
+     "Room Darkening E41-658 (¾\")"
+    ]
+   },
+   {
+    "image": "page053_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sand Dune",
+    "specs": [
+     "Light Filtering E40-659 (¾\")",
+     "Room Darkening E41-659 (¾\")"
+    ]
+   },
+   {
+    "image": "page054_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Mushroom",
+    "specs": [
+     "Light Filtering E40-660 (¾\")",
+     "Room Darkening E41-660 (¾\")"
+    ]
+   },
+   {
+    "image": "page054_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Zirconia",
+    "specs": [
+     "Light Filtering E40-1241 (¾\")",
+     "Room Darkening E41-1241 (¾\")"
+    ]
+   },
+   {
+    "image": "page055_img01_475x825.png",
+    "width": 475,
+    "height": 825,
+    "color_name": "Moonlight",
+    "specs": [
+     "Light Filtering E40-600 (¾\")",
+     "Room Darkening E41-600 (¾\")"
+    ]
+   },
+   {
+    "image": "page055_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Driftwood",
+    "specs": [
+     "Light Filtering E40-635 (¾\")",
+     "Room Darkening E41-635 (¾\")"
+    ]
+   },
+   {
+    "image": "page056_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Silver Lining",
+    "specs": [
+     "Light Filtering E40-689 (¾\")",
+     "Room Darkening E41-689 (¾\")"
+    ]
+   },
+   {
+    "image": "page056_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Honey Wheat",
+    "specs": [
+     "Light Filtering E40-630 (¾\")",
+     "Room Darkening E41-630 (¾\")"
+    ]
+   },
+   {
+    "image": "page057_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Pinecone",
+    "specs": [
+     "Light Filtering E40-661 (¾\")",
+     "Room Darkening E41-661 (¾\")"
+    ]
+   },
+   {
+    "image": "page057_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Chestnut",
+    "specs": [
+     "Light Filtering E40-640 (¾\")",
+     "Room Darkening E41-640 (¾\")"
+    ]
+   },
+   {
+    "image": "page058_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Lavender Calm",
+    "specs": [
+     "Light Filtering E40-1242 (¾\")",
+     "Room Darkening E41-1242 (¾\")"
+    ]
+   },
+   {
+    "image": "page058_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Kobi",
+    "specs": [
+     "Light Filtering E40-1250 (¾\")",
+     "Room Darkening E41-1250 (¾\")"
+    ]
+   },
+   {
+    "image": "page059_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Creamy Oat",
+    "specs": [
+     "Light Filtering E40-656 (¾\")",
+     "Room Darkening E41-656 (¾\")"
+    ]
+   },
+   {
+    "image": "page059_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Desert",
+    "specs": [
+     "Light Filtering E40-669 (¾\")",
+     "Room Darkening E41-669 (¾\")"
+    ]
+   },
+   {
+    "image": "page060_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Cornucopia",
+    "specs": [
+     "Light Filtering E40-1243 (¾\")",
+     "Room Darkening E41-1243 (¾\")"
+    ]
+   },
+   {
+    "image": "page060_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Cranberry",
+    "specs": [
+     "Light Filtering E40-1244 (¾\")",
+     "Room Darkening E41-1244 (¾\")"
+    ]
+   },
+   {
+    "image": "page061_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Cielo",
+    "specs": [
+     "Light Filtering E40-1245 (¾\")",
+     "Room Darkening E41-1245 (¾\")"
+    ]
+   },
+   {
+    "image": "page061_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Laurel",
+    "specs": [
+     "Light Filtering E40-1246 (¾\")",
+     "Room Darkening E41-1246 (¾\")"
+    ]
+   },
+   {
+    "image": "page062_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Aqua Spray",
+    "specs": [
+     "Light Filtering E40-652 (¾\")",
+     "Room Darkening E41-652 (¾\")"
+    ]
+   },
+   {
+    "image": "page062_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Reef",
+    "specs": [
+     "Light Filtering E40-663 (¾\")",
+     "Room Darkening E41-663 (¾\")"
+    ]
+   },
+   {
+    "image": "page063_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Twilight Blue",
+    "specs": [
+     "Light Filtering E40-653 (¾\")",
+     "Room Darkening E41-653 (¾\")"
+    ]
+   },
+   {
+    "image": "page063_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "New Noir",
+    "specs": [
+     "Light Filtering E40-1247 (¾\")",
+     "Room Darkening E41-1247 (¾\")"
+    ]
+   },
+   {
+    "image": "page064_img01_475x825.png",
+    "width": 475,
+    "height": 825,
+    "color_name": "Calm",
+    "specs": [
+     "Light Filtering E26/E28-766 (¾\" & Double)",
+     "Room Darkening E27-766 (¾\")"
+    ]
+   },
+   {
+    "image": "page064_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Summer Wish",
+    "specs": [
+     "Light Filtering E26/E28-767 (¾\" & Double)",
+     "Room Darkening E27-767 (¾\")"
+    ]
+   },
+   {
+    "image": "page065_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Gelato",
+    "specs": [
+     "Light Filtering E26/E28-772 (¾\" & Double)",
+     "Room Darkening E27-772 (¾\")"
+    ]
+   },
+   {
+    "image": "page065_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Twilight",
+    "specs": [
+     "Light Filtering E26/E28-753 (¾\" & Double)",
+     "Room Darkening E27-753 (¾\")"
+    ]
+   },
+   {
+    "image": "page066_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Canoe",
+    "specs": [
+     "Light Filtering E26/E28-770 (¾\" & Double)",
+     "Room Darkening E27-770 (¾\")"
+    ]
+   },
+   {
+    "image": "page066_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Warm Stone",
+    "specs": [
+     "Light Filtering E26/E28-754 (¾\" & Double)",
+     "Room Darkening E27-754 (¾\")"
+    ]
+   },
+   {
+    "image": "page067_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Mystic",
+    "specs": [
+     "Light Filtering E26-1237 (¾\")",
+     "Room Darkening E27-1237 (¾\")"
+    ]
+   },
+   {
+    "image": "page067_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sun Light",
+    "specs": [
+     "Light Filtering E26-768 (¾\")",
+     "Room Darkening E27-768 (¾\")"
+    ]
+   },
+   {
+    "image": "page068_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Honeysuckle",
+    "specs": [
+     "Light Filtering E26-769 (¾\")",
+     "Room Darkening E27-769 (¾\")"
+    ]
+   },
+   {
+    "image": "page068_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Sun Tea",
+    "specs": [
+     "Light Filtering E26-776 (¾\")",
+     "Room Darkening E27-776 (¾\")"
+    ]
+   },
+   {
+    "image": "page069_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Beach Glass",
+    "specs": [
+     "Light Filtering E26-756 (¾\")",
+     "Room Darkening E27-756 (¾\")"
+    ]
+   },
+   {
+    "image": "page069_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Ocean Dusk",
+    "specs": [
+     "Light Filtering E26-755 (¾\")",
+     "Room Darkening E27-755 (¾\")"
+    ]
+   }
+  ],
+  "HDOrigins® Esprit": [
+   {
+    "image": "page070_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Free Spirit",
+    "specs": [
+     "Light Filtering E36-326 (¾\")",
+     "Room Darkening E37-326 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page070_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Whimsy",
+    "specs": [
+     "Light Filtering E36-327 (¾\")",
+     "Room Darkening E37-327 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page071_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Soul Shine",
+    "specs": [
+     "Light Filtering E36-328 (¾\")",
+     "Room Darkening E37-328 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page071_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Hidden Gem",
+    "specs": [
+     "Light Filtering E36-329 (¾\")",
+     "Room Darkening E37-329 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page072_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Barefoot Dreams",
+    "specs": [
+     "Light Filtering E36-330 (¾\")",
+     "Room Darkening E37-330 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page072_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Wild Oats",
+    "specs": [
+     "Light Filtering E36-331 (¾\")",
+     "Room Darkening E37-331 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page073_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Wildflower",
+    "specs": [
+     "Light Filtering E36-332 (¾\")",
+     "Room Darkening E37-332 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page073_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Wanderlust",
+    "specs": [
+     "Light Filtering E36-333 (¾\")",
+     "Room Darkening E37-333 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page074_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Imagine",
+    "specs": [
+     "Light Filtering E36-334 (¾\")",
+     "Room Darkening E37-334 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page074_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Adventurous",
+    "specs": [
+     "Light Filtering E36-335 (¾\")",
+     "Room Darkening E37-335 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page075_img01_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Dreamcatcher",
+    "specs": [
+     "Light Filtering E36-336 (¾\")",
+     "Room Darkening E37-336 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   },
+   {
+    "image": "page075_img02_475x825.jpeg",
+    "width": 475,
+    "height": 825,
+    "color_name": "Gypsy Love",
+    "specs": [
+     "Light Filtering E36-337 (¾\")",
+     "Room Darkening E37-337 (¾\")"
+    ],
+    "fabric_collection": "HDOrigins® Esprit"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 8,
+  "benefits": 1,
+  "control": 5,
+  "design": 1,
+  "mounting": 1,
+  "details": 5,
+  "vane": 0,
+  "hardware": 2,
+  "swatch_collections": 2,
+  "swatch_colors": 81
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 8,
+  "design": 1,
+  "opacity": 5,
+  "control": 5,
+  "benefits": 1,
+  "mounting": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_table": 5,
+  "hardware": 2,
+  "swatch": 41
+ }
 }

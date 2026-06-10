@@ -1,1540 +1,1448 @@
 {
-  "id": "hd-pirouette-digital-sample-book",
-  "name": "Pirouette® Window Shadings",
-  "slug": "pirouette",
-  "description": "Pirouette® Window Shadings feature soft horizontal fabric vanes attached to a single sheer backing that gently diffuses incoming light.",
-  "cover_image": "page002_img01_4209x3009.jpeg",
-  "benefits": [
+ "id": "hd-pirouette-digital-sample-book",
+ "name": "Pirouette® Window Shadings",
+ "slug": "pirouette",
+ "description": "Pirouette® Window Shadings feature soft horizontal fabric vanes attached to a single sheer backing that gently diffuses incoming light.",
+ "cover_image": "page002_img01_4209x3009.jpeg",
+ "benefits": [
+  {
+   "page": 14,
+   "category": "benefits",
+   "text": "BENEFITS\nBenefits\nBeautiful Light Control\nSoft, contoured fabric vanes, whether open, closed or  \nanywhere in between, offer exquisite light control.\nExpansive View\nOur exclusive back sheers and innovative Invisi-Lift™  \nsystem provide unparalleled views. \nUV Protection \nWith fabric vanes open or closed, Pirouette® shadings block the sun’s  \nharmful rays to protect furniture, artwork and flooring from fading.\nEnhanced Privacy\nPartially or fully closed fabric vanes provide flexible levels of privacy. \nGorgeous Fabric Options\nVibrant, fresh fabrics create a robust collection,  \nrich in color and texture.",
+   "images": [
     {
-      "page": 14,
-      "category": "benefits",
-      "text": "BENEFITS\nBenefits\nBeautiful Light Control\nSoft, contoured fabric vanes, whether open, closed or  \nanywhere in between, offer exquisite light control.\nExpansive View\nOur exclusive back sheers and innovative Invisi-Lift™  \nsystem provide unparalleled views. \nUV Protection \nWith fabric vanes open or closed, Pirouette® shadings block the sun’s  \nharmful rays to protect furniture, artwork and flooring from fading.\nEnhanced Privacy\nPartially or fully closed fabric vanes provide flexible levels of privacy. \nGorgeous Fabric Options\nVibrant, fresh fabrics create a robust collection,  \nrich in color and texture.",
-      "images": [
-        {
-          "filename": "page014_img01_1522x873.jpeg",
-          "width": 1522,
-          "height": 873
-        },
-        {
-          "filename": "page014_img02_1525x873.jpeg",
-          "width": 1525,
-          "height": 873
-        },
-        {
-          "filename": "page014_img03_1526x873.jpeg",
-          "width": 1526,
-          "height": 873
-        },
-        {
-          "filename": "page014_img04_1300x742.jpeg",
-          "width": 1300,
-          "height": 742
-        },
-        {
-          "filename": "page014_img05_1523x872.jpeg",
-          "width": 1523,
-          "height": 872
-        }
-      ]
+     "filename": "page014_img01_1522x873.jpeg",
+     "width": 1522,
+     "height": 873
+    },
+    {
+     "filename": "page014_img02_1525x873.jpeg",
+     "width": 1525,
+     "height": 873
+    },
+    {
+     "filename": "page014_img03_1526x873.jpeg",
+     "width": 1526,
+     "height": 873
+    },
+    {
+     "filename": "page014_img04_1300x742.jpeg",
+     "width": 1300,
+     "height": 742
+    },
+    {
+     "filename": "page014_img05_1523x872.jpeg",
+     "width": 1523,
+     "height": 872
     }
-  ],
-  "control_options": [
-    {
-      "page": 8,
-      "category": "control",
-      "text": "PHOTO GALLERY\nPirouette® Window \nShadings combine \nbeautiful, contoured  \nfabric vanes with  \na single back sheer,  \nproviding the  \nversatility of privacy  \nand unparalleled  \nview-through. \nFabric ClearView® Charmeuse    Color Ash\nControl Option SoftTouch® Motorization",
-      "images": [
-        {
-          "filename": "page008_img01_5991x3009.jpeg",
-          "width": 5991,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "control",
-      "text": "PHOTO GALLERY\nFabric ClearView® Batiste Bamboo    Color Pesto\nControl Option PowerView® Automation \nThe A Deux\n™ design  \noption adds a  \nroom-darkening back \npanel to the Pirouette® \nlight-filtering shading, \nletting you create \ndiffused light or a \ndarker room.",
-      "images": [
-        {
-          "filename": "page009_img01_5986x3009.jpeg",
-          "width": 5986,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "control",
-      "text": "A wide array of  \nluxurious fabrics in  \nexquisite colors and \ntextures provides \nsculptural beauty  \nthat complements  \nany design style.\nFabric Satin    Color Amethyst\nControl Option PowerView® Automation",
-      "images": [
-        {
-          "filename": "page010_img01_5800x2916.jpeg",
-          "width": 5800,
-          "height": 2916
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "control",
-      "text": "LIGHT CONTROL\nAND PRIVACY\nFabric Thea™    Color Cypher\nControl Option PowerView® Automation     \nFully open for maximum view-through.\nLight Control and Privacy\nPartially open for a combination of  \nnatural light and privacy.\nClose for complete privacy and light control. \nNote: The Invisi-Lift™ system allows vanes to gracefully open and close on the sheer backing, for beautiful functionality with unobstructed views. \nLIGHT CONTROL\nAND PRIVACY",
-      "images": [
-        {
-          "filename": "page015_img01_3910x3009.jpeg",
-          "width": 3910,
-          "height": 3009
-        },
-        {
-          "filename": "page015_img02_959x1914.jpeg",
-          "width": 959,
-          "height": 1914
-        },
-        {
-          "filename": "page015_img03_959x1914.jpeg",
-          "width": 959,
-          "height": 1914
-        },
-        {
-          "filename": "page015_img04_959x1915.jpeg",
-          "width": 959,
-          "height": 1915
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "control",
-      "text": "PowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon and night\nEffortless Control\nCompatible with voice assistants and many home  \nautomation systems*\nPrivacy and Security\nSchedule shadings to move automatically, when you’re  \nhome or away\nEnergy Efficiency \nProgram shadings to be in the best positions to heat and  \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable  \nbattery and hardwiring capability\n* \u0007Some features require additional hardware and/or third-party equipment. \nTo learn more, visit hunterdouglas.com/powerview-design-options.  \nFor more details on PowerView Automation, open the opposite page.\n  \nFabric ClearView® Satin    Color Black Onyx\nControl Option PowerView® Automation     \nControl Options\nUltraGlide®\nA single retractable wand for enhanced child  \nsafety. With one click, the fabric panel drops for \ncomplete privacy. Pump the wand to open the \nvanes or raise the shading.\nSoftTouch® Motorization\nA battery-operated, cordless system. Gently  \npull down on the wand to lower shadings,  \nor lightly push up to raise them.\nEasyRise™\nA continuous cordless loop system. Simply pull \non the cord to raise or lower the shade. \n*Not available in Canada.",
-      "images": [
-        {
-          "filename": "page018_img01_2096x3009.jpeg",
-          "width": 2096,
-          "height": 3009
-        },
-        {
-          "filename": "page018_img02_674x1156.jpeg",
-          "width": 674,
-          "height": 1156
-        },
-        {
-          "filename": "page018_img03_645x1380.jpeg",
-          "width": 645,
-          "height": 1380
-        },
-        {
-          "filename": "page018_img04_836x1808.jpeg",
-          "width": 836,
-          "height": 1808
-        },
-        {
-          "filename": "page018_img05_647x1393.jpeg",
-          "width": 647,
-          "height": 1393
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "control",
-      "text": "CONTROL AND  \nDESIGN OPTIONS\nPowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon and night\nEffortless Control\nCompatible with voice assistants and many home  \nautomation systems*\nPrivacy and Security\nSchedule shadings to move automatically, when you’re  \nhome or away\nEnergy Efficiency \nProgram shadings to be in the best positions to heat and  \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable  \nbattery and hardwiring capability\n* \u0007Some features require additional hardware and/or third-party equipment. \nTo learn more, visit hunterdouglas.com/powerview-design-options.  \nFor more details on PowerView Automation, open the opposite page.\n  \nFabric ClearView® Satin    Color Black Onyx\nControl Option PowerView® Automation     \nA Day With PowerView®   \n10:30 PM Bedtime\nShadings  close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shadings to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shadings open to reveal your best view.\n2:00 PM Afternoon\nShadings adjust to protect furnishings from harsh midday sunlight.",
-      "images": [
-        {
-          "filename": "page019_img01_5996x3009.jpeg",
-          "width": 5996,
-          "height": 3009
-        },
-        {
-          "filename": "page019_img02_674x1156.jpeg",
-          "width": 674,
-          "height": 1156
-        },
-        {
-          "filename": "page019_img03_1503x990.jpeg",
-          "width": 1503,
-          "height": 990
-        },
-        {
-          "filename": "page019_img04_1453x909.jpeg",
-          "width": 1453,
-          "height": 909
-        },
-        {
-          "filename": "page019_img05_1227x768.jpeg",
-          "width": 1227,
-          "height": 768
-        },
-        {
-          "filename": "page019_img06_1453x909.jpeg",
-          "width": 1453,
-          "height": 909
-        }
-      ]
-    }
-  ],
-  "design_options": [
-    {
-      "page": 20,
-      "category": "design",
-      "text": "MOUNTING PROFILES/\nOPTIONS\nDESIGN AND  \nMOUNTING OPTIONS\nFabric-Covered Bottom Rail\nA coordinating fabric on the bottom rail adds the perfect finishing touch.\nFabric-Covered Headrail\nHeadrail fabric beautifully matches the shading to create a streamlined look.\nTwo-On-One Headrail \nShadings operate independently on the same headrail— \nan ideal solution for wide windows and sliding glass doors.\nDesign Options\nSpecialty Shapes \nThese window shadings are non-operable in the vanes countoured closed position. \n*See Reference guide for a full selection of specialty shapes.\nMounting Profiles\nClassic Headrail\nA Deux™ Headrail\nInside Mount\nPartial Mount\nOutside Mount",
-      "images": [
-        {
-          "filename": "page020_img01_1528x834.jpeg",
-          "width": 1528,
-          "height": 834
-        },
-        {
-          "filename": "page020_img02_1528x834.jpeg",
-          "width": 1528,
-          "height": 834
-        },
-        {
-          "filename": "page020_img03_1529x835.jpeg",
-          "width": 1529,
-          "height": 835
-        },
-        {
-          "filename": "page020_img04_1521x835.jpeg",
-          "width": 1521,
-          "height": 835
-        },
-        {
-          "filename": "page020_img05_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        },
-        {
-          "filename": "page020_img06_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        },
-        {
-          "filename": "page020_img07_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        },
-        {
-          "filename": "page020_img08_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        },
-        {
-          "filename": "page020_img09_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        },
-        {
-          "filename": "page020_img10_962x834.jpeg",
-          "width": 962,
-          "height": 834
-        }
-      ]
-    }
-  ],
-  "mounting": [],
-  "product_details": [
-    {
-      "page": 16,
-      "category": "opacity",
-      "text": "Sheer Options\nPirouette® Classic Sheer—For Maximum Light Filtering \nThe preferred choice for filtering harsh incoming light and UV protection. \n \nClearView® Sheer—For Superior View-Through\nThe preferred choice for crisp, clean view-through, light control and UV protection. \n \nPlease refer to the Fabric Decks designated with the Classic Sheer for all options.\nPlease refer to the Fabric Decks designated with the ClearView Sheer for all options.\nFabric ClearView®  Satin    Color Luxe\nControl Option PowerView® Automation     \nOPACITY  OPTIONS",
-      "images": [
-        {
-          "filename": "page016_img01_3907x3009.jpeg",
-          "width": 3907,
-          "height": 3009
-        },
-        {
-          "filename": "page016_img02_1509x1913.jpeg",
-          "width": 1509,
-          "height": 1913
-        },
-        {
-          "filename": "page016_img03_1510x1913.jpeg",
-          "width": 1510,
-          "height": 1913
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "opacity",
-      "text": "Opacity Options\nLight-Filtering Fabric\nFor diffused light and privacy.\nRoom-Darkening Fabric\nBlocks the majority of light.\nNote: This is not a blackout product. A warm glow may filter between each vane.\nA Deux™ Design\nSuperior light blocking with a room-darkening panel behind  \na light-filtering shading, which operate independently.",
-      "images": [
-        {
-          "filename": "page017_img01_1509x1993.jpeg",
-          "width": 1509,
-          "height": 1993
-        },
-        {
-          "filename": "page017_img02_1509x1993.jpeg",
-          "width": 1509,
-          "height": 1993
-        },
-        {
-          "filename": "page017_img03_1509x1993.jpeg",
-          "width": 1509,
-          "height": 1993
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_3936x3044.jpeg",
-          "width": 3936,
-          "height": 3044
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Our window  \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
-      "images": [
-        {
-          "filename": "page006_img01_4171x3009.jpeg",
-          "width": 4171,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "after\nFabric Grant™    Color Sahara\nControl Option PowerView® Automation",
-      "images": [
-        {
-          "filename": "page007_img01_5991x3009.jpeg",
-          "width": 5991,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "gallery",
-      "text": "Fabric Alustra® Oakley™    Color Sand Jasper\nControl Option PowerView® Automation",
-      "images": [
-        {
-          "filename": "page011_img01_3909x3009.jpeg",
-          "width": 3909,
-          "height": 3009
-        },
-        {
-          "filename": "page011_img02_2467x1671.jpeg",
-          "width": 2467,
-          "height": 1671
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "gallery",
-      "text": "Fabric ClearView® Satin Metallic™    Color Lunar\nControl Option PowerView® Automation",
-      "images": [
-        {
-          "filename": "page012_img01_7805x3009.jpeg",
-          "width": 7805,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "gallery",
-      "text": "Pirouette® shadings with a room-darkening fabric.\nFabric Thea™    Color Hudson Gray\nControl Option UltraGlide® with Two-on-One Headrail",
-      "images": [
-        {
-          "filename": "page013_img01_2467x1671.jpeg",
-          "width": 2467,
-          "height": 1671
-        },
-        {
-          "filename": "page013_img02_3909x3009.jpeg",
-          "width": 3909,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 24,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page024_img01_3009x2427.jpeg",
-          "width": 3009,
-          "height": 2427
-        }
-      ]
-    },
-    {
-      "page": 25,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page025_img01_3035x3036.jpeg",
-          "width": 3035,
-          "height": 3036
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [
-    {
-      "page": 21,
-      "category": "vane",
-      "text": "The bottom fabric panel is adjusted to accommodate the height of the shading and allow for top to bottom vane alignment.\nBottom Fabric Panel Variance\nSmall Bottom Fabric Panel Variance\nLarge Bottom Fabric Panel Variance\nZero Bottom Panel \nThis optional feature for outside mount only,  \ntransforms the bottom panel into a functioning  \nvane. This may add up to 5\" to the length of  \nthe shading. \nFabric Avant    Color Beryl\nControl Option PowerView® Automation \nThe height of the bottom fabric panel will be between 0\" and 5\". This height cannot \nbe predicted until the shade is in manufacturing. \n•  With identical height measurements\n•  At the same time\n•  With the same fabric and vane size\n•  With the same mounting style\nTo ensure shadings are fabricated with bottom fabric panels of the same  \nheight, they must be ordered: \nBOTTOM FABRIC  \nPANEL VARIANCE",
-      "images": [
-        {
-          "filename": "page021_img01_3234x1911.jpeg",
-          "width": 3234,
-          "height": 1911
-        },
-        {
-          "filename": "page021_img02_738x1471.jpeg",
-          "width": 738,
-          "height": 1471
-        },
-        {
-          "filename": "page021_img03_739x1470.jpeg",
-          "width": 739,
-          "height": 1470
-        },
-        {
-          "filename": "page021_img04_738x1471.jpeg",
-          "width": 738,
-          "height": 1471
-        }
-      ]
-    }
-  ],
-  "hardware_colors": [],
-  "fabric_swatches": {
-    "Alustra® Oakley": [
-      {
-        "image": "page032_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Chalcedony",
-        "specs": [
-          "Light Filtering PR82-1302 (5\")",
-          "Room Darkening PR84-1302 (5\")",
-          "Light Filtering PR82-1304 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      },
-      {
-        "image": "page032_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Rock Salt",
-        "specs": [
-          "Light Filtering PR82-1302 (5\")",
-          "Room Darkening PR84-1302 (5\")",
-          "Light Filtering PR82-1304 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      },
-      {
-        "image": "page033_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Lena",
-        "specs": [
-          "Light Filtering PR82-1306 (5\")",
-          "Room Darkening PR84-1306 (5\")",
-          "Light Filtering PR82-1303 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      },
-      {
-        "image": "page033_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Sand Jasper",
-        "specs": [
-          "Light Filtering PR82-1306 (5\")",
-          "Room Darkening PR84-1306 (5\")",
-          "Light Filtering PR82-1303 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      },
-      {
-        "image": "page034_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Bedrock",
-        "specs": [
-          "Light Filtering PR82-1305 (5\")",
-          "Room Darkening PR84-1305 (5\")",
-          "Light Filtering PR82-1307 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      },
-      {
-        "image": "page034_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Quarry",
-        "specs": [
-          "Light Filtering PR82-1305 (5\")",
-          "Room Darkening PR84-1305 (5\")",
-          "Light Filtering PR82-1307 (5\")"
-        ],
-        "fabric_collection": "Alustra® Oakley"
-      }
-    ],
-    "Alustra® ClearView® Apollo": [
-      {
-        "image": "page035_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Lyrical",
-        "specs": [
-          "Light Filtering PR70-011 (5\")",
-          "Room Darkening PR72-011 (5\")",
-          "Light Filtering PR70-103 (5\")"
-        ],
-        "fabric_collection": "Alustra® ClearView® Apollo"
-      },
-      {
-        "image": "page035_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Truth",
-        "specs": [
-          "Light Filtering PR70-011 (5\")",
-          "Room Darkening PR72-011 (5\")",
-          "Light Filtering PR70-103 (5\")"
-        ],
-        "fabric_collection": "Alustra® ClearView® Apollo"
-      },
-      {
-        "image": "page036_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Renew",
-        "specs": [
-          "Light Filtering PR70-104 (5\")",
-          "Room Darkening PR72-104 (5\")",
-          "Light Filtering PR70-603 (5\")"
-        ],
-        "fabric_collection": "Alustra® ClearView® Apollo"
-      },
-      {
-        "image": "page036_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Reflection",
-        "specs": [
-          "Light Filtering PR70-104 (5\")",
-          "Room Darkening PR72-104 (5\")",
-          "Light Filtering PR70-603 (5\")"
-        ],
-        "fabric_collection": "Alustra® ClearView® Apollo"
-      }
-    ],
-    "ClearView® Wren": [
-      {
-        "image": "page037_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Bunting",
-        "specs": [
-          "Light Filtering PR78-1287 (5\")",
-          "Room Darkening PR80-1287 (5\")",
-          "Light Filtering PR78-1288 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      },
-      {
-        "image": "page037_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Larkspur",
-        "specs": [
-          "Light Filtering PR78-1287 (5\")",
-          "Room Darkening PR80-1287 (5\")",
-          "Light Filtering PR78-1288 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      },
-      {
-        "image": "page038_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Goldfinch",
-        "specs": [
-          "Light Filtering PR78-1290 (5\")",
-          "Room Darkening PR80-1290 (5\")",
-          "Light Filtering PR78-1289 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      },
-      {
-        "image": "page038_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Vireo",
-        "specs": [
-          "Light Filtering PR78-1290 (5\")",
-          "Room Darkening PR80-1290 (5\")",
-          "Light Filtering PR78-1289 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      },
-      {
-        "image": "page039_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Gray Goose",
-        "specs": [
-          "Light Filtering PR78-1291 (5\")",
-          "Room Darkening PR80-1291 (5\")",
-          "Light Filtering PR78-1292 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      },
-      {
-        "image": "page039_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Starling",
-        "specs": [
-          "Light Filtering PR78-1291 (5\")",
-          "Room Darkening PR80-1291 (5\")",
-          "Light Filtering PR78-1292 (5\")"
-        ],
-        "fabric_collection": "ClearView® Wren"
-      }
-    ],
-    "ClearView® Batiste Bamboo": [
-      {
-        "image": "page040_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Daisy White",
-        "specs": [
-          "Light Filtering PR74-951 (5\")",
-          "Room Darkening PR76-951 (5\")",
-          "Light Filtering PR74-986 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      },
-      {
-        "image": "page040_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Polar Gray",
-        "specs": [
-          "Light Filtering PR74-951 (5\")",
-          "Room Darkening PR76-951 (5\")",
-          "Light Filtering PR74-986 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      },
-      {
-        "image": "page041_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Pesto",
-        "specs": [
-          "Light Filtering PR74-624 (5\")",
-          "Room Darkening PR76-624 (5\")",
-          "Light Filtering PR74-457 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      },
-      {
-        "image": "page041_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Journal",
-        "specs": [
-          "Light Filtering PR74-624 (5\")",
-          "Room Darkening PR76-624 (5\")",
-          "Light Filtering PR74-457 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      },
-      {
-        "image": "page042_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Platinum",
-        "specs": [
-          "Light Filtering PR74-682 (5\")",
-          "Room Darkening PR76-682 (5\")",
-          "Light Filtering PR74-713 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      },
-      {
-        "image": "page042_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Pearl Gray",
-        "specs": [
-          "Light Filtering PR74-682 (5\")",
-          "Room Darkening PR76-682 (5\")",
-          "Light Filtering PR74-713 (5\")"
-        ],
-        "fabric_collection": "ClearView® Batiste Bamboo"
-      }
-    ],
-    "ClearView® Charmeuse": [
-      {
-        "image": "page043_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Dew",
-        "specs": [
-          "Light Filtering PR90-297 (5\")",
-          "Room Darkening PR92-297 (5\")",
-          "Light Filtering PR90-525 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      },
-      {
-        "image": "page043_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Bisque",
-        "specs": [
-          "Light Filtering PR90-297 (5\")",
-          "Room Darkening PR92-297 (5\")",
-          "Light Filtering PR90-525 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      },
-      {
-        "image": "page044_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Pebble",
-        "specs": [
-          "Light Filtering PR90-937 (5\")",
-          "Room Darkening PR92-937 (5\")",
-          "Light Filtering PR90-486 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      },
-      {
-        "image": "page044_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Ash",
-        "specs": [
-          "Light Filtering PR90-937 (5\")",
-          "Room Darkening PR92-937 (5\")",
-          "Light Filtering PR90-486 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      },
-      {
-        "image": "page045_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Pewter",
-        "specs": [
-          "Light Filtering PR90-336 (5\")",
-          "Room Darkening PR92-336 (5\")",
-          "Light Filtering PR90-725 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      },
-      {
-        "image": "page045_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Storm",
-        "specs": [
-          "Light Filtering PR90-336 (5\")",
-          "Room Darkening PR92-336 (5\")",
-          "Light Filtering PR90-725 (5\")"
-        ],
-        "fabric_collection": "ClearView® Charmeuse"
-      }
-    ],
-    "Satin/ClearView® Satin": [
-      {
-        "image": "page046_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Magnolia",
-        "specs": [
-          "Light Filtering PR10/PR60-951 (5\")",
-          "Room Darkening PR12/PR62-951 (5\")",
-          "Light Filtering PR10/PR60-953 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page046_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Birch",
-        "specs": [
-          "Light Filtering PR10/PR60-951 (5\")",
-          "Room Darkening PR12/PR62-951 (5\")",
-          "Light Filtering PR10/PR60-953 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page047_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Wool",
-        "specs": [
-          "Light Filtering PR10/PR60-907 (5\")",
-          "Room Darkening PR12/PR62-907 (5\")",
-          "Light Filtering PR10/PR60-949 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page047_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Chamomile",
-        "specs": [
-          "Light Filtering PR10/PR60-907 (5\")",
-          "Room Darkening PR12/PR62-907 (5\")",
-          "Light Filtering PR10/PR60-949 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page048_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Natural Chalk",
-        "specs": [
-          "Light Filtering PR10/PR60-948 (5\")",
-          "Room Darkening PR12/PR62-948 (5\")",
-          "Light Filtering PR10/PR60-989 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page048_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Champagne",
-        "specs": [
-          "Light Filtering PR10/PR60-948 (5\")",
-          "Room Darkening PR12/PR62-948 (5\")",
-          "Light Filtering PR10/PR60-989 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page049_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Muse Gray",
-        "specs": [
-          "Light Filtering PR10/PR60-1280 (5\")",
-          "Room Darkening PR12/PR62-1280 (5\")",
-          "Light Filtering PR10/PR60-851 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page049_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Park Ave",
-        "specs": [
-          "Light Filtering PR10/PR60-1280 (5\")",
-          "Room Darkening PR12/PR62-1280 (5\")",
-          "Light Filtering PR10/PR60-851 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page050_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Stainless",
-        "specs": [
-          "Light Filtering PR10/PR60-416 (5\")",
-          "Room Darkening PR12/PR62-416 (5\")",
-          "Light Filtering PR10/PR60-1226 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page050_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Swan",
-        "specs": [
-          "Light Filtering PR10/PR60-416 (5\")",
-          "Room Darkening PR12/PR62-416 (5\")",
-          "Light Filtering PR10/PR60-1226 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page051_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Sanctuary",
-        "specs": [
-          "Light Filtering PR10/PR60-858 (5\")",
-          "Room Darkening PR12/PR62-858 (5\")",
-          "Light Filtering PR10/PR60-624 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page051_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Pesto",
-        "specs": [
-          "Light Filtering PR10/PR60-858 (5\")",
-          "Room Darkening PR12/PR62-858 (5\")",
-          "Light Filtering PR10/PR60-624 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page052_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Julep",
-        "specs": [
-          "Light Filtering PR10/PR60-481 (5\")",
-          "Room Darkening PR12/PR62-481 (5\")",
-          "Light Filtering PR10/PR60-286 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page052_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Blueprint",
-        "specs": [
-          "Light Filtering PR10/PR60-481 (5\")",
-          "Room Darkening PR12/PR62-481 (5\")",
-          "Light Filtering PR10/PR60-286 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page053_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Luxe",
-        "specs": [
-          "Light Filtering PR10/PR60-834 (5\")",
-          "Room Darkening PR12/PR62-834 (5\")",
-          "Light Filtering PR10/PR60-393 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page053_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Dolphin",
-        "specs": [
-          "Light Filtering PR10/PR60-834 (5\")",
-          "Room Darkening PR12/PR62-834 (5\")",
-          "Light Filtering PR10/PR60-393 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page054_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Box Office",
-        "specs": [
-          "Light Filtering PR10/PR60-287 (5\")",
-          "Room Darkening PR12/PR62-287 (5\")",
-          "Light Filtering PR10/PR60-749 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page054_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Black Onyx",
-        "specs": [
-          "Light Filtering PR10/PR60-287 (5\")",
-          "Room Darkening PR12/PR62-287 (5\")",
-          "Light Filtering PR10/PR60-749 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page055_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Charming",
-        "specs": [
-          "Light Filtering PR10/PR60-1281 (5\")",
-          "Room Darkening PR12/PR62-1281 (5\")",
-          "Light Filtering PR10/PR60-1282 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page055_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Grace",
-        "specs": [
-          "Light Filtering PR10/PR60-1281 (5\")",
-          "Room Darkening PR12/PR62-1281 (5\")",
-          "Light Filtering PR10/PR60-1282 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page056_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Amethyst",
-        "specs": [
-          "Light Filtering PR10/PR60-417 (5\")",
-          "Room Darkening PR12/PR62-417 (5\")",
-          "Light Filtering PR10/PR60-324 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page056_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Dune",
-        "specs": [
-          "Light Filtering PR10/PR60-417 (5\")",
-          "Room Darkening PR12/PR62-417 (5\")",
-          "Light Filtering PR10/PR60-324 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page057_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "River Rock",
-        "specs": [
-          "Light Filtering PR10/PR60-411 (5\")",
-          "Room Darkening PR12/PR62-411 (5\")",
-          "Light Filtering PR10/PR60-496 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      },
-      {
-        "image": "page057_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Dark Chocolate",
-        "specs": [
-          "Light Filtering PR10/PR60-411 (5\")",
-          "Room Darkening PR12/PR62-411 (5\")",
-          "Light Filtering PR10/PR60-496 (5\")"
-        ],
-        "fabric_collection": "Satin/ClearView® Satin"
-      }
-    ],
-    "TM/ClearView® Satin Metallic": [
-      {
-        "image": "page058_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Diamond",
-        "specs": [
-          "Light Filtering PR14/PR64-616 (5\")",
-          "Room Darkening PR16/PR66-616 (5\")",
-          "Light Filtering PR14/PR64-087 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page058_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Serenity",
-        "specs": [
-          "Light Filtering PR14/PR64-616 (5\")",
-          "Room Darkening PR16/PR66-616 (5\")",
-          "Light Filtering PR14/PR64-087 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page059_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Lunar",
-        "specs": [
-          "Light Filtering PR14/PR64-085 (5\")",
-          "Room Darkening PR16/PR66-085 (5\")",
-          "Light Filtering PR14/PR64-086 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page059_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Wish",
-        "specs": [
-          "Light Filtering PR14/PR64-085 (5\")",
-          "Room Darkening PR16/PR66-085 (5\")",
-          "Light Filtering PR14/PR64-086 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page060_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Frost",
-        "specs": [
-          "Light Filtering PR14/PR64-600 (5\")",
-          "Room Darkening PR16/PR66-600 (5\")",
-          "Light Filtering PR14/PR64-605 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page060_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Starlight",
-        "specs": [
-          "Light Filtering PR14/PR64-600 (5\")",
-          "Room Darkening PR16/PR66-600 (5\")",
-          "Light Filtering PR14/PR64-605 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page061_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Akoya",
-        "specs": [
-          "Light Filtering PR14/PR64-1283 (5\")",
-          "Room Darkening PR16/PR66-1283 (5\")",
-          "Light Filtering PR14/PR64-1284 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page061_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Aurelia",
-        "specs": [
-          "Light Filtering PR14/PR64-1283 (5\")",
-          "Room Darkening PR16/PR66-1283 (5\")",
-          "Light Filtering PR14/PR64-1284 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page062_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Copper",
-        "specs": [
-          "Light Filtering PR14/PR64-614 (5\")",
-          "Room Darkening PR16/PR66-614 (5\")",
-          "Light Filtering PR14/PR64-1285 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page062_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Geode",
-        "specs": [
-          "Light Filtering PR14/PR64-614 (5\")",
-          "Room Darkening PR16/PR66-614 (5\")",
-          "Light Filtering PR14/PR64-1285 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page063_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Lightning",
-        "specs": [
-          "Light Filtering PR14/PR64-604 (5\")",
-          "Room Darkening PR16/PR66-604 (5\")",
-          "Light Filtering PR14/PR64-1286 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      },
-      {
-        "image": "page063_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Bronze Star",
-        "specs": [
-          "Light Filtering PR14/PR64-604 (5\")",
-          "Room Darkening PR16/PR66-604 (5\")",
-          "Light Filtering PR14/PR64-1286 (5\")"
-        ],
-        "fabric_collection": "TM/ClearView® Satin Metallic"
-      }
-    ],
-    "Other Colors": [
-      {
-        "image": "page064_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Ivory Pearl",
-        "specs": [
-          "Light Filtering PR94-1260 (5\")",
-          "Room Darkening PR96-1260 (5\")",
-          "Light Filtering PR94-1262 (5\")"
-        ]
-      },
-      {
-        "image": "page064_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Hudson Gray",
-        "specs": [
-          "Light Filtering PR94-1260 (5\")",
-          "Room Darkening PR96-1260 (5\")",
-          "Light Filtering PR94-1262 (5\")"
-        ]
-      },
-      {
-        "image": "page065_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Cerise",
-        "specs": [
-          "Light Filtering PR94-1263 (5\")",
-          "Room Darkening PR96-1263 (5\")",
-          "Light Filtering PR94-1308 (5\")"
-        ]
-      },
-      {
-        "image": "page065_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Morel",
-        "specs": [
-          "Light Filtering PR94-1263 (5\")",
-          "Room Darkening PR96-1263 (5\")",
-          "Light Filtering PR94-1308 (5\")"
-        ]
-      },
-      {
-        "image": "page066_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Cypher",
-        "specs": [
-          "Light Filtering PR94-1265 (5\")",
-          "Room Darkening PR96-1265 (5\")",
-          "Light Filtering PR94-1309 (5\")"
-        ]
-      },
-      {
-        "image": "page066_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Olivia",
-        "specs": [
-          "Light Filtering PR94-1265 (5\")",
-          "Room Darkening PR96-1265 (5\")",
-          "Light Filtering PR94-1309 (5\")"
-        ]
-      },
-      {
-        "image": "page067_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Snowdrop",
-        "specs": [
-          "Light Filtering PR86-1296 (5\")",
-          "Room Darkening PR88-1296 (5\")",
-          "Light Filtering PR86-1297 (5\")"
-        ]
-      },
-      {
-        "image": "page067_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "French Porcelain",
-        "specs": [
-          "Light Filtering PR86-1296 (5\")",
-          "Room Darkening PR88-1296 (5\")",
-          "Light Filtering PR86-1297 (5\")"
-        ]
-      },
-      {
-        "image": "page068_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Miel",
-        "specs": [
-          "Light Filtering PR86-1298 (5\")",
-          "Room Darkening PR88-1298 (5\")",
-          "Light Filtering PR86-1299 (5\")"
-        ]
-      },
-      {
-        "image": "page068_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Mist Veil",
-        "specs": [
-          "Light Filtering PR86-1298 (5\")",
-          "Room Darkening PR88-1298 (5\")",
-          "Light Filtering PR86-1299 (5\")"
-        ]
-      },
-      {
-        "image": "page069_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Beryl",
-        "specs": [
-          "Light Filtering PR86-1301 (5\")",
-          "Room Darkening PR88-1301 (5\")",
-          "Light Filtering PR86-1300 (5\")"
-        ]
-      },
-      {
-        "image": "page069_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Sea Fog",
-        "specs": [
-          "Light Filtering PR86-1301 (5\")",
-          "Room Darkening PR88-1301 (5\")",
-          "Light Filtering PR86-1300 (5\")"
-        ]
-      },
-      {
-        "image": "page070_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Buff",
-        "specs": [
-          "Light Filtering PR50-774 (5\")",
-          "Room Darkening PR52-774 (5\")",
-          "Light Filtering PR50-126 (5\")"
-        ]
-      },
-      {
-        "image": "page070_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Sahara",
-        "specs": [
-          "Light Filtering PR50-774 (5\")",
-          "Room Darkening PR52-774 (5\")",
-          "Light Filtering PR50-126 (5\")"
-        ]
-      },
-      {
-        "image": "page071_img03_236x236.jpeg",
-        "width": 236,
-        "height": 236,
-        "color_name": "Brindle",
-        "specs": [
-          "Light Filtering PR50-1294 (5\")",
-          "Room Darkening PR52-1294 (5\")",
-          "Light Filtering PR50-1295 (5\")"
-        ]
-      },
-      {
-        "image": "page071_img04_236x236.jpeg",
-        "width": 236,
-        "height": 236,
-        "color_name": "Thrive",
-        "specs": [
-          "Light Filtering PR50-1294 (5\")",
-          "Room Darkening PR52-1294 (5\")",
-          "Light Filtering PR50-1295 (5\")"
-        ]
-      },
-      {
-        "image": "page072_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Labradorite",
-        "specs": [
-          "Light Filtering PR50-1293 (5\")",
-          "Room Darkening PR52-1293 (5\")",
-          "Light Filtering PR50-855 (5\")"
-        ]
-      },
-      {
-        "image": "page072_img04_236x236.jpeg",
-        "width": 236,
-        "height": 236,
-        "color_name": "Pitch",
-        "specs": [
-          "Light Filtering PR50-1293 (5\")",
-          "Room Darkening PR52-1293 (5\")",
-          "Light Filtering PR50-855 (5\")"
-        ]
-      },
-      {
-        "image": "page073_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Porcelain",
-        "specs": [
-          "Light Filtering PR22-501 (5\")",
-          "Room Darkening PR24-501 (5\")",
-          "Light Filtering PR22-284 (5\")"
-        ]
-      },
-      {
-        "image": "page073_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Blade",
-        "specs": [
-          "Light Filtering PR22-501 (5\")",
-          "Room Darkening PR24-501 (5\")",
-          "Light Filtering PR22-284 (5\")"
-        ]
-      },
-      {
-        "image": "page074_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "White Jade",
-        "specs": [
-          "Light Filtering PR22-502 (5\")",
-          "Room Darkening PR24-502 (5\")",
-          "Light Filtering PR22-524 (5\")"
-        ]
-      },
-      {
-        "image": "page074_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Palomino",
-        "specs": [
-          "Light Filtering PR22-502 (5\")",
-          "Room Darkening PR24-502 (5\")",
-          "Light Filtering PR22-524 (5\")"
-        ]
-      },
-      {
-        "image": "page075_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Magnolia",
-        "specs": [
-          "Light Filtering PR6-951 (5\")",
-          "Room Darkening PR8-951 (5\")",
-          "Light Filtering PR6-949 (5\")"
-        ]
-      },
-      {
-        "image": "page075_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Chamomile",
-        "specs": [
-          "Light Filtering PR6-951 (5\")",
-          "Room Darkening PR8-951 (5\")",
-          "Light Filtering PR6-949 (5\")"
-        ]
-      },
-      {
-        "image": "page076_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Oatmeal",
-        "specs": [
-          "Light Filtering PR6-905 (5\")",
-          "Room Darkening PR8-905 (5\")",
-          "Light Filtering PR6-331 (5\")"
-        ]
-      },
-      {
-        "image": "page076_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Stone",
-        "specs": [
-          "Light Filtering PR6-905 (5\")",
-          "Room Darkening PR8-905 (5\")",
-          "Light Filtering PR6-331 (5\")"
-        ]
-      },
-      {
-        "image": "page077_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Thistle",
-        "specs": [
-          "Light Filtering PR6-403 (5\")",
-          "Room Darkening PR8-403 (5\")",
-          "Light Filtering PR6-124 (5\")"
-        ]
-      },
-      {
-        "image": "page077_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Umber",
-        "specs": [
-          "Light Filtering PR6-403 (5\")",
-          "Room Darkening PR8-403 (5\")",
-          "Light Filtering PR6-124 (5\")"
-        ]
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 8,
-    "benefits": 1,
-    "control": 6,
-    "design": 1,
-    "mounting": 0,
-    "details": 2,
-    "vane": 1,
-    "hardware": 0,
-    "swatch_collections": 8,
-    "swatch_colors": 92
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 8,
-    "control": 6,
-    "benefits": 1,
-    "opacity": 2,
-    "design": 1,
-    "vane": 1,
-    "advantage": 1,
-    "long_text": 1,
-    "color_chart_table": 6,
-    "swatch": 46
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 8,
+   "category": "control",
+   "text": "PHOTO GALLERY\nPirouette® Window \nShadings combine \nbeautiful, contoured  \nfabric vanes with  \na single back sheer,  \nproviding the  \nversatility of privacy  \nand unparalleled  \nview-through. \nFabric ClearView® Charmeuse    Color Ash\nControl Option SoftTouch® Motorization",
+   "images": [
+    {
+     "filename": "page008_img01_5991x3009.jpeg",
+     "width": 5991,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "control",
+   "text": "PHOTO GALLERY\nFabric ClearView® Batiste Bamboo    Color Pesto\nControl Option PowerView® Automation \nThe A Deux\n™ design  \noption adds a  \nroom-darkening back \npanel to the Pirouette® \nlight-filtering shading, \nletting you create \ndiffused light or a \ndarker room.",
+   "images": [
+    {
+     "filename": "page009_img01_5986x3009.jpeg",
+     "width": 5986,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "control",
+   "text": "A wide array of  \nluxurious fabrics in  \nexquisite colors and \ntextures provides \nsculptural beauty  \nthat complements  \nany design style.\nFabric Satin    Color Amethyst\nControl Option PowerView® Automation",
+   "images": [
+    {
+     "filename": "page010_img01_5800x2916.jpeg",
+     "width": 5800,
+     "height": 2916
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "control",
+   "text": "LIGHT CONTROL\nAND PRIVACY\nFabric Thea™    Color Cypher\nControl Option PowerView® Automation     \nFully open for maximum view-through.\nLight Control and Privacy\nPartially open for a combination of  \nnatural light and privacy.\nClose for complete privacy and light control. \nNote: The Invisi-Lift™ system allows vanes to gracefully open and close on the sheer backing, for beautiful functionality with unobstructed views. \nLIGHT CONTROL\nAND PRIVACY",
+   "images": [
+    {
+     "filename": "page015_img01_3910x3009.jpeg",
+     "width": 3910,
+     "height": 3009
+    },
+    {
+     "filename": "page015_img02_959x1914.jpeg",
+     "width": 959,
+     "height": 1914
+    },
+    {
+     "filename": "page015_img03_959x1914.jpeg",
+     "width": 959,
+     "height": 1914
+    },
+    {
+     "filename": "page015_img04_959x1915.jpeg",
+     "width": 959,
+     "height": 1915
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "control",
+   "text": "PowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon and night\nEffortless Control\nCompatible with voice assistants and many home  \nautomation systems*\nPrivacy and Security\nSchedule shadings to move automatically, when you’re  \nhome or away\nEnergy Efficiency \nProgram shadings to be in the best positions to heat and  \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable  \nbattery and hardwiring capability\n* \u0007Some features require additional hardware and/or third-party equipment. \nTo learn more, visit hunterdouglas.com/powerview-design-options.  \nFor more details on PowerView Automation, open the opposite page.\n  \nFabric ClearView® Satin    Color Black Onyx\nControl Option PowerView® Automation     \nControl Options\nUltraGlide®\nA single retractable wand for enhanced child  \nsafety. With one click, the fabric panel drops for \ncomplete privacy. Pump the wand to open the \nvanes or raise the shading.\nSoftTouch® Motorization\nA battery-operated, cordless system. Gently  \npull down on the wand to lower shadings,  \nor lightly push up to raise them.\nEasyRise™\nA continuous cordless loop system. Simply pull \non the cord to raise or lower the shade. \n*Not available in Canada.",
+   "images": [
+    {
+     "filename": "page018_img01_2096x3009.jpeg",
+     "width": 2096,
+     "height": 3009
+    },
+    {
+     "filename": "page018_img02_674x1156.jpeg",
+     "width": 674,
+     "height": 1156
+    },
+    {
+     "filename": "page018_img03_645x1380.jpeg",
+     "width": 645,
+     "height": 1380
+    },
+    {
+     "filename": "page018_img04_836x1808.jpeg",
+     "width": 836,
+     "height": 1808
+    },
+    {
+     "filename": "page018_img05_647x1393.jpeg",
+     "width": 647,
+     "height": 1393
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "control",
+   "text": "CONTROL AND  \nDESIGN OPTIONS\nPowerView® Automation \nIncredible Convenience\nAchieve your perfect light automatically—morning, noon and night\nEffortless Control\nCompatible with voice assistants and many home  \nautomation systems*\nPrivacy and Security\nSchedule shadings to move automatically, when you’re  \nhome or away\nEnergy Efficiency \nProgram shadings to be in the best positions to heat and  \ncool your home\nChild and Pet Safety\nSimple, cord-free operation\nFlexible Power Options\nChoose from several power options, including a rechargeable  \nbattery and hardwiring capability\n* \u0007Some features require additional hardware and/or third-party equipment. \nTo learn more, visit hunterdouglas.com/powerview-design-options.  \nFor more details on PowerView Automation, open the opposite page.\n  \nFabric ClearView® Satin    Color Black Onyx\nControl Option PowerView® Automation     \nA Day With PowerView®   \n10:30 PM Bedtime\nShadings  close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shadings to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shadings open to reveal your best view.\n2:00 PM Afternoon\nShadings adjust to protect furnishings from harsh midday sunlight.",
+   "images": [
+    {
+     "filename": "page019_img01_5996x3009.jpeg",
+     "width": 5996,
+     "height": 3009
+    },
+    {
+     "filename": "page019_img02_674x1156.jpeg",
+     "width": 674,
+     "height": 1156
+    },
+    {
+     "filename": "page019_img03_1503x990.jpeg",
+     "width": 1503,
+     "height": 990
+    },
+    {
+     "filename": "page019_img04_1453x909.jpeg",
+     "width": 1453,
+     "height": 909
+    },
+    {
+     "filename": "page019_img05_1227x768.jpeg",
+     "width": 1227,
+     "height": 768
+    },
+    {
+     "filename": "page019_img06_1453x909.jpeg",
+     "width": 1453,
+     "height": 909
+    }
+   ]
+  }
+ ],
+ "design_options": [
+  {
+   "page": 20,
+   "category": "design",
+   "text": "MOUNTING PROFILES/\nOPTIONS\nDESIGN AND  \nMOUNTING OPTIONS\nFabric-Covered Bottom Rail\nA coordinating fabric on the bottom rail adds the perfect finishing touch.\nFabric-Covered Headrail\nHeadrail fabric beautifully matches the shading to create a streamlined look.\nTwo-On-One Headrail \nShadings operate independently on the same headrail— \nan ideal solution for wide windows and sliding glass doors.\nDesign Options\nSpecialty Shapes \nThese window shadings are non-operable in the vanes countoured closed position. \n*See Reference guide for a full selection of specialty shapes.\nMounting Profiles\nClassic Headrail\nA Deux™ Headrail\nInside Mount\nPartial Mount\nOutside Mount",
+   "images": [
+    {
+     "filename": "page020_img01_1528x834.jpeg",
+     "width": 1528,
+     "height": 834
+    },
+    {
+     "filename": "page020_img02_1528x834.jpeg",
+     "width": 1528,
+     "height": 834
+    },
+    {
+     "filename": "page020_img03_1529x835.jpeg",
+     "width": 1529,
+     "height": 835
+    },
+    {
+     "filename": "page020_img04_1521x835.jpeg",
+     "width": 1521,
+     "height": 835
+    },
+    {
+     "filename": "page020_img05_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    },
+    {
+     "filename": "page020_img06_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    },
+    {
+     "filename": "page020_img07_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    },
+    {
+     "filename": "page020_img08_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    },
+    {
+     "filename": "page020_img09_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    },
+    {
+     "filename": "page020_img10_962x834.jpeg",
+     "width": 962,
+     "height": 834
+    }
+   ]
+  }
+ ],
+ "mounting": [],
+ "product_details": [
+  {
+   "page": 16,
+   "category": "opacity",
+   "text": "Sheer Options\nPirouette® Classic Sheer—For Maximum Light Filtering \nThe preferred choice for filtering harsh incoming light and UV protection. \n \nClearView® Sheer—For Superior View-Through\nThe preferred choice for crisp, clean view-through, light control and UV protection. \n \nPlease refer to the Fabric Decks designated with the Classic Sheer for all options.\nPlease refer to the Fabric Decks designated with the ClearView Sheer for all options.\nFabric ClearView®  Satin    Color Luxe\nControl Option PowerView® Automation     \nOPACITY  OPTIONS",
+   "images": [
+    {
+     "filename": "page016_img01_3907x3009.jpeg",
+     "width": 3907,
+     "height": 3009
+    },
+    {
+     "filename": "page016_img02_1509x1913.jpeg",
+     "width": 1509,
+     "height": 1913
+    },
+    {
+     "filename": "page016_img03_1510x1913.jpeg",
+     "width": 1510,
+     "height": 1913
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "opacity",
+   "text": "Opacity Options\nLight-Filtering Fabric\nFor diffused light and privacy.\nRoom-Darkening Fabric\nBlocks the majority of light.\nNote: This is not a blackout product. A warm glow may filter between each vane.\nA Deux™ Design\nSuperior light blocking with a room-darkening panel behind  \na light-filtering shading, which operate independently.",
+   "images": [
+    {
+     "filename": "page017_img01_1509x1993.jpeg",
+     "width": 1509,
+     "height": 1993
+    },
+    {
+     "filename": "page017_img02_1509x1993.jpeg",
+     "width": 1509,
+     "height": 1993
+    },
+    {
+     "filename": "page017_img03_1509x1993.jpeg",
+     "width": 1509,
+     "height": 1993
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_3936x3044.jpeg",
+     "width": 3936,
+     "height": 3044
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Our window  \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
+   "images": [
+    {
+     "filename": "page006_img01_4171x3009.jpeg",
+     "width": 4171,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "after\nFabric Grant™    Color Sahara\nControl Option PowerView® Automation",
+   "images": [
+    {
+     "filename": "page007_img01_5991x3009.jpeg",
+     "width": 5991,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "gallery",
+   "text": "Fabric Alustra® Oakley™    Color Sand Jasper\nControl Option PowerView® Automation",
+   "images": [
+    {
+     "filename": "page011_img01_3909x3009.jpeg",
+     "width": 3909,
+     "height": 3009
+    },
+    {
+     "filename": "page011_img02_2467x1671.jpeg",
+     "width": 2467,
+     "height": 1671
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "gallery",
+   "text": "Fabric ClearView® Satin Metallic™    Color Lunar\nControl Option PowerView® Automation",
+   "images": [
+    {
+     "filename": "page012_img01_7805x3009.jpeg",
+     "width": 7805,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "gallery",
+   "text": "Pirouette® shadings with a room-darkening fabric.\nFabric Thea™    Color Hudson Gray\nControl Option UltraGlide® with Two-on-One Headrail",
+   "images": [
+    {
+     "filename": "page013_img01_2467x1671.jpeg",
+     "width": 2467,
+     "height": 1671
+    },
+    {
+     "filename": "page013_img02_3909x3009.jpeg",
+     "width": 3909,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 24,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page024_img01_3009x2427.jpeg",
+     "width": 3009,
+     "height": 2427
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page025_img01_3035x3036.jpeg",
+     "width": 3035,
+     "height": 3036
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [
+  {
+   "page": 21,
+   "category": "vane",
+   "text": "The bottom fabric panel is adjusted to accommodate the height of the shading and allow for top to bottom vane alignment.\nBottom Fabric Panel Variance\nSmall Bottom Fabric Panel Variance\nLarge Bottom Fabric Panel Variance\nZero Bottom Panel \nThis optional feature for outside mount only,  \ntransforms the bottom panel into a functioning  \nvane. This may add up to 5\" to the length of  \nthe shading. \nFabric Avant    Color Beryl\nControl Option PowerView® Automation \nThe height of the bottom fabric panel will be between 0\" and 5\". This height cannot \nbe predicted until the shade is in manufacturing. \n•  With identical height measurements\n•  At the same time\n•  With the same fabric and vane size\n•  With the same mounting style\nTo ensure shadings are fabricated with bottom fabric panels of the same  \nheight, they must be ordered: \nBOTTOM FABRIC  \nPANEL VARIANCE",
+   "images": [
+    {
+     "filename": "page021_img01_3234x1911.jpeg",
+     "width": 3234,
+     "height": 1911
+    },
+    {
+     "filename": "page021_img02_738x1471.jpeg",
+     "width": 738,
+     "height": 1471
+    },
+    {
+     "filename": "page021_img03_739x1470.jpeg",
+     "width": 739,
+     "height": 1470
+    },
+    {
+     "filename": "page021_img04_738x1471.jpeg",
+     "width": 738,
+     "height": 1471
+    }
+   ]
+  }
+ ],
+ "hardware_colors": [],
+ "fabric_swatches": {
+  "Alustra® Oakley": [
+   {
+    "image": "page032_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Chalcedony",
+    "specs": [
+     "Light Filtering PR82-1302 (5\")",
+     "Room Darkening PR84-1302 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   },
+   {
+    "image": "page032_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Rock Salt",
+    "specs": [
+     "Light Filtering PR82-1304 (5\")",
+     "Room Darkening PR84-1304 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   },
+   {
+    "image": "page033_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Lena",
+    "specs": [
+     "Light Filtering PR82-1306 (5\")",
+     "Room Darkening PR84-1306 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   },
+   {
+    "image": "page033_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Sand Jasper",
+    "specs": [
+     "Light Filtering PR82-1303 (5\")",
+     "Room Darkening PR84-1303 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   },
+   {
+    "image": "page034_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Bedrock",
+    "specs": [
+     "Light Filtering PR82-1305 (5\")",
+     "Room Darkening PR84-1305 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   },
+   {
+    "image": "page034_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Quarry",
+    "specs": [
+     "Light Filtering PR82-1307 (5\")",
+     "Room Darkening PR84-1307 (5\")"
+    ],
+    "fabric_collection": "Alustra® Oakley"
+   }
+  ],
+  "Alustra® ClearView® Apollo": [
+   {
+    "image": "page035_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Lyrical",
+    "specs": [
+     "Light Filtering PR70-011 (5\")",
+     "Room Darkening PR72-011 (5\")"
+    ],
+    "fabric_collection": "Alustra® ClearView® Apollo"
+   },
+   {
+    "image": "page035_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Truth",
+    "specs": [
+     "Light Filtering PR70-103 (5\")",
+     "Room Darkening PR72-103 (5\")"
+    ],
+    "fabric_collection": "Alustra® ClearView® Apollo"
+   },
+   {
+    "image": "page036_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Renew",
+    "specs": [
+     "Light Filtering PR70-104 (5\")",
+     "Room Darkening PR72-104 (5\")"
+    ],
+    "fabric_collection": "Alustra® ClearView® Apollo"
+   },
+   {
+    "image": "page036_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Reflection",
+    "specs": [
+     "Light Filtering PR70-603 (5\")",
+     "Room Darkening PR72-603 (5\")"
+    ],
+    "fabric_collection": "Alustra® ClearView® Apollo"
+   }
+  ],
+  "ClearView® Wren": [
+   {
+    "image": "page037_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Bunting",
+    "specs": [
+     "Light Filtering PR78-1287 (5\")",
+     "Room Darkening PR80-1287 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   },
+   {
+    "image": "page037_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Larkspur",
+    "specs": [
+     "Light Filtering PR78-1288 (5\")",
+     "Room Darkening PR80-1288 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   },
+   {
+    "image": "page038_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Goldfinch",
+    "specs": [
+     "Light Filtering PR78-1290 (5\")",
+     "Room Darkening PR80-1290 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   },
+   {
+    "image": "page038_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Vireo",
+    "specs": [
+     "Light Filtering PR78-1289 (5\")",
+     "Room Darkening PR80-1289 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   },
+   {
+    "image": "page039_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Gray Goose",
+    "specs": [
+     "Light Filtering PR78-1291 (5\")",
+     "Room Darkening PR80-1291 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   },
+   {
+    "image": "page039_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Starling",
+    "specs": [
+     "Light Filtering PR78-1292 (5\")",
+     "Room Darkening PR80-1292 (5\")"
+    ],
+    "fabric_collection": "ClearView® Wren"
+   }
+  ],
+  "ClearView® Batiste Bamboo": [
+   {
+    "image": "page040_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Daisy White",
+    "specs": [
+     "Light Filtering PR74-951 (5\")",
+     "Room Darkening PR76-951 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   },
+   {
+    "image": "page040_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Polar Gray",
+    "specs": [
+     "Light Filtering PR74-986 (5\")",
+     "Room Darkening PR76-986 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   },
+   {
+    "image": "page041_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Pesto",
+    "specs": [
+     "Light Filtering PR74-624 (5\")",
+     "Room Darkening PR76-624 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   },
+   {
+    "image": "page041_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Journal",
+    "specs": [
+     "Light Filtering PR74-457 (5\")",
+     "Room Darkening PR76-457 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   },
+   {
+    "image": "page042_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Platinum",
+    "specs": [
+     "Light Filtering PR74-682 (5\")",
+     "Room Darkening PR76-682 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   },
+   {
+    "image": "page042_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Pearl Gray",
+    "specs": [
+     "Light Filtering PR74-713 (5\")",
+     "Room Darkening PR76-713 (5\")"
+    ],
+    "fabric_collection": "ClearView® Batiste Bamboo"
+   }
+  ],
+  "ClearView® Charmeuse": [
+   {
+    "image": "page043_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Dew",
+    "specs": [
+     "Light Filtering PR90-297 (5\")",
+     "Room Darkening PR92-297 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   },
+   {
+    "image": "page043_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Bisque",
+    "specs": [
+     "Light Filtering PR90-525 (5\")",
+     "Room Darkening PR92-525 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   },
+   {
+    "image": "page044_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Pebble",
+    "specs": [
+     "Light Filtering PR90-937 (5\")",
+     "Room Darkening PR92-937 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   },
+   {
+    "image": "page044_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Ash",
+    "specs": [
+     "Light Filtering PR90-486 (5\")",
+     "Room Darkening PR92-486 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   },
+   {
+    "image": "page045_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Pewter",
+    "specs": [
+     "Light Filtering PR90-336 (5\")",
+     "Room Darkening PR92-336 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   },
+   {
+    "image": "page045_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Storm",
+    "specs": [
+     "Light Filtering PR90-725 (5\")",
+     "Room Darkening PR92-725 (5\")"
+    ],
+    "fabric_collection": "ClearView® Charmeuse"
+   }
+  ],
+  "Satin/ClearView® Satin": [
+   {
+    "image": "page046_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Magnolia",
+    "specs": [
+     "Light Filtering PR10/PR60-951 (5\")",
+     "Room Darkening PR12/PR62-951 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page046_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Birch",
+    "specs": [
+     "Light Filtering PR10/PR60-953 (5\")",
+     "Room Darkening PR12/PR62-953 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page047_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Wool",
+    "specs": [
+     "Light Filtering PR10/PR60-907 (5\")",
+     "Room Darkening PR12/PR62-907 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page047_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Chamomile",
+    "specs": [
+     "Light Filtering PR10/PR60-949 (5\")",
+     "Room Darkening PR12/PR62-949 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page048_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Natural Chalk",
+    "specs": [
+     "Light Filtering PR10/PR60-948 (5\")",
+     "Room Darkening PR12/PR62-948 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page048_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Champagne",
+    "specs": [
+     "Light Filtering PR10/PR60-989 (5\")",
+     "Room Darkening PR12/PR62-989 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page049_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Muse Gray",
+    "specs": [
+     "Light Filtering PR10/PR60-1280 (5\")",
+     "Room Darkening PR12/PR62-1280 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page049_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Park Ave",
+    "specs": [
+     "Light Filtering PR10/PR60-851 (5\")",
+     "Room Darkening PR12/PR62-851 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page050_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Stainless",
+    "specs": [
+     "Light Filtering PR10/PR60-416 (5\")",
+     "Room Darkening PR12/PR62-416 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page050_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Swan",
+    "specs": [
+     "Light Filtering PR10/PR60-1226 (5\")",
+     "Room Darkening PR12/PR62-1226 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page051_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Sanctuary",
+    "specs": [
+     "Light Filtering PR10/PR60-858 (5\")",
+     "Room Darkening PR12/PR62-858 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page051_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Pesto",
+    "specs": [
+     "Light Filtering PR10/PR60-624 (5\")",
+     "Room Darkening PR12/PR62-624 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page052_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Julep",
+    "specs": [
+     "Light Filtering PR10/PR60-481 (5\")",
+     "Room Darkening PR12/PR62-481 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page052_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Blueprint",
+    "specs": [
+     "Light Filtering PR10/PR60-286 (5\")",
+     "Room Darkening PR12/PR62-286 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page053_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Luxe",
+    "specs": [
+     "Light Filtering PR10/PR60-834 (5\")",
+     "Room Darkening PR12/PR62-834 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page053_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Dolphin",
+    "specs": [
+     "Light Filtering PR10/PR60-393 (5\")",
+     "Room Darkening PR12/PR62-393 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page054_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Box Office",
+    "specs": [
+     "Light Filtering PR10/PR60-287 (5\")",
+     "Room Darkening PR12/PR62-287 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page054_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Black Onyx",
+    "specs": [
+     "Light Filtering PR10/PR60-749 (5\")",
+     "Room Darkening PR12/PR62-749 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page055_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Charming",
+    "specs": [
+     "Light Filtering PR10/PR60-1281 (5\")",
+     "Room Darkening PR12/PR62-1281 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page055_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Grace",
+    "specs": [
+     "Light Filtering PR10/PR60-1282 (5\")",
+     "Room Darkening PR12/PR62-1282 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page056_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Amethyst",
+    "specs": [
+     "Light Filtering PR10/PR60-417 (5\")",
+     "Room Darkening PR12/PR62-417 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page056_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Dune",
+    "specs": [
+     "Light Filtering PR10/PR60-324 (5\")",
+     "Room Darkening PR12/PR62-324 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page057_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "River Rock",
+    "specs": [
+     "Light Filtering PR10/PR60-411 (5\")",
+     "Room Darkening PR12/PR62-411 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   },
+   {
+    "image": "page057_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Dark Chocolate",
+    "specs": [
+     "Light Filtering PR10/PR60-496 (5\")",
+     "Room Darkening PR12/PR62-496 (5\")"
+    ],
+    "fabric_collection": "Satin/ClearView® Satin"
+   }
+  ],
+  "TM/ClearView® Satin Metallic": [
+   {
+    "image": "page058_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Diamond",
+    "specs": [
+     "Light Filtering PR14/PR64-616 (5\")",
+     "Room Darkening PR16/PR66-616 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page058_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Serenity",
+    "specs": [
+     "Light Filtering PR14/PR64-087 (5\")",
+     "Room Darkening PR16/PR66-087 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page059_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Lunar",
+    "specs": [
+     "Light Filtering PR14/PR64-085 (5\")",
+     "Room Darkening PR16/PR66-085 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page059_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Wish",
+    "specs": [
+     "Light Filtering PR14/PR64-086 (5\")",
+     "Room Darkening PR16/PR66-086 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page060_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Frost",
+    "specs": [
+     "Light Filtering PR14/PR64-600 (5\")",
+     "Room Darkening PR16/PR66-600 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page060_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Starlight",
+    "specs": [
+     "Light Filtering PR14/PR64-605 (5\")",
+     "Room Darkening PR16/PR66-605 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page061_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Akoya",
+    "specs": [
+     "Light Filtering PR14/PR64-1283 (5\")",
+     "Room Darkening PR16/PR66-1283 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page061_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Aurelia",
+    "specs": [
+     "Light Filtering PR14/PR64-1284 (5\")",
+     "Room Darkening PR16/PR66-1284 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page062_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Copper",
+    "specs": [
+     "Light Filtering PR14/PR64-614 (5\")",
+     "Room Darkening PR16/PR66-614 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page062_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Geode",
+    "specs": [
+     "Light Filtering PR14/PR64-1285 (5\")",
+     "Room Darkening PR16/PR66-1285 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page063_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Lightning",
+    "specs": [
+     "Light Filtering PR14/PR64-604 (5\")",
+     "Room Darkening PR16/PR66-604 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   },
+   {
+    "image": "page063_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Bronze Star",
+    "specs": [
+     "Light Filtering PR14/PR64-1286 (5\")",
+     "Room Darkening PR16/PR66-1286 (5\")"
+    ],
+    "fabric_collection": "TM/ClearView® Satin Metallic"
+   }
+  ],
+  "Other Colors": [
+   {
+    "image": "page064_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Ivory Pearl",
+    "specs": [
+     "Light Filtering PR94-1260 (5\")",
+     "Room Darkening PR96-1260 (5\")"
+    ]
+   },
+   {
+    "image": "page064_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Hudson Gray",
+    "specs": [
+     "Light Filtering PR94-1262 (5\")",
+     "Room Darkening PR96-1262 (5\")"
+    ]
+   },
+   {
+    "image": "page065_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Cerise",
+    "specs": [
+     "Light Filtering PR94-1263 (5\")",
+     "Room Darkening PR96-1263 (5\")"
+    ]
+   },
+   {
+    "image": "page065_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Morel",
+    "specs": [
+     "Light Filtering PR94-1308 (5\")",
+     "Room Darkening PR96-1308 (5\")"
+    ]
+   },
+   {
+    "image": "page066_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Cypher",
+    "specs": [
+     "Light Filtering PR94-1265 (5\")",
+     "Room Darkening PR96-1265 (5\")"
+    ]
+   },
+   {
+    "image": "page066_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Olivia",
+    "specs": [
+     "Light Filtering PR94-1309 (5\")",
+     "Room Darkening PR96-1309 (5\")"
+    ]
+   },
+   {
+    "image": "page067_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Snowdrop",
+    "specs": [
+     "Light Filtering PR86-1296 (5\")",
+     "Room Darkening PR88-1296 (5\")"
+    ]
+   },
+   {
+    "image": "page067_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "French Porcelain",
+    "specs": [
+     "Light Filtering PR86-1297 (5\")",
+     "Room Darkening PR88-1297 (5\")"
+    ]
+   },
+   {
+    "image": "page068_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Miel",
+    "specs": [
+     "Light Filtering PR86-1298 (5\")",
+     "Room Darkening PR88-1298 (5\")"
+    ]
+   },
+   {
+    "image": "page068_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Mist Veil",
+    "specs": [
+     "Light Filtering PR86-1299 (5\")",
+     "Room Darkening PR88-1299 (5\")"
+    ]
+   },
+   {
+    "image": "page069_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Beryl",
+    "specs": [
+     "Light Filtering PR86-1301 (5\")",
+     "Room Darkening PR88-1301 (5\")"
+    ]
+   },
+   {
+    "image": "page069_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Sea Fog",
+    "specs": [
+     "Light Filtering PR86-1300 (5\")",
+     "Room Darkening PR88-1300 (5\")"
+    ]
+   },
+   {
+    "image": "page070_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Buff",
+    "specs": [
+     "Light Filtering PR50-774 (5\")",
+     "Room Darkening PR52-774 (5\")"
+    ]
+   },
+   {
+    "image": "page070_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Sahara",
+    "specs": [
+     "Light Filtering PR50-126 (5\")",
+     "Room Darkening PR52-126 (5\")"
+    ]
+   },
+   {
+    "image": "page071_img03_236x236.jpeg",
+    "width": 236,
+    "height": 236,
+    "color_name": "Brindle",
+    "specs": [
+     "Light Filtering PR50-1294 (5\")",
+     "Room Darkening PR52-1294 (5\")"
+    ]
+   },
+   {
+    "image": "page071_img04_236x236.jpeg",
+    "width": 236,
+    "height": 236,
+    "color_name": "Thrive",
+    "specs": [
+     "Light Filtering PR50-1295 (5\")",
+     "Room Darkening PR52-1295 (5\")"
+    ]
+   },
+   {
+    "image": "page072_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Labradorite",
+    "specs": [
+     "Light Filtering PR50-1293 (5\")",
+     "Room Darkening PR52-1293 (5\")"
+    ]
+   },
+   {
+    "image": "page072_img04_236x236.jpeg",
+    "width": 236,
+    "height": 236,
+    "color_name": "Pitch",
+    "specs": [
+     "Light Filtering PR50-855 (5\")",
+     "Room Darkening PR52-855 (5\")"
+    ]
+   },
+   {
+    "image": "page073_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Porcelain",
+    "specs": [
+     "Light Filtering PR22-501 (5\")",
+     "Room Darkening PR24-501 (5\")"
+    ]
+   },
+   {
+    "image": "page073_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Blade",
+    "specs": [
+     "Light Filtering PR22-284 (5\")",
+     "Room Darkening PR24-284 (5\")"
+    ]
+   },
+   {
+    "image": "page074_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "White Jade",
+    "specs": [
+     "Light Filtering PR22-502 (5\")",
+     "Room Darkening PR24-502 (5\")"
+    ]
+   },
+   {
+    "image": "page074_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Palomino",
+    "specs": [
+     "Light Filtering PR22-524 (5\")",
+     "Room Darkening PR24-524 (5\")"
+    ]
+   },
+   {
+    "image": "page075_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Magnolia",
+    "specs": [
+     "Light Filtering PR6-951 (5\")",
+     "Room Darkening PR8-951 (5\")"
+    ]
+   },
+   {
+    "image": "page075_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Chamomile",
+    "specs": [
+     "Light Filtering PR6-949 (5\")",
+     "Room Darkening PR8-949 (5\")"
+    ]
+   },
+   {
+    "image": "page076_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Oatmeal",
+    "specs": [
+     "Light Filtering PR6-905 (5\")",
+     "Room Darkening PR8-905 (5\")"
+    ]
+   },
+   {
+    "image": "page076_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Stone",
+    "specs": [
+     "Light Filtering PR6-331 (5\")",
+     "Room Darkening PR8-331 (5\")"
+    ]
+   },
+   {
+    "image": "page077_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Thistle",
+    "specs": [
+     "Light Filtering PR6-403 (5\")",
+     "Room Darkening PR8-403 (5\")"
+    ]
+   },
+   {
+    "image": "page077_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Umber",
+    "specs": [
+     "Light Filtering PR6-124 (5\")",
+     "Room Darkening PR8-124 (5\")"
+    ]
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 8,
+  "benefits": 1,
+  "control": 6,
+  "design": 1,
+  "mounting": 0,
+  "details": 2,
+  "vane": 1,
+  "hardware": 0,
+  "swatch_collections": 8,
+  "swatch_colors": 92
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 8,
+  "control": 6,
+  "benefits": 1,
+  "opacity": 2,
+  "design": 1,
+  "vane": 1,
+  "advantage": 1,
+  "long_text": 1,
+  "color_chart_table": 6,
+  "swatch": 46
+ }
 }

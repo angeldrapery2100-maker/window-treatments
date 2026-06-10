@@ -1,602 +1,602 @@
 {
-  "id": "hd-palm-beach-digital-sample-book",
-  "name": "Palm Beach™ Shutters",
-  "slug": "palm-beach",
-  "description": "Palm Beach™ Polysatin™ shutters are built to last with a UV-resistant compound that resists warping, cracking, fading, and discoloring—guaranteed for life.",
-  "cover_image": "page002_img01_2106x1506.jpeg",
-  "benefits": [
+ "id": "hd-palm-beach-digital-sample-book",
+ "name": "Palm Beach™ Shutters",
+ "slug": "palm-beach",
+ "description": "Palm Beach™ Polysatin™ shutters are built to last with a UV-resistant compound that resists warping, cracking, fading, and discoloring—guaranteed for life.",
+ "cover_image": "page002_img01_2106x1506.jpeg",
+ "benefits": [
+  {
+   "page": 13,
+   "category": "benefits",
+   "text": "Benefits\nOne-Touch Closure\nExclusive SoftClose™ louvers feature one-touch control so louvers \nclose softly and smoothly—and Quick Align™, for easy louver alignment. \nSuperior Quality\nBuilt to last, Palm Beach shutters are reinforced at major \nstress points for exceptional strength and stability.\nWater Resilient\nOur unique Polysatin™ compound resists water and stands up to humidity, \nmaking Palm Beach™ shutters perfect for bathrooms or kitchens.\nPalm Beach™ Promise™\nThe Palm Beach Promise guarantees that shutters won’t warp, \ncrack, fade, chip, peel or discolor for the life of the product. \nEnergy Efficiency\nClose shutter louvers to keep warm air out when it's hot \nand in when it's cold, reducing energy costs. \nFire Retardant\nSuitable for both residential and commercial applications, \nPalm Beach shutters are NFPA 701 flame retardant certified. \nUV Protection\nWhen fully closed, Palm Beach shutters protect furniture, \nflooring and artwork from fading. \nHealthier Indoor Air \nPalm Beach™ shutters are GREENGUARD® Gold Certified for low indoor chemical \nemissions and GREENGUARD listed for resisting the growth of mold and mildew.",
+   "images": [
     {
-      "page": 13,
-      "category": "benefits",
-      "text": "Benefits\nOne-Touch Closure\nExclusive SoftClose™ louvers feature one-touch control so louvers \nclose softly and smoothly—and Quick Align™, for easy louver alignment. \nSuperior Quality\nBuilt to last, Palm Beach shutters are reinforced at major \nstress points for exceptional strength and stability.\nWater Resilient\nOur unique Polysatin™ compound resists water and stands up to humidity, \nmaking Palm Beach™ shutters perfect for bathrooms or kitchens.\nPalm Beach™ Promise™\nThe Palm Beach Promise guarantees that shutters won’t warp, \ncrack, fade, chip, peel or discolor for the life of the product. \nEnergy Efficiency\nClose shutter louvers to keep warm air out when it's hot \nand in when it's cold, reducing energy costs. \nFire Retardant\nSuitable for both residential and commercial applications, \nPalm Beach shutters are NFPA 701 flame retardant certified. \nUV Protection\nWhen fully closed, Palm Beach shutters protect furniture, \nflooring and artwork from fading. \nHealthier Indoor Air \nPalm Beach™ shutters are GREENGUARD® Gold Certified for low indoor chemical \nemissions and GREENGUARD listed for resisting the growth of mold and mildew.",
-      "images": [
-        {
-          "filename": "page013_img01_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img02_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img03_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img04_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img05_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img06_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img07_764x436.jpeg",
-          "width": 764,
-          "height": 436
-        },
-        {
-          "filename": "page013_img08_766x437.jpeg",
-          "width": 766,
-          "height": 437
-        }
-      ]
+     "filename": "page013_img01_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img02_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img03_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img04_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img05_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img06_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img07_764x436.jpeg",
+     "width": 764,
+     "height": 436
+    },
+    {
+     "filename": "page013_img08_766x437.jpeg",
+     "width": 766,
+     "height": 437
     }
-  ],
-  "control_options": [
-    {
-      "page": 15,
-      "category": "control",
-      "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule louvers to close whenever you prefer\nEnergy Efficiency \nProgram louvers to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options. \nPowerView® Automation \nSoftClose™ Louvers\nEnjoy smooth, controlled louver closure with a single touch.\nFront Tilt Offset\nFront tilt bar is offset to the left or right side of the panel \nfor a less obstructed view.\nTraditional Front Tilt \nOpen and close louvers together using the tilt bar.\nHiddenTilt™\nOpen and close louvers together with a single tilt; \nno tilt bar for unobstructed views.\nControl Options",
-      "images": [
-        {
-          "filename": "page015_img01_355x608.jpeg",
-          "width": 355,
-          "height": 608
-        },
-        {
-          "filename": "page015_img02_1046x1505.jpeg",
-          "width": 1046,
-          "height": 1505
-        },
-        {
-          "filename": "page015_img03_727x436.jpeg",
-          "width": 727,
-          "height": 436
-        },
-        {
-          "filename": "page015_img04_727x436.jpeg",
-          "width": 727,
-          "height": 436
-        },
-        {
-          "filename": "page015_img05_727x436.jpeg",
-          "width": 727,
-          "height": 436
-        },
-        {
-          "filename": "page015_img06_727x436.jpeg",
-          "width": 727,
-          "height": 436
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "control",
-      "text": "A Day With PowerView®  \n10:30 PM Bedtime\nLouvers close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule louvers to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, louvers open to reveal your best view.\n2:00 PM Afternoon\nLouvers adjust to protect furnishings from harsh midday sunlight.\nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule louvers to close whenever you prefer\nEnergy Efficiency \nProgram louvers to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options. \nPowerView® Automation \n5151 White Silk with 31/2\" Louver and Standard L-Frame",
-      "images": [
-        {
-          "filename": "page016_img01_355x608.jpeg",
-          "width": 355,
-          "height": 608
-        },
-        {
-          "filename": "page016_img02_2996x1505.jpeg",
-          "width": 2996,
-          "height": 1505
-        },
-        {
-          "filename": "page016_img03_779x537.jpeg",
-          "width": 779,
-          "height": 537
-        },
-        {
-          "filename": "page016_img04_727x455.jpeg",
-          "width": 727,
-          "height": 455
-        },
-        {
-          "filename": "page016_img05_728x456.jpeg",
-          "width": 728,
-          "height": 456
-        },
-        {
-          "filename": "page016_img06_728x455.jpeg",
-          "width": 728,
-          "height": 455
-        }
-      ]
-    }
-  ],
-  "design_options": [
-    {
-      "page": 7,
-      "category": "design",
-      "text": "after\n5136 Bright White with 41/2\" Louver and Classic Z-Frame with Decorative Sill Cover",
-      "images": [
-        {
-          "filename": "page007_img01_2996x1505.jpeg",
-          "width": 2996,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "design",
-      "text": "5137 White with 41/2\" Louver and Bypass Triple Track Frame\nwith Decorative Valance and Standard Z-Frame",
-      "images": [
-        {
-          "filename": "page009_img01_3923x1505.jpeg",
-          "width": 3923,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "design",
-      "text": "Standard Hinged Panels\nBi-Fold Hinged Panels\nStandard Hinged Panels with Measured T-Post Locations\nStandard Hinged Panels with Equal T-Post Locations\n5137 White with 31/2\" Louver, Standard Z-Frame and Decorative Sill Cover",
-      "images": [
-        {
-          "filename": "page017_img01_1617x483.jpeg",
-          "width": 1617,
-          "height": 483
-        },
-        {
-          "filename": "page017_img02_1617x483.jpeg",
-          "width": 1617,
-          "height": 483
-        },
-        {
-          "filename": "page017_img03_1954x1507.jpeg",
-          "width": 1954,
-          "height": 1507
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "design",
-      "text": "Bi-Fold Decorative Valance\nBi-Fold Track System\nBi-Fold Standard Valance\n5136 Bright White with 2½\" Louver and Bi-Fold Track Frame with Standard Valance",
-      "images": [
-        {
-          "filename": "page018_img01_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page018_img02_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page018_img03_1956x1505.jpeg",
-          "width": 1956,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "design",
-      "text": "Bypass Triple Track System\nWith a three-track design, panels slide and stack in less space than a standard \nBypass Track, allowing for improved view-through within a single opening.\nBypass Open Louver Track System\nThis track system allows shutter panels to slide with the louvers \nin an open position for increased view-through.\nBypass Decorative Valance\nBypass Track System\nBypass Standard Valance\n5137 White with 4½\" Louver and Bypass Triple Track Frame with Decorative Valance",
-      "images": [
-        {
-          "filename": "page019_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page019_img02_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page019_img03_764x454.jpeg",
-          "width": 764,
-          "height": 454
-        },
-        {
-          "filename": "page019_img04_765x459.jpeg",
-          "width": 765,
-          "height": 459
-        },
-        {
-          "filename": "page019_img05_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "design",
-      "text": "Decorative Sill Cover\nDouble-Hung\nCorner Window\nFull 4-Sided Café\nDesign Options\nStandard Café\nFrench Door Cut-Out Includes Offset",
-      "images": [
-        {
-          "filename": "page020_img01_766x531.jpeg",
-          "width": 766,
-          "height": 531
-        },
-        {
-          "filename": "page020_img02_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        },
-        {
-          "filename": "page020_img03_763x530.jpeg",
-          "width": 763,
-          "height": 530
-        },
-        {
-          "filename": "page020_img04_765x530.jpeg",
-          "width": 765,
-          "height": 530
-        },
-        {
-          "filename": "page020_img05_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        },
-        {
-          "filename": "page020_img06_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        },
-        {
-          "filename": "page020_img07_770x1120.jpeg",
-          "width": 770,
-          "height": 1120
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "design",
-      "text": "Specialty Shapes\nOctagon\nHexagon\nPentagon\nQuarter Circle\nExtended Angle\nAngle\nArch\nExtended Arch\nExtended Eyebrow\nEyebrow",
-      "images": [
-        {
-          "filename": "page021_img01_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img02_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img03_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img04_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img05_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img06_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img07_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img08_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img09_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        },
-        {
-          "filename": "page021_img10_480x530.jpeg",
-          "width": 480,
-          "height": 530
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "design",
-      "text": "Classic Z-Frame\nClassic Z-Frame with Sill Frame\nHang Strip Behind (OM)\nDecorative Z-Frame with \nSill Frame\nStandard Z-Frame\nStandard Z-Frame with \nStandard L-Frame\nHang Strip to the Side (IM)\nDecorative Z-Frame\nDeluxe Z-Frame with Sill Frame\nDeluxe Z-Frame\nFraming Profiles\nColonial Z-Frame\nDeluxe Casing Frame\nDeluxe Casing Frame with \nSill Frame\nColonial Z-Frame with \nStandard L-Frame\nStandard Casing Frame\nStandard Casing Frame with \nSill Frame\nDeluxe Casing Sill/\nExtended L-Frame\nStandard Casing Sill/\nDecorative L-Frame\nModern Z-Frame\nModern Z-Frame with Sill Frame\nStandard L-Frame (OM)\nStandard L-Frame (IM)",
-      "images": [
-        {
-          "filename": "page022_img01_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img02_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img03_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img04_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img05_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img06_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img07_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img08_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img09_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img10_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img11_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img12_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img13_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img14_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img15_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img16_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img17_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img18_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img19_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img20_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        },
-        {
-          "filename": "page022_img21_338x267.jpeg",
-          "width": 338,
-          "height": 267
-        },
-        {
-          "filename": "page022_img22_338x268.jpeg",
-          "width": 338,
-          "height": 268
-        }
-      ]
-    }
-  ],
-  "mounting": [
-    {
-      "page": 12,
-      "category": "mounting",
-      "text": "5136 Bright White with 31/2\" Louver and Standard Casing Frame \nand Standard L-Frame with French Door Cut-Out",
-      "images": [
-        {
-          "filename": "page012_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    }
-  ],
-  "product_details": [],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
-      "images": [
-        {
-          "filename": "page006_img01_2086x1505.jpeg",
-          "width": 2086,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "category": "gallery",
-      "text": "SoftClose™ louvers \nwith Quick Align™ \nprovide smoothly \ncontrolled, one-touch \nlouver closure, and \neasy alignment of \nlouvers across panels. \n5137 White with 31/2\" Louver and Standard Z-Frame",
-      "images": [
-        {
-          "filename": "page008_img01_2995x1505.jpeg",
-          "width": 2995,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "Conveniently adjust \nall shutter louvers \nautomatically with \nPowerView® Automation. \n5136 Bright White with 31/2\" Louver and Modern Z-Frame with Sill",
-      "images": [
-        {
-          "filename": "page010_img01_2995x1505.jpeg",
-          "width": 2995,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "gallery",
-      "text": "Palm Beach™ shutters \nmounted outside the \nwindow frame are \na great solution for \ntilt and turn windows. \n5136 Bright White with 41/2\" Louver and Deluxe Casing Frame with Decorative Sill Cover",
-      "images": [
-        {
-          "filename": "page011_img01_2995x1507.jpeg",
-          "width": 2995,
-          "height": 1507
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [],
-  "fabric_swatches": {
-    "Other Colors": [
-      {
-        "image": "page014_img03_480x1105.jpeg",
-        "width": 480,
-        "height": 1105,
-        "color_name": "Color 1",
-        "specs": []
-      },
-      {
-        "image": "page014_img04_480x1105.jpeg",
-        "width": 480,
-        "height": 1105,
-        "color_name": "Color 2",
-        "specs": []
-      },
-      {
-        "image": "page014_img05_481x1104.jpeg",
-        "width": 481,
-        "height": 1104,
-        "color_name": "Color 3",
-        "specs": []
-      },
-      {
-        "image": "page028_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Bright White",
-        "specs": []
-      },
-      {
-        "image": "page028_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "White",
-        "specs": []
-      },
-      {
-        "image": "page029_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "White Silk",
-        "specs": []
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 5,
-    "benefits": 1,
-    "control": 2,
-    "design": 8,
-    "mounting": 1,
-    "details": 0,
-    "vane": 0,
-    "hardware": 0,
-    "swatch_collections": 1,
-    "swatch_colors": 6
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 5,
-    "design": 8,
-    "mounting": 1,
-    "benefits": 1,
-    "swatch": 3,
-    "control": 2,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_cover": 2,
-    "color_chart_table": 1
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 15,
+   "category": "control",
+   "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule louvers to close whenever you prefer\nEnergy Efficiency \nProgram louvers to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options. \nPowerView® Automation \nSoftClose™ Louvers\nEnjoy smooth, controlled louver closure with a single touch.\nFront Tilt Offset\nFront tilt bar is offset to the left or right side of the panel \nfor a less obstructed view.\nTraditional Front Tilt \nOpen and close louvers together using the tilt bar.\nHiddenTilt™\nOpen and close louvers together with a single tilt; \nno tilt bar for unobstructed views.\nControl Options",
+   "images": [
+    {
+     "filename": "page015_img01_355x608.jpeg",
+     "width": 355,
+     "height": 608
+    },
+    {
+     "filename": "page015_img02_1046x1505.jpeg",
+     "width": 1046,
+     "height": 1505
+    },
+    {
+     "filename": "page015_img03_727x436.jpeg",
+     "width": 727,
+     "height": 436
+    },
+    {
+     "filename": "page015_img04_727x436.jpeg",
+     "width": 727,
+     "height": 436
+    },
+    {
+     "filename": "page015_img05_727x436.jpeg",
+     "width": 727,
+     "height": 436
+    },
+    {
+     "filename": "page015_img06_727x436.jpeg",
+     "width": 727,
+     "height": 436
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "control",
+   "text": "A Day With PowerView®  \n10:30 PM Bedtime\nLouvers close automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule louvers to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, louvers open to reveal your best view.\n2:00 PM Afternoon\nLouvers adjust to protect furnishings from harsh midday sunlight.\nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule louvers to close whenever you prefer\nEnergy Efficiency \nProgram louvers to be in the best positions throughout \nthe day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options. \nPowerView® Automation \n5151 White Silk with 31/2\" Louver and Standard L-Frame",
+   "images": [
+    {
+     "filename": "page016_img01_355x608.jpeg",
+     "width": 355,
+     "height": 608
+    },
+    {
+     "filename": "page016_img02_2996x1505.jpeg",
+     "width": 2996,
+     "height": 1505
+    },
+    {
+     "filename": "page016_img03_779x537.jpeg",
+     "width": 779,
+     "height": 537
+    },
+    {
+     "filename": "page016_img04_727x455.jpeg",
+     "width": 727,
+     "height": 455
+    },
+    {
+     "filename": "page016_img05_728x456.jpeg",
+     "width": 728,
+     "height": 456
+    },
+    {
+     "filename": "page016_img06_728x455.jpeg",
+     "width": 728,
+     "height": 455
+    }
+   ]
+  }
+ ],
+ "design_options": [
+  {
+   "page": 7,
+   "category": "design",
+   "text": "after\n5136 Bright White with 41/2\" Louver and Classic Z-Frame with Decorative Sill Cover",
+   "images": [
+    {
+     "filename": "page007_img01_2996x1505.jpeg",
+     "width": 2996,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "design",
+   "text": "5137 White with 41/2\" Louver and Bypass Triple Track Frame\nwith Decorative Valance and Standard Z-Frame",
+   "images": [
+    {
+     "filename": "page009_img01_3923x1505.jpeg",
+     "width": 3923,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "design",
+   "text": "Standard Hinged Panels\nBi-Fold Hinged Panels\nStandard Hinged Panels with Measured T-Post Locations\nStandard Hinged Panels with Equal T-Post Locations\n5137 White with 31/2\" Louver, Standard Z-Frame and Decorative Sill Cover",
+   "images": [
+    {
+     "filename": "page017_img01_1617x483.jpeg",
+     "width": 1617,
+     "height": 483
+    },
+    {
+     "filename": "page017_img02_1617x483.jpeg",
+     "width": 1617,
+     "height": 483
+    },
+    {
+     "filename": "page017_img03_1954x1507.jpeg",
+     "width": 1954,
+     "height": 1507
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "design",
+   "text": "Bi-Fold Decorative Valance\nBi-Fold Track System\nBi-Fold Standard Valance\n5136 Bright White with 2½\" Louver and Bi-Fold Track Frame with Standard Valance",
+   "images": [
+    {
+     "filename": "page018_img01_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page018_img02_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page018_img03_1956x1505.jpeg",
+     "width": 1956,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "design",
+   "text": "Bypass Triple Track System\nWith a three-track design, panels slide and stack in less space than a standard \nBypass Track, allowing for improved view-through within a single opening.\nBypass Open Louver Track System\nThis track system allows shutter panels to slide with the louvers \nin an open position for increased view-through.\nBypass Decorative Valance\nBypass Track System\nBypass Standard Valance\n5137 White with 4½\" Louver and Bypass Triple Track Frame with Decorative Valance",
+   "images": [
+    {
+     "filename": "page019_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page019_img02_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page019_img03_764x454.jpeg",
+     "width": 764,
+     "height": 454
+    },
+    {
+     "filename": "page019_img04_765x459.jpeg",
+     "width": 765,
+     "height": 459
+    },
+    {
+     "filename": "page019_img05_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "design",
+   "text": "Decorative Sill Cover\nDouble-Hung\nCorner Window\nFull 4-Sided Café\nDesign Options\nStandard Café\nFrench Door Cut-Out Includes Offset",
+   "images": [
+    {
+     "filename": "page020_img01_766x531.jpeg",
+     "width": 766,
+     "height": 531
+    },
+    {
+     "filename": "page020_img02_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    },
+    {
+     "filename": "page020_img03_763x530.jpeg",
+     "width": 763,
+     "height": 530
+    },
+    {
+     "filename": "page020_img04_765x530.jpeg",
+     "width": 765,
+     "height": 530
+    },
+    {
+     "filename": "page020_img05_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    },
+    {
+     "filename": "page020_img06_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    },
+    {
+     "filename": "page020_img07_770x1120.jpeg",
+     "width": 770,
+     "height": 1120
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "design",
+   "text": "Specialty Shapes\nOctagon\nHexagon\nPentagon\nQuarter Circle\nExtended Angle\nAngle\nArch\nExtended Arch\nExtended Eyebrow\nEyebrow",
+   "images": [
+    {
+     "filename": "page021_img01_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img02_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img03_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img04_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img05_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img06_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img07_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img08_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img09_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    },
+    {
+     "filename": "page021_img10_480x530.jpeg",
+     "width": 480,
+     "height": 530
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "design",
+   "text": "Classic Z-Frame\nClassic Z-Frame with Sill Frame\nHang Strip Behind (OM)\nDecorative Z-Frame with \nSill Frame\nStandard Z-Frame\nStandard Z-Frame with \nStandard L-Frame\nHang Strip to the Side (IM)\nDecorative Z-Frame\nDeluxe Z-Frame with Sill Frame\nDeluxe Z-Frame\nFraming Profiles\nColonial Z-Frame\nDeluxe Casing Frame\nDeluxe Casing Frame with \nSill Frame\nColonial Z-Frame with \nStandard L-Frame\nStandard Casing Frame\nStandard Casing Frame with \nSill Frame\nDeluxe Casing Sill/\nExtended L-Frame\nStandard Casing Sill/\nDecorative L-Frame\nModern Z-Frame\nModern Z-Frame with Sill Frame\nStandard L-Frame (OM)\nStandard L-Frame (IM)",
+   "images": [
+    {
+     "filename": "page022_img01_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img02_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img03_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img04_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img05_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img06_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img07_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img08_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img09_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img10_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img11_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img12_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img13_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img14_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img15_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img16_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img17_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img18_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img19_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img20_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    },
+    {
+     "filename": "page022_img21_338x267.jpeg",
+     "width": 338,
+     "height": 267
+    },
+    {
+     "filename": "page022_img22_338x268.jpeg",
+     "width": 338,
+     "height": 268
+    }
+   ]
+  }
+ ],
+ "mounting": [
+  {
+   "page": 12,
+   "category": "mounting",
+   "text": "5136 Bright White with 31/2\" Louver and Standard Casing Frame \nand Standard L-Frame with French Door Cut-Out",
+   "images": [
+    {
+     "filename": "page012_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  }
+ ],
+ "product_details": [],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
+   "images": [
+    {
+     "filename": "page006_img01_2086x1505.jpeg",
+     "width": 2086,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "category": "gallery",
+   "text": "SoftClose™ louvers \nwith Quick Align™ \nprovide smoothly \ncontrolled, one-touch \nlouver closure, and \neasy alignment of \nlouvers across panels. \n5137 White with 31/2\" Louver and Standard Z-Frame",
+   "images": [
+    {
+     "filename": "page008_img01_2995x1505.jpeg",
+     "width": 2995,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "Conveniently adjust \nall shutter louvers \nautomatically with \nPowerView® Automation. \n5136 Bright White with 31/2\" Louver and Modern Z-Frame with Sill",
+   "images": [
+    {
+     "filename": "page010_img01_2995x1505.jpeg",
+     "width": 2995,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "gallery",
+   "text": "Palm Beach™ shutters \nmounted outside the \nwindow frame are \na great solution for \ntilt and turn windows. \n5136 Bright White with 41/2\" Louver and Deluxe Casing Frame with Decorative Sill Cover",
+   "images": [
+    {
+     "filename": "page011_img01_2995x1507.jpeg",
+     "width": 2995,
+     "height": 1507
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [],
+ "fabric_swatches": {
+  "Other Colors": [
+   {
+    "image": "page014_img03_480x1105.jpeg",
+    "width": 480,
+    "height": 1105,
+    "color_name": "Color 1",
+    "specs": []
+   },
+   {
+    "image": "page014_img04_480x1105.jpeg",
+    "width": 480,
+    "height": 1105,
+    "color_name": "Color 2",
+    "specs": []
+   },
+   {
+    "image": "page014_img05_481x1104.jpeg",
+    "width": 481,
+    "height": 1104,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page028_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Bright White",
+    "specs": []
+   },
+   {
+    "image": "page028_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "White",
+    "specs": []
+   },
+   {
+    "image": "page029_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "White Silk",
+    "specs": []
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 5,
+  "benefits": 1,
+  "control": 2,
+  "design": 8,
+  "mounting": 1,
+  "details": 0,
+  "vane": 0,
+  "hardware": 0,
+  "swatch_collections": 1,
+  "swatch_colors": 6
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 5,
+  "design": 8,
+  "mounting": 1,
+  "benefits": 1,
+  "swatch": 3,
+  "control": 2,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_cover": 2,
+  "color_chart_table": 1
+ }
 }

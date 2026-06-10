@@ -1,2305 +1,1953 @@
 {
-  "id": "hd-nantucket-digital-sample-book",
-  "name": "Nantucket™ Window Shadings",
-  "slug": "nantucket",
-  "description": "Nantucket™ Window Shadings blend the softness of a sheer with the precise light control of a blind, creating a relaxed coastal-inspired elegance.",
-  "cover_image": "page002_img01_2105x1505.jpeg",
-  "benefits": [
+ "id": "hd-nantucket-digital-sample-book",
+ "name": "Nantucket™ Window Shadings",
+ "slug": "nantucket",
+ "description": "Nantucket™ Window Shadings blend the softness of a sheer with the precise light control of a blind, creating a relaxed coastal-inspired elegance.",
+ "cover_image": "page002_img01_2105x1505.jpeg",
+ "benefits": [
+  {
+   "page": 15,
+   "category": "benefits",
+   "text": "UV Protection with View-Through\nNantucket shadings provide outdoor views while protecting flooring, furniture \nand décor from the sun’s harmful UV rays.\nConcise Collection\nEasily find your perfect Nantucket™ shading with a streamlined offering of \nbeautiful and durable fabrics and colors.\nDaytime Privacy\nDuring the day, the rear sheer deflects light to the outside and obscures views \nfrom the street into your home.\nCustomizable Light Control\nFabric vanes tilt to achieve the preferred amount of illumination, whether \nit’s a well-lit space or a room with a softer brilliance. Choose from a range \nof operating systems that make it easy to control light.\nBenefits of \nNantucket™ shadings \nextend beyond \ngorgeous light \ndiffusion that \ncreates an inviting \natmosphere.\nFabric Front Street™    Color Wicker Basket \nOperating System PowerView® Automation",
+   "images": [
     {
-      "page": 15,
-      "category": "benefits",
-      "text": "UV Protection with View-Through\nNantucket shadings provide outdoor views while protecting flooring, furniture \nand décor from the sun’s harmful UV rays.\nConcise Collection\nEasily find your perfect Nantucket™ shading with a streamlined offering of \nbeautiful and durable fabrics and colors.\nDaytime Privacy\nDuring the day, the rear sheer deflects light to the outside and obscures views \nfrom the street into your home.\nCustomizable Light Control\nFabric vanes tilt to achieve the preferred amount of illumination, whether \nit’s a well-lit space or a room with a softer brilliance. Choose from a range \nof operating systems that make it easy to control light.\nBenefits of \nNantucket™ shadings \nextend beyond \ngorgeous light \ndiffusion that \ncreates an inviting \natmosphere.\nFabric Front Street™    Color Wicker Basket \nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page015_img01_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page015_img02_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page015_img03_1130x1504.jpeg",
-          "width": 1130,
-          "height": 1504
-        },
-        {
-          "filename": "page015_img04_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page015_img05_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        }
-      ]
+     "filename": "page015_img01_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page015_img02_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page015_img03_1130x1504.jpeg",
+     "width": 1130,
+     "height": 1504
+    },
+    {
+     "filename": "page015_img04_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page015_img05_755x455.jpeg",
+     "width": 755,
+     "height": 455
     }
-  ],
-  "control_options": [
-    {
-      "page": 8,
-      "category": "control",
-      "text": "Nantucket™ Window \nShadings with \nUltraGlide® operate \nwith a single \nretractable wand \nsystem that’s safer \nfor homes with \nchildren and pets.\nFabric Boardwalk™    Color Picket Fence   \nOperating System UltraGlide®/PowerView® Automation/Specialty Shapes",
-      "images": [
-        {
-          "filename": "page008_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "control",
-      "text": "Nantucket™ shadings \nwith SoftTouch®\nMotorization operate \nwith a battery-powered\nwand that provides \nenhanced child safety.\nFabric Front Street™    Color Moss Rose\nOperating System SoftTouch® Motorization",
-      "images": [
-        {
-          "filename": "page010_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "control",
-      "text": "Fabric Misty Harbor™    Color Beach Shore \nOperating System SoftTouch® Motorization      \nChoose light-dimming \nNantucket™ fabric to \ncreate a comfortable, \nserene space with \nreduced light.",
-      "images": [
-        {
-          "filename": "page012_img01_3079x1505.jpeg",
-          "width": 3079,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "control",
-      "text": "Effortlessly enjoy \nyour perfect light \nand privacy with \nPowerView® Automation, \nwhich moves your\nNantucket™ shadings \nto schedules you set.\nFabric Sun Porch™    Color Summer Linen\nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page013_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "control",
-      "text": "Nantucket™ A Deux™ \nShadings combine a \ntranslucent shading \nand room-darkening \npanel that operate \nindependently for \noptimal light control.\nFabric Boardwalk™    Color Picket Fence\nOperating System A Deux™ with PowerView® Automation",
-      "images": [
-        {
-          "filename": "page014_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "control",
-      "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation  \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation \nSelect from a \nrange of advanced \nmanual and \nautomated \noperating systems.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window \nfashions with cords to make consumers aware\nof window cord hazards for children and pets.  \nEasyRise™\nA continuous cord loop system raises and lowers \nthe shading by simply pulling on the cord.\nUltraGlide®\nA single retractable wand for enhanced child \nsafety. With one click, the fabric panel drops \nand the vanes open. Pump the wand to close \nthe vanes or raise the shading.\nSoftTouch® Motorization\nA battery-operated, cordless system. Gently pull \ndown on the wand to lower shadings, or lightly \npush up to raise them.\nLiteRise®\nAdjust shadings with a light touch on the \nhandle. Pull down to lower; push up to raise.\n    WARNING/\nADVERTENCIA\nWindow Blind Cord\nStrangulation Risk\nWindow blinds with a damaged\nor loose  tension device or \nretractable cord that fails to fully \nretract pose a strangulation risk \nto children. To avoid this potential strangula-\ntion risk, consider purchasing cordless prod-\nucts or products with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda \nretráctable que no se ajusta completamente \nrepresentan un riesgo de estrangulación \npara los niños. Para evitar un posible riesgo \nde estrangulamiento, considere comprar \nproductos inalámbricos o productos con \ncuerdas inaccesibles.",
-      "images": [
-        {
-          "filename": "page017_img01_355x608.jpeg",
-          "width": 355,
-          "height": 608
-        },
-        {
-          "filename": "page017_img02_446x464.jpeg",
-          "width": 446,
-          "height": 464
-        },
-        {
-          "filename": "page017_img03_440x459.jpeg",
-          "width": 440,
-          "height": 459
-        },
-        {
-          "filename": "page017_img04_448x467.jpeg",
-          "width": 448,
-          "height": 467
-        },
-        {
-          "filename": "page017_img05_436x455.jpeg",
-          "width": 436,
-          "height": 455
-        },
-        {
-          "filename": "page017_img06_1130x1505.jpeg",
-          "width": 1130,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "control",
-      "text": "10:30 PM Bedtime\nShadings lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shadings to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shadings open to reveal your best view.\n2:00 PM Afternoon\nShadings adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®  \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation  \n \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation      \nOPERATING SYSTEMS\nAND OPTIONS",
-      "images": [
-        {
-          "filename": "page018_img01_355x608.jpeg",
-          "width": 355,
-          "height": 608
-        },
-        {
-          "filename": "page018_img02_770x536.jpeg",
-          "width": 770,
-          "height": 536
-        },
-        {
-          "filename": "page018_img03_715x455.jpeg",
-          "width": 715,
-          "height": 455
-        },
-        {
-          "filename": "page018_img04_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        },
-        {
-          "filename": "page018_img05_715x455.jpeg",
-          "width": 715,
-          "height": 455
-        },
-        {
-          "filename": "page018_img06_718x455.jpeg",
-          "width": 718,
-          "height": 455
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "control",
-      "text": "Specialty Shapes\nNantucket™ shadings can accommodate shapes such as arches and angles. \nAll specialty shapes are non-operable.\nTilt Only\nBest for French doors or narrow windows, this option keeps the Nantucket™ \nshading lowered but allows vanes to tilt open and closed. Exclusively available \nwith the EasyRise operating system.\nPalette® Fabric-Covered Headrail\nUpgrade to create a uniform look with a headrail wrapped in color-coordinated fabric. \nTwo-On-One Headrail\nFor larger windows, two independently operated shadings can share the same \nheadrail. Available with EasyRise™, LiteRise® and UltraGlide® operating systems. \nA Deux™\nThe dual roller system features a translucent shading in the front and a room-darkening \npanel in the back. Comes standard with Palette® Fabric-Covered Headrail.\nNantucket Fabric Parksley™    Color Element   \nDesign Studio™ Side Panel Fabric Esmery     Color Cottage     \nOperating System PowerView® Automation     \nMagnetic Hold-Down Brackets\nSecure Nantucket shadings on French doors or sidelight applications with \nmagnetic hold-down brackets. Can also be used on all other operating systems \nto prevent movement of the bottom rail in a window.",
-      "images": [
-        {
-          "filename": "page019_img01_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page019_img02_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page019_img03_905x1505.jpeg",
-          "width": 905,
-          "height": 1505
-        },
-        {
-          "filename": "page019_img04_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page019_img05_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page019_img06_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page019_img07_759x468.jpeg",
-          "width": 759,
-          "height": 468
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "control",
-      "text": "Classic Headrail\n \nPartial Mount\nOutside Mount\nInside Mount\nFabric Front Street™    Color Regatta White\nOperating System A Deux™ with PowerView® Automation         \nChoose how your \nNantucket™ shadings \nmount to your \nwindow frame.\nA Deux™ Headrail",
-      "images": [
-        {
-          "filename": "page020_img01_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img02_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img03_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img04_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img05_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img06_455x455.jpeg",
-          "width": 455,
-          "height": 455
-        },
-        {
-          "filename": "page020_img07_1130x1505.jpeg",
-          "width": 1130,
-          "height": 1505
-        }
-      ]
-    }
-  ],
-  "design_options": [],
-  "mounting": [],
-  "product_details": [
-    {
-      "page": 16,
-      "category": "opacity",
-      "text": "Light-Dimming Fabric\nFilters more light\nTranslucent Fabrics\nCreate a soft glow\nA Deux™ Room-Darkening Design Option  \nBlocks most incoming light\nNantucket™ shadings \noffer multiple convenient \nways to control light.\nFull Room Shot - Translucent\nNAN_DP_11\nObjective: Show difference between light filter­\ning (vane), light dimming (vane) and A Deux (back \npanel). Vanes should be closed for light filtering \nand light dimming images.  A Deux should have \nback panel down with vanes open. Important to \nshow light gaps on light dimming and A Deux.\nFabric Front Street™    Color Regatta White\nOperating System A Deux™ with PowerView® Automation",
-      "images": [
-        {
-          "filename": "page016_img01_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page016_img02_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page016_img03_755x455.jpeg",
-          "width": 755,
-          "height": 455
-        },
-        {
-          "filename": "page016_img04_1956x1505.jpeg",
-          "width": 1956,
-          "height": 1505
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "Nantucket™ fabrics \nfeature on-trend \ncolors and patterns \nthat complement \na variety of interior \ndesign styles. \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page007_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "gallery",
-      "text": "Fabric Brant Point™    Color Reyes \nOperating System LiteRise®/PowerView® Automation",
-      "images": [
-        {
-          "filename": "page009_img01_3905x1505.jpeg",
-          "width": 3905,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "gallery",
-      "text": "Nantucket™ shadings \nprovide UV protection \nand view-through \nwith special S-shaped \nvanes positioned \nbetween two sheers.\nFabric Brant Point™    Color Hatteras\nOperating System PowerView® Automation",
-      "images": [
-        {
-          "filename": "page011_img01_3080x1505.jpeg",
-          "width": 3080,
-          "height": 1505
-        },
-        {
-          "filename": "page011_img02_835x644.jpeg",
-          "width": 835,
-          "height": 644
-        }
-      ]
-    },
-    {
-      "page": 23,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page023_img01_3010x2428.jpeg",
-          "width": 3010,
-          "height": 2428
-        }
-      ]
-    },
-    {
-      "page": 24,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page024_img01_3010x3005.jpeg",
-          "width": 3010,
-          "height": 3005
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [
-    {
-      "page": 25,
-      "category": "hardware",
-      "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nTranslucent\nCentre Park™\nN83\n1127\nOrion White\nWhite Tiara\nRadiant White\n1\n3\"\nTranslucent\nCentre Park\nN83\n1125\nGlacier Ice\nSummer Linen\nWhite Diamond\n1\n3\"\nTranslucent\nCentre Park\nN83\n1128\nIllumination\nGolden Straw\nMisty Almond\n2\n3\"\nTranslucent\nCentre Park\nN83\n1126\nHimalayan\nSummer Linen\nWhite Diamond\n2\n3\"\nTranslucent\nCentre Park\nN83\n1129\nSienna Sand\nRipe Pear\nIvoire\n3\n3\"\nTranslucent\nCentre Park\nN83\n1130\nWindsor Gray\nDuchess Gray\nSilver Reflection \n3\n3\"\nTranslucent\nCentre Park\nN83\n1131\nCambria\nPearl Gray\nSea Ranch \n4\n3\"\nTranslucent\nCentre Park\nN83\n1132\nAmante\nDove Gray\nMagician’s Cloth\n4\n3\"\nTranslucent\nParksley™\nN82\n1067\nPilot\nAspen White\nWhite Diamond\n5\n3\"\nTranslucent\nParksley\nN82\n1068\nBonaire\nFeather Fantasy\nFeathered Down\n5\n3\"\nTranslucent\nParksley\nN82\n1069\nAmber Light\nRipe Pear\nIvoire\n6\n3\"\nTranslucent\nParksley\nN82\n1070\nCaraway\nWorn Leather\nFeather Fantasy\n6\n3\"\nTranslucent\nParksley\nN82\n1071\nPinewood\nRipe Pear\nConch Shell\n7\n3\"\nTranslucent\nParksley\nN82\n1072\nElement\nDuchess Gray\nAspen Bark\n7\n3\"\nTranslucent\nParksley\nN82\n1073\nRiver Ridge\nWorn Leather\nFeather Fantasy\n8\n3\"\nTranslucent\nParksley\nN82\n1074\nMason\nGray Flannel \nSpyglass\n8\n3\"\nTranslucent\nFront Street™\nN21\n201\nPicket Fence\nWhite Tiara\nRadiant White\n9\n3\"\nTranslucent\nFront Street\nN21\n213\nRegatta White\nSummer Linen\nWhite Diamond\n9\n3\"\nTranslucent\nFront Street\nN21\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n10\n3\"\nTranslucent\nFront Street\nN21\n205\nCottage Cream\nGolden Straw\nWedding Cake\n10\n3\"\nTranslucent\nFront Street\nN21\n203\nWicker Basket\nFeather Fantasy\nHoney Beige\n11\n3\"\nTranslucent\nFront Street\nN21\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n11\n3\"\nTranslucent\nFront Street\nN21\n1030\nHidden Cove\nDove Gray\nMagician’s Cloth \n12\n3\"\nTranslucent\nFront Street\nN21\n1033\nMoss Rose\nTan Tango\nPéche\n12\n3\"\nTranslucent\nFront Street\nN21\n1031\nRustic Oak\nSquirrel Gray\nSilver Reflection \n13\n3\"\nTranslucent\nFront Street\nN21\n1032\nEnchanted\nHeatherwood\nWhispering Heather\n13\n3\"\nTranslucent\nFront Street\nN21\n1054\nBeach Shore\nFalcon Gray\nFoggy Mist\n14\n3\"\nTranslucent\nFront Street\nN21\n243\nOyster\nSquirrel Gray\nTurtledove\n14\n3\"\nLight Dimming\nMisty Harbor™\nN23\n201\nPicket Fence\nFlex White\nRadiant White\n15\n3\"\nLight Dimming\nMisty Harbor\nN23\n213\nRegatta White\nSummer Linen\nWhite Diamond\n15\n3\"\nLight Dimming\nMisty Harbor\nN23\n204\nSummer Linen\nSummer Linen\nSummer Linen\n16\n3\"\nLight Dimming\nMisty Harbor\nN23\n205\nCottage Cream\nGolden Straw\nMisty Almond\n16\n3\"\nLight Dimming\nMisty Harbor\nN23\n203\nWicker Basket\nFeather Fantasy\nFeather Fantasy\n17\n3\"\nLight Dimming\nMisty Harbor\nN23\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n17",
-      "images": []
-    },
-    {
-      "page": 26,
-      "category": "hardware",
-      "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART (continued)\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nLight Dimming\nMisty Harbor™\nN23\n1030\nHidden Cove\nDove Gray\nMagician’s Cloth \n18\n3\"\nLight Dimming\nMisty Harbor\nN23\n1033\nMoss Rose\nTan Tango\nPéche\n18\n3\"\nLight Dimming\nMisty Harbor\nN23\n1031\nRustic Oak\nDuchess Gray\nSilver Reflection \n19\n3\"\nLight Dimming\nMisty Harbor\nN23\n1032\nEnchanted\nHeatherwood\nWhispering Heather\n19\n3\"\nLight Dimming\nMisty Harbor\nN23\n1054\nBeach Shore\nFalcon Gray\nFoggy Mist\n20\n3\"\nLight Dimming\nMisty Harbor\nN23\n243\nOyster\nSquirrel Gray\nTurtledove\n20\n3\"\nTranslucent\nBrant Point™\nN37\n331\nHatteras\nFlex White\nRadiant White \n21\n3\"\nTranslucent\nBrant Point\nN37\n332\nSaginaw\nBeijing Gray\nFeather Fantasy\n21\n3\"\nTranslucent\nBrant Point\nN37\n333\nBraddock\nRipe Pear\nChampagne Shine\n22\n3\"\nTranslucent\nBrant Point\nN37\n334\nEddystone\nDove Gray\nMorning Shadow\n22\n3\"\nTranslucent\nBrant Point\nN37\n1034\nEaston\nSquirrel Gray\nGrason \n23\n3\"\nTranslucent\nBrant Point\nN37\n337\nHyannis\nAsh\nHaze\n23\n3\"\nTranslucent\nBrant Point\nN37\n336\nReyes\nGray Flannel \nSpyglass\n24\n3\"\nTranslucent\nBrant Point\nN37\n1055\nHudson\nSlate\nGraphite\n24\n3\"\nTranslucent\nSankaty™\nN35\n301\nCaledonia\nWhite Tiara\nRadiant White\n25\n3\"\nTranslucent\nSankaty\nN35\n302\nBayside\nSummer Linen\nWhite Diamond\n25\n3\"\nTranslucent\nSankaty\nN35\n303\nKiawah\nRich Cream\nKiawah\n26\n3\"\nTranslucent\nSankaty\nN35\n304\nPrinceville\nBeijing Gray\nKiawah\n26\n3\"\nTranslucent\nSankaty\nN35\n305\nBandon\nSquirrel Gray \nSilver Reflection \n27\n3\"\nTranslucent\nSankaty\nN35\n306\nSpyglass\nGray Flannel \nSpyglass\n27\n3\"\nTranslucent\nSankaty\nN35\n307\nMerion\nAsh\nGarden Trellis \n28\n3\"\nTranslucent\nSankaty\nN35\n308\nPinehurst\nDove Gray\nMagician’s Cloth \n28\n3\"\nTranslucent\nBoardwalk™\nN25\n201\nPicket Fence\nWhite Tiara\nRadiant White\n29\n3\"\nTranslucent\nBoardwalk\nN25\n213\nRegatta White\nSummer Linen\nWhite Diamond\n29\n3\"\nTranslucent\nBoardwalk\nN25\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n30\n3\"\nTranslucent\nBoardwalk\nN25\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n30\n3\"\nTranslucent\nBoardwalk\nN25\n1036\nWinter Almond\nBeijing Gray\nFeather Fantasy\n31\n3\"\nTranslucent\nBoardwalk\nN25\n1035\nShutter Gray\nRipe Pear\nConch Shell\n31\n3\"\nTranslucent\nBoardwalk\nN25\n234\nFoggy Mist\nDuchess Gray\nFoggy Mist\n32\n3\"\nTranslucent\nBoardwalk\nN25\n1056\nCoastal Night\nFalcon Gray\nFoggy Mist\n32\n3\"\nTranslucent\nSun Porch™\nN31\n201\nPicket Fence\nWhite Tiara\nRadiant White\n33\n3\"\nTranslucent\nSun Porch\nN31\n213\nRegatta White\nSummer Linen\nWhite Diamond\n33\n3\"\nTranslucent\nSun Porch\nN31\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n34\n3\"\nTranslucent\nSun Porch\nN31\n203\nWicker Basket\nFeather Fantasy\nHoney Beige\n34",
-      "images": []
-    },
-    {
-      "page": 27,
-      "category": "hardware",
-      "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART (continued)\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nTranslucent\nSun Porch™\nN31\n1038\nDusty Cedar\nWorn Leather\nWhite Diamond\n35\n3\"\nTranslucent\nSun Porch\nN31\n1037\nAutumn Gray\nFalcon Gray\nCloud\n35\n3\"\nTranslucent\nSun Porch\nN31\n1039\nRainfall\nFalcon Gray\nFoggy Mist\n36\n3\"\nTranslucent\nSun Porch\nN31\n1040\nDark Harbor\nSilverado\nTreffle\n36\n3\"\nTranslucent\nHDOrigins™ Amara™\nN84\n1075\nAddison\nWhite Tiara\nRadiant White\n37\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1076\nPrescott\nSummer Linen\nSummer Linen\n37\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1077\nCapehart\nSummer Linen\nWild Rice\n38\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1078\nKeller\nTan Tango\nBriar Wood\n38\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1079\nBeaufort\nDuchess Gray\nAspen Bark\n39\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1080\nWillow Point\nRipe Pear\nChampagne Shine\n39\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1081\nWestmont\nDove Gray\nSea Ranch\n40\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1082\nTidewater\nSkyline\nAire\n40\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1075\nAddison\nWhite Tiara\nRadiant White\n41\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1076\nPrescott\nSummer Linen\nSummer Linen\n41\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1077\nCapehart\nSummer Linen\nWild Rice\n42\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1078\nKeller\nFeather Fantasy\nFeather Fantasy\n42\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1079\nBeaufort\nDuchess Gray\nAspen Bark\n43\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1080\nWillow Point\nRipe Pear\nChampagne Shine\n43\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1081\nWestmont\nDove Gray\nSea Ranch\n44\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1082\nTidewater\nSkyline\nAire\n44",
-      "images": []
-    },
-    {
-      "page": 28,
-      "category": "hardware",
-      "text": "Hardware Color Guide\n133 Feather \nFantasy\n180 Dove Gray\n276 Silverado\n320 Rich Cream\n329 Summer Linen\n370 Slate\n405 Gray Flannel\n426 Squirrel Gray\n450 Skyline\n550 Ripe Pear\n551 Worn Leather\n609 Falcon Gray\n651 Duchess Gray\n656 Golden Straw\n658 Tan Tango\n661 White Tiara\n669 Beijing Gray\n689 Ash\n785 Aspen White\n862 Gardenia \nWhite\n879 Pearl Gray\n885 Flex White\n897 Heatherwood\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26",
-      "images": [
-        {
-          "filename": "page028_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img10_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img11_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img12_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img13_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img14_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img15_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img16_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img17_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img18_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img19_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img20_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img21_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img22_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img23_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    }
-  ],
-  "fabric_swatches": {
-    "Other Colors": [
-      {
-        "image": "page029_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Orion White",
-        "specs": [
-          "Translucent N83-1127",
-          "Translucent N83-1125"
-        ]
-      },
-      {
-        "image": "page029_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Glacier Ice",
-        "specs": [
-          "Translucent N83-1127",
-          "Translucent N83-1125"
-        ]
-      },
-      {
-        "image": "page029_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N83-1127",
-          "Translucent N83-1125"
-        ]
-      },
-      {
-        "image": "page029_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N83-1127",
-          "Translucent N83-1125"
-        ]
-      },
-      {
-        "image": "page030_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Illumination",
-        "specs": [
-          "Translucent N83-1128",
-          "Translucent N83-1126"
-        ]
-      },
-      {
-        "image": "page030_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Himalayan",
-        "specs": [
-          "Translucent N83-1128",
-          "Translucent N83-1126"
-        ]
-      },
-      {
-        "image": "page030_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N83-1128",
-          "Translucent N83-1126"
-        ]
-      },
-      {
-        "image": "page030_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N83-1128",
-          "Translucent N83-1126"
-        ]
-      },
-      {
-        "image": "page031_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Sienna Sand",
-        "specs": [
-          "Translucent N83-1129",
-          "Translucent N83-1130"
-        ]
-      },
-      {
-        "image": "page031_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Windsor Gray",
-        "specs": [
-          "Translucent N83-1129",
-          "Translucent N83-1130"
-        ]
-      },
-      {
-        "image": "page031_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N83-1129",
-          "Translucent N83-1130"
-        ]
-      },
-      {
-        "image": "page031_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N83-1129",
-          "Translucent N83-1130"
-        ]
-      },
-      {
-        "image": "page032_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Cambria",
-        "specs": [
-          "Translucent N83-1131",
-          "Translucent N83-1132"
-        ]
-      },
-      {
-        "image": "page032_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Amante",
-        "specs": [
-          "Translucent N83-1131",
-          "Translucent N83-1132"
-        ]
-      },
-      {
-        "image": "page032_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N83-1131",
-          "Translucent N83-1132"
-        ]
-      },
-      {
-        "image": "page032_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N83-1131",
-          "Translucent N83-1132"
-        ]
-      },
-      {
-        "image": "page033_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Pilot",
-        "specs": [
-          "Translucent N82-1067",
-          "Translucent N82-1068"
-        ]
-      },
-      {
-        "image": "page033_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Bonaire",
-        "specs": [
-          "Translucent N82-1067",
-          "Translucent N82-1068"
-        ]
-      },
-      {
-        "image": "page033_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N82-1067",
-          "Translucent N82-1068"
-        ]
-      },
-      {
-        "image": "page033_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N82-1067",
-          "Translucent N82-1068"
-        ]
-      },
-      {
-        "image": "page034_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Amber Light",
-        "specs": [
-          "Translucent N82-1069",
-          "Translucent N82-1070"
-        ]
-      },
-      {
-        "image": "page034_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Caraway",
-        "specs": [
-          "Translucent N82-1069",
-          "Translucent N82-1070"
-        ]
-      },
-      {
-        "image": "page034_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N82-1069",
-          "Translucent N82-1070"
-        ]
-      },
-      {
-        "image": "page034_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N82-1069",
-          "Translucent N82-1070"
-        ]
-      },
-      {
-        "image": "page035_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Pinewood",
-        "specs": [
-          "Translucent N82-1071",
-          "Translucent N82-1072"
-        ]
-      },
-      {
-        "image": "page035_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Element",
-        "specs": [
-          "Translucent N82-1071",
-          "Translucent N82-1072"
-        ]
-      },
-      {
-        "image": "page035_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N82-1071",
-          "Translucent N82-1072"
-        ]
-      },
-      {
-        "image": "page035_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N82-1071",
-          "Translucent N82-1072"
-        ]
-      },
-      {
-        "image": "page036_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "River Ridge",
-        "specs": [
-          "Translucent N82-1073",
-          "Translucent N82-1074"
-        ]
-      },
-      {
-        "image": "page036_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Mason",
-        "specs": [
-          "Translucent N82-1073",
-          "Translucent N82-1074"
-        ]
-      },
-      {
-        "image": "page036_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N82-1073",
-          "Translucent N82-1074"
-        ]
-      },
-      {
-        "image": "page036_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N82-1073",
-          "Translucent N82-1074"
-        ]
-      },
-      {
-        "image": "page037_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Picket Fence",
-        "specs": [
-          "Translucent N21-201",
-          "Translucent N21-213"
-        ]
-      },
-      {
-        "image": "page037_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Regatta White",
-        "specs": [
-          "Translucent N21-201",
-          "Translucent N21-213"
-        ]
-      },
-      {
-        "image": "page037_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-201",
-          "Translucent N21-213"
-        ]
-      },
-      {
-        "image": "page037_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-201",
-          "Translucent N21-213"
-        ]
-      },
-      {
-        "image": "page038_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Summer Linen",
-        "specs": [
-          "Translucent N21-204",
-          "Translucent N21-205"
-        ]
-      },
-      {
-        "image": "page038_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Cottage Cream",
-        "specs": [
-          "Translucent N21-204",
-          "Translucent N21-205"
-        ]
-      },
-      {
-        "image": "page038_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-204",
-          "Translucent N21-205"
-        ]
-      },
-      {
-        "image": "page038_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-204",
-          "Translucent N21-205"
-        ]
-      },
-      {
-        "image": "page039_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Wicker Basket",
-        "specs": [
-          "Translucent N21-203",
-          "Translucent N21-226"
-        ]
-      },
-      {
-        "image": "page039_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Deck Chair",
-        "specs": [
-          "Translucent N21-203",
-          "Translucent N21-226"
-        ]
-      },
-      {
-        "image": "page039_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-203",
-          "Translucent N21-226"
-        ]
-      },
-      {
-        "image": "page039_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-203",
-          "Translucent N21-226"
-        ]
-      },
-      {
-        "image": "page040_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Hidden Cove",
-        "specs": [
-          "Translucent N21-1030",
-          "Translucent N21-1033"
-        ]
-      },
-      {
-        "image": "page040_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Moss Rose",
-        "specs": [
-          "Translucent N21-1030",
-          "Translucent N21-1033"
-        ]
-      },
-      {
-        "image": "page040_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-1030",
-          "Translucent N21-1033"
-        ]
-      },
-      {
-        "image": "page040_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-1030",
-          "Translucent N21-1033"
-        ]
-      },
-      {
-        "image": "page041_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Rustic Oak",
-        "specs": [
-          "Translucent N21-1031",
-          "Translucent N21-1032"
-        ]
-      },
-      {
-        "image": "page041_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Enchanted",
-        "specs": [
-          "Translucent N21-1031",
-          "Translucent N21-1032"
-        ]
-      },
-      {
-        "image": "page041_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-1031",
-          "Translucent N21-1032"
-        ]
-      },
-      {
-        "image": "page041_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-1031",
-          "Translucent N21-1032"
-        ]
-      },
-      {
-        "image": "page042_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Beach Shore",
-        "specs": [
-          "Translucent N21-1054",
-          "Translucent N21-243"
-        ]
-      },
-      {
-        "image": "page042_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Oyster",
-        "specs": [
-          "Translucent N21-1054",
-          "Translucent N21-243"
-        ]
-      },
-      {
-        "image": "page042_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N21-1054",
-          "Translucent N21-243"
-        ]
-      },
-      {
-        "image": "page042_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N21-1054",
-          "Translucent N21-243"
-        ]
-      },
-      {
-        "image": "page043_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Picket Fence",
-        "specs": [
-          "Light Dimming N23-201",
-          "Light Dimming N23-213"
-        ]
-      },
-      {
-        "image": "page043_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Regatta White",
-        "specs": [
-          "Light Dimming N23-201",
-          "Light Dimming N23-213"
-        ]
-      },
-      {
-        "image": "page043_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-201",
-          "Light Dimming N23-213"
-        ]
-      },
-      {
-        "image": "page043_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-201",
-          "Light Dimming N23-213"
-        ]
-      },
-      {
-        "image": "page044_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Summer Linen",
-        "specs": [
-          "Light Dimming N23-204",
-          "Light Dimming N23-205"
-        ]
-      },
-      {
-        "image": "page044_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Cottage Cream",
-        "specs": [
-          "Light Dimming N23-204",
-          "Light Dimming N23-205"
-        ]
-      },
-      {
-        "image": "page044_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-204",
-          "Light Dimming N23-205"
-        ]
-      },
-      {
-        "image": "page044_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-204",
-          "Light Dimming N23-205"
-        ]
-      },
-      {
-        "image": "page045_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Wicker Basket",
-        "specs": [
-          "Light Dimming N23-203",
-          "Light Dimming N23-226"
-        ]
-      },
-      {
-        "image": "page045_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Deck Chair",
-        "specs": [
-          "Light Dimming N23-203",
-          "Light Dimming N23-226"
-        ]
-      },
-      {
-        "image": "page045_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-203",
-          "Light Dimming N23-226"
-        ]
-      },
-      {
-        "image": "page045_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-203",
-          "Light Dimming N23-226"
-        ]
-      },
-      {
-        "image": "page046_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Hidden Cove",
-        "specs": [
-          "Light Dimming N23-1030",
-          "Light Dimming N23-1033"
-        ]
-      },
-      {
-        "image": "page046_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Moss Rose",
-        "specs": [
-          "Light Dimming N23-1030",
-          "Light Dimming N23-1033"
-        ]
-      },
-      {
-        "image": "page046_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-1030",
-          "Light Dimming N23-1033"
-        ]
-      },
-      {
-        "image": "page046_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-1030",
-          "Light Dimming N23-1033"
-        ]
-      },
-      {
-        "image": "page047_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Rustic Oak",
-        "specs": [
-          "Light Dimming N23-1031",
-          "Light Dimming N23-1032"
-        ]
-      },
-      {
-        "image": "page047_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Enchanted",
-        "specs": [
-          "Light Dimming N23-1031",
-          "Light Dimming N23-1032"
-        ]
-      },
-      {
-        "image": "page047_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-1031",
-          "Light Dimming N23-1032"
-        ]
-      },
-      {
-        "image": "page047_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-1031",
-          "Light Dimming N23-1032"
-        ]
-      },
-      {
-        "image": "page048_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Beach Shore",
-        "specs": [
-          "Light Dimming N23-1054",
-          "Light Dimming N23-243"
-        ]
-      },
-      {
-        "image": "page048_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Oyster",
-        "specs": [
-          "Light Dimming N23-1054",
-          "Light Dimming N23-243"
-        ]
-      },
-      {
-        "image": "page048_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N23-1054",
-          "Light Dimming N23-243"
-        ]
-      },
-      {
-        "image": "page048_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N23-1054",
-          "Light Dimming N23-243"
-        ]
-      },
-      {
-        "image": "page049_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Hatteras",
-        "specs": [
-          "Translucent N37-331",
-          "Translucent N37-332"
-        ]
-      },
-      {
-        "image": "page049_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Saginaw",
-        "specs": [
-          "Translucent N37-331",
-          "Translucent N37-332"
-        ]
-      },
-      {
-        "image": "page049_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N37-331",
-          "Translucent N37-332"
-        ]
-      },
-      {
-        "image": "page049_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N37-331",
-          "Translucent N37-332"
-        ]
-      },
-      {
-        "image": "page050_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Braddock",
-        "specs": [
-          "Translucent N37-333",
-          "Translucent N37-334"
-        ]
-      },
-      {
-        "image": "page050_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Eddystone",
-        "specs": [
-          "Translucent N37-333",
-          "Translucent N37-334"
-        ]
-      },
-      {
-        "image": "page050_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N37-333",
-          "Translucent N37-334"
-        ]
-      },
-      {
-        "image": "page050_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N37-333",
-          "Translucent N37-334"
-        ]
-      },
-      {
-        "image": "page051_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Easton",
-        "specs": [
-          "Translucent N37-1034",
-          "Translucent N37-337"
-        ]
-      },
-      {
-        "image": "page051_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Hyannis",
-        "specs": [
-          "Translucent N37-1034",
-          "Translucent N37-337"
-        ]
-      },
-      {
-        "image": "page051_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N37-1034",
-          "Translucent N37-337"
-        ]
-      },
-      {
-        "image": "page051_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N37-1034",
-          "Translucent N37-337"
-        ]
-      },
-      {
-        "image": "page052_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Reyes",
-        "specs": [
-          "Translucent N37-336",
-          "Translucent N37-1055"
-        ]
-      },
-      {
-        "image": "page052_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Hudson",
-        "specs": [
-          "Translucent N37-336",
-          "Translucent N37-1055"
-        ]
-      },
-      {
-        "image": "page052_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N37-336",
-          "Translucent N37-1055"
-        ]
-      },
-      {
-        "image": "page052_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N37-336",
-          "Translucent N37-1055"
-        ]
-      },
-      {
-        "image": "page053_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Caledonia",
-        "specs": [
-          "Translucent N35-301",
-          "Translucent N35-302"
-        ]
-      },
-      {
-        "image": "page053_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Bayside",
-        "specs": [
-          "Translucent N35-301",
-          "Translucent N35-302"
-        ]
-      },
-      {
-        "image": "page053_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N35-301",
-          "Translucent N35-302"
-        ]
-      },
-      {
-        "image": "page053_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N35-301",
-          "Translucent N35-302"
-        ]
-      },
-      {
-        "image": "page054_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Kiawah",
-        "specs": [
-          "Translucent N35-303",
-          "Translucent N35-304"
-        ]
-      },
-      {
-        "image": "page054_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Princeville",
-        "specs": [
-          "Translucent N35-303",
-          "Translucent N35-304"
-        ]
-      },
-      {
-        "image": "page054_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N35-303",
-          "Translucent N35-304"
-        ]
-      },
-      {
-        "image": "page054_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N35-303",
-          "Translucent N35-304"
-        ]
-      },
-      {
-        "image": "page055_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Bandon",
-        "specs": [
-          "Translucent N35-305",
-          "Translucent N35-306"
-        ]
-      },
-      {
-        "image": "page055_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Spyglass",
-        "specs": [
-          "Translucent N35-305",
-          "Translucent N35-306"
-        ]
-      },
-      {
-        "image": "page055_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N35-305",
-          "Translucent N35-306"
-        ]
-      },
-      {
-        "image": "page055_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N35-305",
-          "Translucent N35-306"
-        ]
-      },
-      {
-        "image": "page056_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Merion",
-        "specs": [
-          "Translucent N35-307",
-          "Translucent N35-308"
-        ]
-      },
-      {
-        "image": "page056_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Pinehurst",
-        "specs": [
-          "Translucent N35-307",
-          "Translucent N35-308"
-        ]
-      },
-      {
-        "image": "page056_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N35-307",
-          "Translucent N35-308"
-        ]
-      },
-      {
-        "image": "page056_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N35-307",
-          "Translucent N35-308"
-        ]
-      },
-      {
-        "image": "page057_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Picket Fence",
-        "specs": [
-          "Translucent N25-201",
-          "Translucent N25-213"
-        ]
-      },
-      {
-        "image": "page057_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Regatta White",
-        "specs": [
-          "Translucent N25-201",
-          "Translucent N25-213"
-        ]
-      },
-      {
-        "image": "page057_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N25-201",
-          "Translucent N25-213"
-        ]
-      },
-      {
-        "image": "page057_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N25-201",
-          "Translucent N25-213"
-        ]
-      },
-      {
-        "image": "page058_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Summer Linen",
-        "specs": [
-          "Translucent N25-204",
-          "Translucent N25-226"
-        ]
-      },
-      {
-        "image": "page058_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Deck Chair",
-        "specs": [
-          "Translucent N25-204",
-          "Translucent N25-226"
-        ]
-      },
-      {
-        "image": "page058_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N25-204",
-          "Translucent N25-226"
-        ]
-      },
-      {
-        "image": "page058_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N25-204",
-          "Translucent N25-226"
-        ]
-      },
-      {
-        "image": "page059_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Winter Almond",
-        "specs": [
-          "Translucent N25-1036",
-          "Translucent N25-1035"
-        ]
-      },
-      {
-        "image": "page059_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Shutter Gray",
-        "specs": [
-          "Translucent N25-1036",
-          "Translucent N25-1035"
-        ]
-      },
-      {
-        "image": "page059_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N25-1036",
-          "Translucent N25-1035"
-        ]
-      },
-      {
-        "image": "page059_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N25-1036",
-          "Translucent N25-1035"
-        ]
-      },
-      {
-        "image": "page060_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Foggy Mist",
-        "specs": [
-          "Translucent N25-234",
-          "Translucent N25-1056"
-        ]
-      },
-      {
-        "image": "page060_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Coastal Night",
-        "specs": [
-          "Translucent N25-234",
-          "Translucent N25-1056"
-        ]
-      },
-      {
-        "image": "page060_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N25-234",
-          "Translucent N25-1056"
-        ]
-      },
-      {
-        "image": "page060_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N25-234",
-          "Translucent N25-1056"
-        ]
-      },
-      {
-        "image": "page061_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Picket Fence",
-        "specs": [
-          "Translucent N31-201",
-          "Translucent N31-213"
-        ]
-      },
-      {
-        "image": "page061_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Regatta White",
-        "specs": [
-          "Translucent N31-201",
-          "Translucent N31-213"
-        ]
-      },
-      {
-        "image": "page061_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N31-201",
-          "Translucent N31-213"
-        ]
-      },
-      {
-        "image": "page061_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N31-201",
-          "Translucent N31-213"
-        ]
-      },
-      {
-        "image": "page062_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Summer Linen",
-        "specs": [
-          "Translucent N31-204",
-          "Translucent N31-203"
-        ]
-      },
-      {
-        "image": "page062_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Wicker Basket",
-        "specs": [
-          "Translucent N31-204",
-          "Translucent N31-203"
-        ]
-      },
-      {
-        "image": "page062_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N31-204",
-          "Translucent N31-203"
-        ]
-      },
-      {
-        "image": "page062_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N31-204",
-          "Translucent N31-203"
-        ]
-      },
-      {
-        "image": "page063_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Dusty Cedar",
-        "specs": [
-          "Translucent N31-1038",
-          "Translucent N31-1037"
-        ]
-      },
-      {
-        "image": "page063_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Autumn Gray",
-        "specs": [
-          "Translucent N31-1038",
-          "Translucent N31-1037"
-        ]
-      },
-      {
-        "image": "page063_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N31-1038",
-          "Translucent N31-1037"
-        ]
-      },
-      {
-        "image": "page063_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N31-1038",
-          "Translucent N31-1037"
-        ]
-      },
-      {
-        "image": "page064_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Rainfall",
-        "specs": [
-          "Translucent N31-1039",
-          "Translucent N31-1040"
-        ]
-      },
-      {
-        "image": "page064_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Dark Harbor",
-        "specs": [
-          "Translucent N31-1039",
-          "Translucent N31-1040"
-        ]
-      },
-      {
-        "image": "page064_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N31-1039",
-          "Translucent N31-1040"
-        ]
-      },
-      {
-        "image": "page064_img04_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N31-1039",
-          "Translucent N31-1040"
-        ]
-      },
-      {
-        "image": "page065_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Addison",
-        "specs": [
-          "Translucent N84-1075",
-          "Translucent N84-1076"
-        ]
-      },
-      {
-        "image": "page065_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Prescott",
-        "specs": [
-          "Translucent N84-1075",
-          "Translucent N84-1076"
-        ]
-      },
-      {
-        "image": "page065_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N84-1075",
-          "Translucent N84-1076"
-        ]
-      },
-      {
-        "image": "page065_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N84-1075",
-          "Translucent N84-1076"
-        ]
-      },
-      {
-        "image": "page066_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Capehart",
-        "specs": [
-          "Translucent N84-1077",
-          "Translucent N84-1078"
-        ]
-      },
-      {
-        "image": "page066_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Keller",
-        "specs": [
-          "Translucent N84-1077",
-          "Translucent N84-1078"
-        ]
-      },
-      {
-        "image": "page066_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N84-1077",
-          "Translucent N84-1078"
-        ]
-      },
-      {
-        "image": "page066_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N84-1077",
-          "Translucent N84-1078"
-        ]
-      },
-      {
-        "image": "page067_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Beaufort",
-        "specs": [
-          "Translucent N84-1079",
-          "Translucent N84-1080"
-        ]
-      },
-      {
-        "image": "page067_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Willow Point",
-        "specs": [
-          "Translucent N84-1079",
-          "Translucent N84-1080"
-        ]
-      },
-      {
-        "image": "page067_img03_304x304.png",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N84-1079",
-          "Translucent N84-1080"
-        ]
-      },
-      {
-        "image": "page067_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N84-1079",
-          "Translucent N84-1080"
-        ]
-      },
-      {
-        "image": "page068_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Westmont",
-        "specs": [
-          "Translucent N84-1081",
-          "Translucent N84-1082"
-        ]
-      },
-      {
-        "image": "page068_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Tidewater",
-        "specs": [
-          "Translucent N84-1081",
-          "Translucent N84-1082"
-        ]
-      },
-      {
-        "image": "page068_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Translucent N84-1081",
-          "Translucent N84-1082"
-        ]
-      },
-      {
-        "image": "page068_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Translucent N84-1081",
-          "Translucent N84-1082"
-        ]
-      },
-      {
-        "image": "page069_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Addison",
-        "specs": [
-          "Light Dimming N85-1075",
-          "Light Dimming N85-1076"
-        ]
-      },
-      {
-        "image": "page069_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Prescott",
-        "specs": [
-          "Light Dimming N85-1075",
-          "Light Dimming N85-1076"
-        ]
-      },
-      {
-        "image": "page069_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N85-1075",
-          "Light Dimming N85-1076"
-        ]
-      },
-      {
-        "image": "page069_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N85-1075",
-          "Light Dimming N85-1076"
-        ]
-      },
-      {
-        "image": "page070_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Capehart",
-        "specs": [
-          "Light Dimming N85-1077",
-          "Light Dimming N85-1078"
-        ]
-      },
-      {
-        "image": "page070_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Keller",
-        "specs": [
-          "Light Dimming N85-1077",
-          "Light Dimming N85-1078"
-        ]
-      },
-      {
-        "image": "page070_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N85-1077",
-          "Light Dimming N85-1078"
-        ]
-      },
-      {
-        "image": "page070_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N85-1077",
-          "Light Dimming N85-1078"
-        ]
-      },
-      {
-        "image": "page071_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Beaufort",
-        "specs": [
-          "Light Dimming N85-1079",
-          "Light Dimming N85-1080"
-        ]
-      },
-      {
-        "image": "page071_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Willow Point",
-        "specs": [
-          "Light Dimming N85-1079",
-          "Light Dimming N85-1080"
-        ]
-      },
-      {
-        "image": "page071_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N85-1079",
-          "Light Dimming N85-1080"
-        ]
-      },
-      {
-        "image": "page071_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N85-1079",
-          "Light Dimming N85-1080"
-        ]
-      },
-      {
-        "image": "page072_img01_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Westmont",
-        "specs": [
-          "Light Dimming N85-1081",
-          "Light Dimming N85-1082"
-        ]
-      },
-      {
-        "image": "page072_img02_631x1091.jpeg",
-        "width": 631,
-        "height": 1091,
-        "color_name": "Tidewater",
-        "specs": [
-          "Light Dimming N85-1081",
-          "Light Dimming N85-1082"
-        ]
-      },
-      {
-        "image": "page072_img03_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 3",
-        "specs": [
-          "Light Dimming N85-1081",
-          "Light Dimming N85-1082"
-        ]
-      },
-      {
-        "image": "page072_img04_304x304.jpeg",
-        "width": 304,
-        "height": 304,
-        "color_name": "Color 4",
-        "specs": [
-          "Light Dimming N85-1081",
-          "Light Dimming N85-1082"
-        ]
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 6,
-    "benefits": 1,
-    "control": 9,
-    "design": 0,
-    "mounting": 0,
-    "details": 1,
-    "vane": 0,
-    "hardware": 4,
-    "swatch_collections": 1,
-    "swatch_colors": 176
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 1,
-    "slogan": 1,
-    "gallery": 6,
-    "before_after": 1,
-    "control": 9,
-    "benefits": 1,
-    "opacity": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "hardware": 4,
-    "swatch": 44
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 8,
+   "category": "control",
+   "text": "Nantucket™ Window \nShadings with \nUltraGlide® operate \nwith a single \nretractable wand \nsystem that’s safer \nfor homes with \nchildren and pets.\nFabric Boardwalk™    Color Picket Fence   \nOperating System UltraGlide®/PowerView® Automation/Specialty Shapes",
+   "images": [
+    {
+     "filename": "page008_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "control",
+   "text": "Nantucket™ shadings \nwith SoftTouch®\nMotorization operate \nwith a battery-powered\nwand that provides \nenhanced child safety.\nFabric Front Street™    Color Moss Rose\nOperating System SoftTouch® Motorization",
+   "images": [
+    {
+     "filename": "page010_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "control",
+   "text": "Fabric Misty Harbor™    Color Beach Shore \nOperating System SoftTouch® Motorization      \nChoose light-dimming \nNantucket™ fabric to \ncreate a comfortable, \nserene space with \nreduced light.",
+   "images": [
+    {
+     "filename": "page012_img01_3079x1505.jpeg",
+     "width": 3079,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "control",
+   "text": "Effortlessly enjoy \nyour perfect light \nand privacy with \nPowerView® Automation, \nwhich moves your\nNantucket™ shadings \nto schedules you set.\nFabric Sun Porch™    Color Summer Linen\nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page013_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "control",
+   "text": "Nantucket™ A Deux™ \nShadings combine a \ntranslucent shading \nand room-darkening \npanel that operate \nindependently for \noptimal light control.\nFabric Boardwalk™    Color Picket Fence\nOperating System A Deux™ with PowerView® Automation",
+   "images": [
+    {
+     "filename": "page014_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "control",
+   "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation  \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation \nSelect from a \nrange of advanced \nmanual and \nautomated \noperating systems.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window \nfashions with cords to make consumers aware\nof window cord hazards for children and pets.  \nEasyRise™\nA continuous cord loop system raises and lowers \nthe shading by simply pulling on the cord.\nUltraGlide®\nA single retractable wand for enhanced child \nsafety. With one click, the fabric panel drops \nand the vanes open. Pump the wand to close \nthe vanes or raise the shading.\nSoftTouch® Motorization\nA battery-operated, cordless system. Gently pull \ndown on the wand to lower shadings, or lightly \npush up to raise them.\nLiteRise®\nAdjust shadings with a light touch on the \nhandle. Pull down to lower; push up to raise.\n    WARNING/\nADVERTENCIA\nWindow Blind Cord\nStrangulation Risk\nWindow blinds with a damaged\nor loose  tension device or \nretractable cord that fails to fully \nretract pose a strangulation risk \nto children. To avoid this potential strangula-\ntion risk, consider purchasing cordless prod-\nucts or products with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda \nretráctable que no se ajusta completamente \nrepresentan un riesgo de estrangulación \npara los niños. Para evitar un posible riesgo \nde estrangulamiento, considere comprar \nproductos inalámbricos o productos con \ncuerdas inaccesibles.",
+   "images": [
+    {
+     "filename": "page017_img01_355x608.jpeg",
+     "width": 355,
+     "height": 608
+    },
+    {
+     "filename": "page017_img02_446x464.jpeg",
+     "width": 446,
+     "height": 464
+    },
+    {
+     "filename": "page017_img03_440x459.jpeg",
+     "width": 440,
+     "height": 459
+    },
+    {
+     "filename": "page017_img04_448x467.jpeg",
+     "width": 448,
+     "height": 467
+    },
+    {
+     "filename": "page017_img05_436x455.jpeg",
+     "width": 436,
+     "height": 455
+    },
+    {
+     "filename": "page017_img06_1130x1505.jpeg",
+     "width": 1130,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "control",
+   "text": "10:30 PM Bedtime\nShadings lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shadings to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shadings open to reveal your best view.\n2:00 PM Afternoon\nShadings adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®  \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation  \n \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation      \nOPERATING SYSTEMS\nAND OPTIONS",
+   "images": [
+    {
+     "filename": "page018_img01_355x608.jpeg",
+     "width": 355,
+     "height": 608
+    },
+    {
+     "filename": "page018_img02_770x536.jpeg",
+     "width": 770,
+     "height": 536
+    },
+    {
+     "filename": "page018_img03_715x455.jpeg",
+     "width": 715,
+     "height": 455
+    },
+    {
+     "filename": "page018_img04_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    },
+    {
+     "filename": "page018_img05_715x455.jpeg",
+     "width": 715,
+     "height": 455
+    },
+    {
+     "filename": "page018_img06_718x455.jpeg",
+     "width": 718,
+     "height": 455
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "control",
+   "text": "Specialty Shapes\nNantucket™ shadings can accommodate shapes such as arches and angles. \nAll specialty shapes are non-operable.\nTilt Only\nBest for French doors or narrow windows, this option keeps the Nantucket™ \nshading lowered but allows vanes to tilt open and closed. Exclusively available \nwith the EasyRise operating system.\nPalette® Fabric-Covered Headrail\nUpgrade to create a uniform look with a headrail wrapped in color-coordinated fabric. \nTwo-On-One Headrail\nFor larger windows, two independently operated shadings can share the same \nheadrail. Available with EasyRise™, LiteRise® and UltraGlide® operating systems. \nA Deux™\nThe dual roller system features a translucent shading in the front and a room-darkening \npanel in the back. Comes standard with Palette® Fabric-Covered Headrail.\nNantucket Fabric Parksley™    Color Element   \nDesign Studio™ Side Panel Fabric Esmery     Color Cottage     \nOperating System PowerView® Automation     \nMagnetic Hold-Down Brackets\nSecure Nantucket shadings on French doors or sidelight applications with \nmagnetic hold-down brackets. Can also be used on all other operating systems \nto prevent movement of the bottom rail in a window.",
+   "images": [
+    {
+     "filename": "page019_img01_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page019_img02_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page019_img03_905x1505.jpeg",
+     "width": 905,
+     "height": 1505
+    },
+    {
+     "filename": "page019_img04_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page019_img05_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page019_img06_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page019_img07_759x468.jpeg",
+     "width": 759,
+     "height": 468
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "control",
+   "text": "Classic Headrail\n \nPartial Mount\nOutside Mount\nInside Mount\nFabric Front Street™    Color Regatta White\nOperating System A Deux™ with PowerView® Automation         \nChoose how your \nNantucket™ shadings \nmount to your \nwindow frame.\nA Deux™ Headrail",
+   "images": [
+    {
+     "filename": "page020_img01_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img02_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img03_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img04_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img05_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img06_455x455.jpeg",
+     "width": 455,
+     "height": 455
+    },
+    {
+     "filename": "page020_img07_1130x1505.jpeg",
+     "width": 1130,
+     "height": 1505
+    }
+   ]
+  }
+ ],
+ "design_options": [],
+ "mounting": [],
+ "product_details": [
+  {
+   "page": 16,
+   "category": "opacity",
+   "text": "Light-Dimming Fabric\nFilters more light\nTranslucent Fabrics\nCreate a soft glow\nA Deux™ Room-Darkening Design Option  \nBlocks most incoming light\nNantucket™ shadings \noffer multiple convenient \nways to control light.\nFull Room Shot - Translucent\nNAN_DP_11\nObjective: Show difference between light filter­\ning (vane), light dimming (vane) and A Deux (back \npanel). Vanes should be closed for light filtering \nand light dimming images.  A Deux should have \nback panel down with vanes open. Important to \nshow light gaps on light dimming and A Deux.\nFabric Front Street™    Color Regatta White\nOperating System A Deux™ with PowerView® Automation",
+   "images": [
+    {
+     "filename": "page016_img01_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page016_img02_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page016_img03_755x455.jpeg",
+     "width": 755,
+     "height": 455
+    },
+    {
+     "filename": "page016_img04_1956x1505.jpeg",
+     "width": 1956,
+     "height": 1505
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "Nantucket™ fabrics \nfeature on-trend \ncolors and patterns \nthat complement \na variety of interior \ndesign styles. \nFabric Sankaty™    Color Pinehurst   \nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page007_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "gallery",
+   "text": "Fabric Brant Point™    Color Reyes \nOperating System LiteRise®/PowerView® Automation",
+   "images": [
+    {
+     "filename": "page009_img01_3905x1505.jpeg",
+     "width": 3905,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "gallery",
+   "text": "Nantucket™ shadings \nprovide UV protection \nand view-through \nwith special S-shaped \nvanes positioned \nbetween two sheers.\nFabric Brant Point™    Color Hatteras\nOperating System PowerView® Automation",
+   "images": [
+    {
+     "filename": "page011_img01_3080x1505.jpeg",
+     "width": 3080,
+     "height": 1505
+    },
+    {
+     "filename": "page011_img02_835x644.jpeg",
+     "width": 835,
+     "height": 644
+    }
+   ]
+  },
+  {
+   "page": 23,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page023_img01_3010x2428.jpeg",
+     "width": 3010,
+     "height": 2428
+    }
+   ]
+  },
+  {
+   "page": 24,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page024_img01_3010x3005.jpeg",
+     "width": 3010,
+     "height": 3005
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [
+  {
+   "page": 25,
+   "category": "hardware",
+   "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nTranslucent\nCentre Park™\nN83\n1127\nOrion White\nWhite Tiara\nRadiant White\n1\n3\"\nTranslucent\nCentre Park\nN83\n1125\nGlacier Ice\nSummer Linen\nWhite Diamond\n1\n3\"\nTranslucent\nCentre Park\nN83\n1128\nIllumination\nGolden Straw\nMisty Almond\n2\n3\"\nTranslucent\nCentre Park\nN83\n1126\nHimalayan\nSummer Linen\nWhite Diamond\n2\n3\"\nTranslucent\nCentre Park\nN83\n1129\nSienna Sand\nRipe Pear\nIvoire\n3\n3\"\nTranslucent\nCentre Park\nN83\n1130\nWindsor Gray\nDuchess Gray\nSilver Reflection \n3\n3\"\nTranslucent\nCentre Park\nN83\n1131\nCambria\nPearl Gray\nSea Ranch \n4\n3\"\nTranslucent\nCentre Park\nN83\n1132\nAmante\nDove Gray\nMagician’s Cloth\n4\n3\"\nTranslucent\nParksley™\nN82\n1067\nPilot\nAspen White\nWhite Diamond\n5\n3\"\nTranslucent\nParksley\nN82\n1068\nBonaire\nFeather Fantasy\nFeathered Down\n5\n3\"\nTranslucent\nParksley\nN82\n1069\nAmber Light\nRipe Pear\nIvoire\n6\n3\"\nTranslucent\nParksley\nN82\n1070\nCaraway\nWorn Leather\nFeather Fantasy\n6\n3\"\nTranslucent\nParksley\nN82\n1071\nPinewood\nRipe Pear\nConch Shell\n7\n3\"\nTranslucent\nParksley\nN82\n1072\nElement\nDuchess Gray\nAspen Bark\n7\n3\"\nTranslucent\nParksley\nN82\n1073\nRiver Ridge\nWorn Leather\nFeather Fantasy\n8\n3\"\nTranslucent\nParksley\nN82\n1074\nMason\nGray Flannel \nSpyglass\n8\n3\"\nTranslucent\nFront Street™\nN21\n201\nPicket Fence\nWhite Tiara\nRadiant White\n9\n3\"\nTranslucent\nFront Street\nN21\n213\nRegatta White\nSummer Linen\nWhite Diamond\n9\n3\"\nTranslucent\nFront Street\nN21\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n10\n3\"\nTranslucent\nFront Street\nN21\n205\nCottage Cream\nGolden Straw\nWedding Cake\n10\n3\"\nTranslucent\nFront Street\nN21\n203\nWicker Basket\nFeather Fantasy\nHoney Beige\n11\n3\"\nTranslucent\nFront Street\nN21\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n11\n3\"\nTranslucent\nFront Street\nN21\n1030\nHidden Cove\nDove Gray\nMagician’s Cloth \n12\n3\"\nTranslucent\nFront Street\nN21\n1033\nMoss Rose\nTan Tango\nPéche\n12\n3\"\nTranslucent\nFront Street\nN21\n1031\nRustic Oak\nSquirrel Gray\nSilver Reflection \n13\n3\"\nTranslucent\nFront Street\nN21\n1032\nEnchanted\nHeatherwood\nWhispering Heather\n13\n3\"\nTranslucent\nFront Street\nN21\n1054\nBeach Shore\nFalcon Gray\nFoggy Mist\n14\n3\"\nTranslucent\nFront Street\nN21\n243\nOyster\nSquirrel Gray\nTurtledove\n14\n3\"\nLight Dimming\nMisty Harbor™\nN23\n201\nPicket Fence\nFlex White\nRadiant White\n15\n3\"\nLight Dimming\nMisty Harbor\nN23\n213\nRegatta White\nSummer Linen\nWhite Diamond\n15\n3\"\nLight Dimming\nMisty Harbor\nN23\n204\nSummer Linen\nSummer Linen\nSummer Linen\n16\n3\"\nLight Dimming\nMisty Harbor\nN23\n205\nCottage Cream\nGolden Straw\nMisty Almond\n16\n3\"\nLight Dimming\nMisty Harbor\nN23\n203\nWicker Basket\nFeather Fantasy\nFeather Fantasy\n17\n3\"\nLight Dimming\nMisty Harbor\nN23\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n17",
+   "images": []
+  },
+  {
+   "page": 26,
+   "category": "hardware",
+   "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART (continued)\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nLight Dimming\nMisty Harbor™\nN23\n1030\nHidden Cove\nDove Gray\nMagician’s Cloth \n18\n3\"\nLight Dimming\nMisty Harbor\nN23\n1033\nMoss Rose\nTan Tango\nPéche\n18\n3\"\nLight Dimming\nMisty Harbor\nN23\n1031\nRustic Oak\nDuchess Gray\nSilver Reflection \n19\n3\"\nLight Dimming\nMisty Harbor\nN23\n1032\nEnchanted\nHeatherwood\nWhispering Heather\n19\n3\"\nLight Dimming\nMisty Harbor\nN23\n1054\nBeach Shore\nFalcon Gray\nFoggy Mist\n20\n3\"\nLight Dimming\nMisty Harbor\nN23\n243\nOyster\nSquirrel Gray\nTurtledove\n20\n3\"\nTranslucent\nBrant Point™\nN37\n331\nHatteras\nFlex White\nRadiant White \n21\n3\"\nTranslucent\nBrant Point\nN37\n332\nSaginaw\nBeijing Gray\nFeather Fantasy\n21\n3\"\nTranslucent\nBrant Point\nN37\n333\nBraddock\nRipe Pear\nChampagne Shine\n22\n3\"\nTranslucent\nBrant Point\nN37\n334\nEddystone\nDove Gray\nMorning Shadow\n22\n3\"\nTranslucent\nBrant Point\nN37\n1034\nEaston\nSquirrel Gray\nGrason \n23\n3\"\nTranslucent\nBrant Point\nN37\n337\nHyannis\nAsh\nHaze\n23\n3\"\nTranslucent\nBrant Point\nN37\n336\nReyes\nGray Flannel \nSpyglass\n24\n3\"\nTranslucent\nBrant Point\nN37\n1055\nHudson\nSlate\nGraphite\n24\n3\"\nTranslucent\nSankaty™\nN35\n301\nCaledonia\nWhite Tiara\nRadiant White\n25\n3\"\nTranslucent\nSankaty\nN35\n302\nBayside\nSummer Linen\nWhite Diamond\n25\n3\"\nTranslucent\nSankaty\nN35\n303\nKiawah\nRich Cream\nKiawah\n26\n3\"\nTranslucent\nSankaty\nN35\n304\nPrinceville\nBeijing Gray\nKiawah\n26\n3\"\nTranslucent\nSankaty\nN35\n305\nBandon\nSquirrel Gray \nSilver Reflection \n27\n3\"\nTranslucent\nSankaty\nN35\n306\nSpyglass\nGray Flannel \nSpyglass\n27\n3\"\nTranslucent\nSankaty\nN35\n307\nMerion\nAsh\nGarden Trellis \n28\n3\"\nTranslucent\nSankaty\nN35\n308\nPinehurst\nDove Gray\nMagician’s Cloth \n28\n3\"\nTranslucent\nBoardwalk™\nN25\n201\nPicket Fence\nWhite Tiara\nRadiant White\n29\n3\"\nTranslucent\nBoardwalk\nN25\n213\nRegatta White\nSummer Linen\nWhite Diamond\n29\n3\"\nTranslucent\nBoardwalk\nN25\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n30\n3\"\nTranslucent\nBoardwalk\nN25\n226\nDeck Chair\nGardenia White\nFeather Fantasy\n30\n3\"\nTranslucent\nBoardwalk\nN25\n1036\nWinter Almond\nBeijing Gray\nFeather Fantasy\n31\n3\"\nTranslucent\nBoardwalk\nN25\n1035\nShutter Gray\nRipe Pear\nConch Shell\n31\n3\"\nTranslucent\nBoardwalk\nN25\n234\nFoggy Mist\nDuchess Gray\nFoggy Mist\n32\n3\"\nTranslucent\nBoardwalk\nN25\n1056\nCoastal Night\nFalcon Gray\nFoggy Mist\n32\n3\"\nTranslucent\nSun Porch™\nN31\n201\nPicket Fence\nWhite Tiara\nRadiant White\n33\n3\"\nTranslucent\nSun Porch\nN31\n213\nRegatta White\nSummer Linen\nWhite Diamond\n33\n3\"\nTranslucent\nSun Porch\nN31\n204\nSummer Linen\nSummer Linen\nLinen Flirt\n34\n3\"\nTranslucent\nSun Porch\nN31\n203\nWicker Basket\nFeather Fantasy\nHoney Beige\n34",
+   "images": []
+  },
+  {
+   "page": 27,
+   "category": "hardware",
+   "text": "NANTUCKET™ WINDOW SHADINGS COLOR CHART (continued)\nCell Size\nOpacity\nFabric Collection\nFabric \nCode\nColor \nCode\nFabric Color\nHardware Color\nFabric-Covered  \nHeadrail Color\nPage\n3\"\nTranslucent\nSun Porch™\nN31\n1038\nDusty Cedar\nWorn Leather\nWhite Diamond\n35\n3\"\nTranslucent\nSun Porch\nN31\n1037\nAutumn Gray\nFalcon Gray\nCloud\n35\n3\"\nTranslucent\nSun Porch\nN31\n1039\nRainfall\nFalcon Gray\nFoggy Mist\n36\n3\"\nTranslucent\nSun Porch\nN31\n1040\nDark Harbor\nSilverado\nTreffle\n36\n3\"\nTranslucent\nHDOrigins™ Amara™\nN84\n1075\nAddison\nWhite Tiara\nRadiant White\n37\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1076\nPrescott\nSummer Linen\nSummer Linen\n37\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1077\nCapehart\nSummer Linen\nWild Rice\n38\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1078\nKeller\nTan Tango\nBriar Wood\n38\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1079\nBeaufort\nDuchess Gray\nAspen Bark\n39\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1080\nWillow Point\nRipe Pear\nChampagne Shine\n39\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1081\nWestmont\nDove Gray\nSea Ranch\n40\n3\"\nTranslucent\nHDOrigins Amara\nN84\n1082\nTidewater\nSkyline\nAire\n40\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1075\nAddison\nWhite Tiara\nRadiant White\n41\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1076\nPrescott\nSummer Linen\nSummer Linen\n41\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1077\nCapehart\nSummer Linen\nWild Rice\n42\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1078\nKeller\nFeather Fantasy\nFeather Fantasy\n42\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1079\nBeaufort\nDuchess Gray\nAspen Bark\n43\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1080\nWillow Point\nRipe Pear\nChampagne Shine\n43\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1081\nWestmont\nDove Gray\nSea Ranch\n44\n3\"\nLight Dimming\nHDOrigins Amara\nN85\n1082\nTidewater\nSkyline\nAire\n44",
+   "images": []
+  },
+  {
+   "page": 28,
+   "category": "hardware",
+   "text": "Hardware Color Guide\n133 Feather \nFantasy\n180 Dove Gray\n276 Silverado\n320 Rich Cream\n329 Summer Linen\n370 Slate\n405 Gray Flannel\n426 Squirrel Gray\n450 Skyline\n550 Ripe Pear\n551 Worn Leather\n609 Falcon Gray\n651 Duchess Gray\n656 Golden Straw\n658 Tan Tango\n661 White Tiara\n669 Beijing Gray\n689 Ash\n785 Aspen White\n862 Gardenia \nWhite\n879 Pearl Gray\n885 Flex White\n897 Heatherwood\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26",
+   "images": [
+    {
+     "filename": "page028_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img10_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img11_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img12_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img13_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img14_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img15_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img16_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img17_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img18_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img19_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img20_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img21_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img22_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img23_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  }
+ ],
+ "fabric_swatches": {
+  "Other Colors": [
+   {
+    "image": "page029_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Orion White",
+    "specs": [
+     "Translucent N83-1127"
+    ]
+   },
+   {
+    "image": "page029_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Glacier Ice",
+    "specs": [
+     "Translucent N83-1125"
+    ]
+   },
+   {
+    "image": "page029_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page029_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page030_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Illumination",
+    "specs": [
+     "Translucent N83-1128"
+    ]
+   },
+   {
+    "image": "page030_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Himalayan",
+    "specs": [
+     "Translucent N83-1126"
+    ]
+   },
+   {
+    "image": "page030_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page030_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page031_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Sienna Sand",
+    "specs": [
+     "Translucent N83-1129"
+    ]
+   },
+   {
+    "image": "page031_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Windsor Gray",
+    "specs": [
+     "Translucent N83-1130"
+    ]
+   },
+   {
+    "image": "page031_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page031_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page032_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Cambria",
+    "specs": [
+     "Translucent N83-1131"
+    ]
+   },
+   {
+    "image": "page032_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Amante",
+    "specs": [
+     "Translucent N83-1132"
+    ]
+   },
+   {
+    "image": "page032_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page032_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page033_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Pilot",
+    "specs": [
+     "Translucent N82-1067"
+    ]
+   },
+   {
+    "image": "page033_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Bonaire",
+    "specs": [
+     "Translucent N82-1068"
+    ]
+   },
+   {
+    "image": "page033_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page033_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page034_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Amber Light",
+    "specs": [
+     "Translucent N82-1069"
+    ]
+   },
+   {
+    "image": "page034_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Caraway",
+    "specs": [
+     "Translucent N82-1070"
+    ]
+   },
+   {
+    "image": "page034_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page034_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page035_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Pinewood",
+    "specs": [
+     "Translucent N82-1071"
+    ]
+   },
+   {
+    "image": "page035_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Element",
+    "specs": [
+     "Translucent N82-1072"
+    ]
+   },
+   {
+    "image": "page035_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page035_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page036_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "River Ridge",
+    "specs": [
+     "Translucent N82-1073"
+    ]
+   },
+   {
+    "image": "page036_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Mason",
+    "specs": [
+     "Translucent N82-1074"
+    ]
+   },
+   {
+    "image": "page036_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page036_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page037_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Picket Fence",
+    "specs": [
+     "Translucent N21-201"
+    ]
+   },
+   {
+    "image": "page037_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Regatta White",
+    "specs": [
+     "Translucent N21-213"
+    ]
+   },
+   {
+    "image": "page037_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page037_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page038_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Summer Linen",
+    "specs": [
+     "Translucent N21-204"
+    ]
+   },
+   {
+    "image": "page038_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Cottage Cream",
+    "specs": [
+     "Translucent N21-205"
+    ]
+   },
+   {
+    "image": "page038_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page038_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page039_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Wicker Basket",
+    "specs": [
+     "Translucent N21-203"
+    ]
+   },
+   {
+    "image": "page039_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Deck Chair",
+    "specs": [
+     "Translucent N21-226"
+    ]
+   },
+   {
+    "image": "page039_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page039_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page040_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Hidden Cove",
+    "specs": [
+     "Translucent N21-1030"
+    ]
+   },
+   {
+    "image": "page040_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Moss Rose",
+    "specs": [
+     "Translucent N21-1033"
+    ]
+   },
+   {
+    "image": "page040_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page040_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page041_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Rustic Oak",
+    "specs": [
+     "Translucent N21-1031"
+    ]
+   },
+   {
+    "image": "page041_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Enchanted",
+    "specs": [
+     "Translucent N21-1032"
+    ]
+   },
+   {
+    "image": "page041_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page041_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page042_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Beach Shore",
+    "specs": [
+     "Translucent N21-1054"
+    ]
+   },
+   {
+    "image": "page042_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Oyster",
+    "specs": [
+     "Translucent N21-243"
+    ]
+   },
+   {
+    "image": "page042_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page042_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page043_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Picket Fence",
+    "specs": [
+     "Light Dimming N23-201"
+    ]
+   },
+   {
+    "image": "page043_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Regatta White",
+    "specs": [
+     "Light Dimming N23-213"
+    ]
+   },
+   {
+    "image": "page043_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page043_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page044_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Summer Linen",
+    "specs": [
+     "Light Dimming N23-204"
+    ]
+   },
+   {
+    "image": "page044_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Cottage Cream",
+    "specs": [
+     "Light Dimming N23-205"
+    ]
+   },
+   {
+    "image": "page044_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page044_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page045_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Wicker Basket",
+    "specs": [
+     "Light Dimming N23-203"
+    ]
+   },
+   {
+    "image": "page045_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Deck Chair",
+    "specs": [
+     "Light Dimming N23-226"
+    ]
+   },
+   {
+    "image": "page045_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page045_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page046_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Hidden Cove",
+    "specs": [
+     "Light Dimming N23-1030"
+    ]
+   },
+   {
+    "image": "page046_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Moss Rose",
+    "specs": [
+     "Light Dimming N23-1033"
+    ]
+   },
+   {
+    "image": "page046_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page046_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page047_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Rustic Oak",
+    "specs": [
+     "Light Dimming N23-1031"
+    ]
+   },
+   {
+    "image": "page047_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Enchanted",
+    "specs": [
+     "Light Dimming N23-1032"
+    ]
+   },
+   {
+    "image": "page047_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page047_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page048_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Beach Shore",
+    "specs": [
+     "Light Dimming N23-1054"
+    ]
+   },
+   {
+    "image": "page048_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Oyster",
+    "specs": [
+     "Light Dimming N23-243"
+    ]
+   },
+   {
+    "image": "page048_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page048_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page049_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Hatteras",
+    "specs": [
+     "Translucent N37-331"
+    ]
+   },
+   {
+    "image": "page049_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Saginaw",
+    "specs": [
+     "Translucent N37-332"
+    ]
+   },
+   {
+    "image": "page049_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page049_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page050_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Braddock",
+    "specs": [
+     "Translucent N37-333"
+    ]
+   },
+   {
+    "image": "page050_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Eddystone",
+    "specs": [
+     "Translucent N37-334"
+    ]
+   },
+   {
+    "image": "page050_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page050_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page051_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Easton",
+    "specs": [
+     "Translucent N37-1034"
+    ]
+   },
+   {
+    "image": "page051_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Hyannis",
+    "specs": [
+     "Translucent N37-337"
+    ]
+   },
+   {
+    "image": "page051_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page051_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page052_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Reyes",
+    "specs": [
+     "Translucent N37-336"
+    ]
+   },
+   {
+    "image": "page052_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Hudson",
+    "specs": [
+     "Translucent N37-1055"
+    ]
+   },
+   {
+    "image": "page052_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page052_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page053_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Caledonia",
+    "specs": [
+     "Translucent N35-301"
+    ]
+   },
+   {
+    "image": "page053_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Bayside",
+    "specs": [
+     "Translucent N35-302"
+    ]
+   },
+   {
+    "image": "page053_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page053_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page054_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Kiawah",
+    "specs": [
+     "Translucent N35-303"
+    ]
+   },
+   {
+    "image": "page054_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Princeville",
+    "specs": [
+     "Translucent N35-304"
+    ]
+   },
+   {
+    "image": "page054_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page054_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page055_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Bandon",
+    "specs": [
+     "Translucent N35-305"
+    ]
+   },
+   {
+    "image": "page055_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Spyglass",
+    "specs": [
+     "Translucent N35-306"
+    ]
+   },
+   {
+    "image": "page055_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page055_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page056_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Merion",
+    "specs": [
+     "Translucent N35-307"
+    ]
+   },
+   {
+    "image": "page056_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Pinehurst",
+    "specs": [
+     "Translucent N35-308"
+    ]
+   },
+   {
+    "image": "page056_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page056_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page057_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Picket Fence",
+    "specs": [
+     "Translucent N25-201"
+    ]
+   },
+   {
+    "image": "page057_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Regatta White",
+    "specs": [
+     "Translucent N25-213"
+    ]
+   },
+   {
+    "image": "page057_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page057_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page058_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Summer Linen",
+    "specs": [
+     "Translucent N25-204"
+    ]
+   },
+   {
+    "image": "page058_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Deck Chair",
+    "specs": [
+     "Translucent N25-226"
+    ]
+   },
+   {
+    "image": "page058_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page058_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page059_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Winter Almond",
+    "specs": [
+     "Translucent N25-1036"
+    ]
+   },
+   {
+    "image": "page059_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Shutter Gray",
+    "specs": [
+     "Translucent N25-1035"
+    ]
+   },
+   {
+    "image": "page059_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page059_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page060_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Foggy Mist",
+    "specs": [
+     "Translucent N25-234"
+    ]
+   },
+   {
+    "image": "page060_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Coastal Night",
+    "specs": [
+     "Translucent N25-1056"
+    ]
+   },
+   {
+    "image": "page060_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page060_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page061_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Picket Fence",
+    "specs": [
+     "Translucent N31-201"
+    ]
+   },
+   {
+    "image": "page061_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Regatta White",
+    "specs": [
+     "Translucent N31-213"
+    ]
+   },
+   {
+    "image": "page061_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page061_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page062_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Summer Linen",
+    "specs": [
+     "Translucent N31-204"
+    ]
+   },
+   {
+    "image": "page062_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Wicker Basket",
+    "specs": [
+     "Translucent N31-203"
+    ]
+   },
+   {
+    "image": "page062_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page062_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page063_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Dusty Cedar",
+    "specs": [
+     "Translucent N31-1038"
+    ]
+   },
+   {
+    "image": "page063_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Autumn Gray",
+    "specs": [
+     "Translucent N31-1037"
+    ]
+   },
+   {
+    "image": "page063_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page063_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page064_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Rainfall",
+    "specs": [
+     "Translucent N31-1039"
+    ]
+   },
+   {
+    "image": "page064_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Dark Harbor",
+    "specs": [
+     "Translucent N31-1040"
+    ]
+   },
+   {
+    "image": "page064_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page064_img04_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page065_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Addison",
+    "specs": [
+     "Translucent N84-1075"
+    ]
+   },
+   {
+    "image": "page065_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Prescott",
+    "specs": [
+     "Translucent N84-1076"
+    ]
+   },
+   {
+    "image": "page065_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page065_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page066_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Capehart",
+    "specs": [
+     "Translucent N84-1077"
+    ]
+   },
+   {
+    "image": "page066_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Keller",
+    "specs": [
+     "Translucent N84-1078"
+    ]
+   },
+   {
+    "image": "page066_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page066_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page067_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Beaufort",
+    "specs": [
+     "Translucent N84-1079"
+    ]
+   },
+   {
+    "image": "page067_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Willow Point",
+    "specs": [
+     "Translucent N84-1080"
+    ]
+   },
+   {
+    "image": "page067_img03_304x304.png",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page067_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page068_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Westmont",
+    "specs": [
+     "Translucent N84-1081"
+    ]
+   },
+   {
+    "image": "page068_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Tidewater",
+    "specs": [
+     "Translucent N84-1082"
+    ]
+   },
+   {
+    "image": "page068_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page068_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page069_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Addison",
+    "specs": [
+     "Light Dimming N85-1075"
+    ]
+   },
+   {
+    "image": "page069_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Prescott",
+    "specs": [
+     "Light Dimming N85-1076"
+    ]
+   },
+   {
+    "image": "page069_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page069_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page070_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Capehart",
+    "specs": [
+     "Light Dimming N85-1077"
+    ]
+   },
+   {
+    "image": "page070_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Keller",
+    "specs": [
+     "Light Dimming N85-1078"
+    ]
+   },
+   {
+    "image": "page070_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page070_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page071_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Beaufort",
+    "specs": [
+     "Light Dimming N85-1079"
+    ]
+   },
+   {
+    "image": "page071_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Willow Point",
+    "specs": [
+     "Light Dimming N85-1080"
+    ]
+   },
+   {
+    "image": "page071_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page071_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   },
+   {
+    "image": "page072_img01_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Westmont",
+    "specs": [
+     "Light Dimming N85-1081"
+    ]
+   },
+   {
+    "image": "page072_img02_631x1091.jpeg",
+    "width": 631,
+    "height": 1091,
+    "color_name": "Tidewater",
+    "specs": [
+     "Light Dimming N85-1082"
+    ]
+   },
+   {
+    "image": "page072_img03_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 3",
+    "specs": []
+   },
+   {
+    "image": "page072_img04_304x304.jpeg",
+    "width": 304,
+    "height": 304,
+    "color_name": "Color 4",
+    "specs": []
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 6,
+  "benefits": 1,
+  "control": 9,
+  "design": 0,
+  "mounting": 0,
+  "details": 1,
+  "vane": 0,
+  "hardware": 4,
+  "swatch_collections": 1,
+  "swatch_colors": 176
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 1,
+  "slogan": 1,
+  "gallery": 6,
+  "before_after": 1,
+  "control": 9,
+  "benefits": 1,
+  "opacity": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "hardware": 4,
+  "swatch": 44
+ }
 }

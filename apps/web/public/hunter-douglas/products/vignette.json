@@ -1,2026 +1,2470 @@
 {
-  "id": "hd-vignette-digital-sample-book",
-  "name": "Vignette® Modern Roman Shades",
-  "slug": "vignette",
-  "description": "Vignette® Modern Roman Shades feature consistent folds with no exposed rear cords, creating a clean, tailored look in both raised and lowered positions.",
-  "cover_image": "page002_img01_4210x3010.jpeg",
-  "benefits": [],
-  "control_options": [
+ "id": "hd-vignette-digital-sample-book",
+ "name": "Vignette® Modern Roman Shades",
+ "slug": "vignette",
+ "description": "Vignette® Modern Roman Shades feature consistent folds with no exposed rear cords, creating a clean, tailored look in both raised and lowered positions.",
+ "cover_image": "page002_img01_4210x3010.jpeg",
+ "benefits": [],
+ "control_options": [
+  {
+   "page": 7,
+   "category": "control",
+   "text": "Vignette® Modern  \nRoman Shades are  \na contemporary  \nupdate to the classic \nRoman shade. Offering  \na clean and crisp  \nappearance, they are \ndesigned with luxurious, \ndurable fabrics that will  \nmaintain their beauty  \nfor years to come.\nFabric Rory™    Color Brushed Beige\nOperating System UltraGlide®     \nShown in 4\" Full Fold Stacking Style",
+   "images": [
     {
-      "page": 7,
-      "category": "control",
-      "text": "Vignette® Modern  \nRoman Shades are  \na contemporary  \nupdate to the classic \nRoman shade. Offering  \na clean and crisp  \nappearance, they are \ndesigned with luxurious, \ndurable fabrics that will  \nmaintain their beauty  \nfor years to come.\nFabric Rory™    Color Brushed Beige\nOperating System UltraGlide®     \nShown in 4\" Full Fold Stacking Style",
-      "images": [
-        {
-          "filename": "page007_img01_5991x3010.jpeg",
-          "width": 5991,
-          "height": 3010
-        },
-        {
-          "filename": "page007_img02_72x105.jpeg",
-          "width": 72,
-          "height": 105
-        },
-        {
-          "filename": "page007_img03_179x179.jpeg",
-          "width": 179,
-          "height": 179
-        }
-      ]
+     "filename": "page007_img01_5991x3010.jpeg",
+     "width": 5991,
+     "height": 3010
     },
     {
-      "page": 10,
-      "category": "control",
-      "text": "Duolite® Design Option\nFabric Leela™    Color Escape\nOperating System PowerView® Automation     \nDesign Option Duolite®     \nShown in 6\" Flat Fold Rolling Style",
-      "images": [
-        {
-          "filename": "page010_img01_3909x3012.jpeg",
-          "width": 3909,
-          "height": 3012
-        },
-        {
-          "filename": "page010_img02_778x1659.jpeg",
-          "width": 778,
-          "height": 1659
-        },
-        {
-          "filename": "page010_img03_778x1659.jpeg",
-          "width": 778,
-          "height": 1659
-        },
-        {
-          "filename": "page010_img04_778x1659.jpeg",
-          "width": 778,
-          "height": 1659
-        },
-        {
-          "filename": "page010_img05_72x105.jpeg",
-          "width": 72,
-          "height": 105
-        },
-        {
-          "filename": "page010_img06_179x178.jpeg",
-          "width": 179,
-          "height": 178
-        }
-      ]
+     "filename": "page007_img02_72x105.jpeg",
+     "width": 72,
+     "height": 105
     },
     {
-      "page": 12,
-      "category": "control",
-      "text": "Sustainable Fabric Siena™    Color Revere Pewter\nOperating System PowerView® Automation  \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style\nPowerView® Automation Accessories",
-      "images": [
-        {
-          "filename": "page012_img01_3909x3009.jpeg",
-          "width": 3909,
-          "height": 3009
-        },
-        {
-          "filename": "page012_img02_2468x1660.jpeg",
-          "width": 2468,
-          "height": 1660
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "control",
-      "text": "Layer Vignette® shades \nwith coordinating  \nDesign Studio™ drapery \nto add texture and  \npersonal style to  \nyour windows.\nFabric Belfast Linen    Color Homespun\nDesign Studio™ Fabric Bungalow    Color Countryside\nOperating System UltraGlide®     \nShown in 6\" Flat Fold Rolling Style",
-      "images": [
-        {
-          "filename": "page015_img01_5991x3010.jpeg",
-          "width": 5991,
-          "height": 3010
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "control",
-      "text": "With The Whole \nHouse Solution™,  \nsuperior color  \ncoordination between \nVignette® fabrics and  \nDuette® Honeycomb \nShades allows you \nto create a cohesive \nlook in your home.\nFabric India Silk™    Color Sira\nVignette®  Operating System PowerView® Automation     \nShown in 6\" Flat Fold Rolling Style \nDuette® Operating System Vertiglide™ shown in 1¼\" pleat",
-      "images": [
-        {
-          "filename": "page016_img01_5991x3010.jpeg",
-          "width": 5991,
-          "height": 3010
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "control",
-      "text": "Live Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the sum-\nmer.\nYear-Round Comfort\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according  \nto the sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by brightening a \nroom with diffused natural sunlight.\nCost Savings\nShades help control the indoor temperature, so you can spend less  \nto heat and cool your home.  \nSuperior Insulation\nA proprietary insulating design features an extra layer that protects your  \nhome from harsh outdoor temperatures.\nEnergy Efficiency\nYear-Round Comfort\nRed indicates \nwindows  \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home  \nwarm in the winter and cool in the summer.\nFabric Cascade    Color Shimmer\nOperating System PowerView® Automation \nShown in 4\" Full Fold Stacking Style\nScan for AERC \nEnergy Ratings",
-      "images": [
-        {
-          "filename": "page018_img01_1528x872.jpeg",
-          "width": 1528,
-          "height": 872
-        },
-        {
-          "filename": "page018_img02_1529x867.jpeg",
-          "width": 1529,
-          "height": 867
-        },
-        {
-          "filename": "page018_img03_1528x872.jpeg",
-          "width": 1528,
-          "height": 872
-        },
-        {
-          "filename": "page018_img04_1529x872.jpeg",
-          "width": 1529,
-          "height": 872
-        },
-        {
-          "filename": "page018_img05_117x175.jpeg",
-          "width": 117,
-          "height": 175
-        },
-        {
-          "filename": "page018_img06_117x176.jpeg",
-          "width": 117,
-          "height": 176
-        },
-        {
-          "filename": "page018_img07_3910x3008.jpeg",
-          "width": 3910,
-          "height": 3008
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "control",
-      "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shades to close whenever you prefer\nEnergy Efficiency \nProgram shades to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nFabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation\nShown in 4\" Full Fold Stacking Style\nOperating Systems\nLiteRise®\nCordless manual operation for \npremium child and pet safety. \nUse the attached handle to raise \nand lower.\nUltraGlide®\nA single retractable wand for  \nenhanced child safety. To lower,  \npull wand toward center of shade. \nTo raise, pull wand straight down  \nor to the outside of shade.\nEasyRise™\nA continuous cord loop system. \nPull on front or rear of cord to \noperate shade. Cord tensioner \nmounts to window frame.\nSTRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.",
-      "images": [
-        {
-          "filename": "page021_img01_709x455.jpeg",
-          "width": 709,
-          "height": 455
-        },
-        {
-          "filename": "page021_img02_504x990.jpeg",
-          "width": 504,
-          "height": 990
-        },
-        {
-          "filename": "page021_img03_2090x3010.jpeg",
-          "width": 2090,
-          "height": 3010
-        },
-        {
-          "filename": "page021_img04_637x1812.jpeg",
-          "width": 637,
-          "height": 1812
-        },
-        {
-          "filename": "page021_img05_637x1812.jpeg",
-          "width": 637,
-          "height": 1812
-        },
-        {
-          "filename": "page021_img06_637x1811.jpeg",
-          "width": 637,
-          "height": 1811
-        },
-        {
-          "filename": "page021_img07_72x105.jpeg",
-          "width": 72,
-          "height": 105
-        },
-        {
-          "filename": "page021_img08_179x178.jpeg",
-          "width": 179,
-          "height": 178
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "control",
-      "text": "10:30 PM Bedtime\nShades lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®     \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shades to close whenever you prefer\nEnergy Efficiency \nProgram shades to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nFabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation\nShown in 4\" Full Fold Stacking Style\nOPERATING SYSTEMS\nAND OPTIONS",
-      "images": [
-        {
-          "filename": "page022_img01_5991x3010.jpeg",
-          "width": 5991,
-          "height": 3010
-        },
-        {
-          "filename": "page022_img02_1502x989.jpeg",
-          "width": 1502,
-          "height": 989
-        },
-        {
-          "filename": "page022_img03_1453x910.jpeg",
-          "width": 1453,
-          "height": 910
-        },
-        {
-          "filename": "page022_img04_1453x909.jpeg",
-          "width": 1453,
-          "height": 909
-        },
-        {
-          "filename": "page022_img05_1451x909.jpeg",
-          "width": 1451,
-          "height": 909
-        },
-        {
-          "filename": "page022_img06_709x455.jpeg",
-          "width": 709,
-          "height": 455
-        },
-        {
-          "filename": "page022_img07_504x990.jpeg",
-          "width": 504,
-          "height": 990
-        }
-      ]
-    },
-    {
-      "page": 23,
-      "category": "control",
-      "text": "Top-Down/Bottom-Up \nThe shade can be opened from the top or bottom for a greater range of  \nlight control. Available in 4\" full fold stacking style in all opacities.\nSpecialty Shapes  \nFrom arches to angles, Vignette® shades can cover many specialty shapes. \nThey are non-operable and available exclusively as inside mount.\nAccents by the Yard™   \nEvery Vignette fabric is offered as cut yardage, so you can create  \ncoordinating home accents like pillows and duvets.\nDuolite® \nThe Vignette® Duolite front shade and room-darkening back panel both  \nroll into a single headrail for the ultimate in light control and privacy.\n4\" Full Fold \nThis design features soft, cascading fabric folds. Available in rolling  \nand stacking styles.\nTwo-On-One Headrail \nTwo independently operated shades can share the same headrail. Available in \nrolling and stacking styles, and in 4\" full fold and 6\" flat fold in all opacities.\n6\" Flat Fold   \nThis design features non-dimensional fabric folds. Available exclusively \nin rolling style.\nDesign Options",
-      "images": [
-        {
-          "filename": "page023_img01_1529x910.jpeg",
-          "width": 1529,
-          "height": 910
-        },
-        {
-          "filename": "page023_img02_1528x905.jpeg",
-          "width": 1528,
-          "height": 905
-        },
-        {
-          "filename": "page023_img03_1528x909.jpeg",
-          "width": 1528,
-          "height": 909
-        },
-        {
-          "filename": "page023_img04_1529x909.jpeg",
-          "width": 1529,
-          "height": 909
-        },
-        {
-          "filename": "page023_img05_1528x910.jpeg",
-          "width": 1528,
-          "height": 910
-        },
-        {
-          "filename": "page023_img06_1528x909.jpeg",
-          "width": 1528,
-          "height": 909
-        },
-        {
-          "filename": "page023_img07_1528x909.jpeg",
-          "width": 1528,
-          "height": 909
-        },
-        {
-          "filename": "page023_img08_72x105.jpeg",
-          "width": 72,
-          "height": 105
-        },
-        {
-          "filename": "page023_img09_179x178.jpeg",
-          "width": 179,
-          "height": 178
-        }
-      ]
-    },
-    {
-      "page": 24,
-      "category": "control",
-      "text": "Fabric Knox™   Color Simply Pewter\nOperating System LiteRise® \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style\nFully Recessed\nPartially Recessed\nOutside Mount\nOutside Mount\nFully Recessed\nPartially Recessed\nRolling Style\nStacking Style\nFabric Prairie    Color Feather\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Rolling Style\nMounting Profiles",
-      "images": [
-        {
-          "filename": "page024_img01_2396x3009.jpeg",
-          "width": 2396,
-          "height": 3009
-        },
-        {
-          "filename": "page024_img02_2397x3009.jpeg",
-          "width": 2397,
-          "height": 3009
-        },
-        {
-          "filename": "page024_img03_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        },
-        {
-          "filename": "page024_img04_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        },
-        {
-          "filename": "page024_img05_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        },
-        {
-          "filename": "page024_img06_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        },
-        {
-          "filename": "page024_img07_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        },
-        {
-          "filename": "page024_img08_959x609.jpeg",
-          "width": 959,
-          "height": 609
-        }
-      ]
+     "filename": "page007_img03_179x179.jpeg",
+     "width": 179,
+     "height": 179
     }
-  ],
-  "design_options": [
-    {
-      "page": 6,
-      "category": "design",
-      "text": "Fabric Knox™    Color Simply Pewter\nOperating System LiteRise®  \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style",
-      "images": [
-        {
-          "filename": "page006_img01_5859x3009.jpeg",
-          "width": 5859,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "design",
-      "text": "Fabric Cascade    Color Bashful\nOperating System PowerView® Automation\nDesign Option Top-Down/Bottom-Up\nShown in 4\" Full Fold Stacking Style",
-      "images": [
-        {
-          "filename": "page011_img01_7810x3009.jpeg",
-          "width": 7810,
-          "height": 3009
-        }
-      ]
-    }
-  ],
-  "mounting": [],
-  "product_details": [
-    {
-      "page": 8,
-      "category": "opacity",
-      "text": "The innovative Duolite® \ndesign option offers \nroom darkening  \nwhen desired.  \nCustomize light  \ncontrol and privacy \neven more when you \nchoose Duolite with  \na sheer back liner, \navailable with every \nVignette® fabric.\nFabric Loren™    Color Light Touch\nOperating System PowerView® Automation     \nDesign Option Duolite®     \nShown in 6\" Flat Fold Rolling Style",
-      "images": [
-        {
-          "filename": "page008_img01_5990x3015.jpeg",
-          "width": 5990,
-          "height": 3015
-        },
-        {
-          "filename": "page008_img02_72x105.jpeg",
-          "width": 72,
-          "height": 105
-        },
-        {
-          "filename": "page008_img03_179x178.jpeg",
-          "width": 179,
-          "height": 178
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "opacity",
-      "text": "Fabric Belfast Linen    Color Homespun\nOpacity Light Filtering\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nRoom Darkening",
-      "images": [
-        {
-          "filename": "page009_img01_3909x3005.jpeg",
-          "width": 3909,
-          "height": 3005
-        },
-        {
-          "filename": "page009_img02_2472x1659.jpeg",
-          "width": 2472,
-          "height": 1659
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "details",
-      "text": "Rolling Style Fully Raised \nRolling Style Fully Lowered \nStacking Style Partially Lowered\nStacking Style Fully Raised\nStacking Style Fully Lowered\nRolling Style Partially Lowered \nStyle Comparison\nStacking Style \nThe only stacking Roman shade without exposed lift cords on the back. Shade \nstacks neatly when raised or lowered. Fabric-covered, low-profile headrail houses \ninnovative operating systems. \nRolling Style \nThe only Roman shade without internal lift cords. Shade rolls up and away  \ninto a fabric-covered headrail for a consistent look and unobstructed views.",
-      "images": [
-        {
-          "filename": "page019_img01_1903x2454.jpeg",
-          "width": 1903,
-          "height": 2454
-        },
-        {
-          "filename": "page019_img02_1828x2454.jpeg",
-          "width": 1828,
-          "height": 2454
-        },
-        {
-          "filename": "page019_img03_958x908.jpeg",
-          "width": 958,
-          "height": 908
-        },
-        {
-          "filename": "page019_img04_956x908.jpeg",
-          "width": 956,
-          "height": 908
-        },
-        {
-          "filename": "page019_img05_955x907.jpeg",
-          "width": 955,
-          "height": 907
-        },
-        {
-          "filename": "page019_img06_957x907.jpeg",
-          "width": 957,
-          "height": 907
-        },
-        {
-          "filename": "page019_img07_956x907.jpeg",
-          "width": 956,
-          "height": 907
-        },
-        {
-          "filename": "page019_img08_957x907.jpeg",
-          "width": 957,
-          "height": 907
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "opacity",
-      "text": "Duolite® Dual Opacity Design Option\nBlocks majority of light when desired with a room-darkening panel \nthat operates sequentially with a sheer or light-filtering face fabric\nSheer\nProvides the most natural light and view-through with minimal privacy\nRoom Darkening\nBlocks most incoming light with maximum privacy\nLight Filtering\nGently filters light and offers moderate privacy\nLight Control and Privacy\nFabric Belfast Linen    Color Homespun \nOpacity Light Filtering \nOperating System PowerView® Automation     \nShown in 6\" Flat Fold Rolling Style",
-      "images": [
-        {
-          "filename": "page020_img01_3909x3010.jpeg",
-          "width": 3909,
-          "height": 3010
-        },
-        {
-          "filename": "page020_img02_1528x910.jpeg",
-          "width": 1528,
-          "height": 910
-        },
-        {
-          "filename": "page020_img03_1528x910.jpeg",
-          "width": 1528,
-          "height": 910
-        },
-        {
-          "filename": "page020_img04_1529x909.jpeg",
-          "width": 1529,
-          "height": 909
-        },
-        {
-          "filename": "page020_img05_1528x910.jpeg",
-          "width": 1528,
-          "height": 910
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_3909x3009.jpeg",
-          "width": 3909,
-          "height": 3009
-        },
-        {
-          "filename": "page005_img02_1959x3009.jpeg",
-          "width": 1959,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "gallery",
-      "text": "Fabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nPowerView® Pebble® Remote",
-      "images": [
-        {
-          "filename": "page013_img01_2820x1623.jpeg",
-          "width": 2820,
-          "height": 1623
-        },
-        {
-          "filename": "page013_img02_1529x2021.jpeg",
-          "width": 1529,
-          "height": 2021
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "gallery",
-      "text": "Fabric Cambria™    Color Just Right\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nFull Fold Stacking Style",
-      "images": [
-        {
-          "filename": "page014_img01_5234x3010.jpeg",
-          "width": 5234,
-          "height": 3010
-        },
-        {
-          "filename": "page014_img02_1528x2025.jpeg",
-          "width": 1528,
-          "height": 2025
-        }
-      ]
-    },
-    {
-      "page": 27,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page027_img01_1445x1165.jpeg",
-          "width": 1445,
-          "height": 1165
-        }
-      ]
-    },
-    {
-      "page": 28,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page028_img01_1445x1445.jpeg",
-          "width": 1445,
-          "height": 1445
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [],
-  "fabric_swatches": {
-    "Alustra® Elysian": [
-      {
-        "image": "page052_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Beyond",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1189",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1189",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1189"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      },
-      {
-        "image": "page052_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Demure",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1189",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1189",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1189"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      },
-      {
-        "image": "page053_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Petrichor",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1191",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1191",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1191"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      },
-      {
-        "image": "page053_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sonder",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1191",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1191",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1191"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      },
-      {
-        "image": "page054_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sirimiri",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1193",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1193",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1193"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      },
-      {
-        "image": "page054_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Ghataa",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1193",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1193",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1193"
-        ],
-        "fabric_collection": "Alustra® Elysian"
-      }
-    ],
-    "Alustra® Idyllic": [
-      {
-        "image": "page055_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Mejuri",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1196",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1196",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1196"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      },
-      {
-        "image": "page055_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Mangata",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1196",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1196",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1196"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      },
-      {
-        "image": "page056_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sarang",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1198",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1198",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1198"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      },
-      {
-        "image": "page056_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Meraki",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1198",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1198",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1198"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      },
-      {
-        "image": "page057_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Norri",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1195",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1195",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1195"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      },
-      {
-        "image": "page057_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sundar",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1195",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1195",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1195"
-        ],
-        "fabric_collection": "Alustra® Idyllic"
-      }
-    ],
-    "Alustra® Silk Road": [
-      {
-        "image": "page058_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Steppe",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-750",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-750",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-750"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      },
-      {
-        "image": "page058_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Petra",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-750",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-750",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-750"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      },
-      {
-        "image": "page059_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Kingdom",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-752",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-752",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-752"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      },
-      {
-        "image": "page059_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Asha",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-752",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-752",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-752"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      },
-      {
-        "image": "page060_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sari",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-1157",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-1157",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-1157"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      },
-      {
-        "image": "page060_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Keeva",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J30S-1157",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-1157",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-1157"
-        ],
-        "fabric_collection": "Alustra® Silk Road"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164": [
-      {
-        "image": "page061_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Summer Mist",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1164",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1164",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1164"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164"
-      },
-      {
-        "image": "page061_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Coastal Calm",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1164",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1164",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1164"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166": [
-      {
-        "image": "page062_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Light Touch",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1166",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1166",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1166"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166"
-      },
-      {
-        "image": "page062_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Misty Pebble",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1166",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1166",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1166"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168": [
-      {
-        "image": "page063_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sea Stone",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1168",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1168",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1168"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168"
-      },
-      {
-        "image": "page063_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Pleasant Gray",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1168",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1168",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1168"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740": [
-      {
-        "image": "page064_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Cloud",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-740",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-740",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-740"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740"
-      },
-      {
-        "image": "page064_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Illusion",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-740",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-740",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-740"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154": [
-      {
-        "image": "page065_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soft Rain",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-1154",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-1154",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-1154"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154"
-      },
-      {
-        "image": "page065_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Just Kissed",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-1154",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-1154",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-1154"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743": [
-      {
-        "image": "page066_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Inspire",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-743",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-743",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-743"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743"
-      },
-      {
-        "image": "page066_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Escape",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L22S-743",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-743",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-743"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531": [
-      {
-        "image": "page067_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Moonstone",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-531",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-531",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-531"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531"
-      },
-      {
-        "image": "page067_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Lunar Eclipse",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-531",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-531",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-531"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142": [
-      {
-        "image": "page068_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Tourmaline",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1142",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1142",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1142"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142"
-      },
-      {
-        "image": "page068_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Agate",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1142",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1142",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1142"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143": [
-      {
-        "image": "page069_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Dark Onyx",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1143",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1143",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1143"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143"
-      },
-      {
-        "image": "page069_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Jet",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1143",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1143",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1143"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182": [
-      {
-        "image": "page070_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Wisp White",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1182",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1182",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1182"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182"
-      },
-      {
-        "image": "page070_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soft Neutral",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1182",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1182",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1182"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184": [
-      {
-        "image": "page071_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Aged Clay",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1184",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1184",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1184"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184"
-      },
-      {
-        "image": "page071_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Simply Pewter",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1184",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1184",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1184"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186": [
-      {
-        "image": "page072_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Horizon Sky",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1186",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1186",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1186"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186"
-      },
-      {
-        "image": "page072_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Classic Noir",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1186",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1186",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1186"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201": [
-      {
-        "image": "page073_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Classic Linen",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1201",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1201",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1201"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201"
-      },
-      {
-        "image": "page073_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Misty Grey",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1201",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1201",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1201"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203": [
-      {
-        "image": "page074_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Night Sky",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1203",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1203",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1203"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203"
-      },
-      {
-        "image": "page074_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Just Right",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1203",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1203",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1203"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205": [
-      {
-        "image": "page075_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Natural Nude",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1205",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1205",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1205"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205"
-      },
-      {
-        "image": "page075_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Earth Tone",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1205",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1205",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1205"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720": [
-      {
-        "image": "page076_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Whitehall",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-720",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-720",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-720"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720"
-      },
-      {
-        "image": "page076_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Ivory Lace",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-720",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-720",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-720"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722": [
-      {
-        "image": "page077_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sandcastle",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-722",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-722",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-722"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722"
-      },
-      {
-        "image": "page077_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Homespun",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-722",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-722",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-722"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724": [
-      {
-        "image": "page078_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Flax",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-724",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-724",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-724"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724"
-      },
-      {
-        "image": "page078_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Silversea",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-724",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-724",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-724"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726": [
-      {
-        "image": "page079_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Mink",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-726",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-726",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-726"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726"
-      },
-      {
-        "image": "page079_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Smooth Stone",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-726",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-726",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-726"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-1136": [
-      {
-        "image": "page080_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Summer Storm",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J16S-1136",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-1136",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-1136"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-1136"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141": [
-      {
-        "image": "page081_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Birch Bark",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-141",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-141",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-141"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141"
-      },
-      {
-        "image": "page081_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Aspen Cream",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-141",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-141",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-141"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144": [
-      {
-        "image": "page082_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Beechnut",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-144",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-144",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-144"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144"
-      },
-      {
-        "image": "page082_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Winterking",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-144",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-144",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-144"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146": [
-      {
-        "image": "page083_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Marshland",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-146",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-146",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-146"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146"
-      },
-      {
-        "image": "page083_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Silver Pine",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J6S-146",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-146",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-146"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158": [
-      {
-        "image": "page084_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Stone Manor",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1158",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1158",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1158"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158"
-      },
-      {
-        "image": "page084_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Pale Shadow",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1158",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1158",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1158"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160": [
-      {
-        "image": "page085_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Olde Harbour",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1160",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1160",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1160"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160"
-      },
-      {
-        "image": "page085_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soft Henley",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1160",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1160",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1160"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162": [
-      {
-        "image": "page086_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "English Tweed",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1162",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1162",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1162"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162"
-      },
-      {
-        "image": "page086_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Book Clothe",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1162",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1162",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1162"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701": [
-      {
-        "image": "page087_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Bridalveil",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-701",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-701",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-701"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701"
-      },
-      {
-        "image": "page087_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Bashful",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-701",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-701",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-701"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703": [
-      {
-        "image": "page088_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Shimmer",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-703",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-703",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-703"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703"
-      },
-      {
-        "image": "page088_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Contemplation",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-703",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-703",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-703"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139": [
-      {
-        "image": "page089_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soft Whisper",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-1139",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-1139",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-1139"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139"
-      },
-      {
-        "image": "page089_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soothing Storm",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) J13S-1139",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-1139",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-1139"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551": [
-      {
-        "image": "page090_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Ivory Trellis",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-551",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-551",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-551"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551"
-      },
-      {
-        "image": "page090_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Almond Latte",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-551",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-551",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-551"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553": [
-      {
-        "image": "page091_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Dream Weaver",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-553",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-553",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-553"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553"
-      },
-      {
-        "image": "page091_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Vintage Suede",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-553",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-553",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-553"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146": [
-      {
-        "image": "page092_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Hudson Yard",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-1146",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-1146",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-1146"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146"
-      },
-      {
-        "image": "page092_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Hale Navy",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) L51S-1146",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-1146",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-1146"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170": [
-      {
-        "image": "page093_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "All White",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1170",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1170",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1170"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170"
-      },
-      {
-        "image": "page093_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sand Wash",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1170",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1170",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1170"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172": [
-      {
-        "image": "page094_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Brushed Beige",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1172",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1172",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1172"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172"
-      },
-      {
-        "image": "page094_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Wisp Gray",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1172",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1172",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1172"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174": [
-      {
-        "image": "page095_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Soft Stone",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1174",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1174",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1174"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174"
-      },
-      {
-        "image": "page095_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Moon Shadow",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1174",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1174",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1174"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528": [
-      {
-        "image": "page096_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Dove",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-528",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-528",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-528"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528"
-      },
-      {
-        "image": "page096_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Lynx",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-528",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-528",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-528"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152": [
-      {
-        "image": "page097_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Reeds",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1152",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1152",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1152"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152"
-      },
-      {
-        "image": "page097_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Feather",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1152",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1152",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1152"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150": [
-      {
-        "image": "page098_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Fox Fur",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1150",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1150",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1150"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150"
-      },
-      {
-        "image": "page098_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Rye",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1150",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1150",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1150"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176": [
-      {
-        "image": "page099_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Still White",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1176",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1176",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1176"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176"
-      },
-      {
-        "image": "page099_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Revere Pewter",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1176",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1176",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1176"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178": [
-      {
-        "image": "page100_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "New Mauve",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1178",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1178",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1178"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178"
-      },
-      {
-        "image": "page100_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Indigo Batik",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1178",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1178",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1178"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180": [
-      {
-        "image": "page101_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Misty Horizon",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1180",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1180",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1180"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180"
-      },
-      {
-        "image": "page101_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Aged Iron",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1180",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1180",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1180"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547": [
-      {
-        "image": "page102_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Raw Canvas",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-547",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-547",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-547"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547"
-      },
-      {
-        "image": "page102_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Vin Blanc",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-547",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-547",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-547"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823": [
-      {
-        "image": "page103_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Arani",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-823",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-823",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-823"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823"
-      },
-      {
-        "image": "page103_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Temple",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-823",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-823",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-823"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571": [
-      {
-        "image": "page104_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Sira",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-571",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-571",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-571"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571"
-      },
-      {
-        "image": "page104_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Retreat",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-571",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-571",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-571"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501": [
-      {
-        "image": "page105_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Ming Porcelain",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-501",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-501",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-501"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501"
-      },
-      {
-        "image": "page105_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "White Jade",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-501",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-501",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-501"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148": [
-      {
-        "image": "page106_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Buff",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-1148",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-1148",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-1148"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148"
-      },
-      {
-        "image": "page106_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Blade",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-1148",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-1148",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-1148"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148"
-      }
-    ],
-    "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524": [
-      {
-        "image": "page107_img01_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Palomino",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-524",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-524",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-524"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524"
-      },
-      {
-        "image": "page107_img02_705x1039.jpeg",
-        "width": 705,
-        "height": 1039,
-        "color_name": "Peppercorn",
-        "specs": [
-          "Rolling/Stacking 4\" Full Fold (Sheer) M4S-524",
-          "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-524",
-          "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-524"
-        ],
-        "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524"
-      }
-    ]
+   ]
   },
-  "stats": {
-    "gallery": 5,
-    "benefits": 0,
-    "control": 10,
-    "design": 2,
-    "mounting": 0,
-    "details": 4,
-    "vane": 0,
-    "hardware": 0,
-    "swatch_collections": 50,
-    "swatch_colors": 111
+  {
+   "page": 10,
+   "category": "control",
+   "text": "Duolite® Design Option\nFabric Leela™    Color Escape\nOperating System PowerView® Automation     \nDesign Option Duolite®     \nShown in 6\" Flat Fold Rolling Style",
+   "images": [
+    {
+     "filename": "page010_img01_3909x3012.jpeg",
+     "width": 3909,
+     "height": 3012
+    },
+    {
+     "filename": "page010_img02_778x1659.jpeg",
+     "width": 778,
+     "height": 1659
+    },
+    {
+     "filename": "page010_img03_778x1659.jpeg",
+     "width": 778,
+     "height": 1659
+    },
+    {
+     "filename": "page010_img04_778x1659.jpeg",
+     "width": 778,
+     "height": 1659
+    },
+    {
+     "filename": "page010_img05_72x105.jpeg",
+     "width": 72,
+     "height": 105
+    },
+    {
+     "filename": "page010_img06_179x178.jpeg",
+     "width": 179,
+     "height": 178
+    }
+   ]
   },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 2,
-    "gallery": 5,
-    "design": 2,
-    "control": 10,
-    "opacity": 3,
-    "advantage": 2,
-    "details": 1,
-    "copyright": 1,
-    "color_chart_table": 23,
-    "swatch": 56
+  {
+   "page": 12,
+   "category": "control",
+   "text": "Sustainable Fabric Siena™    Color Revere Pewter\nOperating System PowerView® Automation  \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style\nPowerView® Automation Accessories",
+   "images": [
+    {
+     "filename": "page012_img01_3909x3009.jpeg",
+     "width": 3909,
+     "height": 3009
+    },
+    {
+     "filename": "page012_img02_2468x1660.jpeg",
+     "width": 2468,
+     "height": 1660
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "control",
+   "text": "Layer Vignette® shades \nwith coordinating  \nDesign Studio™ drapery \nto add texture and  \npersonal style to  \nyour windows.\nFabric Belfast Linen    Color Homespun\nDesign Studio™ Fabric Bungalow    Color Countryside\nOperating System UltraGlide®     \nShown in 6\" Flat Fold Rolling Style",
+   "images": [
+    {
+     "filename": "page015_img01_5991x3010.jpeg",
+     "width": 5991,
+     "height": 3010
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "control",
+   "text": "With The Whole \nHouse Solution™,  \nsuperior color  \ncoordination between \nVignette® fabrics and  \nDuette® Honeycomb \nShades allows you \nto create a cohesive \nlook in your home.\nFabric India Silk™    Color Sira\nVignette®  Operating System PowerView® Automation     \nShown in 6\" Flat Fold Rolling Style \nDuette® Operating System Vertiglide™ shown in 1¼\" pleat",
+   "images": [
+    {
+     "filename": "page016_img01_5991x3010.jpeg",
+     "width": 5991,
+     "height": 3010
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "control",
+   "text": "Live Comfortably in Any Climate\nEnergy-efficient shades help keep your home \nwarm in the winter and cool in the sum-\nmer.\nYear-Round Comfort\nAutomation Throughout the Year \nPowerView® Automation lets you schedule shades to open and close according  \nto the sun’s movements, so your home’s temperature is regulated automatically.\nSustainability\nShades may eliminate a need for artificial lighting by brightening a \nroom with diffused natural sunlight.\nCost Savings\nShades help control the indoor temperature, so you can spend less  \nto heat and cool your home.  \nSuperior Insulation\nA proprietary insulating design features an extra layer that protects your  \nhome from harsh outdoor temperatures.\nEnergy Efficiency\nYear-Round Comfort\nRed indicates \nwindows  \nwithout shades.\nGreen indicates \nwindows with \nenergy-efficient \nshades.\nLive Comfortably in Any Climate\nEnergy-efficient shades help keep your home  \nwarm in the winter and cool in the summer.\nFabric Cascade    Color Shimmer\nOperating System PowerView® Automation \nShown in 4\" Full Fold Stacking Style\nScan for AERC \nEnergy Ratings",
+   "images": [
+    {
+     "filename": "page018_img01_1528x872.jpeg",
+     "width": 1528,
+     "height": 872
+    },
+    {
+     "filename": "page018_img02_1529x867.jpeg",
+     "width": 1529,
+     "height": 867
+    },
+    {
+     "filename": "page018_img03_1528x872.jpeg",
+     "width": 1528,
+     "height": 872
+    },
+    {
+     "filename": "page018_img04_1529x872.jpeg",
+     "width": 1529,
+     "height": 872
+    },
+    {
+     "filename": "page018_img05_117x175.jpeg",
+     "width": 117,
+     "height": 175
+    },
+    {
+     "filename": "page018_img06_117x176.jpeg",
+     "width": 117,
+     "height": 176
+    },
+    {
+     "filename": "page018_img07_3910x3008.jpeg",
+     "width": 3910,
+     "height": 3008
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "control",
+   "text": "Convenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shades to close whenever you prefer\nEnergy Efficiency \nProgram shades to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nFabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation\nShown in 4\" Full Fold Stacking Style\nOperating Systems\nLiteRise®\nCordless manual operation for \npremium child and pet safety. \nUse the attached handle to raise \nand lower.\nUltraGlide®\nA single retractable wand for  \nenhanced child safety. To lower,  \npull wand toward center of shade. \nTo raise, pull wand straight down  \nor to the outside of shade.\nEasyRise™\nA continuous cord loop system. \nPull on front or rear of cord to \noperate shade. Cord tensioner \nmounts to window frame.\nSTRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.",
+   "images": [
+    {
+     "filename": "page021_img01_709x455.jpeg",
+     "width": 709,
+     "height": 455
+    },
+    {
+     "filename": "page021_img02_504x990.jpeg",
+     "width": 504,
+     "height": 990
+    },
+    {
+     "filename": "page021_img03_2090x3010.jpeg",
+     "width": 2090,
+     "height": 3010
+    },
+    {
+     "filename": "page021_img04_637x1812.jpeg",
+     "width": 637,
+     "height": 1812
+    },
+    {
+     "filename": "page021_img05_637x1812.jpeg",
+     "width": 637,
+     "height": 1812
+    },
+    {
+     "filename": "page021_img06_637x1811.jpeg",
+     "width": 637,
+     "height": 1811
+    },
+    {
+     "filename": "page021_img07_72x105.jpeg",
+     "width": 72,
+     "height": 105
+    },
+    {
+     "filename": "page021_img08_179x178.jpeg",
+     "width": 179,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "control",
+   "text": "10:30 PM Bedtime\nShades lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to operate at your preferred wake-up time.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®     \nConvenience\nAchieve your perfect light automatically\nPrivacy\nSchedule shades to close whenever you prefer\nEnergy Efficiency \nProgram shades to be in the best positions throughout the day\nSecurity\nRemote control gives the illusion that you’re always home\nChild Friendly\nSimple, cord-free operation\nBattery Powered or Hardwired\nFor seamless installation, operation and maintenance\nVoice Control\nCompatible with smart speakers and smart-home systems\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options  \nPowerView® Automation \nFabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation\nShown in 4\" Full Fold Stacking Style\nOPERATING SYSTEMS\nAND OPTIONS",
+   "images": [
+    {
+     "filename": "page022_img01_5991x3010.jpeg",
+     "width": 5991,
+     "height": 3010
+    },
+    {
+     "filename": "page022_img02_1502x989.jpeg",
+     "width": 1502,
+     "height": 989
+    },
+    {
+     "filename": "page022_img03_1453x910.jpeg",
+     "width": 1453,
+     "height": 910
+    },
+    {
+     "filename": "page022_img04_1453x909.jpeg",
+     "width": 1453,
+     "height": 909
+    },
+    {
+     "filename": "page022_img05_1451x909.jpeg",
+     "width": 1451,
+     "height": 909
+    },
+    {
+     "filename": "page022_img06_709x455.jpeg",
+     "width": 709,
+     "height": 455
+    },
+    {
+     "filename": "page022_img07_504x990.jpeg",
+     "width": 504,
+     "height": 990
+    }
+   ]
+  },
+  {
+   "page": 23,
+   "category": "control",
+   "text": "Top-Down/Bottom-Up \nThe shade can be opened from the top or bottom for a greater range of  \nlight control. Available in 4\" full fold stacking style in all opacities.\nSpecialty Shapes  \nFrom arches to angles, Vignette® shades can cover many specialty shapes. \nThey are non-operable and available exclusively as inside mount.\nAccents by the Yard™   \nEvery Vignette fabric is offered as cut yardage, so you can create  \ncoordinating home accents like pillows and duvets.\nDuolite® \nThe Vignette® Duolite front shade and room-darkening back panel both  \nroll into a single headrail for the ultimate in light control and privacy.\n4\" Full Fold \nThis design features soft, cascading fabric folds. Available in rolling  \nand stacking styles.\nTwo-On-One Headrail \nTwo independently operated shades can share the same headrail. Available in \nrolling and stacking styles, and in 4\" full fold and 6\" flat fold in all opacities.\n6\" Flat Fold   \nThis design features non-dimensional fabric folds. Available exclusively \nin rolling style.\nDesign Options",
+   "images": [
+    {
+     "filename": "page023_img01_1529x910.jpeg",
+     "width": 1529,
+     "height": 910
+    },
+    {
+     "filename": "page023_img02_1528x905.jpeg",
+     "width": 1528,
+     "height": 905
+    },
+    {
+     "filename": "page023_img03_1528x909.jpeg",
+     "width": 1528,
+     "height": 909
+    },
+    {
+     "filename": "page023_img04_1529x909.jpeg",
+     "width": 1529,
+     "height": 909
+    },
+    {
+     "filename": "page023_img05_1528x910.jpeg",
+     "width": 1528,
+     "height": 910
+    },
+    {
+     "filename": "page023_img06_1528x909.jpeg",
+     "width": 1528,
+     "height": 909
+    },
+    {
+     "filename": "page023_img07_1528x909.jpeg",
+     "width": 1528,
+     "height": 909
+    },
+    {
+     "filename": "page023_img08_72x105.jpeg",
+     "width": 72,
+     "height": 105
+    },
+    {
+     "filename": "page023_img09_179x178.jpeg",
+     "width": 179,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "page": 24,
+   "category": "control",
+   "text": "Fabric Knox™   Color Simply Pewter\nOperating System LiteRise® \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style\nFully Recessed\nPartially Recessed\nOutside Mount\nOutside Mount\nFully Recessed\nPartially Recessed\nRolling Style\nStacking Style\nFabric Prairie    Color Feather\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Rolling Style\nMounting Profiles",
+   "images": [
+    {
+     "filename": "page024_img01_2396x3009.jpeg",
+     "width": 2396,
+     "height": 3009
+    },
+    {
+     "filename": "page024_img02_2397x3009.jpeg",
+     "width": 2397,
+     "height": 3009
+    },
+    {
+     "filename": "page024_img03_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    },
+    {
+     "filename": "page024_img04_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    },
+    {
+     "filename": "page024_img05_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    },
+    {
+     "filename": "page024_img06_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    },
+    {
+     "filename": "page024_img07_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    },
+    {
+     "filename": "page024_img08_959x609.jpeg",
+     "width": 959,
+     "height": 609
+    }
+   ]
   }
+ ],
+ "design_options": [
+  {
+   "page": 6,
+   "category": "design",
+   "text": "Fabric Knox™    Color Simply Pewter\nOperating System LiteRise®  \nDesign Option Top-Down/Bottom-Up \nShown in 4\" Full Fold Stacking Style",
+   "images": [
+    {
+     "filename": "page006_img01_5859x3009.jpeg",
+     "width": 5859,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "design",
+   "text": "Fabric Cascade    Color Bashful\nOperating System PowerView® Automation\nDesign Option Top-Down/Bottom-Up\nShown in 4\" Full Fold Stacking Style",
+   "images": [
+    {
+     "filename": "page011_img01_7810x3009.jpeg",
+     "width": 7810,
+     "height": 3009
+    }
+   ]
+  }
+ ],
+ "mounting": [],
+ "product_details": [
+  {
+   "page": 8,
+   "category": "opacity",
+   "text": "The innovative Duolite® \ndesign option offers \nroom darkening  \nwhen desired.  \nCustomize light  \ncontrol and privacy \neven more when you \nchoose Duolite with  \na sheer back liner, \navailable with every \nVignette® fabric.\nFabric Loren™    Color Light Touch\nOperating System PowerView® Automation     \nDesign Option Duolite®     \nShown in 6\" Flat Fold Rolling Style",
+   "images": [
+    {
+     "filename": "page008_img01_5990x3015.jpeg",
+     "width": 5990,
+     "height": 3015
+    },
+    {
+     "filename": "page008_img02_72x105.jpeg",
+     "width": 72,
+     "height": 105
+    },
+    {
+     "filename": "page008_img03_179x178.jpeg",
+     "width": 179,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "opacity",
+   "text": "Fabric Belfast Linen    Color Homespun\nOpacity Light Filtering\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nRoom Darkening",
+   "images": [
+    {
+     "filename": "page009_img01_3909x3005.jpeg",
+     "width": 3909,
+     "height": 3005
+    },
+    {
+     "filename": "page009_img02_2472x1659.jpeg",
+     "width": 2472,
+     "height": 1659
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "details",
+   "text": "Rolling Style Fully Raised \nRolling Style Fully Lowered \nStacking Style Partially Lowered\nStacking Style Fully Raised\nStacking Style Fully Lowered\nRolling Style Partially Lowered \nStyle Comparison\nStacking Style \nThe only stacking Roman shade without exposed lift cords on the back. Shade \nstacks neatly when raised or lowered. Fabric-covered, low-profile headrail houses \ninnovative operating systems. \nRolling Style \nThe only Roman shade without internal lift cords. Shade rolls up and away  \ninto a fabric-covered headrail for a consistent look and unobstructed views.",
+   "images": [
+    {
+     "filename": "page019_img01_1903x2454.jpeg",
+     "width": 1903,
+     "height": 2454
+    },
+    {
+     "filename": "page019_img02_1828x2454.jpeg",
+     "width": 1828,
+     "height": 2454
+    },
+    {
+     "filename": "page019_img03_958x908.jpeg",
+     "width": 958,
+     "height": 908
+    },
+    {
+     "filename": "page019_img04_956x908.jpeg",
+     "width": 956,
+     "height": 908
+    },
+    {
+     "filename": "page019_img05_955x907.jpeg",
+     "width": 955,
+     "height": 907
+    },
+    {
+     "filename": "page019_img06_957x907.jpeg",
+     "width": 957,
+     "height": 907
+    },
+    {
+     "filename": "page019_img07_956x907.jpeg",
+     "width": 956,
+     "height": 907
+    },
+    {
+     "filename": "page019_img08_957x907.jpeg",
+     "width": 957,
+     "height": 907
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "opacity",
+   "text": "Duolite® Dual Opacity Design Option\nBlocks majority of light when desired with a room-darkening panel \nthat operates sequentially with a sheer or light-filtering face fabric\nSheer\nProvides the most natural light and view-through with minimal privacy\nRoom Darkening\nBlocks most incoming light with maximum privacy\nLight Filtering\nGently filters light and offers moderate privacy\nLight Control and Privacy\nFabric Belfast Linen    Color Homespun \nOpacity Light Filtering \nOperating System PowerView® Automation     \nShown in 6\" Flat Fold Rolling Style",
+   "images": [
+    {
+     "filename": "page020_img01_3909x3010.jpeg",
+     "width": 3909,
+     "height": 3010
+    },
+    {
+     "filename": "page020_img02_1528x910.jpeg",
+     "width": 1528,
+     "height": 910
+    },
+    {
+     "filename": "page020_img03_1528x910.jpeg",
+     "width": 1528,
+     "height": 910
+    },
+    {
+     "filename": "page020_img04_1529x909.jpeg",
+     "width": 1529,
+     "height": 909
+    },
+    {
+     "filename": "page020_img05_1528x910.jpeg",
+     "width": 1528,
+     "height": 910
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_3909x3009.jpeg",
+     "width": 3909,
+     "height": 3009
+    },
+    {
+     "filename": "page005_img02_1959x3009.jpeg",
+     "width": 1959,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "gallery",
+   "text": "Fabric Rory™    Color Brushed Beige\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nPowerView® Pebble® Remote",
+   "images": [
+    {
+     "filename": "page013_img01_2820x1623.jpeg",
+     "width": 2820,
+     "height": 1623
+    },
+    {
+     "filename": "page013_img02_1529x2021.jpeg",
+     "width": 1529,
+     "height": 2021
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "gallery",
+   "text": "Fabric Cambria™    Color Just Right\nOperating System PowerView® Automation     \nShown in 4\" Full Fold Stacking Style\nFull Fold Stacking Style",
+   "images": [
+    {
+     "filename": "page014_img01_5234x3010.jpeg",
+     "width": 5234,
+     "height": 3010
+    },
+    {
+     "filename": "page014_img02_1528x2025.jpeg",
+     "width": 1528,
+     "height": 2025
+    }
+   ]
+  },
+  {
+   "page": 27,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page027_img01_1445x1165.jpeg",
+     "width": 1445,
+     "height": 1165
+    }
+   ]
+  },
+  {
+   "page": 28,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page028_img01_1445x1445.jpeg",
+     "width": 1445,
+     "height": 1445
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [],
+ "fabric_swatches": {
+  "Alustra® Elysian": [
+   {
+    "image": "page052_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Beyond",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1189",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FE22S-1189",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1189",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1189",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1189",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1189",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1189"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   },
+   {
+    "image": "page052_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Demure",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1190",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FE22S-1190",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1190",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1190",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1190",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1190",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1190"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   },
+   {
+    "image": "page053_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Petrichor",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1191",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FE22S-1191",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1191",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1191",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1191",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1191",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1191"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   },
+   {
+    "image": "page053_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sonder",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1192",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FE22S-1192",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1192",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1192",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1192",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1192",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1192"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   },
+   {
+    "image": "page054_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sirimiri",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1193",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FE22S-1193",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1193",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1193",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1193",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1193",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1193"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   },
+   {
+    "image": "page054_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Ghataa",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) E22S-1194",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FE22S-1194",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) E22-1194",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FE22-1194",
+     "Rolling 4\" Full Fold (Room Darkening) ZE22-1194",
+     "Rolling 6\" Flat Fold (Room Darkening) FZE22-1194",
+     "Stacking 4\" Full Fold (Room Darkening) ZE22E-1194"
+    ],
+    "fabric_collection": "Alustra® Elysian"
+   }
+  ],
+  "Alustra® Idyllic": [
+   {
+    "image": "page055_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Mejuri",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1196",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FI22S-1196",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1196",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1196",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1196",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1196",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1196"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   },
+   {
+    "image": "page055_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Mangata",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1197",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FI22S-1197",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1197",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1197",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1197",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1197",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1197"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   },
+   {
+    "image": "page056_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sarang",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1198",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FI22S-1198",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1198",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1198",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1198",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1198",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1198"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   },
+   {
+    "image": "page056_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Meraki",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1199",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FI22S-1199",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1199",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1199",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1199",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1199",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1199"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   },
+   {
+    "image": "page057_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Norri",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1195",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FI22S-1195",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1195",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1195",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1195",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1195",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1195"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   },
+   {
+    "image": "page057_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sundar",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) I22S-1200",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FI22S-1200",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) I22-1200",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FI22-1200",
+     "Rolling 4\" Full Fold (Room Darkening) ZI22-1200",
+     "Rolling 6\" Flat Fold (Room Darkening) FZI22-1200",
+     "Stacking 4\" Full Fold (Room Darkening) ZI22E-1200"
+    ],
+    "fabric_collection": "Alustra® Idyllic"
+   }
+  ],
+  "Alustra® Silk Road": [
+   {
+    "image": "page058_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Steppe",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-750",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ20S-750",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-750",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-750",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-750",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-750",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-750"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   },
+   {
+    "image": "page058_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Petra",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-751",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ20S-751",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-751",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-751",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-751",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-751",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-751"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   },
+   {
+    "image": "page059_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Kingdom",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-752",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ20S-752",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-752",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-752",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-752",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-752",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-752"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   },
+   {
+    "image": "page059_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Asha",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-1155",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ20S-1155",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-1155",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-1155",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-1155",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-1155",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-1155"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   },
+   {
+    "image": "page060_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sari",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-1157",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ20S-1157",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-1157",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-1157",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-1157",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-1157",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-1157"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   },
+   {
+    "image": "page060_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Keeva",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J30S-1156",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ20S-1156",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J30-1156",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ20-1156",
+     "Rolling 4\" Full Fold (Room Darkening) Z220-1156",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ20-1156",
+     "Stacking 4\" Full Fold (Room Darkening) Z220E-1156"
+    ],
+    "fabric_collection": "Alustra® Silk Road"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164": [
+   {
+    "image": "page061_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Summer Mist",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1164",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1164",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1164",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1164",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1164",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1164"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164"
+   },
+   {
+    "image": "page061_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Coastal Calm",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1165",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FG22S-1165",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1165",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1165",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1165",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1165",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1165"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1164"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166": [
+   {
+    "image": "page062_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Light Touch",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1166",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1166",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1166",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1166",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1166",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1166"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166"
+   },
+   {
+    "image": "page062_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Misty Pebble",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1167",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FG22S-1167",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1167",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1167",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1167",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1167",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1167"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1166"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168": [
+   {
+    "image": "page063_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sea Stone",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1168",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1168",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1168",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1168",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1168",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1168"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168"
+   },
+   {
+    "image": "page063_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Pleasant Gray",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) G22S-1169",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FG22S-1169",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) G22-1169",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FG22-1169",
+     "Rolling 4\" Full Fold (Room Darkening) ZG22-1169",
+     "Rolling 6\" Flat Fold (Room Darkening) FZG22-1169",
+     "Stacking 4\" Full Fold (Room Darkening) ZG22E-1169"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FG22S-1168"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740": [
+   {
+    "image": "page064_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Cloud",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-740",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-740",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-740",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-740",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-740",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-740"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740"
+   },
+   {
+    "image": "page064_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Illusion",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-741",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL22S-741",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-741",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-741",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-741",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-741",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-741"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-740"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154": [
+   {
+    "image": "page065_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soft Rain",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-1154",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-1154",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-1154",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-1154",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-1154",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-1154"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154"
+   },
+   {
+    "image": "page065_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Just Kissed",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-1153",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL22S-1153",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-1153",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-1153",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-1153",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-1153",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-1153"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-1154"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743": [
+   {
+    "image": "page066_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Inspire",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-743",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-743",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-743",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-743",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-743",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-743"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743"
+   },
+   {
+    "image": "page066_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Escape",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L22S-744",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL22S-744",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L22-744",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL22-744",
+     "Rolling 4\" Full Fold (Room Darkening) ZL22-744",
+     "Rolling 6\" Flat Fold (Room Darkening) FZL22-744",
+     "Stacking 4\" Full Fold (Room Darkening) ZL22E-744"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL22S-743"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531": [
+   {
+    "image": "page067_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Moonstone",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-531",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-531",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-531",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-531",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-531",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-531"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531"
+   },
+   {
+    "image": "page067_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Lunar Eclipse",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1141",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL52S-1141",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1141",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1141",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-1141",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-1141",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-1141"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-531"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142": [
+   {
+    "image": "page068_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Tourmaline",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1142",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1142",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1142",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-1142",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-1142",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-1142"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142"
+   },
+   {
+    "image": "page068_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Agate",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-532",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL52S-532",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-532",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-532",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-532",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-532",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-532"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1142"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143": [
+   {
+    "image": "page069_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Dark Onyx",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1143",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1143",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1143",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-1143",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-1143",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-1143"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143"
+   },
+   {
+    "image": "page069_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Jet",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L52S-1144",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL52S-1144",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L52-1144",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL52-1144",
+     "Rolling 4\" Full Fold (Room Darkening) Z52-1144",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ52-1144",
+     "Stacking 4\" Full Fold (Room Darkening) Z52E-1144"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL52S-1143"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182": [
+   {
+    "image": "page070_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Wisp White",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1182",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1182",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1182",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1182",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1182",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1182"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182"
+   },
+   {
+    "image": "page070_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soft Neutral",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1183",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FK22S-1183",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1183",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1183",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1183",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1183",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1183"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1182"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184": [
+   {
+    "image": "page071_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Aged Clay",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1184",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1184",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1184",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1184",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1184",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1184"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184"
+   },
+   {
+    "image": "page071_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Simply Pewter",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1185",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FK22S-1185",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1185",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1185",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1185",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1185",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1185"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1184"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186": [
+   {
+    "image": "page072_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Horizon Sky",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1186",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1186",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1186",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1186",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1186",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1186"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186"
+   },
+   {
+    "image": "page072_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Classic Noir",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) K22S-1187",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FK22S-1187",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) K22-1187",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FK22-1187",
+     "Rolling 4\" Full Fold (Room Darkening) ZK22-1187",
+     "Rolling 6\" Flat Fold (Room Darkening) FZK22-1187",
+     "Stacking 4\" Full Fold (Room Darkening) ZK22E-1187"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FK22S-1186"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201": [
+   {
+    "image": "page073_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Classic Linen",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1201",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1201",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1201",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1201",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1201",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1201"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201"
+   },
+   {
+    "image": "page073_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Misty Grey",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1202",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FA22S-1202",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1202",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1202",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1202",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1202",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1202"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1201"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203": [
+   {
+    "image": "page074_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Night Sky",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1203",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1203",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1203",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1203",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1203",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1203"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203"
+   },
+   {
+    "image": "page074_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Just Right",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1204",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FA22S-1204",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1204",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1204",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1204",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1204",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1204"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1203"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205": [
+   {
+    "image": "page075_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Natural Nude",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1205",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1205",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1205",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1205",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1205",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1205"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205"
+   },
+   {
+    "image": "page075_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Earth Tone",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) A22S-1206",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FA22S-1206",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) A22-1206",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FA22-1206",
+     "Rolling 4\" Full Fold (Room Darkening) ZA22-1206",
+     "Rolling 6\" Flat Fold (Room Darkening) FZA22-1206",
+     "Stacking 4\" Full Fold (Room Darkening) ZA22E-1206"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FA22S-1205"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720": [
+   {
+    "image": "page076_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Whitehall",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-720",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-720",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-720",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-720",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-720",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-720"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720"
+   },
+   {
+    "image": "page076_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Ivory Lace",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-721",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ16S-721",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-721",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-721",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-721",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-721",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-721"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-720"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722": [
+   {
+    "image": "page077_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sandcastle",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-722",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-722",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-722",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-722",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-722",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-722"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722"
+   },
+   {
+    "image": "page077_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Homespun",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-723",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ16S-723",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-723",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-723",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-723",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-723",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-723"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-722"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724": [
+   {
+    "image": "page078_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Flax",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-724",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-724",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-724",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-724",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-724",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-724"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724"
+   },
+   {
+    "image": "page078_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Silversea",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-725",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ16S-725",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-725",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-725",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-725",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-725",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-725"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-724"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726": [
+   {
+    "image": "page079_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Mink",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-726",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-726",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-726",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-726",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-726",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-726"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726"
+   },
+   {
+    "image": "page079_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Smooth Stone",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-1135",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ16S-1135",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-1135",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-1135",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-1135",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-1135",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-1135"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-726"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-1136": [
+   {
+    "image": "page080_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Summer Storm",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J16S-1136",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-1136",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J16-1136",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ16-1136",
+     "Rolling 4\" Full Fold (Room Darkening) Z216-1136",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ16-1136",
+     "Stacking 4\" Full Fold (Room Darkening) Z216E-1136"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ16S-1136"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141": [
+   {
+    "image": "page081_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Birch Bark",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-141",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-141",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-141",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-141",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-141",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-141"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141"
+   },
+   {
+    "image": "page081_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Aspen Cream",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-221",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ5S-221",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-221",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-221",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-221",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-221",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-221"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-141"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144": [
+   {
+    "image": "page082_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Beechnut",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-144",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-144",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-144",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-144",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-144",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-144"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144"
+   },
+   {
+    "image": "page082_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Winterking",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-232",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ5S-232",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-232",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-232",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-232",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-232",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-232"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-144"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146": [
+   {
+    "image": "page083_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Marshland",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-146",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-146",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-146",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-146",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-146",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-146"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146"
+   },
+   {
+    "image": "page083_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Silver Pine",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J6S-233",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ5S-233",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J6-233",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ5-233",
+     "Rolling 4\" Full Fold (Room Darkening) Z18-233",
+     "Rolling 6\" Flat Fold (Room Darkening) F25-233",
+     "Stacking 4\" Full Fold (Room Darkening) Z18E-233"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ5S-146"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158": [
+   {
+    "image": "page084_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Stone Manor",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1158",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1158",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1158",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1158",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1158",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1158"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158"
+   },
+   {
+    "image": "page084_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Pale Shadow",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1159",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FB22S-1159",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1159",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1159",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1159",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1159",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1159"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1158"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160": [
+   {
+    "image": "page085_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Olde Harbour",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1160",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1160",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1160",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1160",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1160",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1160"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160"
+   },
+   {
+    "image": "page085_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soft Henley",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1161",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FB22S-1161",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1161",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1161",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1161",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1161",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1161"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1160"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162": [
+   {
+    "image": "page086_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "English Tweed",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1162",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1162",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1162",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1162",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1162",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1162"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162"
+   },
+   {
+    "image": "page086_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Book Clothe",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) B22S-1163",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FB22S-1163",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) B22-1163",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FB22-1163",
+     "Rolling 4\" Full Fold (Room Darkening) ZB22-1163",
+     "Rolling 6\" Flat Fold (Room Darkening) FZB22-1163",
+     "Stacking 4\" Full Fold (Room Darkening) ZB22E-1163"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FB22S-1162"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701": [
+   {
+    "image": "page087_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Bridalveil",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-701",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-701",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-701",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-701",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-701",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-701"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701"
+   },
+   {
+    "image": "page087_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Bashful",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-702",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ13S-702",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-702",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-702",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-702",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-702",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-702"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-701"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703": [
+   {
+    "image": "page088_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Shimmer",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-703",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-703",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-703",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-703",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-703",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-703"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703"
+   },
+   {
+    "image": "page088_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Contemplation",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-1138",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ13S-1138",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-1138",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-1138",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-1138",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-1138",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-1138"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-703"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139": [
+   {
+    "image": "page089_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soft Whisper",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-1139",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-1139",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-1139",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-1139",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-1139",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-1139"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139"
+   },
+   {
+    "image": "page089_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soothing Storm",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) J13S-1140",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FJ13S-1140",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) J13-1140",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FJ13-1140",
+     "Rolling 4\" Full Fold (Room Darkening) Z213-1140",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ13-1140",
+     "Stacking 4\" Full Fold (Room Darkening) Z213E-1140"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FJ13S-1139"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551": [
+   {
+    "image": "page090_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Ivory Trellis",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-551",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-551",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-551",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-551",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-551",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-551"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551"
+   },
+   {
+    "image": "page090_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Almond Latte",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-1145",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL51S-1145",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-1145",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-1145",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-1145",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-1145",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-1145"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-551"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553": [
+   {
+    "image": "page091_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Dream Weaver",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-553",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-553",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-553",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-553",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-553",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-553"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553"
+   },
+   {
+    "image": "page091_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Vintage Suede",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-554",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL51S-554",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-554",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-554",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-554",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-554",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-554"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-553"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146": [
+   {
+    "image": "page092_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Hudson Yard",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-1146",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-1146",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-1146",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-1146",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-1146",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-1146"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146"
+   },
+   {
+    "image": "page092_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Hale Navy",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) L51S-1147",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FL51S-1147",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) L51-1147",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FL51-1147",
+     "Rolling 4\" Full Fold (Room Darkening) Z51-1147",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ51-1147",
+     "Stacking 4\" Full Fold (Room Darkening) Z51E-1147"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FL51S-1146"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170": [
+   {
+    "image": "page093_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "All White",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1170",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1170",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1170",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1170",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1170",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1170"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170"
+   },
+   {
+    "image": "page093_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sand Wash",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1171",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FR22S-1171",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1171",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1171",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1171",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1171",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1171"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1170"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172": [
+   {
+    "image": "page094_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Brushed Beige",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1172",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1172",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1172",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1172",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1172",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1172"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172"
+   },
+   {
+    "image": "page094_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Wisp Gray",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1173",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FR22S-1173",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1173",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1173",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1173",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1173",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1173"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1172"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174": [
+   {
+    "image": "page095_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Soft Stone",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1174",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1174",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1174",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1174",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1174",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1174"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174"
+   },
+   {
+    "image": "page095_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Moon Shadow",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) R22S-1175",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FR22S-1175",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) R22-1175",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FR22-1175",
+     "Rolling 4\" Full Fold (Room Darkening) ZR22-1175",
+     "Rolling 6\" Flat Fold (Room Darkening) FZR22-1175",
+     "Stacking 4\" Full Fold (Room Darkening) ZR22E-1175"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FR22S-1174"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528": [
+   {
+    "image": "page096_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Dove",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-528",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-528",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-528",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-528",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-528",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-528"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528"
+   },
+   {
+    "image": "page096_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Lynx",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1149",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FT8S-1149",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1149",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1149",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-1149",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-1149",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-1149"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-528"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152": [
+   {
+    "image": "page097_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Reeds",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1152",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1152",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1152",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-1152",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-1152",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-1152"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152"
+   },
+   {
+    "image": "page097_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Feather",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-529",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FT8S-529",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-529",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-529",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-529",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-529",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-529"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1152"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150": [
+   {
+    "image": "page098_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Fox Fur",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1150",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1150",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1150",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-1150",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-1150",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-1150"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150"
+   },
+   {
+    "image": "page098_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Rye",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) T8S-1151",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FT8S-1151",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) T8-1151",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FT8-1151",
+     "Rolling 4\" Full Fold (Room Darkening) Z39-1151",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ39-1151",
+     "Stacking 4\" Full Fold (Room Darkening) Z39E-1151"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FT8S-1150"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176": [
+   {
+    "image": "page099_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Still White",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1176",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1176",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1176",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1176",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1176",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1176"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176"
+   },
+   {
+    "image": "page099_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Revere Pewter",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1177",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FS22S-1177",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1177",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1177",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1177",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1177",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1177"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1176"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178": [
+   {
+    "image": "page100_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "New Mauve",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1178",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1178",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1178",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1178",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1178",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1178"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178"
+   },
+   {
+    "image": "page100_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Indigo Batik",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1179",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FS22S-1179",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1179",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1179",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1179",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1179",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1179"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1178"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180": [
+   {
+    "image": "page101_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Misty Horizon",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1180",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1180",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1180",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1180",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1180",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1180"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180"
+   },
+   {
+    "image": "page101_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Aged Iron",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) S22S-1181",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FS22S-1181",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) S22-1181",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FS22-1181",
+     "Rolling 4\" Full Fold (Room Darkening) ZS22-1181",
+     "Rolling 6\" Flat Fold (Room Darkening) FZS22-1181",
+     "Stacking 4\" Full Fold (Room Darkening) ZS22E-1181"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FS22S-1180"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547": [
+   {
+    "image": "page102_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Raw Canvas",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-547",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-547",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-547",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-547",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-547",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-547"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547"
+   },
+   {
+    "image": "page102_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Vin Blanc",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-548",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FPH3S-548",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-548",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-548",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-548",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-548",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-548"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-547"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823": [
+   {
+    "image": "page103_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Arani",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-823",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-823",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-823",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-823",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-823",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-823"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823"
+   },
+   {
+    "image": "page103_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Temple",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-570",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FPH3S-570",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-570",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-570",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-570",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-570",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-570"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-823"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571": [
+   {
+    "image": "page104_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Sira",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-571",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-571",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-571",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-571",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-571",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-571"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571"
+   },
+   {
+    "image": "page104_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Retreat",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) P4HS-1137",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FPH3S-1137",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) P4H-1137",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FPH3-1137",
+     "Rolling 4\" Full Fold (Room Darkening) Z43H-1137",
+     "Rolling 6\" Flat Fold (Room Darkening) FZH42-1137",
+     "Stacking 4\" Full Fold (Room Darkening) Z43HE-1137"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FPH3S-571"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501": [
+   {
+    "image": "page105_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Ming Porcelain",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-501",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-501",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-501",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-501",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-501",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-501"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501"
+   },
+   {
+    "image": "page105_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "White Jade",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-502",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FM3S-502",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-502",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-502",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-502",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-502",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-502"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-501"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148": [
+   {
+    "image": "page106_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Buff",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-1148",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-1148",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-1148",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-1148",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-1148",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-1148"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148"
+   },
+   {
+    "image": "page106_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Blade",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-284",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FM3S-284",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-284",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-284",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-284",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-284",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-284"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-1148"
+   }
+  ],
+  "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524": [
+   {
+    "image": "page107_img01_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Palomino",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-524",
+     "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-524",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-524",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-524",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-524",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-524"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524"
+   },
+   {
+    "image": "page107_img02_705x1039.jpeg",
+    "width": 705,
+    "height": 1039,
+    "color_name": "Peppercorn",
+    "specs": [
+     "Rolling/Stacking 4\" Full Fold (Sheer) M4S-511",
+     "Rolling 6\" Flat Fold (Sheer & Duolite) FM3S-511",
+     "Rolling/Stacking 4\" Full Fold (Light Filtering) M4-511",
+     "Rolling 6\" Flat Fold BU (Light Filtering & Duolite) FM3-511",
+     "Rolling 4\" Full Fold (Room Darkening) Z41-511",
+     "Rolling 6\" Flat Fold (Room Darkening) FZ40-511",
+     "Stacking 4\" Full Fold (Room Darkening) Z41E-511"
+    ],
+    "fabric_collection": "Rolling 6\" Flat Fold (Sheer & Duolite®) FM3S-524"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 5,
+  "benefits": 0,
+  "control": 10,
+  "design": 2,
+  "mounting": 0,
+  "details": 4,
+  "vane": 0,
+  "hardware": 0,
+  "swatch_collections": 50,
+  "swatch_colors": 111
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 2,
+  "gallery": 5,
+  "design": 2,
+  "control": 10,
+  "opacity": 3,
+  "advantage": 2,
+  "details": 1,
+  "copyright": 1,
+  "color_chart_table": 23,
+  "swatch": 56
+ }
 }

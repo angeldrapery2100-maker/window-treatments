@@ -1,2374 +1,2374 @@
 {
-  "id": "hd-verticals-digital-sample-book",
-  "name": "Vertical Blinds Collection",
-  "slug": "verticals",
-  "description": "Vertical Blinds offer a versatile and practical solution for large windows and sliding doors, with a wide selection of materials, textures, and colors.",
-  "cover_image": null,
-  "benefits": [
+ "id": "hd-verticals-digital-sample-book",
+ "name": "Vertical Blinds Collection",
+ "slug": "verticals",
+ "description": "Vertical Blinds offer a versatile and practical solution for large windows and sliding doors, with a wide selection of materials, textures, and colors.",
+ "cover_image": null,
+ "benefits": [
+  {
+   "page": 19,
+   "category": "benefits",
+   "text": "27\n Three Product Collections\n Hunter Douglas Vertical Blinds feature three distinct collections; Cadence®, \nSomner®, and Vertical Solutions®.\n Control the Light and Maximize the View\nVertical Blinds provide minimal stack when open, with vane tilt options to      \ncustomize the light in any room while maximizing the view.\n Superior Functionality\nThree proprietary operating systems provide smooth functionality  \nguaranteed to last a lifetime.\nContemporary Style\nFashion-forward styles featuring on-trend hues, rich textures, and patterns \nin fabric, vinyl, and aluminum.\n26\n Modern Aesthetic\nThe clean lines of Vertical Blinds provide a modern aesthetic covering\nexpansive windows using a single headrail.\nBenefits",
+   "images": [
     {
-      "page": 19,
-      "category": "benefits",
-      "text": "27\n Three Product Collections\n Hunter Douglas Vertical Blinds feature three distinct collections; Cadence®, \nSomner®, and Vertical Solutions®.\n Control the Light and Maximize the View\nVertical Blinds provide minimal stack when open, with vane tilt options to      \ncustomize the light in any room while maximizing the view.\n Superior Functionality\nThree proprietary operating systems provide smooth functionality  \nguaranteed to last a lifetime.\nContemporary Style\nFashion-forward styles featuring on-trend hues, rich textures, and patterns \nin fabric, vinyl, and aluminum.\n26\n Modern Aesthetic\nThe clean lines of Vertical Blinds provide a modern aesthetic covering\nexpansive windows using a single headrail.\nBenefits",
-      "images": [
-        {
-          "filename": "page019_img01_700x483.jpeg",
-          "width": 700,
-          "height": 483
-        },
-        {
-          "filename": "page019_img02_699x483.jpeg",
-          "width": 699,
-          "height": 483
-        },
-        {
-          "filename": "page019_img03_699x482.jpeg",
-          "width": 699,
-          "height": 482
-        },
-        {
-          "filename": "page019_img04_700x483.jpeg",
-          "width": 700,
-          "height": 483
-        },
-        {
-          "filename": "page019_img05_697x483.jpeg",
-          "width": 697,
-          "height": 483
-        },
-        {
-          "filename": "page019_img06_692x1139.jpeg",
-          "width": 692,
-          "height": 1139
-        }
-      ]
+     "filename": "page019_img01_700x483.jpeg",
+     "width": 700,
+     "height": 483
+    },
+    {
+     "filename": "page019_img02_699x483.jpeg",
+     "width": 699,
+     "height": 483
+    },
+    {
+     "filename": "page019_img03_699x482.jpeg",
+     "width": 699,
+     "height": 482
+    },
+    {
+     "filename": "page019_img04_700x483.jpeg",
+     "width": 700,
+     "height": 483
+    },
+    {
+     "filename": "page019_img05_697x483.jpeg",
+     "width": 697,
+     "height": 483
+    },
+    {
+     "filename": "page019_img06_692x1139.jpeg",
+     "width": 692,
+     "height": 1139
     }
-  ],
-  "control_options": [
-    {
-      "page": 11,
-      "category": "control",
-      "text": "10\n11\nProduct Cadence® Motif™    Fabric Regal    Color Lily \nOperating System Cord & Wand \nCadence® Motif™  \nprovides a sophisticated \nelegance for any space.",
-      "images": [
-        {
-          "filename": "page011_img01_2688x1505.jpeg",
-          "width": 2688,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "control",
-      "text": "Product Cadence® Impressions™    Vinyl Astor    Color Silver Dew    \nOperating System Cord & Wand\n16\n17\nCadence® Impressions™ \nprovides an elevated \nlook while outfitting  \na room.",
-      "images": [
-        {
-          "filename": "page014_img01_2695x1505.jpeg",
-          "width": 2695,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 26,
-      "category": "control",
-      "text": "41\nProduct Somner ®     Fabric Amelia    Color Cream \nOperating System Cord & Chain   Deck 1 \n38\nSpecialty Blinds for Somner® & Vertical Solutions®\nCurved or Straight Track\nAvailable Operating Systems include Cord & Chain or Tilt and Traverse \nMotorization. The Straight option provides the opportunity to coordinate \ntracks within a room with various window shapes.\n Slope\n Available with Cord & Chain Operating System.\n Skylight – Top & Bottom Track\n Available with vinyl styles only. Available with Cord & Chain  \nOperating System.\n Arch\n Available with Cord & Chain Operating System. \n40\nThe Specialty Blinds Track features an Anodized finish. The Cord & Chain operating controls available in Ivory only.",
-      "images": [
-        {
-          "filename": "page026_img01_1470x1507.jpeg",
-          "width": 1470,
-          "height": 1507
-        },
-        {
-          "filename": "page026_img02_645x417.jpeg",
-          "width": 645,
-          "height": 417
-        },
-        {
-          "filename": "page026_img03_630x408.jpeg",
-          "width": 630,
-          "height": 408
-        },
-        {
-          "filename": "page026_img04_640x368.jpeg",
-          "width": 640,
-          "height": 368
-        },
-        {
-          "filename": "page026_img05_618x421.jpeg",
-          "width": 618,
-          "height": 421
-        }
-      ]
-    },
-    {
-      "page": 27,
-      "category": "control",
-      "text": "Somner®\n43\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\nThe traveling wand tilts the vanes \nand traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nOperating Systems – Paramount® Contoured Headrail\nCadence®\n42\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\nThe traveling wand tilts the vanes \nand traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nThis patented, sleek, curved headrail features three operating systems to provide tilt and traverse functionality \nwith enhanced safety. Headrail available in Ivory finish, operating controls are color-coordinated*.\n*Cord & Chain available in Ivory only.",
-      "images": [
-        {
-          "filename": "page027_img01_307x963.jpeg",
-          "width": 307,
-          "height": 963
-        },
-        {
-          "filename": "page027_img02_307x958.jpeg",
-          "width": 307,
-          "height": 958
-        },
-        {
-          "filename": "page027_img03_309x962.jpeg",
-          "width": 309,
-          "height": 962
-        },
-        {
-          "filename": "page027_img04_307x961.jpeg",
-          "width": 307,
-          "height": 961
-        },
-        {
-          "filename": "page027_img05_307x963.jpeg",
-          "width": 307,
-          "height": 963
-        },
-        {
-          "filename": "page027_img06_307x961.jpeg",
-          "width": 307,
-          "height": 961
-        }
-      ]
-    },
-    {
-      "page": 28,
-      "category": "control",
-      "text": "Operating Systems – Enhanced Safety  \nand Color Coordination\n45\n Child Safety Labels on Corded Systems\nThese warning labels appear on window \nfashions with cords to make consumers \naware of window cord hazards for \nchildren and pets.\nUniversal Cord Tensioner\nCords are held in place for maximum functionality\nand enhanced safety. Custom colors are pre-selected  \nand available on Cadence® and Somner® only.  \nVertical Solutions® features Ivory operating controls.  \nThe Wand\nThe wand enhances safety and provides ease of \noperation. Custom colors are pre-selected and \navailable on Cadence® and Somner® only. The  \nwand color for Vertical Solutions® is Ivory.\nWhite\nIvory\nDove Gray\nBronze\nAsh\nBlack\n44\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\n The traveling wand tilts the vanes  \n and traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nOperating Systems – PermaTrak® Headrail\nVertical Solutions®\nThis headrail features three operating systems to provide tilt and traverse functionality with enhanced safety.  \nHeadrail available in Gray finish, operating controls available in Ivory only.\nSTRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.",
-      "images": [
-        {
-          "filename": "page028_img01_429x962.jpeg",
-          "width": 429,
-          "height": 962
-        },
-        {
-          "filename": "page028_img02_185x958.jpeg",
-          "width": 185,
-          "height": 958
-        },
-        {
-          "filename": "page028_img03_307x962.jpeg",
-          "width": 307,
-          "height": 962
-        },
-        {
-          "filename": "page028_img04_309x963.jpeg",
-          "width": 309,
-          "height": 963
-        },
-        {
-          "filename": "page028_img05_307x962.jpeg",
-          "width": 307,
-          "height": 962
-        }
-      ]
-    }
-  ],
-  "design_options": [],
-  "mounting": [
-    {
-      "page": 29,
-      "category": "mounting",
-      "text": "Somner®\nParamount Contoured Headrail\n Vertical Solutions®\n PermaTrak® Headrail\n Somner & Vertical Solutions\nDust Cover Valances\n47\n** When mounting depth is less than the headrail depth. \nSee Reference Guide for all mounting specifications.\nSTANDARD\nSTANDARD\nOPTIONAL\nInside Mount\nPartial Mount**\nOutside Mount\nInside Mount  \nNo returns available\nOutside Mount\nClosed Corner with returns\nOutside Mount\nRounded Corner with returns\nInside Mount\nPartial Mount**\nOutside Mount\nMounting Options\nCadence®\n Valance*\n Cadence\n Paramount® Contoured Headrail\n46\n*The Cadence® Valance comes standard on all Cadence orders. Outside mount Cadence Valance features color-coordinated corners  \nthat are pre-selected to best coordinate with valance color. Headrail images shown for situations when valance isn't installed.\nSTANDARD\nInside Mount Valance  \nNo returns available\n Outside Mount Valance\nShown with 2\" returns\nInside Mount\nPartial Mount**\nOutside Mount Valance\nShown with 5\" returns\nOutside Mount",
-      "images": [
-        {
-          "filename": "page029_img01_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img02_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img03_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img04_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img05_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img06_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img07_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img08_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img09_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img10_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img11_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img12_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img13_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img14_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        },
-        {
-          "filename": "page029_img15_450x279.jpeg",
-          "width": 450,
-          "height": 279
-        }
-      ]
-    }
-  ],
-  "product_details": [
-    {
-      "page": 20,
-      "category": "opacity",
-      "text": "28\nOpacity\n Sheer  |  Opacity Rating 1\nMost light, least privacy\nSemi-Opaque  |  Opacity Rating 3\nSome light, more privacy\n Semi-Sheer  |  Opacity Rating 2\nModerate light, some privacy\n Opaque  |  Opacity Rating 4\nLeast light, most privacy\n29\nPermaClear™ Groover\n Sheer without Groover\nThe fabric styles offer varying levels of opacity from sheer to semi-opaque.\n Sheer with Groover\nThe PermaClear™ Groover enhances light control, privacy and energy  \nefficiency. With the addition of the Groover, the opacity becomes opaque,  \nproviding least light with most privacy.\nProduct Somner ®    Fabric Dawson    Color White Magnolia \nProduct Somner\n®  Fabric Dawson    Color White Magnolia, with Groover added \nAvailable with Somner® and Vertical Solutions® fabrics",
-      "images": [
-        {
-          "filename": "page020_img01_700x437.jpeg",
-          "width": 700,
-          "height": 437
-        },
-        {
-          "filename": "page020_img02_699x437.jpeg",
-          "width": 699,
-          "height": 437
-        },
-        {
-          "filename": "page020_img03_699x437.jpeg",
-          "width": 699,
-          "height": 437
-        },
-        {
-          "filename": "page020_img04_699x437.jpeg",
-          "width": 699,
-          "height": 437
-        },
-        {
-          "filename": "page020_img05_699x1019.jpeg",
-          "width": 699,
-          "height": 1019
-        },
-        {
-          "filename": "page020_img06_699x1024.jpeg",
-          "width": 699,
-          "height": 1024
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "details",
-      "text": "31\n Left Facing: Closed\nLeft Facing: Open\nLeft Facing: Partially Open\nThe louvers tilt open from left to right allowing light \nto ﬁlter into the room from the right.\n Right Facing: Closed\nRight Facing: Open\nRight Facing: Partially Open\nThe louvers tilt open from right to left allowing light \nto ﬁlter into the room from the left.\nDirect the light with Cadence®\nThe orientation of the unique curved louver controls the direction that light filters into a room.\n30\nVertical Blinds Stack\nLeft Stack\nLeft or right control options available.\n Split Stack\nLeft or right control options available.\n Right Stack\nLeft or right control options available.\n Center Stack\nLeft or right control options available.\nMinimal stack, maximum view-through. With an outside mount, louvers stack on the wall, providing an unobstructed view*.\n*Stack back varies by blind. Images shown as outside mount.",
-      "images": [
-        {
-          "filename": "page021_img01_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img02_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img03_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img04_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img05_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img06_473x437.jpeg",
-          "width": 473,
-          "height": 437
-        },
-        {
-          "filename": "page021_img07_699x438.jpeg",
-          "width": 699,
-          "height": 438
-        },
-        {
-          "filename": "page021_img08_699x438.jpeg",
-          "width": 699,
-          "height": 438
-        },
-        {
-          "filename": "page021_img09_699x438.jpeg",
-          "width": 699,
-          "height": 438
-        },
-        {
-          "filename": "page021_img10_699x437.jpeg",
-          "width": 699,
-          "height": 437
-        }
-      ]
-    },
-    {
-      "page": 23,
-      "category": "details",
-      "text": "35\nCadence® Soft Vertical Blinds\n Cadence® Motif™\nThe soft texture of the fabric louver creates a drapery look and feel. \nLouvers are the same color interior and street side.\n Cadence Impressions™\nRichly textured vinyl evokes the feeling of draped fabric. Louvers feature \neither a coordinating or neutral street side color.\nPatented Curved Profile\n The unique curved louver of Cadence adds dimension at the window \nproviding the look of drapery.\nCadence Valance\nThe modern profile adds a tailored look to the blind.\nThe unique curved\nlouver adds dimension \nand dramatic light  \ncontrol. The exclusive  \nParamount® Contoured \nHeadrail provides  \nthe ultimate in control\nand functionality.\nProduct Cadence® Motif™    Fabric Bailey    Color Lattice \nOperating System Cord &  Wand\n34",
-      "images": [
-        {
-          "filename": "page023_img01_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        },
-        {
-          "filename": "page023_img02_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        },
-        {
-          "filename": "page023_img03_656x438.jpeg",
-          "width": 656,
-          "height": 438
-        },
-        {
-          "filename": "page023_img04_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        },
-        {
-          "filename": "page023_img05_966x1505.jpeg",
-          "width": 966,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 24,
-      "category": "details",
-      "text": "36\nThe most robust\nand extensive\ncollection of\nfashion fabrics,\ndistinctive vinyls,\nand unique\naluminums.\nProduct Somner ®    Vinyl Bondi    Color Sandhills \nOperating System PermAssure®  Safety Wand    Deck 3 \n37\nSomner® Custom Vertical Blinds\n Fabric\nFashion fabrics in rich textures and on trend colors.\nVinyl\n Distinctive patterns and colors from subtle to bold designed to make \na statement.\nAluminum\n Designed to coordinate with the decorative metals and appliances  \nin your home. The unique perforated options add subtle view-through.\nDust Cover Valances\nValances add light control and are available as inside or outside mount. \nCompatible with fabric, vinyl, and aluminum inserts.\nRounded Corner\nOutside Mount\nClosed Corner\nOutside Mount\nOPTIONAL",
-      "images": [
-        {
-          "filename": "page024_img01_1035x1505.jpeg",
-          "width": 1035,
-          "height": 1505
-        },
-        {
-          "filename": "page024_img02_321x437.jpeg",
-          "width": 321,
-          "height": 437
-        },
-        {
-          "filename": "page024_img03_320x437.jpeg",
-          "width": 320,
-          "height": 437
-        },
-        {
-          "filename": "page024_img04_655x438.jpeg",
-          "width": 655,
-          "height": 438
-        },
-        {
-          "filename": "page024_img05_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        },
-        {
-          "filename": "page024_img06_653x437.jpeg",
-          "width": 653,
-          "height": 437
-        },
-        {
-          "filename": "page024_img07_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        }
-      ]
-    },
-    {
-      "page": 25,
-      "category": "details",
-      "text": "This fundamental \ncollection provides \nboth vinyl and \nfabric in simplified \ntextures and \nfeatures a neutral \ncolor palette. \nProduct Vertical Solutions®    Vinyl Midwood    Color Frost \nOperating System PermAssure®  Safety Wand \n38\nVertical Solutions® Vertical Blinds\n Fabric\n Classic fabrics feature soft textures and neutral colors.\nVinyl\nVinyl styles provide a classic look and years of durability.\n Rounded Corner, Outside Mount\n Dust Cover Valances add light control and are compatible with both fabric and vinyl inserts. Inside and outside mount available. \n Closed Corner, Outside Mount\n39",
-      "images": [
-        {
-          "filename": "page025_img01_992x1505.jpeg",
-          "width": 992,
-          "height": 1505
-        },
-        {
-          "filename": "page025_img02_656x438.jpeg",
-          "width": 656,
-          "height": 438
-        },
-        {
-          "filename": "page025_img03_653x437.jpeg",
-          "width": 653,
-          "height": 437
-        },
-        {
-          "filename": "page025_img04_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        },
-        {
-          "filename": "page025_img05_656x437.jpeg",
-          "width": 656,
-          "height": 437
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 2,
-      "category": "gallery",
-      "text": "Vertical Blinds Collection",
-      "images": [
-        {
-          "filename": "page002_img01_1935x1505.jpeg",
-          "width": 1935,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1716x1505.jpeg",
-          "width": 1716,
-          "height": 1505
-        },
-        {
-          "filename": "page005_img02_895x1505.jpeg",
-          "width": 895,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Product Somner®    Vinyl Bondi    Color Sandhills \nOperating System PermAssure® Safety Wand    Deck 3",
-      "images": [
-        {
-          "filename": "page006_img01_2592x1505.jpeg",
-          "width": 2592,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "2\n3\nHunter Douglas features the most\ndiverse Vertical Blinds product offering  \nproviding functionality and style for  \na modern take on a classic product.\nProduct Cadence® Impressions™    Vinyl Hampton    Color Ivory Tower \nOperating System Cord & Wand",
-      "images": [
-        {
-          "filename": "page007_img01_2291x1505.jpeg",
-          "width": 2291,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "category": "gallery",
-      "text": "4\nBold fabrics make a \nfashion statement in \nthe Somner® Collection.\nProduct Somner ®    Fabric Urban Loft    Color Blue Denim \nOperating System PermAssure®  Safety Wand    Deck 2\n5",
-      "images": [
-        {
-          "filename": "page008_img01_2684x1505.jpeg",
-          "width": 2684,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "gallery",
-      "text": "Product Cadence® Motif™    Fabric Bailey    Color Lattice    \nOperating System Cord & Wand\n6",
-      "images": [
-        {
-          "filename": "page009_img01_3436x1504.jpeg",
-          "width": 3436,
-          "height": 1504
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "8\nThe modern vinyl  \nstyles in the Somner®  \nCollection allow  \nfor limitless possibilities.\nProduct Somner ®    Vinyl Bridger    Color Gold    \nOperating System Cord & Wand    Deck 4\n9",
-      "images": [
-        {
-          "filename": "page010_img01_2684x1505.jpeg",
-          "width": 2684,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "gallery",
-      "text": "Product Somner ®    Vinyl Everly    Color Raven    \nOperating System Cord & Wand    Deck 4\n12\n13",
-      "images": [
-        {
-          "filename": "page012_img01_3436x1505.jpeg",
-          "width": 3436,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "gallery",
-      "text": "14\nStylish Somner®  \nPerforated Aluminum  \naccents the light by  \noffering a screen-like \nview-through.\nProduct Somner®    Aluminum    Color Zinc Perforated    \nOperating System Cord & Wand    Deck 3\n15\n15",
-      "images": [
-        {
-          "filename": "page013_img01_2681x1505.jpeg",
-          "width": 2681,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "gallery",
-      "text": "18\nProduct Somner®    Vinyl Hampshire    Color Gray Garden \nOperating System Cord & Wand    Deck 5\n19",
-      "images": [
-        {
-          "filename": "page015_img01_3437x1507.jpeg",
-          "width": 3437,
-          "height": 1507
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "gallery",
-      "text": "20\nThe neutral palette\nand simplified textures\nof Vertical Solutions®\ncreate a contemporary\napproach to decor.\nProduct Vertical Solutions®    Fabric Bryce    Color Bright White    \nOperating System Cord & Chain\nProduct EverWood®    Collection Distinctions™    Color Extreme White    \nOperating System Cordlock\n21",
-      "images": [
-        {
-          "filename": "page016_img01_2684x1505.jpeg",
-          "width": 2684,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "gallery",
-      "text": "22\n23\nCreate a polished  \nbackdrop in any space.\nProduct Somner ®    Fabric Amelia    Color White Cloud \nOperating System PermAssure®  Safety Wand    Deck 1",
-      "images": [
-        {
-          "filename": "page017_img01_2690x1503.jpeg",
-          "width": 2690,
-          "height": 1503
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "gallery",
-      "text": "Product Vertical Solutions®    Vinyl Midwood    Color Frost    \nOperating System PermAssure® Safety Wand\n24\n25",
-      "images": [
-        {
-          "filename": "page018_img01_3436x1505.jpeg",
-          "width": 3436,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 32,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page032_img01_3009x2427.jpeg",
-          "width": 3009,
-          "height": 2427
-        }
-      ]
-    },
-    {
-      "page": 33,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page033_img01_3009x3009.jpeg",
-          "width": 3009,
-          "height": 3009
-        }
-      ]
-    },
-    {
-      "page": 40,
-      "category": "gallery",
-      "text": "GREY\nOpaque VSCRII-1643902\nVinylscapes–Curves\nSNOW WHITE\nOpaque VSCRII-7701930\n1",
-      "images": [
-        {
-          "filename": "page040_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page040_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 41,
-      "category": "gallery",
-      "text": "WHITE\nOpaque VSCRII-1643903\nVinylscapes–Curves\nOFF WHITE\nOpaque VSCRII-1643901\n2",
-      "images": [
-        {
-          "filename": "page041_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page041_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 42,
-      "category": "gallery",
-      "text": "IVORY\nOpaque VSCRII-1643900\nVinylscapes–Curves\nTAN\nOpaque VSCRII-1643904\n3",
-      "images": [
-        {
-          "filename": "page042_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page042_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 43,
-      "category": "gallery",
-      "text": "GREY\nOpaque VSFL-1642901\nVinylscapes–Flat\nWHITE\nOpaque VSFL-1642902\n4",
-      "images": [
-        {
-          "filename": "page043_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page043_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 44,
-      "category": "gallery",
-      "text": "OFF WHITE\nOpaque VSFL-1642903\nVinylscapes–Flat\nIVORY\nOpaque VSFL-1642900\n5",
-      "images": [
-        {
-          "filename": "page044_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page044_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 45,
-      "category": "gallery",
-      "text": "FEMATA\nOpaque CARNEGIE-7712689\nCarnegie\nMEZZO\nOpaque CARNEGIE-7712687\n6",
-      "images": [
-        {
-          "filename": "page045_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page045_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 46,
-      "category": "gallery",
-      "text": "TEMPO\nOpaque CARNEGIE-7716700\nCarnegie\n7",
-      "images": [
-        {
-          "filename": "page046_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 47,
-      "category": "gallery",
-      "text": "CHINA WHITE\nOpaque MANS-7716810\nMansfield\nBUFF NATURAL\nOpaque MANS-7716812\n8",
-      "images": [
-        {
-          "filename": "page047_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page047_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 48,
-      "category": "gallery",
-      "text": "STORM CLOUD\nOpaque MANS-1026809\nMansfield\n9",
-      "images": [
-        {
-          "filename": "page048_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 49,
-      "category": "gallery",
-      "text": "SANDY DUNES\nOpaque PIPER-7716763\nPiper\nVINTAGE WHITE\nOpaque PIPER-7716760\n10",
-      "images": [
-        {
-          "filename": "page049_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page049_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 50,
-      "category": "gallery",
-      "text": "BEIGE LINEN\nOpaque PIPER-7716761\nPiper\nWASHED GREY\nOpaque PIPER-1026720\n11",
-      "images": [
-        {
-          "filename": "page050_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page050_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 51,
-      "category": "gallery",
-      "text": "WICKER\nOpaque ITH-7711727\nIthaca\nPALMS\nOpaque ITH-7711725\n12",
-      "images": [
-        {
-          "filename": "page051_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page051_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 52,
-      "category": "gallery",
-      "text": "SMOKE\nOpaque ITH-1026679\nIthaca\n13",
-      "images": [
-        {
-          "filename": "page052_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 53,
-      "category": "gallery",
-      "text": "FERN\nOpaque DARBY-7716716\nDarby\nSEA SALT\nOpaque DARBY-7712712\n14",
-      "images": [
-        {
-          "filename": "page053_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page053_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 54,
-      "category": "gallery",
-      "text": "NATURAL\nOpaque DARBY-7712711\nDarby\nALABASTER\nOpaque DARBY-1026678\n15",
-      "images": [
-        {
-          "filename": "page054_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page054_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 55,
-      "category": "gallery",
-      "text": "HONEY\nOpaque THAT-7716831\nThatcher\nMILK\nOpaque THAT-7716830\n16",
-      "images": [
-        {
-          "filename": "page055_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page055_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 56,
-      "category": "gallery",
-      "text": "TRUFFLE\nOpaque THAT-7716834\nThatcher\n17",
-      "images": [
-        {
-          "filename": "page056_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 57,
-      "category": "gallery",
-      "text": "PEARLY\nOpaque EVERL-1026796\nEverly\nGLACIER\nOpaque EVERL-1026793\n18",
-      "images": [
-        {
-          "filename": "page057_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page057_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 58,
-      "category": "gallery",
-      "text": "JEWEL\nOpaque EVERL-1026794\nEverly\nNEUTRAL\nOpaque EVERL-1026795\n19",
-      "images": [
-        {
-          "filename": "page058_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page058_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 59,
-      "category": "gallery",
-      "text": "RAVEN\nOpaque EVERL-1026797\nEverly\n20",
-      "images": [
-        {
-          "filename": "page059_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 60,
-      "category": "gallery",
-      "text": "UNION SQUARE\nOpaque BRITT-7716355\nBrittmore\nMODERN WHITE\nOpaque BRITT-7716350\n21",
-      "images": [
-        {
-          "filename": "page060_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page060_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 61,
-      "category": "gallery",
-      "text": "STAINLESS STEEL\nOpaque BRITT-7716351\nBrittmore\nRESTORATION\nOpaque BRITT-7716353\n22",
-      "images": [
-        {
-          "filename": "page061_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page061_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 62,
-      "category": "gallery",
-      "text": "TRENDY TAN\nOpaque BRITT-1026790\nBrittmore\n23",
-      "images": [
-        {
-          "filename": "page062_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 63,
-      "category": "gallery",
-      "text": "MYSTIC GRAY\nOpaque ADORN-7716618\nAdorn\nWHITE ICE\nOpaque ADORN-7712610\n24",
-      "images": [
-        {
-          "filename": "page063_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page063_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 64,
-      "category": "gallery",
-      "text": "LIGHT BLUE\nOpaque ADORN-7712613\nAdorn\nSTEEL GREY\nOpaque ADORN-1026776\n25",
-      "images": [
-        {
-          "filename": "page064_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page064_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 65,
-      "category": "gallery",
-      "text": "GRAY GARDEN\nOpaque HAM-7716727\nHampshire\nFROST\nOpaque HAM-7716725\n26",
-      "images": [
-        {
-          "filename": "page065_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page065_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 66,
-      "category": "gallery",
-      "text": "SEA SALT\nOpaque HAM-7716726\nHampshire\n27",
-      "images": [
-        {
-          "filename": "page066_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 67,
-      "category": "gallery",
-      "text": "MAGNOLIA\nOpaque TIMB-1026811\nTimber\nBRADFORD\nOpaque TIMB-1026810\n28",
-      "images": [
-        {
-          "filename": "page067_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page067_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 68,
-      "category": "gallery",
-      "text": "WILLOW\nOpaque TIMB-1026812\nTimber\n29",
-      "images": [
-        {
-          "filename": "page068_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 69,
-      "category": "gallery",
-      "text": "IRONSTONE WHITE\nOpaque BEACH-7716880\nBeacham\nSANDY BEACH\nOpaque BEACH-1026677\n30",
-      "images": [
-        {
-          "filename": "page069_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page069_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 70,
-      "category": "gallery",
-      "text": "BLUE SKY\nOpaque BEACH-1026676\nBeacham\n31",
-      "images": [
-        {
-          "filename": "page070_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 71,
-      "category": "gallery",
-      "text": "SANDHILLS\nOpaque BOND-1026784\nBondi\nCOCONUT\nOpaque BOND-1026782\n32",
-      "images": [
-        {
-          "filename": "page071_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page071_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 72,
-      "category": "gallery",
-      "text": "SHORELINE\nOpaque BOND-1026785\nBondi\nDUSK\nOpaque BOND-1026783\n33",
-      "images": [
-        {
-          "filename": "page072_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page072_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 73,
-      "category": "gallery",
-      "text": "WYTHE\nOpaque HUDS-1026801\nHudson\nELLIS\nOpaque HUDS-1026798\n34",
-      "images": [
-        {
-          "filename": "page073_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page073_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 74,
-      "category": "gallery",
-      "text": "PARK\nOpaque HUDS-1026799\nHudson\nWAVERLY\nOpaque HUDS-1026800\n35",
-      "images": [
-        {
-          "filename": "page074_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page074_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 75,
-      "category": "gallery",
-      "text": "GRAY PENNANT\nOpaque CAME-7716678\nCamelot\nTUSCAN BEIGE\nOpaque CAME-7716679\n36",
-      "images": [
-        {
-          "filename": "page075_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page075_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 76,
-      "category": "gallery",
-      "text": "TRUE TAUPE\nOpaque CAME-1026792\nCamelot\nGRAY STAR\nOpaque CAME-1026791\n37",
-      "images": [
-        {
-          "filename": "page076_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page076_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 77,
-      "category": "gallery",
-      "text": "CLOUD\nOpaque ACCRD-7708701\nAccord\nOPAL\nOpaque ACCRD-1026775\n38",
-      "images": [
-        {
-          "filename": "page077_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page077_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 78,
-      "category": "gallery",
-      "text": "BEIGE\nOpaque ACCRD-1026774\nAccord\n39",
-      "images": [
-        {
-          "filename": "page078_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 79,
-      "category": "gallery",
-      "text": "WHITE\nSheer VPERF-7705742\nVinyl Perforated\nIVORY\nSheer VPERF-7705741\n40",
-      "images": [
-        {
-          "filename": "page079_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page079_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 80,
-      "category": "gallery",
-      "text": "GREY\nSheer VPERF-7705740\nVinyl Perforated\nLIGHT GREY\nSheer VPERF-1026802\n41",
-      "images": [
-        {
-          "filename": "page080_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page080_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 81,
-      "category": "gallery",
-      "text": "OFF WHITE\nSheer VPERF-1026803\nVinyl Perforated\n42",
-      "images": [
-        {
-          "filename": "page081_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 82,
-      "category": "gallery",
-      "text": "DIAMOND\nOpaque BRID-1026787\nBridger\nGOLD\nOpaque BRID-1026788\n43",
-      "images": [
-        {
-          "filename": "page082_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page082_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 83,
-      "category": "gallery",
-      "text": "SILVER\nOpaque BRID-1026789\nBridger\nCARBON\nOpaque BRID-1026786\n44",
-      "images": [
-        {
-          "filename": "page083_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page083_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 84,
-      "category": "gallery",
-      "text": "ONYX\nOpaque ALUM-7716286\nAluminum\nOFF WHITE\nOpaque ALUM-7716285\n45",
-      "images": [
-        {
-          "filename": "page084_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page084_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 85,
-      "category": "gallery",
-      "text": "ZINC\nOpaque ALUM-7716280\nAluminum\nZINC PERFORATED\nSheer ALUM-7716281\n46",
-      "images": [
-        {
-          "filename": "page085_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page085_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 86,
-      "category": "gallery",
-      "text": "WHITE PERFORATED\nSheer ALUM-1026741\nAluminum\nCHARCOAL PERFORATED\nSheer ALUM-1026740\n47",
-      "images": [
-        {
-          "filename": "page086_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page086_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 87,
-      "category": "gallery",
-      "text": "BLACK PERFORATED\nSheer ALUM-1026739\nAluminum\n48",
-      "images": [
-        {
-          "filename": "page087_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 88,
-      "category": "gallery",
-      "text": "WHITE WOOD\nOpaque WDLN-1026808\nWoodland\nHONEY WOOD\nOpaque WDLN-1026807\n49",
-      "images": [
-        {
-          "filename": "page088_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page088_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 89,
-      "category": "gallery",
-      "text": "CHERRY WOOD\nOpaque WDLN-1026804\nWoodland\nDRIFTWOOD\nOpaque WDLN-1026805\n50",
-      "images": [
-        {
-          "filename": "page089_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page089_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 90,
-      "category": "gallery",
-      "text": "GREY WOOD\nOpaque WDLN-1026806\nWoodland\n51",
-      "images": [
-        {
-          "filename": "page090_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 91,
-      "category": "gallery",
-      "text": "GELATO\nOpaque JUPI-1026985\nJupiter\nTAFFY\nOpaque JUPI-1026984\n52",
-      "images": [
-        {
-          "filename": "page091_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page091_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 92,
-      "category": "gallery",
-      "text": "BOARDWALK\nOpaque JUPI-1026986\nJupiter\nJET\nOpaque JUPI-1026987\n53",
-      "images": [
-        {
-          "filename": "page092_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page092_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 93,
-      "category": "gallery",
-      "text": "WINTERMINT\nSemi-Opaque SILAS-7712147\nSilas\nTOASTY VANILLA\nSemi-Opaque SILAS-7712148\n54",
-      "images": [
-        {
-          "filename": "page093_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page093_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 94,
-      "category": "gallery",
-      "text": "CINZA\nSemi-Opaque SILAS-7716356\nSilas\n55",
-      "images": [
-        {
-          "filename": "page094_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 95,
-      "category": "gallery",
-      "text": "WHITE\nOpaque GRAH-1026773\nGraham\nIVORY\nOpaque GRAH-1026772\n56",
-      "images": [
-        {
-          "filename": "page095_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page095_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 96,
-      "category": "gallery",
-      "text": "GREY\nOpaque GRAH-1026771\nGraham\nBLACK\nOpaque GRAH-1026770\n57",
-      "images": [
-        {
-          "filename": "page096_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page096_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 97,
-      "category": "gallery",
-      "text": "ORGANIC COTTON\nSemi-Opaque UBL-7712173\nUrban Loft\nBLUE DENIM\nSemi-Opaque UBL-1026742\n58",
-      "images": [
-        {
-          "filename": "page097_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page097_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 98,
-      "category": "gallery",
-      "text": "TAVERN TAUPE\nSemi-Opaque UBL-1026744\nUrban Loft\nSLATE GREY\nSemi-Opaque UBL-1026743\n59",
-      "images": [
-        {
-          "filename": "page098_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page098_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 99,
-      "category": "gallery",
-      "text": "BAMBOO\nSemi-Sheer MAKENA-7716114\nMakenna\nCHESTNUT\nSemi-Sheer MAKENA-7704109\n60",
-      "images": [
-        {
-          "filename": "page099_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page099_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 100,
-      "category": "gallery",
-      "text": "POPLAR\nSemi-Sheer MAKENA-1026761\nMakenna\nCINDER\nSemi-Sheer MAKENA-1026760\n61",
-      "images": [
-        {
-          "filename": "page100_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page100_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 101,
-      "category": "gallery",
-      "text": "TRAIL\nSemi-Sheer MAKENA-1026762\nMakenna\n62",
-      "images": [
-        {
-          "filename": "page101_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 102,
-      "category": "gallery",
-      "text": "STOWE\nSemi-Sheer BLMT-1026752\nBelmont\nCRAMER\nSemi-Sheer BLMT-1026750\n63",
-      "images": [
-        {
-          "filename": "page102_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page102_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 103,
-      "category": "gallery",
-      "text": "WYLIE\nSemi-Sheer BLMT-1026753\nBelmont\nGLENWAY\nSemi-Sheer BLMT-1026751\n64",
-      "images": [
-        {
-          "filename": "page103_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page103_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 104,
-      "category": "gallery",
-      "text": "CREAM\nSemi-Opaque AMEL-1026747\nAmelia\nWHITE CLOUD\nSemi-Opaque AMEL-1026749\n65",
-      "images": [
-        {
-          "filename": "page104_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page104_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 105,
-      "category": "gallery",
-      "text": "CASTLE\nSemi-Opaque AMEL-1026745\nAmelia\nCHATEAU\nSemi-Opaque AMEL-1026746\n66",
-      "images": [
-        {
-          "filename": "page105_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page105_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 106,
-      "category": "gallery",
-      "text": "TOWER\nSemi-Opaque AMEL-1026748\nAmelia\n67",
-      "images": [
-        {
-          "filename": "page106_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 107,
-      "category": "gallery",
-      "text": "SPANISH MOSS\nSheer DAWSON-7712075\nDawson\nWHITE MAGNOLIA\nSheer DAWSON-7712073\n68",
-      "images": [
-        {
-          "filename": "page107_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page107_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 108,
-      "category": "gallery",
-      "text": "WISTERIA\nSheer DAWSON-7712074\nDawson\nGREY IVY\nSheer DAWSON-1026758\n69",
-      "images": [
-        {
-          "filename": "page108_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page108_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 109,
-      "category": "gallery",
-      "text": "PUTTY\nOpaque ANS-7716561\nAnsley\nCONCRETE\nOpaque ANS-7716562\n70",
-      "images": [
-        {
-          "filename": "page109_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page109_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 110,
-      "category": "gallery",
-      "text": "DOVE\nOpaque ANS-7716563\nAnsley\nPYRITE\nOpaque ANS-7716564\n71",
-      "images": [
-        {
-          "filename": "page110_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page110_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 111,
-      "category": "gallery",
-      "text": "FLAX\nSemi-Sheer PAST-14101\nPastel Linen\nMIST\nSemi-Sheer PAST-1026763\n72",
-      "images": [
-        {
-          "filename": "page111_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page111_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 112,
-      "category": "gallery",
-      "text": "WAVES\nSemi-Sheer PAST-1026765\nPastel Linen\nSHORE\nSemi-Sheer PAST-1026764\n73",
-      "images": [
-        {
-          "filename": "page112_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page112_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 113,
-      "category": "gallery",
-      "text": "WOOD\nSemi-Sheer PAST-1026766\nPastel Linen\n74",
-      "images": [
-        {
-          "filename": "page113_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 114,
-      "category": "gallery",
-      "text": "WHITE WILLOW\nSemi-Sheer CECI-1026756\nCecilia\nIVORY ROSE\nSemi-Sheer CECI-1026754\n75",
-      "images": [
-        {
-          "filename": "page114_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page114_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 115,
-      "category": "gallery",
-      "text": "IVY\nSemi-Sheer CECI-1026755\nCecilia\nWOOD PATH\nSemi-Sheer CECI-1026757\n76",
-      "images": [
-        {
-          "filename": "page115_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page115_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 116,
-      "category": "gallery",
-      "text": "ANTIQUE PARCHMENT\nOpaque TRENT-7716242\nTrent\nDEEP SHALE\nOpaque TRENT-7716240\n77",
-      "images": [
-        {
-          "filename": "page116_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page116_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 117,
-      "category": "gallery",
-      "text": "FALLING SNOW\nOpaque TRENT-1026767\nTrent\nSOFT TAN\nOpaque TRENT-1026769\n78",
-      "images": [
-        {
-          "filename": "page117_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page117_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 118,
-      "category": "gallery",
-      "text": "GREY MIST\nOpaque TRENT-1026768\nTrent\n79",
-      "images": [
-        {
-          "filename": "page118_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 119,
-      "category": "gallery",
-      "text": "BIRCH\nOpaque EAST-7716301\nEaston\nSTRATUS\nOpaque EAST-7716300\n80",
-      "images": [
-        {
-          "filename": "page119_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page119_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 120,
-      "category": "gallery",
-      "text": "SMOKE\nOpaque EAST-7716302\nEaston\nPATINA\nOpaque EAST-1026759\n81",
-      "images": [
-        {
-          "filename": "page120_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page120_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 121,
-      "category": "gallery",
-      "text": "METAL\nSemi-Sheer TREMII-7716807\nTremont\nWHITE\nSemi-Sheer TREMII-93483\n82",
-      "images": [
-        {
-          "filename": "page121_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page121_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 122,
-      "category": "gallery",
-      "text": "NATURAL\nSemi-Sheer TREMII-93485\nTremont\nCOCOA\nSemi-Sheer TREMII-7716805\n83",
-      "images": [
-        {
-          "filename": "page122_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page122_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 123,
-      "category": "gallery",
-      "text": "WHITE\nOpaque COLINS-7705718\nCollins\nOFF WHITE\nOpaque COLINS-7705719\n84",
-      "images": [
-        {
-          "filename": "page123_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page123_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 124,
-      "category": "gallery",
-      "text": "ALMOND\nOpaque COLINS-7705720\nCollins\nGRAPHITE\nOpaque COLINS-1026816\n85",
-      "images": [
-        {
-          "filename": "page124_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page124_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 125,
-      "category": "gallery",
-      "text": "WHITE\nOpaque WESL-7716400\nWesley\nCREAM\nOpaque WESL-7716402\n86",
-      "images": [
-        {
-          "filename": "page125_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page125_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 126,
-      "category": "gallery",
-      "text": "OFF WHITE\nOpaque WESL-7716401\nWesley\nLIGHT GRAY\nOpaque WESL-7716404\n87",
-      "images": [
-        {
-          "filename": "page126_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page126_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 127,
-      "category": "gallery",
-      "text": "WHITE\nOpaque FASH-7799660\nFashion Curves\nOFF WHITE\nOpaque FASH-7799661\n88",
-      "images": [
-        {
-          "filename": "page127_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page127_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 128,
-      "category": "gallery",
-      "text": "LIGHT GRAY\nOpaque FASH-7799664\nFashion Curves\nTAN\nOpaque FASH-7799663\n89",
-      "images": [
-        {
-          "filename": "page128_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page128_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 129,
-      "category": "gallery",
-      "text": "NUTMEG\nOpaque COLNADE-7712705\nColonnade\nFENCE POST\nOpaque COLNADE-7712704\n90",
-      "images": [
-        {
-          "filename": "page129_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page129_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 130,
-      "category": "gallery",
-      "text": "SHADOW\nOpaque COLNADE-7712706\nColonnade\n91",
-      "images": [
-        {
-          "filename": "page130_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 131,
-      "category": "gallery",
-      "text": "WHITE\nOpaque AFTON-7799640\nAfton\nOFF WHITE\nOpaque AFTON-7799641\n92",
-      "images": [
-        {
-          "filename": "page131_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page131_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 132,
-      "category": "gallery",
-      "text": "TAN\nOpaque AFTON-7799645\nAfton\nGRAY\nOpaque AFTON-7716647\n93",
-      "images": [
-        {
-          "filename": "page132_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page132_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 133,
-      "category": "gallery",
-      "text": "WHITE WASH\nOpaque MONT-1026818\nMontford\nSANDSTONE\nOpaque MONT-1026817\n94",
-      "images": [
-        {
-          "filename": "page133_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page133_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 134,
-      "category": "gallery",
-      "text": "BONE\nOpaque MIDW-1026814\nMidwood\nFROST\nOpaque MIDW-1026815\n95",
-      "images": [
-        {
-          "filename": "page134_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page134_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 135,
-      "category": "gallery",
-      "text": "PORCELAIN\nOpaque LILY-1026989\nLily\nCHAMPAGNE\nOpaque LILY-1026988\n96",
-      "images": [
-        {
-          "filename": "page135_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page135_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 136,
-      "category": "gallery",
-      "text": "WHITE\nOpaque GILMO-7716775\nGilmore\nOFF WHITE\nOpaque GILMO-7716776\n97",
-      "images": [
-        {
-          "filename": "page136_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page136_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 137,
-      "category": "gallery",
-      "text": "PEWTER\nOpaque GILMO-7716777\nGilmore\n98",
-      "images": [
-        {
-          "filename": "page137_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 138,
-      "category": "gallery",
-      "text": "CHALK\nOpaque BASK-1026778\nBasket\nNATURAL\nOpaque BASK-1026780\n99",
-      "images": [
-        {
-          "filename": "page138_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page138_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 139,
-      "category": "gallery",
-      "text": "ASH\nOpaque BASK-1026777\nBasket\nSTUCCO\nOpaque BASK-1026781\n100",
-      "images": [
-        {
-          "filename": "page139_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page139_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 140,
-      "category": "gallery",
-      "text": "CONCRETE\nOpaque BASK-1026779\nBasket\n101",
-      "images": [
-        {
-          "filename": "page140_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 141,
-      "category": "gallery",
-      "text": "SNOW\nSemi-Opaque LINE-1026821\nLinen\nSAND\nSemi-Opaque LINE-1026820\n102",
-      "images": [
-        {
-          "filename": "page141_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page141_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 142,
-      "category": "gallery",
-      "text": "STORM\nSemi-Opaque LINE-1026822\nLinen\n103",
-      "images": [
-        {
-          "filename": "page142_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 143,
-      "category": "gallery",
-      "text": "IVORY\nSemi-Sheer LAYLA-7712112\nLayla\nWHITE\nSemi-Sheer LAYLA-7712116\n104",
-      "images": [
-        {
-          "filename": "page143_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        },
-        {
-          "filename": "page143_img02_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 144,
-      "category": "gallery",
-      "text": "PLATINUM\nSemi-Sheer LAYLA-1026819\nLayla\n105",
-      "images": [
-        {
-          "filename": "page144_img01_1472x2405.jpeg",
-          "width": 1472,
-          "height": 2405
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [],
-  "fabric_swatches": {
-    "Vertical Solutions® Vertical Blinds": [
-      {
-        "image": "page022_img01_472x1019.jpeg",
-        "width": 472,
-        "height": 1019,
-        "color_name": "N/A",
-        "specs": [],
-        "fabric_collection": "Vertical Solutions® Vertical Blinds"
-      },
-      {
-        "image": "page022_img02_472x1019.jpeg",
-        "width": 472,
-        "height": 1019,
-        "color_name": "N/A",
-        "specs": [],
-        "fabric_collection": "Vertical Solutions® Vertical Blinds"
-      },
-      {
-        "image": "page022_img03_473x1020.jpeg",
-        "width": 473,
-        "height": 1020,
-        "color_name": "Color 3",
-        "specs": [],
-        "fabric_collection": "Vertical Solutions® Vertical Blinds"
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 120,
-    "benefits": 1,
-    "control": 5,
-    "design": 0,
-    "mounting": 1,
-    "details": 5,
-    "vane": 0,
-    "hardware": 0,
-    "swatch_collections": 1,
-    "swatch_colors": 3
-  },
-  "_classification": {
-    "toc": 1,
-    "gallery": 120,
-    "empty": 1,
-    "slogan": 1,
-    "control": 5,
-    "benefits": 1,
-    "opacity": 1,
-    "details": 4,
-    "swatch": 1,
-    "mounting": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_table": 6
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 11,
+   "category": "control",
+   "text": "10\n11\nProduct Cadence® Motif™    Fabric Regal    Color Lily \nOperating System Cord & Wand \nCadence® Motif™  \nprovides a sophisticated \nelegance for any space.",
+   "images": [
+    {
+     "filename": "page011_img01_2688x1505.jpeg",
+     "width": 2688,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "control",
+   "text": "Product Cadence® Impressions™    Vinyl Astor    Color Silver Dew    \nOperating System Cord & Wand\n16\n17\nCadence® Impressions™ \nprovides an elevated \nlook while outfitting  \na room.",
+   "images": [
+    {
+     "filename": "page014_img01_2695x1505.jpeg",
+     "width": 2695,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 26,
+   "category": "control",
+   "text": "41\nProduct Somner ®     Fabric Amelia    Color Cream \nOperating System Cord & Chain   Deck 1 \n38\nSpecialty Blinds for Somner® & Vertical Solutions®\nCurved or Straight Track\nAvailable Operating Systems include Cord & Chain or Tilt and Traverse \nMotorization. The Straight option provides the opportunity to coordinate \ntracks within a room with various window shapes.\n Slope\n Available with Cord & Chain Operating System.\n Skylight – Top & Bottom Track\n Available with vinyl styles only. Available with Cord & Chain  \nOperating System.\n Arch\n Available with Cord & Chain Operating System. \n40\nThe Specialty Blinds Track features an Anodized finish. The Cord & Chain operating controls available in Ivory only.",
+   "images": [
+    {
+     "filename": "page026_img01_1470x1507.jpeg",
+     "width": 1470,
+     "height": 1507
+    },
+    {
+     "filename": "page026_img02_645x417.jpeg",
+     "width": 645,
+     "height": 417
+    },
+    {
+     "filename": "page026_img03_630x408.jpeg",
+     "width": 630,
+     "height": 408
+    },
+    {
+     "filename": "page026_img04_640x368.jpeg",
+     "width": 640,
+     "height": 368
+    },
+    {
+     "filename": "page026_img05_618x421.jpeg",
+     "width": 618,
+     "height": 421
+    }
+   ]
+  },
+  {
+   "page": 27,
+   "category": "control",
+   "text": "Somner®\n43\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\nThe traveling wand tilts the vanes \nand traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nOperating Systems – Paramount® Contoured Headrail\nCadence®\n42\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\nThe traveling wand tilts the vanes \nand traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nThis patented, sleek, curved headrail features three operating systems to provide tilt and traverse functionality \nwith enhanced safety. Headrail available in Ivory finish, operating controls are color-coordinated*.\n*Cord & Chain available in Ivory only.",
+   "images": [
+    {
+     "filename": "page027_img01_307x963.jpeg",
+     "width": 307,
+     "height": 963
+    },
+    {
+     "filename": "page027_img02_307x958.jpeg",
+     "width": 307,
+     "height": 958
+    },
+    {
+     "filename": "page027_img03_309x962.jpeg",
+     "width": 309,
+     "height": 962
+    },
+    {
+     "filename": "page027_img04_307x961.jpeg",
+     "width": 307,
+     "height": 961
+    },
+    {
+     "filename": "page027_img05_307x963.jpeg",
+     "width": 307,
+     "height": 963
+    },
+    {
+     "filename": "page027_img06_307x961.jpeg",
+     "width": 307,
+     "height": 961
+    }
+   ]
+  },
+  {
+   "page": 28,
+   "category": "control",
+   "text": "Operating Systems – Enhanced Safety  \nand Color Coordination\n45\n Child Safety Labels on Corded Systems\nThese warning labels appear on window \nfashions with cords to make consumers \naware of window cord hazards for \nchildren and pets.\nUniversal Cord Tensioner\nCords are held in place for maximum functionality\nand enhanced safety. Custom colors are pre-selected  \nand available on Cadence® and Somner® only.  \nVertical Solutions® features Ivory operating controls.  \nThe Wand\nThe wand enhances safety and provides ease of \noperation. Custom colors are pre-selected and \navailable on Cadence® and Somner® only. The  \nwand color for Vertical Solutions® is Ivory.\nWhite\nIvory\nDove Gray\nBronze\nAsh\nBlack\n44\n Cord & Wand\nThe wand tilts the vanes while  \nthe cord traverses the blind.\n PermAssure® Safety Wand\n The traveling wand tilts the vanes  \n and traverses the blind.\n Cord & Chain\nThe chain tilts the vanes while  \nthe cord traverses the blind.\nSTANDARD\nOperating Systems – PermaTrak® Headrail\nVertical Solutions®\nThis headrail features three operating systems to provide tilt and traverse functionality with enhanced safety.  \nHeadrail available in Gray finish, operating controls available in Ivory only.\nSTRANGULATION HAZARD – Young children \ncan be strangled by cords. Immediately remove \nthis product if a cord longer than 22 cm or a loop \nexceeding 44 cm around becomes accessible.\n       WARNING/\nADVERTENCIA\nWindow Blind Cord Strangulation\nRisk Window blinds with a damaged\nor loose tension device or retract-\nable cord that fails to fully retract \npose a strangulation risk to children. \nTo avoid this potential strangulation \nrisk, consider purchasing cordless products or \nproducts with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de \nPersianas Las persianas con un dispositivo \ntensor suelto o dañado o con una cuerda retráct-\nable que no se ajusta completamente represent-\nan un riesgo de estrangulación para los niños. \nPara evitar un posible riesgo de estrangula-\nmiento, considere comprar productos inalám-\nbricos o productos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en \nbas âge peuvent s’éntrangler avec des cordes. \nEnlevez immédiatement ce produit si une corde \nmesurant plus de 22 cm devient accessible ou \nsi le contour d’une boucle de plus de 44 cm \ndevient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.",
+   "images": [
+    {
+     "filename": "page028_img01_429x962.jpeg",
+     "width": 429,
+     "height": 962
+    },
+    {
+     "filename": "page028_img02_185x958.jpeg",
+     "width": 185,
+     "height": 958
+    },
+    {
+     "filename": "page028_img03_307x962.jpeg",
+     "width": 307,
+     "height": 962
+    },
+    {
+     "filename": "page028_img04_309x963.jpeg",
+     "width": 309,
+     "height": 963
+    },
+    {
+     "filename": "page028_img05_307x962.jpeg",
+     "width": 307,
+     "height": 962
+    }
+   ]
+  }
+ ],
+ "design_options": [],
+ "mounting": [
+  {
+   "page": 29,
+   "category": "mounting",
+   "text": "Somner®\nParamount Contoured Headrail\n Vertical Solutions®\n PermaTrak® Headrail\n Somner & Vertical Solutions\nDust Cover Valances\n47\n** When mounting depth is less than the headrail depth. \nSee Reference Guide for all mounting specifications.\nSTANDARD\nSTANDARD\nOPTIONAL\nInside Mount\nPartial Mount**\nOutside Mount\nInside Mount  \nNo returns available\nOutside Mount\nClosed Corner with returns\nOutside Mount\nRounded Corner with returns\nInside Mount\nPartial Mount**\nOutside Mount\nMounting Options\nCadence®\n Valance*\n Cadence\n Paramount® Contoured Headrail\n46\n*The Cadence® Valance comes standard on all Cadence orders. Outside mount Cadence Valance features color-coordinated corners  \nthat are pre-selected to best coordinate with valance color. Headrail images shown for situations when valance isn't installed.\nSTANDARD\nInside Mount Valance  \nNo returns available\n Outside Mount Valance\nShown with 2\" returns\nInside Mount\nPartial Mount**\nOutside Mount Valance\nShown with 5\" returns\nOutside Mount",
+   "images": [
+    {
+     "filename": "page029_img01_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img02_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img03_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img04_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img05_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img06_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img07_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img08_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img09_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img10_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img11_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img12_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img13_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img14_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    },
+    {
+     "filename": "page029_img15_450x279.jpeg",
+     "width": 450,
+     "height": 279
+    }
+   ]
+  }
+ ],
+ "product_details": [
+  {
+   "page": 20,
+   "category": "opacity",
+   "text": "28\nOpacity\n Sheer  |  Opacity Rating 1\nMost light, least privacy\nSemi-Opaque  |  Opacity Rating 3\nSome light, more privacy\n Semi-Sheer  |  Opacity Rating 2\nModerate light, some privacy\n Opaque  |  Opacity Rating 4\nLeast light, most privacy\n29\nPermaClear™ Groover\n Sheer without Groover\nThe fabric styles offer varying levels of opacity from sheer to semi-opaque.\n Sheer with Groover\nThe PermaClear™ Groover enhances light control, privacy and energy  \nefficiency. With the addition of the Groover, the opacity becomes opaque,  \nproviding least light with most privacy.\nProduct Somner ®    Fabric Dawson    Color White Magnolia \nProduct Somner\n®  Fabric Dawson    Color White Magnolia, with Groover added \nAvailable with Somner® and Vertical Solutions® fabrics",
+   "images": [
+    {
+     "filename": "page020_img01_700x437.jpeg",
+     "width": 700,
+     "height": 437
+    },
+    {
+     "filename": "page020_img02_699x437.jpeg",
+     "width": 699,
+     "height": 437
+    },
+    {
+     "filename": "page020_img03_699x437.jpeg",
+     "width": 699,
+     "height": 437
+    },
+    {
+     "filename": "page020_img04_699x437.jpeg",
+     "width": 699,
+     "height": 437
+    },
+    {
+     "filename": "page020_img05_699x1019.jpeg",
+     "width": 699,
+     "height": 1019
+    },
+    {
+     "filename": "page020_img06_699x1024.jpeg",
+     "width": 699,
+     "height": 1024
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "details",
+   "text": "31\n Left Facing: Closed\nLeft Facing: Open\nLeft Facing: Partially Open\nThe louvers tilt open from left to right allowing light \nto ﬁlter into the room from the right.\n Right Facing: Closed\nRight Facing: Open\nRight Facing: Partially Open\nThe louvers tilt open from right to left allowing light \nto ﬁlter into the room from the left.\nDirect the light with Cadence®\nThe orientation of the unique curved louver controls the direction that light filters into a room.\n30\nVertical Blinds Stack\nLeft Stack\nLeft or right control options available.\n Split Stack\nLeft or right control options available.\n Right Stack\nLeft or right control options available.\n Center Stack\nLeft or right control options available.\nMinimal stack, maximum view-through. With an outside mount, louvers stack on the wall, providing an unobstructed view*.\n*Stack back varies by blind. Images shown as outside mount.",
+   "images": [
+    {
+     "filename": "page021_img01_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img02_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img03_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img04_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img05_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img06_473x437.jpeg",
+     "width": 473,
+     "height": 437
+    },
+    {
+     "filename": "page021_img07_699x438.jpeg",
+     "width": 699,
+     "height": 438
+    },
+    {
+     "filename": "page021_img08_699x438.jpeg",
+     "width": 699,
+     "height": 438
+    },
+    {
+     "filename": "page021_img09_699x438.jpeg",
+     "width": 699,
+     "height": 438
+    },
+    {
+     "filename": "page021_img10_699x437.jpeg",
+     "width": 699,
+     "height": 437
+    }
+   ]
+  },
+  {
+   "page": 23,
+   "category": "details",
+   "text": "35\nCadence® Soft Vertical Blinds\n Cadence® Motif™\nThe soft texture of the fabric louver creates a drapery look and feel. \nLouvers are the same color interior and street side.\n Cadence Impressions™\nRichly textured vinyl evokes the feeling of draped fabric. Louvers feature \neither a coordinating or neutral street side color.\nPatented Curved Profile\n The unique curved louver of Cadence adds dimension at the window \nproviding the look of drapery.\nCadence Valance\nThe modern profile adds a tailored look to the blind.\nThe unique curved\nlouver adds dimension \nand dramatic light  \ncontrol. The exclusive  \nParamount® Contoured \nHeadrail provides  \nthe ultimate in control\nand functionality.\nProduct Cadence® Motif™    Fabric Bailey    Color Lattice \nOperating System Cord &  Wand\n34",
+   "images": [
+    {
+     "filename": "page023_img01_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    },
+    {
+     "filename": "page023_img02_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    },
+    {
+     "filename": "page023_img03_656x438.jpeg",
+     "width": 656,
+     "height": 438
+    },
+    {
+     "filename": "page023_img04_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    },
+    {
+     "filename": "page023_img05_966x1505.jpeg",
+     "width": 966,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 24,
+   "category": "details",
+   "text": "36\nThe most robust\nand extensive\ncollection of\nfashion fabrics,\ndistinctive vinyls,\nand unique\naluminums.\nProduct Somner ®    Vinyl Bondi    Color Sandhills \nOperating System PermAssure®  Safety Wand    Deck 3 \n37\nSomner® Custom Vertical Blinds\n Fabric\nFashion fabrics in rich textures and on trend colors.\nVinyl\n Distinctive patterns and colors from subtle to bold designed to make \na statement.\nAluminum\n Designed to coordinate with the decorative metals and appliances  \nin your home. The unique perforated options add subtle view-through.\nDust Cover Valances\nValances add light control and are available as inside or outside mount. \nCompatible with fabric, vinyl, and aluminum inserts.\nRounded Corner\nOutside Mount\nClosed Corner\nOutside Mount\nOPTIONAL",
+   "images": [
+    {
+     "filename": "page024_img01_1035x1505.jpeg",
+     "width": 1035,
+     "height": 1505
+    },
+    {
+     "filename": "page024_img02_321x437.jpeg",
+     "width": 321,
+     "height": 437
+    },
+    {
+     "filename": "page024_img03_320x437.jpeg",
+     "width": 320,
+     "height": 437
+    },
+    {
+     "filename": "page024_img04_655x438.jpeg",
+     "width": 655,
+     "height": 438
+    },
+    {
+     "filename": "page024_img05_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    },
+    {
+     "filename": "page024_img06_653x437.jpeg",
+     "width": 653,
+     "height": 437
+    },
+    {
+     "filename": "page024_img07_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "category": "details",
+   "text": "This fundamental \ncollection provides \nboth vinyl and \nfabric in simplified \ntextures and \nfeatures a neutral \ncolor palette. \nProduct Vertical Solutions®    Vinyl Midwood    Color Frost \nOperating System PermAssure®  Safety Wand \n38\nVertical Solutions® Vertical Blinds\n Fabric\n Classic fabrics feature soft textures and neutral colors.\nVinyl\nVinyl styles provide a classic look and years of durability.\n Rounded Corner, Outside Mount\n Dust Cover Valances add light control and are compatible with both fabric and vinyl inserts. Inside and outside mount available. \n Closed Corner, Outside Mount\n39",
+   "images": [
+    {
+     "filename": "page025_img01_992x1505.jpeg",
+     "width": 992,
+     "height": 1505
+    },
+    {
+     "filename": "page025_img02_656x438.jpeg",
+     "width": 656,
+     "height": 438
+    },
+    {
+     "filename": "page025_img03_653x437.jpeg",
+     "width": 653,
+     "height": 437
+    },
+    {
+     "filename": "page025_img04_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    },
+    {
+     "filename": "page025_img05_656x437.jpeg",
+     "width": 656,
+     "height": 437
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 2,
+   "category": "gallery",
+   "text": "Vertical Blinds Collection",
+   "images": [
+    {
+     "filename": "page002_img01_1935x1505.jpeg",
+     "width": 1935,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1716x1505.jpeg",
+     "width": 1716,
+     "height": 1505
+    },
+    {
+     "filename": "page005_img02_895x1505.jpeg",
+     "width": 895,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Product Somner®    Vinyl Bondi    Color Sandhills \nOperating System PermAssure® Safety Wand    Deck 3",
+   "images": [
+    {
+     "filename": "page006_img01_2592x1505.jpeg",
+     "width": 2592,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "2\n3\nHunter Douglas features the most\ndiverse Vertical Blinds product offering  \nproviding functionality and style for  \na modern take on a classic product.\nProduct Cadence® Impressions™    Vinyl Hampton    Color Ivory Tower \nOperating System Cord & Wand",
+   "images": [
+    {
+     "filename": "page007_img01_2291x1505.jpeg",
+     "width": 2291,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "category": "gallery",
+   "text": "4\nBold fabrics make a \nfashion statement in \nthe Somner® Collection.\nProduct Somner ®    Fabric Urban Loft    Color Blue Denim \nOperating System PermAssure®  Safety Wand    Deck 2\n5",
+   "images": [
+    {
+     "filename": "page008_img01_2684x1505.jpeg",
+     "width": 2684,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "gallery",
+   "text": "Product Cadence® Motif™    Fabric Bailey    Color Lattice    \nOperating System Cord & Wand\n6",
+   "images": [
+    {
+     "filename": "page009_img01_3436x1504.jpeg",
+     "width": 3436,
+     "height": 1504
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "8\nThe modern vinyl  \nstyles in the Somner®  \nCollection allow  \nfor limitless possibilities.\nProduct Somner ®    Vinyl Bridger    Color Gold    \nOperating System Cord & Wand    Deck 4\n9",
+   "images": [
+    {
+     "filename": "page010_img01_2684x1505.jpeg",
+     "width": 2684,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "gallery",
+   "text": "Product Somner ®    Vinyl Everly    Color Raven    \nOperating System Cord & Wand    Deck 4\n12\n13",
+   "images": [
+    {
+     "filename": "page012_img01_3436x1505.jpeg",
+     "width": 3436,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "gallery",
+   "text": "14\nStylish Somner®  \nPerforated Aluminum  \naccents the light by  \noffering a screen-like \nview-through.\nProduct Somner®    Aluminum    Color Zinc Perforated    \nOperating System Cord & Wand    Deck 3\n15\n15",
+   "images": [
+    {
+     "filename": "page013_img01_2681x1505.jpeg",
+     "width": 2681,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "gallery",
+   "text": "18\nProduct Somner®    Vinyl Hampshire    Color Gray Garden \nOperating System Cord & Wand    Deck 5\n19",
+   "images": [
+    {
+     "filename": "page015_img01_3437x1507.jpeg",
+     "width": 3437,
+     "height": 1507
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "gallery",
+   "text": "20\nThe neutral palette\nand simplified textures\nof Vertical Solutions®\ncreate a contemporary\napproach to decor.\nProduct Vertical Solutions®    Fabric Bryce    Color Bright White    \nOperating System Cord & Chain\nProduct EverWood®    Collection Distinctions™    Color Extreme White    \nOperating System Cordlock\n21",
+   "images": [
+    {
+     "filename": "page016_img01_2684x1505.jpeg",
+     "width": 2684,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "gallery",
+   "text": "22\n23\nCreate a polished  \nbackdrop in any space.\nProduct Somner ®    Fabric Amelia    Color White Cloud \nOperating System PermAssure®  Safety Wand    Deck 1",
+   "images": [
+    {
+     "filename": "page017_img01_2690x1503.jpeg",
+     "width": 2690,
+     "height": 1503
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "gallery",
+   "text": "Product Vertical Solutions®    Vinyl Midwood    Color Frost    \nOperating System PermAssure® Safety Wand\n24\n25",
+   "images": [
+    {
+     "filename": "page018_img01_3436x1505.jpeg",
+     "width": 3436,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 32,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page032_img01_3009x2427.jpeg",
+     "width": 3009,
+     "height": 2427
+    }
+   ]
+  },
+  {
+   "page": 33,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page033_img01_3009x3009.jpeg",
+     "width": 3009,
+     "height": 3009
+    }
+   ]
+  },
+  {
+   "page": 40,
+   "category": "gallery",
+   "text": "GREY\nOpaque VSCRII-1643902\nVinylscapes–Curves\nSNOW WHITE\nOpaque VSCRII-7701930\n1",
+   "images": [
+    {
+     "filename": "page040_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page040_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 41,
+   "category": "gallery",
+   "text": "WHITE\nOpaque VSCRII-1643903\nVinylscapes–Curves\nOFF WHITE\nOpaque VSCRII-1643901\n2",
+   "images": [
+    {
+     "filename": "page041_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page041_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 42,
+   "category": "gallery",
+   "text": "IVORY\nOpaque VSCRII-1643900\nVinylscapes–Curves\nTAN\nOpaque VSCRII-1643904\n3",
+   "images": [
+    {
+     "filename": "page042_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page042_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 43,
+   "category": "gallery",
+   "text": "GREY\nOpaque VSFL-1642901\nVinylscapes–Flat\nWHITE\nOpaque VSFL-1642902\n4",
+   "images": [
+    {
+     "filename": "page043_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page043_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 44,
+   "category": "gallery",
+   "text": "OFF WHITE\nOpaque VSFL-1642903\nVinylscapes–Flat\nIVORY\nOpaque VSFL-1642900\n5",
+   "images": [
+    {
+     "filename": "page044_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page044_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 45,
+   "category": "gallery",
+   "text": "FEMATA\nOpaque CARNEGIE-7712689\nCarnegie\nMEZZO\nOpaque CARNEGIE-7712687\n6",
+   "images": [
+    {
+     "filename": "page045_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page045_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 46,
+   "category": "gallery",
+   "text": "TEMPO\nOpaque CARNEGIE-7716700\nCarnegie\n7",
+   "images": [
+    {
+     "filename": "page046_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 47,
+   "category": "gallery",
+   "text": "CHINA WHITE\nOpaque MANS-7716810\nMansfield\nBUFF NATURAL\nOpaque MANS-7716812\n8",
+   "images": [
+    {
+     "filename": "page047_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page047_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 48,
+   "category": "gallery",
+   "text": "STORM CLOUD\nOpaque MANS-1026809\nMansfield\n9",
+   "images": [
+    {
+     "filename": "page048_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 49,
+   "category": "gallery",
+   "text": "SANDY DUNES\nOpaque PIPER-7716763\nPiper\nVINTAGE WHITE\nOpaque PIPER-7716760\n10",
+   "images": [
+    {
+     "filename": "page049_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page049_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 50,
+   "category": "gallery",
+   "text": "BEIGE LINEN\nOpaque PIPER-7716761\nPiper\nWASHED GREY\nOpaque PIPER-1026720\n11",
+   "images": [
+    {
+     "filename": "page050_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page050_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 51,
+   "category": "gallery",
+   "text": "WICKER\nOpaque ITH-7711727\nIthaca\nPALMS\nOpaque ITH-7711725\n12",
+   "images": [
+    {
+     "filename": "page051_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page051_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 52,
+   "category": "gallery",
+   "text": "SMOKE\nOpaque ITH-1026679\nIthaca\n13",
+   "images": [
+    {
+     "filename": "page052_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 53,
+   "category": "gallery",
+   "text": "FERN\nOpaque DARBY-7716716\nDarby\nSEA SALT\nOpaque DARBY-7712712\n14",
+   "images": [
+    {
+     "filename": "page053_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page053_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 54,
+   "category": "gallery",
+   "text": "NATURAL\nOpaque DARBY-7712711\nDarby\nALABASTER\nOpaque DARBY-1026678\n15",
+   "images": [
+    {
+     "filename": "page054_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page054_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 55,
+   "category": "gallery",
+   "text": "HONEY\nOpaque THAT-7716831\nThatcher\nMILK\nOpaque THAT-7716830\n16",
+   "images": [
+    {
+     "filename": "page055_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page055_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 56,
+   "category": "gallery",
+   "text": "TRUFFLE\nOpaque THAT-7716834\nThatcher\n17",
+   "images": [
+    {
+     "filename": "page056_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 57,
+   "category": "gallery",
+   "text": "PEARLY\nOpaque EVERL-1026796\nEverly\nGLACIER\nOpaque EVERL-1026793\n18",
+   "images": [
+    {
+     "filename": "page057_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page057_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 58,
+   "category": "gallery",
+   "text": "JEWEL\nOpaque EVERL-1026794\nEverly\nNEUTRAL\nOpaque EVERL-1026795\n19",
+   "images": [
+    {
+     "filename": "page058_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page058_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 59,
+   "category": "gallery",
+   "text": "RAVEN\nOpaque EVERL-1026797\nEverly\n20",
+   "images": [
+    {
+     "filename": "page059_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 60,
+   "category": "gallery",
+   "text": "UNION SQUARE\nOpaque BRITT-7716355\nBrittmore\nMODERN WHITE\nOpaque BRITT-7716350\n21",
+   "images": [
+    {
+     "filename": "page060_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page060_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 61,
+   "category": "gallery",
+   "text": "STAINLESS STEEL\nOpaque BRITT-7716351\nBrittmore\nRESTORATION\nOpaque BRITT-7716353\n22",
+   "images": [
+    {
+     "filename": "page061_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page061_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 62,
+   "category": "gallery",
+   "text": "TRENDY TAN\nOpaque BRITT-1026790\nBrittmore\n23",
+   "images": [
+    {
+     "filename": "page062_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 63,
+   "category": "gallery",
+   "text": "MYSTIC GRAY\nOpaque ADORN-7716618\nAdorn\nWHITE ICE\nOpaque ADORN-7712610\n24",
+   "images": [
+    {
+     "filename": "page063_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page063_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 64,
+   "category": "gallery",
+   "text": "LIGHT BLUE\nOpaque ADORN-7712613\nAdorn\nSTEEL GREY\nOpaque ADORN-1026776\n25",
+   "images": [
+    {
+     "filename": "page064_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page064_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 65,
+   "category": "gallery",
+   "text": "GRAY GARDEN\nOpaque HAM-7716727\nHampshire\nFROST\nOpaque HAM-7716725\n26",
+   "images": [
+    {
+     "filename": "page065_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page065_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 66,
+   "category": "gallery",
+   "text": "SEA SALT\nOpaque HAM-7716726\nHampshire\n27",
+   "images": [
+    {
+     "filename": "page066_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 67,
+   "category": "gallery",
+   "text": "MAGNOLIA\nOpaque TIMB-1026811\nTimber\nBRADFORD\nOpaque TIMB-1026810\n28",
+   "images": [
+    {
+     "filename": "page067_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page067_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 68,
+   "category": "gallery",
+   "text": "WILLOW\nOpaque TIMB-1026812\nTimber\n29",
+   "images": [
+    {
+     "filename": "page068_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 69,
+   "category": "gallery",
+   "text": "IRONSTONE WHITE\nOpaque BEACH-7716880\nBeacham\nSANDY BEACH\nOpaque BEACH-1026677\n30",
+   "images": [
+    {
+     "filename": "page069_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page069_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 70,
+   "category": "gallery",
+   "text": "BLUE SKY\nOpaque BEACH-1026676\nBeacham\n31",
+   "images": [
+    {
+     "filename": "page070_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 71,
+   "category": "gallery",
+   "text": "SANDHILLS\nOpaque BOND-1026784\nBondi\nCOCONUT\nOpaque BOND-1026782\n32",
+   "images": [
+    {
+     "filename": "page071_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page071_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 72,
+   "category": "gallery",
+   "text": "SHORELINE\nOpaque BOND-1026785\nBondi\nDUSK\nOpaque BOND-1026783\n33",
+   "images": [
+    {
+     "filename": "page072_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page072_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 73,
+   "category": "gallery",
+   "text": "WYTHE\nOpaque HUDS-1026801\nHudson\nELLIS\nOpaque HUDS-1026798\n34",
+   "images": [
+    {
+     "filename": "page073_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page073_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 74,
+   "category": "gallery",
+   "text": "PARK\nOpaque HUDS-1026799\nHudson\nWAVERLY\nOpaque HUDS-1026800\n35",
+   "images": [
+    {
+     "filename": "page074_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page074_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 75,
+   "category": "gallery",
+   "text": "GRAY PENNANT\nOpaque CAME-7716678\nCamelot\nTUSCAN BEIGE\nOpaque CAME-7716679\n36",
+   "images": [
+    {
+     "filename": "page075_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page075_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 76,
+   "category": "gallery",
+   "text": "TRUE TAUPE\nOpaque CAME-1026792\nCamelot\nGRAY STAR\nOpaque CAME-1026791\n37",
+   "images": [
+    {
+     "filename": "page076_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page076_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 77,
+   "category": "gallery",
+   "text": "CLOUD\nOpaque ACCRD-7708701\nAccord\nOPAL\nOpaque ACCRD-1026775\n38",
+   "images": [
+    {
+     "filename": "page077_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page077_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 78,
+   "category": "gallery",
+   "text": "BEIGE\nOpaque ACCRD-1026774\nAccord\n39",
+   "images": [
+    {
+     "filename": "page078_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 79,
+   "category": "gallery",
+   "text": "WHITE\nSheer VPERF-7705742\nVinyl Perforated\nIVORY\nSheer VPERF-7705741\n40",
+   "images": [
+    {
+     "filename": "page079_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page079_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 80,
+   "category": "gallery",
+   "text": "GREY\nSheer VPERF-7705740\nVinyl Perforated\nLIGHT GREY\nSheer VPERF-1026802\n41",
+   "images": [
+    {
+     "filename": "page080_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page080_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 81,
+   "category": "gallery",
+   "text": "OFF WHITE\nSheer VPERF-1026803\nVinyl Perforated\n42",
+   "images": [
+    {
+     "filename": "page081_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 82,
+   "category": "gallery",
+   "text": "DIAMOND\nOpaque BRID-1026787\nBridger\nGOLD\nOpaque BRID-1026788\n43",
+   "images": [
+    {
+     "filename": "page082_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page082_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 83,
+   "category": "gallery",
+   "text": "SILVER\nOpaque BRID-1026789\nBridger\nCARBON\nOpaque BRID-1026786\n44",
+   "images": [
+    {
+     "filename": "page083_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page083_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 84,
+   "category": "gallery",
+   "text": "ONYX\nOpaque ALUM-7716286\nAluminum\nOFF WHITE\nOpaque ALUM-7716285\n45",
+   "images": [
+    {
+     "filename": "page084_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page084_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 85,
+   "category": "gallery",
+   "text": "ZINC\nOpaque ALUM-7716280\nAluminum\nZINC PERFORATED\nSheer ALUM-7716281\n46",
+   "images": [
+    {
+     "filename": "page085_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page085_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 86,
+   "category": "gallery",
+   "text": "WHITE PERFORATED\nSheer ALUM-1026741\nAluminum\nCHARCOAL PERFORATED\nSheer ALUM-1026740\n47",
+   "images": [
+    {
+     "filename": "page086_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page086_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 87,
+   "category": "gallery",
+   "text": "BLACK PERFORATED\nSheer ALUM-1026739\nAluminum\n48",
+   "images": [
+    {
+     "filename": "page087_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 88,
+   "category": "gallery",
+   "text": "WHITE WOOD\nOpaque WDLN-1026808\nWoodland\nHONEY WOOD\nOpaque WDLN-1026807\n49",
+   "images": [
+    {
+     "filename": "page088_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page088_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 89,
+   "category": "gallery",
+   "text": "CHERRY WOOD\nOpaque WDLN-1026804\nWoodland\nDRIFTWOOD\nOpaque WDLN-1026805\n50",
+   "images": [
+    {
+     "filename": "page089_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page089_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 90,
+   "category": "gallery",
+   "text": "GREY WOOD\nOpaque WDLN-1026806\nWoodland\n51",
+   "images": [
+    {
+     "filename": "page090_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 91,
+   "category": "gallery",
+   "text": "GELATO\nOpaque JUPI-1026985\nJupiter\nTAFFY\nOpaque JUPI-1026984\n52",
+   "images": [
+    {
+     "filename": "page091_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page091_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 92,
+   "category": "gallery",
+   "text": "BOARDWALK\nOpaque JUPI-1026986\nJupiter\nJET\nOpaque JUPI-1026987\n53",
+   "images": [
+    {
+     "filename": "page092_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page092_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 93,
+   "category": "gallery",
+   "text": "WINTERMINT\nSemi-Opaque SILAS-7712147\nSilas\nTOASTY VANILLA\nSemi-Opaque SILAS-7712148\n54",
+   "images": [
+    {
+     "filename": "page093_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page093_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 94,
+   "category": "gallery",
+   "text": "CINZA\nSemi-Opaque SILAS-7716356\nSilas\n55",
+   "images": [
+    {
+     "filename": "page094_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 95,
+   "category": "gallery",
+   "text": "WHITE\nOpaque GRAH-1026773\nGraham\nIVORY\nOpaque GRAH-1026772\n56",
+   "images": [
+    {
+     "filename": "page095_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page095_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 96,
+   "category": "gallery",
+   "text": "GREY\nOpaque GRAH-1026771\nGraham\nBLACK\nOpaque GRAH-1026770\n57",
+   "images": [
+    {
+     "filename": "page096_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page096_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 97,
+   "category": "gallery",
+   "text": "ORGANIC COTTON\nSemi-Opaque UBL-7712173\nUrban Loft\nBLUE DENIM\nSemi-Opaque UBL-1026742\n58",
+   "images": [
+    {
+     "filename": "page097_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page097_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 98,
+   "category": "gallery",
+   "text": "TAVERN TAUPE\nSemi-Opaque UBL-1026744\nUrban Loft\nSLATE GREY\nSemi-Opaque UBL-1026743\n59",
+   "images": [
+    {
+     "filename": "page098_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page098_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 99,
+   "category": "gallery",
+   "text": "BAMBOO\nSemi-Sheer MAKENA-7716114\nMakenna\nCHESTNUT\nSemi-Sheer MAKENA-7704109\n60",
+   "images": [
+    {
+     "filename": "page099_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page099_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 100,
+   "category": "gallery",
+   "text": "POPLAR\nSemi-Sheer MAKENA-1026761\nMakenna\nCINDER\nSemi-Sheer MAKENA-1026760\n61",
+   "images": [
+    {
+     "filename": "page100_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page100_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 101,
+   "category": "gallery",
+   "text": "TRAIL\nSemi-Sheer MAKENA-1026762\nMakenna\n62",
+   "images": [
+    {
+     "filename": "page101_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 102,
+   "category": "gallery",
+   "text": "STOWE\nSemi-Sheer BLMT-1026752\nBelmont\nCRAMER\nSemi-Sheer BLMT-1026750\n63",
+   "images": [
+    {
+     "filename": "page102_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page102_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 103,
+   "category": "gallery",
+   "text": "WYLIE\nSemi-Sheer BLMT-1026753\nBelmont\nGLENWAY\nSemi-Sheer BLMT-1026751\n64",
+   "images": [
+    {
+     "filename": "page103_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page103_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 104,
+   "category": "gallery",
+   "text": "CREAM\nSemi-Opaque AMEL-1026747\nAmelia\nWHITE CLOUD\nSemi-Opaque AMEL-1026749\n65",
+   "images": [
+    {
+     "filename": "page104_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page104_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 105,
+   "category": "gallery",
+   "text": "CASTLE\nSemi-Opaque AMEL-1026745\nAmelia\nCHATEAU\nSemi-Opaque AMEL-1026746\n66",
+   "images": [
+    {
+     "filename": "page105_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page105_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 106,
+   "category": "gallery",
+   "text": "TOWER\nSemi-Opaque AMEL-1026748\nAmelia\n67",
+   "images": [
+    {
+     "filename": "page106_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 107,
+   "category": "gallery",
+   "text": "SPANISH MOSS\nSheer DAWSON-7712075\nDawson\nWHITE MAGNOLIA\nSheer DAWSON-7712073\n68",
+   "images": [
+    {
+     "filename": "page107_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page107_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 108,
+   "category": "gallery",
+   "text": "WISTERIA\nSheer DAWSON-7712074\nDawson\nGREY IVY\nSheer DAWSON-1026758\n69",
+   "images": [
+    {
+     "filename": "page108_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page108_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 109,
+   "category": "gallery",
+   "text": "PUTTY\nOpaque ANS-7716561\nAnsley\nCONCRETE\nOpaque ANS-7716562\n70",
+   "images": [
+    {
+     "filename": "page109_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page109_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 110,
+   "category": "gallery",
+   "text": "DOVE\nOpaque ANS-7716563\nAnsley\nPYRITE\nOpaque ANS-7716564\n71",
+   "images": [
+    {
+     "filename": "page110_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page110_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 111,
+   "category": "gallery",
+   "text": "FLAX\nSemi-Sheer PAST-14101\nPastel Linen\nMIST\nSemi-Sheer PAST-1026763\n72",
+   "images": [
+    {
+     "filename": "page111_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page111_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 112,
+   "category": "gallery",
+   "text": "WAVES\nSemi-Sheer PAST-1026765\nPastel Linen\nSHORE\nSemi-Sheer PAST-1026764\n73",
+   "images": [
+    {
+     "filename": "page112_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page112_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 113,
+   "category": "gallery",
+   "text": "WOOD\nSemi-Sheer PAST-1026766\nPastel Linen\n74",
+   "images": [
+    {
+     "filename": "page113_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 114,
+   "category": "gallery",
+   "text": "WHITE WILLOW\nSemi-Sheer CECI-1026756\nCecilia\nIVORY ROSE\nSemi-Sheer CECI-1026754\n75",
+   "images": [
+    {
+     "filename": "page114_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page114_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 115,
+   "category": "gallery",
+   "text": "IVY\nSemi-Sheer CECI-1026755\nCecilia\nWOOD PATH\nSemi-Sheer CECI-1026757\n76",
+   "images": [
+    {
+     "filename": "page115_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page115_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 116,
+   "category": "gallery",
+   "text": "ANTIQUE PARCHMENT\nOpaque TRENT-7716242\nTrent\nDEEP SHALE\nOpaque TRENT-7716240\n77",
+   "images": [
+    {
+     "filename": "page116_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page116_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 117,
+   "category": "gallery",
+   "text": "FALLING SNOW\nOpaque TRENT-1026767\nTrent\nSOFT TAN\nOpaque TRENT-1026769\n78",
+   "images": [
+    {
+     "filename": "page117_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page117_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 118,
+   "category": "gallery",
+   "text": "GREY MIST\nOpaque TRENT-1026768\nTrent\n79",
+   "images": [
+    {
+     "filename": "page118_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 119,
+   "category": "gallery",
+   "text": "BIRCH\nOpaque EAST-7716301\nEaston\nSTRATUS\nOpaque EAST-7716300\n80",
+   "images": [
+    {
+     "filename": "page119_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page119_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 120,
+   "category": "gallery",
+   "text": "SMOKE\nOpaque EAST-7716302\nEaston\nPATINA\nOpaque EAST-1026759\n81",
+   "images": [
+    {
+     "filename": "page120_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page120_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 121,
+   "category": "gallery",
+   "text": "METAL\nSemi-Sheer TREMII-7716807\nTremont\nWHITE\nSemi-Sheer TREMII-93483\n82",
+   "images": [
+    {
+     "filename": "page121_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page121_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 122,
+   "category": "gallery",
+   "text": "NATURAL\nSemi-Sheer TREMII-93485\nTremont\nCOCOA\nSemi-Sheer TREMII-7716805\n83",
+   "images": [
+    {
+     "filename": "page122_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page122_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 123,
+   "category": "gallery",
+   "text": "WHITE\nOpaque COLINS-7705718\nCollins\nOFF WHITE\nOpaque COLINS-7705719\n84",
+   "images": [
+    {
+     "filename": "page123_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page123_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 124,
+   "category": "gallery",
+   "text": "ALMOND\nOpaque COLINS-7705720\nCollins\nGRAPHITE\nOpaque COLINS-1026816\n85",
+   "images": [
+    {
+     "filename": "page124_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page124_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 125,
+   "category": "gallery",
+   "text": "WHITE\nOpaque WESL-7716400\nWesley\nCREAM\nOpaque WESL-7716402\n86",
+   "images": [
+    {
+     "filename": "page125_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page125_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 126,
+   "category": "gallery",
+   "text": "OFF WHITE\nOpaque WESL-7716401\nWesley\nLIGHT GRAY\nOpaque WESL-7716404\n87",
+   "images": [
+    {
+     "filename": "page126_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page126_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 127,
+   "category": "gallery",
+   "text": "WHITE\nOpaque FASH-7799660\nFashion Curves\nOFF WHITE\nOpaque FASH-7799661\n88",
+   "images": [
+    {
+     "filename": "page127_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page127_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 128,
+   "category": "gallery",
+   "text": "LIGHT GRAY\nOpaque FASH-7799664\nFashion Curves\nTAN\nOpaque FASH-7799663\n89",
+   "images": [
+    {
+     "filename": "page128_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page128_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 129,
+   "category": "gallery",
+   "text": "NUTMEG\nOpaque COLNADE-7712705\nColonnade\nFENCE POST\nOpaque COLNADE-7712704\n90",
+   "images": [
+    {
+     "filename": "page129_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page129_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 130,
+   "category": "gallery",
+   "text": "SHADOW\nOpaque COLNADE-7712706\nColonnade\n91",
+   "images": [
+    {
+     "filename": "page130_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 131,
+   "category": "gallery",
+   "text": "WHITE\nOpaque AFTON-7799640\nAfton\nOFF WHITE\nOpaque AFTON-7799641\n92",
+   "images": [
+    {
+     "filename": "page131_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page131_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 132,
+   "category": "gallery",
+   "text": "TAN\nOpaque AFTON-7799645\nAfton\nGRAY\nOpaque AFTON-7716647\n93",
+   "images": [
+    {
+     "filename": "page132_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page132_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 133,
+   "category": "gallery",
+   "text": "WHITE WASH\nOpaque MONT-1026818\nMontford\nSANDSTONE\nOpaque MONT-1026817\n94",
+   "images": [
+    {
+     "filename": "page133_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page133_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 134,
+   "category": "gallery",
+   "text": "BONE\nOpaque MIDW-1026814\nMidwood\nFROST\nOpaque MIDW-1026815\n95",
+   "images": [
+    {
+     "filename": "page134_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page134_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 135,
+   "category": "gallery",
+   "text": "PORCELAIN\nOpaque LILY-1026989\nLily\nCHAMPAGNE\nOpaque LILY-1026988\n96",
+   "images": [
+    {
+     "filename": "page135_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page135_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 136,
+   "category": "gallery",
+   "text": "WHITE\nOpaque GILMO-7716775\nGilmore\nOFF WHITE\nOpaque GILMO-7716776\n97",
+   "images": [
+    {
+     "filename": "page136_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page136_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 137,
+   "category": "gallery",
+   "text": "PEWTER\nOpaque GILMO-7716777\nGilmore\n98",
+   "images": [
+    {
+     "filename": "page137_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 138,
+   "category": "gallery",
+   "text": "CHALK\nOpaque BASK-1026778\nBasket\nNATURAL\nOpaque BASK-1026780\n99",
+   "images": [
+    {
+     "filename": "page138_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page138_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 139,
+   "category": "gallery",
+   "text": "ASH\nOpaque BASK-1026777\nBasket\nSTUCCO\nOpaque BASK-1026781\n100",
+   "images": [
+    {
+     "filename": "page139_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page139_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 140,
+   "category": "gallery",
+   "text": "CONCRETE\nOpaque BASK-1026779\nBasket\n101",
+   "images": [
+    {
+     "filename": "page140_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 141,
+   "category": "gallery",
+   "text": "SNOW\nSemi-Opaque LINE-1026821\nLinen\nSAND\nSemi-Opaque LINE-1026820\n102",
+   "images": [
+    {
+     "filename": "page141_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page141_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 142,
+   "category": "gallery",
+   "text": "STORM\nSemi-Opaque LINE-1026822\nLinen\n103",
+   "images": [
+    {
+     "filename": "page142_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 143,
+   "category": "gallery",
+   "text": "IVORY\nSemi-Sheer LAYLA-7712112\nLayla\nWHITE\nSemi-Sheer LAYLA-7712116\n104",
+   "images": [
+    {
+     "filename": "page143_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    },
+    {
+     "filename": "page143_img02_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 144,
+   "category": "gallery",
+   "text": "PLATINUM\nSemi-Sheer LAYLA-1026819\nLayla\n105",
+   "images": [
+    {
+     "filename": "page144_img01_1472x2405.jpeg",
+     "width": 1472,
+     "height": 2405
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [],
+ "fabric_swatches": {
+  "Vertical Solutions® Vertical Blinds": [
+   {
+    "image": "page022_img01_472x1019.jpeg",
+    "width": 472,
+    "height": 1019,
+    "color_name": "N/A",
+    "specs": [],
+    "fabric_collection": "Vertical Solutions® Vertical Blinds"
+   },
+   {
+    "image": "page022_img02_472x1019.jpeg",
+    "width": 472,
+    "height": 1019,
+    "color_name": "N/A",
+    "specs": [],
+    "fabric_collection": "Vertical Solutions® Vertical Blinds"
+   },
+   {
+    "image": "page022_img03_473x1020.jpeg",
+    "width": 473,
+    "height": 1020,
+    "color_name": "Color 3",
+    "specs": [],
+    "fabric_collection": "Vertical Solutions® Vertical Blinds"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 120,
+  "benefits": 1,
+  "control": 5,
+  "design": 0,
+  "mounting": 1,
+  "details": 5,
+  "vane": 0,
+  "hardware": 0,
+  "swatch_collections": 1,
+  "swatch_colors": 3
+ },
+ "_classification": {
+  "toc": 1,
+  "gallery": 120,
+  "empty": 1,
+  "slogan": 1,
+  "control": 5,
+  "benefits": 1,
+  "opacity": 1,
+  "details": 4,
+  "swatch": 1,
+  "mounting": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_table": 6
+ }
 }

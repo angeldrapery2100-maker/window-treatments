@@ -1,1122 +1,1136 @@
 {
-  "id": "hd-heritance-newstyle-digital-sample-book",
-  "name": "Heritance® & NewStyle® Shutters",
-  "slug": "heritance-newstyle",
-  "description": "Heritance® hardwood and NewStyle® hybrid shutters combine timeless beauty with modern innovation for enduring quality and charm.",
-  "cover_image": "page002_img01_2105x1505.jpeg",
-  "benefits": [
+ "id": "hd-heritance-newstyle-digital-sample-book",
+ "name": "Heritance® & NewStyle® Shutters",
+ "slug": "heritance-newstyle",
+ "description": "Heritance® hardwood and NewStyle® hybrid shutters combine timeless beauty with modern innovation for enduring quality and charm.",
+ "cover_image": "page002_img01_2105x1505.jpeg",
+ "benefits": [
+  {
+   "page": 24,
+   "category": "benefits",
+   "text": "Heritance® and \nNewStyle® Benefits\nScan to see more information about \nHeritance® and NewStyle® construction\nSCAN ME\nBENEFITS\nSuperior Quality\nHeritance® and NewStyle® shutters are meticulously crafted with \nTruemill® dovetail construction, for strong panels that stand the test of time.\nOne-Touch Closure\nExclusive SoftClose™ louvers feature one-touch control so louvers \nclose softly and smoothly—and Quick Align™, for easy louver alignment. \nEnergy Efficiency\nClose shutter louvers to keep warm air out when it's hot \nand in when it's cold, reducing energy costs.\nSound Deflection\nClosed louvers deflect outside noise to keep your indoor space calm and quiet. \nUV Protection\nWhen fully closed, Heritance® and NewStyle® shutters protect furniture, \nflooring and artwork from fading. \nHealthier Indoor Air\nHeritance® and NewStyle® Shutters are GREENGUARD® Gold Certified \nfor low indoor chemical emissions.",
+   "images": [
     {
-      "page": 24,
-      "category": "benefits",
-      "text": "Heritance® and \nNewStyle® Benefits\nScan to see more information about \nHeritance® and NewStyle® construction\nSCAN ME\nBENEFITS\nSuperior Quality\nHeritance® and NewStyle® shutters are meticulously crafted with \nTruemill® dovetail construction, for strong panels that stand the test of time.\nOne-Touch Closure\nExclusive SoftClose™ louvers feature one-touch control so louvers \nclose softly and smoothly—and Quick Align™, for easy louver alignment. \nEnergy Efficiency\nClose shutter louvers to keep warm air out when it's hot \nand in when it's cold, reducing energy costs.\nSound Deflection\nClosed louvers deflect outside noise to keep your indoor space calm and quiet. \nUV Protection\nWhen fully closed, Heritance® and NewStyle® shutters protect furniture, \nflooring and artwork from fading. \nHealthier Indoor Air\nHeritance® and NewStyle® Shutters are GREENGUARD® Gold Certified \nfor low indoor chemical emissions.",
-      "images": [
-        {
-          "filename": "page024_img01_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page024_img02_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page024_img03_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page024_img04_763x464.jpeg",
-          "width": 763,
-          "height": 464
-        },
-        {
-          "filename": "page024_img05_764x464.jpeg",
-          "width": 764,
-          "height": 464
-        },
-        {
-          "filename": "page024_img06_765x464.jpeg",
-          "width": 765,
-          "height": 464
-        }
-      ]
+     "filename": "page024_img01_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page024_img02_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page024_img03_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page024_img04_763x464.jpeg",
+     "width": 763,
+     "height": 464
+    },
+    {
+     "filename": "page024_img05_764x464.jpeg",
+     "width": 764,
+     "height": 464
+    },
+    {
+     "filename": "page024_img06_765x464.jpeg",
+     "width": 765,
+     "height": 464
     }
-  ],
-  "control_options": [
-    {
-      "page": 25,
-      "category": "control",
-      "text": "Light Control and Privacy\nDaylighting\nShutters provide energy efficiency by drawing natural light into a room, reducing the need for artificial lighting.\nSplit Tilt\nFor more privacy, choose split tilt with \nindependent upper and lower louver operation.\nDivider Rail\nAdd strength to larger panels with divider rails, \nwhile allowing independent upper and lower \nlouver operation.\nAstragal\nThis feature covers the gap where two panels \nmeet, helping to minimize any light passing \nbetween rabbeted stiles.\n2 ½\" Louver\nIdeal for smaller windows\n3 ½\" Louver\nA pleasing standard louver size\n4 ½\" Louver\nProvides a more expansive view\nLIGHT CONTROL\nAND PRIVACY\nLIGHT CONTROL\nAND PRIVACY",
-      "images": [
-        {
-          "filename": "page025_img01_480x1130.jpeg",
-          "width": 480,
-          "height": 1130
-        },
-        {
-          "filename": "page025_img02_480x1130.jpeg",
-          "width": 480,
-          "height": 1130
-        },
-        {
-          "filename": "page025_img03_480x1130.jpeg",
-          "width": 480,
-          "height": 1130
-        },
-        {
-          "filename": "page025_img04_480x436.jpeg",
-          "width": 480,
-          "height": 436
-        },
-        {
-          "filename": "page025_img05_480x436.jpeg",
-          "width": 480,
-          "height": 436
-        },
-        {
-          "filename": "page025_img06_480x436.jpeg",
-          "width": 480,
-          "height": 436
-        },
-        {
-          "filename": "page025_img07_1616x427.jpeg",
-          "width": 1616,
-          "height": 427
-        }
-      ]
-    }
-  ],
-  "design_options": [
-    {
-      "page": 7,
-      "category": "design",
-      "text": "after\nHeritance® 7081 Obsidian with 31/2\" Louver and Bi-Fold Track Frame \nwith 53/8\" Standard Valance, Standard Z-Frame and 13/4\" Modern L-Frame\nCoordinates with NewStyle® 6685 Onyx",
-      "images": [
-        {
-          "filename": "page007_img01_2995x1505.jpeg",
-          "width": 2995,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "design",
-      "text": "Heritance®  8002 Windsor Walnut with 41/2\" Louver \nand Bypass Triple Track Frame with Decorative Valance",
-      "images": [
-        {
-          "filename": "page011_img01_2999x1507.jpeg",
-          "width": 2999,
-          "height": 1507
-        }
-      ]
-    },
-    {
-      "page": 23,
-      "category": "design",
-      "text": "With SoftClose™ for \nBypass Track Systems, \nshutter panels glide \nsmoothly and \nclose gently. \nNewStyle® 6658 Sand Dune with 3½\" Louver \nand Bypass Track Frame with Decorative Valance \nCoordinates with Heritance® 7061 Sand Castle",
-      "images": [
-        {
-          "filename": "page023_img01_2992x1503.jpeg",
-          "width": 2992,
-          "height": 1503
-        }
-      ]
-    },
-    {
-      "page": 27,
-      "category": "design",
-      "text": "Bi-Fold Hinged Panels\nStandard Hinged Panels with Measured T-Post Locations\nNewStyle® 6651 White Lace \nwith 31/2\" Louver and Colonial Casing Frame\nCoordinates with Heritance® 7019 Wedding Veil\nStandard Hinged Panels\nStandard Hinged Panels with Equal T-Post Locations\nDESIGN\nOPTIONS",
-      "images": [
-        {
-          "filename": "page027_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page027_img02_1617x485.jpeg",
-          "width": 1617,
-          "height": 485
-        },
-        {
-          "filename": "page027_img03_1617x484.jpeg",
-          "width": 1617,
-          "height": 484
-        }
-      ]
-    },
-    {
-      "page": 28,
-      "category": "design",
-      "text": "Heritance® 8024 Dark Oak with 31/2\" Louver \nand Bi-Fold Track Frame with 53/8\" Standard Valance\nBi-Fold Track System with 2 1/2\" Standard Valance\n \nBi-Fold Track System with Decorative Valance\nBi-Fold Track System with 53/8\" Standard Valance\n \nBi-Fold Track System",
-      "images": [
-        {
-          "filename": "page028_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page028_img02_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        },
-        {
-          "filename": "page028_img03_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        },
-        {
-          "filename": "page028_img04_764x530.jpeg",
-          "width": 764,
-          "height": 530
-        }
-      ]
-    },
-    {
-      "page": 29,
-      "category": "design",
-      "text": "Bypass Open Louver Track System\nThis track system allows shutter panels to slide with the louvers in \nan open position for increased view-through.\nBypass Triple Track System\nWith a three-track design, panels slide and stack in less space than a standard \nBypass Track, allowing for improved view-through within a single opening.\nBypass Track System with Decorative Valance\nBypass Track System with 53/8\" Standard Valance\n \nBypass Track Systems\nNewStyle®  6658 Sand Dune with 31/2\" Louver \nand Bypass Track Frame with Decorative Valance\nCoordinates with Heritance® 7061 Sand Castle",
-      "images": [
-        {
-          "filename": "page029_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        },
-        {
-          "filename": "page029_img02_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page029_img03_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page029_img04_764x455.jpeg",
-          "width": 764,
-          "height": 455
-        },
-        {
-          "filename": "page029_img05_765x456.jpeg",
-          "width": 765,
-          "height": 456
-        }
-      ]
-    },
-    {
-      "page": 30,
-      "category": "design",
-      "text": "Design Options\nDouble-Hung with Horizontal T-Post\nFull 4-Sided Café\nStandard Café\nHeritance® 8017 Driftwood \nwith 3½\" Louver and 1¾\" Modern L-Frame\nDouble-Hung  without Horizontal T-Post",
-      "images": [
-        {
-          "filename": "page030_img01_1950x1503.jpeg",
-          "width": 1950,
-          "height": 1503
-        },
-        {
-          "filename": "page030_img02_765x485.jpeg",
-          "width": 765,
-          "height": 485
-        },
-        {
-          "filename": "page030_img03_764x484.jpeg",
-          "width": 764,
-          "height": 484
-        },
-        {
-          "filename": "page030_img04_765x487.jpeg",
-          "width": 765,
-          "height": 487
-        },
-        {
-          "filename": "page030_img05_764x487.jpeg",
-          "width": 764,
-          "height": 487
-        }
-      ]
-    },
-    {
-      "page": 32,
-      "category": "design",
-      "text": "Framed Arch\nOver framed panels with Z frame and L frame \ncombination.\nOutside Mount Unframed Arch\nOver framed standard panels with top sill.\nContinuous Framed Arch\nWith horizontal T-post over standard panels.\nFramed Arch\nOutside Mount Unframed Arch\nContinuous Framed Arch\nSpecialty Shapes\nTwo Panel Arch Top with Zero Shoulder Height\nTwo Panel Arch Top\nFour Panel Arch Top\nSingle Panel Arch Top\nTwo Panel Angle Top",
-      "images": [
-        {
-          "filename": "page032_img01_475x482.jpeg",
-          "width": 475,
-          "height": 482
-        },
-        {
-          "filename": "page032_img02_477x484.jpeg",
-          "width": 477,
-          "height": 484
-        },
-        {
-          "filename": "page032_img03_483x484.jpeg",
-          "width": 483,
-          "height": 484
-        },
-        {
-          "filename": "page032_img04_476x482.jpeg",
-          "width": 476,
-          "height": 482
-        },
-        {
-          "filename": "page032_img05_480x485.jpeg",
-          "width": 480,
-          "height": 485
-        },
-        {
-          "filename": "page032_img06_478x485.jpeg",
-          "width": 478,
-          "height": 485
-        },
-        {
-          "filename": "page032_img07_480x484.jpeg",
-          "width": 480,
-          "height": 484
-        },
-        {
-          "filename": "page032_img08_480x484.jpeg",
-          "width": 480,
-          "height": 484
-        },
-        {
-          "filename": "page032_img09_483x484.jpeg",
-          "width": 483,
-          "height": 484
-        },
-        {
-          "filename": "page032_img10_480x484.jpeg",
-          "width": 480,
-          "height": 484
-        },
-        {
-          "filename": "page032_img11_480x484.jpeg",
-          "width": 480,
-          "height": 484
-        }
-      ]
-    },
-    {
-      "page": 33,
-      "category": "design",
-      "text": "Extended Eyebrow\nEyebrow\nExtended Arch\nCircle\nPerfect Arch\nExtended Quarter Eyebrow\nQuarter Circle\nAngle\nPentagon\nExtended Angle\nCircle – Horizontal Louver\nOval – Horizontal Louver\nHexagon – Horizontal Louver\nOctagon – Horizontal Louver\nSpecialty Shapes",
-      "images": [
-        {
-          "filename": "page033_img01_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img02_479x293.jpeg",
-          "width": 479,
-          "height": 293
-        },
-        {
-          "filename": "page033_img03_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img04_479x679.jpeg",
-          "width": 479,
-          "height": 679
-        },
-        {
-          "filename": "page033_img05_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img06_1048x679.jpeg",
-          "width": 1048,
-          "height": 679
-        },
-        {
-          "filename": "page033_img07_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img08_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img09_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img10_479x293.jpeg",
-          "width": 479,
-          "height": 293
-        },
-        {
-          "filename": "page033_img11_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img12_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img13_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        },
-        {
-          "filename": "page033_img14_480x293.jpeg",
-          "width": 480,
-          "height": 293
-        }
-      ]
-    }
-  ],
-  "mounting": [
-    {
-      "page": 12,
-      "category": "mounting",
-      "text": "Heritance®  8044 Salt and Pepper \nwith 41/2\" Louver and 15/8\" Colonial L-Frame \nwith Sill Frame (left), Standard Z-Frame with Sill Frame (right)",
-      "images": [
-        {
-          "filename": "page012_img01_3900x1503.jpeg",
-          "width": 3900,
-          "height": 1503
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "mounting",
-      "text": "Heritance® Hardwood \nand NewStyle® Hybrid \nShutters are cord free, \nmaking them a safer \noption for homes \nwith children.\nHERITANCE®\nAND NEWSTYLE®\nHeritance® 7063 Griffin with 31/2\" Louver, \nClassic Z-Frame and 13/4\" Modern L-Frame",
-      "images": [
-        {
-          "filename": "page022_img01_2994x1504.jpeg",
-          "width": 2994,
-          "height": 1504
-        }
-      ]
-    },
-    {
-      "page": 34,
-      "category": "mounting",
-      "text": "Framing Profiles\nColonial Tilt-In Z-Frame\nColonial Tilt-In Z-Frame \nwith Sill Frame\nModern Tilt-In Z-Frame\nModern Tilt-In Z-Frame \nwith Sill Frame\nHang Strip Behind (OM)\n13/4\" Colonial L-Frame \n15/8\" Colonial L-Frame\n15/8\" Colonial L-Frame \nwith Sill Frame\n13/4\" Colonial L-Frame \nwith Sill Frame\n13/4\" Modern L-Frame (IM)\n13/4\" Modern L-Frame \nwith Sill Frame (IM)\n15/8\" Modern L-Frame\n15/8\" Modern L-Frame \nwith Sill Frame \nHang Strip to the Side (IM)\nFRAMING\nPROFILES",
-      "images": [
-        {
-          "filename": "page034_img01_337x286.jpeg",
-          "width": 337,
-          "height": 286
-        },
-        {
-          "filename": "page034_img02_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img03_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img04_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img05_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img06_428x336.jpeg",
-          "width": 428,
-          "height": 336
-        },
-        {
-          "filename": "page034_img07_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img08_422x327.jpeg",
-          "width": 422,
-          "height": 327
-        },
-        {
-          "filename": "page034_img09_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img10_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img11_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page034_img12_418x333.jpeg",
-          "width": 418,
-          "height": 333
-        },
-        {
-          "filename": "page034_img13_410x320.jpeg",
-          "width": 410,
-          "height": 320
-        },
-        {
-          "filename": "page034_img14_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        }
-      ]
-    },
-    {
-      "page": 35,
-      "category": "mounting",
-      "text": "Standard Z-Frame\nClassic Z-Frame\nStandard Z-Frame \nwith L-Frame\nClassic Z-Frame \nwith L-Frame\nStandard Z-Frame \nwith Sill Frame\nClassic Z-Frame \nwith Sill Frame\n2\" Modern Z-Frame\n11/8\" Modern Z-Frame\n11/8\" Modern Z-Frame \nwith Sill Frame\n2\" Modern Z-Frame \nwith Sill Frame\nModern Casing Frame\nModern Casing Frame \nwith L-Frame\nModern Casing Frame \nwith Sill Frame\nFraming Profiles\n3\" Modern Z-Frame\n3\" Modern Z-Frame \nwith Sill Frame\nColonial Casing Frame\nColonial Casing Frame \nwith L-Frame\nColonial Casing Frame \nwith Sill Frame\nFRAMING\nPROFILES\n2\" Modern Z-Frame \nwith L-Frame\n11/8\" Modern Z-Frame \nwith L-Frame\n3\" Modern Z-Frame\nwith L-Frame",
-      "images": [
-        {
-          "filename": "page035_img01_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img02_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img03_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img04_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img05_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img06_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img07_382x324.jpeg",
-          "width": 382,
-          "height": 324
-        },
-        {
-          "filename": "page035_img08_485x425.jpeg",
-          "width": 485,
-          "height": 425
-        },
-        {
-          "filename": "page035_img09_393x371.jpeg",
-          "width": 393,
-          "height": 371
-        },
-        {
-          "filename": "page035_img10_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img11_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img12_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img13_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img14_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img15_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img16_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img17_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img18_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img19_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img20_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        },
-        {
-          "filename": "page035_img21_338x286.jpeg",
-          "width": 338,
-          "height": 286
-        }
-      ]
-    }
-  ],
-  "product_details": [
-    {
-      "page": 31,
-      "category": "details",
-      "text": "31/2\" Curved Cut-Out\n31/2\" Curved Cut-Out with Offset\nRectangular Cut-Out with Offset\n5\" Curved Cut-Out with Offset\nFrench Door Cut-Out\nFrench Door Cut-Out\nHeritance® 7088 Greyhound with 41/2\" Louver \nand 27/8\" Modern L-Frame with 5\" Curved Cut-Out",
-      "images": [
-        {
-          "filename": "page031_img01_2469x1901.jpeg",
-          "width": 2469,
-          "height": 1901
-        },
-        {
-          "filename": "page031_img02_765x485.jpeg",
-          "width": 765,
-          "height": 485
-        },
-        {
-          "filename": "page031_img03_765x485.jpeg",
-          "width": 765,
-          "height": 485
-        },
-        {
-          "filename": "page031_img04_764x485.jpeg",
-          "width": 764,
-          "height": 485
-        },
-        {
-          "filename": "page031_img05_765x485.jpeg",
-          "width": 765,
-          "height": 485
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1955x1505.jpeg",
-          "width": 1955,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
-      "images": [
-        {
-          "filename": "page006_img01_2086x1505.jpeg",
-          "width": 2086,
-          "height": 1505
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "category": "gallery",
-      "text": "Heritance® Hardwood \nShutters are custom \ncrafted from genuine \nhardwood, and are \navailable in a range \nof paints and stains \nfor any design style. \nHERITANCE®\nHeritance®  8025 Palomino \nwith 41/2\" Louver and 2\" Modern Z-Frame",
-      "images": [
-        {
-          "filename": "page008_img01_2993x1504.jpeg",
-          "width": 2993,
-          "height": 1504
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "gallery",
-      "text": "Customize your \nshutters in any paint \nor stain color you can \nimagine with the \nHeritance® custom \ncolor matching service.\nHERITANCE®\nHeritance®  Custom Paint Color \nwith 41/2\" Louver and 13/4\" Modern L-Frame",
-      "images": [
-        {
-          "filename": "page009_img01_2997x1506.jpeg",
-          "width": 2997,
-          "height": 1506
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "gallery",
-      "text": "Heritance®  7088 Greyhound with 41/2\" Louver \nand 27/8\" Modern L-Frame with 5\" Curved Cut-Out",
-      "images": [
-        {
-          "filename": "page010_img01_5043x1944.jpeg",
-          "width": 5043,
-          "height": 1944
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page014_img01_1954x1504.jpeg",
-          "width": 1954,
-          "height": 1504
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "gallery",
-      "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
-      "images": [
-        {
-          "filename": "page015_img01_2087x1506.jpeg",
-          "width": 2087,
-          "height": 1506
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "gallery",
-      "text": "after\nNewStyle® 6683 Zenith with 41/2\" Louver \nand Modern Casing Frame\nCoordinates with Heritance® 7077 Zephyr",
-      "images": [
-        {
-          "filename": "page016_img01_2997x1506.jpeg",
-          "width": 2997,
-          "height": 1506
-        }
-      ]
-    },
-    {
-      "page": 17,
-      "category": "gallery",
-      "text": "NewStyle® Hybrid \nShutters are crafted \nof natural wood and \ncomposite materials \nfor durability and \nlasting beauty.\nNEWSTYLE®\nNewStyle® 6610 Polar White with 31/2\" Louver \nand 2\" Modern Z-Frame with Sill Frame\nCoordinates with Heritance® 7002 Arctic White",
-      "images": [
-        {
-          "filename": "page017_img01_2998x1506.jpeg",
-          "width": 2998,
-          "height": 1506
-        }
-      ]
-    },
-    {
-      "page": 18,
-      "category": "gallery",
-      "text": "NEWSTYLE®\nNewStyle® 6685 Onyx \nwith 41/2\" Louver and 2\" Modern Z-Frame\nCoordinates with Heritance® 7081 Obsidian",
-      "images": [
-        {
-          "filename": "page018_img01_2991x1503.jpeg",
-          "width": 2991,
-          "height": 1503
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "gallery",
-      "text": "NewStyle® 6656 Swiss Cream \nwith 31/2\" Louver and Colonial Casing Frame\nCoordinates with Heritance® 7048 Chalet",
-      "images": [
-        {
-          "filename": "page019_img01_5085x1966.jpeg",
-          "width": 5085,
-          "height": 1966
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "gallery",
-      "text": "NewStyle® 6610 Polar White \nwith 31/2\" Louver and 3\" Modern Z-Frame\nCoordinates with Heritance® 7002 Arctic White",
-      "images": [
-        {
-          "filename": "page020_img01_4505x2257.jpeg",
-          "width": 4505,
-          "height": 2257
-        }
-      ]
-    },
-    {
-      "page": 21,
-      "category": "gallery",
-      "text": "SoftClose™ louvers with \nQuick Align™ provide \nsmoothly controlled, \none-touch louver \nclosure, and easy \nalignment of louvers \nacross panels.\nScan to learn more about \nSoftClose™ louvers with Quick Align™\nHERITANCE®\nAND NEWSTYLE®\nHeritance® 7061 Sand Castle \nwith 41/2\" Louver and Classic Z-Frame\nCoordinates with NewStyle® 6658 Sand Dune",
-      "images": [
-        {
-          "filename": "page021_img01_2999x1507.jpeg",
-          "width": 2999,
-          "height": 1507
-        }
-      ]
-    },
-    {
-      "page": 43,
-      "category": "gallery",
-      "text": "WEDDING VEIL\n7005\nCHALET\n7007\n3\nCoordinates with NewStyle®­ 6651 White Lace\nCoordinates with NewStyle­ 6656 Swiss Cream",
-      "images": [
-        {
-          "filename": "page043_img01_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        },
-        {
-          "filename": "page043_img02_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 46,
-      "category": "gallery",
-      "text": "SAND CASTLE\n7061\nGRIFFIN\n7063\n6\nCoordinates with NewStyle®­ 6658 Sand Dune",
-      "images": [
-        {
-          "filename": "page046_img01_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        },
-        {
-          "filename": "page046_img02_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 48,
-      "category": "gallery",
-      "text": "OBSIDIAN\n7081\nGREYHOUND\n7088\n8\nCoordinates with NewStyle®­ 6685 Onyx",
-      "images": [
-        {
-          "filename": "page048_img01_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        },
-        {
-          "filename": "page048_img02_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 57,
-      "category": "gallery",
-      "text": "TRANQUIL MIST\n6657\nSAND DUNE\n6658\n17\nCoordinates with Heritance®­ 7010 Rainy Day\nCoordinates with Heritance­ 7061 Sand Castle",
-      "images": [
-        {
-          "filename": "page057_img01_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        },
-        {
-          "filename": "page057_img02_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        }
-      ]
-    },
-    {
-      "page": 58,
-      "category": "gallery",
-      "text": "ZENITH\n6683\nONYX\n6685\n18\nCoordinates with Heritance®­ 7077 Zephyr\nCoordinates with Heritance­ 7081 Obsidian",
-      "images": [
-        {
-          "filename": "page058_img01_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        },
-        {
-          "filename": "page058_img02_1468x2405.jpeg",
-          "width": 1468,
-          "height": 2405
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [],
-  "fabric_swatches": {
-    "Coordinates with NewStyle® 6683 Zenith": [
-      {
-        "image": "page026_img02_480x1013.jpeg",
-        "width": 480,
-        "height": 1013,
-        "color_name": "Control",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
-      },
-      {
-        "image": "page026_img03_480x1013.jpeg",
-        "width": 480,
-        "height": 1013,
-        "color_name": "Options",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
-      },
-      {
-        "image": "page026_img04_480x1013.jpeg",
-        "width": 480,
-        "height": 1013,
-        "color_name": "Control And",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
-      }
-    ],
-    "Coordinates with NewStyle®­ 6650 True White": [
-      {
-        "image": "page041_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Snow",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6650 True White"
-      },
-      {
-        "image": "page041_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Perfect White",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6650 True White"
-      }
-    ],
-    "Coordinates with NewStyle®­ 6610 Polar White": [
-      {
-        "image": "page042_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Arctic White",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6610 Polar White"
-      },
-      {
-        "image": "page042_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Silk White",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6610 Polar White"
-      }
-    ],
-    "Coordinates with NewStyle®­ 6657 Tranquil Mist": [
-      {
-        "image": "page044_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Rainy Day",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6657 Tranquil Mist"
-      }
-    ],
-    "Other Colors": [
-      {
-        "image": "page045_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Picket Fence",
-        "specs": []
-      },
-      {
-        "image": "page045_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Avalanche",
-        "specs": []
-      },
-      {
-        "image": "page049_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Windsor Walnut",
-        "specs": []
-      },
-      {
-        "image": "page049_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Goldenrod",
-        "specs": []
-      },
-      {
-        "image": "page050_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Pecan",
-        "specs": []
-      },
-      {
-        "image": "page050_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Midnight",
-        "specs": []
-      },
-      {
-        "image": "page051_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Driftwood",
-        "specs": []
-      },
-      {
-        "image": "page051_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Pewter",
-        "specs": []
-      },
-      {
-        "image": "page052_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Dark Oak",
-        "specs": []
-      },
-      {
-        "image": "page052_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Palomino",
-        "specs": []
-      },
-      {
-        "image": "page053_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Salt And Pepper",
-        "specs": []
-      },
-      {
-        "image": "page053_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Copper River",
-        "specs": []
-      },
-      {
-        "image": "page054_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Espresso",
-        "specs": []
-      },
-      {
-        "image": "page054_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Rich Leather",
-        "specs": []
-      }
-    ],
-    "Coordinates with NewStyle®­ 6683 Zenith": [
-      {
-        "image": "page047_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Sugar Pine",
-        "specs": [],
-        "fabric_collection": "Coordinates with NewStyle®­ 6683 Zenith"
-      }
-    ],
-    "Coordinates with Heritance®­ 7001 Perfect White": [
-      {
-        "image": "page055_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "True White",
-        "specs": [],
-        "fabric_collection": "Coordinates with Heritance®­ 7001 Perfect White"
-      },
-      {
-        "image": "page055_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Polar White",
-        "specs": [],
-        "fabric_collection": "Coordinates with Heritance®­ 7001 Perfect White"
-      }
-    ],
-    "Coordinates with Heritance®­ 7005 Wedding Veil": [
-      {
-        "image": "page056_img01_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "White Lace",
-        "specs": [],
-        "fabric_collection": "Coordinates with Heritance®­ 7005 Wedding Veil"
-      },
-      {
-        "image": "page056_img02_631x1089.jpeg",
-        "width": 631,
-        "height": 1089,
-        "color_name": "Swiss Cream",
-        "specs": [],
-        "fabric_collection": "Coordinates with Heritance®­ 7005 Wedding Veil"
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 18,
-    "benefits": 1,
-    "control": 1,
-    "design": 9,
-    "mounting": 4,
-    "details": 1,
-    "vane": 0,
-    "hardware": 0,
-    "swatch_collections": 8,
-    "swatch_colors": 27
-  },
-  "_classification": {
-    "toc": 1,
-    "cover": 1,
-    "empty": 3,
-    "gallery": 18,
-    "design": 9,
-    "mounting": 4,
-    "benefits": 1,
-    "control": 1,
-    "swatch": 14,
-    "details": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_cover": 2,
-    "color_chart_table": 1
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 25,
+   "category": "control",
+   "text": "Light Control and Privacy\nDaylighting\nShutters provide energy efficiency by drawing natural light into a room, reducing the need for artificial lighting.\nSplit Tilt\nFor more privacy, choose split tilt with \nindependent upper and lower louver operation.\nDivider Rail\nAdd strength to larger panels with divider rails, \nwhile allowing independent upper and lower \nlouver operation.\nAstragal\nThis feature covers the gap where two panels \nmeet, helping to minimize any light passing \nbetween rabbeted stiles.\n2 ½\" Louver\nIdeal for smaller windows\n3 ½\" Louver\nA pleasing standard louver size\n4 ½\" Louver\nProvides a more expansive view\nLIGHT CONTROL\nAND PRIVACY\nLIGHT CONTROL\nAND PRIVACY",
+   "images": [
+    {
+     "filename": "page025_img01_480x1130.jpeg",
+     "width": 480,
+     "height": 1130
+    },
+    {
+     "filename": "page025_img02_480x1130.jpeg",
+     "width": 480,
+     "height": 1130
+    },
+    {
+     "filename": "page025_img03_480x1130.jpeg",
+     "width": 480,
+     "height": 1130
+    },
+    {
+     "filename": "page025_img04_480x436.jpeg",
+     "width": 480,
+     "height": 436
+    },
+    {
+     "filename": "page025_img05_480x436.jpeg",
+     "width": 480,
+     "height": 436
+    },
+    {
+     "filename": "page025_img06_480x436.jpeg",
+     "width": 480,
+     "height": 436
+    },
+    {
+     "filename": "page025_img07_1616x427.jpeg",
+     "width": 1616,
+     "height": 427
+    }
+   ]
+  }
+ ],
+ "design_options": [
+  {
+   "page": 7,
+   "category": "design",
+   "text": "after\nHeritance® 7081 Obsidian with 31/2\" Louver and Bi-Fold Track Frame \nwith 53/8\" Standard Valance, Standard Z-Frame and 13/4\" Modern L-Frame\nCoordinates with NewStyle® 6685 Onyx",
+   "images": [
+    {
+     "filename": "page007_img01_2995x1505.jpeg",
+     "width": 2995,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "design",
+   "text": "Heritance®  8002 Windsor Walnut with 41/2\" Louver \nand Bypass Triple Track Frame with Decorative Valance",
+   "images": [
+    {
+     "filename": "page011_img01_2999x1507.jpeg",
+     "width": 2999,
+     "height": 1507
+    }
+   ]
+  },
+  {
+   "page": 23,
+   "category": "design",
+   "text": "With SoftClose™ for \nBypass Track Systems, \nshutter panels glide \nsmoothly and \nclose gently. \nNewStyle® 6658 Sand Dune with 3½\" Louver \nand Bypass Track Frame with Decorative Valance \nCoordinates with Heritance® 7061 Sand Castle",
+   "images": [
+    {
+     "filename": "page023_img01_2992x1503.jpeg",
+     "width": 2992,
+     "height": 1503
+    }
+   ]
+  },
+  {
+   "page": 27,
+   "category": "design",
+   "text": "Bi-Fold Hinged Panels\nStandard Hinged Panels with Measured T-Post Locations\nNewStyle® 6651 White Lace \nwith 31/2\" Louver and Colonial Casing Frame\nCoordinates with Heritance® 7019 Wedding Veil\nStandard Hinged Panels\nStandard Hinged Panels with Equal T-Post Locations\nDESIGN\nOPTIONS",
+   "images": [
+    {
+     "filename": "page027_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page027_img02_1617x485.jpeg",
+     "width": 1617,
+     "height": 485
+    },
+    {
+     "filename": "page027_img03_1617x484.jpeg",
+     "width": 1617,
+     "height": 484
+    }
+   ]
+  },
+  {
+   "page": 28,
+   "category": "design",
+   "text": "Heritance® 8024 Dark Oak with 31/2\" Louver \nand Bi-Fold Track Frame with 53/8\" Standard Valance\nBi-Fold Track System with 2 1/2\" Standard Valance\n \nBi-Fold Track System with Decorative Valance\nBi-Fold Track System with 53/8\" Standard Valance\n \nBi-Fold Track System",
+   "images": [
+    {
+     "filename": "page028_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page028_img02_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    },
+    {
+     "filename": "page028_img03_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    },
+    {
+     "filename": "page028_img04_764x530.jpeg",
+     "width": 764,
+     "height": 530
+    }
+   ]
+  },
+  {
+   "page": 29,
+   "category": "design",
+   "text": "Bypass Open Louver Track System\nThis track system allows shutter panels to slide with the louvers in \nan open position for increased view-through.\nBypass Triple Track System\nWith a three-track design, panels slide and stack in less space than a standard \nBypass Track, allowing for improved view-through within a single opening.\nBypass Track System with Decorative Valance\nBypass Track System with 53/8\" Standard Valance\n \nBypass Track Systems\nNewStyle®  6658 Sand Dune with 31/2\" Louver \nand Bypass Track Frame with Decorative Valance\nCoordinates with Heritance® 7061 Sand Castle",
+   "images": [
+    {
+     "filename": "page029_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    },
+    {
+     "filename": "page029_img02_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page029_img03_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page029_img04_764x455.jpeg",
+     "width": 764,
+     "height": 455
+    },
+    {
+     "filename": "page029_img05_765x456.jpeg",
+     "width": 765,
+     "height": 456
+    }
+   ]
+  },
+  {
+   "page": 30,
+   "category": "design",
+   "text": "Design Options\nDouble-Hung with Horizontal T-Post\nFull 4-Sided Café\nStandard Café\nHeritance® 8017 Driftwood \nwith 3½\" Louver and 1¾\" Modern L-Frame\nDouble-Hung  without Horizontal T-Post",
+   "images": [
+    {
+     "filename": "page030_img01_1950x1503.jpeg",
+     "width": 1950,
+     "height": 1503
+    },
+    {
+     "filename": "page030_img02_765x485.jpeg",
+     "width": 765,
+     "height": 485
+    },
+    {
+     "filename": "page030_img03_764x484.jpeg",
+     "width": 764,
+     "height": 484
+    },
+    {
+     "filename": "page030_img04_765x487.jpeg",
+     "width": 765,
+     "height": 487
+    },
+    {
+     "filename": "page030_img05_764x487.jpeg",
+     "width": 764,
+     "height": 487
+    }
+   ]
+  },
+  {
+   "page": 32,
+   "category": "design",
+   "text": "Framed Arch\nOver framed panels with Z frame and L frame \ncombination.\nOutside Mount Unframed Arch\nOver framed standard panels with top sill.\nContinuous Framed Arch\nWith horizontal T-post over standard panels.\nFramed Arch\nOutside Mount Unframed Arch\nContinuous Framed Arch\nSpecialty Shapes\nTwo Panel Arch Top with Zero Shoulder Height\nTwo Panel Arch Top\nFour Panel Arch Top\nSingle Panel Arch Top\nTwo Panel Angle Top",
+   "images": [
+    {
+     "filename": "page032_img01_475x482.jpeg",
+     "width": 475,
+     "height": 482
+    },
+    {
+     "filename": "page032_img02_477x484.jpeg",
+     "width": 477,
+     "height": 484
+    },
+    {
+     "filename": "page032_img03_483x484.jpeg",
+     "width": 483,
+     "height": 484
+    },
+    {
+     "filename": "page032_img04_476x482.jpeg",
+     "width": 476,
+     "height": 482
+    },
+    {
+     "filename": "page032_img05_480x485.jpeg",
+     "width": 480,
+     "height": 485
+    },
+    {
+     "filename": "page032_img06_478x485.jpeg",
+     "width": 478,
+     "height": 485
+    },
+    {
+     "filename": "page032_img07_480x484.jpeg",
+     "width": 480,
+     "height": 484
+    },
+    {
+     "filename": "page032_img08_480x484.jpeg",
+     "width": 480,
+     "height": 484
+    },
+    {
+     "filename": "page032_img09_483x484.jpeg",
+     "width": 483,
+     "height": 484
+    },
+    {
+     "filename": "page032_img10_480x484.jpeg",
+     "width": 480,
+     "height": 484
+    },
+    {
+     "filename": "page032_img11_480x484.jpeg",
+     "width": 480,
+     "height": 484
+    }
+   ]
+  },
+  {
+   "page": 33,
+   "category": "design",
+   "text": "Extended Eyebrow\nEyebrow\nExtended Arch\nCircle\nPerfect Arch\nExtended Quarter Eyebrow\nQuarter Circle\nAngle\nPentagon\nExtended Angle\nCircle – Horizontal Louver\nOval – Horizontal Louver\nHexagon – Horizontal Louver\nOctagon – Horizontal Louver\nSpecialty Shapes",
+   "images": [
+    {
+     "filename": "page033_img01_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img02_479x293.jpeg",
+     "width": 479,
+     "height": 293
+    },
+    {
+     "filename": "page033_img03_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img04_479x679.jpeg",
+     "width": 479,
+     "height": 679
+    },
+    {
+     "filename": "page033_img05_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img06_1048x679.jpeg",
+     "width": 1048,
+     "height": 679
+    },
+    {
+     "filename": "page033_img07_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img08_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img09_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img10_479x293.jpeg",
+     "width": 479,
+     "height": 293
+    },
+    {
+     "filename": "page033_img11_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img12_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img13_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    },
+    {
+     "filename": "page033_img14_480x293.jpeg",
+     "width": 480,
+     "height": 293
+    }
+   ]
+  }
+ ],
+ "mounting": [
+  {
+   "page": 12,
+   "category": "mounting",
+   "text": "Heritance®  8044 Salt and Pepper \nwith 41/2\" Louver and 15/8\" Colonial L-Frame \nwith Sill Frame (left), Standard Z-Frame with Sill Frame (right)",
+   "images": [
+    {
+     "filename": "page012_img01_3900x1503.jpeg",
+     "width": 3900,
+     "height": 1503
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "mounting",
+   "text": "Heritance® Hardwood \nand NewStyle® Hybrid \nShutters are cord free, \nmaking them a safer \noption for homes \nwith children.\nHERITANCE®\nAND NEWSTYLE®\nHeritance® 7063 Griffin with 31/2\" Louver, \nClassic Z-Frame and 13/4\" Modern L-Frame",
+   "images": [
+    {
+     "filename": "page022_img01_2994x1504.jpeg",
+     "width": 2994,
+     "height": 1504
+    }
+   ]
+  },
+  {
+   "page": 34,
+   "category": "mounting",
+   "text": "Framing Profiles\nColonial Tilt-In Z-Frame\nColonial Tilt-In Z-Frame \nwith Sill Frame\nModern Tilt-In Z-Frame\nModern Tilt-In Z-Frame \nwith Sill Frame\nHang Strip Behind (OM)\n13/4\" Colonial L-Frame \n15/8\" Colonial L-Frame\n15/8\" Colonial L-Frame \nwith Sill Frame\n13/4\" Colonial L-Frame \nwith Sill Frame\n13/4\" Modern L-Frame (IM)\n13/4\" Modern L-Frame \nwith Sill Frame (IM)\n15/8\" Modern L-Frame\n15/8\" Modern L-Frame \nwith Sill Frame \nHang Strip to the Side (IM)\nFRAMING\nPROFILES",
+   "images": [
+    {
+     "filename": "page034_img01_337x286.jpeg",
+     "width": 337,
+     "height": 286
+    },
+    {
+     "filename": "page034_img02_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img03_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img04_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img05_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img06_428x336.jpeg",
+     "width": 428,
+     "height": 336
+    },
+    {
+     "filename": "page034_img07_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img08_422x327.jpeg",
+     "width": 422,
+     "height": 327
+    },
+    {
+     "filename": "page034_img09_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img10_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img11_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page034_img12_418x333.jpeg",
+     "width": 418,
+     "height": 333
+    },
+    {
+     "filename": "page034_img13_410x320.jpeg",
+     "width": 410,
+     "height": 320
+    },
+    {
+     "filename": "page034_img14_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    }
+   ]
+  },
+  {
+   "page": 35,
+   "category": "mounting",
+   "text": "Standard Z-Frame\nClassic Z-Frame\nStandard Z-Frame \nwith L-Frame\nClassic Z-Frame \nwith L-Frame\nStandard Z-Frame \nwith Sill Frame\nClassic Z-Frame \nwith Sill Frame\n2\" Modern Z-Frame\n11/8\" Modern Z-Frame\n11/8\" Modern Z-Frame \nwith Sill Frame\n2\" Modern Z-Frame \nwith Sill Frame\nModern Casing Frame\nModern Casing Frame \nwith L-Frame\nModern Casing Frame \nwith Sill Frame\nFraming Profiles\n3\" Modern Z-Frame\n3\" Modern Z-Frame \nwith Sill Frame\nColonial Casing Frame\nColonial Casing Frame \nwith L-Frame\nColonial Casing Frame \nwith Sill Frame\nFRAMING\nPROFILES\n2\" Modern Z-Frame \nwith L-Frame\n11/8\" Modern Z-Frame \nwith L-Frame\n3\" Modern Z-Frame\nwith L-Frame",
+   "images": [
+    {
+     "filename": "page035_img01_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img02_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img03_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img04_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img05_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img06_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img07_382x324.jpeg",
+     "width": 382,
+     "height": 324
+    },
+    {
+     "filename": "page035_img08_485x425.jpeg",
+     "width": 485,
+     "height": 425
+    },
+    {
+     "filename": "page035_img09_393x371.jpeg",
+     "width": 393,
+     "height": 371
+    },
+    {
+     "filename": "page035_img10_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img11_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img12_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img13_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img14_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img15_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img16_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img17_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img18_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img19_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img20_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    },
+    {
+     "filename": "page035_img21_338x286.jpeg",
+     "width": 338,
+     "height": 286
+    }
+   ]
+  }
+ ],
+ "product_details": [
+  {
+   "page": 31,
+   "category": "details",
+   "text": "31/2\" Curved Cut-Out\n31/2\" Curved Cut-Out with Offset\nRectangular Cut-Out with Offset\n5\" Curved Cut-Out with Offset\nFrench Door Cut-Out\nFrench Door Cut-Out\nHeritance® 7088 Greyhound with 41/2\" Louver \nand 27/8\" Modern L-Frame with 5\" Curved Cut-Out",
+   "images": [
+    {
+     "filename": "page031_img01_2469x1901.jpeg",
+     "width": 2469,
+     "height": 1901
+    },
+    {
+     "filename": "page031_img02_765x485.jpeg",
+     "width": 765,
+     "height": 485
+    },
+    {
+     "filename": "page031_img03_765x485.jpeg",
+     "width": 765,
+     "height": 485
+    },
+    {
+     "filename": "page031_img04_764x485.jpeg",
+     "width": 764,
+     "height": 485
+    },
+    {
+     "filename": "page031_img05_765x485.jpeg",
+     "width": 765,
+     "height": 485
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1955x1505.jpeg",
+     "width": 1955,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
+   "images": [
+    {
+     "filename": "page006_img01_2086x1505.jpeg",
+     "width": 2086,
+     "height": 1505
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "category": "gallery",
+   "text": "Heritance® Hardwood \nShutters are custom \ncrafted from genuine \nhardwood, and are \navailable in a range \nof paints and stains \nfor any design style. \nHERITANCE®\nHeritance®  8025 Palomino \nwith 41/2\" Louver and 2\" Modern Z-Frame",
+   "images": [
+    {
+     "filename": "page008_img01_2993x1504.jpeg",
+     "width": 2993,
+     "height": 1504
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "gallery",
+   "text": "Customize your \nshutters in any paint \nor stain color you can \nimagine with the \nHeritance® custom \ncolor matching service.\nHERITANCE®\nHeritance®  Custom Paint Color \nwith 41/2\" Louver and 13/4\" Modern L-Frame",
+   "images": [
+    {
+     "filename": "page009_img01_2997x1506.jpeg",
+     "width": 2997,
+     "height": 1506
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "gallery",
+   "text": "Heritance®  7088 Greyhound with 41/2\" Louver \nand 27/8\" Modern L-Frame with 5\" Curved Cut-Out",
+   "images": [
+    {
+     "filename": "page010_img01_5043x1944.jpeg",
+     "width": 5043,
+     "height": 1944
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page014_img01_1954x1504.jpeg",
+     "width": 1954,
+     "height": 1504
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "gallery",
+   "text": "Our window \ntreatments do more\nthan look good.\nThey transform natural\nlight, creating beautiful\nspaces for comfortable, \neveryday living.\nbefore",
+   "images": [
+    {
+     "filename": "page015_img01_2087x1506.jpeg",
+     "width": 2087,
+     "height": 1506
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "gallery",
+   "text": "after\nNewStyle® 6683 Zenith with 41/2\" Louver \nand Modern Casing Frame\nCoordinates with Heritance® 7077 Zephyr",
+   "images": [
+    {
+     "filename": "page016_img01_2997x1506.jpeg",
+     "width": 2997,
+     "height": 1506
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "category": "gallery",
+   "text": "NewStyle® Hybrid \nShutters are crafted \nof natural wood and \ncomposite materials \nfor durability and \nlasting beauty.\nNEWSTYLE®\nNewStyle® 6610 Polar White with 31/2\" Louver \nand 2\" Modern Z-Frame with Sill Frame\nCoordinates with Heritance® 7002 Arctic White",
+   "images": [
+    {
+     "filename": "page017_img01_2998x1506.jpeg",
+     "width": 2998,
+     "height": 1506
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "category": "gallery",
+   "text": "NEWSTYLE®\nNewStyle® 6685 Onyx \nwith 41/2\" Louver and 2\" Modern Z-Frame\nCoordinates with Heritance® 7081 Obsidian",
+   "images": [
+    {
+     "filename": "page018_img01_2991x1503.jpeg",
+     "width": 2991,
+     "height": 1503
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "gallery",
+   "text": "NewStyle® 6656 Swiss Cream \nwith 31/2\" Louver and Colonial Casing Frame\nCoordinates with Heritance® 7048 Chalet",
+   "images": [
+    {
+     "filename": "page019_img01_5085x1966.jpeg",
+     "width": 5085,
+     "height": 1966
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "gallery",
+   "text": "NewStyle® 6610 Polar White \nwith 31/2\" Louver and 3\" Modern Z-Frame\nCoordinates with Heritance® 7002 Arctic White",
+   "images": [
+    {
+     "filename": "page020_img01_4505x2257.jpeg",
+     "width": 4505,
+     "height": 2257
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "category": "gallery",
+   "text": "SoftClose™ louvers with \nQuick Align™ provide \nsmoothly controlled, \none-touch louver \nclosure, and easy \nalignment of louvers \nacross panels.\nScan to learn more about \nSoftClose™ louvers with Quick Align™\nHERITANCE®\nAND NEWSTYLE®\nHeritance® 7061 Sand Castle \nwith 41/2\" Louver and Classic Z-Frame\nCoordinates with NewStyle® 6658 Sand Dune",
+   "images": [
+    {
+     "filename": "page021_img01_2999x1507.jpeg",
+     "width": 2999,
+     "height": 1507
+    }
+   ]
+  },
+  {
+   "page": 43,
+   "category": "gallery",
+   "text": "WEDDING VEIL\n7005\nCHALET\n7007\n3\nCoordinates with NewStyle®­ 6651 White Lace\nCoordinates with NewStyle­ 6656 Swiss Cream",
+   "images": [
+    {
+     "filename": "page043_img01_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    },
+    {
+     "filename": "page043_img02_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 46,
+   "category": "gallery",
+   "text": "SAND CASTLE\n7061\nGRIFFIN\n7063\n6\nCoordinates with NewStyle®­ 6658 Sand Dune",
+   "images": [
+    {
+     "filename": "page046_img01_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    },
+    {
+     "filename": "page046_img02_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 48,
+   "category": "gallery",
+   "text": "OBSIDIAN\n7081\nGREYHOUND\n7088\n8\nCoordinates with NewStyle®­ 6685 Onyx",
+   "images": [
+    {
+     "filename": "page048_img01_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    },
+    {
+     "filename": "page048_img02_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 57,
+   "category": "gallery",
+   "text": "TRANQUIL MIST\n6657\nSAND DUNE\n6658\n17\nCoordinates with Heritance®­ 7010 Rainy Day\nCoordinates with Heritance­ 7061 Sand Castle",
+   "images": [
+    {
+     "filename": "page057_img01_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    },
+    {
+     "filename": "page057_img02_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    }
+   ]
+  },
+  {
+   "page": 58,
+   "category": "gallery",
+   "text": "ZENITH\n6683\nONYX\n6685\n18\nCoordinates with Heritance®­ 7077 Zephyr\nCoordinates with Heritance­ 7081 Obsidian",
+   "images": [
+    {
+     "filename": "page058_img01_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    },
+    {
+     "filename": "page058_img02_1468x2405.jpeg",
+     "width": 1468,
+     "height": 2405
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [],
+ "fabric_swatches": {
+  "Coordinates with NewStyle® 6683 Zenith": [
+   {
+    "image": "page026_img02_480x1013.jpeg",
+    "width": 480,
+    "height": 1013,
+    "color_name": "Control",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
+   },
+   {
+    "image": "page026_img03_480x1013.jpeg",
+    "width": 480,
+    "height": 1013,
+    "color_name": "Options",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
+   },
+   {
+    "image": "page026_img04_480x1013.jpeg",
+    "width": 480,
+    "height": 1013,
+    "color_name": "Control And",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle® 6683 Zenith"
+   }
+  ],
+  "Coordinates with NewStyle®­ 6650 True White": [
+   {
+    "image": "page041_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Snow",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle®­ 6650 True White"
+   },
+   {
+    "image": "page041_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Perfect White",
+    "specs": [
+     "Coordinates with NewStyle® 6650 True White"
+    ],
+    "fabric_collection": "Coordinates with NewStyle®­ 6650 True White"
+   }
+  ],
+  "Coordinates with NewStyle®­ 6610 Polar White": [
+   {
+    "image": "page042_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Arctic White",
+    "specs": [
+     "Coordinates with NewStyle® 6610 Polar White"
+    ],
+    "fabric_collection": "Coordinates with NewStyle®­ 6610 Polar White"
+   },
+   {
+    "image": "page042_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Silk White",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle®­ 6610 Polar White"
+   }
+  ],
+  "Coordinates with NewStyle®­ 6657 Tranquil Mist": [
+   {
+    "image": "page044_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Rainy Day",
+    "specs": [
+     "Coordinates with NewStyle® 6657 Tranquil Mist"
+    ],
+    "fabric_collection": "Coordinates with NewStyle®­ 6657 Tranquil Mist"
+   }
+  ],
+  "Other Colors": [
+   {
+    "image": "page045_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Picket Fence",
+    "specs": []
+   },
+   {
+    "image": "page045_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Avalanche",
+    "specs": []
+   },
+   {
+    "image": "page049_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Windsor Walnut",
+    "specs": []
+   },
+   {
+    "image": "page049_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Goldenrod",
+    "specs": []
+   },
+   {
+    "image": "page050_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Pecan",
+    "specs": []
+   },
+   {
+    "image": "page050_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Midnight",
+    "specs": []
+   },
+   {
+    "image": "page051_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Driftwood",
+    "specs": []
+   },
+   {
+    "image": "page051_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Pewter",
+    "specs": []
+   },
+   {
+    "image": "page052_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Dark Oak",
+    "specs": []
+   },
+   {
+    "image": "page052_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Palomino",
+    "specs": []
+   },
+   {
+    "image": "page053_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Salt And Pepper",
+    "specs": []
+   },
+   {
+    "image": "page053_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Copper River",
+    "specs": []
+   },
+   {
+    "image": "page054_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Espresso",
+    "specs": []
+   },
+   {
+    "image": "page054_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Rich Leather",
+    "specs": []
+   }
+  ],
+  "Coordinates with NewStyle®­ 6683 Zenith": [
+   {
+    "image": "page047_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Sugar Pine",
+    "specs": [],
+    "fabric_collection": "Coordinates with NewStyle®­ 6683 Zenith"
+   }
+  ],
+  "Coordinates with Heritance®­ 7001 Perfect White": [
+   {
+    "image": "page055_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "True White",
+    "specs": [
+     "Coordinates with Heritance® 7001 Perfect White"
+    ],
+    "fabric_collection": "Coordinates with Heritance®­ 7001 Perfect White"
+   },
+   {
+    "image": "page055_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Polar White",
+    "specs": [
+     "Coordinates with Heritance 7002 Arctic White"
+    ],
+    "fabric_collection": "Coordinates with Heritance®­ 7001 Perfect White"
+   }
+  ],
+  "Coordinates with Heritance®­ 7005 Wedding Veil": [
+   {
+    "image": "page056_img01_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "White Lace",
+    "specs": [
+     "Coordinates with Heritance® 7005 Wedding Veil"
+    ],
+    "fabric_collection": "Coordinates with Heritance®­ 7005 Wedding Veil"
+   },
+   {
+    "image": "page056_img02_631x1089.jpeg",
+    "width": 631,
+    "height": 1089,
+    "color_name": "Swiss Cream",
+    "specs": [
+     "Coordinates with Heritance 7007 Chalet"
+    ],
+    "fabric_collection": "Coordinates with Heritance®­ 7005 Wedding Veil"
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 18,
+  "benefits": 1,
+  "control": 1,
+  "design": 9,
+  "mounting": 4,
+  "details": 1,
+  "vane": 0,
+  "hardware": 0,
+  "swatch_collections": 8,
+  "swatch_colors": 27
+ },
+ "_classification": {
+  "toc": 1,
+  "cover": 1,
+  "empty": 3,
+  "gallery": 18,
+  "design": 9,
+  "mounting": 4,
+  "benefits": 1,
+  "control": 1,
+  "swatch": 14,
+  "details": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_cover": 2,
+  "color_chart_table": 1
+ }
 }

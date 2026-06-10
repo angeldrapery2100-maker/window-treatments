@@ -1,1016 +1,980 @@
 {
-  "id": "hd-alustra-architectural-digital-sample-book",
-  "name": "Alustra® Architectural Roller Shades",
-  "slug": "alustra-architectural",
-  "description": "The innovative form of Alustra® Architectural Shades infuses a soft yet structural beauty at the window. Sophisticated fabrics combined with a unique linear design.",
-  "cover_image": null,
-  "benefits": [
+ "id": "hd-alustra-architectural-digital-sample-book",
+ "name": "Alustra® Architectural Roller Shades",
+ "slug": "alustra-architectural",
+ "description": "The innovative form of Alustra® Architectural Shades infuses a soft yet structural beauty at the window. Sophisticated fabrics combined with a unique linear design.",
+ "cover_image": null,
+ "benefits": [
+  {
+   "page": 17,
+   "category": "benefits",
+   "text": "Innovative Shade Structure\nCombine the beauty of a traditional Roman shade with the minimal aesthetic of a roller shade. The unique, \narchitectural construction of a fabric wrapped curved batten adds dimension and structure with a modern vibe.\nVersatile Fabric Opacity\nExclusive textural fabrics in distinctive hues are available from sheer to semi-opaque providing light \ncontrol and privacy options.\n22\nBenefits\nInnovative Shade Structure\nCombine the beauty of a traditional Roman shade with the minimal aesthetic of a roller shade. The unique, \narchitectural construction of a fabric wrapped curved batten adds dimension and structure with a modern vibe.\nSuperior Functionality\nStyle meets performance, the proprietary Custom Clutch is available with cassette or bracket only. Elevate the \nstyle and design with the Exclusive Alustra Metal Custom Clutch Bracket and metal bead chain option. Available \nin Brushed Nickel and Bronze Shimmer. \nPowerView® Automation\nPowerView® Automation provides the ultimate in home automation allowing you to control every shade with the \ntouch of a button.\n23",
+   "images": [
     {
-      "page": 17,
-      "category": "benefits",
-      "text": "Innovative Shade Structure\nCombine the beauty of a traditional Roman shade with the minimal aesthetic of a roller shade. The unique, \narchitectural construction of a fabric wrapped curved batten adds dimension and structure with a modern vibe.\nVersatile Fabric Opacity\nExclusive textural fabrics in distinctive hues are available from sheer to semi-opaque providing light \ncontrol and privacy options.\n22\nBenefits\nInnovative Shade Structure\nCombine the beauty of a traditional Roman shade with the minimal aesthetic of a roller shade. The unique, \narchitectural construction of a fabric wrapped curved batten adds dimension and structure with a modern vibe.\nSuperior Functionality\nStyle meets performance, the proprietary Custom Clutch is available with cassette or bracket only. Elevate the \nstyle and design with the Exclusive Alustra Metal Custom Clutch Bracket and metal bead chain option. Available \nin Brushed Nickel and Bronze Shimmer. \nPowerView® Automation\nPowerView® Automation provides the ultimate in home automation allowing you to control every shade with the \ntouch of a button.\n23",
-      "images": [
-        {
-          "filename": "page017_img01_1055x680.jpeg",
-          "width": 1055,
-          "height": 680
-        },
-        {
-          "filename": "page017_img02_1053x679.jpeg",
-          "width": 1053,
-          "height": 679
-        },
-        {
-          "filename": "page017_img03_1057x681.jpeg",
-          "width": 1057,
-          "height": 681
-        },
-        {
-          "filename": "page017_img04_1056x680.jpeg",
-          "width": 1056,
-          "height": 680
-        }
-      ]
+     "filename": "page017_img01_1055x680.jpeg",
+     "width": 1055,
+     "height": 680
+    },
+    {
+     "filename": "page017_img02_1053x679.jpeg",
+     "width": 1053,
+     "height": 679
+    },
+    {
+     "filename": "page017_img03_1057x681.jpeg",
+     "width": 1057,
+     "height": 681
+    },
+    {
+     "filename": "page017_img04_1056x680.jpeg",
+     "width": 1056,
+     "height": 680
     }
-  ],
-  "control_options": [
-    {
-      "page": 8,
-      "category": "control",
-      "text": "4\nFabric Finley    Color Misty Harbor     \nOperating System PowerView® Automation    Deck 2\n5\nAlustra® Architectural Shades\nThe innovative form of \nAlustra® Architectural Shades \ninfuses a soft yet structural \nbeauty at the window. \nSophisticated fabrics \ncombined with a unique \nlinear design, provides  \nthe dimensional aesthetic  \nof a Roman shade with  \nthe modern appeal of \na roller shade.",
-      "images": [
-        {
-          "filename": "page008_img01_1794x1956.jpeg",
-          "width": 1794,
-          "height": 1956
-        },
-        {
-          "filename": "page008_img02_783x1956.jpeg",
-          "width": 783,
-          "height": 1956
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "category": "control",
-      "text": "8\nFabric Leo    Color Earthy Umber     \nOperating System PowerView® Automation    Deck 2\n9\nInfuse a room with a soft \nstructural beauty that \nadds dimension to unify \nand define the space.",
-      "images": [
-        {
-          "filename": "page010_img01_1783x1953.jpeg",
-          "width": 1783,
-          "height": 1953
-        },
-        {
-          "filename": "page010_img02_791x1001.jpeg",
-          "width": 791,
-          "height": 1001
-        },
-        {
-          "filename": "page010_img03_893x1953.jpeg",
-          "width": 893,
-          "height": 1953
-        }
-      ]
-    },
-    {
-      "page": 11,
-      "category": "control",
-      "text": "10\nInherent to \nArchitectural Shades \nare the exclusive \nAlustra® Collection \nfabrics for those  \nwho seek the best  \nin design.\nFabric Finley    Color Misty Harbor \nOperating System PowerView® Automation    Deck 2\n11",
-      "images": [
-        {
-          "filename": "page011_img01_735x874.jpeg",
-          "width": 735,
-          "height": 874
-        },
-        {
-          "filename": "page011_img02_1795x1955.jpeg",
-          "width": 1795,
-          "height": 1955
-        },
-        {
-          "filename": "page011_img03_935x1955.jpeg",
-          "width": 935,
-          "height": 1955
-        }
-      ]
-    },
-    {
-      "page": 12,
-      "category": "control",
-      "text": "Fabric Rumi    Color Moroccan Sand    \nOperating System PowerView® Automation    Deck 2\n12\nFPO\n13\nThe minimalistic \nappeal of a modern \nroller shade for a \nstyle redefined.",
-      "images": [
-        {
-          "filename": "page012_img01_1795x1955.jpeg",
-          "width": 1795,
-          "height": 1955
-        },
-        {
-          "filename": "page012_img02_660x845.jpeg",
-          "width": 660,
-          "height": 845
-        },
-        {
-          "filename": "page012_img03_1007x1955.jpeg",
-          "width": 1007,
-          "height": 1955
-        }
-      ]
-    },
-    {
-      "page": 13,
-      "category": "control",
-      "text": "Fabric Landen    Color Piccolo     \nOperating System PowerView® Automation    Deck 2\nThe rhythmic symmetry \nof evenly spaced \nelements provides \nwindow-to-window \nalignment with \nsame sized shades.\n14\n15",
-      "images": [
-        {
-          "filename": "page013_img01_981x1955.jpeg",
-          "width": 981,
-          "height": 1955
-        },
-        {
-          "filename": "page013_img02_687x850.jpeg",
-          "width": 687,
-          "height": 850
-        },
-        {
-          "filename": "page013_img03_1796x1955.jpeg",
-          "width": 1796,
-          "height": 1955
-        }
-      ]
-    },
-    {
-      "page": 14,
-      "category": "control",
-      "text": "Fabric Brielle    Color Ascot    \nOperating System PowerView® Automation    Deck 1\n16\n17\nThe linear aesthetic of \nthis unique shade form \nadds drama to even  \nthe sheerest fabric.",
-      "images": [
-        {
-          "filename": "page014_img01_1796x1955.jpeg",
-          "width": 1796,
-          "height": 1955
-        },
-        {
-          "filename": "page014_img02_950x1955.jpeg",
-          "width": 950,
-          "height": 1955
-        },
-        {
-          "filename": "page014_img03_717x899.jpeg",
-          "width": 717,
-          "height": 899
-        }
-      ]
-    },
-    {
-      "page": 15,
-      "category": "control",
-      "text": "Fabric Jayce    Color Weathered Oak    \nOperating System Custom Clutch    Deck 1\n18\n19\nFor the ultimate in \nperformance and \nfunctionality PowerView® \nAutomation and  \nthe proprietary Custom \nClutch are available. \nFPO",
-      "images": [
-        {
-          "filename": "page015_img01_1797x1957.jpeg",
-          "width": 1797,
-          "height": 1957
-        },
-        {
-          "filename": "page015_img02_746x932.jpeg",
-          "width": 746,
-          "height": 932
-        },
-        {
-          "filename": "page015_img03_942x1957.jpeg",
-          "width": 942,
-          "height": 1957
-        }
-      ]
-    },
-    {
-      "page": 16,
-      "category": "control",
-      "text": "Pair Design Studio™ \nSide Panels with \nthe structural \nArchitectural Shades \nfor a sophisticated \ntransitional style.\n20\nFabric Clayton    Color Sugared Birch     \nOperating System PowerView® Automation    Deck 1\nDesign Studio Fabric Hudson    Color Sandy Beach\n21",
-      "images": [
-        {
-          "filename": "page016_img01_1024x1953.jpeg",
-          "width": 1024,
-          "height": 1953
-        },
-        {
-          "filename": "page016_img02_646x862.jpeg",
-          "width": 646,
-          "height": 862
-        },
-        {
-          "filename": "page016_img03_1797x1953.jpeg",
-          "width": 1797,
-          "height": 1953
-        }
-      ]
-    },
-    {
-      "page": 19,
-      "category": "control",
-      "text": "26\nPowerView® Automation\nConvenience\nAchieve your perfect light automatically\nPrivacy \nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout  \nthe day\nSecurity \nRemote control gives the illusion that you're always home\nChild Friendly \nSimple, cord-free operation\nBattery Powered or Hardwired \nFor seamless installation, operation and maintenance\nVoice Control \nCompatible with smart speakers and smart-home systems \nPowerView+TM Automation \nPowerView+ Gen 3 is a premium control option in the \nPowerView family that utilizes a wired connection to both \npower and control PowerView window treatments\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options\n27\nThe Custom Clutch\nThis proprietary   \nsystem provides  \nsuperior functionality, \nshade-to-shade lift \nuniformity, precise \noperation, and  \nminimal light gap  \nwith sophistication  \nand style. Available  \nwith Cassette or  \nbracket only.\nLa cuerda de la persiana puede ESTRANGULAR a su niño. \nPara evitar el estrangulamiento, compre alternativas cuerda \no productos con cuerdas inaccesibles.\nWARNING/ADVERTENCIA\nWindow blind cord can STRANGLE your child. To \nprevent strangulation, purchase cordless products \nor products with inaccessible cords. \nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.\nOPERATING SYSTEMS\nAND OPTIONS\nSTRANGULATION HAZARD – Young children can be strangled \nby cords. Immediately remove this product if a cord longer than \n22 cm or a loop exceeding 44 cm around becomes accessible.\n     WARNING/ADVERTENCIA\nWindow Blind Cord Strangulation Risk Window \nblinds with a damaged or loose tension device or \nretractable cord that fails to fully retract pose a \nstrangulation risk to children. To avoid this potential \nstrangulation risk, consider purchasing cordless \nproducts or products with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de Persianas Las persi-\nanas con un dispositivo tensor suelto o dañado o con una cuerda \nretráctable que no se ajusta completamente representan un riesgo \nde estrangulación para los niños. Para evitar un posible riesgo de \nestrangulamiento, considere comprar productos inalámbricos o \nproductos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en bas âge peuvent \ns’éntrangler avec des cordes. Enlevez immédiatement ce produit \nsi une corde mesurant plus de 22 cm devient accessible ou si \nle contour d’une boucle de plus de 44 cm devient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions with cords to make \nconsumers aware of window cord hazards for children and pets.",
-      "images": [
-        {
-          "filename": "page019_img01_433x558.jpeg",
-          "width": 433,
-          "height": 558
-        },
-        {
-          "filename": "page019_img02_217x459.jpeg",
-          "width": 217,
-          "height": 459
-        },
-        {
-          "filename": "page019_img03_797x1424.jpeg",
-          "width": 797,
-          "height": 1424
-        },
-        {
-          "filename": "page019_img04_471x320.jpeg",
-          "width": 471,
-          "height": 320
-        },
-        {
-          "filename": "page019_img05_472x319.jpeg",
-          "width": 472,
-          "height": 319
-        },
-        {
-          "filename": "page019_img06_471x319.jpeg",
-          "width": 471,
-          "height": 319
-        },
-        {
-          "filename": "page019_img07_471x319.jpeg",
-          "width": 471,
-          "height": 319
-        },
-        {
-          "filename": "page019_img08_943x1957.jpeg",
-          "width": 943,
-          "height": 1957
-        }
-      ]
-    },
-    {
-      "page": 20,
-      "category": "control",
-      "text": "OPERATING SYSTEMS\nAND OPTIONS\n10:30 PM Bedtime\nShades lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to let in just the right amount of light.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®   \nFabric Brielle    Color Ascot \nOperating System PowerView\n® Automation    Deck 1\n26\nPowerView® Automation\nConvenience\nAchieve your perfect light automatically\nPrivacy \nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout  \nthe day\nSecurity \nRemote control gives the illusion that you're always home\nChild Friendly \nSimple, cord-free operation\nBattery Powered or Hardwired \nFor seamless installation, operation and maintenance\nVoice Control \nCompatible with smart speakers and smart-home systems \nPowerView+TM Automation \nPowerView+ Gen 3 is a premium control option in the \nPowerView family that utilizes a wired connection to both \npower and control PowerView window treatments\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options",
-      "images": [
-        {
-          "filename": "page020_img01_1710x1957.jpeg",
-          "width": 1710,
-          "height": 1957
-        },
-        {
-          "filename": "page020_img02_709x603.jpeg",
-          "width": 709,
-          "height": 603
-        },
-        {
-          "filename": "page020_img03_1027x892.jpeg",
-          "width": 1027,
-          "height": 892
-        },
-        {
-          "filename": "page020_img04_1112x803.jpeg",
-          "width": 1112,
-          "height": 803
-        },
-        {
-          "filename": "page020_img05_1123x853.jpeg",
-          "width": 1123,
-          "height": 853
-        },
-        {
-          "filename": "page020_img06_433x558.jpeg",
-          "width": 433,
-          "height": 558
-        },
-        {
-          "filename": "page020_img07_217x459.jpeg",
-          "width": 217,
-          "height": 459
-        },
-        {
-          "filename": "page020_img08_962x1957.jpeg",
-          "width": 962,
-          "height": 1957
-        }
-      ]
-    }
-  ],
-  "design_options": [
-    {
-      "page": 21,
-      "category": "design",
-      "text": "Top  \nTreatments\nBottom \nTreatments\nLarge Square Cassette 2.0\nConceals the fabric roll behind a modern, square \nfabric-wrapped cover. \nValance\t\nThe fabric-wrapped valance provides a structured  \nand tailored profile. Valance height options: 6½\", 8\".\nCustom Clutch\nProprietary system provides functionality, shade- \nto-shade lift uniformity, precise operation and  \na minimum light gap. Available in 12 finishes,  \nincluding two exclusive metal finishes: Brushed  \nSilver or Bronze Shimmer. \nBottom Bar\nUnique fabric covered bottom bar designed to \ncomplement the contoured battens.\n28\nMounting Profiles\nThe minimal proﬁle of\nAlustra® Architectural Shades\nallows for both inside and\noutside mounting. Select the\noption that works best for your\nwindow and design aesthetic.\nInside Mount\nOutside Mount\nLarge Square Cassette 2.0\nLarge Square Cassette 2.0\nCustom Clutch Bracket\nCustom Clutch Bracket\nValance\nOutside Mount Valance over Inside Mount Shade\n3129",
-      "images": [
-        {
-          "filename": "page021_img01_797x1424.jpeg",
-          "width": 797,
-          "height": 1424
-        },
-        {
-          "filename": "page021_img02_471x320.jpeg",
-          "width": 471,
-          "height": 320
-        },
-        {
-          "filename": "page021_img03_472x319.jpeg",
-          "width": 472,
-          "height": 319
-        },
-        {
-          "filename": "page021_img04_471x319.jpeg",
-          "width": 471,
-          "height": 319
-        },
-        {
-          "filename": "page021_img05_471x319.jpeg",
-          "width": 471,
-          "height": 319
-        },
-        {
-          "filename": "page021_img06_560x347.jpeg",
-          "width": 560,
-          "height": 347
-        },
-        {
-          "filename": "page021_img07_560x347.jpeg",
-          "width": 560,
-          "height": 347
-        },
-        {
-          "filename": "page021_img08_560x347.jpeg",
-          "width": 560,
-          "height": 347
-        },
-        {
-          "filename": "page021_img09_560x347.jpeg",
-          "width": 560,
-          "height": 347
-        },
-        {
-          "filename": "page021_img10_559x347.jpeg",
-          "width": 559,
-          "height": 347
-        }
-      ]
-    }
-  ],
-  "mounting": [],
-  "product_details": [
-    {
-      "page": 18,
-      "category": "opacity",
-      "text": "24\nFabric Amelia    Color Abyss \nOperating System PowerView® Automation    Deck 1\nOpacity\nThe unique fabrics in \nthis collection offer \nvarying levels of privacy \nand light control.\n25\nSheer   |   Opacity Rating 1\nMost Light – Least Privacy\nSemi-Opaque   |   Opacity Rating 3\nSome Light – More Privacy\nSemi-Sheer   |   Opacity Rating 2\nModerate Light – Some Privacy\nSheer    Fabric Jayce    Color Weathered Oak    Deck 1\nSemi-Sheer    Fabric Amelia    Color Dawn Drizzle    Deck 1\nSemi-Opaque    Fabric Landen    Color Piccolo    Deck 2\nLight Control and Privacy\nThere is a range of subtle opacity levels within each category based on the \nweave of the fabric.",
-      "images": [
-        {
-          "filename": "page018_img01_995x1954.jpeg",
-          "width": 995,
-          "height": 1954
-        },
-        {
-          "filename": "page018_img02_731x598.jpeg",
-          "width": 731,
-          "height": 598
-        },
-        {
-          "filename": "page018_img03_731x598.jpeg",
-          "width": 731,
-          "height": 598
-        },
-        {
-          "filename": "page018_img04_731x598.jpeg",
-          "width": 731,
-          "height": 598
-        }
-      ]
-    },
-    {
-      "page": 22,
-      "category": "details",
-      "text": "30\n33\nReverse Roll & Reverse Roll Recessed\nReverse Roll\n31\nReverse Roll Recessed\nReverse Roll Recessed: Top Panel Variation\nWith the Reverse Roll Recessed option, the top panel height and batten \nplacement will vary based on the length of shade. All other panels and \nbatten positions on the shade will be equal.\nReverse Roll Shade rolls off the front of the headrail \ncreating uniform batten and panel spacing from  \ntop to bottom.\nOnce fully lowered the shade automatically kicks \nback into position reducing space between shade \nand window.",
-      "images": [
-        {
-          "filename": "page022_img01_690x618.jpeg",
-          "width": 690,
-          "height": 618
-        },
-        {
-          "filename": "page022_img02_691x618.jpeg",
-          "width": 691,
-          "height": 618
-        },
-        {
-          "filename": "page022_img03_690x618.jpeg",
-          "width": 690,
-          "height": 618
-        },
-        {
-          "filename": "page022_img04_690x618.jpeg",
-          "width": 690,
-          "height": 618
-        },
-        {
-          "filename": "page022_img05_678x1295.jpeg",
-          "width": 678,
-          "height": 1295
-        },
-        {
-          "filename": "page022_img06_678x1295.jpeg",
-          "width": 678,
-          "height": 1295
-        }
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "page": 2,
-      "category": "gallery",
-      "text": "Alustra\n® Architectural Shades",
-      "images": [
-        {
-          "filename": "page002_img01_2028x1955.jpeg",
-          "width": 2028,
-          "height": 1955
-        }
-      ]
-    },
-    {
-      "page": 5,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page005_img01_1781x1956.jpeg",
-          "width": 1781,
-          "height": 1956
-        },
-        {
-          "filename": "page005_img02_1148x1953.jpeg",
-          "width": 1148,
-          "height": 1953
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "category": "gallery",
-      "text": "Fabric Amelia    Color Dawn Drizzle \nOperating System PowerView® Automation    Deck 1",
-      "images": [
-        {
-          "filename": "page006_img01_2903x1956.jpeg",
-          "width": 2903,
-          "height": 1956
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "category": "gallery",
-      "text": "2\nThe Alustra® Collection\nCreated to meet the \nexpectations of those who \nseek the best in design. \nThe Alustra® Collection is \nan exclusive, thoughtfully \ncurated collection of \ndesign-inspired fabrics, \ntextures and colors for \nHunter Douglas custom \nwindow treatments. \n3",
-      "images": [
-        {
-          "filename": "page007_img01_2563x2812.jpeg",
-          "width": 2563,
-          "height": 2812
-        },
-        {
-          "filename": "page007_img02_1148x2812.jpeg",
-          "width": 1148,
-          "height": 2812
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "category": "gallery",
-      "text": "6\nFabric Brielle    Color Ascot \nOperating System PowerView® Automation    Deck 1\n7",
-      "images": [
-        {
-          "filename": "page009_img01_1797x1957.jpeg",
-          "width": 1797,
-          "height": 1957
-        },
-        {
-          "filename": "page009_img02_1788x1957.jpeg",
-          "width": 1788,
-          "height": 1957
-        }
-      ]
-    },
-    {
-      "page": 25,
-      "category": "gallery",
-      "text": "",
-      "images": [
-        {
-          "filename": "page025_img01_3010x2427.jpeg",
-          "width": 3010,
-          "height": 2427
-        }
-      ]
-    }
-  ],
-  "vane_sizes": [],
-  "hardware_colors": [
-    {
-      "page": 28,
-      "category": "hardware",
-      "text": "Hardware Color Guide\n048 Black\n064 Bronze\n235 Gold\n316 Nickel\n320 Rich Cream\n651 Duchess Grey\n661 White Tiara\n859 Desert Tan\n879 Pearl Gray\n903 Desert Gold\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26",
-      "images": [
-        {
-          "filename": "page028_img01_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img02_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img03_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img04_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img05_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img06_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img07_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img08_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img09_306x306.png",
-          "width": 306,
-          "height": 306
-        },
-        {
-          "filename": "page028_img10_306x306.png",
-          "width": 306,
-          "height": 306
-        }
-      ]
-    }
-  ],
-  "fabric_swatches": {
-    "Other Colors": [
-      {
-        "image": "page029_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Crème Brûlée",
-        "specs": [
-          "Sheer JAY-301",
-          "Sheer JAY-302"
-        ]
-      },
-      {
-        "image": "page029_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Weathered Oak",
-        "specs": [
-          "Sheer JAY-301",
-          "Sheer JAY-302"
-        ]
-      },
-      {
-        "image": "page030_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Honey Gold",
-        "specs": [
-          "Sheer JAY-351",
-          "Sheer JAY-401"
-        ]
-      },
-      {
-        "image": "page030_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Timber Ridge",
-        "specs": [
-          "Sheer JAY-351",
-          "Sheer JAY-401"
-        ]
-      },
-      {
-        "image": "page031_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Snowbird",
-        "specs": [
-          "Sheer HWD-101",
-          "Sheer HWD-201"
-        ]
-      },
-      {
-        "image": "page031_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Limestone",
-        "specs": [
-          "Sheer HWD-101",
-          "Sheer HWD-201"
-        ]
-      },
-      {
-        "image": "page032_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Olde Pewter",
-        "specs": [
-          "Sheer HWD-801",
-          "Sheer HWD-303"
-        ]
-      },
-      {
-        "image": "page032_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Sand Storm",
-        "specs": [
-          "Sheer HWD-801",
-          "Sheer HWD-303"
-        ]
-      },
-      {
-        "image": "page033_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Atlas",
-        "specs": [
-          "Sheer HWD-601",
-          "Sheer HWD-401"
-        ]
-      },
-      {
-        "image": "page033_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Cedar Chest",
-        "specs": [
-          "Sheer HWD-601",
-          "Sheer HWD-401"
-        ]
-      },
-      {
-        "image": "page034_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Nordic",
-        "specs": [
-          "Semi-Sheer BRL-803",
-          "Semi-Sheer BRL-304"
-        ]
-      },
-      {
-        "image": "page034_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Paloma",
-        "specs": [
-          "Semi-Sheer BRL-803",
-          "Semi-Sheer BRL-304"
-        ]
-      },
-      {
-        "image": "page035_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Oxford",
-        "specs": [
-          "Semi-Sheer BRL-802",
-          "Semi-Sheer BRL-402"
-        ]
-      },
-      {
-        "image": "page035_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Ascot",
-        "specs": [
-          "Semi-Sheer BRL-802",
-          "Semi-Sheer BRL-402"
-        ]
-      },
-      {
-        "image": "page036_img02_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Calder",
-        "specs": [
-          "Semi-Sheer BRL-902"
-        ]
-      },
-      {
-        "image": "page037_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Lattice",
-        "specs": [
-          "Semi-Sheer CLT-305",
-          "Semi-Sheer CLT-306"
-        ]
-      },
-      {
-        "image": "page037_img04_213x212.jpeg",
-        "width": 213,
-        "height": 212,
-        "color_name": "Tweed Coat",
-        "specs": [
-          "Semi-Sheer CLT-305",
-          "Semi-Sheer CLT-306"
-        ]
-      },
-      {
-        "image": "page038_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Sugared Birch",
-        "specs": [
-          "Semi-Sheer CLT-352",
-          "Semi-Sheer CLT-804"
-        ]
-      },
-      {
-        "image": "page038_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Silver Point",
-        "specs": [
-          "Semi-Sheer CLT-352",
-          "Semi-Sheer CLT-804"
-        ]
-      },
-      {
-        "image": "page039_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Dawn Drizzle",
-        "specs": [
-          "Semi-Sheer AMI-307",
-          "Semi-Sheer AMI-806"
-        ]
-      },
-      {
-        "image": "page039_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Silver Mist",
-        "specs": [
-          "Semi-Sheer AMI-307",
-          "Semi-Sheer AMI-806"
-        ]
-      },
-      {
-        "image": "page040_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Bedford Brown",
-        "specs": [
-          "Semi-Sheer AMI-403",
-          "Semi-Sheer AMI-807"
-        ]
-      },
-      {
-        "image": "page040_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Fossil",
-        "specs": [
-          "Semi-Sheer AMI-403",
-          "Semi-Sheer AMI-807"
-        ]
-      },
-      {
-        "image": "page041_img02_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Abyss",
-        "specs": [
-          "Semi-Sheer AMI-904"
-        ]
-      },
-      {
-        "image": "page042_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Pearl Dust",
-        "specs": [
-          "Semi-Opaque RMI-808",
-          "Semi-Opaque RMI-308"
-        ]
-      },
-      {
-        "image": "page042_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Moroccan Sand",
-        "specs": [
-          "Semi-Opaque RMI-808",
-          "Semi-Opaque RMI-308"
-        ]
-      },
-      {
-        "image": "page043_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Shadow",
-        "specs": [
-          "Semi-Opaque RMI-809",
-          "Semi-Opaque RMI-602"
-        ]
-      },
-      {
-        "image": "page043_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Marina",
-        "specs": [
-          "Semi-Opaque RMI-809",
-          "Semi-Opaque RMI-602"
-        ]
-      },
-      {
-        "image": "page044_img02_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Java Coast",
-        "specs": [
-          "Semi-Opaque RMI-701"
-        ]
-      },
-      {
-        "image": "page045_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Arctic White",
-        "specs": [
-          "Semi-Opaque FIN-103",
-          "Semi-Opaque FIN-810"
-        ]
-      },
-      {
-        "image": "page045_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Misty Harbor",
-        "specs": [
-          "Semi-Opaque FIN-103",
-          "Semi-Opaque FIN-810"
-        ]
-      },
-      {
-        "image": "page046_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Arrowhead",
-        "specs": [
-          "Semi-Opaque FIN-309",
-          "Semi-Opaque FIN-353"
-        ]
-      },
-      {
-        "image": "page046_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Ancient Bronze",
-        "specs": [
-          "Semi-Opaque FIN-309",
-          "Semi-Opaque FIN-353"
-        ]
-      },
-      {
-        "image": "page047_img02_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Pebble",
-        "specs": [
-          "Semi-Opaque FIN-811"
-        ]
-      },
-      {
-        "image": "page048_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Warm Sterling",
-        "specs": [
-          "Semi-Opaque LEO-406",
-          "Semi-Opaque LEO-355"
-        ]
-      },
-      {
-        "image": "page048_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Earthy Umber",
-        "specs": [
-          "Semi-Opaque LEO-406",
-          "Semi-Opaque LEO-355"
-        ]
-      },
-      {
-        "image": "page049_img02_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Celestial Grey",
-        "specs": [
-          "Semi-Opaque LEO-812"
-        ]
-      },
-      {
-        "image": "page050_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Edgecomb",
-        "specs": [
-          "Semi-Opaque LAND-311",
-          "Semi-Opaque LAND-407"
-        ]
-      },
-      {
-        "image": "page050_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Piccolo",
-        "specs": [
-          "Semi-Opaque LAND-311",
-          "Semi-Opaque LAND-407"
-        ]
-      },
-      {
-        "image": "page051_img03_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Peppercorn",
-        "specs": [
-          "Semi-Opaque LAND-813",
-          "Semi-Opaque LAND-814"
-        ]
-      },
-      {
-        "image": "page051_img04_212x212.jpeg",
-        "width": 212,
-        "height": 212,
-        "color_name": "Inkwell",
-        "specs": [
-          "Semi-Opaque LAND-813",
-          "Semi-Opaque LAND-814"
-        ]
-      }
-    ]
-  },
-  "stats": {
-    "gallery": 6,
-    "benefits": 1,
-    "control": 10,
-    "design": 1,
-    "mounting": 0,
-    "details": 2,
-    "vane": 0,
-    "hardware": 1,
-    "swatch_collections": 1,
-    "swatch_colors": 41
-  },
-  "_classification": {
-    "toc": 1,
-    "gallery": 6,
-    "empty": 1,
-    "slogan": 1,
-    "control": 10,
-    "benefits": 1,
-    "opacity": 1,
-    "design": 1,
-    "details": 1,
-    "advantage": 1,
-    "copyright": 1,
-    "color_chart_cover": 1,
-    "long_text": 1,
-    "hardware": 1,
-    "swatch": 23
+   ]
   }
+ ],
+ "control_options": [
+  {
+   "page": 8,
+   "category": "control",
+   "text": "4\nFabric Finley    Color Misty Harbor     \nOperating System PowerView® Automation    Deck 2\n5\nAlustra® Architectural Shades\nThe innovative form of \nAlustra® Architectural Shades \ninfuses a soft yet structural \nbeauty at the window. \nSophisticated fabrics \ncombined with a unique \nlinear design, provides  \nthe dimensional aesthetic  \nof a Roman shade with  \nthe modern appeal of \na roller shade.",
+   "images": [
+    {
+     "filename": "page008_img01_1794x1956.jpeg",
+     "width": 1794,
+     "height": 1956
+    },
+    {
+     "filename": "page008_img02_783x1956.jpeg",
+     "width": 783,
+     "height": 1956
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "category": "control",
+   "text": "8\nFabric Leo    Color Earthy Umber     \nOperating System PowerView® Automation    Deck 2\n9\nInfuse a room with a soft \nstructural beauty that \nadds dimension to unify \nand define the space.",
+   "images": [
+    {
+     "filename": "page010_img01_1783x1953.jpeg",
+     "width": 1783,
+     "height": 1953
+    },
+    {
+     "filename": "page010_img02_791x1001.jpeg",
+     "width": 791,
+     "height": 1001
+    },
+    {
+     "filename": "page010_img03_893x1953.jpeg",
+     "width": 893,
+     "height": 1953
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "category": "control",
+   "text": "10\nInherent to \nArchitectural Shades \nare the exclusive \nAlustra® Collection \nfabrics for those  \nwho seek the best  \nin design.\nFabric Finley    Color Misty Harbor \nOperating System PowerView® Automation    Deck 2\n11",
+   "images": [
+    {
+     "filename": "page011_img01_735x874.jpeg",
+     "width": 735,
+     "height": 874
+    },
+    {
+     "filename": "page011_img02_1795x1955.jpeg",
+     "width": 1795,
+     "height": 1955
+    },
+    {
+     "filename": "page011_img03_935x1955.jpeg",
+     "width": 935,
+     "height": 1955
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "category": "control",
+   "text": "Fabric Rumi    Color Moroccan Sand    \nOperating System PowerView® Automation    Deck 2\n12\nFPO\n13\nThe minimalistic \nappeal of a modern \nroller shade for a \nstyle redefined.",
+   "images": [
+    {
+     "filename": "page012_img01_1795x1955.jpeg",
+     "width": 1795,
+     "height": 1955
+    },
+    {
+     "filename": "page012_img02_660x845.jpeg",
+     "width": 660,
+     "height": 845
+    },
+    {
+     "filename": "page012_img03_1007x1955.jpeg",
+     "width": 1007,
+     "height": 1955
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "category": "control",
+   "text": "Fabric Landen    Color Piccolo     \nOperating System PowerView® Automation    Deck 2\nThe rhythmic symmetry \nof evenly spaced \nelements provides \nwindow-to-window \nalignment with \nsame sized shades.\n14\n15",
+   "images": [
+    {
+     "filename": "page013_img01_981x1955.jpeg",
+     "width": 981,
+     "height": 1955
+    },
+    {
+     "filename": "page013_img02_687x850.jpeg",
+     "width": 687,
+     "height": 850
+    },
+    {
+     "filename": "page013_img03_1796x1955.jpeg",
+     "width": 1796,
+     "height": 1955
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "category": "control",
+   "text": "Fabric Brielle    Color Ascot    \nOperating System PowerView® Automation    Deck 1\n16\n17\nThe linear aesthetic of \nthis unique shade form \nadds drama to even  \nthe sheerest fabric.",
+   "images": [
+    {
+     "filename": "page014_img01_1796x1955.jpeg",
+     "width": 1796,
+     "height": 1955
+    },
+    {
+     "filename": "page014_img02_950x1955.jpeg",
+     "width": 950,
+     "height": 1955
+    },
+    {
+     "filename": "page014_img03_717x899.jpeg",
+     "width": 717,
+     "height": 899
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "category": "control",
+   "text": "Fabric Jayce    Color Weathered Oak    \nOperating System Custom Clutch    Deck 1\n18\n19\nFor the ultimate in \nperformance and \nfunctionality PowerView® \nAutomation and  \nthe proprietary Custom \nClutch are available. \nFPO",
+   "images": [
+    {
+     "filename": "page015_img01_1797x1957.jpeg",
+     "width": 1797,
+     "height": 1957
+    },
+    {
+     "filename": "page015_img02_746x932.jpeg",
+     "width": 746,
+     "height": 932
+    },
+    {
+     "filename": "page015_img03_942x1957.jpeg",
+     "width": 942,
+     "height": 1957
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "category": "control",
+   "text": "Pair Design Studio™ \nSide Panels with \nthe structural \nArchitectural Shades \nfor a sophisticated \ntransitional style.\n20\nFabric Clayton    Color Sugared Birch     \nOperating System PowerView® Automation    Deck 1\nDesign Studio Fabric Hudson    Color Sandy Beach\n21",
+   "images": [
+    {
+     "filename": "page016_img01_1024x1953.jpeg",
+     "width": 1024,
+     "height": 1953
+    },
+    {
+     "filename": "page016_img02_646x862.jpeg",
+     "width": 646,
+     "height": 862
+    },
+    {
+     "filename": "page016_img03_1797x1953.jpeg",
+     "width": 1797,
+     "height": 1953
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "category": "control",
+   "text": "26\nPowerView® Automation\nConvenience\nAchieve your perfect light automatically\nPrivacy \nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout  \nthe day\nSecurity \nRemote control gives the illusion that you're always home\nChild Friendly \nSimple, cord-free operation\nBattery Powered or Hardwired \nFor seamless installation, operation and maintenance\nVoice Control \nCompatible with smart speakers and smart-home systems \nPowerView+TM Automation \nPowerView+ Gen 3 is a premium control option in the \nPowerView family that utilizes a wired connection to both \npower and control PowerView window treatments\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options\n27\nThe Custom Clutch\nThis proprietary   \nsystem provides  \nsuperior functionality, \nshade-to-shade lift \nuniformity, precise \noperation, and  \nminimal light gap  \nwith sophistication  \nand style. Available  \nwith Cassette or  \nbracket only.\nLa cuerda de la persiana puede ESTRANGULAR a su niño. \nPara evitar el estrangulamiento, compre alternativas cuerda \no productos con cuerdas inaccesibles.\nWARNING/ADVERTENCIA\nWindow blind cord can STRANGLE your child. To \nprevent strangulation, purchase cordless products \nor products with inaccessible cords. \nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions \nwith cords to make consumers aware of window \ncord hazards for children and pets.\nOPERATING SYSTEMS\nAND OPTIONS\nSTRANGULATION HAZARD – Young children can be strangled \nby cords. Immediately remove this product if a cord longer than \n22 cm or a loop exceeding 44 cm around becomes accessible.\n     WARNING/ADVERTENCIA\nWindow Blind Cord Strangulation Risk Window \nblinds with a damaged or loose tension device or \nretractable cord that fails to fully retract pose a \nstrangulation risk to children. To avoid this potential \nstrangulation risk, consider purchasing cordless \nproducts or products with inaccessible cords. \nRiesgo de Estragulamiento en Cuerdas de Persianas Las persi-\nanas con un dispositivo tensor suelto o dañado o con una cuerda \nretráctable que no se ajusta completamente representan un riesgo \nde estrangulación para los niños. Para evitar un posible riesgo de \nestrangulamiento, considere comprar productos inalámbricos o \nproductos con cuerdas inaccesibles.\nWARNING\nMISE EN GARDE\nRISQUE D’ÉTRANGLEMENT– Les enfants en bas âge peuvent \ns’éntrangler avec des cordes. Enlevez immédiatement ce produit \nsi une corde mesurant plus de 22 cm devient accessible ou si \nle contour d’une boucle de plus de 44 cm devient accessible.\nChild Safety Labels on Corded Systems\nThese warning labels appear on window fashions with cords to make \nconsumers aware of window cord hazards for children and pets.",
+   "images": [
+    {
+     "filename": "page019_img01_433x558.jpeg",
+     "width": 433,
+     "height": 558
+    },
+    {
+     "filename": "page019_img02_217x459.jpeg",
+     "width": 217,
+     "height": 459
+    },
+    {
+     "filename": "page019_img03_797x1424.jpeg",
+     "width": 797,
+     "height": 1424
+    },
+    {
+     "filename": "page019_img04_471x320.jpeg",
+     "width": 471,
+     "height": 320
+    },
+    {
+     "filename": "page019_img05_472x319.jpeg",
+     "width": 472,
+     "height": 319
+    },
+    {
+     "filename": "page019_img06_471x319.jpeg",
+     "width": 471,
+     "height": 319
+    },
+    {
+     "filename": "page019_img07_471x319.jpeg",
+     "width": 471,
+     "height": 319
+    },
+    {
+     "filename": "page019_img08_943x1957.jpeg",
+     "width": 943,
+     "height": 1957
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "category": "control",
+   "text": "OPERATING SYSTEMS\nAND OPTIONS\n10:30 PM Bedtime\nShades lower automatically for privacy and a perfect night’s sleep.\n7:00 AM Morning\nSchedule shades to let in just the right amount of light.\n5 Minutes Before Sunset\nBased on your local sunset time, shades open to reveal your best view.\n2:00 PM Afternoon\nShades adjust to protect furnishings from harsh midday sunlight.\nA Day With PowerView®   \nFabric Brielle    Color Ascot \nOperating System PowerView\n® Automation    Deck 1\n26\nPowerView® Automation\nConvenience\nAchieve your perfect light automatically\nPrivacy \nSchedule shadings to close whenever you prefer\nEnergy Efficiency \nProgram shadings to be in the best positions throughout  \nthe day\nSecurity \nRemote control gives the illusion that you're always home\nChild Friendly \nSimple, cord-free operation\nBattery Powered or Hardwired \nFor seamless installation, operation and maintenance\nVoice Control \nCompatible with smart speakers and smart-home systems \nPowerView+TM Automation \nPowerView+ Gen 3 is a premium control option in the \nPowerView family that utilizes a wired connection to both \npower and control PowerView window treatments\nFor more details on PowerView, open the opposite page  \nand visit hunterdouglas.com/powerview-design-options",
+   "images": [
+    {
+     "filename": "page020_img01_1710x1957.jpeg",
+     "width": 1710,
+     "height": 1957
+    },
+    {
+     "filename": "page020_img02_709x603.jpeg",
+     "width": 709,
+     "height": 603
+    },
+    {
+     "filename": "page020_img03_1027x892.jpeg",
+     "width": 1027,
+     "height": 892
+    },
+    {
+     "filename": "page020_img04_1112x803.jpeg",
+     "width": 1112,
+     "height": 803
+    },
+    {
+     "filename": "page020_img05_1123x853.jpeg",
+     "width": 1123,
+     "height": 853
+    },
+    {
+     "filename": "page020_img06_433x558.jpeg",
+     "width": 433,
+     "height": 558
+    },
+    {
+     "filename": "page020_img07_217x459.jpeg",
+     "width": 217,
+     "height": 459
+    },
+    {
+     "filename": "page020_img08_962x1957.jpeg",
+     "width": 962,
+     "height": 1957
+    }
+   ]
+  }
+ ],
+ "design_options": [
+  {
+   "page": 21,
+   "category": "design",
+   "text": "Top  \nTreatments\nBottom \nTreatments\nLarge Square Cassette 2.0\nConceals the fabric roll behind a modern, square \nfabric-wrapped cover. \nValance\t\nThe fabric-wrapped valance provides a structured  \nand tailored profile. Valance height options: 6½\", 8\".\nCustom Clutch\nProprietary system provides functionality, shade- \nto-shade lift uniformity, precise operation and  \na minimum light gap. Available in 12 finishes,  \nincluding two exclusive metal finishes: Brushed  \nSilver or Bronze Shimmer. \nBottom Bar\nUnique fabric covered bottom bar designed to \ncomplement the contoured battens.\n28\nMounting Profiles\nThe minimal proﬁle of\nAlustra® Architectural Shades\nallows for both inside and\noutside mounting. Select the\noption that works best for your\nwindow and design aesthetic.\nInside Mount\nOutside Mount\nLarge Square Cassette 2.0\nLarge Square Cassette 2.0\nCustom Clutch Bracket\nCustom Clutch Bracket\nValance\nOutside Mount Valance over Inside Mount Shade\n3129",
+   "images": [
+    {
+     "filename": "page021_img01_797x1424.jpeg",
+     "width": 797,
+     "height": 1424
+    },
+    {
+     "filename": "page021_img02_471x320.jpeg",
+     "width": 471,
+     "height": 320
+    },
+    {
+     "filename": "page021_img03_472x319.jpeg",
+     "width": 472,
+     "height": 319
+    },
+    {
+     "filename": "page021_img04_471x319.jpeg",
+     "width": 471,
+     "height": 319
+    },
+    {
+     "filename": "page021_img05_471x319.jpeg",
+     "width": 471,
+     "height": 319
+    },
+    {
+     "filename": "page021_img06_560x347.jpeg",
+     "width": 560,
+     "height": 347
+    },
+    {
+     "filename": "page021_img07_560x347.jpeg",
+     "width": 560,
+     "height": 347
+    },
+    {
+     "filename": "page021_img08_560x347.jpeg",
+     "width": 560,
+     "height": 347
+    },
+    {
+     "filename": "page021_img09_560x347.jpeg",
+     "width": 560,
+     "height": 347
+    },
+    {
+     "filename": "page021_img10_559x347.jpeg",
+     "width": 559,
+     "height": 347
+    }
+   ]
+  }
+ ],
+ "mounting": [],
+ "product_details": [
+  {
+   "page": 18,
+   "category": "opacity",
+   "text": "24\nFabric Amelia    Color Abyss \nOperating System PowerView® Automation    Deck 1\nOpacity\nThe unique fabrics in \nthis collection offer \nvarying levels of privacy \nand light control.\n25\nSheer   |   Opacity Rating 1\nMost Light – Least Privacy\nSemi-Opaque   |   Opacity Rating 3\nSome Light – More Privacy\nSemi-Sheer   |   Opacity Rating 2\nModerate Light – Some Privacy\nSheer    Fabric Jayce    Color Weathered Oak    Deck 1\nSemi-Sheer    Fabric Amelia    Color Dawn Drizzle    Deck 1\nSemi-Opaque    Fabric Landen    Color Piccolo    Deck 2\nLight Control and Privacy\nThere is a range of subtle opacity levels within each category based on the \nweave of the fabric.",
+   "images": [
+    {
+     "filename": "page018_img01_995x1954.jpeg",
+     "width": 995,
+     "height": 1954
+    },
+    {
+     "filename": "page018_img02_731x598.jpeg",
+     "width": 731,
+     "height": 598
+    },
+    {
+     "filename": "page018_img03_731x598.jpeg",
+     "width": 731,
+     "height": 598
+    },
+    {
+     "filename": "page018_img04_731x598.jpeg",
+     "width": 731,
+     "height": 598
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "category": "details",
+   "text": "30\n33\nReverse Roll & Reverse Roll Recessed\nReverse Roll\n31\nReverse Roll Recessed\nReverse Roll Recessed: Top Panel Variation\nWith the Reverse Roll Recessed option, the top panel height and batten \nplacement will vary based on the length of shade. All other panels and \nbatten positions on the shade will be equal.\nReverse Roll Shade rolls off the front of the headrail \ncreating uniform batten and panel spacing from  \ntop to bottom.\nOnce fully lowered the shade automatically kicks \nback into position reducing space between shade \nand window.",
+   "images": [
+    {
+     "filename": "page022_img01_690x618.jpeg",
+     "width": 690,
+     "height": 618
+    },
+    {
+     "filename": "page022_img02_691x618.jpeg",
+     "width": 691,
+     "height": 618
+    },
+    {
+     "filename": "page022_img03_690x618.jpeg",
+     "width": 690,
+     "height": 618
+    },
+    {
+     "filename": "page022_img04_690x618.jpeg",
+     "width": 690,
+     "height": 618
+    },
+    {
+     "filename": "page022_img05_678x1295.jpeg",
+     "width": 678,
+     "height": 1295
+    },
+    {
+     "filename": "page022_img06_678x1295.jpeg",
+     "width": 678,
+     "height": 1295
+    }
+   ]
+  }
+ ],
+ "gallery": [
+  {
+   "page": 2,
+   "category": "gallery",
+   "text": "Alustra\n® Architectural Shades",
+   "images": [
+    {
+     "filename": "page002_img01_2028x1955.jpeg",
+     "width": 2028,
+     "height": 1955
+    }
+   ]
+  },
+  {
+   "page": 5,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page005_img01_1781x1956.jpeg",
+     "width": 1781,
+     "height": 1956
+    },
+    {
+     "filename": "page005_img02_1148x1953.jpeg",
+     "width": 1148,
+     "height": 1953
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "category": "gallery",
+   "text": "Fabric Amelia    Color Dawn Drizzle \nOperating System PowerView® Automation    Deck 1",
+   "images": [
+    {
+     "filename": "page006_img01_2903x1956.jpeg",
+     "width": 2903,
+     "height": 1956
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "category": "gallery",
+   "text": "2\nThe Alustra® Collection\nCreated to meet the \nexpectations of those who \nseek the best in design. \nThe Alustra® Collection is \nan exclusive, thoughtfully \ncurated collection of \ndesign-inspired fabrics, \ntextures and colors for \nHunter Douglas custom \nwindow treatments. \n3",
+   "images": [
+    {
+     "filename": "page007_img01_2563x2812.jpeg",
+     "width": 2563,
+     "height": 2812
+    },
+    {
+     "filename": "page007_img02_1148x2812.jpeg",
+     "width": 1148,
+     "height": 2812
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "category": "gallery",
+   "text": "6\nFabric Brielle    Color Ascot \nOperating System PowerView® Automation    Deck 1\n7",
+   "images": [
+    {
+     "filename": "page009_img01_1797x1957.jpeg",
+     "width": 1797,
+     "height": 1957
+    },
+    {
+     "filename": "page009_img02_1788x1957.jpeg",
+     "width": 1788,
+     "height": 1957
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "category": "gallery",
+   "text": "",
+   "images": [
+    {
+     "filename": "page025_img01_3010x2427.jpeg",
+     "width": 3010,
+     "height": 2427
+    }
+   ]
+  }
+ ],
+ "vane_sizes": [],
+ "hardware_colors": [
+  {
+   "page": 28,
+   "category": "hardware",
+   "text": "Hardware Color Guide\n048 Black\n064 Bronze\n235 Gold\n316 Nickel\n320 Rich Cream\n651 Duchess Grey\n661 White Tiara\n859 Desert Tan\n879 Pearl Gray\n903 Desert Gold\nThe actual colors of the fabric may vary slightly from the samples in this book. All variations are within established industry standards. © 2026 Hunter Douglas. All rights reserved.  \nAll trademarks used herein are the property of Hunter Douglas or their respective owners.  1/26",
+   "images": [
+    {
+     "filename": "page028_img01_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img02_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img03_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img04_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img05_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img06_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img07_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img08_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img09_306x306.png",
+     "width": 306,
+     "height": 306
+    },
+    {
+     "filename": "page028_img10_306x306.png",
+     "width": 306,
+     "height": 306
+    }
+   ]
+  }
+ ],
+ "fabric_swatches": {
+  "Other Colors": [
+   {
+    "image": "page029_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Crème Brûlée",
+    "specs": [
+     "Sheer JAY-301"
+    ]
+   },
+   {
+    "image": "page029_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Weathered Oak",
+    "specs": [
+     "Sheer JAY-302"
+    ]
+   },
+   {
+    "image": "page030_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Honey Gold",
+    "specs": [
+     "Sheer JAY-351"
+    ]
+   },
+   {
+    "image": "page030_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Timber Ridge",
+    "specs": [
+     "Sheer JAY-401"
+    ]
+   },
+   {
+    "image": "page031_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Snowbird",
+    "specs": [
+     "Sheer HWD-101"
+    ]
+   },
+   {
+    "image": "page031_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Limestone",
+    "specs": [
+     "Sheer HWD-201"
+    ]
+   },
+   {
+    "image": "page032_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Olde Pewter",
+    "specs": [
+     "Sheer HWD-801"
+    ]
+   },
+   {
+    "image": "page032_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Sand Storm",
+    "specs": [
+     "Sheer HWD-303"
+    ]
+   },
+   {
+    "image": "page033_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Atlas",
+    "specs": [
+     "Sheer HWD-601"
+    ]
+   },
+   {
+    "image": "page033_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Cedar Chest",
+    "specs": [
+     "Sheer HWD-401"
+    ]
+   },
+   {
+    "image": "page034_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Nordic",
+    "specs": [
+     "Semi-Sheer BRL-803"
+    ]
+   },
+   {
+    "image": "page034_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Paloma",
+    "specs": [
+     "Semi-Sheer BRL-304"
+    ]
+   },
+   {
+    "image": "page035_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Oxford",
+    "specs": [
+     "Semi-Sheer BRL-802"
+    ]
+   },
+   {
+    "image": "page035_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Ascot",
+    "specs": [
+     "Semi-Sheer BRL-402"
+    ]
+   },
+   {
+    "image": "page036_img02_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Calder",
+    "specs": [
+     "Semi-Sheer BRL-902"
+    ]
+   },
+   {
+    "image": "page037_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Lattice",
+    "specs": [
+     "Semi-Sheer CLT-305"
+    ]
+   },
+   {
+    "image": "page037_img04_213x212.jpeg",
+    "width": 213,
+    "height": 212,
+    "color_name": "Tweed Coat",
+    "specs": [
+     "Semi-Sheer CLT-306"
+    ]
+   },
+   {
+    "image": "page038_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Sugared Birch",
+    "specs": [
+     "Semi-Sheer CLT-352"
+    ]
+   },
+   {
+    "image": "page038_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Silver Point",
+    "specs": [
+     "Semi-Sheer CLT-804"
+    ]
+   },
+   {
+    "image": "page039_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Dawn Drizzle",
+    "specs": [
+     "Semi-Sheer AMI-307"
+    ]
+   },
+   {
+    "image": "page039_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Silver Mist",
+    "specs": [
+     "Semi-Sheer AMI-806"
+    ]
+   },
+   {
+    "image": "page040_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Bedford Brown",
+    "specs": [
+     "Semi-Sheer AMI-403"
+    ]
+   },
+   {
+    "image": "page040_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Fossil",
+    "specs": [
+     "Semi-Sheer AMI-807"
+    ]
+   },
+   {
+    "image": "page041_img02_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Abyss",
+    "specs": [
+     "Semi-Sheer AMI-904"
+    ]
+   },
+   {
+    "image": "page042_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Pearl Dust",
+    "specs": [
+     "Semi-Opaque RMI-808"
+    ]
+   },
+   {
+    "image": "page042_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Moroccan Sand",
+    "specs": [
+     "Semi-Opaque RMI-308"
+    ]
+   },
+   {
+    "image": "page043_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Shadow",
+    "specs": [
+     "Semi-Opaque RMI-809"
+    ]
+   },
+   {
+    "image": "page043_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Marina",
+    "specs": [
+     "Semi-Opaque RMI-602"
+    ]
+   },
+   {
+    "image": "page044_img02_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Java Coast",
+    "specs": [
+     "Semi-Opaque RMI-701"
+    ]
+   },
+   {
+    "image": "page045_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Arctic White",
+    "specs": [
+     "Semi-Opaque FIN-103"
+    ]
+   },
+   {
+    "image": "page045_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Misty Harbor",
+    "specs": [
+     "Semi-Opaque FIN-810"
+    ]
+   },
+   {
+    "image": "page046_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Arrowhead",
+    "specs": [
+     "Semi-Opaque FIN-309"
+    ]
+   },
+   {
+    "image": "page046_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Ancient Bronze",
+    "specs": [
+     "Semi-Opaque FIN-353"
+    ]
+   },
+   {
+    "image": "page047_img02_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Pebble",
+    "specs": [
+     "Semi-Opaque FIN-811"
+    ]
+   },
+   {
+    "image": "page048_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Warm Sterling",
+    "specs": [
+     "Semi-Opaque LEO-406"
+    ]
+   },
+   {
+    "image": "page048_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Earthy Umber",
+    "specs": [
+     "Semi-Opaque LEO-355"
+    ]
+   },
+   {
+    "image": "page049_img02_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Celestial Grey",
+    "specs": [
+     "Semi-Opaque LEO-812"
+    ]
+   },
+   {
+    "image": "page050_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Edgecomb",
+    "specs": [
+     "Semi-Opaque LAND-311"
+    ]
+   },
+   {
+    "image": "page050_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Piccolo",
+    "specs": [
+     "Semi-Opaque LAND-407"
+    ]
+   },
+   {
+    "image": "page051_img03_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Peppercorn",
+    "specs": [
+     "Semi-Opaque LAND-813"
+    ]
+   },
+   {
+    "image": "page051_img04_212x212.jpeg",
+    "width": 212,
+    "height": 212,
+    "color_name": "Inkwell",
+    "specs": [
+     "Semi-Opaque LAND-814"
+    ]
+   }
+  ]
+ },
+ "stats": {
+  "gallery": 6,
+  "benefits": 1,
+  "control": 10,
+  "design": 1,
+  "mounting": 0,
+  "details": 2,
+  "vane": 0,
+  "hardware": 1,
+  "swatch_collections": 1,
+  "swatch_colors": 41
+ },
+ "_classification": {
+  "toc": 1,
+  "gallery": 6,
+  "empty": 1,
+  "slogan": 1,
+  "control": 10,
+  "benefits": 1,
+  "opacity": 1,
+  "design": 1,
+  "details": 1,
+  "advantage": 1,
+  "copyright": 1,
+  "color_chart_cover": 1,
+  "long_text": 1,
+  "hardware": 1,
+  "swatch": 23
+ }
 }
