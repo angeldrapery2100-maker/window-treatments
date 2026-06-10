@@ -325,9 +325,11 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="flex flex-wrap justify-center gap-6"
             key={activeFilter}
           >
+            {/* flex-wrap + justify-center keeps a partially filled last row centered
+                (filter results often aren't multiples of the column count) */}
             {filteredProducts.map((product) => {
               // DB catalog: use href from DB; JSON mode: build from slug
               const productHref = (useDbCatalog && product.href) ? product.href : `/products/${product.slug}`
@@ -339,7 +341,11 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
                     : `${CDN_BASE}/hunter-douglas/${product.slug}/${product.cover_image}`)
                 : null
               return (
-              <motion.div key={product.id || product.slug} variants={cardReveal}>
+              <motion.div
+                key={product.id || product.slug}
+                variants={cardReveal}
+                className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
+              >
                 <Link
                   href={productHref}
                   className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100"

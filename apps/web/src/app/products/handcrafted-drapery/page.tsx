@@ -162,11 +162,11 @@ function CinemaPlayer({ videos, startIndex = 0, onClose }: { videos: ProjectVide
 }
 
 /* ─── Tactile clickable image ─── */
-function TactileImg({ src, alt, className, onOpen }: { src: string; alt: string; className?: string; onOpen: () => void }) {
+function TactileImg({ src, alt, className, onOpen, fit = 'cover' }: { src: string; alt: string; className?: string; onOpen: () => void; fit?: 'cover' | 'contain' }) {
   return (
     <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={`cursor-zoom-in overflow-hidden rounded-sm ${className || ''}`} onClick={onOpen}>
-      <Image src={src} alt={alt} width={1200} height={1500} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" loading="lazy" />
+      className={`cursor-zoom-in overflow-hidden rounded-sm ${fit === 'contain' ? 'bg-white' : ''} ${className || ''}`} onClick={onOpen}>
+      <Image src={src} alt={alt} width={1200} height={1500} sizes="(max-width: 768px) 100vw, 50vw" className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`} loading="lazy" />
     </motion.div>
   )
 }
@@ -354,6 +354,7 @@ export default function HandcraftedDraperyPage() {
             <TactileImg
               src={`${IMG}/04_fa469c_c8ae22a6dc774d28a6e6e3b637ad406c~mv2.jpeg`}
               alt="Pinch Pleat and Tailored Pleat styles"
+              fit="contain"
               className="w-full aspect-[4/5] shadow-xl"
               onOpen={() => openLightbox(stylesImages, 0)}
             />

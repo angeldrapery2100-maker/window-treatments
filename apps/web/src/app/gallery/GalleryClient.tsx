@@ -64,8 +64,13 @@ function VideoFrame({ item, onClick }: { item: ProjectVideo; onClick: () => void
             <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
           </div>
         </div>
-        <span className="absolute top-3 left-3 text-[9px] font-mono bg-black/40 text-white/80 px-2 py-0.5 rounded-full backdrop-blur-sm">
-          {item.tag}
+        {/* Show at most 2 tags as separate pills — long comma lists read as clutter */}
+        <span className="absolute top-3 left-3 flex gap-1.5">
+          {item.tag.split(',').map(t => t.trim()).filter(Boolean).slice(0, 2).map(t => (
+            <span key={t} className="text-[9px] font-mono bg-black/40 text-white/80 px-2 py-0.5 rounded-full backdrop-blur-sm whitespace-nowrap">
+              {t}
+            </span>
+          ))}
         </span>
       </div>
       <div>
@@ -206,7 +211,9 @@ function Lightbox({
         {/* Info bar — compact, below video */}
         <div className="w-full max-w-[85vw] mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-[#ef8200] text-[10px] font-bold uppercase tracking-[0.4em]">{item.tag}</span>
+            <span className="text-[#ef8200] text-[10px] font-bold uppercase tracking-[0.4em]">
+              {item.tag.split(',').map(t => t.trim()).filter(Boolean).slice(0, 2).join(' · ')}
+            </span>
             <div className="w-px h-4 bg-white/20 hidden md:block" />
             <h2 className="text-lg md:text-xl font-light text-white leading-tight">{item.title}</h2>
             <p className="text-gray-500 text-[10px] uppercase tracking-widest hidden md:block">{item.location}</p>
