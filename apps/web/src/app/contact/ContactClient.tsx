@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import { CA_LICENSE, MAPS_EMBED_URL } from '@/lib/site'
+import { MAPS_EMBED_URL } from '@/lib/site'
 
 interface ContactData {
   title: string
@@ -281,22 +281,18 @@ export default function ContactClient({ contact, footer }: Props) {
         </div>
       </section>
 
-      {/* ── Licensing & Warranty ── */}
+      {/* ── Warranty & Service ── */}
       <section className="w-full border-t border-gray-100 bg-[#F8F8F6] py-14 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
-          <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-gray-500 mb-6">Licensing, Insurance & Warranty</p>
-          <div className="grid gap-8 md:grid-cols-3 text-sm leading-relaxed text-gray-600">
+          <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-gray-500 mb-6">Warranty &amp; Service</p>
+          <div className="grid gap-8 md:grid-cols-2 text-sm leading-relaxed text-gray-600">
             <div>
-              <h3 className="text-base font-medium text-[#12141C] mb-2">Licensed &amp; Insured</h3>
-              <p>Angel Drapery, Inc is a licensed California contractor — CA License #{CA_LICENSE}. We carry full liability insurance on every project. [待补充: 保险承保范围说明]</p>
-            </div>
-            <div>
-              <h3 className="text-base font-medium text-[#12141C] mb-2">Installation Warranty</h3>
-              <p>Every installation is backed by our workmanship warranty. [待补充: 保修年限与条款细节]</p>
+              <h3 className="text-base font-medium text-[#12141C] mb-2">Three-Year Installation Warranty</h3>
+              <p>Our installation work is covered for three years — if anything we installed needs attention, we'll come back and fix it, free of charge.</p>
             </div>
             <div>
               <h3 className="text-base font-medium text-[#12141C] mb-2">Free In-Home Measurement</h3>
-              <p>We measure every window ourselves before fabrication — precise fit is on us, not you. Consultations and measurements are always free within our service area.</p>
+              <p>Consultations and measurements are always free within our service area — we measure every window ourselves before fabrication.</p>
             </div>
           </div>
         </div>

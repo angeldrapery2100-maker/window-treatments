@@ -6,9 +6,6 @@ export const COPYRIGHT = `©1984–${new Date().getFullYear()} Angel Drapery, In
 
 export const PRIMARY_PHONE = '626-451-9841'
 
-/** CA contractor license — placeholder until the owner provides the number. */
-export const CA_LICENSE = '[待补充: License 号]'
-
 export const INSTAGRAM_URL = 'https://www.instagram.com/angeldrapery'
 
 export const BUSINESS_ADDRESS = '8831 E Las Tunas Dr, Temple City, CA 91780'
