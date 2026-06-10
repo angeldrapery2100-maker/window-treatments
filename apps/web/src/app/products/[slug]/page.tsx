@@ -53,11 +53,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /* ─── Hunter Douglas: slug-based JSON lookup ─── */
+
+// Data hygiene for fabric_swatches. The PDF extraction that produced these
+// JSONs sometimes assigned one page's spec codes to EVERY color on that page,
+// so several colors in a collection share identical spec lists (682 groups
+// across 14 products). Specs are order SKUs — showing the wrong code is worse
+// than showing none — so we blank out specs that aren't uniquely attributable.
+// Also drops "Color 3"-style placeholder names left by the extractor.
+// Applied once here so all detail-client variants render clean data.
+function sanitizeSwatches(product: any) {
+  const swatchMap = product?.fabric_swatches
+  if (!swatchMap || typeof swatchMap !== 'object') return product
+  for (const colors of Object.values(swatchMap) as any[]) {
+    if (!Array.isArray(colors)) continue
+    const specCount = new Map<string, number>()
+    for (const c of colors) {
+      const k = (c?.specs || []).join('|')
+      if (k) specCount.set(k, (specCount.get(k) || 0) + 1)
+    }
+    for (const c of colors) {
+      const k = (c?.specs || []).join('|')
+      if (k && (specCount.get(k) || 0) > 1) c.specs = []
+      if (typeof c?.color_name === 'string' && /^color \d+$/i.test(c.color_name.trim())) c.color_name = ''
+    }
+  }
+  return product
+}
+
 async function getProductBySlug(slug: string) {
   try {
     const filePath = path.join(process.cwd(), 'public', 'hunter-douglas', 'products', `${slug}.json`)
     const raw = await fs.readFile(filePath, 'utf-8')
-    return JSON.parse(raw)
+    return sanitizeSwatches(JSON.parse(raw))
   } catch (e) {
     return null
   }

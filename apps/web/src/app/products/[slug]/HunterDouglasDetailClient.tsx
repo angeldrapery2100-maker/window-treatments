@@ -380,6 +380,24 @@ function SwatchCollection({
   onSwatchClick: (images: LightboxImage[], index: number) => void
 }) {
   const sectionImgs = swatches.map(swatch => ({ src: `${CDN_BASE}/hunter-douglas/${slug}/${swatch.image}` }))
+
+  // Data hygiene: the source-PDF extraction sometimes assigned one page's spec
+  // codes to EVERY color on that page, so several colors share identical spec
+  // lists. Those codes are order SKUs — showing the wrong one is worse than
+  // showing none. Suppress specs whose exact spec list appears on more than
+  // one color in this collection; unambiguous specs still display.
+  const specCount = new Map<string, number>()
+  for (const s of swatches) {
+    const k = (s.specs || []).join('|')
+    if (k) specCount.set(k, (specCount.get(k) || 0) + 1)
+  }
+  const showSpecs = (s: Swatch) => {
+    const k = (s.specs || []).join('|')
+    return !!k && specCount.get(k) === 1
+  }
+  // "Color 3" / "Color 4" are extraction placeholders, not real HD names.
+  const isPlaceholderName = (n: string) => /^color \d+$/i.test(n.trim())
+
   return (
     <CollapsibleSection title={name} badge={`${swatches.length} colors`} defaultOpen={defaultOpen}>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -393,8 +411,10 @@ function SwatchCollection({
                 loading="lazy"
               />
             </div>
-            <p className="text-xs font-medium text-gray-800 uppercase tracking-wide">{swatch.color_name}</p>
-            {swatch.specs.length > 0 && (
+            {!isPlaceholderName(swatch.color_name) && (
+              <p className="text-xs font-medium text-gray-800 uppercase tracking-wide">{swatch.color_name}</p>
+            )}
+            {showSpecs(swatch) && (
               <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{swatch.specs[0]}</p>
             )}
           </div>
