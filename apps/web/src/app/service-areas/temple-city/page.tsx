@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in Temple City | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in Temple City',
   description:
     'Angel Drapery has made custom drapery, roman shades, and motorized window treatments in Temple City since 1984. Workroom and showroom on Las Tunas Drive. Free in-home measurement.',
   alternates: { canonical: '/service-areas/temple-city' },

@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in San Gabriel | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in San Gabriel',
   description:
     'Durable custom drapery, cordless roman shades, and motorized treatments for San Gabriel family homes. Free in-home measurement and a 3-year installation warranty.',
   alternates: { canonical: '/service-areas/san-gabriel' },

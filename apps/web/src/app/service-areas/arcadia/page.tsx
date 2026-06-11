@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in Arcadia | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in Arcadia',
   description:
     'Custom drapery, motorized blackout shades, and Hunter Douglas window treatments for Arcadia homes. Oversized windows and sliding doors are our specialty. Free in-home measurement.',
   alternates: { canonical: '/service-areas/arcadia' },

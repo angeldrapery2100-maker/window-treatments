@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in Pasadena | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in Pasadena',
   description:
     'Custom drapery, roman shades, and smart motorized shades for Pasadena craftsman bungalows, condos, and everything in between. Free in-home measurement, since 1984.',
   alternates: { canonical: '/service-areas/pasadena' },

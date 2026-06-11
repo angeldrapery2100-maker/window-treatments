@@ -8,7 +8,7 @@ import { CITIES } from './cities'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Service Areas | Custom Window Treatments in the San Gabriel Valley | Angel Drapery',
+  title: 'Service Areas | Custom Window Treatments in the San Gabriel Valley',
   description:
     'Angel Drapery serves Temple City, Arcadia, San Marino, Pasadena, San Gabriel, and Alhambra with custom drapery, roman shades, and smart motorized shades. Free in-home measurement.',
   alternates: { canonical: '/service-areas' },

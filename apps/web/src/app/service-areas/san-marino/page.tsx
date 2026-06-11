@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in San Marino | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in San Marino',
   description:
     'Traditional pleated drapery, roman shades, and Hunter Douglas treatments for San Marino estates. Preservation-minded measuring and installation since 1984.',
   alternates: { canonical: '/service-areas/san-marino' },

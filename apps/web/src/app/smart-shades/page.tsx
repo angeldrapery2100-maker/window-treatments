@@ -7,7 +7,7 @@ import { COPYRIGHT, PRIMARY_PHONE } from '@/lib/site'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Smart Motorized Shades | HomeKit, Google Home, Matter | Angel Drapery',
+  title: 'Smart Motorized Shades | HomeKit, Google Home, Matter',
   description:
     'Smart motorized shades that work with Apple HomeKit, Google Home, Matter, and Home Assistant. Somfy and Hunter Douglas PowerView motorization, installed in the San Gabriel Valley since 1984.',
   alternates: { canonical: '/smart-shades' },

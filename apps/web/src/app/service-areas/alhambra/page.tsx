@@ -4,7 +4,7 @@ import CityPage from '../CityPage'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Custom Drapery & Window Treatments in Alhambra | Angel Drapery',
+  title: 'Custom Drapery & Window Treatments in Alhambra',
   description:
     'Light control and privacy window treatments for Alhambra townhomes and condos — layered shades, custom drapery, and smart motorization. Free in-home measurement.',
   alternates: { canonical: '/service-areas/alhambra' },
