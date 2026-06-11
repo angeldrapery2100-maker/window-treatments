@@ -22,6 +22,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'products/lutron-palladiom',
     'products/roller-collection',
     'products/sheer-collection',
+    'smart-shades',
+    'service-areas',
+    'service-areas/temple-city',
+    'service-areas/arcadia',
+    'service-areas/san-marino',
+    'service-areas/pasadena',
+    'service-areas/san-gabriel',
+    'service-areas/alhambra',
   ]
   const entries: MetadataRoute.Sitemap = staticPaths.map((p) => ({
     url: p === '' ? `${BASE}/` : `${BASE}/${p}`,

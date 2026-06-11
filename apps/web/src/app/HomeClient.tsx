@@ -531,6 +531,14 @@ export default function HomeClient({ hero, gallery, about, process: processData,
             );
           })()}
 
+          {/* Quiet text link into the dedicated smart-shades page. */}
+          <Link
+            href="/smart-shades"
+            className="mt-10 text-[11px] font-semibold tracking-[0.25em] uppercase text-[#4DB6E8] hover:text-[#12141C] transition-colors"
+          >
+            Explore Smart Shades →
+          </Link>
+
         </div>
       </section>
 
