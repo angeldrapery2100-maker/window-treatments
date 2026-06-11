@@ -11,6 +11,8 @@ const ALL_NAV_ITEMS = [
   { name: 'Products',     href: '/products' },
   { name: 'Online Store', href: '/store' },
   { name: 'Contact',      href: '/contact' },
+  // Traditional-Chinese locale entry point — kept last and unobtrusive.
+  { name: '中文',          href: '/zh' },
 ]
 
 interface SiteNavProps {

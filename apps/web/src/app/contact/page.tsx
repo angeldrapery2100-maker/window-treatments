@@ -6,7 +6,7 @@ import { COPYRIGHT } from '@/lib/site'
 export const metadata: Metadata = {
   title: 'Contact Us',
   description: 'Contact Angel Drapery for a free in-home consultation. Located in Temple City, CA. Serving the greater Los Angeles area since 1984.',
-  alternates: { canonical: '/contact' },
+  alternates: { canonical: '/contact', languages: { en: '/contact', 'zh-Hant': '/zh/contact' } },
 }
 
 // ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).
