@@ -13,6 +13,7 @@ interface Product {
   sort_order: number
   main_image_url?: string
   base_price?: number
+  stock_qty?: number | null
   default_config?: any
   store_category_id?: string | null
   store_category_name?: string | null
@@ -365,6 +366,11 @@ export default function StoreProductsPage() {
                     </td>
                     <td className="px-3 py-3 text-sm text-gray-900 font-medium tabular-nums">
                       {displayPrice(p)}
+                      {p.stock_qty != null && (
+                        <p className={`text-[11px] font-normal mt-0.5 ${Number(p.stock_qty) === 0 ? 'text-red-600' : 'text-gray-400'}`}>
+                          Stock: {p.stock_qty}
+                        </p>
+                      )}
                     </td>
                     <td className="px-3 py-3 text-center">
                       <input type="checkbox" checked={!!p.default_config?.is_featured}

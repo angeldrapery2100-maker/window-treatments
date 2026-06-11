@@ -31,6 +31,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
   const [description, setDescription] = useState('')
   const [status, setStatus] = useState<'active' | 'inactive'>('inactive')
   const [sortOrder, setSortOrder] = useState(0)
+  const [stockQty, setStockQty] = useState('')  // '' = untracked / unlimited
 
   // 子组件数据（由子组件通过 onChange 上报）
   const imagesRef = useRef<any>(null)
@@ -89,6 +90,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         setDescription(p.description || '')
         setStatus(p.status)
         setSortOrder(p.sort_order || 0)
+        setStockQty(p.stock_qty == null ? '' : String(p.stock_qty))
       }
     } catch (e) { console.error('Failed to fetch product:', e) }
     finally { setLoading(false) }
@@ -104,7 +106,10 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
       await fetch(`/api/admin/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: productName, type: productType, description, status, sort_order: sortOrder })
+        body: JSON.stringify({
+          name: productName, type: productType, description, status, sort_order: sortOrder,
+          stock_qty: stockQty.trim() === '' ? null : parseInt(stockQty, 10),
+        })
       })
 
       // 2. 保存图片（如果有改动）
@@ -371,6 +376,23 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     />
                     <p className="text-xs text-gray-400 mt-1">数字越小越靠前</p>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Stock quantity</label>
+                  <input
+                    type="number"
+                    min={0}
+                    step={1}
+                    value={stockQty}
+                    onChange={e => {
+                      const v = e.target.value
+                      if (v === '' || /^\d+$/.test(v)) { setStockQty(v); markDirty() }
+                    }}
+                    placeholder="Unlimited"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Leave empty for made-to-order / unlimited items. Set a number to track stock for hardware.</p>
                 </div>
 
                 {!basicSaved && (

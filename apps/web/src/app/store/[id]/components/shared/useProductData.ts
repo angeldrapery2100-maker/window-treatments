@@ -21,6 +21,7 @@ export function useProductData(productId: string) {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
   const [options, setOptions] = useState<ProductOption[]>([])
   const [params, setParams] = useState<Record<string, any>>({})
+  const [stockQty, setStockQty] = useState<number | null>(null) // null = untracked/unlimited
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export function useProductData(productId: string) {
           setGalleryImages(data.data.images?.gallery || [])
           setOptions(data.data.options || [])
           setParams(data.data.params || {})
+          setStockQty(data.data.product?.stock_qty ?? null)
         }
       }).catch(console.error)
       .finally(() => setLoading(false))
@@ -72,5 +74,5 @@ export function useProductData(productId: string) {
     return optionValues
   }
 
-  return { productName, productType, description, mainImages, galleryImages, options, params, buildOptionValues, loading }
+  return { productName, productType, description, mainImages, galleryImages, options, params, stockQty, buildOptionValues, loading }
 }

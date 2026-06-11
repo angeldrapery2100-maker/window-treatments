@@ -303,6 +303,21 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
     throw insErr
   }
 
+  // Decrement tracked stock (non-blocking, best-effort). NULL stock_qty =
+  // untracked/unlimited and is left alone; tracked stock floors at 0 so a
+  // race/oversell can never go negative. A failure must NEVER fail the order —
+  // it is already paid and persisted.
+  for (const it of (items as any[])) {
+    const pid = it?.productId
+    if (!pid) continue
+    const qty = Math.max(1, Math.floor(Number(it.quantity) || 1))
+    await query(
+      `UPDATE products SET stock_qty = GREATEST(stock_qty - $1, 0), updated_at = NOW()
+       WHERE id = $2 AND stock_qty IS NOT NULL`,
+      [qty, pid]
+    ).catch(() => {})
+  }
+
   // Increment discount used_count (non-blocking)
   if (finalDiscountCode) {
     await query(

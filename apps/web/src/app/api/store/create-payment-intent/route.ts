@@ -123,11 +123,17 @@ export async function POST(request: Request) {
         shippingCost,
         state,
         zip,
+        enforceStock: true,
       })
-    } catch (e) {
+    } catch (e: any) {
       console.warn('[create-payment-intent] pricing rejected:', e)
+      // Stock shortfalls carry a customer-meaningful message ("X only has N
+      // left in stock") — surface it verbatim instead of the generic copy.
+      const msg = typeof e?.message === 'string' && e.message.includes('left in stock')
+        ? e.message
+        : 'One or more items in your cart are no longer available. Please refresh and try again.'
       return NextResponse.json(
-        { success: false, error: 'One or more items in your cart are no longer available. Please refresh and try again.' },
+        { success: false, error: msg },
         { status: 400 }
       )
     }

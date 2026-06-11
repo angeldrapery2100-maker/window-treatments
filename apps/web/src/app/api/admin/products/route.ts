@@ -19,6 +19,9 @@ async function ensureStoreCategories() {
   if (col.length === 0) {
     await query(`ALTER TABLE products ADD COLUMN store_category_id uuid REFERENCES store_categories(id) ON DELETE SET NULL`)
   }
+  // Optional inventory tracking: NULL = untracked/unlimited (made-to-order),
+  // a number = finite stock (hardware).
+  await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
 }
 
 export async function GET(request: Request) {
@@ -43,6 +46,7 @@ export async function GET(request: Request) {
         ) AS main_image_url,
         p.default_config,
         p.is_active,
+        p.stock_qty,
         p.store_category_id,
         sc.name AS store_category_name,
         sc.slug AS store_category_slug,

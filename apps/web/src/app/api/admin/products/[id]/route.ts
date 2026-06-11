@@ -13,6 +13,7 @@ export async function GET(
   const { id } = await params
 
   try {
+    await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
     const product = await queryOne(
       `SELECT 
         p.id,
@@ -23,6 +24,7 @@ export async function GET(
         p.images,
         p.default_config,
         p.is_active,
+        p.stock_qty,
         p.created_at,
         p.updated_at
        FROM products p
@@ -77,6 +79,25 @@ export async function PUT(
     const body = await request.json()
     const isActive = body.status === 'active'
 
+    // Optional stock tracking: undefined = leave unchanged; null/'' = untracked
+    // (unlimited); otherwise must be a non-negative integer.
+    let stockQty: number | null | undefined = undefined
+    if ('stock_qty' in body) {
+      if (body.stock_qty === null || body.stock_qty === '') {
+        stockQty = null
+      } else {
+        const n = Number(body.stock_qty)
+        if (!Number.isInteger(n) || n < 0) {
+          return NextResponse.json(
+            { success: false, error: { code: 'VALIDATION_ERROR', message: 'stock_qty must be a non-negative integer or null' } },
+            { status: 400 }
+          )
+        }
+        stockQty = n
+      }
+    }
+    await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+
     // 查出 product_type_id
     const productType = await queryOne<{ id: string }>(
       'SELECT id FROM product_types WHERE slug = $1',
@@ -120,10 +141,12 @@ export async function PUT(
         default_config = $2::jsonb,
         is_active = $3,
         product_type_id = COALESCE($5, product_type_id),
+        stock_qty = CASE WHEN $6::boolean THEN $7::int ELSE stock_qty END,
         updated_at = NOW()
        WHERE id = $4
-       RETURNING id, name, is_active, updated_at`,
-      [body.name, JSON.stringify(mergedConfig), isActive, id, productType?.id ?? null]
+       RETURNING id, name, is_active, stock_qty, updated_at`,
+      [body.name, JSON.stringify(mergedConfig), isActive, id, productType?.id ?? null,
+       stockQty !== undefined, stockQty ?? null]
     )
 
     if (!updated) {

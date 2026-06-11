@@ -14,7 +14,9 @@ import { addToCart } from '@/lib/cart'
 
 export default function HardwareProduct({ productId }: { productId: string }) {
   const router = useRouter()
-  const { productName, mainImages, galleryImages, options, params, loading } = useProductData(productId)
+  const { productName, mainImages, galleryImages, options, params, stockQty, loading } = useProductData(productId)
+  const outOfStock = stockQty === 0
+  const lowStock = stockQty !== null && stockQty > 0 && stockQty <= 5
 
   const [width, setWidth] = useState<number | ''>('')
   const [widthFraction, setWidthFraction] = useState('0')
@@ -160,8 +162,15 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                     </div>
                   )}
 
+                  {outOfStock && (
+                    <p className="text-sm text-red-600">Out of stock</p>
+                  )}
+                  {lowStock && (
+                    <p className="text-xs text-red-600">Only {stockQty} left in stock</p>
+                  )}
+
                   <div className="pt-1">
-                    <button disabled={!canSubmit() || unitPrice <= 0 || addedMsg}
+                    <button disabled={!canSubmit() || unitPrice <= 0 || addedMsg || outOfStock}
                       onClick={() => {
                         const optionDetails = options.map(opt => {
                           const selVal = selectedOptions[opt.name]
@@ -177,7 +186,7 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                         setAddedMsg(true)
                         setTimeout(() => setAddedMsg(false), 2000)
                       }}
-                      className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit() && unitPrice > 0 ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>{addedMsg ? '✓ Added to Cart' : 'Add to Cart'}</button>
+                      className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit() && unitPrice > 0 && !outOfStock ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>{addedMsg ? '✓ Added to Cart' : outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
                     <CopyConfigLink productId={productId} config={{ width: typeof width === 'number' ? String(width) : '', widthFraction, quantity, options: selectedOptions }} />
                   </div>
                 </div>

@@ -74,6 +74,10 @@ export interface PricingInput {
   shippingCost:  number          // client-supplied, clamped to $0–$500
   state?:        string          // 2-letter state abbreviation for tax lookup
   zip?:          string          // reserved for future external tax API
+  // When true, lines whose product has finite stock_qty < quantity throw a
+  // clear error. Enabled at PI creation only — NOT during post-payment order
+  // creation, where a stock race must never reject an already-paid order.
+  enforceStock?: boolean
 }
 
 export interface PricingResult {
@@ -90,6 +94,16 @@ export interface PricingResult {
 }
 
 const MAX_SHIPPING_DOLLARS = 500  // sanity cap — well above any realistic rate
+
+// ── Optional inventory tracking ───────────────────────────────────────────────
+// products.stock_qty: NULL = untracked/unlimited (made-to-order custom items),
+// integer = finite stock (hardware). Memoized per serverless instance.
+let stockColEnsured = false
+export async function ensureStockColumn(): Promise<void> {
+  if (stockColEnsured) return
+  await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+  stockColEnsured = true
+}
 
 // Max multiplier a client-supplied unit price may exceed the DB base_price by.
 // Custom-configured drapery legitimately scales above base (fabric upgrades,
@@ -111,15 +125,20 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
     throw new Error('Cart contains an item with no productId')
   }
 
-  const rows: { id: string; base_price: number }[] = ids.length
+  await ensureStockColumn()
+  const rows: { id: string; name: string; base_price: number; stock_qty: number | null }[] = ids.length
     ? await query(
-        `SELECT id, base_price FROM products
+        `SELECT id, name, base_price, stock_qty FROM products
          WHERE id = ANY($1::uuid[]) AND is_active = true`,
         [ids]
       ).catch(() => [])
     : []
   const basePriceMap: Record<string, number> = {}
-  for (const r of rows) basePriceMap[r.id] = Number(r.base_price) || 0
+  const productMap: Record<string, { name: string; stock_qty: number | null }> = {}
+  for (const r of rows) {
+    basePriceMap[r.id] = Number(r.base_price) || 0
+    productMap[r.id]   = { name: r.name, stock_qty: r.stock_qty == null ? null : Number(r.stock_qty) }
+  }
 
   let subtotal = 0
   for (const item of items) {
@@ -130,6 +149,14 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
     }
     const basePrice   = basePriceMap[item.productId]
     const clientPrice = Math.max(0, Number(item.price) || 0)
+    const lineQty     = Math.max(1, Math.floor(Number(item.quantity) || 1))
+
+    // Optional stock enforcement (PI creation only) — NULL stock_qty means
+    // untracked/unlimited and is never checked.
+    const pinfo = productMap[item.productId]
+    if (input.enforceStock && pinfo && pinfo.stock_qty !== null && pinfo.stock_qty < lineQty) {
+      throw new Error(`${pinfo.name} only has ${pinfo.stock_qty} left in stock`)
+    }
 
     let unitPrice: number
     if (basePrice > 0) {
@@ -152,7 +179,7 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
         )
       }
     }
-    subtotal += unitPrice * Math.max(1, Math.floor(Number(item.quantity) || 1))
+    subtotal += unitPrice * lineQty
   }
   subtotal = Math.round(subtotal * 100) / 100
 
