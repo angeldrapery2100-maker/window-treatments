@@ -193,6 +193,27 @@ export async function POST(request: Request) {
       const order = await queryOne('SELECT * FROM orders WHERE id = $1', [orderId])
       if (!order) return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 })
 
+      // Double-purchase guard: labels cost real money. If a live (non-voided)
+      // label already covers any of these items, refuse unless the admin
+      // explicitly confirms with force=true (UI shows a confirm dialog).
+      if (!body.force) {
+        const existing = await query<any>(
+          `SELECT tracking_number, item_indices FROM order_shipments
+           WHERE order_id = $1 AND status NOT IN ('voided', 'refunded', 'failure')`,
+          [orderId]
+        ).catch(() => [])
+        const wanted = new Set((itemIndices || []).map((n: any) => Number(n)))
+        const clash = existing.find((s: any) =>
+          (s.item_indices || []).some((n: any) => wanted.has(Number(n))))
+        if (clash) {
+          return NextResponse.json({
+            success: false,
+            code: 'DUPLICATE_SHIPMENT',
+            error: `A label already exists for these items (tracking ${clash.tracking_number}). Void it first, or pass force=true to buy another label anyway.`,
+          }, { status: 409 })
+        }
+      }
+
       const transaction = await shippoFetch('/transactions/', 'POST', {
         rate: rateId, label_file_type: 'PDF', async: false,
       })

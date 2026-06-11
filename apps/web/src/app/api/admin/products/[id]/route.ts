@@ -94,6 +94,26 @@ export async function PUT(
       sort_order: body.sort_order || 0
     }
 
+    // Publish gate: an ACTIVE product must have a sellable price and at least
+    // one main image — otherwise customers see a broken listing. Drafts
+    // (inactive) can stay incomplete.
+    if (isActive) {
+      const cfg: any = mergedConfig
+      const hasPrice =
+        (Number(cfg?.starting_price) > 0) ||
+        (Array.isArray(cfg?.options) && cfg.options.length > 0)
+      const hasImage = Array.isArray(cfg?.images?.main) && cfg.images.main.length > 0
+      const missing: string[] = []
+      if (!hasPrice) missing.push('a starting price or at least one priced option')
+      if (!hasImage) missing.push('at least one main image')
+      if (missing.length > 0) {
+        return NextResponse.json(
+          { success: false, error: { code: 'PUBLISH_VALIDATION', message: `Cannot publish: product needs ${missing.join(' and ')}. Save it as inactive, or complete the listing first.` } },
+          { status: 400 }
+        )
+      }
+    }
+
     const updated = await queryOne(
       `UPDATE products SET
         name = $1,

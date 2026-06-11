@@ -16,63 +16,6 @@ interface Shipment {
   items: ShipmentItem[]
 }
 
-const MOCK_SHIPMENTS: Shipment[] = [
-  {
-    id: 's1', orderId: 'ord-001', orderNumber: 'AD-20260220-A1B2', status: 'completed', createdAt: '2026-02-20T14:28:16Z',
-    carrier: 'USPS', service: 'Priority Mail', trackingNumber: '9400111208266829955163', trackingUrl: 'https://tools.usps.com/go/TrackConfirmAction?tLabels=9400111208266829955163', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Josh Miller', toStreet: '27101 Calle Del Cid', toCity: 'Mission Viejo', toState: 'CA', toZip: '92691-6204', toCountry: 'US', toPhone: '949-555-1234', toEmail: 'josh@example.com',
-    parcelLength: 24, parcelWidth: 18, parcelHeight: 6, parcelWeight: 4.0,
-    retailRate: 0, shippingRate: 7.23, serviceRate: 0.05, totalCost: 7.28,
-    items: [{ name: 'Elegant Sheer Curtain', qty: 2, width: 72, height: 84, options: 'White Linen, Center Split' }, { name: 'Double Curtain Rod 72"', qty: 1, options: 'Brushed Nickel' }],
-  },
-  {
-    id: 's2', orderId: 'ord-001', orderNumber: 'AD-20260220-A1B2', status: 'completed', createdAt: '2026-02-20T15:10:00Z',
-    carrier: 'USPS', service: 'Priority Mail', trackingNumber: '9400111208266829955170', trackingUrl: 'https://tools.usps.com/go/TrackConfirmAction?tLabels=9400111208266829955170', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Josh Miller', toStreet: '27101 Calle Del Cid', toCity: 'Mission Viejo', toState: 'CA', toZip: '92691-6204', toCountry: 'US', toPhone: '949-555-1234', toEmail: 'josh@example.com',
-    parcelLength: 20, parcelWidth: 15, parcelHeight: 5, parcelWeight: 2.5,
-    retailRate: 0, shippingRate: 5.15, serviceRate: 0.05, totalCost: 5.20,
-    items: [{ name: 'Elegant Sheer Curtain', qty: 1, width: 72, height: 84, options: 'White Linen, Center Split' }],
-  },
-  {
-    id: 's3', orderId: 'ord-002', orderNumber: 'AD-20260218-C3D4', status: 'completed', createdAt: '2026-02-18T10:05:00Z',
-    carrier: 'UPS', service: 'Ground', trackingNumber: '1ZC6H815YW06330156', trackingUrl: 'https://www.ups.com/track?tracknum=1ZC6H815YW06330156', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Vicki Le', toStreet: '1318 Dixie Ave', toCity: 'Lehigh Acres', toState: 'FL', toZip: '33972-8744', toCountry: 'US', toPhone: '239-555-5678', toEmail: 'vicki@example.com',
-    parcelLength: 36, parcelWidth: 12, parcelHeight: 12, parcelWeight: 8.0,
-    retailRate: 0, shippingRate: 18.45, serviceRate: 0.10, totalCost: 18.55,
-    items: [{ name: 'Blackout Roller Shade', qty: 2, width: 36, height: 60, options: 'Ivory, Inside Mount' }],
-  },
-  {
-    id: 's4', orderId: 'ord-003', orderNumber: 'AD-20260215-E5F6', status: 'voided', createdAt: '2026-02-15T09:30:00Z',
-    carrier: 'FedEx', service: 'Home Delivery', trackingNumber: 'VOID794644790500', trackingUrl: '', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Sarah Chen', toStreet: '456 Oak Ave', toCity: 'Pasadena', toState: 'CA', toZip: '91101', toCountry: 'US', toPhone: '626-555-9999', toEmail: 'sarah@example.com',
-    parcelLength: 20, parcelWidth: 15, parcelHeight: 5, parcelWeight: 3.0,
-    retailRate: 0, shippingRate: 12.80, serviceRate: 0.08, totalCost: 12.88,
-    items: [{ name: 'Honeycomb Shade', qty: 1, width: 48, height: 72, options: 'Cream, Cordless' }],
-  },
-  {
-    id: 's5', orderId: 'ord-004', orderNumber: 'AD-20260222-G7H8', status: 'in_transit', createdAt: '2026-02-22T16:45:00Z',
-    carrier: 'USPS', service: 'Priority Mail Express', trackingNumber: '9270190164917312345678', trackingUrl: 'https://tools.usps.com/go/TrackConfirmAction?tLabels=9270190164917312345678', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Mike Johnson', toStreet: '789 Pine St', toCity: 'San Francisco', toState: 'CA', toZip: '94102', toCountry: 'US', toPhone: '415-555-7777', toEmail: 'mike@example.com',
-    parcelLength: 30, parcelWidth: 20, parcelHeight: 8, parcelWeight: 6.0,
-    retailRate: 0, shippingRate: 28.50, serviceRate: 0.15, totalCost: 28.65,
-    items: [{ name: 'Luxury Velvet Drape', qty: 2, width: 54, height: 96, options: 'Navy Blue, Rod Pocket' }, { name: 'Decorative Finials', qty: 2, options: 'Gold' }],
-  },
-  {
-    id: 's6', orderId: 'ord-005', orderNumber: 'AD-20260223-I9J0', status: 'delivered', createdAt: '2026-02-23T08:20:00Z',
-    carrier: 'UPS', service: 'Ground', trackingNumber: '1Z999AA10123456784', trackingUrl: 'https://www.ups.com/track?tracknum=1Z999AA10123456784', labelUrl: '#',
-    fromName: 'Eddie Cao', fromCompany: 'Angel Drapery, Inc', fromStreet: '8827 Las Tunas Dr', fromCity: 'Temple City', fromState: 'CA', fromZip: '91780', fromCountry: 'US',
-    toName: 'Amy Wang', toStreet: '100 Main St Apt 5B', toCity: 'Arcadia', toState: 'CA', toZip: '91006', toCountry: 'US', toPhone: '626-555-3333', toEmail: 'amy@example.com',
-    parcelLength: 18, parcelWidth: 14, parcelHeight: 4, parcelWeight: 2.0,
-    retailRate: 0, shippingRate: 9.80, serviceRate: 0.05, totalCost: 9.85,
-    items: [{ name: 'Sheer Voile Panel', qty: 4, width: 60, height: 84, options: 'White, Grommet Top' }],
-  },
-]
-
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
   completed: { label: 'Completed', color: 'text-green-700', bg: 'bg-green-50' },
   in_transit: { label: 'In Transit', color: 'text-blue-700', bg: 'bg-blue-50' },
@@ -382,7 +325,8 @@ function ActionsDropdown({ shipment, onAction }: { shipment: Shipment; onAction:
 
 // ─── Main Page ───
 export default function ShipmentsPage() {
-  const [shipments, setShipments] = useState<Shipment[]>(MOCK_SHIPMENTS)
+  const [shipments, setShipments] = useState<Shipment[]>([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null)
@@ -390,6 +334,20 @@ export default function ShipmentsPage() {
   const [showSlip, setShowSlip] = useState<Shipment | null>(null)
   const [message, setMessage] = useState('')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    fetch('/api/admin/shipments')
+      .then(r => r.json())
+      .then(json => {
+        if (cancelled) return
+        if (json?.success && json.data?.shipments) setShipments(json.data.shipments)
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [])
 
   const filtered = shipments.filter(s => {
     if (filter !== 'all' && s.status !== filter) return false
@@ -441,7 +399,7 @@ export default function ShipmentsPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Shipments</h1>
-              <p className="text-sm text-gray-500 mt-1">Test mode — all operations are simulated</p>
+              <p className="text-sm text-gray-500 mt-1">Labels purchased from your orders' Pack &amp; Ship</p>
             </div>
             <div className="flex gap-3 items-center">
               {message && <span className="text-sm px-3 py-1 rounded bg-gray-100 text-gray-700">{message}</span>}
@@ -512,7 +470,11 @@ export default function ShipmentsPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
+              {loading ? (
+                <tr><td colSpan={8} className="py-20 text-center text-gray-400">Loading shipments…</td></tr>
+              ) : shipments.length === 0 ? (
+                <tr><td colSpan={8} className="py-20 text-center text-gray-400">No shipments yet — labels you buy from an order's Pack &amp; Ship will appear here.</td></tr>
+              ) : filtered.length === 0 ? (
                 <tr><td colSpan={8} className="py-20 text-center text-gray-400">No matching shipments</td></tr>
               ) : filtered.map(s => {
                 const statusCfg = STATUS_CONFIG[s.status]

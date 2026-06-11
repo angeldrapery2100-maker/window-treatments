@@ -43,6 +43,7 @@ export default function AdminSupportPage() {
   const [message, setMessage] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [notesDraft, setNotesDraft] = useState<Record<string, string>>({})
+  const [replyDraft, setReplyDraft] = useState<Record<string, string>>({})
   const [savingId, setSavingId] = useState<string | null>(null)
 
   const fetchTickets = useCallback(async (f: string) => {
@@ -59,7 +60,7 @@ export default function AdminSupportPage() {
 
   const flash = (m: string) => { setMessage(m); setTimeout(() => setMessage(''), 3000) }
 
-  const update = async (id: string, patch: { status?: string; admin_notes?: string }) => {
+  const update = async (id: string, patch: { status?: string; admin_notes?: string; reply_message?: string }) => {
     setSavingId(id)
     try {
       const res = await fetch('/api/admin/support', {
@@ -133,6 +134,27 @@ export default function AdminSupportPage() {
                         </button>
                       ))}
                     </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-1.5">Reply to customer</p>
+                    <textarea
+                      value={replyDraft[t.id] ?? ''}
+                      onChange={e => setReplyDraft(d => ({ ...d, [t.id]: e.target.value }))}
+                      rows={3}
+                      placeholder="Write a reply — it will be emailed to the customer and logged in the notes below…"
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
+                    />
+                    <button
+                      onClick={async () => {
+                        const msg = (replyDraft[t.id] || '').trim()
+                        if (!msg) return
+                        await update(t.id, { reply_message: msg })
+                        setReplyDraft(d => ({ ...d, [t.id]: '' }))
+                      }}
+                      disabled={savingId === t.id || !(replyDraft[t.id] || '').trim()}
+                      className="mt-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg hover:bg-black disabled:opacity-50">
+                      Send Reply
+                    </button>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-1.5">Internal notes</p>
