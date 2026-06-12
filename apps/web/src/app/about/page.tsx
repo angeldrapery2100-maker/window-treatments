@@ -9,7 +9,7 @@ import { COPYRIGHT } from '@/lib/site'
 export const metadata: Metadata = {
   title: 'About Us',
   description: '40 years of excellence in custom window treatments. Angel Drapery has been serving the greater Los Angeles area since 1984 with premium drapery, blinds, and shades.',
-  alternates: { canonical: '/about', languages: { en: '/about', 'zh-Hant': '/zh/about' } },
+  alternates: { canonical: '/about' },
 }
 
 // ISR: regenerate at most every 5 min instead of per-request (was force-dynamic).

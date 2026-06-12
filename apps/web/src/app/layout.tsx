@@ -101,8 +101,7 @@ export const metadata: Metadata = {
   // (e.g. /about → alternates.canonical '/about') so every page publishes its
   // own canonical URL; without this default, the homepage emits no canonical
   // and risks being deduped against trailing-slash or query variants.
-  // hreflang: the homepage has a Traditional-Chinese counterpart at /zh.
-  alternates: { canonical: '/', languages: { en: '/', 'zh-Hant': '/zh' } },
+  alternates: { canonical: '/' },
 }
 
 export default function RootLayout({
