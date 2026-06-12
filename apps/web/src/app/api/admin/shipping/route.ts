@@ -3,6 +3,7 @@ import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { Resend } from 'resend'
 import { requireAdmin } from '@/lib/auth'
+import { recordAudit } from '@/lib/audit'
 import { escapeHtml, safeUrl } from '@/lib/html'
 
 const SHIPPO_API = 'https://api.goshippo.com'
@@ -132,7 +133,8 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
 
 export async function POST(request: Request) {
   // Explicit admin guard — defence-in-depth beyond middleware matcher
-  try { requireAdmin(request) } catch {
+  let adminUser: any = null
+  try { adminUser = requireAdmin(request) } catch {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
   }
   try {
@@ -337,6 +339,67 @@ export async function POST(request: Request) {
     }
 
     // ─── DELETE SHIPMENT ───
+    // ─── VOID LABEL ───
+    // Requests a refund from Shippo for a purchased label and marks the
+    // shipment voided. Carrier refunds are asynchronous (USPS can take up to
+    // ~14 days to approve); we mark voided as soon as Shippo accepts the
+    // refund request. Manual shipments (no Shippo transaction) just flip status.
+    if (action === 'void_label') {
+      const { shipmentId } = body
+      if (!shipmentId) return NextResponse.json({ success: false, error: 'shipmentId required' }, { status: 400 })
+      await ensureShipmentsTable()
+
+      const shipment = await queryOne<any>(`SELECT * FROM order_shipments WHERE id = $1`, [shipmentId])
+      if (!shipment) return NextResponse.json({ success: false, error: 'Shipment not found' }, { status: 404 })
+      if (shipment.status === 'voided' || shipment.status === 'refunded') {
+        return NextResponse.json({ success: true, data: { refundStatus: 'already_voided' } })
+      }
+
+      let refundStatus = 'manual'
+      if (shipment.shippo_transaction_id) {
+        const refund = await shippoFetch('/refunds/', 'POST', {
+          transaction: shipment.shippo_transaction_id,
+          async: false,
+        })
+        refundStatus = refund?.status || 'UNKNOWN'
+        if (refundStatus === 'ERROR') {
+          const msg = refund?.messages?.map((m: any) => m.text).join('; ')
+            || 'Shippo rejected the refund request (the label may already be used or past the refund window).'
+          return NextResponse.json({ success: false, error: msg }, { status: 400 })
+        }
+      }
+
+      await query(`UPDATE order_shipments SET status = 'voided' WHERE id = $1`, [shipmentId])
+
+      // If this label was the one that marked the order "shipped" and there is
+      // no other live shipment left, roll the order back to in_production and
+      // clear the order-level tracking fields so the customer view is honest.
+      const remaining = await query<any>(
+        `SELECT 1 FROM order_shipments
+         WHERE order_id = $1 AND id <> $2 AND status NOT IN ('voided', 'refunded', 'failure') LIMIT 1`,
+        [shipment.order_id, shipmentId]
+      ).catch(() => [])
+      if (remaining.length === 0) {
+        await query(
+          `UPDATE orders SET status = 'in_production', tracking_number = NULL, tracking_url = NULL,
+             shipping_label_url = NULL, shippo_transaction_id = NULL, updated_at = NOW()
+           WHERE id = $1 AND status = 'shipped'`,
+          [shipment.order_id]
+        ).catch(() => {})
+      }
+
+      await recordAudit({
+        action: 'shipping.label_voided',
+        actor_id: adminUser?.id,
+        actor_email: adminUser?.email,
+        target_type: 'order_shipment',
+        target_id: shipmentId,
+        note: `tracking ${shipment.tracking_number || 'n/a'} · refund ${refundStatus}`,
+      }).catch(() => {})
+
+      return NextResponse.json({ success: true, data: { refundStatus } })
+    }
+
     if (action === 'delete_shipment') {
       const { orderId, shipmentId } = body
       await ensureShipmentsTable()

@@ -296,7 +296,6 @@ function ActionsDropdown({ shipment, onAction }: { shipment: Shipment; onAction:
     { key: 'divider2', label: '' },
     ...(shipment.trackingUrl ? [{ key: 'track', label: 'Track package' }] : []),
     ...(shipment.status !== 'voided' ? [{ key: 'void', label: 'Void label' }] : []),
-    { key: 'duplicate', label: 'Duplicate shipment' },
   ]
 
   return (
@@ -358,22 +357,40 @@ export default function ShipmentsPage() {
     return true
   })
 
-  const handleAction = (shipment: Shipment, action: string) => {
+  const handleAction = async (shipment: Shipment, action: string) => {
     switch (action) {
       case 'info': setSelectedShipment(shipment); break
       case 'print_label': setShowLabel(shipment); break
       case 'print_slip': setShowSlip(shipment); break
       case 'print_both': setShowLabel(shipment); setTimeout(() => setShowSlip(shipment), 100); break
-      case 'export_label': setMessage('[Simulated] Label PDF exported'); setTimeout(() => setMessage(''), 3000); break
-      case 'export_slip': setMessage('[Simulated] Packing slip exported'); setTimeout(() => setMessage(''), 3000); break
+      case 'export_label':
+        // The Shippo label PDF itself — open in a new tab for download/print.
+        if (shipment.labelUrl && shipment.labelUrl !== '#') window.open(shipment.labelUrl, '_blank')
+        else { setMessage('No label file for this shipment'); setTimeout(() => setMessage(''), 3000) }
+        break
+      case 'export_slip': setShowSlip(shipment); break
       case 'track': if (shipment.trackingUrl) window.open(shipment.trackingUrl, '_blank'); break
       case 'void':
-        if (confirm(`Void label ${shipment.trackingNumber}?\nThis will cancel the label and request a refund.`)) {
-          setShipments(prev => prev.map(s => s.id === shipment.id ? { ...s, status: 'voided' as const } : s))
-          setMessage('[Simulated] Label voided'); setTimeout(() => setMessage(''), 4000)
+        if (confirm(`Void label ${shipment.trackingNumber}?\nThis cancels the label and requests a carrier refund (USPS refunds can take up to ~14 days to approve).`)) {
+          try {
+            const res = await fetch('/api/admin/shipping', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'void_label', shipmentId: shipment.id }),
+            })
+            const data = await res.json()
+            if (data.success) {
+              setShipments(prev => prev.map(s => s.id === shipment.id ? { ...s, status: 'voided' as const } : s))
+              setMessage('Label voided — refund requested with the carrier')
+            } else {
+              setMessage(data.error || 'Could not void the label')
+            }
+          } catch {
+            setMessage('Could not void the label — network error')
+          }
+          setTimeout(() => setMessage(''), 6000)
         }
         break
-      case 'duplicate': setMessage('[Simulated] Shipment duplicated'); setTimeout(() => setMessage(''), 3000); break
     }
   }
 
