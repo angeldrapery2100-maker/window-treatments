@@ -48,7 +48,7 @@ const ALLOWED_PREFIXES = new Set(
 
 type Ctx = { params: Promise<{ path: string[] }> }
 
-export async function GET(_request: Request, ctx: Ctx) {
+export async function GET(request: Request, ctx: Ctx) {
   const { path } = await ctx.params
 
   if (!path || path.length === 0) {
@@ -76,8 +76,15 @@ export async function GET(_request: Request, ctx: Ctx) {
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
   }
 
+  // Pass the browser's Range header through to R2. <video>/<audio> elements
+  // REQUIRE the server to honour Range with a 206 partial response; if we
+  // advertise Accept-Ranges but answer every Range with a full 200, Chrome
+  // stalls at readyState 0 and the video never plays (black). So forward the
+  // range and return whatever S3/R2 gives back (206 + Content-Range).
+  const range = request.headers.get('range') || undefined
+
   try {
-    const obj = await r2.send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+    const obj = await r2.send(new GetObjectCommand({ Bucket: bucket, Key: key, Range: range }))
 
     if (!obj.Body) {
       return NextResponse.json({ error: 'Empty body from R2' }, { status: 502 })
@@ -90,21 +97,30 @@ export async function GET(_request: Request, ctx: Ctx) {
       // timestamp-based so they're effectively immutable — updates get a
       // new key anyway.
       'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
+      // Advertise range support (and honour it below).
+      'Accept-Ranges': 'bytes',
     }
 
     if (obj.ContentLength != null) headers['Content-Length'] = String(obj.ContentLength)
     if (obj.ETag) headers['ETag'] = obj.ETag
     if (obj.LastModified) headers['Last-Modified'] = obj.LastModified.toUTCString()
-    // Let the browser do range requests for <video> scrubbing etc.
-    headers['Accept-Ranges'] = 'bytes'
+
+    // When the client asked for a range and R2 returned a partial object,
+    // reflect that as a 206 with Content-Range — required for media streaming.
+    const isPartial = !!range && !!obj.ContentRange
+    if (obj.ContentRange) headers['Content-Range'] = obj.ContentRange
 
     // obj.Body is a Readable stream in Node. NextResponse accepts a
     // ReadableStream<Uint8Array>; cast through `any` since the SDK types
     // aren't precise about which stream flavor it hands back.
-    return new NextResponse(obj.Body as any, { status: 200, headers })
+    return new NextResponse(obj.Body as any, { status: isPartial ? 206 : 200, headers })
   } catch (err: any) {
     if (err instanceof NoSuchKey || err?.name === 'NoSuchKey' || err?.$metadata?.httpStatusCode === 404) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+    // An unsatisfiable range → 416 so the browser can recover by re-requesting.
+    if (err?.name === 'InvalidRange' || err?.$metadata?.httpStatusCode === 416) {
+      return NextResponse.json({ error: 'Range not satisfiable' }, { status: 416 })
     }
     console.error('[media proxy] R2 error for key', key, err)
     return NextResponse.json({ error: 'R2 fetch failed' }, { status: 500 })
