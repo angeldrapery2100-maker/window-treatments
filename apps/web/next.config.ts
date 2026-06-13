@@ -11,9 +11,16 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@window-treatments/shared"],
   serverExternalPackages: ["pg", "pg-pool", "pg-connection-string", "stripe"],
   images: {
-    // Serve next-gen formats. AVIF first (best compression), WebP fallback.
-    // The browser picks the smallest format it supports automatically.
-    formats: ['image/avif', 'image/webp'],
+    // ── Vercel Image Optimization disabled ──────────────────────────────────
+    // This image-heavy site (full product catalogs + many photos) blew past the
+    // Hobby plan's monthly image-optimization quota, after which /_next/image
+    // returned HTTP 402 and images broke intermittently. With unoptimized,
+    // <Image> renders a plain <img> pointing straight at the source (R2 via the
+    // /media proxy and the asset-folder rewrites), so there is no per-image
+    // Vercel transformation and no 402. Re-enable (remove this line) if/when the
+    // project moves to a plan with a higher optimization limit, or an external
+    // image CDN/loader is wired up.
+    unoptimized: true,
     // Responsive breakpoints used to generate srcset for <Image>. Keeps phones
     // from downloading desktop-resolution photos.
     deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
