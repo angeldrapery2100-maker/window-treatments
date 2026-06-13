@@ -36,7 +36,7 @@ export const runtime = 'nodejs'
 // non-public key ever lands in the bucket. Override via MEDIA_ALLOWED_PREFIXES
 // (comma-separated) if new collections are added.
 const DEFAULT_PREFIXES = [
-  'site', 'products', 'uploads',
+  'site', 'products', 'uploads', 'videos',
   'gallery-videos', 'gallery-posters',
   'roller', 'sheer', 'luma', 'lutron', 'zebra', 'shangrila', 'roman', 'hunter-douglas',
 ]
