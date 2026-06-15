@@ -12,10 +12,17 @@ export const revalidate = 300
 const SITE = 'https://angel-drapery.com'
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-function absUrl(u?: string | null): string | undefined {
-  if (!u) return undefined
-  if (/^https?:\/\//i.test(u)) return u
-  return `${SITE}${u.startsWith('/') ? '' : '/'}${u}`
+function absUrl(u?: unknown): string | undefined {
+  // default_config.images.main entries are objects ({ id, url, ... }), not bare
+  // strings — so accept either shape and bail safely on anything else.
+  // (Passing an object straight in used to throw "a.startsWith is not a
+  // function" and crash the whole product page's server render.)
+  const s = typeof u === 'string'
+    ? u
+    : (u && typeof u === 'object' && typeof (u as any).url === 'string' ? (u as any).url : null)
+  if (!s) return undefined
+  if (/^https?:\/\//i.test(s)) return s
+  return `${SITE}${s.startsWith('/') ? '' : '/'}${s}`
 }
 
 const getProduct = cache(async (id: string) => {
