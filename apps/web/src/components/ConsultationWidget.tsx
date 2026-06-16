@@ -28,6 +28,8 @@ export default function ConsultationWidget() {
       phone: formData.get('phone') as string,
       email: formData.get('email') as string,
       notes: formData.get('notes') as string,
+      // A2P 10DLC: explicit, verifiable SMS opt-in. Unchecked + optional.
+      smsConsent: formData.get('smsConsent') === 'on',
     }
 
     try {
@@ -170,6 +172,22 @@ export default function ConsultationWidget() {
                   className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 transition-colors"
                 />
               </div>
+
+              {/* SMS opt-in (A2P 10DLC) — directly below phone, unchecked by default, optional */}
+              <label className="flex items-start gap-2.5 text-[12px] leading-relaxed text-gray-500">
+                <input
+                  type="checkbox" name="smsConsent" defaultChecked={false}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                />
+                <span>
+                  I agree to receive text messages (SMS) from Angel Drapery, Inc at the phone
+                  number provided, about my inquiry — appointment scheduling, intake forms, and
+                  quote and order updates. Message frequency varies. Msg &amp; data rates may apply.
+                  Reply STOP to opt out, HELP for help. Consent is not a condition of any purchase.
+                  See our <a href="/privacy" className="underline hover:text-gray-700">Privacy Policy</a> and{' '}
+                  <a href="/terms" className="underline hover:text-gray-700">SMS Terms</a>.
+                </span>
+              </label>
 
               {/* Email */}
               <div>

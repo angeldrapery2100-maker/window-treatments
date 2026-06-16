@@ -21,6 +21,10 @@ async function ensureTable() {
   // Migration: add address and message columns (safe on existing tables)
   await query(`ALTER TABLE consultation_requests ADD COLUMN IF NOT EXISTS address text`).catch(() => {})
   await query(`ALTER TABLE consultation_requests ADD COLUMN IF NOT EXISTS message text`).catch(() => {})
+  // A2P 10DLC: persist the SMS opt-in flag as a consent record (best practice;
+  // not required by Twilio's reviewer but kept as proof of affirmative consent).
+  await query(`ALTER TABLE consultation_requests ADD COLUMN IF NOT EXISTS sms_consent boolean DEFAULT false`).catch(() => {})
+  await query(`ALTER TABLE consultation_requests ADD COLUMN IF NOT EXISTS sms_consent_at timestamptz`).catch(() => {})
 }
 
 export async function POST(request: Request) {
@@ -44,6 +48,7 @@ export async function POST(request: Request) {
     const { name, phone, email } = body
     const address = (body.address || '').trim()
     const message = (body.message || body.notes || '').trim()  // message takes priority; fall back to legacy notes
+    const smsConsent = body.smsConsent === true || body.smsConsent === 'on'  // A2P opt-in flag
 
     // Validate required fields
     if (!name || !String(name).trim()) {
@@ -62,9 +67,10 @@ export async function POST(request: Request) {
 
     // Save to database — keep notes column populated for backward-compat readers
     await query(
-      `INSERT INTO consultation_requests (name, phone, email, notes, address, message)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [cleanName, cleanPhone, cleanEmail, message || null, address || null, message || null]
+      `INSERT INTO consultation_requests (name, phone, email, notes, address, message, sms_consent, sms_consent_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [cleanName, cleanPhone, cleanEmail, message || null, address || null, message || null,
+       smsConsent, smsConsent ? new Date() : null]
     )
 
     // Escaped copies for HTML interpolation
@@ -88,6 +94,11 @@ export async function POST(request: Request) {
            <td style="padding: 10px 0; color: #1a1a1a; font-size: 14px; white-space: pre-line;">${esMessage}</td>
          </tr>`
       : ''
+
+    const smsRow = `<tr>
+           <td style="padding: 10px 0; color: #999; font-size: 13px; vertical-align: top;">SMS Consent</td>
+           <td style="padding: 10px 0; color: #1a1a1a; font-size: 14px;">${smsConsent ? '✅ Opted in to SMS' : '— Not opted in'}</td>
+         </tr>`
 
     // Send notification email to business owner.
     // IMPORTANT: resend.emails.send() returns { data, error } — it does NOT throw on
@@ -119,6 +130,7 @@ export async function POST(request: Request) {
               </tr>
               ${addressRow}
               ${messageRow}
+              ${smsRow}
             </table>
             <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
             <p style="color: #999; font-size: 12px;">This request was submitted through the Angel Drapery website.</p>

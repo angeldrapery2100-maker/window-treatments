@@ -40,6 +40,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The A2P 10DLC sample messages link to angel-drapery.com/intake. That path
+  // had no route (404). Point it at the consultation page, which carries the
+  // verifiable SMS opt-in checkbox the carrier reviewer needs to see.
+  async redirects() {
+    return [
+      { source: '/intake', destination: '/contact', permanent: false },
+    ]
+  },
   async rewrites() {
     if (!CDN_URL) return []
     // Rewrite all public asset folders to R2 CDN
