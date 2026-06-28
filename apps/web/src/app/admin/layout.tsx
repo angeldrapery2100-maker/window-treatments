@@ -3,6 +3,12 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+// ── Navigation, split into two independent admin areas ──────────────
+// "Website" manages the public marketing site (content, images, videos).
+// "Store" manages e-commerce (products, orders, shipping, etc.).
+// Each area gets its own dashboard and its own sidebar; you switch
+// between them from the area switcher or the /admin landing page.
+
 const WEBSITE_NAV = [
   { href: '/admin/site-content', label: 'Site Content', icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z' },
   { href: '/admin/gallery-videos', label: 'Gallery Videos', icon: 'M15 10l4.553-2.069A1 1 0 0121 8.868V15.13a1 1 0 01-1.447.899L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z' },
@@ -22,6 +28,21 @@ const STORE_NAV = [
 const SYSTEM_NAV = [
   { href: '/admin/accounts', label: 'Accounts', icon: 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z' },
 ]
+
+type Area = 'website' | 'store'
+
+const AREAS: Record<Area, { label: string; dashboard: string; nav: typeof WEBSITE_NAV }> = {
+  website: { label: 'Website', dashboard: '/admin/website', nav: WEBSITE_NAV },
+  store:   { label: 'Store',   dashboard: '/admin/store',   nav: STORE_NAV },
+}
+
+// Map any admin path to its area. Defaults to "website" for shared/system
+// pages (e.g. Accounts) so the sidebar always has a sensible context.
+function areaForPath(pathname: string): Area {
+  const storePrefixes = ['/admin/store', '/admin/products', '/admin/orders', '/admin/shipments', '/admin/discount-codes', '/admin/support', '/admin/reviews']
+  if (storePrefixes.some(p => pathname === p || pathname.startsWith(p + '/'))) return 'store'
+  return 'website'
+}
 
 function NavItem({ item, pathname }: { item: typeof WEBSITE_NAV[0]; pathname: string }) {
   const active = pathname === item.href || pathname.startsWith(item.href + '/')
@@ -51,11 +72,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     window.location.href = '/admin/login'
   }
 
-  // Full-width pages (no sidebar)
+  // Full-width pages (no sidebar): the area chooser landing, plus print /
+  // work-order views and the login page.
   const fullWidthPaths = ['/admin/orders/shipping/', '/admin/orders/work-order/', '/admin/login']
-  const isFullWidth = fullWidthPaths.some(p => pathname.startsWith(p))
+  const isChooser = pathname === '/admin'
+  const isFullWidth = isChooser || fullWidthPaths.some(p => pathname.startsWith(p))
 
   if (isFullWidth) return <>{children}</>
+
+  const area = areaForPath(pathname)
+  const current = AREAS[area]
+  const other: Area = area === 'website' ? 'store' : 'website'
+  const otherArea = AREAS[other]
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -68,11 +96,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </div>
 
+        {/* Area badge + switch to the other area */}
+        <div className="px-3 pt-4">
+          <div className="flex items-center justify-between px-3 py-2 rounded-md bg-gray-50 border border-gray-100">
+            <span className="text-[11px] font-semibold text-gray-700 uppercase tracking-widest">{current.label}</span>
+            <Link href={otherArea.dashboard} className="text-[11px] text-gray-400 hover:text-gray-700 transition-colors flex items-center gap-1">
+              {otherArea.label}
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+
         <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
           <div>
-            <Link href="/admin"
+            <Link href={current.dashboard}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] transition-colors ${
-                pathname === '/admin'
+                pathname === current.dashboard
                   ? 'bg-[#3d3d3d] text-white font-medium'
                   : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
               }`}>
@@ -84,16 +125,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div>
-            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Website</p>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{current.label}</p>
             <div className="space-y-0.5">
-              {WEBSITE_NAV.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
-            </div>
-          </div>
-
-          <div>
-            <p className="px-3 mb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Store</p>
-            <div className="space-y-0.5">
-              {STORE_NAV.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
+              {current.nav.map(item => <NavItem key={item.href} item={item} pathname={pathname} />)}
             </div>
           </div>
 

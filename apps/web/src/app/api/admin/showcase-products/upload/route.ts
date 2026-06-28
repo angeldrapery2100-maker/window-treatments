@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { uploadToR2 } from '@/lib/r2'
+import { compressImage } from '@/lib/image'
 
 const ALLOWED_TYPES: Record<string, string> = {
   'image/jpeg': 'jpg',
@@ -44,15 +45,32 @@ export async function POST(request: Request) {
     }
 
     const bytes    = await file.arrayBuffer()
-    const buffer   = Buffer.from(bytes)
-    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${safeExt}`
-    const key      = `showcase/${productId}/${filename}`
+    const raw      = Buffer.from(bytes)
 
-    const url = await uploadToR2(key, buffer, file.type)
+    // Shrink/re-encode images before upload (no-op for videos / GIFs). Since
+    // the site serves R2 images directly (next/image unoptimized), this is
+    // where optimisation happens — clamps to 2400px at quality 82.
+    const compressed = await compressImage(raw, file.type)
+    const filename   = `${Date.now()}-${Math.random().toString(36).slice(2)}.${compressed.extension}`
+    const key        = `showcase/${productId}/${filename}`
+
+    const url = await uploadToR2(key, compressed.buffer, compressed.contentType)
+
+    if (compressed.finalBytes < compressed.originalBytes) {
+      console.log(
+        `[showcase upload] compressed ${file.name}: ${(compressed.originalBytes / 1024).toFixed(0)}KB → ${(compressed.finalBytes / 1024).toFixed(0)}KB`,
+      )
+    }
 
     return NextResponse.json({
       success: true,
-      data: { url, filename, originalName: file.name }
+      data: {
+        url,
+        filename,
+        originalName: file.name,
+        originalBytes: compressed.originalBytes,
+        finalBytes: compressed.finalBytes,
+      }
     })
   } catch (error) {
     return NextResponse.json({ success: false, error: { message: '上传失败: ' + (error instanceof Error ? error.message : String(error)) } }, { status: 500 })
