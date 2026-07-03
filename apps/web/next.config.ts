@@ -84,17 +84,18 @@ const nextConfig: NextConfig = {
     const R2 = 'https://pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev'
     const cspReportOnly = [
       `default-src 'self'`,
-      // Next.js injects inline bootstrap scripts; Stripe.js is loaded for checkout.
-      `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com`,
+      // Next.js injects inline bootstrap scripts; Stripe.js is loaded for
+      // checkout; Turnstile's api.js powers the consultation-form bot check.
+      `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://challenges.cloudflare.com`,
       // Tailwind / framer-motion / Next set inline styles.
       `style-src 'self' 'unsafe-inline'`,
       `img-src 'self' data: blob: ${R2} https://www.carolefabrics.com https://q.stripe.com`,
       `media-src 'self' blob: ${R2}`,
       `font-src 'self' data:`,
-      // XHR/fetch to our APIs, Stripe, and the media CDN.
-      `connect-src 'self' ${R2} https://api.stripe.com https://api.goshippo.com`,
-      // Stripe payment element iframes.
-      `frame-src https://js.stripe.com https://hooks.stripe.com`,
+      // XHR/fetch to our APIs, Stripe, the media CDN, and Turnstile siteverify.
+      `connect-src 'self' ${R2} https://api.stripe.com https://api.goshippo.com https://challenges.cloudflare.com`,
+      // Stripe payment element iframes + the Turnstile challenge iframe.
+      `frame-src https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com`,
       `object-src 'none'`,
       `base-uri 'self'`,
       `form-action 'self'`,

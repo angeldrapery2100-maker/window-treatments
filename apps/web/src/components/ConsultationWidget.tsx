@@ -2,6 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import Script from 'next/script'
+
+// Public Turnstile site key. When unset (local dev / preview without the key)
+// the widget is skipped and the server-side check skips too, so the form works.
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
 export default function ConsultationWidget() {
   const pathname = usePathname()
@@ -11,6 +16,13 @@ export default function ConsultationWidget() {
   const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  // Timestamp (ms) of when the form became visible, for the minimum-fill-time
+  // anti-bot check. Reset each time the panel opens.
+  const renderedAtRef = useRef<number>(0)
+
+  useEffect(() => {
+    if (isOpen) renderedAtRef.current = Date.now()
+  }, [isOpen])
 
   // Hide on store and admin pages
   if (pathname.startsWith('/store') || pathname.startsWith('/admin')) {
@@ -30,6 +42,11 @@ export default function ConsultationWidget() {
       notes: formData.get('notes') as string,
       // A2P 10DLC: explicit, verifiable SMS opt-in. Unchecked + optional.
       smsConsent: formData.get('smsConsent') === 'on',
+      // Anti-bot: honeypot field (must stay empty), time-on-screen, and the
+      // Turnstile token that the widget injects into the form as a hidden input.
+      company: (formData.get('company') as string) || '',
+      elapsedMs: renderedAtRef.current ? Date.now() - renderedAtRef.current : 10000,
+      turnstileToken: (formData.get('cf-turnstile-response') as string) || '',
     }
 
     try {
@@ -64,6 +81,16 @@ export default function ConsultationWidget() {
 
   return (
     <>
+      {/* Load the Turnstile script only when a site key is configured. */}
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+          strategy="afterInteractive"
+        />
+      )}
+
       {/* Overlay */}
       {isOpen && (
         <div
@@ -143,6 +170,24 @@ export default function ConsultationWidget() {
             </div>
           ) : (
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+              {/* Honeypot — hidden from humans; only bots fill this. Positioned
+                  off-screen (more robust than display:none, which some bots skip).
+                  Do not remove. */}
+              <div
+                aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}
+              >
+                <label htmlFor="cw-company">Company</label>
+                <input
+                  id="cw-company"
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  defaultValue=""
+                />
+              </div>
+
               {/* Name */}
               <div>
                 <label htmlFor="cw-name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -217,6 +262,13 @@ export default function ConsultationWidget() {
                   className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 transition-colors resize-none"
                 />
               </div>
+
+              {/* Cloudflare Turnstile — renders a challenge and injects a hidden
+                  input named "cf-turnstile-response" into this form. Rendered only
+                  when a site key is configured. */}
+              {TURNSTILE_SITE_KEY && (
+                <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" />
+              )}
 
               {error && (
                 <p className="text-sm text-red-500">{error}</p>

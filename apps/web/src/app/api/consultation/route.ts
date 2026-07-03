@@ -3,9 +3,17 @@ import { Resend } from 'resend'
 import { query } from '@/lib/db'
 import { escapeHtml } from '@/lib/html'
 import { rateLimit, getClientIp } from '@/lib/rateLimit'
+import { verifyTurnstile } from '@/lib/turnstile'
+import { scoreSpam } from '@/lib/spamCheck'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
+
+// Decoy success response for silently-dropped bot submissions. Returns the SAME
+// shape a real submission gets so a bot cannot tell it was rejected and adapt.
+function decoyResponse() {
+  return NextResponse.json({ success: true, emailSent: true })
+}
 
 // Create / migrate table on first access
 async function ensureTable() {
@@ -29,9 +37,33 @@ async function ensureTable() {
 
 export async function POST(request: Request) {
   try {
-    // Throttle submissions: max 5 per hour per IP to prevent spam / email bombing.
     const ip = getClientIp(request)
-    const limit = await rateLimit('consultation', ip, { max: 5, windowSeconds: 3600 })
+
+    // Accept both new fields (address, message) and legacy field (notes).
+    // Frontend sends: name, email, phone, address, message, plus the anti-bot
+    // fields company (honeypot), elapsedMs (fill time) and turnstileToken.
+    // Old callers may send: name, email, phone, notes
+    const body = await request.json() as any
+
+    // ── P0: honeypot ─────────────────────────────────────────────────────────
+    // `company` is an invisible field no human ever sees or fills. Any value =
+    // a bot. Reply with the normal success shape so it gets no signal to adapt.
+    if (typeof body.company === 'string' && body.company.trim() !== '') {
+      console.warn('[consultation] honeypot tripped — dropping submission')
+      return decoyResponse()
+    }
+
+    // ── P0: minimum fill time ────────────────────────────────────────────────
+    // The widget stamps how long the form was on screen before submit. Humans
+    // take several seconds to fill name/phone/email; sub-3s means a script.
+    const elapsedMs = Number(body.elapsedMs)
+    if (Number.isFinite(elapsedMs) && elapsedMs < 3000) {
+      console.warn(`[consultation] too-fast submit (${elapsedMs}ms) — dropping`)
+      return decoyResponse()
+    }
+
+    // ── P2: rate limit (tightened 5 → 3 per hour per IP) ─────────────────────
+    const limit = await rateLimit('consultation', ip, { max: 3, windowSeconds: 3600 })
     if (!limit.allowed) {
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },
@@ -41,10 +73,6 @@ export async function POST(request: Request) {
 
     await ensureTable()
 
-    // Accept both new fields (address, message) and legacy field (notes).
-    // Frontend sends: name, email, phone, address, message
-    // Old callers may send: name, email, phone, notes
-    const body = await request.json() as any
     const { name, phone, email } = body
     const address = (body.address || '').trim()
     const message = (body.message || body.notes || '').trim()  // message takes priority; fall back to legacy notes
@@ -64,6 +92,25 @@ export async function POST(request: Request) {
     const cleanName  = String(name).trim()
     const cleanPhone = String(phone).trim()
     const cleanEmail = String(email).trim()
+
+    // ── P1: Cloudflare Turnstile ─────────────────────────────────────────────
+    // Verify the human-challenge token before touching the DB or sending mail.
+    // Skips automatically when TURNSTILE_SECRET_KEY is unset (dev/preview).
+    const turnstile = await verifyTurnstile(body.turnstileToken, ip)
+    if (!turnstile.ok) {
+      console.warn('[consultation] Turnstile verification failed:', turnstile.error)
+      return NextResponse.json(
+        { error: 'Verification failed. Please try again.' },
+        { status: 403 }
+      )
+    }
+
+    // ── P2: heuristic spam score (auxiliary, conservative — see spamCheck.ts) ─
+    const verdict = scoreSpam({ name: cleanName, phone: cleanPhone, email: cleanEmail, message })
+    if (verdict.spam) {
+      console.warn(`[consultation] heuristic spam drop (score=${verdict.score}): ${verdict.reasons.join(', ')}`)
+      return decoyResponse()
+    }
 
     // Save to database — keep notes column populated for backward-compat readers
     await query(
