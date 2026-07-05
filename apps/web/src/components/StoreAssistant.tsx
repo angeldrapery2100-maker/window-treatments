@@ -39,9 +39,15 @@ const QUICK_PROMPTS = [
   'Hunter Douglas 有什么产品?',
 ]
 
-// Module-level flag: once the server says 'assistant_unavailable', stay hidden
-// across route changes / remounts without re-probing the API.
-let assistantUnavailable = false
+// NOTE (fix 2026-07-05): we previously hid the whole widget permanently when
+// the server reported 'assistant_unavailable'. That made the bubble vanish
+// mid-conversation (e.g. env var not yet live, key rotated, quota exhausted)
+// and confused users. Now we keep the widget and show a human-fallback
+// message instead — the assistant recovers automatically on the next send.
+const UNAVAILABLE_MSG =
+  'Our AI assistant is temporarily unavailable. Please call us at 626-451-9841, ' +
+  'or request a free design consultation at /store/whole-home — a real person will help you. ' +
+  'AI 客服暂时不可用，请拨打 626-451-9841 或提交免费设计咨询，我们的设计师会协助您。'
 
 function loadStored(): ChatMessage[] {
   try {
@@ -68,7 +74,6 @@ function saveStored(messages: ChatMessage[]) {
 
 export default function StoreAssistant() {
   const pathname = usePathname()
-  const [hidden, setHidden] = useState(assistantUnavailable)
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
@@ -122,9 +127,11 @@ export default function StoreAssistant() {
           setMessages(withReply)
           saveStored(withReply)
         } else if (json?.error === 'assistant_unavailable') {
-          // Backend not configured — hide the widget entirely for this page lifetime.
-          assistantUnavailable = true
-          setHidden(true)
+          // Backend not configured / key missing — keep the widget, offer the
+          // human path. Recovers automatically once the server has its key.
+          const withNotice = [...next, { role: 'assistant' as const, content: UNAVAILABLE_MSG }]
+          setMessages(withNotice)
+          saveStored(withNotice)
         } else {
           setErrorMsg(
             typeof json?.error === 'string' && json.error
@@ -140,8 +147,6 @@ export default function StoreAssistant() {
     },
     [messages, sending]
   )
-
-  if (hidden) return null
 
   const showWelcome = messages.length === 0
   const onStore = pathname?.startsWith('/store')
