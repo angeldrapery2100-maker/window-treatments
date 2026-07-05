@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { query, queryOne } from '@/lib/db'
 import { UnifiedPricingEngine } from '@window-treatments/shared/pricing/engines'
 import { explainDrapery, explainSheer, explainShade } from '@window-treatments/shared/pricing/explainers'
+import { isAappConfigured, calculateAapp } from '@window-treatments/shared/pricing/aapp'
 
 type ProductType = 'drapery' | 'sheer' | 'shade'
 
@@ -141,6 +142,20 @@ export async function POST(request: Request) {
       ...(FORMULA_DEFAULTS[productType] ?? {}),
       ...(pricingConfig?.variables ?? {}),
       ...baseParams,
+    }
+
+    // ── AAPP 对齐引擎（产品 params 含 aapp_engine 时启用，与内部软件报价 1:1）──
+    // 选项值字符串即 AAPP key；数值参数（fabric_price_per_yard 等）走
+    // resolvedOptionValues（未做 KEY_MAP 映射的原始 key）。见 docs/aapp-engine-wiring.md。
+    if (isAappConfigured(mergedBaseParams)) {
+      const aapp = calculateAapp({
+        width: input.width,
+        height: input.height,
+        baseParams: mergedBaseParams,
+        options,
+        optionParams: resolvedOptionValues,
+      })
+      return NextResponse.json({ ok: true, result: aapp, explain: [] })
     }
 
     // 调用 engine

@@ -21,7 +21,13 @@ export interface CartItem {
   quantity: number
   unitPrice: number      // calculated price per unit
   addedAt: number        // timestamp
+  // Free fabric swatch line: $0, no dimensions, max MAX_SWATCHES_PER_ORDER per
+  // order. Server re-verifies (orderPricing) — the flag alone never sets price.
+  isSwatch?: boolean
 }
+
+/** Free fabric swatches allowed per order (enforced client- AND server-side). */
+export const MAX_SWATCHES_PER_ORDER = 5
 
 export interface Cart {
   items: CartItem[]
@@ -59,6 +65,47 @@ export function addToCart(item: Omit<CartItem, 'id' | 'addedAt'>) {
   cart.items.push(newItem)
   saveCart(cart)
   return newItem.id
+}
+
+export function getSwatchCount(): number {
+  return getCart().items.filter(i => i.isSwatch).reduce((sum, i) => sum + i.quantity, 0)
+}
+
+/**
+ * Add a free fabric swatch for a product+fabric combination.
+ * Returns: 'added' | 'duplicate' (same swatch already in cart) | 'limit'
+ * (MAX_SWATCHES_PER_ORDER reached).
+ */
+export function addSwatchToCart(input: {
+  productId: string
+  productName: string
+  mainImageUrl: string | null
+  fabricOption: CartItemOption | null
+}): 'added' | 'duplicate' | 'limit' {
+  const cart = getCart()
+  const fabricValue = input.fabricOption?.value || ''
+  const dup = cart.items.some(i =>
+    i.isSwatch && i.productId === input.productId &&
+    (i.options.find(o => o.name === input.fabricOption?.name)?.value || '') === fabricValue
+  )
+  if (dup) return 'duplicate'
+  if (getSwatchCount() >= MAX_SWATCHES_PER_ORDER) return 'limit'
+  const options: CartItemOption[] = [
+    // Display marker — shows up in cart / order / work-order option lists.
+    { name: 'item_kind', displayLabel: 'Item', value: 'swatch', valueLabel: 'Free Fabric Swatch' },
+    ...(input.fabricOption ? [input.fabricOption] : []),
+  ]
+  addToCart({
+    productId: input.productId,
+    productName: input.productName,
+    productType: 'swatch',
+    mainImageUrl: input.mainImageUrl,
+    options,
+    quantity: 1,
+    unitPrice: 0,
+    isSwatch: true,
+  })
+  return 'added'
 }
 
 export function updateCartItemQuantity(itemId: string, quantity: number) {

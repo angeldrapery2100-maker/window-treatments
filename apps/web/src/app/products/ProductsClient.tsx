@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 
 interface ImageData {
   url: string; alt: string; width: number; height: number; fit: string
@@ -153,14 +153,7 @@ export default function ProductsClient({ hero, products, footer }: Props) {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
-            <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} copyright={footer.copyright} />
 
       <style jsx global>{`
         .fade-in > div > * { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }

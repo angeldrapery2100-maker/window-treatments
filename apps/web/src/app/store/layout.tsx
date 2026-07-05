@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/store' },
 }
 
+// Note: the AI shopping assistant (StoreAssistant) is mounted site-wide from
+// the root layout now — nothing store-specific to render here.
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }

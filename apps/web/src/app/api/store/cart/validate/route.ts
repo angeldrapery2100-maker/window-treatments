@@ -20,6 +20,15 @@ export async function POST(request: Request) {
 
     const out = await Promise.all(items.map(async (it: any) => {
       const clientPrice = Number(it.unitPrice) || 0
+      // Free swatch lines: $0 by definition — only verify the product exists
+      // and is still active (no engine pricing, they carry no dimensions).
+      if (it.isSwatch) {
+        const row = await queryOne<{ id: string }>(
+          `SELECT id FROM products WHERE id = $1 AND is_active = true`,
+          [it.productId]
+        ).catch(() => null)
+        return { id: it.id ?? null, productId: it.productId, available: !!row, unitPrice: 0, changed: false }
+      }
       try {
         const server = await computeServerUnitPrice({
           productId: it.productId,

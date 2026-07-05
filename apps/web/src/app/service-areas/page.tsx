@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 import { COPYRIGHT, PRIMARY_PHONE } from '@/lib/site'
 import { CITIES } from './cities'
 
@@ -59,14 +59,7 @@ export default function ServiceAreasIndexPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="w-full bg-white border-t border-gray-100 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial />
-            <div className="text-center text-sm text-gray-600">{COPYRIGHT}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

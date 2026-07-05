@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { m as motion } from 'framer-motion'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 
 interface Product {
   id: string
@@ -765,14 +765,7 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
       </section>
 
       {/* ═══════════════════════ FOOTER ═══════════════════════ */}
-      <footer className="w-full bg-[#3d3d3d] border-t border-white/5 py-12">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="flex flex-col items-center space-y-6">
-            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
-            <div className="text-center text-xs text-gray-500 tracking-wider">{footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter dark youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} copyright={footer.copyright} />
     </main>
   )
 }

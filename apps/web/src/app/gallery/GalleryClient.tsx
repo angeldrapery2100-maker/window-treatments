@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import { type ProjectVideo, DEFAULT_VIDEOS } from '@/lib/gallery-videos-data'
+import SiteFooter from '@/components/SiteFooter'
 
 // Re-export for backward-compat with gallery/page.tsx
 export type { ProjectVideo }
@@ -404,9 +405,7 @@ export default function GalleryClient({ footer, videos: videosProp }: Props) {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="py-12 px-12 bg-[#3d3d3d] text-center border-t border-white/10">
-        <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-mono">{footer.copyright}</p>
-      </footer>
+      <SiteFooter dark copyright={footer.copyright} />
 
       {/* ── Lightbox ── */}
       <AnimatePresence>

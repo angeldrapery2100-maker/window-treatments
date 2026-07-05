@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import { getCartCount } from '@/lib/cart'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 import { COPYRIGHT } from '@/lib/site'
 
 interface StoreProduct {
@@ -300,6 +300,25 @@ export default function OnlineStorePage() {
         </section>
       ) : (
         <>
+          {/* Whole-Home Custom banner */}
+          <section className="w-full bg-white pt-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <Link href="/store/whole-home"
+                className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-white px-6 py-5 hover:border-gray-400 hover:shadow-lg transition-all duration-300">
+                <div>
+                  <p className="text-base font-medium text-gray-900 mb-0.5">Furnishing multiple rooms?</p>
+                  <p className="text-sm text-gray-500">Our design team helps you measure, choose fabrics, and quote your whole home — free in-home consultation in the LA area.</p>
+                </div>
+                <span className="shrink-0 inline-flex items-center gap-2 text-sm font-medium tracking-wide text-gray-900 border-b border-gray-300 pb-0.5 group-hover:border-gray-900 transition-colors">
+                  Get a free design consultation
+                  <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </span>
+              </Link>
+            </div>
+          </section>
+
           {/* Recommended */}
           {featured.length > 0 && <RecommendedSection products={featured} />}
 
@@ -382,14 +401,7 @@ export default function OnlineStorePage() {
       )}
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial />
-            <div className="text-center text-sm text-gray-600">{COPYRIGHT}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

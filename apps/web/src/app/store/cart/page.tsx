@@ -31,7 +31,7 @@ export default function CartPage() {
         body: JSON.stringify({ items: c.items.map(i => ({
           id: i.id, productId: i.productId, width: i.width, height: i.height,
           widthFraction: i.widthFraction, heightFraction: i.heightFraction,
-          options: i.options, unitPrice: i.unitPrice,
+          options: i.options, unitPrice: i.unitPrice, isSwatch: !!i.isSwatch,
         })) }),
       })
         .then(r => r.json())
@@ -244,21 +244,31 @@ export default function CartPage() {
 
                       {/* Quantity + Price */}
                       <div className="mt-3 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-400 uppercase tracking-wider">Qty</span>
-                          <div className="flex items-center border border-gray-200 rounded">
-                            <button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                              disabled={item.quantity <= 1}
-                              className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700 disabled:opacity-30 text-sm">−</button>
-                            <span className="w-8 text-center text-sm font-medium text-gray-900">{item.quantity}</span>
-                            <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                              className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700 text-sm">+</button>
+                        {item.isSwatch ? (
+                          <span className="text-xs text-gray-400">Free swatch · qty 1</span>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-400 uppercase tracking-wider">Qty</span>
+                            <div className="flex items-center border border-gray-200 rounded">
+                              <button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                                disabled={item.quantity <= 1}
+                                className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700 disabled:opacity-30 text-sm">−</button>
+                              <span className="w-8 text-center text-sm font-medium text-gray-900">{item.quantity}</span>
+                              <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                                className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700 text-sm">+</button>
+                            </div>
                           </div>
-                        </div>
+                        )}
                         <div className="text-right">
-                          <p className="text-sm font-semibold text-gray-900">${(item.unitPrice * item.quantity).toLocaleString()}</p>
-                          {item.quantity > 1 && (
-                            <p className="text-[11px] text-gray-400">${item.unitPrice.toLocaleString()} each</p>
+                          {item.isSwatch ? (
+                            <p className="text-sm font-semibold text-green-600">FREE</p>
+                          ) : (
+                            <>
+                              <p className="text-sm font-semibold text-gray-900">${(item.unitPrice * item.quantity).toLocaleString()}</p>
+                              {item.quantity > 1 && (
+                                <p className="text-[11px] text-gray-400">${item.unitPrice.toLocaleString()} each</p>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>

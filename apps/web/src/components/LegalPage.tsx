@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
+import SiteFooter from '@/components/SiteFooter'
 
 /**
  * Shared shell for static legal pages (Privacy Policy, SMS Terms).
@@ -33,17 +34,7 @@ export default function LegalPage({
       </article>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-10">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
-            <Link href="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gray-900 transition-colors">SMS Terms &amp; Conditions</Link>
-            <Link href="/contact" className="hover:text-gray-900 transition-colors">Contact</Link>
-          </nav>
-          <p className="text-center text-sm text-gray-500">©2026 Angel Drapery, Inc</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

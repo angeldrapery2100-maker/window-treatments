@@ -5,6 +5,7 @@ import { m as motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { MAPS_EMBED_URL } from '@/lib/site'
+import SiteFooter from '@/components/SiteFooter'
 
 interface ContactData {
   title: string
@@ -344,9 +345,7 @@ export default function ContactClient({ contact, footer }: Props) {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="bg-[#0d0f17] py-8 text-center">
-        <p className="text-white/30 text-sm">{footer.copyright}</p>
-      </footer>
+      <SiteFooter dark copyright={footer.copyright} />
     </main>
   )
 }

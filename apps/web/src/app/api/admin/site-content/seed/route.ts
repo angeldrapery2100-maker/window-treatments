@@ -7,6 +7,8 @@ const SEED_DATA = [
   // ======================== HOME PAGE ========================
   // Hero
   { page: 'home', section: 'hero', field_key: 'video', field_type: 'video', content: '', image_url: '/videos/hero-background.mp4', sort_order: 0 },
+  // Static first frame of the hero video — shown instantly while the mp4 loads (LCP fix).
+  { page: 'home', section: 'hero', field_key: 'poster', field_type: 'image', content: 'Hero video poster (first frame)', image_url: '', sort_order: 0 },
   { page: 'home', section: 'hero', field_key: 'title_cn', field_type: 'text', content: '天使窗簾', sort_order: 1 },
   { page: 'home', section: 'hero', field_key: 'subtitle', field_type: 'text', content: '专业窗簾設計、訂造、安裝', sort_order: 2 },
   { page: 'home', section: 'hero', field_key: 'tagline', field_type: 'text', content: 'Since 1984 • 40 Years Experience', sort_order: 3 },

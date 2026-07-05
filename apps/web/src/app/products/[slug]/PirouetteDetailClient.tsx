@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import { pirouetteLayout } from './pirouette-layout'
 import type { SectionLayout, CardItem, ImageLabel, SwatchCollection, ControlSystemPanel } from './applause-layout'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 
 interface RelatedProduct {
   name: string; slug: string; cover_image: string | null; description: string
@@ -500,14 +500,7 @@ export default function PirouetteDetailClient({ product, related, footer }: Prop
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
-            <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} copyright={footer.copyright} />
     </main>
   )
 }

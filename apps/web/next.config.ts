@@ -94,8 +94,9 @@ const nextConfig: NextConfig = {
       `font-src 'self' data:`,
       // XHR/fetch to our APIs, Stripe, the media CDN, and Turnstile siteverify.
       `connect-src 'self' ${R2} https://api.stripe.com https://api.goshippo.com https://challenges.cloudflare.com`,
-      // Stripe payment element iframes + the Turnstile challenge iframe.
-      `frame-src https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com`,
+      // Stripe payment element iframes + the Turnstile challenge iframe +
+      // the Google Maps embed on the home/contact pages.
+      `frame-src https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com https://www.google.com`,
       `object-src 'none'`,
       `base-uri 'self'`,
       `form-action 'self'`,

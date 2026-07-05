@@ -66,7 +66,15 @@ export interface PricingItem {
   widthFraction?:  string | number
   heightFraction?: string | number
   options?:        Array<{ name: string; value: string }> | Record<string, string>
+  // Free fabric swatch line. Server treats it as unitPrice=0 regardless of any
+  // client price, capped at MAX_SWATCHES_PER_ORDER per order. Marking a real
+  // product as a swatch gains nothing: the line is priced $0 AND fulfilled as
+  // a swatch (createOrder strips dimensions and renames the line).
+  isSwatch?:       boolean
 }
+
+/** Free fabric swatches allowed per order — mirrors lib/cart.ts. */
+export const MAX_SWATCHES_PER_ORDER = 5
 
 export interface PricingInput {
   items:        PricingItem[]
@@ -140,6 +148,14 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
     productMap[r.id]   = { name: r.name, stock_qty: r.stock_qty == null ? null : Number(r.stock_qty) }
   }
 
+  // Free swatch lines: $0 each, hard-capped per order.
+  const swatchQty = items
+    .filter(i => i.isSwatch)
+    .reduce((sum, i) => sum + Math.max(1, Math.floor(Number(i.quantity) || 1)), 0)
+  if (swatchQty > MAX_SWATCHES_PER_ORDER) {
+    throw new Error(`Free swatches are limited to ${MAX_SWATCHES_PER_ORDER} per order`)
+  }
+
   let subtotal = 0
   for (const item of items) {
     if (!(item.productId in basePriceMap)) {
@@ -147,6 +163,7 @@ export async function calcServerTotals(input: PricingInput): Promise<PricingResu
       // client-supplied price.
       throw new Error(`Product not available: ${item.productId}`)
     }
+    if (item.isSwatch) continue  // $0 line — validated above, contributes nothing
     const basePrice   = basePriceMap[item.productId]
     const clientPrice = Math.max(0, Number(item.price) || 0)
     const lineQty     = Math.max(1, Math.floor(Number(item.quantity) || 1))

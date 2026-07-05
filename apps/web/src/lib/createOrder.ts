@@ -16,7 +16,9 @@ import { calcServerTotals } from '@/lib/orderPricing'
 import { sendOrderEmails } from '@/lib/orderEmails'
 
 export interface CreateOrderInput {
-  paymentIntentId: string
+  // Required at runtime — every order (including swatch-only, which charges
+  // shipping) must carry a verified PaymentIntent.
+  paymentIntentId: string | null | undefined
   customer: { name: string; email: string; phone?: string; address?: any }
   items: any[]
   shipping?: { cost?: number; carrier?: string; service?: string; rateId?: string } | null
@@ -118,16 +120,37 @@ function generateOrderNumber(): string {
 }
 
 export async function createOrderForPaymentIntent(input: CreateOrderInput): Promise<CreateOrderResult> {
-  const { customer, items, notes, paymentIntentId, shipping, discount, userId } = input
+  const { customer, notes, paymentIntentId, shipping, discount, userId } = input
 
   await ensureOrdersTable()
 
   if (!customer?.name || !customer?.email) {
     return { ok: false, status: 400, error: 'Name and email are required' }
   }
-  if (!items || items.length === 0) {
+  if (!input.items || input.items.length === 0) {
     return { ok: false, status: 400, error: 'Cart is empty' }
   }
+
+  // ── Sanitize swatch lines ──────────────────────────────────────────────────
+  // A swatch is fulfilled as a swatch no matter what the client sent: $0 price,
+  // no dimensions, qty 1, explicit type/name. This makes "mark a real product
+  // as swatch" pointless — the order line can never describe a full product.
+  const items = (input.items as any[]).map(i => {
+    if (!i?.isSwatch) return i
+    return {
+      productId:    i.productId,
+      productName:  i.productName,
+      productType:  'swatch',
+      mainImageUrl: i.mainImageUrl ?? null,
+      options:      Array.isArray(i.options) ? i.options : [],
+      quantity:     1,
+      unitPrice:    0,
+      isSwatch:     true,
+    }
+  })
+
+  // NOTE: swatch-only orders are NOT free-of-payment — swatches are $0 but
+  // shipping is charged, so every order must carry a verified PaymentIntent.
   if (!paymentIntentId) {
     return { ok: false, status: 400, error: 'Payment information is required' }
   }
@@ -162,11 +185,10 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
     return { ok: false, status: 400, error: 'Could not verify payment' }
   }
 
-  const piAmountCents = pi.amount
-  const piTotal       = piAmountCents / 100
-  const piMeta        = (pi.metadata || {}) as Record<string, string>
-  const piTaxSource   = piMeta.taxSource || 'local'
-  const taxCalcId     = piMeta.taxCalculationId || ''
+  const piTotal     = pi.amount / 100
+  const piMeta      = (pi.metadata || {}) as Record<string, string>
+  const piTaxSource = piMeta.taxSource || 'local'
+  const taxCalcId   = piMeta.taxCalculationId || ''
 
   let finalSubtotal:      number
   let finalDiscountCode:  string | null
@@ -217,6 +239,7 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
       widthFraction:  i.widthFraction,
       heightFraction: i.heightFraction,
       options:        i.options,
+      isSwatch:       !!i.isSwatch,
     }))
 
     let serverPricing

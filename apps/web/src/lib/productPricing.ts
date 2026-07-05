@@ -16,6 +16,7 @@
 
 import { query, queryOne } from '@/lib/db'
 import { UnifiedPricingEngine } from '@window-treatments/shared/pricing/engines'
+import { isAappConfigured, calculateAapp } from '@window-treatments/shared/pricing/aapp'
 
 export type EngineProductType = 'drapery' | 'sheer' | 'shade'
 export type OptionValues = Record<string, Record<string, Record<string, number>>>
@@ -161,6 +162,40 @@ export async function computeServerUnitPrice(item: ServerPriceItem): Promise<{ u
   const cfg = row.default_config || {}
   const type = row.type
   const sel = normalizeSelections(item.options)
+
+  // ── AAPP-parity engine (products with params.aapp_engine) ─────────────────
+  // Mirrors the /api/store/pricing/calculate branch exactly — same adapter,
+  // same option→input mapping — so checkout re-verification always agrees
+  // with what the product page displayed. See docs/aapp-engine-wiring.md.
+  if (isAappConfigured(cfg.params)) {
+    const width = (Number(item.width) || 0) + parseFraction(item.widthFraction)
+    const height = (Number(item.height) || 0) + parseFraction(item.heightFraction)
+    if (width <= 0) throw new Error('Missing width for custom-priced item')
+    const engine = String(cfg.params.aapp_engine)
+    const needsHeight = engine !== 'drapery_hardware' && engine !== 'somfy_track'
+    if (needsHeight && height <= 0) throw new Error('Missing height for custom-priced item')
+
+    // Merge numeric params of the SELECTED option values (raw keys, un-mapped).
+    const optionValues = buildOptionValuesFromCfg(cfg.options || [])
+    const optionParams: Record<string, number> = {}
+    for (const [optName, value] of Object.entries(sel)) {
+      const params = optionValues[optName]?.[value]
+      if (params) Object.assign(optionParams, params)
+    }
+
+    const aapp = calculateAapp({
+      width,
+      height,
+      baseParams: cfg.params || {},
+      options: sel,
+      optionParams,
+    })
+    const unitPrice = Math.round(Number(aapp.total))
+    if (!Number.isFinite(unitPrice) || unitPrice <= 0) {
+      throw new Error('Could not compute server price for custom item')
+    }
+    return { unitPrice, basePrice, type }
+  }
 
   // ── Hardware: fixed formula from option params (no engine) ────────────────
   if (type === 'hardware') {

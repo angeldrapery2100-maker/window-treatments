@@ -3,7 +3,7 @@
 import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 import { COPYRIGHT } from '@/lib/site'
 
 // ────────────────────────────────────────────────
@@ -246,12 +246,7 @@ export default function ProductShell({
       )}
 
       {/* ── Footer ── */}
-      <footer className="border-t border-gray-100 py-10 mt-8">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-4">
-          <FooterSocial />
-          <p className="text-xs text-gray-300 tracking-widest">{COPYRIGHT}</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

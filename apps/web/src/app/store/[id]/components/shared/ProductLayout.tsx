@@ -3,7 +3,7 @@
 import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import { getCartCount } from '@/lib/cart'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 import { COPYRIGHT } from '@/lib/site'
 
 interface ProductLayoutProps {
@@ -96,14 +96,7 @@ export default function ProductLayout({ children, productName }: ProductLayoutPr
       </div>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-10 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial />
-            <p className="text-sm text-gray-400">{COPYRIGHT}</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

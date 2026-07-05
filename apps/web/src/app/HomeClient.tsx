@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
-import FooterSocial from '@/components/FooterSocial'
+import SiteFooter from '@/components/SiteFooter'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
 
@@ -27,7 +27,7 @@ interface ImageData {
 }
 
 interface Props {
-  hero: { background: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string; titleSeo: string; subtitleEn: string }
+  hero: { background: string; poster?: string; titleCn: string; titleEn?: string; subtitle: string; tagline: string; titleSeo: string; subtitleEn: string }
   gallery: GalleryImage[]
   about: {
     title: string; highlight: string; subtitle: string; description: string
@@ -221,7 +221,17 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       <section className="relative w-full min-h-screen overflow-hidden">
         <div className="absolute inset-0 w-full h-full bg-gray-800">
           {/\.(mp4|mov|webm)(\?|$)/i.test(hero.background) ? (
-            <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+            // poster paints a real first frame instantly while the mp4 streams
+            // in — without it the hero is a blank dark block for seconds (LCP).
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={hero.poster || undefined}
+              preload="metadata"
+              className="w-full h-full object-cover"
+            >
               <source src={hero.background} type="video/mp4" />
             </video>
           ) : (
@@ -244,12 +254,10 @@ export default function HomeClient({ hero, gallery, about, process: processData,
         <SiteNav activePage="Home" brandName={hero.titleEn} />
 
         <div className="absolute inset-0 flex items-center justify-center px-6 pt-20 md:px-0 md:pt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
-            className="z-10 max-w-[92vw] text-center md:max-w-4xl"
-          >
+          {/* Plain CSS animation instead of framer-motion: the h1 is the LCP
+              element and must paint from server HTML immediately — motion's
+              initial={{opacity:0}} kept it invisible until JS hydrated. */}
+          <div className="hero-fade-up z-10 max-w-[92vw] text-center md:max-w-4xl">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.04em] md:tracking-[0.08em] leading-tight text-white mb-4 md:mb-6 drop-shadow-2xl text-balance">
               {heroTitle}
             </h1>
@@ -268,7 +276,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </a>
-          </motion.div>
+          </div>
         </div>
 
         <motion.div
@@ -1658,16 +1666,16 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-4">
-            <FooterSocial youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} />
-            <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter youtube={footer.youtube} etsy={footer.etsy} tiktok={footer.tiktok} instagram={footer.instagram} copyright={footer.copyright} />
 
       <style jsx global>{`
+        .hero-fade-up {
+          animation: hero-fade-up 1s ease-out 0.15s both;
+        }
+        @keyframes hero-fade-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .radar-sweep-overlay {

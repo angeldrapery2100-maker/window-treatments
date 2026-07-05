@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import ProductLayout from './shared/ProductLayout'
 import ImageGallery from './shared/ImageGallery'
 import GalleryCards from './shared/GalleryCards'
@@ -10,6 +11,7 @@ import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
 import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
+import SwatchCard from './shared/SwatchCard'
 import { addToCart } from '@/lib/cart'
 
 export default function ShadeProduct({ productId }: { productId: string }) {
@@ -225,6 +227,11 @@ export default function ShadeProduct({ productId }: { productId: string }) {
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
                     <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
+                    <SwatchCard productId={productId} productName={productName} mainImageUrl={mainImages[0]?.url || null} options={options} selectedOptions={selectedOptions} />
+                    <p className="mt-3 text-center text-xs text-gray-500">
+                      Doing a whole home or multiple rooms?{' '}
+                      <Link href="/store/whole-home" className="text-gray-800 font-medium underline underline-offset-2 hover:text-gray-600">Talk to a designer →</Link>
+                    </p>
                   </div>
                 </div>
               </div>

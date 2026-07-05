@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import ConsultationWidget from '@/components/ConsultationWidgetLoader'
+import StoreAssistant from '@/components/StoreAssistantLoader'
 import MotionProvider from '@/components/MotionProvider'
 
 // ─── schema.org LocalBusiness ─────────────────────────────────────────────
@@ -129,6 +130,10 @@ export default function RootLayout({
         <MotionProvider>
           {children}
           <ConsultationWidget />
+          {/* AI design assistant — site-wide. On marketing pages it stacks
+              above the consultation pill; on /store the pill hides itself
+              and the assistant keeps the bottom-right slot. */}
+          <StoreAssistant />
         </MotionProvider>
       </body>
     </html>

@@ -10,6 +10,7 @@ import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
 import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
+import SwatchCard from './shared/SwatchCard'
 import { addToCart } from '@/lib/cart'
 
 export default function SheerProduct({ productId }: { productId: string }) {
@@ -242,6 +243,7 @@ export default function SheerProduct({ productId }: { productId: string }) {
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
                     <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
+                    <SwatchCard productId={productId} productName={productName} mainImageUrl={mainImages[0]?.url || null} options={options} selectedOptions={selectedOptions} />
                   </div>
                 </div>
               </div>

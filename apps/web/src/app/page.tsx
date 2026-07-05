@@ -12,6 +12,9 @@ export default async function HomePage() {
   // Build serializable props for client component
   const hero = {
     background: data?.hero?.background?.image_url || data?.hero?.video?.image_url || '/videos/hero-background.mp4',
+    // Static first frame shown while the hero video streams in (admin: home →
+    // hero → poster image field). Empty string = no poster attribute.
+    poster: data?.hero?.poster?.image_url || '',
     titleCn: getText(data, 'hero', 'title_cn', '天使窗簾'),
     titleEn: getText(data, 'hero', 'title_en', 'ANGEL DRAPERY, INC'),
     subtitle: getText(data, 'hero', 'subtitle', '专业窗簾設計、訂造、安裝'),

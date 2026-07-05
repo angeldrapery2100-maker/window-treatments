@@ -7,3 +7,7 @@ export * from "./functions";
 
 // ✅ 统一从 explainers/index.ts 导出（同时支持 Drapery + Sheer）
 export * from "./explainers";
+
+// AAPP-parity engines (Luma shade / handcrafted roman / handcrafted drapery /
+// drapery hardware + SOMFY track) — see docs/aapp-pricing-spec.md
+export * from "./aapp";

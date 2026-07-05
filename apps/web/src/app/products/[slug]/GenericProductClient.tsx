@@ -7,6 +7,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, m as motion } from 'framer-motion'
 import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
+import SiteFooter from '@/components/SiteFooter'
 
 interface RelatedProduct {
   name: string
@@ -434,13 +435,7 @@ export default function GenericProductClient({ product, related, footer }: Props
         </div>
       </section>
 
-      <footer className="w-full bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="text-center text-sm text-gray-600">{footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter copyright={footer.copyright} />
     </main>
   )
 }

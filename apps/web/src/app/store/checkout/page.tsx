@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getCart, clearCart, type Cart, type CartItem } from '@/lib/cart'
+import { SWATCH_SHIPPING_RATES } from '@/lib/site'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
@@ -165,6 +166,15 @@ export default function CheckoutPage() {
 
   const itemCount = cart.items.reduce((sum, i) => sum + i.quantity, 0)
 
+  // Swatch-only carts: swatches are free but shipping is charged (flat two-tier
+  // rates, no Shippo call needed). Payment goes through Stripe as usual.
+  const swatchOnly = cart.items.length > 0 && cart.items.every(i => i.isSwatch)
+
+  // Default swatch-only orders to the standard rate as soon as we know.
+  useEffect(() => {
+    if (swatchOnly && !selectedRate) setSelectedRate({ ...SWATCH_SHIPPING_RATES[0] })
+  }, [swatchOnly, selectedRate])
+
   const validate = () => {
     if (!name.trim()) return 'Please enter your name'
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email'
@@ -191,7 +201,8 @@ export default function CheckoutPage() {
         fetch('/api/store/shipping-rates', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            items: cart.items.map(i => ({ productId: i.productId, width: i.width, height: i.height, quantity: i.quantity })),
+            // Swatches ship free in an envelope — excluded from parcel estimation.
+            items: cart.items.filter(i => !i.isSwatch).map(i => ({ productId: i.productId, width: i.width, height: i.height, quantity: i.quantity })),
             address: { street: address, city, state, zip },
           })
         }),
@@ -220,6 +231,12 @@ export default function CheckoutPage() {
   // ─── Step 2: Proceed to Payment (creates PI, gets authoritative tax) ────────
   const createPaymentIntent = async () => {
     if (!selectedRate) { setError('Please select a shipping method'); return }
+    // Swatch-only flow skips the Shippo step, so the address hasn't been
+    // validated yet — do it here before creating the PI.
+    if (swatchOnly) {
+      const err = validate()
+      if (err) { setError(err); setTouched({ name: true, email: true, phone: true, address: true, city: true, state: true, zip: true }); return }
+    }
     if (wantAccount && !user) {
       if (!emailVerified) { setError('Please verify your email first'); return }
       if (regPassword.length < 6) { setError('Password must be at least 6 characters'); return }
@@ -249,6 +266,7 @@ export default function CheckoutPage() {
             productType:  i.productType,
             mainImageUrl: i.mainImageUrl,
             unitPrice:    i.unitPrice,
+            isSwatch:     !!i.isSwatch,
           })),
           discountCode: cart.discountCode || null,
           shippingCost,
@@ -327,7 +345,7 @@ export default function CheckoutPage() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customer: { name: name.trim(), email: email.trim(), phone: phone.trim(), address: { street: address, city, state, zip } },
-          items: cart.items.map(i => ({ productId: i.productId, productName: i.productName, productType: i.productType, mainImageUrl: i.mainImageUrl, width: i.width, height: i.height, heightFraction: i.heightFraction, widthFraction: i.widthFraction, options: i.options, quantity: i.quantity, unitPrice: i.unitPrice })),
+          items: cart.items.map(i => ({ productId: i.productId, productName: i.productName, productType: i.productType, mainImageUrl: i.mainImageUrl, width: i.width, height: i.height, heightFraction: i.heightFraction, widthFraction: i.widthFraction, options: i.options, quantity: i.quantity, unitPrice: i.unitPrice, isSwatch: !!i.isSwatch })),
           notes: notes.trim(),
           shipping: selectedRate ? { carrier: selectedRate.carrier, service: selectedRate.service, cost: selectedRate.price, rateId: selectedRate.rateId } : null,
           discount: hasDiscount ? { code: cart.discountCode, type: discountType, value: cart.discountPercent, amount: discountAmount } : null,
@@ -564,7 +582,27 @@ export default function CheckoutPage() {
                 {selectedRate && (
                   <div className="flex justify-between"><span className="text-gray-500">Shipping</span><span className="font-medium">${selectedRate.price.toFixed(2)}</span></div>
                 )}
-                {!shippingCalculated && <div className="flex justify-between text-gray-400"><span>Shipping</span><span className="text-xs italic">Calculated at next step</span></div>}
+                {/* Swatch-only: flat two-tier shipping choice (no Shippo call) */}
+                {swatchOnly && !clientSecret && (
+                  <div className="space-y-1.5 pt-1">
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Swatch Shipping</p>
+                    {SWATCH_SHIPPING_RATES.map(rate => (
+                      <label key={rate.rateId}
+                        className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer transition-colors ${selectedRate?.rateId === rate.rateId ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <div className="flex items-center gap-2">
+                          <input type="radio" name="swatch-shipping" checked={selectedRate?.rateId === rate.rateId}
+                            onChange={() => setSelectedRate({ ...rate })} className="w-3.5 h-3.5 text-gray-900 focus:ring-gray-500" />
+                          <div>
+                            <p className="text-xs font-medium text-gray-900">{rate.carrier} — {rate.service}</p>
+                            <p className="text-[10px] text-gray-400">Est. {rate.estimatedDays} days</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-semibold text-gray-900">${rate.price.toFixed(2)}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                {!swatchOnly && !shippingCalculated && <div className="flex justify-between text-gray-400"><span>Shipping</span><span className="text-xs italic">Calculated at next step</span></div>}
 
                 {/* ─── Tax line ─── */}
                 {shippingCalculated && (
@@ -573,7 +611,15 @@ export default function CheckoutPage() {
                     <span className="font-medium">${displayTaxAmount.toFixed(2)}</span>
                   </div>
                 )}
-                {!shippingCalculated && (
+                {swatchOnly && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Tax</span>
+                    {clientSecret
+                      ? <span className="font-medium">${displayTaxAmount.toFixed(2)}</span>
+                      : <span className="text-xs italic text-gray-400">Calculated at payment</span>}
+                  </div>
+                )}
+                {!swatchOnly && !shippingCalculated && (
                   <div className="flex justify-between text-gray-400"><span>Tax</span><span className="text-xs italic">Calculated at next step</span></div>
                 )}
 
@@ -591,13 +637,19 @@ export default function CheckoutPage() {
               </div>
 
               {/* ─── Action Buttons ─── */}
-              {!shippingCalculated && !clientSecret && (
+              {swatchOnly && !clientSecret && (
+                <button onClick={createPaymentIntent} disabled={loading || !selectedRate}
+                  className="w-full mt-4 py-3 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded disabled:opacity-50">
+                  {loading ? 'Loading...' : 'Continue to Payment'}
+                </button>
+              )}
+              {!swatchOnly && !shippingCalculated && !clientSecret && (
                 <button onClick={calculateShipping} disabled={shippingLoading}
                   className="w-full mt-4 py-3 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded disabled:opacity-50">
                   {shippingLoading ? 'Calculating...' : 'Calculate Shipping'}
                 </button>
               )}
-              {shippingCalculated && !clientSecret && (
+              {!swatchOnly && shippingCalculated && !clientSecret && (
                 <button onClick={createPaymentIntent} disabled={loading || !selectedRate}
                   className="w-full mt-4 py-3 bg-[#3d3d3d] text-white text-sm font-medium tracking-widest uppercase hover:bg-gray-700 transition-colors rounded disabled:opacity-50">
                   {loading ? 'Loading...' : 'Continue to Payment'}
