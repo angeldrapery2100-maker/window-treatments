@@ -43,9 +43,23 @@ const nextConfig: NextConfig = {
   // The A2P 10DLC sample messages link to angel-drapery.com/intake. That path
   // had no route (404). Point it at the consultation page, which carries the
   // verifiable SMS opt-in checkbox the carrier reviewer needs to see.
+  //
+  // Legacy pre-relaunch URLs below (SEO audit 2026-07-05): Google still has
+  // these flat paths indexed from the old site (some cached titles literally
+  // say "... copy"), and they currently 404 on the new app-router site since
+  // the IA moved everything under /products/*. Without a 301 here, any old
+  // backlinks, bookmarks, or AI-engine citations pointing at these URLs dead-end.
+  // 301s consolidate that old link equity onto the current equivalent page and
+  // let Google drop the stale URL from the index in favor of the new one.
   async redirects() {
     return [
       { source: '/intake', destination: '/contact', permanent: false },
+      { source: '/handcrafted-drapery', destination: '/products/handcrafted-drapery', permanent: true },
+      { source: '/roller-shade', destination: '/products/roller-collection', permanent: true },
+      { source: '/verticalblind', destination: '/products/verticals', permanent: true },
+      // "Add Semi Roller Shade" was an old configurator add-on page — closest
+      // living equivalent is the roller shade collection it was upselling from.
+      { source: '/add-semi', destination: '/products/roller-collection', permanent: true },
     ]
   },
   async rewrites() {
