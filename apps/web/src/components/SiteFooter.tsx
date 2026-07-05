@@ -41,6 +41,9 @@ export default function SiteFooter({ dark, youtube, etsy, tiktok, instagram, cop
           {/* Quick links */}
           <nav className={`flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.14em] ${muted}`}>
             <Link href="/contact" className="hover:underline">Contact</Link>
+            <Link href="/how-to-measure" className="hover:underline">How to Measure</Link>
+            <Link href="/faq" className="hover:underline">FAQ</Link>
+            <Link href="/service-areas" className="hover:underline">Service Areas</Link>
             <Link href="/store/track" className="hover:underline">Track Order</Link>
             <Link href="/privacy" className="hover:underline">Privacy</Link>
             <Link href="/terms" className="hover:underline">Terms</Link>

@@ -23,6 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'products/roller-collection',
     'products/sheer-collection',
     'smart-shades',
+    'how-to-measure',
+    'faq',
     'service-areas',
     'service-areas/temple-city',
     'service-areas/arcadia',
