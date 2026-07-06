@@ -1,32 +1,78 @@
 'use client'
 
 import Script from 'next/script'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Shared anti-bot fields for any form that POSTs to /api/consultation.
 // The endpoint enforces: an empty honeypot (`company`), a minimum fill time
-// (`formRenderedAt` → elapsedMs ≥ 3s), and — when TURNSTILE is configured — a
+// (`formRenderedAt` → elapsedMs ≥ 3s), and — when Turnstile is configured — a
 // valid Turnstile token (`cf-turnstile-response`). Every consultation form must
 // render this, or the endpoint rejects it (403) once Turnstile is enabled.
 //
-// All values ride in the form's own fields, so a plain `new FormData(form)` at
-// submit time picks them up — see readAntiBot() below.
+// Turnstile is rendered EXPLICITLY (turnstile.render on mount, remove on
+// unmount) rather than via the implicit `.cf-turnstile` auto-scan. The implicit
+// mode only renders widgets present when api.js loads, so a widget added later
+// — e.g. the floating consultation panel that mounts its form on open — never
+// got a token and the form 403'd. Explicit render also lets us clean up (no
+// "Cannot find Widget" console warnings) and clear the token on expiry.
+//
+// The solved token is written into a hidden <input name="cf-turnstile-response">
+// so a plain `new FormData(form)` at submit time still picks it up — see
+// readAntiBot().
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string
+      remove: (id: string) => void
+      reset: (id?: string) => void
+    }
+  }
+}
 
 export default function AntiBotFields() {
   // Stamp the moment the form mounted (for the minimum-fill-time check).
   const [renderedAt] = useState(() => Date.now())
+  const boxRef = useRef<HTMLDivElement>(null)
+  const tokenRef = useRef<HTMLInputElement>(null)
+  const widgetIdRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return
+    let cancelled = false
+    const setToken = (v: string) => { if (tokenRef.current) tokenRef.current.value = v }
+
+    // Wait for api.js, then render this instance explicitly.
+    const render = () => {
+      if (cancelled || widgetIdRef.current) return
+      const ts = window.turnstile
+      if (!ts || !boxRef.current) { window.setTimeout(render, 150); return }
+      widgetIdRef.current = ts.render(boxRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: 'light',
+        callback: (t: string) => setToken(t),
+        'error-callback': () => setToken(''),
+        'expired-callback': () => setToken(''),
+      })
+    }
+    render()
+
+    return () => {
+      cancelled = true
+      const ts = window.turnstile
+      if (ts && widgetIdRef.current) {
+        try { ts.remove(widgetIdRef.current) } catch { /* already gone */ }
+        widgetIdRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <>
       {TURNSTILE_SITE_KEY && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          async
-          defer
-          strategy="afterInteractive"
-        />
+        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" />
       )}
 
       {/* Honeypot — invisible to humans; only bots fill it. Off-screen rather
@@ -37,12 +83,11 @@ export default function AntiBotFields() {
       </div>
 
       <input type="hidden" name="formRenderedAt" defaultValue={String(renderedAt)} />
+      {/* Turnstile writes the solved token here via its callback. */}
+      <input type="hidden" name="cf-turnstile-response" ref={tokenRef} defaultValue="" />
 
-      {/* Turnstile — injects a hidden "cf-turnstile-response" input into the
-          surrounding form. Rendered only when a site key is configured. */}
-      {TURNSTILE_SITE_KEY && (
-        <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" />
-      )}
+      {/* Explicit-render target (NOT the implicit `.cf-turnstile` class). */}
+      {TURNSTILE_SITE_KEY && <div ref={boxRef} />}
     </>
   )
 }
