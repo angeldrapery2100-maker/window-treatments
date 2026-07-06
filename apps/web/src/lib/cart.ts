@@ -27,7 +27,7 @@ export interface CartItem {
 }
 
 /** Free fabric swatches allowed per order (enforced client- AND server-side). */
-export const MAX_SWATCHES_PER_ORDER = 5
+export const MAX_SWATCHES_PER_ORDER = 10
 
 export interface Cart {
   items: CartItem[]

@@ -5,9 +5,11 @@ import { usePathname } from 'next/navigation'
 
 // Site-wide floating AI shopping assistant. Talks to /api/store/assistant
 // (Anthropic-backed). Conversation lives in sessionStorage so it survives
-// navigation within the tab, and the whole widget hides itself for the rest
-// of the page lifetime if the backend reports the assistant is unavailable
-// (no API key configured).
+// navigation within the tab. If the backend reports the assistant is
+// unavailable (no API key configured, key rotated, quota exhausted), the
+// widget stays visible and shows a human-fallback message (see
+// UNAVAILABLE_MSG below) instead of disappearing — it recovers automatically
+// on the next send once the server is healthy again.
 //
 // Positioning: on /store pages the bottom-right slot is free (the site-wide
 // ConsultationWidget returns null there), so the launcher sits at bottom-5/6
@@ -26,17 +28,33 @@ const STORAGE_KEY = 'store_assistant_chat'
 const MAX_MESSAGES = 30
 const MAX_CONTENT_CHARS = 2000
 
-const WELCOME: ChatMessage = {
+// Main marketing site: steer toward understanding the company and finding
+// the right product (funnels to a local in-home consultation).
+const WELCOME_MAIN: ChatMessage = {
   role: 'assistant',
   content:
-    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows or choosing shades and drapery. 你好！我是安琪窗帘的设计助手，量窗、选帘都可以问我。",
+    "Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product, in whatever language is easiest for you. 你好！我是安琪窗帘的设计助手，想了解我们公司，或者想知道哪款产品适合你，都可以用中文、英文或其他语言问我。",
 }
 
-const QUICK_PROMPTS = [
+const QUICK_PROMPTS_MAIN = [
+  'Tell me about Angel Drapery',
+  'Which product is right for my window?',
+  '帮我选适合的窗帘',
+  '介绍一下你们公司',
+]
+
+// Online store: steer toward measuring, configuring, ordering, and after-sales.
+const WELCOME_STORE: ChatMessage = {
+  role: 'assistant',
+  content:
+    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows, choosing shades and drapery, or your order, in whatever language is easiest for you. 你好！我是安琪窗帘的设计助手，量窗、选帘、订单问题都可以问我，中文、英文或其他语言都可以直接问我。",
+}
+
+const QUICK_PROMPTS_STORE = [
   'How do I measure my window?',
   'Which shade is best for a bedroom?',
   '帮我选窗帘',
-  'Hunter Douglas 有什么产品?',
+  'I need to change or cancel my order',
 ]
 
 // NOTE (fix 2026-07-05): we previously hid the whole widget permanently when
@@ -100,6 +118,9 @@ export default function StoreAssistant() {
     if (open) inputRef.current?.focus()
   }, [open])
 
+  const onStore = pathname?.startsWith('/store')
+  const surface: 'main' | 'store' = onStore ? 'store' : 'main'
+
   const send = useCallback(
     async (text: string, baseHistory?: ChatMessage[]) => {
       const content = text.trim().slice(0, MAX_CONTENT_CHARS)
@@ -118,7 +139,7 @@ export default function StoreAssistant() {
         const res = await fetch('/api/store/assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next }),
+          body: JSON.stringify({ messages: next, surface }),
         })
         const json = await res.json().catch(() => null)
 
@@ -145,11 +166,10 @@ export default function StoreAssistant() {
         setSending(false)
       }
     },
-    [messages, sending]
+    [messages, sending, surface]
   )
 
   const showWelcome = messages.length === 0
-  const onStore = pathname?.startsWith('/store')
   // Checkout has full-width in-flow submit buttons near the bottom on mobile —
   // lift the launcher there so it never sits on top of "Pay & Place Order".
   const onCheckout = pathname?.startsWith('/store/checkout')
@@ -192,7 +212,11 @@ export default function StoreAssistant() {
         <div className="flex items-start justify-between border-b border-gray-100 bg-[#3d3d3d] px-4 py-3 text-white">
           <div>
             <p className="text-sm font-medium tracking-wide">Design Assistant · Angel Drapery</p>
-            <p className="mt-0.5 text-[11px] text-gray-300">AI assistant — ask about measuring &amp; products</p>
+            <p className="mt-0.5 text-[11px] text-gray-300">
+              {onStore
+                ? 'AI assistant — measuring, ordering & order help · any language'
+                : 'AI assistant — get to know us & find your product · any language'}
+            </p>
             <a
               href="/store/whole-home"
               className="mt-1 inline-block text-[11px] text-gray-200 underline underline-offset-2 hover:text-white"
@@ -216,10 +240,10 @@ export default function StoreAssistant() {
           {showWelcome && hydrated && (
             <>
               <div className="max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800">
-                {WELCOME.content}
+                {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
-                {QUICK_PROMPTS.map((q) => (
+                {(onStore ? QUICK_PROMPTS_STORE : QUICK_PROMPTS_MAIN).map((q) => (
                   <button
                     key={q}
                     onClick={() => send(q)}

@@ -74,7 +74,7 @@ export interface PricingItem {
 }
 
 /** Free fabric swatches allowed per order — mirrors lib/cart.ts. */
-export const MAX_SWATCHES_PER_ORDER = 5
+export const MAX_SWATCHES_PER_ORDER = 10
 
 export interface PricingInput {
   items:        PricingItem[]

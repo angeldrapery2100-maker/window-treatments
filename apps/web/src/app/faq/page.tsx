@@ -34,11 +34,15 @@ const categories = [
       },
       {
         q: 'What areas do you serve?',
-        a: 'We\'re based in Temple City and serve the greater San Gabriel Valley and Los Angeles area, including Pasadena, Arcadia, San Marino, San Gabriel, and Alhambra. For larger projects we often travel further — call to ask about your specific location.',
+        a: 'For free in-home measurement and installation, we serve the greater San Gabriel Valley and Los Angeles area — Temple City, Pasadena, Arcadia, San Marino, San Gabriel, Alhambra, and nearby. For larger projects we often travel further — call to ask about your specific location. A curated selection of our in-house products (drapery, roman shades, and the Luma collection) can also be ordered online with instant configurator pricing, shipped to the continental United States and Canada.',
       },
       {
         q: 'How do I get started?',
         a: `Call or text ${PRIMARY_PHONE}, or send a message through our contact page. We'll schedule a free in-home consultation and measurement at a time that works for you.`,
+      },
+      {
+        q: 'Do you offer payment plans like Affirm or Klarna?',
+        a: 'Not currently — card payment only for now. If that changes we\'ll update this page.',
       },
     ],
   },
@@ -47,11 +51,15 @@ const categories = [
     faqs: [
       {
         q: 'Are you an authorized Hunter Douglas dealer?',
-        a: 'Yes. We carry the full Hunter Douglas lineup — shades, blinds, shutters, and sheers & shadings — alongside our own handcrafted drapery and Luma Collection products, all made or fitted to your exact measurements.',
+        a: 'Yes — plus Sundance, JC, and Lutron Palladiom. Those brand-name lines are quoted through a free consultation rather than online. Our own products — handcrafted drapery, handcrafted roman shades, and the Luma collection (roller, zebra, sheer, and dual shades) — are made in our own workroom and priced instantly in our online configurator.',
       },
       {
         q: 'How many fabric options are there for custom drapery and roman shades?',
-        a: 'Our handcrafted roman shades alone come in 6 distinctive styles and 3,000+ fabric options. Custom drapery draws from thousands of fabrics across our workroom partners. We narrow this down together during your consultation based on your style and room.',
+        a: 'Our handcrafted roman shades come in 6 styles — flat, slouch, soft, front fold, reverse fold, and hobbled. Our online store keeps the fabric selection intentionally curated — each listed product has its own page with a focused set of colors and a custom-size configurator. For our full fabric range across drapery and roman shades, book a free in-home consultation and we\'ll bring the complete collection to you.',
+      },
+      {
+        q: 'Can I order free fabric swatches before committing?',
+        a: 'Yes — order up to 10 free fabric swatches online, you only pay shipping ($2.99 standard, 5–8 days, or $9.99 expedited, 2–3 days). It\'s the easiest way to see and feel a fabric in your own home before ordering a full custom piece.',
       },
       {
         q: 'Can you retrofit motorization onto shades or drapery I already own?',
@@ -61,6 +69,10 @@ const categories = [
         q: 'Do you make custom drapery in-house, or is it outsourced?',
         a: 'In-house. Our own workroom has hand-sewn custom drapery since 1984 — we measure, fabricate, and install with our own team rather than outsourcing production.',
       },
+      {
+        q: 'What about bay windows, arches, or other unusual window shapes?',
+        a: 'Bay windows, corner windows, arches and other special shapes, and French doors are handled through a free in-home consultation rather than the online configurator — these need an expert eye, not a standard measurement.',
+      },
     ],
   },
   {
@@ -68,7 +80,7 @@ const categories = [
     faqs: [
       {
         q: 'How long does an order take from measurement to installation?',
-        a: 'It varies by product and fabric availability — handcrafted drapery and motorized systems generally take longer than in-stock shade lines. We give you a specific timeline estimate as part of your quote, once we know exactly what you\'re ordering.',
+        a: 'Online store orders typically ship within about 2 weeks of order confirmation, though it can vary by product and fabric availability. For local in-home projects, we give you a specific timeline estimate as part of your quote, once we know exactly what you\'re ordering and whether installation is included.',
       },
       {
         q: 'How long does installation itself take?',
@@ -77,6 +89,18 @@ const categories = [
       {
         q: 'What happens if my walls or windows aren\'t perfectly square?',
         a: 'Very common in older homes across the San Gabriel Valley. This is why we measure in person rather than relying on your own numbers — see our measuring guide for how we account for this during fabrication.',
+      },
+      {
+        q: 'How do I check the status of an existing order?',
+        a: 'Use our order tracking page with your order number and email — no account needed. For anything beyond tracking (changes, issues, refunds), reach out directly and a real person will help.',
+      },
+      {
+        q: 'Can I change or cancel my order after I place it?',
+        a: 'Production typically begins about 48 hours after you place your order — within that window, contact us and we can make changes. If you cancel within that 48-hour window, the card processor\'s transaction fee is deducted from your refund. Once production has started, reach out right away and we\'ll see what\'s still possible.',
+      },
+      {
+        q: 'Why does my drapery arrive with wrinkles or creases?',
+        a: 'It\'s normal. Before shipping, we hang and steam each panel smooth, then fold it along its natural pleats to fit the box — that folding is what creates the crease lines. They typically relax once the drapery has been hanging for a bit, and a garment steamer speeds that up. Linen-blend fabrics tend to show creasing a bit more visibly than others; a light steam or iron helps.',
       },
     ],
   },
@@ -88,8 +112,16 @@ const categories = [
         a: 'Our installation workmanship is covered by a three-year warranty — if anything we installed needs attention, we come back and fix it at no charge. Motors and hardware also carry their manufacturer warranties (Hunter Douglas, Somfy, Lutron), and we handle the manufacturer warranty process on your behalf if anything comes up.',
       },
       {
-        q: 'Can I return or cancel a custom order?',
-        a: 'Because every piece is cut and fabricated specifically to your window measurements, custom orders can\'t be resold or restocked once production begins — this is standard across the custom window treatment industry. We walk through every measurement, fabric, and option in detail before you approve an order, precisely so there are no surprises. Ask us about our specific order-change and cancellation window during your consultation.',
+        q: 'What if I measured wrong and the piece doesn\'t fit?',
+        a: 'We can remake or adjust it — you\'d just cover return shipping both ways. It\'s a manageable fix, but ordering free swatches first and measuring carefully (or booking the free in-home measurement) is the easiest way to skip that extra cost and wait entirely.',
+      },
+      {
+        q: 'What if there\'s a manufacturing defect or quality problem?',
+        a: 'Let us know within 14 days of delivery. If it\'s a genuine quality or manufacturing issue (not a measurement error), we\'ll remake the item or have it shipped back for repair, and we cover the cost.',
+      },
+      {
+        q: 'I\'m installing my hardware myself and a part arrived damaged — what do I do?',
+        a: 'Let us know right away, whether you notice it on arrival or while installing — we\'ll ship you a replacement part.',
       },
       {
         q: 'What are your showroom hours?',

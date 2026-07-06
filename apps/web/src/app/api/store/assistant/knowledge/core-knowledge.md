@@ -10,7 +10,8 @@ internal markups, or employee workflow details.
 - Showroom: 8831 E Las Tunas Dr, Temple City, CA 91780 · Phone 626-451-9841.
 - Hours: Mon–Fri 9:00 am–5:00 pm, Sat 10:00 am–3:00 pm.
 - Service area for in-home measure & install: LA / San Gabriel Valley (Pasadena, Arcadia,
-  San Gabriel, San Marino, Temple City, Alhambra and nearby). Online orders ship nationwide.
+  San Gabriel, San Marino, Temple City, Alhambra and nearby). Online orders ship to the
+  continental United States and Canada (no other international shipping, no HI/AK).
 - We design, sew, and install with our own team (handcrafted drapery & roman shades made
   in our own workroom).
 
@@ -56,24 +57,31 @@ and guide the customer to a free consultation for exact pricing.
   If you already know the exact finished size you want, enter that in the configurator.
 
 **Drapery finished size:**
-- Width: window/opening width + stacking room (usually +10-12" total) so panels clear the glass.
-- Height (floor-length): measure rod position to floor; standard floor clearance ≈ 0.5".
-  Rules of thumb by mounting: motorized ceiling track ≈ ceiling height − 1.75";
-  standard ceiling track ≈ ceiling height − 1.3"; wall rod mounted ~4" below ceiling ≈
-  ceiling height − 4.5".
+- Width: window/opening width + stacking room, generally +10" or more per side of clearance
+  depending on how wide the window is — wider windows need proportionally more stack room.
+- Height (ceiling-mounted rods/tracks): ceiling height is often uneven, so measure it at
+  left, center, and right. Finished height = ceiling height − rod/track thickness − floor
+  clearance (0.5-1"). Track/rod thickness: motorized ceiling track ≈ 1.25"; standard ceiling
+  track ≈ 1". If the gap from window top to ceiling is more than 30", the rod can instead be
+  mounted at the midpoint between window top and ceiling rather than right at the ceiling.
+- Height (wall-mounted rod): finished height ≈ ceiling height − 4.5" flat — no separate floor
+  clearance deduction needed, it's already accounted for.
 - Measure with a steel tape, to the nearest 1/8". When in doubt, order free swatches first
   and book a free in-home measure (within service area).
 
 **Ripplefold 蛇形帘 basics:** panels ride on evenly-spaced carriers; fullness options
-(60/80/100/120% or CN 6cm/7cm systems). Stack depth is compact and modern; we calculate
-carrier counts and snap tape for you — customers only need track length and drop.
+(60/80/100/120% or CN 6cm/7cm systems). Note: ripplefold takes up MORE stack space at the
+sides when open than pinch pleat does — good to mention if the customer has limited wall
+space beside the window. We calculate carrier counts and snap tape for you — customers only
+need track length and drop.
 
 ## Options explained
 
 - Lining 里布: NO = unlined; LF = light-filtering lining (protects fabric, softens light);
   BO = blackout lining (bedrooms, media rooms).
-- Pleats: 2-fold pinch = tailored, less fabric; 3-fold pinch = fuller, more luxurious;
-  ripplefold = modern continuous S-wave, best with motorized tracks.
+- Pleats: 2-fold pinch = tailored, streamlined look; 3-fold pinch = fuller, more luxurious
+  look; ripplefold = modern continuous S-wave, best with motorized tracks (note: ripplefold
+  takes up more stack space at the sides when open than pinch pleat styles do).
 - Shade controls: plastic chain (standard) / stainless chain / cordless (child-safe,
   clean look — roller) / motorized (rechargeable motor; remotes 2/6/15-channel, Matter
   hub for app & voice control).
@@ -88,15 +96,44 @@ carrier counts and snap tape for you — customers only need track length and dr
 
 ## Store facts (online orders)
 
+- The online store is intentionally kept separate from our full local/in-person business:
+  it sells a small, curated selection of our own products only (handcrafted drapery,
+  handcrafted roman shades, Luma collection shades, drapery hardware) — NOT the full AAPP
+  fabric catalog. Each listed fabric/product has its own page where the customer picks a
+  color from that listing's curated options and enters custom dimensions. Hunter Douglas,
+  Sundance, JC, and Lutron are never sold through the online store — those always require a
+  local in-home consultation and quote.
 - Every store product is made to measure — enter width/height and options in the product
   page configurator to see the EXACT price. The assistant must never quote or estimate
   prices itself.
-- Free fabric swatches: up to 5 per order; customer pays only shipping — $2.99 USPS
+- Free fabric swatches: up to 10 per order; customer pays only shipping — $2.99 USPS
   standard (5-8 days) or $9.99 expedited (2-3 days).
-- Custom-made items are made to order; they are not returnable for size errors on
-  customer-measured orders — recommend swatches + careful measuring, or an in-home measure.
-- Production & shipping: made to order in our LA workroom; timeline varies by product —
-  for current lead times contact us.
+- Production & shipping: made to order in our LA workroom; usually ships within about 2
+  weeks of order confirmation (can vary by product/fabric availability). We currently ship
+  to the continental United States and Canada only — no other international shipping, and
+  no Hawaii/Alaska at this time.
+- Measurement errors (customer-measured orders): if the customer's own measurement was
+  wrong, we can remake or adjust the piece, but the customer covers return shipping both
+  ways. This is exactly why we recommend ordering swatches and measuring carefully, or
+  booking a free in-home measure, to avoid this in the first place.
+- Quality issues (not measurement-related): if there's a manufacturing defect or quality
+  problem, let us know within 14 days of delivery — we'll remake the item or have it
+  shipped back for repair, and we cover the cost in that case.
+- Self-installation and damaged parts: if a customer installs their own hardware/track and
+  a part is damaged (on arrival, or discovered during installation), report it promptly —
+  we ship a replacement part.
+- Order changes / cancellation window: production typically begins about 48 hours after
+  the order is placed. Within that 48-hour window, customers can request order changes; if
+  they cancel within that window, the card processor's transaction fee is deducted from the
+  refund (not fully refundable). After production has started, changes are more limited —
+  have them contact us right away to see what's possible.
+- Payment methods: card payment only for now — installment / buy-now-pay-later options
+  (Affirm, Klarna) are not currently offered.
+- Packaging & wrinkles: finished drapery is hung, steamed/combed smooth, then folded along
+  its natural pleats and bagged for shipping. Because panel height has to fold to fit the
+  box, some crease lines on arrival are normal — they typically relax after the drapery has
+  hung for a while, and a garment steamer speeds that up. Linen-blend fabrics tend to show
+  creasing more visibly than others; a light steam or iron helps more on those.
 - Whole-home / multi-room projects: free design consultation → /store/whole-home
   (or call 626-451-9841). In-home measure available within the service area.
 - Order tracking: /store/track with order number + email.

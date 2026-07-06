@@ -25,12 +25,12 @@ const mountTypes = [
   {
     title: 'Inside Mount',
     desc:
-      'The treatment sits inside the window frame, flush against the wall. Gives a clean, built-in look and works best when the frame has enough depth for the hardware or headrail. We measure the width in three places (top, middle, bottom) and use the narrowest number, since most frames are not perfectly square.',
+      'The treatment sits inside the window frame, flush against the wall — a clean, built-in look. Measure the exact inner frame opening: width at top, middle, and bottom (use the smallest), height at left, center, and right (use the smallest), since most frames aren\'t perfectly square. Give us that exact opening measurement — don\'t deduct anything yourself, we make the factory deductions. Shades generally need about 2–3" of flat frame depth to sit flush.',
   },
   {
     title: 'Outside Mount',
     desc:
-      'The treatment mounts on the wall or trim above and around the window, covering the frame entirely. Better for shallow frames, uneven openings, or when you want the window to look larger. Width and height are measured to how far past the frame you want the treatment to extend on each side.',
+      'The treatment mounts on the wall or trim around the window, covering the frame entirely — better for shallow frames, uneven openings, or when you want a window to look larger. As a rule of thumb we add about +5" width / +6" height beyond the opening for roman and roller shades, and 2–3" per side for drapery, to block light gaps. Already know the exact finished size you want? Enter that directly.',
   },
 ]
 
@@ -38,36 +38,36 @@ const productGuides = [
   {
     title: 'Custom Drapery',
     points: [
-      'Rod width usually extends 4–8" beyond the frame on each side, so panels can stack fully off the glass and let in more light when open.',
-      '"Stack back" is the space the fabric takes up when the drapery is pushed open — wider rods and fuller panels need more of it.',
-      'Length is typically measured to the floor, sill, or apron depending on style; we account for the specific pleat or heading style when calculating fabric take-up.',
+      'Width: window/opening width plus stacking room — generally +10" or more per side, scaling up for wider windows, so panels can clear the glass fully when open.',
+      'For ceiling-mounted rods/tracks: ceilings are often uneven, so measure ceiling height at left, center, and right. Finished height = ceiling height − rod/track thickness (motorized ceiling track ≈ 1.25", standard ceiling track ≈ 1") − floor clearance (0.5–1"). If the gap from window top to ceiling is over 30", the rod can instead be mounted at the midpoint. For a wall-mounted rod, finished height is simply ceiling height − 4.5" — no separate floor clearance needed.',
+      '2-fold pinch pleat gives a tailored, streamlined look; 3-fold pinch pleat is fuller and more traditional; ripplefold gives a modern continuous wave and pairs well with motorized tracks — though it does take up more stack space at the sides when open than pinch pleat styles. For ripplefold we only need your track length and drop, and calculate carriers and fullness (60/80/100/120%) for you.',
     ],
     href: '/products/handcrafted-drapery',
   },
   {
     title: 'Roman Shades',
     points: [
-      'Inside mount needs at least 2–3" of frame depth to sit flush; outside mount is the safer choice for shallow or uneven frames.',
-      'Width is measured at the narrowest point for inside mount, or with enough overlap on each side for outside mount to fully block light gaps.',
-      'Cordless and motorized lift systems change the hardware clearance needed at the top of the shade — this gets confirmed at the in-home visit.',
+      'Available in 6 styles — flat, slouch, soft, front fold, reverse fold, and hobbled — with 3,000+ fabric options, optional lining, valance, cordless or motorized lift.',
+      'Inside mount needs about 2–3" of frame depth to sit flush; outside mount adds roughly +5" width / +6" height beyond the opening.',
+      'Cordless and motorized lift systems change the hardware clearance needed at the top of the shade — confirmed at your free in-home visit.',
     ],
     href: '/products/handcrafted-roman-shade',
   },
   {
-    title: 'Roller & Solar Shades',
+    title: 'Roller, Zebra & Sheer Shades (Luma Collection)',
     points: [
-      'Fascia (the trim that hides the roll) adds a small amount to both width and projection — factored in during fabrication, not at the raw measurement stage.',
-      'For inside mount, we leave a small tolerance gap on each side so the shade doesn\'t bind against the frame as it rolls.',
-      'Motorized and Matter-enabled options need a power source or charging access considered before installation day.',
+      'Our Luma collection covers roller, zebra (alternating sheer/solid bands), sheer, and dual (double-layer) shades — maximum single-panel width is 118"; wider windows split into multiple panels.',
+      'Outside mount adds roughly +5" width / +6" height beyond the opening, same as roman shades, to block light gaps at the edges.',
+      'Choose from plastic chain, stainless chain, cordless, or motorized control — motorized and Matter-enabled options need power or charging access considered before install day.',
     ],
     href: '/products/roller-collection',
   },
   {
-    title: 'Shutters & Blinds',
+    title: 'Hunter Douglas, Shutters & Blinds',
     points: [
-      'Frame depth matters most here — plantation shutters need real clearance for the panel and hinge to swing freely.',
-      'Tilt-rod or hidden-tilt mechanisms and divided-light patterns are matched to your actual window muntins, not a standard grid.',
-      'Outside mount is common on shallow stucco returns or windows without enough inside depth.',
+      'The full Hunter Douglas lineup (Duette, Silhouette, Palm Beach shutters, and more) is priced through a free consultation rather than the online configurator.',
+      'Frame depth matters most for shutters — panels and hinges need real clearance to swing freely, matched to your actual window muntins.',
+      'Bay windows, corner windows, arches, and other special shapes always go through an in-home consultation rather than a self-measured order.',
     ],
     href: '/products',
   },
@@ -76,15 +76,15 @@ const productGuides = [
 const mistakes = [
   {
     title: 'Using a cloth tape measure',
-    desc: 'Fabric tape stretches. A steel tape measure gives a measurement that stays accurate from the living room to the workroom.',
+    desc: 'Fabric tape stretches. Use a steel tape measure to the nearest 1/8" — that\'s the precision that keeps a measurement accurate from the living room to the workroom.',
   },
   {
     title: 'Measuring only once',
     desc: 'Framing settles over decades — measure width and height in three spots and use the smallest number for inside mount so the finished piece always fits.',
   },
   {
-    title: 'Rounding up "to be safe"',
-    desc: 'A rounded measurement can mean a gap of light at the edges or a shade that binds against the frame. Precise numbers, not rounded ones, are what make a custom piece actually look custom.',
+    title: 'Deducting anything yourself for inside mount',
+    desc: 'Give us the exact inner frame opening as measured — don\'t subtract for clearance. We make the correct factory deductions on our end; deducting twice is a common cause of a too-small finished piece.',
   },
   {
     title: 'Forgetting obstructions',
@@ -106,16 +106,20 @@ const faqs = [
     a: 'Inside mount sits within the window frame for a flush, built-in look and needs adequate frame depth. Outside mount covers the frame and wall around it, which works better for shallow frames, uneven openings, or when you want a window to appear larger. We help you choose during the free consultation.',
   },
   {
-    q: 'How much extra fabric does drapery need for fullness?',
-    a: 'It depends on the heading style — pinch pleat, ripple fold, and grommet panels each take a different fullness ratio (roughly 2x to 2.5x the rod width in fabric) to hang correctly when closed. This is calculated as part of your custom order, not a flat rule.',
+    q: 'What\'s the difference between ripplefold and pinch pleat, style-wise?',
+    a: 'Ripplefold gives a modern, continuous S-wave look and pairs especially well with motorized tracks — it does take up a bit more stack space at the sides when fully open than pinch pleat does, worth knowing if wall space beside the window is tight. Pinch pleat (2-fold or 3-fold) gives a more traditional, tailored look, with 3-fold reading fuller and more formal. For ripplefold, we only need your track length and drop and calculate the rest (carrier counts, fullness percentage) for you.',
   },
   {
     q: 'What if my walls or window frames aren\'t perfectly square?',
-    a: 'Very common in older homes across the San Gabriel Valley — craftsman bungalows and mid-century houses especially. This is exactly why we measure in person rather than working from phone measurements: our workroom builds to the smallest/tightest dimension so everything still fits and operates smoothly.',
+    a: 'Very common in older homes across the San Gabriel Valley — craftsman bungalows and mid-century houses especially. This is exactly why we always use the smallest of three measurements per dimension, and why in-home measurement exists: our workroom builds to the tightest number so everything still fits and operates smoothly.',
   },
   {
     q: 'Is the in-home measurement really free?',
-    a: 'Yes, with no obligation to purchase. We come to you, measure every window ourselves, and show fabrics and samples in your actual lighting before you commit to anything.',
+    a: 'Yes, with no obligation to purchase. We come to you, measure every window ourselves, and show fabrics and samples in your actual lighting before you commit to anything. If you\'re not in our San Gabriel Valley service area, or just want to get a feel for materials first, you can also order up to 10 free fabric swatches online (you only pay shipping).',
+  },
+  {
+    q: 'What if I measure it myself and get it wrong?',
+    a: 'If your own measurement turns out to be off, we can remake or adjust the piece — you\'d just cover return shipping both ways. It\'s a straightforward fix, but ordering free swatches first and measuring carefully (or booking the free in-home measurement) is the easiest way to avoid the extra shipping cost and wait entirely.',
   },
 ]
 
