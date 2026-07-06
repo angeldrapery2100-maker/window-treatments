@@ -82,6 +82,11 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
       return { ok: false, error: `http_${res.status}` }
     }
     const data = (await res.json().catch(() => ({}))) as any
+    // The CF returns HTTP 200 even for a rejected key ({ok:false,error:"bad key"}),
+    // so log the failure reason explicitly — otherwise it's invisible.
+    if (data?.ok !== true) {
+      console.error('[aapp-intake] websiteInquiry rejected:', JSON.stringify(data).slice(0, 200))
+    }
     return {
       ok: data?.ok === true,
       link: typeof data?.link === 'string' ? data.link : undefined,
