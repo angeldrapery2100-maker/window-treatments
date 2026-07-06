@@ -6,6 +6,7 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import SiteFooter from '@/components/SiteFooter'
+import AntiBotFields, { readAntiBot } from '@/components/AntiBotFields'
 
 interface ContactData {
   title: string
@@ -45,6 +46,9 @@ export default function ContactClient({ contact, footer }: Props) {
       // A2P 10DLC: explicit, verifiable SMS opt-in. Unchecked by default and
       // optional, so this is a true affirmative consent record.
       smsConsent: data.get('smsConsent') === 'on',
+      // Anti-bot fields required by /api/consultation (honeypot, fill time,
+      // Turnstile token) — without these the endpoint rejects the form (403).
+      ...readAntiBot(data),
     }
     try {
       const res = await fetch('/api/consultation', {
@@ -272,6 +276,8 @@ export default function ContactClient({ contact, footer }: Props) {
                 name="message" rows={4} placeholder="Tell us about your window treatment project..." aria-label="Project details"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none"
               />
+
+              <AntiBotFields />
 
               <AnimatePresence>
                 {submitStatus.type && (

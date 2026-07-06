@@ -6,6 +6,7 @@ import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
 import SiteFooter from '@/components/SiteFooter'
+import AntiBotFields, { readAntiBot } from '@/components/AntiBotFields'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
 
@@ -192,7 +193,13 @@ export default function HomeClient({ hero, gallery, about, process: processData,
           name: fd.get('name'),
           phone: fd.get('phone'),
           email: fd.get('email'),
+          address: fd.get('address') || '',
+          message: fd.get('message') || '',
           notes: [fd.get('address') ? `Address: ${fd.get('address')}` : '', fd.get('message') || ''].filter(Boolean).join('\n') || null,
+          smsConsent: fd.get('smsConsent') === 'on',
+          // Anti-bot fields required by /api/consultation (honeypot, fill time,
+          // Turnstile token) — without these the endpoint rejects the form (403).
+          ...readAntiBot(fd),
         }),
       })
       if (!res.ok) throw new Error()
@@ -1605,6 +1612,8 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                     <textarea name="message" rows={4} placeholder="Tell us about your window treatment project..." className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none" />
                   </div>
                 </div>
+
+                <AntiBotFields />
 
                 {/* Status message */}
                 <AnimatePresence>
