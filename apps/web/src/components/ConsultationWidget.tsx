@@ -13,6 +13,7 @@ export default function ConsultationWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [bookingLink, setBookingLink] = useState('')
   const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -56,11 +57,15 @@ export default function ConsultationWidget() {
         body: JSON.stringify(data),
       })
 
+      const json = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const json = await res.json()
         throw new Error(json.error || 'Failed to submit')
       }
 
+      // If the backend registered the lead and returned a booking link, show it.
+      if (typeof json.bookingLink === 'string' && /^https?:\/\//.test(json.bookingLink)) {
+        setBookingLink(json.bookingLink)
+      }
       setSubmitted(true)
       formRef.current?.reset()
     } catch (err: any) {
@@ -76,6 +81,7 @@ export default function ConsultationWidget() {
     setTimeout(() => {
       setSubmitted(false)
       setError('')
+      setBookingLink('')
     }, 300)
   }
 
@@ -161,9 +167,22 @@ export default function ConsultationWidget() {
               </div>
               <h4 className="text-lg font-medium text-gray-900 mb-1">Thank You!</h4>
               <p className="text-sm text-gray-500">We&apos;ve received your request and will contact you shortly.</p>
+              {bookingLink && (
+                <div className="mt-5">
+                  <a
+                    href={bookingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-black"
+                  >
+                    📅 Book your appointment
+                  </a>
+                  <p className="mt-2 text-xs text-gray-400">We&apos;ve also texted this link to your phone.</p>
+                </div>
+              )}
               <button
                 onClick={handleClose}
-                className="mt-5 text-sm text-gray-500 hover:text-gray-700 underline"
+                className="mt-5 block mx-auto text-sm text-gray-500 hover:text-gray-700 underline"
               >
                 Close
               </button>

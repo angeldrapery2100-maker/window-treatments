@@ -19,6 +19,7 @@ import {
 } from '@/lib/supportTickets'
 import { Resend } from 'resend'
 import { escapeHtml, safeUrl } from '@/lib/html'
+import { submitWebsiteInquiry } from '@/lib/aappIntake'
 
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
@@ -247,7 +248,7 @@ export const ASSISTANT_TOOLS = [
   {
     name: 'submit_service_request',
     description:
-      'Create an after-sales, change, or cancel request ticket for an order. The server re-verifies ownership and the 48-hour window. For a cancellation a HUMAN confirms and issues the refund — never promise an instant or exact refund amount. Only call this AFTER the customer has explicitly confirmed the action.',
+      'Create an after-sales, change, or cancel request ticket for an ONLINE-STORE order (one placed through this website with an AD######-XXXX number). The server re-verifies ownership and the 48-hour window. For a cancellation a HUMAN confirms and issues the refund — never promise an instant or exact refund amount. Only call this AFTER the customer has explicitly confirmed the action.',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -259,6 +260,25 @@ export const ASSISTANT_TOOLS = [
         requested_changes: { type: 'object', description: 'For order_change only: the fields to change, e.g. {"width":42,"color":"natural"}.' },
       },
       required: ['order_number', 'ticket_type', 'message'],
+    },
+  },
+  {
+    name: 'submit_website_inquiry',
+    description:
+      "Register a NEW sales/consultation lead (NOT an existing online-store order). Use for visitors who want a free in-home measure, a design consultation, a photo quote, to visit the Temple City showroom, to discuss a whole-home project or a premium brand line (Hunter Douglas / Sundance / Lutron), or a repair of items NOT bought through the online store. The backend creates the customer profile, assigns a salesperson, and returns a booking link. Collect the customer's NAME and PHONE first, and ask whether they consent to a text message before setting sms_consent=true. Call this AT MOST ONCE per conversation.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        name: { type: 'string', description: "Customer's name (required)." },
+        phone: { type: 'string', description: 'Customer phone — needed to text the booking link.' },
+        email: { type: 'string', description: 'Customer email (optional).' },
+        address: { type: 'string', description: 'City or address (ask when they want an in-home visit).' },
+        message: { type: 'string', description: 'Short summary of what the customer wants (goes into their profile notes).' },
+        product_type: { type: 'string', description: 'Optional product interest, e.g. "Motorized Shades".' },
+        intent: { type: 'string', enum: ['triage', 'repair'], description: '"triage" for a new sales/consultation lead (default), "repair" for a repair request.' },
+        sms_consent: { type: 'boolean', description: 'True ONLY if the customer explicitly agreed to receive a text message.' },
+      },
+      required: ['name'],
     },
   },
 ]
@@ -286,6 +306,18 @@ export async function executeAssistantTool(
         category: input?.category,
         message: input?.message,
         requestedChanges: input?.requested_changes ?? null,
+      })
+    case 'submit_website_inquiry':
+      return await submitWebsiteInquiry({
+        name: input?.name,
+        phone: input?.phone,
+        email: input?.email,
+        address: input?.address,
+        message: input?.message,
+        productType: input?.product_type,
+        intent: input?.intent === 'repair' ? 'repair' : 'triage',
+        smsConsent: input?.sms_consent === true,
+        source: 'website_chat',
       })
     default:
       return { error: `unknown_tool: ${name}` }

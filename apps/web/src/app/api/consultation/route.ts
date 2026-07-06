@@ -5,6 +5,7 @@ import { escapeHtml } from '@/lib/html'
 import { rateLimit, getClientIp } from '@/lib/rateLimit'
 import { verifyTurnstile } from '@/lib/turnstile'
 import { scoreSpam } from '@/lib/spamCheck'
+import { submitWebsiteInquiry } from '@/lib/aappIntake'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
@@ -120,6 +121,25 @@ export async function POST(request: Request) {
        smsConsent, smsConsent ? new Date() : null]
     )
 
+    // Forward the lead to AAPP intake (creates the customer profile, assigns a
+    // salesperson, generates a booking link, and texts it when the customer
+    // consented). Best-effort and time-bounded — a failure here must never fail
+    // the form submission; the DB row + email above already captured the lead.
+    let bookingLink = ''
+    try {
+      const inquiry = await submitWebsiteInquiry({
+        name: cleanName,
+        phone: cleanPhone,
+        email: cleanEmail,
+        address,
+        message,
+        intent: 'triage',
+        smsConsent,
+        source: 'website_form',
+      })
+      if (inquiry.ok && inquiry.link) bookingLink = inquiry.link
+    } catch { /* non-fatal */ }
+
     // Escaped copies for HTML interpolation
     const esName    = escapeHtml(cleanName)
     const esPhone   = escapeHtml(cleanPhone)
@@ -204,6 +224,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       emailSent,
+      ...(bookingLink ? { bookingLink } : {}),
       ...(emailError ? { emailError } : {}),
     })
   } catch (e) {

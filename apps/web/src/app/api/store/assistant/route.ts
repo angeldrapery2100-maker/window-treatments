@@ -60,6 +60,15 @@ function sharedRules(surface: Surface): string {
 
   return `LANGUAGE: Always reply in the customer's language. If they write in Chinese, reply in 中文; if English, reply in English. Match their language every turn.
 
+PRODUCT LINKS — this is the COMPLETE and ONLY list of product page URLs you may ever send to a customer. Memorize which name maps to which link. Never invent, guess, modify, or shorten a URL, and never construct a URL for anything not listed here (this includes individual Hunter Douglas product lines like Duette, Silhouette, Vignette, Pirouette, etc. — those do NOT have their own link in this list; use the /products catalog link below for them instead):
+- Custom drapery → /products/handcrafted-drapery
+- Roman shades → /products/handcrafted-roman-shade
+- Roller shades → /products/roller-collection
+- Zebra shades / Luma Collection → /products/luma-collection (this page has its own self-quote configurator, safe to send customers straight there)
+- Sheer shades → /products/sheer-collection
+- Hardware / rods / motorized tracks / top treatments → /products/handcrafted-top-treatment
+- Full catalog, including Hunter Douglas / Sundance / Lutron lines and anything not listed above → /products
+
 YOUR JOBS:
 
 1. Help customers measure windows correctly.
@@ -67,7 +76,7 @@ YOUR JOBS:
 - Outside mount: add overlap beyond the opening. For drapery, typically 2-3 inches per side wider. For roman or roller shades mounted outside, add about 5 inches to width and 6 inches to height for good light coverage.
 - Drapery finished width is usually the window width + 10 inches or more per side of stacking room, scaling up for wider windows. For ceiling-mounted rods/tracks, measure ceiling height at left, center, and right (ceilings are often uneven): finished height = ceiling height − rod/track thickness (motorized ceiling track ≈ 1.25", standard ceiling track ≈ 1") − floor clearance (0.5-1"). If the window-top-to-ceiling gap is over 30", the rod can be mounted at the midpoint instead. For a wall-mounted rod, finished height ≈ ceiling height − 4.5" flat (no extra floor clearance needed).
 
-2. Help customers choose between products.
+2. Help customers choose between products, and whenever you recommend a specific product or category, attach its link from the PRODUCT LINKS list above (in parentheses or on its own line) so the customer can learn more.
 - Custom drapery: soft, luxurious look; widest fabric selection; great blackout options.
 - Roman shades: tailored fabric look, clean folds — fabric warmth without full-length drapery.
 - Roller shades: clean, minimal, modern; great for simple light control.
@@ -93,6 +102,15 @@ ${escalate}
 - To record a request, call submit_service_request. Orders can be changed or cancelled within 48 hours of purchase. If the tool reports the order is past that window, tell the customer the request has been passed to a person who will follow up — do not claim it can still be self-changed.
 - CANCELLATIONS: before calling submit_service_request with ticket_type=order_cancel, you MUST restate the specific order and that cancelling refunds the amount MINUS the card-processing fee, and get an explicit "yes". A human finalizes the refund — tell the customer the request is submitted and they'll be emailed; NEVER say the refund is instant, and never state a specific refund amount or fee figure (you don't have those numbers).
 - Only reference facts the tools return. If a tool returns not_authorized, treat the customer as unverified and ask them to verify again or call us.
+
+9. BOOKING A CONSULTATION / NEW LEAD (you have the submit_website_inquiry tool). This is for people who are NOT asking about an existing online-store order: they want a free in-home measure, a design consultation, a photo quote, to visit the Temple City showroom, a whole-home project, a premium brand line (Hunter Douglas / Sundance / Lutron), or a repair of something not bought in the online store.${surface === 'main'
+      ? ' On this main-site page this is your PRIMARY goal — guide interested visitors here.'
+      : ' On the store this is SECONDARY — first try to help them measure, choose, and order in the store; only use this for whole-home projects, premium brand lines, or an in-home visit.'}
+- Collect in this order: what they want → their NAME → their PHONE → (if they want an in-home visit) their city/address → then ask ONE question like "Can I text you the booking link?" (that answer is sms_consent).
+- Once you have at least a name and phone, call submit_website_inquiry EXACTLY ONCE. Do not call it again if they add details later.
+- When it returns a link, present it clearly as a booking button/link ("📅 Book your appointment") and, if it texted them, add that the link was also sent to their phone.
+- Offer three easy paths and let them pick: (1) visit the Temple City showroom (by appointment), (2) a free in-home measure/consultation with a designer (do NOT say it's free of any service fee, and never quote a fee amount), or (3) send photos for a preliminary quote. Repairs use intent="repair".
+- Our phone is 626-451-9841. We work by appointment. Never quote any price.
 
 STYLE: Warm, concise, and practical — usually 2-6 sentences. Plain text only: no markdown headers, no bullet lists unless genuinely helpful, no code blocks. Ask one clarifying question when the customer's window or room details are unclear. Never make up product names, promotions, or policies beyond what is described here.`
 }
@@ -260,6 +278,7 @@ export async function POST(request: Request) {
     const MAX_TOOL_ITERATIONS = 5
 
     let reply = ''
+    let bookingLink = ''  // set when submit_website_inquiry returns a booking link
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -299,6 +318,11 @@ export async function POST(request: Request) {
             console.error(`[assistant] tool ${block?.name} failed:`, err)
             result = { error: 'tool_failed' }
           }
+          // Capture a booking link so the client can render a proper button.
+          if (block.name === 'submit_website_inquiry') {
+            const link = (result as any)?.link
+            if (typeof link === 'string' && /^https?:\/\//.test(link)) bookingLink = link
+          }
           toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: JSON.stringify(result) })
         }
         apiMessages.push({ role: 'user', content: toolResults })
@@ -319,7 +343,10 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    return NextResponse.json({ success: true, data: { reply } })
+    return NextResponse.json({
+      success: true,
+      data: { reply, ...(bookingLink ? { bookingLink } : {}) },
+    })
   } catch (e) {
     console.error('[assistant] Unexpected error:', e)
     return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 500)

@@ -22,6 +22,9 @@ import { usePathname } from 'next/navigation'
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
+  // Set on an assistant turn when the backend registered a lead and returned an
+  // appointment link — rendered as a "Book now" button under the message.
+  bookingLink?: string
 }
 
 const STORAGE_KEY = 'store_assistant_chat'
@@ -144,7 +147,8 @@ export default function StoreAssistant() {
         const json = await res.json().catch(() => null)
 
         if (json?.success && json.data?.reply) {
-          const withReply = [...next, { role: 'assistant' as const, content: String(json.data.reply) }]
+          const link = typeof json.data.bookingLink === 'string' ? json.data.bookingLink : undefined
+          const withReply = [...next, { role: 'assistant' as const, content: String(json.data.reply), ...(link ? { bookingLink: link } : {}) }]
           setMessages(withReply)
           saveStored(withReply)
         } else if (json?.error === 'assistant_unavailable') {
@@ -265,8 +269,20 @@ export default function StoreAssistant() {
                 </div>
               </div>
             ) : (
-              <div key={i} className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-gray-100 px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800">
-                {m.content}
+              <div key={i} className="max-w-[85%] space-y-2">
+                <div className="whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-gray-100 px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800">
+                  {m.content}
+                </div>
+                {m.bookingLink && (
+                  <a
+                    href={m.bookingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#3d3d3d] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-gray-700"
+                  >
+                    📅 Book your appointment / 点此预约
+                  </a>
+                )}
               </div>
             )
           )}
