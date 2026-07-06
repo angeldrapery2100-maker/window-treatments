@@ -55,10 +55,15 @@ export async function POST(request: Request) {
     }
 
     // ── P0: minimum fill time ────────────────────────────────────────────────
-    // The widget stamps how long the form was on screen before submit. Humans
-    // take several seconds to fill name/phone/email; sub-3s means a script.
+    // The widget stamps how long the form was on screen before submit. A very
+    // fast submit is scripted. Threshold kept LOW (800ms) on purpose: with
+    // browser/password-manager autofill a real person can open the panel and
+    // tap submit in ~1.5s (their fields were pre-filled) — a 3s gate silently
+    // dropped those legitimate leads. Turnstile + honeypot + rate-limit are the
+    // primary bot defenses now; this only catches near-instant scripted posts.
+    const MIN_FILL_MS = 800
     const elapsedMs = Number(body.elapsedMs)
-    if (Number.isFinite(elapsedMs) && elapsedMs < 3000) {
+    if (Number.isFinite(elapsedMs) && elapsedMs < MIN_FILL_MS) {
       console.warn(`[consultation] too-fast submit (${elapsedMs}ms) — dropping`)
       return decoyResponse()
     }
