@@ -9,19 +9,18 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 're
 // Turnstile token (`cf-turnstile-response`). Every consultation form must render
 // this, or the endpoint rejects it (403) once Turnstile is enabled.
 //
-// Turnstile is rendered EXPLICITLY (turnstile.render on mount, remove on
-// unmount) rather than via the implicit `.cf-turnstile` auto-scan: the implicit
-// mode only renders widgets present when api.js loads, so a widget added later
-// (e.g. the floating consultation panel that mounts its form on open) never got
-// a token and the form 403'd.
+// Turnstile is rendered EXPLICITLY (turnstile.render on mount, remove on unmount)
+// because the implicit `.cf-turnstile` auto-scan only renders widgets present
+// when api.js loads — so a widget added later (e.g. the floating consultation
+// panel that mounts its form on open) never rendered and the form 403'd.
 //
-// Turnstile tokens are SINGLE-USE. After a submit the token is spent, so the
-// parent must call the imperative reset() (see below) after every submit to get
-// a fresh token — otherwise a second submit re-sends a used token and Cloudflare
-// returns "timeout-or-duplicate" → 403 even though the widget still shows a tick.
-//
-// The solved token is written into a hidden <input name="cf-turnstile-response">
-// so `new FormData(form)` at submit time still picks it up — see readAntiBot().
+// IMPORTANT: turnstile.render() injects its OWN hidden <input
+// name="cf-turnstile-response"> inside the widget container and keeps it in sync
+// with the current token. We rely on THAT single input (read via FormData at
+// submit) — we must NOT also render our own same-named input, or FormData reads
+// the wrong (empty) one → "missing-token" 403. The callback is used only to
+// track readiness (enable submit) and reset() clears the token for the next try
+// (tokens are single-use).
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -31,6 +30,7 @@ declare global {
       render: (el: HTMLElement, opts: Record<string, unknown>) => string
       remove: (id: string) => void
       reset: (id?: string) => void
+      getResponse?: (id?: string) => string | undefined
     }
   }
 }
@@ -40,29 +40,18 @@ export interface AntiBotHandle {
   reset: () => void
 }
 
-// onReady(true) once a Turnstile token is available (or immediately when
-// Turnstile isn't configured), onReady(false) while it's missing/expired/reset.
-// Parents use this to disable submit until verification is ready — both to avoid
-// submitting an autofilled form before the token exists, and to block re-submits
-// during the brief window while a fresh token is being fetched.
 const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => void }>(
   function AntiBotFields({ onReady }, ref) {
     // Stamp the moment the form mounted (for the minimum-fill-time check).
     const [renderedAt] = useState(() => Date.now())
     const boxRef = useRef<HTMLDivElement>(null)
-    const tokenRef = useRef<HTMLInputElement>(null)
     const widgetIdRef = useRef<string | null>(null)
-
-    const setToken = (v: string) => {
-      if (tokenRef.current) tokenRef.current.value = v
-      onReady?.(!!v)
-    }
 
     useImperativeHandle(ref, () => ({
       reset: () => {
         const ts = window.turnstile
         if (ts && widgetIdRef.current) {
-          setToken('') // disables submit until the new token arrives via callback
+          onReady?.(false) // block submit until the fresh token arrives
           try { ts.reset(widgetIdRef.current) } catch { /* widget gone */ }
         }
       },
@@ -73,7 +62,8 @@ const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => 
       if (!TURNSTILE_SITE_KEY) { onReady?.(true); return }
       let cancelled = false
 
-      // Wait for api.js, then render this instance explicitly.
+      // Wait for api.js, then render this instance explicitly. Turnstile injects
+      // and maintains its own hidden cf-turnstile-response input inside boxRef.
       const render = () => {
         if (cancelled || widgetIdRef.current) return
         const ts = window.turnstile
@@ -81,9 +71,9 @@ const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => 
         widgetIdRef.current = ts.render(boxRef.current, {
           sitekey: TURNSTILE_SITE_KEY,
           theme: 'light',
-          callback: (t: string) => setToken(t),
-          'error-callback': () => setToken(''),
-          'expired-callback': () => setToken(''),
+          callback: () => onReady?.(true),
+          'error-callback': () => onReady?.(false),
+          'expired-callback': () => onReady?.(false),
         })
       }
       render()
@@ -112,10 +102,9 @@ const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => 
         </div>
 
         <input type="hidden" name="formRenderedAt" defaultValue={String(renderedAt)} />
-        {/* Turnstile writes the solved token here via its callback. */}
-        <input type="hidden" name="cf-turnstile-response" ref={tokenRef} defaultValue="" />
 
-        {/* Explicit-render target (NOT the implicit `.cf-turnstile` class). */}
+        {/* Turnstile renders here AND injects its own hidden cf-turnstile-response
+            input that FormData reads at submit. */}
         {TURNSTILE_SITE_KEY && <div ref={boxRef} />}
       </>
     )
