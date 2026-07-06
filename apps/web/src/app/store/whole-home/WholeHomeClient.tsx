@@ -1,13 +1,14 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import Script from 'next/script'
+import { useState, useRef } from 'react'
 import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
-
-// Public Turnstile site key. When unset (local dev / preview without the key)
-// the widget is skipped and the server-side check skips too, so the form works.
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+// Shared anti-bot kit (honeypot + fill-time + EXPLICIT Turnstile render +
+// getToken()). The previous inline implicit `.cf-turnstile` + FormData token
+// read suffered the same missing-token 403 as the consultation forms did —
+// the implicit auto-scan misses widgets mounted after api.js loads (SPA
+// navigation to this page), and FormData reads proved unreliable.
+import AntiBotFields, { readAntiBot, type AntiBotHandle } from '@/components/AntiBotFields'
 
 const PRODUCT_OPTIONS = [
   'Custom Drapery',
@@ -36,13 +37,9 @@ export default function WholeHomeClient() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
-  // Timestamp (ms) of when the form rendered, for the minimum-fill-time
-  // anti-bot check (mirrors ConsultationWidget).
-  const renderedAtRef = useRef<number>(0)
-
-  useEffect(() => {
-    renderedAtRef.current = Date.now()
-  }, [])
+  const antiBotRef = useRef<AntiBotHandle>(null)
+  // Gate submit until Turnstile has a token (true immediately when no site key).
+  const [verifyReady, setVerifyReady] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -61,11 +58,11 @@ export default function WholeHomeClient() {
       budget: (formData.get('budget') as string) || '',
       contactMethod: (formData.get('contactMethod') as string) || '',
       message: (formData.get('message') as string) || '',
-      // Anti-bot: honeypot field (must stay empty), time-on-screen, and the
-      // Turnstile token injected into the form as a hidden input.
-      company: (formData.get('company') as string) || '',
-      elapsedMs: renderedAtRef.current ? Date.now() - renderedAtRef.current : 10000,
-      turnstileToken: (formData.get('cf-turnstile-response') as string) || '',
+      // Anti-bot fields (honeypot, fill time) from the shared component…
+      ...readAntiBot(formData),
+      // …but the Turnstile token is read straight from the widget — the
+      // FormData path returns empty (missing-token 403). Same fix as f77957e.
+      turnstileToken: antiBotRef.current?.getToken() || '',
     }
 
     try {
@@ -86,21 +83,15 @@ export default function WholeHomeClient() {
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.')
     } finally {
+      // Turnstile tokens are single-use — get a fresh one for any retry.
+      antiBotRef.current?.reset()
       setIsSubmitting(false)
     }
   }
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Load the Turnstile script only when a site key is configured. */}
-      {TURNSTILE_SITE_KEY && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          async
-          defer
-          strategy="afterInteractive"
-        />
-      )}
+      {/* Turnstile's api.js is loaded by AntiBotFields itself. */}
 
       {/* Hero */}
       <section className="relative w-full h-[45vh] min-h-[340px] overflow-hidden">
@@ -157,16 +148,6 @@ export default function WholeHomeClient() {
               <div className="mb-2">
                 <h3 className="text-lg font-semibold text-gray-900">Request a Design Consultation</h3>
                 <p className="text-xs text-gray-500 mt-0.5">Free, no obligation. We&apos;ll reach out within 1 business day.</p>
-              </div>
-
-              {/* Honeypot — hidden from humans; only bots fill this. Positioned
-                  off-screen (more robust than display:none). Do not remove. */}
-              <div
-                aria-hidden="true"
-                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}
-              >
-                <label htmlFor="wh-company">Company</label>
-                <input id="wh-company" name="company" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -277,18 +258,15 @@ export default function WholeHomeClient() {
                 />
               </div>
 
-              {/* Cloudflare Turnstile — renders a challenge and injects a hidden
-                  input named "cf-turnstile-response" into this form. Rendered only
-                  when a site key is configured. */}
-              {TURNSTILE_SITE_KEY && (
-                <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" />
-              )}
+              {/* Shared anti-bot kit: honeypot + fill-time stamp + explicit
+                  Turnstile render (token read via getToken() at submit). */}
+              <AntiBotFields ref={antiBotRef} onReady={setVerifyReady} />
 
               {error && <p className="text-sm text-red-500">{error}</p>}
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !verifyReady}
                 className="w-full py-3 bg-gray-900 text-white text-sm font-medium tracking-widest uppercase rounded-lg hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
