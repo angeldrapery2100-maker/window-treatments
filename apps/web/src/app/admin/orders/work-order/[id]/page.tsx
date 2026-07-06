@@ -36,9 +36,26 @@ interface ProductParams {
   [key: string]: any
 }
 
+// Auto work-order snapshot entry (see lib/workOrders.ts WorkOrderSnapshotItem)
+interface SnapshotItem {
+  productId: string
+  productType: string
+  engine?: string
+  production?: Record<string, number | string> | null
+}
+
 const ITEMS_PER_PAGE = 8
 const CATEGORIES = ['drapery', 'sheer', 'shade', 'hardware'] as const
 const CATEGORY_LABELS: Record<string, string> = { drapery: 'DRAPERY', sheer: 'SHEER', shade: 'SHADE', hardware: 'HARDWARE' }
+
+// The workshop sheet must NOT show money — mirrors PRODUCTION_MONEY_KEY_RE in
+// lib/workOrders.ts (kept inline: that module imports the server-only db layer).
+const MONEY_KEY_RE = /amount|amt|price|total|subtotal|net|sell|retail|markup|peryard|persqft/i
+
+// "mainCutDrop" → "Main Cut Drop"
+function humanizeKey(k: string): string {
+  return k.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+}
 
 function getOption(item: OrderItem, key: string): string {
   const opt = item.options?.find(o => o.displayLabel?.toLowerCase().includes(key.toLowerCase()))
@@ -88,8 +105,40 @@ function calcSheer(item: OrderItem, sheerFabricWidth: number) {
 const ls: React.CSSProperties = { color: '#9ca3af', fontSize: 9 }
 const vs: React.CSSProperties = { fontWeight: 600, fontSize: 9 }
 
+// ─── Production parameters (from work_orders.items_snapshot) ───
+// Renders the AAPP engine breakdown captured at payment time, money-filtered.
+// Replaces the legacy on-the-fly calc lines when a snapshot exists.
+function ProductionParams({ snap }: { snap: SnapshotItem }) {
+  const entries = Object.entries(snap.production || {}).filter(([k]) => !MONEY_KEY_RE.test(k))
+  if (!entries.length) return null
+  const hwEntries = entries.filter(([k]) => k.toLowerCase().startsWith('hardware'))
+  const mainEntries = entries.filter(([k]) => !k.toLowerCase().startsWith('hardware'))
+  return (
+    <div style={{ marginTop: 5, background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 4, padding: '5px 8px' }}>
+      <div style={{ fontSize: 7.5, fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+        Production Parameters{snap.engine ? ` · ${snap.engine}` : ''}
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: 12, marginTop: 2, fontSize: 9, color: '#4b5563', lineHeight: 1.7 }}>
+        {mainEntries.map(([k, v]) => (
+          <span key={k}><span style={ls}>{humanizeKey(k)}:</span> <span style={vs}>{String(v)}</span></span>
+        ))}
+      </div>
+      {hwEntries.length > 0 && (
+        <div style={{ marginTop: 4, borderTop: '1px dashed #d97706', paddingTop: 3 }}>
+          <div style={{ fontSize: 7.5, fontWeight: 800, color: '#92400e', letterSpacing: 0.8 }}>PAIRED ROD/TRACK — MAKE TOGETHER WITH THIS DRAPERY</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: 12, marginTop: 2, fontSize: 9, color: '#92400e', lineHeight: 1.7 }}>
+            {hwEntries.map(([k, v]) => (
+              <span key={k}><span style={{ ...ls, color: '#b45309' }}>{humanizeKey(k)}:</span> <span style={vs}>{String(v)}</span></span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Item Renderers ───
-function DraperyItem({ item, index, fabricWidth }: { item: OrderItem; index: number; fabricWidth: number }) {
+function DraperyItem({ item, index, fabricWidth, snap }: { item: OrderItem; index: number; fabricWidth: number; snap?: SnapshotItem }) {
   const c = calcDrapery(item, fabricWidth)
   const hf = item.heightFraction && item.heightFraction !== '0' ? ` ${item.heightFraction}` : ''
   return (
@@ -104,19 +153,21 @@ function DraperyItem({ item, index, fabricWidth }: { item: OrderItem; index: num
           <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.6 }}>
             {item.options?.map((o, i) => <span key={i} style={{ marginRight: 10 }}><span style={ls}>{o.displayLabel}:</span> <span style={vs}>{o.valueLabel}</span></span>)}
           </div>
-          <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.7 }}>
-            <span style={{ marginRight: 12 }}><span style={ls}>Panel:</span> <span style={vs}>{c.panelCount}</span> <span style={{ color: '#6b7280' }}>({c.isCenterSplit ? 'Center Split' : 'One Way'})</span></span>
-            <span style={{ marginRight: 12 }}><span style={ls}>Panel Size:</span> <span style={vs}>{c.panelWidth}" × {c.panelHeight}"</span></span>
-            <span style={{ marginRight: 12 }}><span style={ls}>Widths/Panel:</span> <span style={vs}>{c.widthsPerPanel}</span></span>
-            <span><span style={ls}>Total Fabric:</span> <span style={vs}>{c.totalFabricYards} yd</span></span>
-          </div>
+          {snap?.production ? <ProductionParams snap={snap} /> : (
+            <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.7 }}>
+              <span style={{ marginRight: 12 }}><span style={ls}>Panel:</span> <span style={vs}>{c.panelCount}</span> <span style={{ color: '#6b7280' }}>({c.isCenterSplit ? 'Center Split' : 'One Way'})</span></span>
+              <span style={{ marginRight: 12 }}><span style={ls}>Panel Size:</span> <span style={vs}>{c.panelWidth}" × {c.panelHeight}"</span></span>
+              <span style={{ marginRight: 12 }}><span style={ls}>Widths/Panel:</span> <span style={vs}>{c.widthsPerPanel}</span></span>
+              <span><span style={ls}>Total Fabric:</span> <span style={vs}>{c.totalFabricYards} yd</span></span>
+            </div>
+          )}
         </div>
       </div>
     </div>
   )
 }
 
-function SheerItem({ item, index, fabricWidth }: { item: OrderItem; index: number; fabricWidth: number }) {
+function SheerItem({ item, index, fabricWidth, snap }: { item: OrderItem; index: number; fabricWidth: number; snap?: SnapshotItem }) {
   const c = calcSheer(item, fabricWidth)
   const hf = item.heightFraction && item.heightFraction !== '0' ? ` ${item.heightFraction}` : ''
   const ml = c.method === 'horizontal' ? 'Horizontal Cut' : c.method === 'vertical' ? 'Vertical Seam' : 'Normal'
@@ -132,21 +183,23 @@ function SheerItem({ item, index, fabricWidth }: { item: OrderItem; index: numbe
           <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.6 }}>
             {item.options?.map((o, i) => <span key={i} style={{ marginRight: 10 }}><span style={ls}>{o.displayLabel}:</span> <span style={vs}>{o.valueLabel}</span></span>)}
           </div>
-          <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.7 }}>
-            <span style={{ marginRight: 12 }}><span style={ls}>Panel:</span> <span style={vs}>{c.panelCount}</span> <span style={{ color: '#6b7280' }}>({c.isCenterSplit ? 'Center Split' : 'One Way'})</span></span>
-            <span style={{ marginRight: 12 }}><span style={ls}>Panel Size:</span> <span style={vs}>{c.panelWidth}" × {c.panelHeight}"</span></span>
-            <span style={{ marginRight: 12 }}><span style={ls}>Method:</span> <span style={vs}>{ml}</span></span>
-            {c.method === 'horizontal' ? <span style={{ marginRight: 12 }}><span style={ls}>Cut:</span> <span style={vs}>{c.cutLength}"</span></span>
-              : <span style={{ marginRight: 12 }}><span style={ls}>Widths:</span> <span style={vs}>{c.sheerPanel} × {c.sheerFabricWidth}"</span></span>}
-            <span><span style={ls}>Total Fabric:</span> <span style={vs}>{c.sheerYard} yd</span></span>
-          </div>
+          {snap?.production ? <ProductionParams snap={snap} /> : (
+            <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.7 }}>
+              <span style={{ marginRight: 12 }}><span style={ls}>Panel:</span> <span style={vs}>{c.panelCount}</span> <span style={{ color: '#6b7280' }}>({c.isCenterSplit ? 'Center Split' : 'One Way'})</span></span>
+              <span style={{ marginRight: 12 }}><span style={ls}>Panel Size:</span> <span style={vs}>{c.panelWidth}" × {c.panelHeight}"</span></span>
+              <span style={{ marginRight: 12 }}><span style={ls}>Method:</span> <span style={vs}>{ml}</span></span>
+              {c.method === 'horizontal' ? <span style={{ marginRight: 12 }}><span style={ls}>Cut:</span> <span style={vs}>{c.cutLength}"</span></span>
+                : <span style={{ marginRight: 12 }}><span style={ls}>Widths:</span> <span style={vs}>{c.sheerPanel} × {c.sheerFabricWidth}"</span></span>}
+              <span><span style={ls}>Total Fabric:</span> <span style={vs}>{c.sheerYard} yd</span></span>
+            </div>
+          )}
         </div>
       </div>
     </div>
   )
 }
 
-function ShadeItem({ item, index }: { item: OrderItem; index: number }) {
+function ShadeItem({ item, index, snap }: { item: OrderItem; index: number; snap?: SnapshotItem }) {
   const hf = item.heightFraction && item.heightFraction !== '0' ? ` ${item.heightFraction}` : ''
   const fcOpt = item.options?.find(o => o.name === 'fabric_color' || o.displayLabel?.toLowerCase().includes('fabric'))
   return (
@@ -171,13 +224,14 @@ function ShadeItem({ item, index }: { item: OrderItem; index: number }) {
               <span><span style={ls}>Fabric:</span> <span style={vs}>{fcOpt.valueLabel}</span></span>
             </div>
           )}
+          {snap?.production && <ProductionParams snap={snap} />}
         </div>
       </div>
     </div>
   )
 }
 
-function HardwareItem({ item, index }: { item: OrderItem; index: number }) {
+function HardwareItem({ item, index, snap }: { item: OrderItem; index: number; snap?: SnapshotItem }) {
   return (
     <div style={{ borderBottom: '1px solid #d1d5db', paddingBottom: 14, marginBottom: 14 }}>
       <div style={{ display: 'flex', gap: 12 }}>
@@ -190,6 +244,7 @@ function HardwareItem({ item, index }: { item: OrderItem; index: number }) {
           <div style={{ marginTop: 4, fontSize: 9, color: '#4b5563', lineHeight: 1.6 }}>
             {item.options?.map((o, i) => <span key={i} style={{ marginRight: 10 }}><span style={ls}>{o.displayLabel}:</span> <span style={vs}>{o.valueLabel}</span></span>)}
           </div>
+          {snap?.production && <ProductionParams snap={snap} />}
         </div>
       </div>
     </div>
@@ -213,6 +268,7 @@ export default function WorkOrderPage({ params }: { params: Promise<{ id: string
   const [productParams, setProductParams] = useState<Record<string, ProductParams>>({})
   const [saved, setSaved] = useState(false)
   const [savedVersion, setSavedVersion] = useState(0)
+  const [snapshot, setSnapshot] = useState<SnapshotItem[] | null>(null)
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
 
@@ -246,6 +302,10 @@ export default function WorkOrderPage({ params }: { params: Promise<{ id: string
               if (woData.success && woData.data?.workOrder) {
                 setSaved(true)
                 setSavedVersion(woData.data.workOrder.version)
+                // Auto-generated work orders carry the engine's production
+                // breakdown — render it instead of the legacy on-the-fly calc.
+                const snap = woData.data.workOrder.items_snapshot
+                if (Array.isArray(snap) && snap.length > 0) setSnapshot(snap)
               }
             } catch {}
           }
@@ -302,6 +362,20 @@ export default function WorkOrderPage({ params }: { params: Promise<{ id: string
 
   if (loading) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>Loading...</div>
   if (!order) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6b7280' }}>Order not found</div>
+
+  // Match snapshot entries to order items: the snapshot is the flat array of
+  // NON-SWATCH order items in original order (see lib/workOrders.ts
+  // buildWorkOrderSnapshot), so walk both in lockstep and sanity-check the
+  // productId before trusting an entry.
+  const snapByItem = new Map<OrderItem, SnapshotItem>()
+  if (snapshot) {
+    let si = 0
+    for (const item of order.items) {
+      if ((item as any).isSwatch || item.productType?.toLowerCase() === 'swatch') continue
+      const s = snapshot[si++]
+      if (s && s.productId === item.productId) snapByItem.set(item, s)
+    }
+  }
 
   // Group items by category
   const grouped: Record<string, OrderItem[]> = {}
@@ -423,10 +497,11 @@ export default function WorkOrderPage({ params }: { params: Promise<{ id: string
             <div className="page-body">
               {page.items.map((item, idx) => {
                 const globalIdx = page.globalStartIndex + idx
-                if (page.cat === 'drapery') return <DraperyItem key={idx} item={item} index={globalIdx} fabricWidth={getDraperyFabricWidth(item)} />
-                if (page.cat === 'sheer') return <SheerItem key={idx} item={item} index={globalIdx} fabricWidth={getSheerFabricWidth(item)} />
-                if (page.cat === 'shade') return <ShadeItem key={idx} item={item} index={globalIdx} />
-                return <HardwareItem key={idx} item={item} index={globalIdx} />
+                const snap = snapByItem.get(item)
+                if (page.cat === 'drapery') return <DraperyItem key={idx} item={item} index={globalIdx} fabricWidth={getDraperyFabricWidth(item)} snap={snap} />
+                if (page.cat === 'sheer') return <SheerItem key={idx} item={item} index={globalIdx} fabricWidth={getSheerFabricWidth(item)} snap={snap} />
+                if (page.cat === 'shade') return <ShadeItem key={idx} item={item} index={globalIdx} snap={snap} />
+                return <HardwareItem key={idx} item={item} index={globalIdx} snap={snap} />
               })}
 
               {/* Customer notes only on first page of each category */}

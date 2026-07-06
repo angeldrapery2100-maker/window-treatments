@@ -7,12 +7,14 @@
 
 import { Resend } from 'resend'
 import { escapeHtml, safeUrl } from '@/lib/html'
+import { isProductionMoneyKey, type WorkOrderSnapshotItem } from '@/lib/workOrders'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
 
-const FROM       = () => process.env.EMAIL_FROM || 'Angel Drapery <onboarding@resend.dev>'
-const ADMIN_TO   = () => process.env.ORDER_NOTIFY_EMAIL || 'admin@angel-drapery.com'
+const FROM        = () => process.env.EMAIL_FROM || 'Angel Drapery <onboarding@resend.dev>'
+const ADMIN_TO    = () => process.env.ORDER_NOTIFY_EMAIL || 'admin@angel-drapery.com'
+const WORKSHOP_TO = () => process.env.WORKSHOP_EMAIL || ADMIN_TO()
 const SITE_URL   = () => (process.env.NEXT_PUBLIC_SITE_URL || 'https://angel-drapery.com').replace(/\/$/, '')
 
 export interface OrderEmailData {
@@ -239,6 +241,117 @@ export async function sendShippingAlertEmail(args: {
   } catch (e: any) {
     console.error(`[orderEmails] shipping alert FAILED for ${args.orderNumber}:`, e?.message || e)
   }
+}
+
+// ── Workshop: production work order sheet ────────────────────────────────────
+// Sent to the workshop inbox when a paid order auto-generates a work order
+// (lib/workOrders.ts). One block per item: product name big, finished size in
+// large type, customer options, then the engine's production parameters.
+// NO MONEY on this sheet — dollar-carrying breakdown keys are filtered out.
+
+// Humanize a camelCase breakdown key: "mainCutDrop" → "Main Cut Drop".
+function humanizeKey(k: string): string {
+  return k
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase())
+}
+
+function paramTableHtml(entries: [string, unknown][]): string {
+  const rows = entries.map(([k, v]) => `
+    <tr>
+      <td style="padding:3px 12px 3px 0;color:#6b7280;font-size:12px;white-space:nowrap;">${escapeHtml(humanizeKey(k))}</td>
+      <td style="padding:3px 0;color:#111827;font-size:12px;font-weight:600;">${escapeHtml(String(v))}</td>
+    </tr>`).join('')
+  return `<table style="border-collapse:collapse;">${rows}</table>`
+}
+
+function workOrderItemHtml(item: WorkOrderSnapshotItem, index: number): string {
+  const name = escapeHtml(item.productName || 'Custom Item')
+  const type = escapeHtml((item.productType || '').toUpperCase())
+  const wf = item.widthFraction && String(item.widthFraction) !== '0' ? ` ${escapeHtml(String(item.widthFraction))}` : ''
+  const hf = item.heightFraction && String(item.heightFraction) !== '0' ? ` ${escapeHtml(String(item.heightFraction))}` : ''
+  const size = item.width
+    ? `${escapeHtml(String(item.width))}${wf}&quot; W${item.height ? ` × ${escapeHtml(String(item.height))}${hf}&quot; H` : ''}`
+    : ''
+
+  // Customer-selected options; hardware_* options are pulled out into the
+  // paired rod/track sub-block below.
+  const opts = Array.isArray(item.options) ? item.options : []
+  const hardwareOpts = opts.filter((o: any) => String(o?.name || '').startsWith('hardware_'))
+  const regularOpts  = opts.filter((o: any) => !String(o?.name || '').startsWith('hardware_'))
+  const optEntries: [string, unknown][] = regularOpts.map((o: any) => [
+    String(o?.displayLabel || o?.name || ''),
+    String(o?.valueLabel || o?.value || ''),
+  ])
+
+  // Production parameters from the engine breakdown — money keys filtered.
+  const prodEntries: [string, unknown][] = Object.entries(item.production || {})
+    .filter(([k]) => !isProductionMoneyKey(k))
+
+  // Bundled hardware production keys live in the same breakdown (hardware*).
+  const hwProdEntries = prodEntries.filter(([k]) => k.toLowerCase().startsWith('hardware'))
+  const mainProdEntries = prodEntries.filter(([k]) => !k.toLowerCase().startsWith('hardware'))
+
+  const pairedRodBlock = hardwareOpts.length > 0 ? `
+    <div style="margin-top:12px;border:2px dashed #d97706;border-radius:6px;padding:10px 14px;background:#fffbeb;">
+      <p style="margin:0 0 6px;font-size:12px;font-weight:800;color:#92400e;letter-spacing:1px;">PAIRED ROD/TRACK — make together with this drapery</p>
+      ${size ? `<p style="margin:0 0 6px;font-size:13px;color:#92400e;">Rod/track length = finished width: <strong>${size.split(' × ')[0]}</strong></p>` : ''}
+      ${paramTableHtml(hardwareOpts.map((o: any) => [String(o?.displayLabel || o?.name || ''), String(o?.valueLabel || o?.value || '')] as [string, unknown]))}
+      ${hwProdEntries.length ? paramTableHtml(hwProdEntries) : ''}
+    </div>` : ''
+
+  return `
+  <div style="border:1px solid #d1d5db;border-radius:8px;padding:16px 18px;margin:0 0 18px;">
+    <p style="margin:0;font-size:11px;color:#9ca3af;letter-spacing:1px;">#${index} · ${type}${item.engine ? ` · ${escapeHtml(item.engine)}` : ''} · QTY ${item.quantity}</p>
+    <p style="margin:4px 0 0;font-size:18px;font-weight:800;color:#111827;">${name}</p>
+    ${size ? `<p style="margin:6px 0 0;font-size:24px;font-weight:800;color:#111827;font-family:monospace;">${size}</p>` : ''}
+    ${optEntries.length ? `
+      <p style="margin:12px 0 4px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Customer Options</p>
+      ${paramTableHtml(optEntries)}` : ''}
+    ${mainProdEntries.length ? `
+      <p style="margin:12px 0 4px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Production Parameters</p>
+      ${paramTableHtml(mainProdEntries)}` : ''}
+    ${pairedRodBlock}
+  </div>`
+}
+
+export async function sendWorkOrderEmail(args: {
+  orderNumber: string
+  items_snapshot: WorkOrderSnapshotItem[]
+  customer: { name: string; email?: string; phone?: string; address?: any }
+}): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn(`[orderEmails] RESEND_API_KEY not set — skipping work order email for ${args.orderNumber}`)
+    return
+  }
+  const items = (args.items_snapshot || []).filter(i => i && i.productType !== 'swatch')
+  if (items.length === 0) return
+
+  const esNo = escapeHtml(args.orderNumber)
+  const html = `
+  <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;">
+    <div style="border-bottom:3px solid #111827;padding-bottom:10px;margin-bottom:18px;">
+      <h2 style="margin:0;color:#111827;letter-spacing:1px;">🧵 WORK ORDER</h2>
+      <p style="margin:4px 0 0;font-size:16px;font-weight:700;font-family:monospace;color:#111827;">${esNo}</p>
+      <p style="margin:4px 0 0;font-size:12px;color:#6b7280;">
+        Customer: <strong>${escapeHtml(args.customer?.name || '—')}</strong>${args.customer?.phone ? ` · ${escapeHtml(args.customer.phone)}` : ''}
+        · ${items.length} item${items.length === 1 ? '' : 's'} · ${escapeHtml(new Date().toLocaleDateString('en-US'))}
+      </p>
+    </div>
+    ${items.map((it, i) => workOrderItemHtml(it, i + 1)).join('')}
+    <p style="color:#9ca3af;font-size:11px;margin-top:20px;">
+      Auto-generated production sheet — Angel Drapery. The printable version is available in the admin panel.
+    </p>
+  </div>`
+
+  const { error } = await getResend().emails.send({
+    from: FROM(),
+    to: WORKSHOP_TO(),
+    subject: `🧵 Work Order ${esNo}`,
+    html,
+  })
+  if (error) throw new Error(`${(error as any).name || 'ResendError'}: ${(error as any).message || JSON.stringify(error)}`)
 }
 
 /**

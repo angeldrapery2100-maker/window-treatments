@@ -39,6 +39,15 @@ export default function DraperyProduct({ productId }: { productId: string }) {
     { value: '1/2', label: '1/2' }, { value: '3/4', label: '3/4' },
   ]
 
+  // Bundled rod/track add-on: hardware-related options are configured by the
+  // admin (option name starting with 'hardware_', or 'finial') and rendered in
+  // their own opt-in section instead of the main grid. If the product has no
+  // such options, the whole section is hidden.
+  const isHardwareOpt = (name: string) => name.startsWith('hardware_') || name === 'finial'
+  const hardwareOptions = options.filter(opt => isHardwareOpt(opt.name))
+  const mainOptions = options.filter(opt => !isHardwareOpt(opt.name))
+  const hardwareOn = selectedOptions.hardware === 'yes'
+
   // Restore dimensions/qty from a shared link (once, on mount).
   useEffect(() => {
     const c = parseConfigFromUrl()
@@ -58,6 +67,9 @@ export default function DraperyProduct({ productId }: { productId: string }) {
         const v = urlOpts[opt.name]
         if (v && opt.values?.some((o: any) => o.value === v)) defaults[opt.name] = v
       })
+      // Rod/track add-on toggle (not an admin option value — client-driven).
+      // Default OFF; restore from a shared link when valid.
+      defaults.hardware = urlOpts.hardware === 'yes' ? 'yes' : 'none'
       setSelectedOptions(defaults)
     }
   }, [options])
@@ -153,9 +165,9 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                     </div>
                   </div>
 
-                  {options.length > 0 && (
+                  {mainOptions.length > 0 && (
                     <div className="grid grid-cols-2 gap-4">
-                      {options.map(opt => (
+                      {mainOptions.map(opt => (
                         <div key={opt.id}>
                           <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">{opt.display_label || opt.label} *</label>
                           <select
@@ -167,6 +179,37 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                           </select>
                         </div>
                       ))}
+                    </div>
+                  )}
+
+                  {hardwareOptions.length > 0 && (
+                    <div className="border border-gray-200 rounded p-4">
+                      <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={hardwareOn}
+                          onChange={e => setSelectedOptions(prev => ({ ...prev, hardware: e.target.checked ? 'yes' : 'none' }))}
+                          className="h-4 w-4 accent-gray-800"
+                        />
+                        <span className="text-sm font-medium text-gray-800">Add matching rod / track</span>
+                      </label>
+                      {hardwareOn && (
+                        <div className="grid grid-cols-2 gap-4 mt-3">
+                          {hardwareOptions.map(opt => (
+                            <div key={opt.id}>
+                              <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">{opt.display_label || opt.label} *</label>
+                              <select
+                                value={selectedOptions[opt.name] || ''}
+                                onChange={e => setSelectedOptions(prev => ({ ...prev, [opt.name]: e.target.value }))}
+                                className="w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:border-gray-800 focus:outline-none"
+                              >
+                                {opt.values.map((v: any) => <option key={v.value} value={v.value}>{v.label}</option>)}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-400 mt-2">Rod length is automatically matched to your drapery width.</p>
                     </div>
                   )}
 
@@ -201,11 +244,19 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                   <div className="pt-1">
                     <button disabled={!canSubmit || unitPrice <= 0 || addedMsg}
                       onClick={() => {
-                        const optionDetails = options.map(opt => {
+                        // Rod/track declined → drop hardware_* / finial options
+                        // entirely (no hw params reach the server pricer).
+                        // Accepted → keep them and add the explicit toggle
+                        // marker the AAPP adapter looks for.
+                        const cartOptions = hardwareOn ? options : mainOptions
+                        const optionDetails = cartOptions.map(opt => {
                           const selVal = selectedOptions[opt.name]
                           const valObj = opt.values.find((v: any) => v.value === selVal)
                           return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
                         })
+                        if (hardwareOn && hardwareOptions.length > 0) {
+                          optionDetails.push({ name: 'hardware', displayLabel: 'Rod/Track', value: 'yes', valueLabel: 'Matching rod/track included' })
+                        }
                         addToCart({
                           productId, productName, productType: 'drapery',
                           mainImageUrl: mainImages[0]?.url || null,

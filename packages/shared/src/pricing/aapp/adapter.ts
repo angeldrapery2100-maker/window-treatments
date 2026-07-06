@@ -22,6 +22,8 @@ import { priceHandcraftedDrapery } from "./drapery";
 import { priceDraperyHardware, priceSomfyTrack } from "./hardware";
 import type {
   AappPriceResult,
+  DeepPartial,
+  DraperyHardwareConfig,
   DraperyOperation,
   DraperyStyleFamily,
   LiningType,
@@ -54,6 +56,59 @@ function asLining(v: unknown): LiningType {
 function num(v: unknown): number | undefined {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
+// ── Rod/track hardware mapping (shared by 'drapery_hardware' and the
+//    drapery-bundled add-on) ─────────────────────────────────────────────────
+// Profile prices are admin data — supplied inline via option params (with
+// baseParams.aapp_hw_* fallbacks) rather than a shared catalog. We build a
+// single-profile config keyed 'selected'.
+
+interface HardwareMapping {
+  /** True when any hw_* pricing value came from the SELECTED option values
+   *  (used by the drapery branch to auto-detect a configured add-on). */
+  hasOptionPricing: boolean;
+  /** True when any price model exists at all (optionParams or baseParams). */
+  hasAnyPricing: boolean;
+  leftFinialKey?: "left";
+  rightFinialKey?: "right";
+  config: DeepPartial<DraperyHardwareConfig>;
+}
+
+function mapHardwareSelection(
+  optionParams: Record<string, number>,
+  baseParams: Record<string, any>,
+): HardwareMapping {
+  const basePrice = num(optionParams.hw_base_price) ?? num(baseParams.aapp_hw_base_price) ?? 0;
+  const addPerFoot = num(optionParams.hw_add_per_foot) ?? num(baseParams.aapp_hw_add_per_foot) ?? 0;
+  const perFootLegacy = num(optionParams.hw_price_per_foot) ?? num(baseParams.aapp_hw_price_per_foot) ?? 0;
+  const leftFinial = num(optionParams.finial_price_left) ?? num(optionParams.finial_price) ?? 0;
+  const rightFinial = num(optionParams.finial_price_right) ?? 0;
+  return {
+    hasOptionPricing: !!(
+      num(optionParams.hw_base_price) ||
+      num(optionParams.hw_add_per_foot) ||
+      num(optionParams.hw_price_per_foot)
+    ),
+    hasAnyPricing: !!(basePrice || addPerFoot || perFootLegacy),
+    leftFinialKey: leftFinial ? "left" : undefined,
+    rightFinialKey: rightFinial ? "right" : undefined,
+    config: {
+      profiles: {
+        selected: {
+          basePriceAtMinWidth: basePrice,
+          addPricePerFoot: addPerFoot,
+          minBillableWidthIn:
+            num(optionParams.hw_min_width_in) ?? num(baseParams.aapp_hw_min_width_in) ?? 48,
+          pricePerFoot: perFootLegacy,
+        },
+      },
+      finials: {
+        ...(leftFinial ? { left: { price: leftFinial } } : {}),
+        ...(rightFinial ? { right: { price: rightFinial } } : {}),
+      },
+    },
+  };
 }
 
 /** Route a generic store configuration to the matching AAPP engine. Throws on
@@ -120,6 +175,14 @@ export function calculateAapp(args: AappAdapterArgs): AappPriceResult {
 
       const bandingStyle = options.banding && options.banding !== "none" ? options.banding : undefined;
 
+      // Bundled rod/track add-on (spec §3.6 — the engine prices it via
+      // priceDraperyHardware with lengthIn = finishedWidthIn). Enabled by an
+      // explicit `hardware: 'yes'` selection, or implicitly when the selected
+      // option values carry hw_* pricing and the customer didn't opt out.
+      const hw = mapHardwareSelection(optionParams, baseParams);
+      const hardwareEnabled =
+        options.hardware === "yes" || (hw.hasOptionPricing && options.hardware !== "none");
+
       return priceHandcraftedDrapery({
         finishedWidthIn: width,
         finishedHeightIn: height,
@@ -143,6 +206,13 @@ export function calculateAapp(args: AappAdapterArgs): AappPriceResult {
               num(optionParams.sheer_width_in) ?? num(baseParams.aapp_sheer_width_in) ?? 55,
           } : { enabled: false },
         },
+        hardware: hardwareEnabled ? {
+          enabled: true,
+          profileKey: "selected",
+          leftFinialKey: hw.leftFinialKey,
+          rightFinialKey: hw.rightFinialKey,
+        } : undefined,
+        hardwareConfig: hardwareEnabled ? hw.config : undefined,
         banding: bandingStyle ? {
           enabled: true,
           countPerPanel: optionParams.banding_count_per_panel === 2 ? 2 : 1,
@@ -153,36 +223,16 @@ export function calculateAapp(args: AappAdapterArgs): AappPriceResult {
     }
 
     case "drapery_hardware": {
-      // Profile prices are admin data — supplied inline via option params /
-      // baseParams rather than a shared catalog.
-      const basePrice = num(optionParams.hw_base_price) ?? num(baseParams.aapp_hw_base_price) ?? 0;
-      const addPerFoot = num(optionParams.hw_add_per_foot) ?? num(baseParams.aapp_hw_add_per_foot) ?? 0;
-      const perFootLegacy = num(optionParams.hw_price_per_foot) ?? num(baseParams.aapp_hw_price_per_foot) ?? 0;
-      if (!basePrice && !addPerFoot && !perFootLegacy) {
+      const hw = mapHardwareSelection(optionParams, baseParams);
+      if (!hw.hasAnyPricing) {
         throw new Error("aapp hardware: no price model configured (hw_base_price / hw_price_per_foot)");
       }
-      const leftFinial = num(optionParams.finial_price_left) ?? num(optionParams.finial_price) ?? 0;
-      const rightFinial = num(optionParams.finial_price_right) ?? 0;
       return priceDraperyHardware({
         profileKey: "selected",
         lengthIn: width,
-        leftFinialKey: leftFinial ? "left" : undefined,
-        rightFinialKey: rightFinial ? "right" : undefined,
-        config: {
-          profiles: {
-            selected: {
-              basePriceAtMinWidth: basePrice,
-              addPricePerFoot: addPerFoot,
-              minBillableWidthIn:
-                num(optionParams.hw_min_width_in) ?? num(baseParams.aapp_hw_min_width_in) ?? 48,
-              pricePerFoot: perFootLegacy,
-            },
-          },
-          finials: {
-            ...(leftFinial ? { left: { price: leftFinial } } : {}),
-            ...(rightFinial ? { right: { price: rightFinial } } : {}),
-          },
-        },
+        leftFinialKey: hw.leftFinialKey,
+        rightFinialKey: hw.rightFinialKey,
+        config: hw.config,
       });
     }
 

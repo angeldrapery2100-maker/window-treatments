@@ -143,6 +143,66 @@ function normalizeSelections(options: ServerPriceItem['options']): Record<string
   return options
 }
 
+// Merge the numeric params of the SELECTED option values (raw keys, un-mapped).
+// Shared by the aapp branch of computeServerUnitPrice and computeAappBreakdown
+// so option→param resolution can never drift between the two.
+function mergeSelectedOptionParams(cfgOptions: any[], sel: Record<string, string>): Record<string, number> {
+  const optionValues = buildOptionValuesFromCfg(cfgOptions || [])
+  const optionParams: Record<string, number> = {}
+  for (const [optName, value] of Object.entries(sel)) {
+    const params = optionValues[optName]?.[value]
+    if (params) Object.assign(optionParams, params)
+  }
+  return optionParams
+}
+
+// Run the AAPP adapter for an item against a product's default_config.
+// Throws (fail-closed) on missing dimensions or unpriceable configurations —
+// exactly like the aapp branch of computeServerUnitPrice, which calls this.
+function runAappForItem(cfg: any, item: ServerPriceItem, sel: Record<string, string>): { result: ReturnType<typeof calculateAapp>; engine: string } {
+  const width = (Number(item.width) || 0) + parseFraction(item.widthFraction)
+  const height = (Number(item.height) || 0) + parseFraction(item.heightFraction)
+  if (width <= 0) throw new Error('Missing width for custom-priced item')
+  const engine = String(cfg.params.aapp_engine)
+  const needsHeight = engine !== 'drapery_hardware' && engine !== 'somfy_track'
+  if (needsHeight && height <= 0) throw new Error('Missing height for custom-priced item')
+
+  const optionParams = mergeSelectedOptionParams(cfg.options || [], sel)
+
+  const result = calculateAapp({
+    width,
+    height,
+    baseParams: cfg.params || {},
+    options: sel,
+    optionParams,
+  })
+  return { result, engine }
+}
+
+/**
+ * Full AAPP engine result (total + production breakdown) for a product item.
+ * Returns null when the product has no `params.aapp_engine` (legacy pricing
+ * path — no production parameters exist for it). Used by the auto work-order
+ * snapshot (lib/workOrders.ts) so the work order carries the SAME intermediate
+ * values (panel counts, yardages, cut lengths, …) the quote was priced with.
+ */
+export async function computeAappBreakdown(item: ServerPriceItem): Promise<{ total: number; breakdown: Record<string, number | string>; engine: string } | null> {
+  const row = await queryOne<{ default_config: any }>(
+    `SELECT p.default_config
+     FROM products p
+     WHERE p.id = $1`,
+    [item.productId]
+  )
+  if (!row) return null
+
+  const cfg = row.default_config || {}
+  if (!isAappConfigured(cfg.params)) return null
+
+  const sel = normalizeSelections(item.options)
+  const { result, engine } = runAappForItem(cfg, item, sel)
+  return { total: Math.round(Number(result.total)), breakdown: result.breakdown, engine }
+}
+
 /**
  * Server-authoritative unit price for a product, recomputed from DB config.
  * Throws (fail-closed) when the item can't be priced — never returns 0 prices
@@ -168,28 +228,7 @@ export async function computeServerUnitPrice(item: ServerPriceItem): Promise<{ u
   // same option→input mapping — so checkout re-verification always agrees
   // with what the product page displayed. See docs/aapp-engine-wiring.md.
   if (isAappConfigured(cfg.params)) {
-    const width = (Number(item.width) || 0) + parseFraction(item.widthFraction)
-    const height = (Number(item.height) || 0) + parseFraction(item.heightFraction)
-    if (width <= 0) throw new Error('Missing width for custom-priced item')
-    const engine = String(cfg.params.aapp_engine)
-    const needsHeight = engine !== 'drapery_hardware' && engine !== 'somfy_track'
-    if (needsHeight && height <= 0) throw new Error('Missing height for custom-priced item')
-
-    // Merge numeric params of the SELECTED option values (raw keys, un-mapped).
-    const optionValues = buildOptionValuesFromCfg(cfg.options || [])
-    const optionParams: Record<string, number> = {}
-    for (const [optName, value] of Object.entries(sel)) {
-      const params = optionValues[optName]?.[value]
-      if (params) Object.assign(optionParams, params)
-    }
-
-    const aapp = calculateAapp({
-      width,
-      height,
-      baseParams: cfg.params || {},
-      options: sel,
-      optionParams,
-    })
+    const { result: aapp } = runAappForItem(cfg, item, sel)
     const unitPrice = Math.round(Number(aapp.total))
     if (!Number.isFinite(unitPrice) || unitPrice <= 0) {
       throw new Error('Could not compute server price for custom item')

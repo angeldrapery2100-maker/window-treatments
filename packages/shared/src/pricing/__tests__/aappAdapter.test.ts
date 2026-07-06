@@ -52,6 +52,37 @@ describe('aapp adapter', () => {
     expect(r.total).toBe(660)
   })
 
+  it('D1 + bundled rod: hardware=yes adds $210 (billedFeet 9, min 4 ft) → $870', () => {
+    const r = calculateAapp({
+      width: 100, height: 96,
+      baseParams: { aapp_engine: 'drapery' },
+      options: { style: '2fold_pinch', operation: 'split', lining: 'NO', hardware: 'yes' },
+      optionParams: {
+        fabric_price_per_yard: 30, fabric_width_in: 55,
+        hw_base_price: 120, hw_add_per_foot: 18, hw_min_width_in: 48,
+      },
+    })
+    // rod lengthIn = finished width 100" → billedFeet ceil(99.9/12)=9,
+    // minFt 4 → 120 + 5×18 = 210; drapery D1 = 660 → 870 total.
+    expect(r.breakdown.hardwareSubtotal).toBe(210)
+    expect(r.breakdown.hardwareBilledFeet).toBe(9)
+    expect(r.total).toBe(870)
+  })
+
+  it('D1 + hardware options but hardware="none": rod excluded, stays $660', () => {
+    const r = calculateAapp({
+      width: 100, height: 96,
+      baseParams: { aapp_engine: 'drapery' },
+      options: { style: '2fold_pinch', operation: 'split', lining: 'NO', hardware: 'none' },
+      optionParams: {
+        fabric_price_per_yard: 30, fabric_width_in: 55,
+        hw_base_price: 120, hw_add_per_foot: 18, hw_min_width_in: 48,
+      },
+    })
+    expect(r.breakdown.hardwareSubtotal).toBeUndefined()
+    expect(r.total).toBe(660)
+  })
+
   it('H1 via adapter: hardware 100" base $120@4ft + $18/ft = $210', () => {
     const r = calculateAapp({
       width: 100, height: 0,

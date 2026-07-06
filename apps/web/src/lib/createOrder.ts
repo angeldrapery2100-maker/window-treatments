@@ -13,7 +13,9 @@
 import { query, queryOne } from '@/lib/db'
 import { stripe } from '@/lib/stripe'
 import { calcServerTotals } from '@/lib/orderPricing'
-import { sendOrderEmails } from '@/lib/orderEmails'
+import { sendOrderEmails, sendWorkOrderEmail } from '@/lib/orderEmails'
+import { autoCreateWorkOrder } from '@/lib/workOrders'
+import { recordOrderHistory } from '@/lib/orderHistory'
 
 export interface CreateOrderInput {
   // Required at runtime — every order (including swatch-only, which charges
@@ -350,6 +352,33 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
     ).catch(() => {})
   }
 
+  // ── Automatic production work order (docs/ORDER-TO-PRODUCTION-DESIGN.md §B) ─
+  // Non-swatch orders get a v1 work order snapshotting the engine's production
+  // breakdown, then move pending → in_production. Swatch-only orders skip the
+  // whole flow and stay 'pending' (they ship directly). Every step is
+  // best-effort — the order is already paid and persisted.
+  const hasProductionItems = (items as any[]).some(i => i && !i.isSwatch)
+  let workOrderSnapshot: Awaited<ReturnType<typeof autoCreateWorkOrder>> = null
+  if (hasProductionItems) {
+    workOrderSnapshot = await autoCreateWorkOrder(row.id, items) // never throws
+    try {
+      await query(
+        `UPDATE orders SET status = 'in_production', updated_at = NOW() WHERE id = $1`,
+        [row.id]
+      )
+      await recordOrderHistory({
+        order_id:    row.id,
+        action:      'status_changed',
+        from_status: 'pending',
+        to_status:   'in_production',
+        actor_email: 'system',
+        note:        'Auto: production work order generated on payment',
+      })
+    } catch (e: any) {
+      console.error('[createOrder] auto in_production transition failed:', e?.message || e)
+    }
+  }
+
   // Transactional emails (customer confirmation + merchant notification).
   // Awaited so serverless doesn't kill the send, but failures never fail the
   // order — it is already paid and persisted.
@@ -365,6 +394,15 @@ export async function createOrderForPaymentIntent(input: CreateOrderInput): Prom
     shippingMethod: shipping?.carrier && shipping?.service ? `${shipping.carrier} - ${shipping.service}` : null,
     notes,
   }).catch(() => {})
+
+  // Workshop production sheet email (best-effort, money-free).
+  if (workOrderSnapshot && workOrderSnapshot.length > 0) {
+    await sendWorkOrderEmail({
+      orderNumber:    row.order_number,
+      items_snapshot: workOrderSnapshot,
+      customer,
+    }).catch((e: any) => console.error('[createOrder] workshop email failed:', e?.message || e))
+  }
 
   return { ok: true, orderId: row.id, orderNumber: row.order_number, createdAt: row.created_at }
 }

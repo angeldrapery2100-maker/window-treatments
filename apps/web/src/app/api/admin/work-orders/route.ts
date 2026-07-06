@@ -2,20 +2,12 @@ import { NextResponse } from 'next/server'
 import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
+import { ensureWorkOrdersColumns } from '@/lib/workOrders'
 
+// Table create + items_snapshot / auto_generated columns (SELECT * below needs
+// them) — shared with the auto-generation path in lib/workOrders.ts.
 async function ensureWorkOrdersTable() {
-  await query(`
-    CREATE TABLE IF NOT EXISTS work_orders (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      order_id UUID NOT NULL REFERENCES orders(id),
-      version INTEGER DEFAULT 1,
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      updated_at TIMESTAMPTZ DEFAULT NOW(),
-      created_by VARCHAR(128) DEFAULT 'admin',
-      notes TEXT DEFAULT ''
-    )
-  `).catch(() => {})
-  await query(`CREATE INDEX IF NOT EXISTS idx_work_orders_order_id ON work_orders(order_id)`).catch(() => {})
+  await ensureWorkOrdersColumns()
 }
 
 // GET: get work order(s) for an order
@@ -69,12 +61,19 @@ export async function POST(request: Request) {
     )
     const nextVersion = (existing?.max_version || 0) + 1
 
+    // Carry the production snapshot forward from the latest version (manual
+    // re-saves must not lose the auto-generated production parameters).
+    const latest = nextVersion > 1 ? await queryOne(
+      'SELECT items_snapshot FROM work_orders WHERE order_id = $1 ORDER BY version DESC LIMIT 1',
+      [orderId]
+    ).catch(() => null) : null
+
     // Insert new work order record
     const workOrder = await queryOne(
-      `INSERT INTO work_orders (order_id, version, notes)
-       VALUES ($1, $2, $3)
+      `INSERT INTO work_orders (order_id, version, notes, items_snapshot)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [orderId, nextVersion, notes || '']
+      [orderId, nextVersion, notes || '', latest?.items_snapshot ? JSON.stringify(latest.items_snapshot) : null]
     )
 
     // Auto-update order status to in_production if currently pending
