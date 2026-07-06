@@ -6,7 +6,7 @@ import Image from 'next/image'
 import SiteNav from '@/components/SiteNav'
 import LumaShowcase, { type LumaCardData } from '@/components/LumaShowcase'
 import SiteFooter from '@/components/SiteFooter'
-import AntiBotFields, { readAntiBot } from '@/components/AntiBotFields'
+import AntiBotFields, { readAntiBot, type AntiBotHandle } from '@/components/AntiBotFields'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import { m as motion, AnimatePresence, useMotionValue } from 'framer-motion'
 
@@ -96,6 +96,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
   }, [])
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
   const [verifyReady, setVerifyReady] = useState(false)
+  const antiBotRef = useRef<AntiBotHandle>(null)
 
   // Framer Motion 动画变体
   const fadeInUp = {
@@ -211,6 +212,8 @@ export default function HomeClient({ hero, gallery, about, process: processData,
       setSubmitStatus({ type: 'error', message: 'Failed to send. Please try again.' })
     } finally {
       setIsSubmitting(false)
+      // Turnstile tokens are single-use — get a fresh one for any retry.
+      antiBotRef.current?.reset()
     }
   }
 
@@ -1614,7 +1617,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   </div>
                 </div>
 
-                <AntiBotFields onReady={setVerifyReady} />
+                <AntiBotFields ref={antiBotRef} onReady={setVerifyReady} />
 
                 {/* Status message */}
                 <AnimatePresence>

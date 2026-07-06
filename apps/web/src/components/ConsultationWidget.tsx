@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { usePathname } from 'next/navigation'
-import AntiBotFields, { readAntiBot } from '@/components/AntiBotFields'
+import AntiBotFields, { readAntiBot, type AntiBotHandle } from '@/components/AntiBotFields'
 
 export default function ConsultationWidget() {
   const pathname = usePathname()
@@ -15,6 +15,7 @@ export default function ConsultationWidget() {
   const [verifyReady, setVerifyReady] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const antiBotRef = useRef<AntiBotHandle>(null)
 
   // Hide on store and admin pages
   if (pathname.startsWith('/store') || pathname.startsWith('/admin')) {
@@ -60,6 +61,8 @@ export default function ConsultationWidget() {
       setError(err.message || 'Something went wrong. Please try again.')
     } finally {
       setIsSubmitting(false)
+      // Turnstile tokens are single-use — get a fresh one for any retry.
+      antiBotRef.current?.reset()
     }
   }
 
@@ -245,7 +248,7 @@ export default function ConsultationWidget() {
 
               {/* Honeypot + fill-time + Turnstile (explicit render, robust for
                   this on-open-mounted panel). */}
-              <AntiBotFields onReady={setVerifyReady} />
+              <AntiBotFields ref={antiBotRef} onReady={setVerifyReady} />
 
               {error && (
                 <p className="text-sm text-red-500">{error}</p>

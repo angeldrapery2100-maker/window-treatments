@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { MAPS_EMBED_URL } from '@/lib/site'
 import SiteFooter from '@/components/SiteFooter'
-import AntiBotFields, { readAntiBot } from '@/components/AntiBotFields'
+import AntiBotFields, { readAntiBot, type AntiBotHandle } from '@/components/AntiBotFields'
 
 interface ContactData {
   title: string
@@ -32,6 +32,7 @@ export default function ContactClient({ contact, footer }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
   const [verifyReady, setVerifyReady] = useState(false)
+  const antiBotRef = useRef<AntiBotHandle>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -67,6 +68,8 @@ export default function ContactClient({ contact, footer }: Props) {
       setSubmitStatus({ type: 'error', message: 'Something went wrong. Please call us directly.' })
     } finally {
       setIsSubmitting(false)
+      // Turnstile tokens are single-use — get a fresh one for any retry.
+      antiBotRef.current?.reset()
     }
   }
 
@@ -278,7 +281,7 @@ export default function ContactClient({ contact, footer }: Props) {
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none"
               />
 
-              <AntiBotFields onReady={setVerifyReady} />
+              <AntiBotFields ref={antiBotRef} onReady={setVerifyReady} />
 
               <AnimatePresence>
                 {submitStatus.type && (
