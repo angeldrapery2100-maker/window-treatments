@@ -37,6 +37,8 @@ export default function ConsultationWidget() {
       smsConsent: formData.get('smsConsent') === 'on',
       // Anti-bot fields (honeypot, fill time, Turnstile token) — see AntiBotFields.
       ...readAntiBot(formData),
+      // Token straight from the widget (reliable; FormData proved flaky).
+      turnstileToken: antiBotRef.current?.getToken() || '',
     }
 
     try {

@@ -202,6 +202,8 @@ export default function HomeClient({ hero, gallery, about, process: processData,
           // Anti-bot fields required by /api/consultation (honeypot, fill time,
           // Turnstile token) — without these the endpoint rejects the form (403).
           ...readAntiBot(fd),
+          // Token straight from the widget (reliable; FormData proved flaky).
+          turnstileToken: antiBotRef.current?.getToken() || '',
         }),
       })
       if (!res.ok) throw new Error()

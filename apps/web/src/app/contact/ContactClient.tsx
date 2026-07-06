@@ -51,6 +51,8 @@ export default function ContactClient({ contact, footer }: Props) {
       // Anti-bot fields required by /api/consultation (honeypot, fill time,
       // Turnstile token) — without these the endpoint rejects the form (403).
       ...readAntiBot(data),
+      // Token straight from the widget (reliable; FormData proved flaky).
+      turnstileToken: antiBotRef.current?.getToken() || '',
     }
     try {
       const res = await fetch('/api/consultation', {

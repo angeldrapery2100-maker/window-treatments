@@ -38,6 +38,8 @@ declare global {
 export interface AntiBotHandle {
   /** Discard the used token and fetch a fresh one. Call after each submit. */
   reset: () => void
+  /** Current Turnstile token read straight from the widget (source of truth). */
+  getToken: () => string
 }
 
 const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => void }>(
@@ -54,6 +56,13 @@ const AntiBotFields = forwardRef<AntiBotHandle, { onReady?: (ready: boolean) => 
           onReady?.(false) // block submit until the fresh token arrives
           try { ts.reset(widgetIdRef.current) } catch { /* widget gone */ }
         }
+      },
+      getToken: () => {
+        // Read straight from the widget — the reliable source of truth. Relying
+        // on FormData/hidden inputs proved flaky (missing-token 403s).
+        if (!TURNSTILE_SITE_KEY) return ''
+        try { return window.turnstile?.getResponse?.(widgetIdRef.current ?? undefined) || '' }
+        catch { return '' }
       },
     }))
 
