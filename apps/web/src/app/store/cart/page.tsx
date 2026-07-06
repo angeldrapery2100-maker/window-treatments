@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   getCart, saveCart, removeCartItem, updateCartItemQuantity,
+  hydrateCartFromServerIfEmpty,
   type Cart, type CartItem
 } from '@/lib/cart'
 
@@ -62,6 +63,18 @@ export default function CartPage() {
         })
         .catch(() => { /* non-blocking */ })
     }
+  }, [])
+
+  // Cross-device: if this browser's local cart is empty but the user is logged
+  // in, pull their server cart so it shows up here (new device / new browser).
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      const before = getCart().items.length
+      await hydrateCartFromServerIfEmpty()
+      if (!cancelled && getCart().items.length !== before) setCart(getCart())
+    })()
+    return () => { cancelled = true }
   }, [])
 
   const refresh = () => setCart(getCart())

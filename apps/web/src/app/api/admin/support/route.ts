@@ -5,7 +5,7 @@ import { errorResponse } from '@/lib/apiError'
 import { query, queryOne } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 import { recordAudit } from '@/lib/audit'
-import { ensureSupportTable, TICKET_STATUSES, type TicketStatus } from '@/lib/supportTickets'
+import { ensureSupportTable, TICKET_STATUSES, TICKET_SOURCES, type TicketStatus, type TicketSource } from '@/lib/supportTickets'
 import { Resend } from 'resend'
 import { escapeHtml } from '@/lib/html'
 
@@ -27,12 +27,17 @@ export async function GET(request: Request) {
     await ensureSupportTable()
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
+    const source = searchParams.get('source')
 
     let sql = `SELECT * FROM support_tickets WHERE 1=1`
     const params: any[] = []
     if (status && status !== 'all' && TICKET_STATUSES.includes(status as TicketStatus)) {
       params.push(status)
       sql += ` AND status = $${params.length}`
+    }
+    if (source && source !== 'all' && TICKET_SOURCES.includes(source as TicketSource)) {
+      params.push(source)
+      sql += ` AND source = $${params.length}`
     }
     // Open first, then newest.
     sql += ` ORDER BY CASE status WHEN 'open' THEN 0 WHEN 'in_progress' THEN 1 WHEN 'resolved' THEN 2 ELSE 3 END, created_at DESC LIMIT 200`
@@ -42,8 +47,17 @@ export async function GET(request: Request) {
       `SELECT status, COUNT(*) AS n FROM support_tickets GROUP BY status`
     ).catch(() => [])
     const openCount = Number((counts.find((c: any) => c.status === 'open') as any)?.n || 0)
+    // Counts per source, for the All / Web form / AI assistant tabs.
+    const srcRows = await query<{ source: string; n: string }>(
+      `SELECT source, COUNT(*) AS n FROM support_tickets GROUP BY source`
+    ).catch(() => [])
+    const sourceCounts = {
+      all: srcRows.reduce((s, r) => s + Number(r.n), 0),
+      web_form: Number((srcRows.find(r => r.source === 'web_form'))?.n || 0),
+      ai_assistant: Number((srcRows.find(r => r.source === 'ai_assistant'))?.n || 0),
+    }
 
-    return NextResponse.json({ success: true, data: { tickets, openCount } })
+    return NextResponse.json({ success: true, data: { tickets, openCount, sourceCounts } })
   } catch (e) {
     return errorResponse('Could not load support tickets.', 500, e)
   }

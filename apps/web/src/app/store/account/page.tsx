@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { mergeCartOnLogin, hydrateCartFromServerIfEmpty, setCartLoggedIn } from '@/lib/cart'
 
 // ============================================================
 // Types
@@ -153,8 +154,13 @@ export default function AccountPage() {
             setAddresses([])
           }
           fetchOrders()
+          // Already logged in (e.g. returning on a new device): enable sync and
+          // pull the server cart if this browser has an empty local cart.
+          setCartLoggedIn(true)
+          hydrateCartFromServerIfEmpty()
         } else {
           setShowLogin(true)
+          setCartLoggedIn(false)
         }
       })
       .catch(() => setShowLogin(true))
@@ -191,6 +197,13 @@ export default function AccountPage() {
         }
         setShowLogin(false)
         fetchOrders()
+        // Merge the guest cart with this user's server cart (cross-device sync).
+        try {
+          const { swatchesTrimmed } = await mergeCartOnLogin()
+          if (swatchesTrimmed) {
+            alert('Some free fabric swatches were removed because your carts together exceeded the 10-per-order limit.')
+          }
+        } catch { /* non-fatal */ }
       } else {
         setAuthError(data.error)
       }
@@ -254,6 +267,8 @@ export default function AccountPage() {
         setProfilePhone(data.data.user.phone || '')
         setShowLogin(false)
         fetchOrders()
+        // New account: push the guest cart up so it's saved server-side too.
+        mergeCartOnLogin().catch(() => {})
       } else setAuthError(data.error)
     } catch { setAuthError('Registration failed') }
     finally { setAuthLoading(false) }
@@ -261,6 +276,9 @@ export default function AccountPage() {
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
+    // Decision 2A: do NOT clear the local cart on logout — it stays as a guest
+    // cart so items don't vanish. Just stop mirroring to the server.
+    setCartLoggedIn(false)
     setUser(null)
     setOrders([])
     setAddresses([])

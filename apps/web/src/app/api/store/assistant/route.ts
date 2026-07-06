@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { rateLimit, getClientIp } from '@/lib/rateLimit'
+import { getUserFromRequest } from '@/lib/auth'
+import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 // AI shopping assistant for the store — proxies chat turns to the Anthropic
@@ -84,6 +86,13 @@ YOUR JOBS:
 ${escalate}
 
 7. USE THE KNOWLEDGE SECTIONS. Answer brand-line (Hunter Douglas / Sundance / JC / Lutron) questions ONLY from the KNOWLEDGE sections below; if the knowledge doesn't cover it, say so and offer the free design consultation (/store/whole-home, or 626-451-9841). Never state or estimate any price, wholesale or retail, even if asked repeatedly.
+
+8. ORDER HELP (you have tools). You can look up orders and submit after-sales, change, and cancellation requests using the provided tools — but ONLY these tools touch order data; never invent order details.
+- Signed-in customer: call lookup_my_orders (no need to ask for an order number), then confirm which order they mean.
+- Guest (not signed in): ask for their order number AND the shipping ZIP code, then call verify_guest_order. If it fails, say only that you couldn't find a matching order for that number and ZIP — never reveal which part was wrong — and offer 626-451-9841. Do not retry endlessly.
+- To record a request, call submit_service_request. Orders can be changed or cancelled within 48 hours of purchase. If the tool reports the order is past that window, tell the customer the request has been passed to a person who will follow up — do not claim it can still be self-changed.
+- CANCELLATIONS: before calling submit_service_request with ticket_type=order_cancel, you MUST restate the specific order and that cancelling refunds the amount MINUS the card-processing fee, and get an explicit "yes". A human finalizes the refund — tell the customer the request is submitted and they'll be emailed; NEVER say the refund is instant, and never state a specific refund amount or fee figure (you don't have those numbers).
+- Only reference facts the tools return. If a tool returns not_authorized, treat the customer as unverified and ask them to verify again or call us.
 
 STYLE: Warm, concise, and practical — usually 2-6 sentences. Plain text only: no markdown headers, no bullet lists unless genuinely helpful, no code blocks. Ask one clarifying question when the customer's window or room details are unclear. Never make up product names, promotions, or policies beyond what is described here.`
 }
@@ -236,40 +245,77 @@ export async function POST(request: Request) {
     // that was the widget's original universal behavior.
     const surface: Surface = body?.surface === 'main' ? 'main' : 'store'
 
-    // ── Call Anthropic Messages API (plain fetch, non-streaming) ─────────────
-    const model = process.env.ASSISTANT_MODEL || 'claude-haiku-4-5'
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: MAX_TOKENS,
-        system: buildSystemPrompt(messages, surface),
-        messages,
-      }),
-    })
+    // Identify the signed-in customer from the session cookie (NOT from
+    // anything the model says). Guests are null and must verify via ZIP.
+    const userId = getUserFromRequest(request)?.id ?? null
 
-    if (!res.ok) {
-      const detail = await res.text().catch(() => '')
-      console.error(`[assistant] Anthropic API error ${res.status}:`, detail.slice(0, 500))
-      return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+    // ── Anthropic Messages API with a SERVER-SIDE tool-use loop ──────────────
+    // The client only ever sends/receives plain text turns. The multi-turn
+    // tool loop (lookup order → verify → submit request) runs entirely here;
+    // tool_use / tool_result blocks never leave the server, so a client can't
+    // forge a "verified" result — and submit_service_request re-verifies anyway.
+    const model = process.env.ASSISTANT_MODEL || 'claude-haiku-4-5'
+    const system = buildSystemPrompt(messages, surface)
+    const apiMessages: any[] = messages.map(m => ({ role: m.role, content: m.content }))
+    const MAX_TOOL_ITERATIONS = 5
+
+    let reply = ''
+    for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: MAX_TOKENS,
+          system,
+          tools: ASSISTANT_TOOLS,
+          messages: apiMessages,
+        }),
+      })
+
+      if (!res.ok) {
+        const detail = await res.text().catch(() => '')
+        console.error(`[assistant] Anthropic API error ${res.status}:`, detail.slice(0, 500))
+        return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+      }
+
+      const data = await res.json()
+      const content: any[] = Array.isArray(data?.content) ? data.content : []
+
+      if (data?.stop_reason === 'tool_use') {
+        // Record the model's tool-use turn, run each tool, feed results back.
+        apiMessages.push({ role: 'assistant', content })
+        const toolResults: any[] = []
+        for (const block of content) {
+          if (block?.type !== 'tool_use') continue
+          let result: unknown
+          try {
+            result = await executeAssistantTool(block.name, block.input, userId)
+          } catch (err) {
+            console.error(`[assistant] tool ${block?.name} failed:`, err)
+            result = { error: 'tool_failed' }
+          }
+          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: JSON.stringify(result) })
+        }
+        apiMessages.push({ role: 'user', content: toolResults })
+        continue // let the model incorporate the tool results
+      }
+
+      // Normal end of turn — collect the text answer.
+      reply = content
+        .filter(b => b?.type === 'text' && typeof b.text === 'string')
+        .map(b => b.text)
+        .join('')
+        .trim()
+      break
     }
 
-    const data = await res.json()
-    const reply = Array.isArray(data?.content)
-      ? data.content
-          .filter((block: any) => block?.type === 'text' && typeof block.text === 'string')
-          .map((block: any) => block.text)
-          .join('')
-          .trim()
-      : ''
-
     if (!reply) {
-      console.error('[assistant] Empty reply from Anthropic:', JSON.stringify(data).slice(0, 500))
+      console.error('[assistant] No final reply after tool loop')
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 

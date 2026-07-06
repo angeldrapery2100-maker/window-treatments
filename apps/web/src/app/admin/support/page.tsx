@@ -14,11 +14,25 @@ interface Ticket {
   admin_notes: string
   created_at: string
   updated_at: string
+  source?: string                    // 'web_form' | 'ai_assistant'
+  ticket_type?: string               // 'after_sales' | 'order_change' | 'order_cancel'
+  requested_changes?: Record<string, unknown> | null
+  window_ok?: boolean | null
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
   wrong_size: 'Wrong size', damaged: 'Arrived damaged', defect: 'Defect / quality',
   missing_item: 'Missing item', wrong_item: 'Wrong item', late: 'Late / not received', other: 'Other',
+}
+
+// Ticket-type badge (distinguishes AI order-change / cancel from plain after-sales).
+const TYPE_LABELS: Record<string, string> = {
+  after_sales: 'After-sales', order_change: 'Change request', order_cancel: 'Cancel request',
+}
+const TYPE_STYLE: Record<string, string> = {
+  after_sales: 'bg-gray-100 text-gray-600 border-gray-200',
+  order_change: 'bg-blue-50 text-blue-700 border-blue-200',
+  order_cancel: 'bg-red-50 text-red-700 border-red-200',
 }
 
 const STATUS_STYLE: Record<string, string> = {
@@ -29,6 +43,11 @@ const STATUS_STYLE: Record<string, string> = {
 }
 
 const STATUSES = ['open', 'in_progress', 'resolved', 'closed']
+const SOURCE_TABS: { key: string; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'web_form', label: 'Web form' },
+  { key: 'ai_assistant', label: 'AI assistant' },
+]
 
 function fmt(s: string) {
   try { return new Date(s).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }
@@ -38,25 +57,34 @@ function fmt(s: string) {
 export default function AdminSupportPage() {
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [openCount, setOpenCount] = useState(0)
+  const [sourceCounts, setSourceCounts] = useState<Record<string, number>>({ all: 0, web_form: 0, ai_assistant: 0 })
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
+  const [sourceFilter, setSourceFilter] = useState('all')
   const [message, setMessage] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [notesDraft, setNotesDraft] = useState<Record<string, string>>({})
   const [replyDraft, setReplyDraft] = useState<Record<string, string>>({})
   const [savingId, setSavingId] = useState<string | null>(null)
 
-  const fetchTickets = useCallback(async (f: string) => {
+  const fetchTickets = useCallback(async (f: string, src: string) => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/admin/support${f !== 'all' ? `?status=${f}` : ''}`)
+      const qs = new URLSearchParams()
+      if (f !== 'all') qs.set('status', f)
+      if (src !== 'all') qs.set('source', src)
+      const res = await fetch(`/api/admin/support${qs.toString() ? `?${qs}` : ''}`)
       const data = await res.json()
-      if (data.success) { setTickets(data.data.tickets || []); setOpenCount(data.data.openCount || 0) }
+      if (data.success) {
+        setTickets(data.data.tickets || [])
+        setOpenCount(data.data.openCount || 0)
+        if (data.data.sourceCounts) setSourceCounts(data.data.sourceCounts)
+      }
     } catch { /* noop */ }
     finally { setLoading(false) }
   }, [])
 
-  useEffect(() => { fetchTickets(filter) }, [filter, fetchTickets])
+  useEffect(() => { fetchTickets(filter, sourceFilter) }, [filter, sourceFilter, fetchTickets])
 
   const flash = (m: string) => { setMessage(m); setTimeout(() => setMessage(''), 3000) }
 
@@ -69,7 +97,7 @@ export default function AdminSupportPage() {
         body: JSON.stringify({ id, ...patch }),
       })
       const data = await res.json()
-      if (data.success) { flash('Saved'); fetchTickets(filter) }
+      if (data.success) { flash('Saved'); fetchTickets(filter, sourceFilter) }
       else flash(data.error || 'Save failed')
     } catch { flash('Save failed') }
     finally { setSavingId(null) }
@@ -83,6 +111,18 @@ export default function AdminSupportPage() {
       </div>
 
       {message && <div className="mb-4 px-4 py-2.5 bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg">{message}</div>}
+
+      {/* Source tabs: where the ticket came from (web form vs AI assistant). */}
+      <div className="flex gap-1 mb-4 border-b border-gray-200">
+        {SOURCE_TABS.map(tab => (
+          <button key={tab.key} onClick={() => setSourceFilter(tab.key)}
+            className={`px-4 py-2 text-sm -mb-px border-b-2 ${sourceFilter === tab.key ? 'border-[#3d3d3d] text-gray-900 font-medium' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>
+            {tab.key === 'ai_assistant' && <span className="mr-1">🤖</span>}
+            {tab.label}
+            <span className="ml-1.5 text-xs text-gray-400">{sourceCounts[tab.key] ?? 0}</span>
+          </button>
+        ))}
+      </div>
 
       <div className="flex gap-2 mb-5 flex-wrap">
         {['all', ...STATUSES].map(s => (
@@ -105,8 +145,15 @@ export default function AdminSupportPage() {
                 className="w-full flex items-center justify-between gap-3 p-4 text-left hover:bg-gray-50">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
+                    {t.source === 'ai_assistant' && <span title="Submitted via AI assistant">🤖</span>}
                     <span className="font-mono font-semibold text-gray-900 text-sm">{t.order_number}</span>
                     <span className={`px-2 py-0.5 rounded-full text-[11px] border ${STATUS_STYLE[t.status] || STATUS_STYLE.closed}`}>{t.status.replace('_', ' ')}</span>
+                    {t.ticket_type && t.ticket_type !== 'after_sales' && (
+                      <span className={`px-2 py-0.5 rounded-full text-[11px] border ${TYPE_STYLE[t.ticket_type] || TYPE_STYLE.after_sales}`}>{TYPE_LABELS[t.ticket_type] || t.ticket_type}</span>
+                    )}
+                    {(t.ticket_type === 'order_change' || t.ticket_type === 'order_cancel') && t.window_ok === false && (
+                      <span className="px-2 py-0.5 rounded-full text-[11px] border bg-amber-50 text-amber-700 border-amber-200">Past 48h window</span>
+                    )}
                     <span className="text-xs text-gray-400">{CATEGORY_LABELS[t.category] || t.category}</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1 truncate">{t.customer_name || t.customer_email} · {fmt(t.created_at)}</p>
@@ -124,6 +171,35 @@ export default function AdminSupportPage() {
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Message</p>
                     <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded-lg p-3">{t.message}</p>
                   </div>
+
+                  {/* Requested changes (order_change tickets). */}
+                  {t.requested_changes && Object.keys(t.requested_changes).length > 0 && (
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Requested changes</p>
+                      <div className="text-sm text-gray-700 bg-blue-50 border border-blue-100 rounded-lg p-3 space-y-1">
+                        {Object.entries(t.requested_changes).map(([k, v]) => (
+                          <div key={k} className="flex gap-2">
+                            <span className="text-gray-500 capitalize">{k.replace(/_/g, ' ')}:</span>
+                            <span className="font-medium">{String(v)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Cancel request → Plan B: staff confirm & refund via the order page. */}
+                  {t.ticket_type === 'order_cancel' && (
+                    <div className="text-sm bg-red-50 border border-red-100 rounded-lg p-3">
+                      <p className="text-red-700 font-medium mb-1">Cancellation request{t.window_ok === false ? ' (past 48h window)' : ''}</p>
+                      <p className="text-gray-600 text-xs">
+                        Review, then cancel &amp; refund on the order page (full amount minus the card-processing fee).
+                        {t.order_id && (
+                          <> {' '}<a href={`/admin/orders?search=${t.order_number}`} className="text-red-700 underline hover:text-red-900">Open order to refund →</a></>
+                        )}
+                      </p>
+                    </div>
+                  )}
+
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-1.5">Status</p>
                     <div className="flex gap-2 flex-wrap">
