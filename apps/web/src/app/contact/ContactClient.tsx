@@ -31,6 +31,7 @@ const fadeUp = {
 export default function ContactClient({ contact, footer }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
+  const [verifyReady, setVerifyReady] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -277,7 +278,7 @@ export default function ContactClient({ contact, footer }: Props) {
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none"
               />
 
-              <AntiBotFields />
+              <AntiBotFields onReady={setVerifyReady} />
 
               <AnimatePresence>
                 {submitStatus.type && (
@@ -292,12 +293,12 @@ export default function ContactClient({ contact, footer }: Props) {
 
               <motion.button
                 type="submit"
-                disabled={isSubmitting || submitStatus.type === 'success'}
+                disabled={isSubmitting || submitStatus.type === 'success' || !verifyReady}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 className="w-full py-4 bg-[#12141C] text-white rounded-sm font-medium tracking-widest uppercase hover:bg-black transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Sending…' : submitStatus.type === 'success' ? 'Message Sent ✓' : 'Send Message'}
+                {isSubmitting ? 'Sending…' : submitStatus.type === 'success' ? 'Message Sent ✓' : !verifyReady ? 'Verifying…' : 'Send Message'}
               </motion.button>
 
               <p className="text-[11px] text-gray-400 text-center mt-2">

@@ -32,7 +32,11 @@ declare global {
   }
 }
 
-export default function AntiBotFields() {
+// onReady(true) once a Turnstile token is available (or immediately when
+// Turnstile isn't configured), onReady(false) if it expires/errors. Parents use
+// this to disable submit until verification is ready, avoiding a race where an
+// autofilled form is submitted before the token exists (→ 403).
+export default function AntiBotFields({ onReady }: { onReady?: (ready: boolean) => void } = {}) {
   // Stamp the moment the form mounted (for the minimum-fill-time check).
   const [renderedAt] = useState(() => Date.now())
   const boxRef = useRef<HTMLDivElement>(null)
@@ -40,9 +44,13 @@ export default function AntiBotFields() {
   const widgetIdRef = useRef<string | null>(null)
 
   useEffect(() => {
-    if (!TURNSTILE_SITE_KEY) return
+    // No Turnstile configured → nothing to verify, ready right away.
+    if (!TURNSTILE_SITE_KEY) { onReady?.(true); return }
     let cancelled = false
-    const setToken = (v: string) => { if (tokenRef.current) tokenRef.current.value = v }
+    const setToken = (v: string) => {
+      if (tokenRef.current) tokenRef.current.value = v
+      onReady?.(!!v)
+    }
 
     // Wait for api.js, then render this instance explicitly.
     const render = () => {

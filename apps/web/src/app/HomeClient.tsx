@@ -95,6 +95,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
     })
   }, [])
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
+  const [verifyReady, setVerifyReady] = useState(false)
 
   // Framer Motion 动画变体
   const fadeInUp = {
@@ -1613,7 +1614,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                   </div>
                 </div>
 
-                <AntiBotFields />
+                <AntiBotFields onReady={setVerifyReady} />
 
                 {/* Status message */}
                 <AnimatePresence>
@@ -1632,11 +1633,11 @@ export default function HomeClient({ hero, gallery, about, process: processData,
                 {/* Paper airplane submit button */}
                 <button
                   type="submit"
-                  disabled={isSubmitting || submitStatus.type === 'success'}
+                  disabled={isSubmitting || submitStatus.type === 'success' || !verifyReady}
                   className="group relative w-full flex items-center justify-center px-8 py-4 bg-[#12141C] text-white rounded-sm font-medium tracking-widest uppercase hover:bg-black transition-all disabled:opacity-80 disabled:cursor-not-allowed overflow-hidden"
                 >
                   <span className={`transition-transform duration-300 ${isSubmitting ? '-translate-y-12' : 'translate-y-0'}`}>
-                    {submitStatus.type === 'success' ? 'Message Sent' : 'Send Message'}
+                    {submitStatus.type === 'success' ? 'Message Sent' : !verifyReady ? 'Verifying…' : 'Send Message'}
                   </span>
                   {/* Hover static plane */}
                   <svg viewBox="0 0 24 24" className={`absolute right-6 w-5 h-5 fill-none stroke-current stroke-2 transition-all duration-300 ${isSubmitting || submitStatus.type === 'success' ? 'opacity-0' : 'opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 group-hover:translate-x-1'}`}>

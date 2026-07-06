@@ -11,6 +11,8 @@ export default function ConsultationWidget() {
   const [submitted, setSubmitted] = useState(false)
   const [bookingLink, setBookingLink] = useState('')
   const [error, setError] = useState('')
+  // True once Turnstile has a token (or immediately if Turnstile is off).
+  const [verifyReady, setVerifyReady] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -109,14 +111,14 @@ export default function ConsultationWidget() {
       {/* Slide-up Panel */}
       <div
         ref={panelRef}
-        className={`fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[999] w-full sm:w-[400px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl transition-all duration-300 ease-out ${
+        className={`fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[999] w-full sm:w-[400px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl transition-all duration-300 ease-out flex flex-col max-h-[88dvh] sm:max-h-[85vh] ${
           isOpen
             ? 'translate-y-0 opacity-100'
             : 'translate-y-full opacity-0 pointer-events-none'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-gray-100 shrink-0">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">Request a Consultation</h3>
             <p className="text-xs text-gray-500 mt-0.5">We&apos;ll get back to you within 24 hours</p>
@@ -132,8 +134,9 @@ export default function ConsultationWidget() {
           </button>
         </div>
 
-        {/* Content */}
-        <div className="px-6 py-5">
+        {/* Content — scrolls inside the sheet so tall forms (with the Turnstile
+            widget) never push the top fields above the viewport on mobile. */}
+        <div className="px-6 py-5 overflow-y-auto overscroll-contain flex-1">
           {submitted ? (
             <div className="text-center py-8">
               <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -242,7 +245,7 @@ export default function ConsultationWidget() {
 
               {/* Honeypot + fill-time + Turnstile (explicit render, robust for
                   this on-open-mounted panel). */}
-              <AntiBotFields />
+              <AntiBotFields onReady={setVerifyReady} />
 
               {error && (
                 <p className="text-sm text-red-500">{error}</p>
@@ -250,7 +253,7 @@ export default function ConsultationWidget() {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !verifyReady}
                 className="w-full py-3 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
@@ -261,6 +264,8 @@ export default function ConsultationWidget() {
                     </svg>
                     Submitting...
                   </span>
+                ) : !verifyReady ? (
+                  'Verifying…'
                 ) : (
                   'Submit Request'
                 )}
