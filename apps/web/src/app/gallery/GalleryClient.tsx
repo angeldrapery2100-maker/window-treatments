@@ -24,8 +24,11 @@ export interface GalleryPhoto {
 }
 
 // Page background tones (opener near-black → footer's #3d3d3d)
-const BG = '#101216'
-const BG_DEEP = '#0d0f17'
+// Deep-space gray palette (was near-black — Eddie 2026-07-06): a graphite
+// base with slightly deeper bands for contrast sections. Cool, soft, less
+// harsh than pure black; lets shadows and the video card read as layers.
+const BG = '#1b1e24'
+const BG_DEEP = '#14161b'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Central video controller — only ONE video plays at a time, page-wide.
@@ -618,13 +621,18 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
           0%, 100% { transform: translateY(0);   opacity: 0.4; }
           50%      { transform: translateY(8px); opacity: 1; }
         }
+        @keyframes gal-video-in {
+          from { opacity: 0; transform: translateY(28px) scale(0.985); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
         .gal-eyebrow  { animation: gal-track-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .gal-headline { animation: gal-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
         .gal-subline  { animation: gal-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both; }
         .gal-watch    { animation: gal-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both; }
+        .gal-video    { animation: gal-video-in 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both; }
         .gal-scroll-dot { animation: gal-scroll-pulse 2.2s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .gal-eyebrow, .gal-headline, .gal-subline, .gal-watch { animation: none; }
+          .gal-eyebrow, .gal-headline, .gal-subline, .gal-watch, .gal-video { animation: none; }
           .gal-scroll-dot { animation: none; }
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -635,6 +643,18 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
           (was a full-screen 100svh background hero; 16:9 shows the whole
           clip without cropping, per Eddie 2026-07-06) */}
       <section className="relative w-full overflow-hidden">
+        {/* Ambient studio light — a faint cool glow from the top plus a whisper
+            of the brand amber, so the graphite bg reads as a lit space, not a void */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(1200px 620px at 50% -8%, rgba(255,255,255,0.07), transparent 62%), ' +
+              'radial-gradient(900px 480px at 78% 4%, rgba(239,130,0,0.05), transparent 60%)',
+          }}
+        />
+
         <SiteNav activePage="Our Projects" />
 
         {/* Copy */}
@@ -661,9 +681,9 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
         {/* 16:9 video — full frame (poster-first, autoplay muted in view);
             edge-to-edge on mobile, inset with rounded corners on desktop */}
         {heroVideo && (
-          <div className="gal-watch mx-auto w-full max-w-[1400px] md:px-12">
+          <div className="gal-video mx-auto w-full max-w-[1400px] md:px-12">
             <div
-              className="relative aspect-video w-full cursor-pointer overflow-hidden md:rounded-xl"
+              className="relative aspect-video w-full cursor-pointer overflow-hidden md:rounded-xl md:ring-1 md:ring-white/10 md:shadow-[0_48px_120px_-24px_rgba(0,0,0,0.75)]"
               onClick={() => openVideo(heroVideo)}
             >
               <AutoVideo item={heroVideo} className="absolute inset-0" sizes="100vw" priorityPoster />
