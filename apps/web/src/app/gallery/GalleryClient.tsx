@@ -631,24 +631,14 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* ═══ 1 · Cinematic opener ═══ */}
-      <section className="relative flex h-[100svh] min-h-[560px] w-full items-center justify-center overflow-hidden">
-        {/* Background video (poster-first, autoplay muted in view) */}
-        {heroVideo && (
-          <AutoVideo item={heroVideo} className="absolute inset-0" sizes="100vw" priorityPoster />
-        )}
-        {/* Tonal overlay — deep near-black fading into page bg */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, ${BG_DEEP}b3 0%, ${BG_DEEP}59 40%, ${BG_DEEP}40 65%, ${BG} 100%)`,
-          }}
-        />
-
+      {/* ═══ 1 · Cinematic opener — copy header + 16:9 full-frame video ═══
+          (was a full-screen 100svh background hero; 16:9 shows the whole
+          clip without cropping, per Eddie 2026-07-06) */}
+      <section className="relative w-full overflow-hidden">
         <SiteNav activePage="Our Projects" />
 
-        {/* Overlay copy */}
-        <div className="relative z-10 flex flex-col items-center px-6 text-center">
+        {/* Copy */}
+        <div className="relative z-10 mx-auto flex flex-col items-center px-6 pb-10 pt-32 text-center md:pb-14 md:pt-40">
           <span className="gal-eyebrow mb-6 block text-[10px] font-bold uppercase tracking-[0.42em] text-[#ef8200] md:text-xs">
             Our Work
           </span>
@@ -668,8 +658,21 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
           )}
         </div>
 
+        {/* 16:9 video — full frame (poster-first, autoplay muted in view);
+            edge-to-edge on mobile, inset with rounded corners on desktop */}
+        {heroVideo && (
+          <div className="gal-watch mx-auto w-full max-w-[1400px] md:px-12">
+            <div
+              className="relative aspect-video w-full cursor-pointer overflow-hidden md:rounded-xl"
+              onClick={() => openVideo(heroVideo)}
+            >
+              <AutoVideo item={heroVideo} className="absolute inset-0" sizes="100vw" priorityPoster />
+            </div>
+          </div>
+        )}
+
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3">
+        <div className="mt-10 flex flex-col items-center gap-3 pb-4">
           <span className="text-[9px] uppercase tracking-[0.35em] text-white/40">Scroll</span>
           <div className="h-10 w-px bg-white/15">
             <div className="gal-scroll-dot h-3 w-px bg-white/70" />
