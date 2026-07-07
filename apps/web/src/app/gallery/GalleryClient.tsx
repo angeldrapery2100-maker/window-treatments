@@ -326,13 +326,25 @@ function FeaturedRow({
 }) {
   const reduced = useReducedMotion()
 
+  // Choreography: the video settles in first (fade + gentle scale), then the
+  // copy column materialises line by line — index → title (blur-to-focus) →
+  // location → tags → description → divider. Once only, reduced-motion safe.
+  const EASE = [0.22, 1, 0.36, 1] as const
   const container = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.12 } },
+    show: { transition: { staggerChildren: 0.14, delayChildren: reduced ? 0 : 0.1 } },
+  }
+  const videoReveal = {
+    hidden: { opacity: 0, y: reduced ? 0 : 20, scale: reduced ? 1 : 0.97 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: EASE } },
   }
   const child = {
     hidden: { opacity: 0, y: reduced ? 0 : 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+  }
+  const titleChild = {
+    hidden: { opacity: 0, y: reduced ? 0 : 24, filter: reduced ? 'blur(0px)' : 'blur(8px)' },
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.85, ease: EASE } },
   }
 
   const tags = item.tag.split(',').map(t => t.trim()).filter(Boolean).slice(0, 2)
@@ -346,7 +358,7 @@ function FeaturedRow({
       className="grid items-center gap-6 md:grid-cols-5 md:gap-12 lg:gap-16"
     >
       {/* Video — 60% */}
-      <motion.div variants={child} className={`md:col-span-3 ${flip ? 'md:order-2' : ''}`}>
+      <motion.div variants={videoReveal} className={`md:col-span-3 ${flip ? 'md:order-2' : ''}`}>
         <button
           onClick={onOpen}
           aria-label={`Watch: ${item.title}`}
@@ -368,7 +380,7 @@ function FeaturedRow({
         <motion.p variants={child} className="mb-4 font-mono text-xs tracking-widest text-white/25">
           {String(index + 1).padStart(2, '0')}
         </motion.p>
-        <motion.h3 variants={child} className="text-2xl font-light tracking-tight text-white md:text-3xl">
+        <motion.h3 variants={titleChild} className="text-2xl font-light tracking-tight text-white md:text-3xl">
           {item.title}
         </motion.h3>
         <motion.p variants={child} className="mt-2 text-[11px] uppercase tracking-[0.3em] text-white/40">
