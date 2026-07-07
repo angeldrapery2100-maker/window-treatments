@@ -100,7 +100,12 @@ function AutoVideo({
   }, [reduced])
 
   return (
-    <div ref={wrapRef} className={`relative overflow-hidden ${className}`}>
+    // NOTE: no `relative` in the base classes — every call site passes its own
+    // positioning (`absolute inset-0`). Merging both position utilities let
+    // `relative` win in the compiled CSS order, and a relative box with only
+    // inset has no height source → the video collapsed to 0px and the
+    // IntersectionObserver never fired (videos appeared black / never played).
+    <div ref={wrapRef} className={`overflow-hidden ${className}`}>
       <Image
         src={item.poster}
         alt={item.title}
@@ -376,7 +381,9 @@ function FeaturedRow({
           </motion.div>
         )}
         {item.description && (
-          <motion.p variants={child} className="mt-5 max-w-md text-sm leading-relaxed text-white/60">
+          // Admin project stories can be very long — clamp so the copy column
+          // stays balanced with the video; full text is available in the lightbox.
+          <motion.p variants={child} className="mt-5 max-w-md text-sm leading-relaxed text-white/60 line-clamp-6">
             {item.description}
           </motion.p>
         )}
