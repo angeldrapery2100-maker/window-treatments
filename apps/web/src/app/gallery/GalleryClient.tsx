@@ -580,8 +580,12 @@ export default function GalleryClient({ footer, videos: videosProp, photos = [] 
   const landscapes = VIDEOS.filter(v => v.orientation === 'landscape')
   const portraits = VIDEOS.filter(v => v.orientation === 'portrait')
 
-  const heroVideo = landscapes[0] ?? null
-  const featured = landscapes.slice(1)
+  // Hero pick: Eddie's chosen showcase clip — "Linen drapery with roller shade"
+  // (San Gabriel, landscape-07, DEFAULT_VIDEOS id 16). Falls back to the first
+  // landscape if that clip is ever unpublished in the admin.
+  const HERO_VIDEO_ID = 16
+  const heroVideo = landscapes.find(v => v.id === HERO_VIDEO_ID) ?? landscapes[0] ?? null
+  const featured = landscapes.filter(v => v !== heroVideo)
 
   const openVideo = (item: ProjectVideo) => {
     const idx = VIDEOS.findIndex(v => v.id === item.id)
