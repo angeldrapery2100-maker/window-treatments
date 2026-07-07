@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
-import { getPageContent, getText } from '@/lib/content'
-import GalleryClient from './GalleryClient'
+import { getPageContent, getText, getImage } from '@/lib/content'
+import GalleryClient, { type GalleryPhoto } from './GalleryClient'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 import pool from '@/lib/db'
 import { COPYRIGHT } from '@/lib/site'
 
 export const metadata: Metadata = {
-  title: 'Our Projects',
-  description: 'Explore our portfolio of stunning custom window treatment projects across Los Angeles. Drapery, roman shades, blinds, and more.',
+  title: 'Our Work',
+  description:
+    'Four decades of handcrafted window treatments across Los Angeles. Browse real projects — custom drapery, roman shades, motorized blinds — designed, sewn and installed by our own team since 1984.',
   alternates: { canonical: '/gallery' },
 }
 
@@ -71,11 +72,63 @@ async function getVideoData(): Promise<{ meta: Record<number, any>; customVideos
   }
 }
 
+/** 'handcrafted-roman-shade' → 'Roman Shade' — filter-chip label from product_type. */
+function categoryLabel(productType: string): string {
+  return productType
+    .replace(/^handcrafted-/, '')
+    .split('-')
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+}
+
+/** Photo wall source 1: installation_images (all product types, published only). */
+async function getInstallationPhotos(): Promise<GalleryPhoto[]> {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, product_type, image_url, caption
+         FROM installation_images
+        WHERE is_published = true
+        ORDER BY product_type, sort_order, id`
+    )
+    return rows
+      .filter((r: any) => r.image_url)
+      .map((r: any) => ({
+        id:       `inst-${r.id}`,
+        src:      r.image_url,
+        caption:  r.caption || '',
+        category: categoryLabel(r.product_type || 'projects'),
+      }))
+  } catch {
+    // Table may not exist yet — the photo wall simply hides
+    return []
+  }
+}
+
+/** Photo wall source 2: homepage site-content gallery images (page 'home', section 'gallery'). */
+function getHomeGalleryPhotos(homeData: Record<string, Record<string, any>>): GalleryPhoto[] {
+  const photos: GalleryPhoto[] = []
+  for (let i = 1; i <= 12; i++) {
+    const img = getImage(homeData, 'gallery', `project_${i}`)
+    if (!img || !img.url) continue
+    photos.push({
+      id:       `home-${i}`,
+      src:      img.url,
+      caption:  img.alt || '',
+      category: 'Projects',
+      width:    img.width || undefined,
+      height:   img.height || undefined,
+    })
+  }
+  return photos
+}
+
 export default async function GalleryPage() {
-  const [data, globalData, videoData] = await Promise.all([
-    getPageContent('gallery'),
+  const [globalData, homeData, videoData, installationPhotos] = await Promise.all([
     getPageContent('global'),
+    getPageContent('home'),
     getVideoData(),
+    getInstallationPhotos(),
   ])
 
   const { meta: videoMeta, customVideos } = videoData
@@ -102,6 +155,15 @@ export default async function GalleryPage() {
   // Combine: defaults + custom videos
   const videos = [...defaultVideos, ...customVideos]
 
+  // Photo wall: installation images + home gallery images, deduped by URL
+  const homePhotos = getHomeGalleryPhotos(homeData)
+  const seen = new Set<string>()
+  const photos = [...installationPhotos, ...homePhotos].filter(p => {
+    if (seen.has(p.src)) return false
+    seen.add(p.src)
+    return true
+  })
+
   const footer = {
     copyright: COPYRIGHT,
     youtube:   getText(globalData, 'footer', 'youtube_url',  '#'),
@@ -110,5 +172,5 @@ export default async function GalleryPage() {
     instagram: getText(globalData, 'footer', 'instagram_url', 'https://instagram.com/angeldrapery?igshid=MjEwN2IyYWYwYw=='),
   }
 
-  return <GalleryClient footer={footer} videos={videos} />
+  return <GalleryClient footer={footer} videos={videos} photos={photos} />
 }
