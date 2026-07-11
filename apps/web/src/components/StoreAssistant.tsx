@@ -177,11 +177,15 @@ export default function StoreAssistant() {
   // Checkout has full-width in-flow submit buttons near the bottom on mobile —
   // lift the launcher there so it never sits on top of "Pay & Place Order".
   const onCheckout = pathname?.startsWith('/store/checkout')
+  // Product detail pages (/store/<uuid>) render a fixed bottom sticky price
+  // bar on mobile (store redesign P2) — lift the launcher the same way so it
+  // stacks above the bar instead of covering its Add to Cart button.
+  const onProductPage = /^\/store\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(pathname || '')
   // Marketing pages: the ConsultationWidget pill occupies bottom-6 right-6,
   // so both the launcher and the desktop panel stack above it.
   const btnOffset = !onStore
     ? 'bottom-24'
-    : onCheckout
+    : (onCheckout || onProductPage)
       ? 'bottom-24 sm:bottom-6'
       : 'bottom-5 sm:bottom-6'
   const panelPos = onStore

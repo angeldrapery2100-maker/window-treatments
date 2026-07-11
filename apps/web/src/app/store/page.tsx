@@ -26,8 +26,20 @@ function getRecentlyViewed(): string[] {
   try { return JSON.parse(localStorage.getItem('store_recently_viewed') || '[]') } catch { return [] }
 }
 
-// Product card component
-function ProductCard({ p }: { p: StoreProduct }) {
+// Category tabs (store redesign P2): filter by product TYPE slug. Only tabs
+// whose type actually has active products are rendered. 'shade' surfaces as
+// "Luma Shades" per the blueprint.
+const TYPE_TABS: { slug: string; label: string }[] = [
+  { slug: 'drapery',   label: 'Drapery' },
+  { slug: 'sheer',     label: 'Sheer' },
+  { slug: 'hardware',  label: 'Hardware' },
+  { slug: 'shade',     label: 'Luma Shades' },
+  { slug: 'accessory', label: 'Accessories' },
+]
+
+// Product card component. fromPrice comes from /api/store/starting-prices
+// (saved starting_price > base_price); null/0 hides the badge.
+function ProductCard({ p, fromPrice }: { p: StoreProduct; fromPrice?: number | null }) {
   return (
     <Link href={`/store/${p.id}`}
       className="group cursor-pointer bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 block">
@@ -43,13 +55,16 @@ function ProductCard({ p }: { p: StoreProduct }) {
       </div>
       <div className="p-4">
         <h3 className="text-base font-medium mb-1 group-hover:text-gray-600 transition-colors">{p.name}</h3>
+        {fromPrice != null && fromPrice > 0 && (
+          <p className="text-sm text-gray-500">from ${Math.round(fromPrice)}</p>
+        )}
       </div>
     </Link>
   )
 }
 
 // Recommended section with horizontal scroll
-function RecommendedSection({ products }: { products: StoreProduct[] }) {
+function RecommendedSection({ products, prices }: { products: StoreProduct[]; prices: Record<string, number | null> }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -105,7 +120,7 @@ function RecommendedSection({ products }: { products: StoreProduct[] }) {
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {products.map(p => (
               <div key={p.id} className="flex-shrink-0 w-[calc(25%-18px)]" style={{ minWidth: '260px' }}>
-                <ProductCard p={p} />
+                <ProductCard p={p} fromPrice={prices[p.id]} />
               </div>
             ))}
           </div>
@@ -122,6 +137,9 @@ export default function OnlineStorePage() {
   const [recentProducts, setRecentProducts] = useState<StoreProduct[]>([])
   const [cartCount, setCartCount] = useState(0)
   const [search, setSearch] = useState('')
+  const [typeTab, setTypeTab] = useState('all')
+  // productId → starting price ("from $X" badges). Loaded once alongside products.
+  const [startingPrices, setStartingPrices] = useState<Record<string, number | null>>({})
 
   // Check if store is enabled
   useEffect(() => {
@@ -147,6 +165,11 @@ export default function OnlineStorePage() {
 
   useEffect(() => {
     if (storeEnabled === false) return
+    // "from $X" badges — non-blocking; badges simply don't render on failure.
+    fetch('/api/store/starting-prices')
+      .then(r => r.json())
+      .then(d => { if (d.success && d.data) setStartingPrices(d.data) })
+      .catch(() => {})
     fetch('/api/store/products?status=active').then(r => r.json())
     .then(prodData => {
       const prods: StoreProduct[] = prodData.success ? (prodData.data.products || []) : []
@@ -165,6 +188,13 @@ export default function OnlineStorePage() {
 
   // Featured: products marked as is_featured in default_config
   const featured = products.filter(p => p.default_config?.is_featured)
+
+  // Category tabs — derive from the product type slugs actually present so an
+  // empty type never renders a dead tab. Client-side filter only.
+  const typesPresent = new Set(products.map(p => p.type))
+  const typeTabs = TYPE_TABS.filter(t => typesPresent.has(t.slug))
+  const tabFiltered = typeTab === 'all' ? products : products.filter(p => p.type === typeTab)
+  const activeTabLabel = TYPE_TABS.find(t => t.slug === typeTab)?.label || 'All'
 
   // Group products by category name derived from product data
   const grouped: Record<string, StoreProduct[]> = {}
@@ -264,7 +294,22 @@ export default function OnlineStorePage() {
                 className="w-full border border-gray-200 rounded-full pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
             </div>
-            {!q && displayCategoryNames.length > 0 && (
+            {!q && typeTabs.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {[{ slug: 'all', label: 'All' }, ...typeTabs].map(t => (
+                  <button key={t.slug} onClick={() => setTypeTab(t.slug)}
+                    className={`snap-start shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      typeTab === t.slug
+                        ? 'bg-[#3d3d3d] text-white'
+                        : 'border border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900'
+                    }`}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {!q && typeTab === 'all' && displayCategoryNames.length > 0 && (
               <div className="flex flex-wrap justify-center gap-3">
                 {displayCategoryNames.map(name => (
                   <button key={name} onClick={() => scrollToCategory(name)}
@@ -289,7 +334,7 @@ export default function OnlineStorePage() {
             </p>
             {searchResults.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {searchResults.map(p => <ProductCard key={p.id} p={p} />)}
+                {searchResults.map(p => <ProductCard key={p.id} p={p} fromPrice={startingPrices[p.id]} />)}
               </div>
             ) : (
               <div className="text-center text-gray-400 py-16">
@@ -319,8 +364,30 @@ export default function OnlineStorePage() {
             </div>
           </section>
 
+          {typeTab !== 'all' ? (
+            /* ── Type-tab filtered view (flat grid) ── */
+            <section className="w-full bg-white py-12 min-h-[40vh]">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center gap-4 mb-10">
+                  <h2 className="text-3xl md:text-4xl font-light tracking-wide">{activeTabLabel}</h2>
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-sm text-gray-400">{tabFiltered.length} product{tabFiltered.length === 1 ? '' : 's'}</span>
+                </div>
+                {tabFiltered.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {tabFiltered.map(p => <ProductCard key={p.id} p={p} fromPrice={startingPrices[p.id]} />)}
+                  </div>
+                ) : (
+                  <div className="text-center text-gray-400 py-16">
+                    No products in this category yet. <button onClick={() => setTypeTab('all')} className="underline hover:text-gray-600">View all</button>
+                  </div>
+                )}
+              </div>
+            </section>
+          ) : (
+          <>
           {/* Recommended */}
-          {featured.length > 0 && <RecommendedSection products={featured} />}
+          {featured.length > 0 && <RecommendedSection products={featured} prices={startingPrices} />}
 
           {/* Category Sections */}
           {displayCategoryNames.map((name, catIdx) => (
@@ -334,7 +401,7 @@ export default function OnlineStorePage() {
                     <span className="text-sm text-gray-400">{grouped[name].length} products</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {grouped[name].map(p => <ProductCard key={p.id} p={p} />)}
+                    {grouped[name].map(p => <ProductCard key={p.id} p={p} fromPrice={startingPrices[p.id]} />)}
                   </div>
                 </div>
               </div>
@@ -353,7 +420,7 @@ export default function OnlineStorePage() {
                     <span className="text-sm text-gray-400">{uncategorized.length} products</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {uncategorized.map(p => <ProductCard key={p.id} p={p} />)}
+                    {uncategorized.map(p => <ProductCard key={p.id} p={p} fromPrice={startingPrices[p.id]} />)}
                   </div>
                 </div>
               </div>
@@ -369,10 +436,12 @@ export default function OnlineStorePage() {
                   <div className="flex-1 h-px bg-gray-200" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {recentProducts.map(p => <ProductCard key={p.id} p={p} />)}
+                  {recentProducts.map(p => <ProductCard key={p.id} p={p} fromPrice={startingPrices[p.id]} />)}
                 </div>
               </div>
             </section>
+          )}
+          </>
           )}
         </>
       )}

@@ -13,6 +13,9 @@ import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
 import SwatchCard from './shared/SwatchCard'
 import SheerCrossSell from './shared/SheerCrossSell'
+import { DraperyOptionPicker, draperyPickerKind } from './shared/DraperyOptionPickers'
+import StickyPriceBar from './shared/StickyPriceBar'
+import TrustStrip from './shared/TrustStrip'
 import { addToCart } from '@/lib/cart'
 
 export default function DraperyProduct({ productId }: { productId: string }) {
@@ -51,6 +54,13 @@ export default function DraperyProduct({ productId }: { productId: string }) {
   const isHardwareOpt = (name: string) => name.startsWith('hardware_') || name === 'finial'
   const hardwareOptions = options.filter(opt => isHardwareOpt(opt.name))
   const mainOptions = options.filter(opt => !isHardwareOpt(opt.name))
+
+  // P2 visual pickers (store redesign): fabric color → swatch grid, style →
+  // SVG pleat-diagram cards, lining → icon cards, operation → segmented
+  // control. Everything else keeps the original <select>. Presentation only —
+  // the pickers write the exact same selectedOptions[name] = value strings.
+  const visualOptions = mainOptions.filter(opt => draperyPickerKind(opt.name))
+  const selectOptions = mainOptions.filter(opt => !draperyPickerKind(opt.name))
 
   const aappHwIds: string[] = Array.isArray(params?.aapp_hardware_products)
     ? params.aapp_hardware_products.filter((x: any) => typeof x === 'string' && x)
@@ -130,6 +140,36 @@ export default function DraperyProduct({ productId }: { productId: string }) {
 
   const canSubmit = widthNum >= 12 && widthNum <= 360 && heightNum >= 12 && heightNum <= 240
 
+  const handleAddToCart = () => {
+    // Rod/track declined → drop hardware_* / finial options entirely (no hw
+    // params reach the server pricer). Accepted → keep them and add the
+    // explicit toggle marker the AAPP adapter looks for.
+    // Product-reference model: main options only, plus a hardware_product
+    // entry carrying the chosen hardware product's id + human name (work
+    // orders show the name; the 'hardware_' prefix keeps the PAIRED block
+    // working).
+    const cartOptions = useHwProductRef ? mainOptions : (hardwareOn ? options : mainOptions)
+    const optionDetails = cartOptions.map(opt => {
+      const selVal = selectedOptions[opt.name]
+      const valObj = opt.values.find((v: any) => v.value === selVal)
+      return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
+    })
+    if (useHwProductRef && hardwareOn && selectedHwId) {
+      const hw = hwProducts.find(h => h.id === selectedHwId)
+      optionDetails.push({ name: 'hardware_product', displayLabel: 'Rod/Track', value: selectedHwId, valueLabel: hw?.name || 'Matching rod/track' })
+    } else if (!useHwProductRef && hardwareOn && hardwareOptions.length > 0) {
+      optionDetails.push({ name: 'hardware', displayLabel: 'Rod/Track', value: 'yes', valueLabel: 'Matching rod/track included' })
+    }
+    addToCart({
+      productId, productName, productType: 'drapery',
+      mainImageUrl: mainImages[0]?.url || null,
+      width: widthNum, height: heightNum, heightFraction,
+      options: optionDetails, quantity, unitPrice: Math.round(unitPrice),
+    })
+    setAddedMsg(true)
+    setTimeout(() => setAddedMsg(false), 2000)
+  }
+
   useEffect(() => {
     if (!canSubmit || !width || !height || loading) { setUnitPrice(0); setCalcError(''); return }
     const optionValues = buildOptionValues()
@@ -157,7 +197,8 @@ export default function DraperyProduct({ productId }: { productId: string }) {
 
   return (
     <ProductLayout productName={productName || 'Drapery'}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      {/* pb-28 on mobile keeps in-flow content clear of the sticky price bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-28 md:pb-16">
         {loading ? (
           <div className="py-20 text-center text-gray-400">Loading...</div>
         ) : (
@@ -205,9 +246,21 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                     </div>
                   </div>
 
-                  {mainOptions.length > 0 && (
+                  {visualOptions.map(opt => (
+                    <div key={opt.id}>
+                      <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">{opt.display_label || opt.label} *</label>
+                      <DraperyOptionPicker
+                        name={opt.name}
+                        values={opt.values}
+                        selected={selectedOptions[opt.name] || ''}
+                        onSelect={v => setSelectedOptions(prev => ({ ...prev, [opt.name]: v }))}
+                      />
+                    </div>
+                  ))}
+
+                  {selectOptions.length > 0 && (
                     <div className="grid grid-cols-2 gap-4">
-                      {mainOptions.map(opt => (
+                      {selectOptions.map(opt => (
                         <div key={opt.id}>
                           <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">{opt.display_label || opt.label} *</label>
                           <select
@@ -322,39 +375,11 @@ export default function DraperyProduct({ productId }: { productId: string }) {
 
                   <div className="pt-1">
                     <button disabled={!canSubmit || unitPrice <= 0 || addedMsg}
-                      onClick={() => {
-                        // Rod/track declined → drop hardware_* / finial options
-                        // entirely (no hw params reach the server pricer).
-                        // Accepted → keep them and add the explicit toggle
-                        // marker the AAPP adapter looks for.
-                        // Product-reference model: main options only, plus a
-                        // hardware_product entry carrying the chosen hardware
-                        // product's id + human name (work orders show the name;
-                        // the 'hardware_' prefix keeps the PAIRED block working).
-                        const cartOptions = useHwProductRef ? mainOptions : (hardwareOn ? options : mainOptions)
-                        const optionDetails = cartOptions.map(opt => {
-                          const selVal = selectedOptions[opt.name]
-                          const valObj = opt.values.find((v: any) => v.value === selVal)
-                          return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
-                        })
-                        if (useHwProductRef && hardwareOn && selectedHwId) {
-                          const hw = hwProducts.find(h => h.id === selectedHwId)
-                          optionDetails.push({ name: 'hardware_product', displayLabel: 'Rod/Track', value: selectedHwId, valueLabel: hw?.name || 'Matching rod/track' })
-                        } else if (!useHwProductRef && hardwareOn && hardwareOptions.length > 0) {
-                          optionDetails.push({ name: 'hardware', displayLabel: 'Rod/Track', value: 'yes', valueLabel: 'Matching rod/track included' })
-                        }
-                        addToCart({
-                          productId, productName, productType: 'drapery',
-                          mainImageUrl: mainImages[0]?.url || null,
-                          width: widthNum, height: heightNum, heightFraction,
-                          options: optionDetails, quantity, unitPrice: Math.round(unitPrice),
-                        })
-                        setAddedMsg(true)
-                        setTimeout(() => setAddedMsg(false), 2000)
-                      }}
+                      onClick={handleAddToCart}
                       className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit && unitPrice > 0 ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
+                    <TrustStrip />
                     <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
                     <SwatchCard productId={productId} productName={productName} mainImageUrl={mainImages[0]?.url || null} options={options} selectedOptions={selectedOptions} />
                     <SheerCrossSell currentId={productId} />
@@ -377,6 +402,15 @@ export default function DraperyProduct({ productId }: { productId: string }) {
               <ProductContent productId={productId} productType="drapery" />
             </div>
             <RelatedProducts currentId={productId} />
+
+            <StickyPriceBar
+              priceText={unitPrice > 0 ? `$${Math.round(unitPrice * qtyNum)}` : ''}
+              placeholder={calcError ? 'Check your configuration' : 'Enter size to see price'}
+              calculating={isCalculating}
+              disabled={!canSubmit || unitPrice <= 0}
+              added={addedMsg}
+              onAdd={handleAddToCart}
+            />
           </>
         )}
       </div>

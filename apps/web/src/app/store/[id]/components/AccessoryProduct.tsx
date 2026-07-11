@@ -19,6 +19,8 @@ import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
 import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
+import StickyPriceBar from './shared/StickyPriceBar'
+import TrustStrip from './shared/TrustStrip'
 import { addToCart } from '@/lib/cart'
 
 interface WorksWithProduct {
@@ -128,7 +130,8 @@ export default function AccessoryProduct({ productId }: { productId: string }) {
 
   return (
     <ProductLayout productName={productName || 'Accessory'}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      {/* pb-28 on mobile keeps in-flow content clear of the sticky price bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-28 md:pb-16">
         {loading ? (
           <div className="py-20 text-center text-gray-400">Loading...</div>
         ) : (
@@ -218,6 +221,7 @@ export default function AccessoryProduct({ productId }: { productId: string }) {
                       }`}>
                       {addedMsg ? '✓ Added to Cart' : outOfStock ? 'Out of Stock' : 'Add to Cart'}
                     </button>
+                    <TrustStrip />
                     <CopyConfigLink productId={productId} config={{ quantity, options: selectedOptions }} />
                   </div>
                 </div>
@@ -236,6 +240,15 @@ export default function AccessoryProduct({ productId }: { productId: string }) {
               <ProductContent productId={productId} productType="accessory" />
             </div>
             <RelatedProducts currentId={productId} />
+
+            <StickyPriceBar
+              priceText={unitPrice > 0 ? `$${unitPrice * quantity}` : ''}
+              placeholder="Price unavailable"
+              disabled={!canSubmit}
+              added={addedMsg}
+              onAdd={handleAddToCart}
+              addLabel={outOfStock ? 'Out of Stock' : 'Add to Cart'}
+            />
           </>
         )}
       </div>
