@@ -25,6 +25,12 @@ function getJwtSecret(): string {
   }
   throw new Error('JWT_SECRET is not set. For local dev, set ALLOW_DEV_JWT=1 to use the insecure dev fallback.')
 }
+/** Shared app secret for non-JWT HMAC uses (e.g. draft preview tokens).
+ *  Same resolution rules as JWT signing — fail-closed when unset. */
+export function getAuthSecret(): string {
+  return getJwtSecret()
+}
+
 const TOKEN_EXPIRY = '30d'
 // Pin the signing/verification algorithm. Without an explicit algorithm
 // whitelist, jsonwebtoken can be tricked into algorithm-confusion if the key

@@ -6,6 +6,7 @@ import SheerProduct from './components/SheerProduct'
 import ShadeProduct from './components/ShadeProduct'
 import HardwareProduct from './components/HardwareProduct'
 import AccessoryProduct from './components/AccessoryProduct'
+import { withPreviewParam } from './components/shared/useProductData'
 
 // Interactive part of the store product page. The server wrapper (page.tsx)
 // provides metadata + JSON-LD and passes the product type / template key it
@@ -52,7 +53,7 @@ export default function StoreProductClient({ id, initialType, initialTemplateKey
   // Fallback: if the server couldn't resolve the type (e.g. DB hiccup), try client-side.
   useEffect(() => {
     if (initialType !== null) return
-    fetch(`/api/store/products/${id}`)
+    fetch(withPreviewParam(`/api/store/products/${id}`))
       .then(r => r.json())
       .then(data => {
         if (data.success) {

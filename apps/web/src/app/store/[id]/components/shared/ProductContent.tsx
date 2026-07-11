@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { DEFAULT_BLOCKS, ContentBlock } from '@/app/admin/products/edit/[id]/components/ContentEditor'
 import ProductReviews from './ProductReviews'
+import { withPreviewParam } from './useProductData'
 
 interface ProductContentProps {
   productId: string
@@ -86,7 +87,8 @@ export default function ProductContent({ productId, productType, extraContent }:
 
   useEffect(() => {
     // Use public store API — content_blocks included in the product response
-    fetch(`/api/store/products/${productId}`)
+    // (withPreviewParam: draft-preview token passthrough, no-op normally)
+    fetch(withPreviewParam(`/api/store/products/${productId}`))
       .then(r => r.json())
       .then(data => {
         const rawBlocks = data.data?.content_blocks || []

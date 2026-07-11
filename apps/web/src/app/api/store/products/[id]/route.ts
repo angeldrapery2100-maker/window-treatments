@@ -1,19 +1,26 @@
 import { NextResponse } from 'next/server'
 import { queryOne } from '@/lib/db'
 import { ensureStockColumn } from '@/lib/orderPricing'
+import { verifyPreviewToken } from '@/lib/previewToken'
 
 // Public endpoint — no authentication required.
 // Returns all data needed by the store product detail page in one request,
 // so store components don't need to call any admin API endpoints.
+//
+// Draft preview (store redesign P4): a valid ?preview=<token> (signed HMAC of
+// this product id + hour bucket — lib/previewToken.ts) additionally allows
+// fetching THIS product while it is inactive, so the storefront page can be
+// previewed before publishing. The list endpoint (../route.ts) never honors
+// the token — inactive products stay out of lists/search unconditionally.
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
 
   try {
     await ensureStockColumn().catch(() => {})
-    const row = await queryOne(
+    let row = await queryOne(
       `SELECT
         p.id,
         p.name,
@@ -29,6 +36,30 @@ export async function GET(
        WHERE p.id = $1 AND p.is_active = true`,
       [id]
     )
+
+    if (!row) {
+      // Not active — allow through ONLY with a valid draft-preview token.
+      let previewToken: string | null = null
+      try { previewToken = new URL(request.url).searchParams.get('preview') } catch { /* ignore */ }
+      if (previewToken && verifyPreviewToken(id, previewToken)) {
+        row = await queryOne(
+          `SELECT
+            p.id,
+            p.name,
+            pt.slug          AS type,
+            p.base_price,
+            p.default_config,
+            p.is_active,
+            p.stock_qty,
+            p.template_key,
+            p.store_category_id
+           FROM products p
+           JOIN product_types pt ON pt.id = p.product_type_id
+           WHERE p.id = $1`,
+          [id]
+        )
+      }
+    }
 
     if (!row) {
       return NextResponse.json(

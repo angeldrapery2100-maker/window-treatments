@@ -2,6 +2,7 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 import { queryOne, query } from '@/lib/db'
 import { ensureStockColumn } from '@/lib/orderPricing'
+import { verifyPreviewToken } from '@/lib/previewToken'
 import StoreProductClient from './StoreProductClient'
 
 // Server wrapper for the store product page. Adds per-product metadata and
@@ -37,6 +38,27 @@ const getProduct = cache(async (id: string) => {
        FROM products p
        JOIN product_types pt ON pt.id = p.product_type_id
        WHERE p.id = $1 AND p.is_active = true`,
+      [id]
+    )
+    return row || null
+  } catch {
+    return null
+  }
+})
+
+// Draft preview (store redesign P4): same SELECT as getProduct but WITHOUT
+// the is_active filter. Only ever called after verifyPreviewToken succeeded
+// for this exact product id — inactive products stay 404 for everyone else,
+// and list/search endpoints never honor the token.
+const getProductForPreview = cache(async (id: string) => {
+  if (!UUID_RE.test(id)) return null
+  try {
+    await ensureStockColumn().catch(() => {})
+    const row = await queryOne<any>(
+      `SELECT p.id, p.name, pt.slug AS type, p.template_key, p.base_price, p.default_config, p.is_active
+       FROM products p
+       JOIN product_types pt ON pt.id = p.product_type_id
+       WHERE p.id = $1`,
       [id]
     )
     return row || null
@@ -97,13 +119,36 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 }
 
-export default async function StoreProductPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function StoreProductPage({ params, searchParams }: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   const { id } = await params
-  const product = await getProduct(id)
+  let product = await getProduct(id)
+  let previewMode = false
+
+  // Draft preview (store redesign P4): ONLY when the active-product lookup
+  // missed do we touch searchParams (keeps regular product renders static /
+  // ISR — awaiting searchParams would otherwise force every render dynamic).
+  // A valid signed token (HMAC of id + hour bucket, constant-time compare,
+  // current + previous hour accepted) lets an admin view an inactive product
+  // exactly as a customer would, behind a slim amber banner.
+  if (!product) {
+    const sp = await searchParams
+    const token = typeof sp.preview === 'string' ? sp.preview : undefined
+    if (token && verifyPreviewToken(id, token)) {
+      const draft = await getProductForPreview(id)
+      if (draft) {
+        product = draft
+        previewMode = true
+      }
+    }
+  }
+
   const reviewData = product ? await getReviewData(id) : null
 
   let jsonLd: Record<string, any> | null = null
-  if (product) {
+  if (product && !previewMode) {
     const cfg = product.default_config || {}
     jsonLd = {
       '@context': 'https://schema.org',
@@ -150,6 +195,11 @@ export default async function StoreProductPage({ params }: { params: Promise<{ i
       {/* "<" is escaped so customer review text can never break out of the script tag */}
       {jsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      )}
+      {previewMode && (
+        <div className="bg-amber-100 border-b border-amber-200 text-amber-800 text-center text-xs py-2 px-4">
+          Draft preview — this product is not published. Customers cannot see this page; the link expires automatically.
+        </div>
       )}
       <StoreProductClient
         id={id}

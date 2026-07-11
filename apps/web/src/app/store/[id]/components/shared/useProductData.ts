@@ -2,6 +2,18 @@
 
 import { useState, useEffect } from 'react'
 
+// Draft preview passthrough (store redesign P4): when the page URL carries a
+// valid ?preview=<token>, the public product API accepts it for THIS product
+// even while inactive. Appending it here (and in ProductContent) is a no-op
+// for normal traffic — the param is simply absent.
+export function withPreviewParam(url: string): string {
+  try {
+    const t = new URLSearchParams(window.location.search).get('preview')
+    if (t) return `${url}${url.includes('?') ? '&' : '?'}preview=${encodeURIComponent(t)}`
+  } catch { /* SSR / malformed URL — ignore */ }
+  return url
+}
+
 export interface MainImage { id: string; url: string; name: string; sort_order: number }
 export interface GalleryImage { id: string; url: string; title: string; description: string; sort_order: number }
 export interface ProductOption {
@@ -28,7 +40,7 @@ export function useProductData(productId: string) {
   useEffect(() => {
     if (!productId) return
     // Single public endpoint — no admin auth needed, returns all sub-data at once
-    fetch(`/api/store/products/${productId}`)
+    fetch(withPreviewParam(`/api/store/products/${productId}`))
       .then(r => r.json())
       .then((data) => {
         if (data.success) {

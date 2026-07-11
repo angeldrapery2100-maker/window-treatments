@@ -275,16 +275,32 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 ← 返回
               </button>
 
-              {/* 预览按钮：保存后才可用 */}
+              {/* 预览按钮：保存后才可用。草稿（未发布）商品走签名预览链接
+                  （POST preview-token → /store/<id>?preview=<token>，1–2 小时
+                  有效），已发布商品直接打开正式页。 */}
               {basicSaved && currentId && currentId !== 'create' && (
                 <button
                   onClick={async () => {
                     if (isDirty && isBasicComplete) await handleSave()
-                    window.open(`/store/${currentId}`, '_blank')
+                    if (status === 'active') {
+                      window.open(`/store/${currentId}`, '_blank')
+                      return
+                    }
+                    try {
+                      const res = await fetch(`/api/admin/products/${currentId}/preview-token`, { method: 'POST' })
+                      const data = await res.json()
+                      if (data.success && data.data?.url) {
+                        window.open(data.data.url, '_blank')
+                      } else {
+                        setSaveError('无法生成预览链接，请重试')
+                      }
+                    } catch {
+                      setSaveError('无法生成预览链接，请重试')
+                    }
                   }}
                   className="px-4 py-2 border border-gray-700 rounded-lg text-gray-700 hover:bg-gray-700 hover:text-white transition-colors flex items-center gap-1.5"
                 >
-                  ↗ 预览
+                  {status === 'active' ? '↗ 预览' : '↗ 以客户视角预览'}
                 </button>
               )}
 
