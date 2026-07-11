@@ -134,13 +134,28 @@ export const CATEGORY_BLUEPRINTS: Record<CategoryKey, CategoryBlueprint> = {
     icon: '☁️',
     defaultParams: { aapp_engine: 'drapery', aapp_composition: 'sheer_only' },
     // Styles limited to pleated + ripplefold per blueprint; values are added
-    // by the admin (sheer_price_per_yard rides the fabric option values).
+    // by the admin. Pricing keys the adapter reads for the sheer layer:
+    // product-level params.aapp_sheer_price_per_yard / aapp_sheer_width_in
+    // (written by the ParamsConfig sheer editor), with per-color overrides
+    // sheer_price_per_yard / sheer_width_in on fabric_color option values —
+    // NOT the fabric_* keys (those are the main-fabric layer).
     optionScaffold: [
       opt('style', 'Pleat Style'),
       opt('fabric_color', 'Fabric Color'),
       opt('operation', 'Operation'),
     ],
-    acceptanceSamples: [],
+    acceptanceSamples: [
+      {
+        label: 'S1 — 100×96 split, 2-fold pinch, $20/yd 118" sheer',
+        width: 100,
+        height: 96,
+        options: { style: '2fold_pinch', operation: 'split' },
+        sampleParams: { aapp_sheer_price_per_yard: 20, aapp_sheer_width_in: 118 },
+        // Locked by packages/shared aappAdapter.test.ts "S1 sheer_only"
+        // (hand-derived from docs/aapp-pricing-spec.md §3.4).
+        expectedTotal: 306,
+      },
+    ],
   },
 
   // ── ③ Hardware 杆/轨 — 1D (length): base price + per-foot ──────────────────

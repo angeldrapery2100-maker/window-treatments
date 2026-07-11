@@ -10,7 +10,44 @@ import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
 import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
+import StickyPriceBar from './shared/StickyPriceBar'
+import TrustStrip from './shared/TrustStrip'
 import { addToCart } from '@/lib/cart'
+
+// Hardware template 「五金精品」 (store redesign P3 — docs/STORE-REDESIGN-
+// BLUEPRINT.md §3.2③). Dark premium treatment for the CONFIGURATOR COLUMN only
+// (the page shell stays the standard store chrome): metallic circular finish
+// swatches (switching the gallery image when the value carries image_url), a
+// horizontal finial image-card strip, and length preset chips.
+// PRESENTATION ONLY — the price formula and cart payload are byte-identical to
+// the previous <select>-based template.
+
+// ── Finish swatch helpers ────────────────────────────────────────────────────
+
+/** Metallic-look CSS gradient keyed by common finish names; neutral fallback. */
+function finishGradient(value: string, label?: string): string {
+  const s = `${value} ${label || ''}`.toLowerCase()
+  if (/black|matte\s*noir|onyx/.test(s)) return 'linear-gradient(135deg,#4a4a4a 0%,#111 60%,#2e2e2e 100%)'
+  if (/bronze|copper|rust/.test(s)) return 'linear-gradient(135deg,#c08a5a 0%,#5c3a21 60%,#8a5c33 100%)'
+  if (/brass|gold/.test(s)) return 'linear-gradient(135deg,#f0d99a 0%,#a67c28 60%,#d4af5e 100%)'
+  if (/nickel|silver|satin|pewter/.test(s)) return 'linear-gradient(135deg,#f2f2f2 0%,#9fa4ab 60%,#c9cdd3 100%)'
+  if (/chrome|steel|stainless/.test(s)) return 'linear-gradient(135deg,#fbfbfb 0%,#8e959e 55%,#dfe3e8 100%)'
+  if (/white|ivory|cream/.test(s)) return 'linear-gradient(135deg,#ffffff 0%,#d8d8d8 70%,#f0f0f0 100%)'
+  return 'linear-gradient(135deg,#d6d6d6 0%,#8a8a8a 60%,#bdbdbd 100%)'
+}
+
+function valueImage(v: any): string | null {
+  if (typeof v?.image_url === 'string' && v.image_url) return v.image_url
+  if (v?.params && typeof v.params.image_url === 'string' && v.params.image_url) return v.params.image_url
+  return null
+}
+
+function isFinishOption(name: string): boolean {
+  const n = (name || '').toLowerCase()
+  return n === 'color' || n === 'finish' || n.includes('finish')
+}
+
+const LENGTH_PRESETS = [48, 72, 96, 120, 144]
 
 export default function HardwareProduct({ productId }: { productId: string }) {
   const router = useRouter()
@@ -88,20 +125,55 @@ export default function HardwareProduct({ productId }: { productId: string }) {
     setUnitPrice(fixedPrice + finialPrice + extraFeet * pricePerFoot)
   }, [width, widthFraction, selectedOptions, options, params])
 
-  const finialOpt = options.find(o => o.name === 'finial')
-  const currentFinial = finialOpt?.values.find(v => v.value === selectedOptions['finial'])
-  const finialLength = currentFinial?.params?.finial_length ?? 0
+  const handleAddToCart = () => {
+    const optionDetails = options.map(opt => {
+      const selVal = selectedOptions[opt.name]
+      const valObj = opt.values.find((v: any) => v.value === selVal)
+      return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
+    })
+    addToCart({
+      productId, productName, productType: 'hardware',
+      mainImageUrl: mainImages[0]?.url || null,
+      width: typeof width === 'number' ? width : undefined, widthFraction,
+      options: optionDetails, quantity, unitPrice: Math.round(unitPrice),
+    })
+    setAddedMsg(true)
+    setTimeout(() => setAddedMsg(false), 2000)
+  }
+
+  // ── Option grouping (presentation only) ──────────────────────────────────
+  const finishOptions = options.filter(o => isFinishOption(o.name))
+  const finialOptions = options.filter(o => o.name === 'finial')
+  const selectOptions = options.filter(o => !isFinishOption(o.name) && o.name !== 'finial')
+
+  // Selected finish value with an image switches the main gallery image:
+  // prepend it and remount the gallery (key) so it shows immediately.
+  const selectedFinishImage = (() => {
+    for (const opt of finishOptions) {
+      const v = opt.values.find((x: any) => x.value === selectedOptions[opt.name])
+      const img = v ? valueImage(v) : null
+      if (img) return { url: img, name: v?.label || '' }
+    }
+    return null
+  })()
+  const displayImages = selectedFinishImage
+    ? [{ id: '__finish', url: selectedFinishImage.url, name: selectedFinishImage.name, sort_order: -1 }, ...mainImages]
+    : mainImages
+
+  const darkLabel = 'block text-xs font-medium tracking-wider uppercase text-gray-400 mb-1.5'
+  const darkSelect = 'w-full px-3 py-2.5 rounded text-sm bg-[#262b33] border border-white/15 text-white focus:border-white/40 focus:outline-none'
 
   return (
     <ProductLayout productName={productName || 'Curtain Rod'}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      {/* pb-28 on mobile keeps in-flow content clear of the sticky price bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-28 md:pb-16">
         {loading ? (
           <div className="py-20 text-center text-gray-400">Loading...</div>
         ) : (
           <>
             <div className="grid md:grid-cols-2 gap-12 mt-4">
               <div>
-                <ImageGallery mainImages={mainImages} galleryImages={[]} />
+                <ImageGallery key={selectedFinishImage?.url || 'default'} mainImages={displayImages} galleryImages={[]} />
               </div>
               <div>
                 <div className="flex items-center gap-2 text-xs text-gray-400 tracking-wide uppercase mb-4">
@@ -114,26 +186,114 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                 <p className="text-sm text-gray-500 leading-relaxed mb-6">
                   Premium curtain rods with your choice of finial and finish. Custom cut to your exact width.
                 </p>
-                <div className="space-y-4">
+
+                {/* ── Dark premium configurator panel ── */}
+                <div className="rounded-xl bg-[#1b1e24] p-5 text-white space-y-5">
+                  {/* Finish — circular metallic swatches */}
+                  {finishOptions.map(opt => {
+                    const sel = selectedOptions[opt.name] || ''
+                    const selObj = opt.values.find((v: any) => v.value === sel)
+                    return (
+                      <div key={opt.id}>
+                        <label className={darkLabel}>
+                          {opt.display_label || opt.label} *
+                          {selObj && <span className="ml-2 normal-case tracking-normal text-gray-300">{selObj.label || selObj.value}</span>}
+                        </label>
+                        <div className="flex flex-wrap gap-2.5">
+                          {opt.values.map((v: any) => {
+                            const isSel = sel === v.value
+                            const img = valueImage(v)
+                            return (
+                              <button
+                                key={v.value}
+                                type="button"
+                                onClick={() => setSelectedOptions(prev => ({ ...prev, [opt.name]: v.value }))}
+                                aria-pressed={isSel}
+                                title={v.label || v.value}
+                                className={`h-10 w-10 rounded-full overflow-hidden transition-shadow ${
+                                  isSel ? 'ring-2 ring-white ring-offset-2 ring-offset-[#1b1e24]' : 'ring-1 ring-white/25 hover:ring-white/60'
+                                }`}
+                                style={img ? undefined : { background: finishGradient(v.value, v.label) }}
+                              >
+                                {img && (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={img} alt={v.label || v.value} className="h-full w-full object-cover" loading="lazy" />
+                                )}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+
+                  {/* Finial — horizontal image-card strip */}
+                  {finialOptions.map(opt => (
+                    <div key={opt.id}>
+                      <label className={darkLabel}>{opt.display_label || opt.label} *</label>
+                      <div className="flex gap-2 overflow-x-auto pb-1 -mr-1">
+                        {opt.values.map((v: any) => {
+                          const isSel = (selectedOptions[opt.name] || '') === v.value
+                          const img = valueImage(v)
+                          return (
+                            <button
+                              key={v.value}
+                              type="button"
+                              onClick={() => setSelectedOptions(prev => ({ ...prev, [opt.name]: v.value }))}
+                              aria-pressed={isSel}
+                              className={`shrink-0 w-24 rounded-lg border p-2 text-center transition-colors ${
+                                isSel ? 'border-white bg-white/10 text-white' : 'border-white/15 text-gray-300 hover:border-white/45'
+                              }`}
+                            >
+                              {img ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={img} alt={v.label || v.value} className="h-14 w-full object-cover rounded" loading="lazy" />
+                              ) : (
+                                <span className="flex h-14 w-full items-center justify-center rounded bg-white/5 text-white/30 text-xl">◆</span>
+                              )}
+                              <span className="mt-1.5 block text-[10px] leading-tight">{v.label || v.value}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Length + quick presets */}
                   <div>
-                    <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">Width (inch) *</label>
+                    <label className={darkLabel}>Width (inch) *</label>
                     <div className="flex gap-1.5">
                       <input type="text" inputMode="numeric" value={width || ''} onChange={e => handleWidthChange(e.target.value)} placeholder="20–192"
-                        className={`flex-1 min-w-0 px-3 py-2.5 border rounded text-sm focus:outline-none ${widthError ? 'border-red-400' : 'border-gray-300 focus:border-gray-800'}`} />
-                      <select value={widthFraction} onChange={e => setWidthFraction(e.target.value)} className="w-16 px-1 py-2.5 border border-gray-300 rounded text-sm text-center">
+                        className={`flex-1 min-w-0 px-3 py-2.5 rounded text-sm bg-[#262b33] text-white placeholder-gray-500 border focus:outline-none ${widthError ? 'border-red-400' : 'border-white/15 focus:border-white/40'}`} />
+                      <select value={widthFraction} onChange={e => setWidthFraction(e.target.value)} className="w-16 px-1 py-2.5 rounded text-sm text-center bg-[#262b33] border border-white/15 text-white focus:outline-none">
                         {fractions.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
                       </select>
                     </div>
-                    {widthError && <p className="text-red-500 text-xs mt-1">{widthError}</p>}
+                    {widthError && <p className="text-red-400 text-xs mt-1">{widthError}</p>}
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {LENGTH_PRESETS.map(n => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleWidthChange(String(n))}
+                          className={`rounded-full px-3 py-1 text-[11px] transition-colors ${
+                            width === n ? 'bg-white text-gray-900' : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                          }`}
+                        >
+                          {n}&Prime;
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  {options.length > 0 && (
+                  {/* Remaining options (rod profile, …) keep <select>s */}
+                  {selectOptions.length > 0 && (
                     <div className="grid grid-cols-2 gap-4">
-                      {options.map(opt => (
+                      {selectOptions.map(opt => (
                         <div key={opt.id}>
-                          <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">{opt.display_label || opt.label} *</label>
+                          <label className={darkLabel}>{opt.display_label || opt.label} *</label>
                           <select value={selectedOptions[opt.name] || ''} onChange={e => setSelectedOptions(prev => ({ ...prev, [opt.name]: e.target.value }))}
-                            className="w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:border-gray-800 focus:outline-none">
+                            className={darkSelect}>
                             {opt.values.map(v => <option key={v.value} value={v.value}>{v.label}</option>)}
                           </select>
                         </div>
@@ -141,13 +301,12 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                     </div>
                   )}
 
-
                   <div>
-                    <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">Qty *</label>
+                    <label className={darkLabel}>Qty *</label>
                     <select
                       value={quantity}
                       onChange={e => setQuantity(parseInt(e.target.value))}
-                      className="w-24 px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-gray-800"
+                      className="w-24 px-3 py-2.5 rounded text-sm bg-[#262b33] border border-white/15 text-white focus:outline-none focus:border-white/40"
                     >
                       {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
                         <option key={n} value={n}>{n}</option>
@@ -155,41 +314,32 @@ export default function HardwareProduct({ productId }: { productId: string }) {
                     </select>
                   </div>
 
+                  <p className="text-[11px] text-gray-400">Pairs with pinch pleat &amp; ripplefold drapery.</p>
+
                   {canSubmit() && (
-                    <div className="bg-gray-50 rounded px-4 py-3 space-y-1">
-                      <div className="flex justify-between text-sm"><span className="text-gray-500">Unit Price</span><span className="font-medium">${Math.round(unitPrice)}</span></div>
-                      <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-1 mt-1"><span>Total</span><span>${Math.round(unitPrice * quantity)}</span></div>
+                    <div className="rounded-lg bg-white/5 px-4 py-3 space-y-1">
+                      <div className="flex justify-between text-sm"><span className="text-gray-400">Unit Price</span><span className="font-medium">${Math.round(unitPrice)}</span></div>
+                      <div className="flex justify-between text-sm font-semibold border-t border-white/10 pt-1 mt-1"><span>Total</span><span>${Math.round(unitPrice * quantity)}</span></div>
                     </div>
                   )}
 
                   {outOfStock && (
-                    <p className="text-sm text-red-600">Out of stock</p>
+                    <p className="text-sm text-red-400">Out of stock</p>
                   )}
                   {lowStock && (
-                    <p className="text-xs text-red-600">Only {stockQty} left in stock</p>
+                    <p className="text-xs text-red-400">Only {stockQty} left in stock</p>
                   )}
 
                   <div className="pt-1">
                     <button disabled={!canSubmit() || unitPrice <= 0 || addedMsg || outOfStock}
-                      onClick={() => {
-                        const optionDetails = options.map(opt => {
-                          const selVal = selectedOptions[opt.name]
-                          const valObj = opt.values.find((v: any) => v.value === selVal)
-                          return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
-                        })
-                        addToCart({
-                          productId, productName, productType: 'hardware',
-                          mainImageUrl: mainImages[0]?.url || null,
-                          width: typeof width === 'number' ? width : undefined, widthFraction,
-                          options: optionDetails, quantity, unitPrice: Math.round(unitPrice),
-                        })
-                        setAddedMsg(true)
-                        setTimeout(() => setAddedMsg(false), 2000)
-                      }}
-                      className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit() && unitPrice > 0 && !outOfStock ? 'bg-[#3d3d3d] text-white hover:bg-gray-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>{addedMsg ? '✓ Added to Cart' : outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
-                    <CopyConfigLink productId={productId} config={{ width: typeof width === 'number' ? String(width) : '', widthFraction, quantity, options: selectedOptions }} />
+                      onClick={handleAddToCart}
+                      className={`w-full py-3 text-sm font-medium tracking-widest uppercase transition-colors ${addedMsg ? 'bg-green-600 text-white' : canSubmit() && unitPrice > 0 && !outOfStock ? 'bg-white text-gray-900 hover:bg-gray-200' : 'bg-white/10 text-gray-500 cursor-not-allowed'}`}>{addedMsg ? '✓ Added to Cart' : outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
+                    <TrustStrip />
                   </div>
                 </div>
+
+                {/* Light shell below the dark panel */}
+                <CopyConfigLink productId={productId} config={{ width: typeof width === 'number' ? String(width) : '', widthFraction, quantity, options: selectedOptions }} />
               </div>
             </div>
 
@@ -203,6 +353,14 @@ export default function HardwareProduct({ productId }: { productId: string }) {
               <ProductContent productId={productId} productType="hardware" />
             </div>
             <RelatedProducts currentId={productId} />
+
+            <StickyPriceBar
+              priceText={canSubmit() && unitPrice > 0 ? `$${Math.round(unitPrice * quantity)}` : ''}
+              placeholder={outOfStock ? 'Out of stock' : 'Enter width to see price'}
+              disabled={!canSubmit() || unitPrice <= 0 || outOfStock}
+              added={addedMsg}
+              onAdd={handleAddToCart}
+            />
           </>
         )}
       </div>

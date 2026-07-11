@@ -91,12 +91,19 @@ export default function SheerProduct({ productId }: { productId: string }) {
     const selectedFabricVal = (fabricColorOpt?.values as any[])?.find((v: any) => v.value === selectedFabricColor)
     const fabricPrice = selectedFabricVal?.params?.fabric_price ?? 0
 
-    const baseParams = {
-      ...params,
-      // engine 需要 sheer_unit_price，后台按颜色存的是 fabric_price
-      sheer_unit_price: params.sheer_unit_price ?? fabricPrice,
-      // labor_per_panel 直接来自 params（后台计算参数里配置）
-    }
+    // AAPP migration (P3): products with params.aapp_engine pass params through
+    // untouched — the calculate route's AAPP branch triggers on
+    // baseParams.aapp_engine regardless of productType, and the sheer price
+    // rides aapp_sheer_price_per_yard / per-color sheer_price_per_yard (in
+    // optionValues), NOT the legacy sheer_unit_price mapping below.
+    const baseParams = params.aapp_engine
+      ? params
+      : {
+          ...params,
+          // engine 需要 sheer_unit_price，后台按颜色存的是 fabric_price
+          sheer_unit_price: params.sheer_unit_price ?? fabricPrice,
+          // labor_per_panel 直接来自 params（后台计算参数里配置）
+        }
 
     setIsCalculating(true)
     setCalcError('')

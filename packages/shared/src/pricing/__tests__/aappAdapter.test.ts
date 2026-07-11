@@ -115,6 +115,61 @@ describe('aapp adapter', () => {
     expect(r.total).toBe(2491.65)
   })
 
+  it('S1 sheer_only: 100×96 split 2fold pinch, $20/yd 118" sheer = $306', () => {
+    // Hand-derived from spec §3.4 (same solver as D1, sheerLabor $26/panel-
+    // width, no lining):
+    //   panelW = 50, fw = 118 (step 0.25) → np 11 (spacing 50/12 ≈ 4.167,
+    //   PA = (118−50−13)/11 = 5.0), orientation railroaded (118 ≥ 110,
+    //   96 ≤ 102) → perSide = 50 + 11×6 + 13 = 129"
+    //   sheerYds  = ceilHalfYd(129/36 × 2 sides) = 7.5 → fabric 7.5×$20 = $150
+    //   laborWps  = ceil(129/50/0.5)×0.5×2 = 6 → labor 6×$26 = $156
+    //   total = $306
+    const r = calculateAapp({
+      width: 100, height: 96,
+      baseParams: { aapp_engine: 'drapery', aapp_composition: 'sheer_only' },
+      options: { style: '2fold_pinch', operation: 'split' },
+      optionParams: { sheer_price_per_yard: 20, sheer_width_in: 118 },
+    })
+    expect(r.total).toBe(306)
+    // Structural: sheer_only must produce ONLY sheer breakdown keys.
+    expect(r.breakdown.sheerYds).toBe(7.5)
+    expect(r.breakdown.sheerLaborWps).toBe(6)
+    expect(r.breakdown.sheerFabricAmt).toBe(150)
+    expect(r.breakdown.sheerLaborAmt).toBe(156)
+    expect(r.breakdown.sheerTotal).toBe(306)
+    expect(r.breakdown.mainTotal).toBeUndefined()
+    expect(r.breakdown.mainFabricAmt).toBeUndefined()
+    expect(r.breakdown.mainLiningAmt).toBeUndefined()
+  })
+
+  it('S1 via product-level defaults: aapp_sheer_price_per_yard/width in baseParams = $306', () => {
+    // Mirrors what the admin sheer editor writes (product-level defaults, no
+    // per-color option params) — must price identically to S1.
+    const r = calculateAapp({
+      width: 100, height: 96,
+      baseParams: {
+        aapp_engine: 'drapery',
+        aapp_composition: 'sheer_only',
+        aapp_sheer_price_per_yard: 20,
+        aapp_sheer_width_in: 118,
+      },
+      options: { style: '2fold_pinch', operation: 'split' },
+      optionParams: {},
+    })
+    expect(r.total).toBe(306)
+  })
+
+  it('fails closed: sheer_only without a sheer price throws', () => {
+    expect(() => calculateAapp({
+      width: 100, height: 96,
+      baseParams: { aapp_engine: 'drapery', aapp_composition: 'sheer_only' },
+      options: { style: '2fold_pinch', operation: 'split' },
+      // fabric_price_per_yard is the WRONG key for the sheer layer — the
+      // adapter must demand sheer_price_per_yard.
+      optionParams: { fabric_price_per_yard: 20 },
+    })).toThrow(/sheer_price_per_yard/)
+  })
+
   it('fails closed: drapery without a fabric price throws', () => {
     expect(() => calculateAapp({
       width: 100, height: 96,
