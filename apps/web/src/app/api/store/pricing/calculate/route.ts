@@ -3,6 +3,7 @@ import { query, queryOne } from '@/lib/db'
 import { UnifiedPricingEngine } from '@window-treatments/shared/pricing/engines'
 import { explainDrapery, explainSheer, explainShade } from '@window-treatments/shared/pricing/explainers'
 import { isAappConfigured, calculateAapp } from '@window-treatments/shared/pricing/aapp'
+import { applyHardwareProductSelection } from '@/lib/productPricing'
 
 type ProductType = 'drapery' | 'sheer' | 'shade'
 
@@ -147,13 +148,20 @@ export async function POST(request: Request) {
     // ── AAPP 对齐引擎（产品 params 含 aapp_engine 时启用，与内部软件报价 1:1）──
     // 选项值字符串即 AAPP key；数值参数（fabric_price_per_yard 等）走
     // resolvedOptionValues（未做 KEY_MAP 映射的原始 key）。见 docs/aapp-engine-wiring.md。
+    // options.hardware_product（= 五金商品 id）→ 服务端解析该商品的 hw_* 价格
+    // 参数并打开捆绑五金路径 — 与 lib/productPricing 的结算核价共用同一个 helper。
     if (isAappConfigured(mergedBaseParams)) {
+      const resolved = await applyHardwareProductSelection(
+        String(mergedBaseParams.aapp_engine),
+        options,
+        resolvedOptionValues,
+      )
       const aapp = calculateAapp({
         width: input.width,
         height: input.height,
         baseParams: mergedBaseParams,
-        options,
-        optionParams: resolvedOptionValues,
+        options: resolved.options,
+        optionParams: resolved.optionParams,
       })
       return NextResponse.json({ ok: true, result: aapp, explain: [] })
     }
@@ -176,7 +184,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, result, explain })
   } catch (e) {
     console.error('[pricing/calculate]', e)
-    return NextResponse.json({ ok: false, error: 'Could not calculate price. Please try again.' }, { status: 400 })
+    // Surface the engine's own error key (e.g. "no_spacing_solution",
+    // "aapp drapery: missing fabric_price_per_yard") so the admin preview and
+    // the configurator can show WHY a configuration is unpriceable.
+    const msg = e instanceof Error && e.message ? e.message : 'Could not calculate price. Please try again.'
+    return NextResponse.json({ ok: false, error: msg }, { status: 400 })
   }
 }
 

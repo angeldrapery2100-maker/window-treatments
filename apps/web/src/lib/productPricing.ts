@@ -156,10 +156,91 @@ function mergeSelectedOptionParams(cfgOptions: any[], sel: Record<string, string
   return optionParams
 }
 
+// ── Hardware-by-product-reference (drapery bundled rod/track) ────────────────
+// Convention: the drapery configurator stores the chosen add-on rod/track as
+// option `hardware_product` = <hardware product id> ('none' = declined). The
+// price comes from that hardware product's OWN configuration, evaluated by the
+// AAPP adapter's existing bundled-hardware path at rod length = drapery
+// finished width. This helper derives the hw_* pricing params from the
+// referenced product row. Priority:
+//   1. explicit aapp_hw_* / hw_* keys in its default_config.params
+//   2. legacy hardware model: first `rod` option value's fixed_price /
+//      price_per_foot + params.base_length → { hw_base_price,
+//      hw_add_per_foot, hw_min_width_in }
+// Finials are NOT auto-included (v1 keeps the add-on to the bare rod/track).
+// No cross-request caching — one queryOne per item, always-fresh admin edits.
+export async function resolveHardwareProductParams(hardwareProductId: string): Promise<Record<string, number> | null> {
+  if (!hardwareProductId) return null
+  const row = await queryOne<{ default_config: any }>(
+    'SELECT default_config FROM products WHERE id = $1',
+    [hardwareProductId]
+  ).catch(() => null)
+  if (!row) return null
+
+  const cfg = row.default_config || {}
+  const p = cfg.params || {}
+  const pos = (v: unknown): number | undefined => {
+    const n = Number(v)
+    return Number.isFinite(n) && n > 0 ? n : undefined
+  }
+
+  // 1) Explicit aapp_hw_* / hw_* params on the hardware product itself.
+  const direct: Record<string, number> = {}
+  const basePrice   = pos(p.aapp_hw_base_price)     ?? pos(p.hw_base_price)
+  const addPerFoot  = pos(p.aapp_hw_add_per_foot)   ?? pos(p.hw_add_per_foot)
+  const perFootOnly = pos(p.aapp_hw_price_per_foot) ?? pos(p.hw_price_per_foot)
+  const minWidthIn  = pos(p.aapp_hw_min_width_in)   ?? pos(p.hw_min_width_in)
+  if (basePrice != null)   direct.hw_base_price     = basePrice
+  if (addPerFoot != null)  direct.hw_add_per_foot   = addPerFoot
+  if (perFootOnly != null) direct.hw_price_per_foot = perFootOnly
+  if (minWidthIn != null)  direct.hw_min_width_in   = minWidthIn
+  if (direct.hw_base_price || direct.hw_add_per_foot || direct.hw_price_per_foot) return direct
+
+  // 2) Legacy hardware model (HardwareProduct.tsx): first rod value's
+  //    fixed_price / price_per_foot, free length params.base_length.
+  const rodOpt = (cfg.options || []).find((o: any) => o?.name === 'rod')
+  const rod = rodOpt?.values?.[0]
+  const legacy: Record<string, number> = {}
+  const fixed   = pos(rod?.params?.fixed_price)
+  const perFoot = pos(rod?.params?.price_per_foot)
+  const baseLen = pos(p.base_length)
+  if (fixed != null)   legacy.hw_base_price    = fixed
+  if (perFoot != null) legacy.hw_add_per_foot  = perFoot
+  if (baseLen != null) legacy.hw_min_width_in  = baseLen
+  if (legacy.hw_base_price || legacy.hw_add_per_foot) return legacy
+
+  return null
+}
+
+// Shared by BOTH pricing entry points (this module's runAappForItem and the
+// /api/store/pricing/calculate route) so the hardware_product resolution can
+// never drift between live quote and checkout re-verification.
+// For an aapp drapery item with options.hardware_product set (≠ 'none'),
+// resolves the referenced hardware product's hw_* params, merges them into
+// optionParams and flags options.hardware='yes' — the adapter's EXISTING
+// bundled-hardware path then prices it at lengthIn = finished width.
+// Throws (fail-closed) when the referenced product has no price model.
+export async function applyHardwareProductSelection(
+  engine: string,
+  options: Record<string, string>,
+  optionParams: Record<string, number>,
+): Promise<{ options: Record<string, string>; optionParams: Record<string, number> }> {
+  const hwId = options.hardware_product
+  if (engine !== 'drapery' || !hwId || hwId === 'none') return { options, optionParams }
+  const hw = await resolveHardwareProductParams(hwId)
+  if (!hw) {
+    throw new Error('hardware_product: referenced hardware product has no price model configured')
+  }
+  return {
+    options: { ...options, hardware: 'yes' },
+    optionParams: { ...optionParams, ...hw },
+  }
+}
+
 // Run the AAPP adapter for an item against a product's default_config.
 // Throws (fail-closed) on missing dimensions or unpriceable configurations —
 // exactly like the aapp branch of computeServerUnitPrice, which calls this.
-function runAappForItem(cfg: any, item: ServerPriceItem, sel: Record<string, string>): { result: ReturnType<typeof calculateAapp>; engine: string } {
+async function runAappForItem(cfg: any, item: ServerPriceItem, sel: Record<string, string>): Promise<{ result: ReturnType<typeof calculateAapp>; engine: string }> {
   const width = (Number(item.width) || 0) + parseFraction(item.widthFraction)
   const height = (Number(item.height) || 0) + parseFraction(item.heightFraction)
   if (width <= 0) throw new Error('Missing width for custom-priced item')
@@ -168,13 +249,14 @@ function runAappForItem(cfg: any, item: ServerPriceItem, sel: Record<string, str
   if (needsHeight && height <= 0) throw new Error('Missing height for custom-priced item')
 
   const optionParams = mergeSelectedOptionParams(cfg.options || [], sel)
+  const resolved = await applyHardwareProductSelection(engine, sel, optionParams)
 
   const result = calculateAapp({
     width,
     height,
     baseParams: cfg.params || {},
-    options: sel,
-    optionParams,
+    options: resolved.options,
+    optionParams: resolved.optionParams,
   })
   return { result, engine }
 }
@@ -199,7 +281,7 @@ export async function computeAappBreakdown(item: ServerPriceItem): Promise<{ tot
   if (!isAappConfigured(cfg.params)) return null
 
   const sel = normalizeSelections(item.options)
-  const { result, engine } = runAappForItem(cfg, item, sel)
+  const { result, engine } = await runAappForItem(cfg, item, sel)
   return { total: Math.round(Number(result.total)), breakdown: result.breakdown, engine }
 }
 
@@ -228,7 +310,7 @@ export async function computeServerUnitPrice(item: ServerPriceItem): Promise<{ u
   // same option→input mapping — so checkout re-verification always agrees
   // with what the product page displayed. See docs/aapp-engine-wiring.md.
   if (isAappConfigured(cfg.params)) {
-    const { result: aapp } = runAappForItem(cfg, item, sel)
+    const { result: aapp } = await runAappForItem(cfg, item, sel)
     const unitPrice = Math.round(Number(aapp.total))
     if (!Number.isFinite(unitPrice) || unitPrice <= 0) {
       throw new Error('Could not compute server price for custom item')

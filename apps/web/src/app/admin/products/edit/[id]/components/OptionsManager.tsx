@@ -52,7 +52,12 @@ const DEFAULT_OPTIONS: Record<string, ProductOption[]> = {
 
 const PARAM_FIELDS: Record<string, Record<string, { key: string; label: string }[]>> = {
   drapery: {
-    fabric_color: [{ key: 'fabric_price', label: '面料单价 ($/yard)' }],
+    fabric_color: [
+      { key: 'fabric_price', label: '面料单价 ($/yard)（旧模型）' },
+      // AAPP 引擎的每色覆盖值（未填则用商品参数的 aapp_fabric_price_per_yard / aapp_fabric_width_in）
+      { key: 'fabric_price_per_yard', label: 'AAPP 面料单价 ($/yd)' },
+      { key: 'fabric_width_in', label: 'AAPP 面料幅宽 (inch)' },
+    ],
     lining: [{ key: 'lining_price', label: '里衬单价 ($/yard)' }, { key: 'labor_price', label: '加工价 ($/panel)' }],
     operation: [{ key: 'stack_divisor', label: '堆叠除数' }],
   },

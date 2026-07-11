@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
 interface ProductParams {
   fabric_width?: number
@@ -14,6 +14,14 @@ interface ProductParams {
   labor_per_panel?: number
   hardware_unit_price?: number
   base_length?: number
+  // AAPP-parity engine (drapery)
+  aapp_engine?: string
+  aapp_fabric_price_per_yard?: number
+  aapp_fabric_width_in?: number
+  aapp_composition?: string
+  aapp_sheer_price_per_yard?: number
+  aapp_sheer_width_in?: number
+  aapp_hardware_products?: string[]
   [key: string]: any
 }
 
@@ -21,7 +29,128 @@ interface ParamsConfigProps {
   productType: 'drapery' | 'sheer' | 'shade' | 'hardware'
   productId: string
   onChange: (params: ProductParams) => void
+  /** Fired when this tab auto-syncs the product's default_config.options
+   *  (AAPP drapery mode manages the style / lining / operation options). */
+  onOptionsChange?: (options: any[]) => void
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AAPP drapery — managed option definitions (option VALUE strings are AAPP keys,
+// see docs/aapp-engine-wiring.md §3 and packages/shared/src/pricing/aapp/adapter.ts)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const AAPP_STYLE_ORDER = ['2fold_pinch', '3fold_pinch', 'cn_6cm', 'cn_7cm', 'us_60', 'us_80', 'us_100', 'us_120'] as const
+
+const AAPP_STYLE_LABELS: Record<string, string> = {
+  '2fold_pinch': '2-Fold Pinch Pleat',
+  '3fold_pinch': '3-Fold Pinch Pleat',
+  cn_6cm: 'Ripplefold 6cm (CN)',
+  cn_7cm: 'Ripplefold 7cm (CN)',
+  us_60: 'Ripplefold 60% (US)',
+  us_80: 'Ripplefold 80% (US)',
+  us_100: 'Ripplefold 100% (US)',
+  us_120: 'Ripplefold 120% (US)',
+}
+
+const AAPP_STYLE_ZH: Record<string, string> = {
+  '2fold_pinch': '两褶',
+  '3fold_pinch': '三褶',
+  cn_6cm: '蛇形帘 6cm (国标)',
+  cn_7cm: '蛇形帘 7cm (国标)',
+  us_60: '蛇形帘 60% (美标)',
+  us_80: '蛇形帘 80% (美标)',
+  us_100: '蛇形帘 100% (美标)',
+  us_120: '蛇形帘 120% (美标)',
+}
+
+const AAPP_LINING_ORDER = ['NO', 'LF', 'BO'] as const
+const AAPP_LINING_LABELS: Record<string, string> = {
+  NO: 'No Lining',
+  LF: 'Light Filtering Lining',
+  BO: 'Blackout Lining',
+}
+// Engine built-in tiers (packages/shared/src/pricing/aapp/constants.ts liningOptions)
+const AAPP_LINING_TIERS = [
+  { key: 'NO', zh: '无衬', fabric: 0, labor: 30 },
+  { key: 'LF', zh: '遮光衬', fabric: 6, labor: 36 },
+  { key: 'BO', zh: '全遮光衬', fabric: 8, labor: 38 },
+]
+
+const AAPP_OPERATION_ORDER = ['split', 'single_left', 'single_right'] as const
+const AAPP_OPERATION_LABELS: Record<string, string> = {
+  split: 'Split (Pair)',
+  single_left: 'Single Panel — Left',
+  single_right: 'Single Panel — Right',
+}
+const AAPP_OPERATION_ZH: Record<string, string> = {
+  split: '对开',
+  single_left: '单开（左）',
+  single_right: '单开（右）',
+}
+
+/** Upsert one managed option: keep option identity/labels/value params the
+ *  admin already set, only enforce the value SET and ordering. */
+function upsertManagedOption(options: any[], name: string, displayLabel: string, keys: string[], defaultLabels: Record<string, string>): any[] {
+  const idx = options.findIndex((o: any) => o?.name === name)
+  const prev = idx >= 0 ? options[idx] : null
+  const prevValues: any[] = Array.isArray(prev?.values) ? prev.values : []
+  const values = keys.map((k, i) => {
+    const existing = prevValues.find((v: any) => v?.value === k)
+    return existing
+      ? { ...existing, sort_order: i }
+      : { id: `${name}_${k}`, value: k, label: defaultLabels[k] || k, params: {}, sort_order: i }
+  })
+  const next = prev
+    ? { ...prev, values }
+    : { id: name, name, type: 'select', display_label: displayLabel, values }
+  const out = [...options]
+  if (idx >= 0) out[idx] = next
+  else out.push(next)
+  return out
+}
+
+/** Full sync of the three engine-managed options for an AAPP drapery product. */
+function syncAappDraperyOptions(options: any[], styleKeys: string[]): any[] {
+  let out = upsertManagedOption(options, 'style', 'Style', styleKeys, AAPP_STYLE_LABELS)
+  out = upsertManagedOption(out, 'lining', 'Lining', [...AAPP_LINING_ORDER], AAPP_LINING_LABELS)
+  out = upsertManagedOption(out, 'operation', 'Operation', [...AAPP_OPERATION_ORDER], AAPP_OPERATION_LABELS)
+  return out
+}
+
+/** Style keys currently offered (from the draft options). null → option absent. */
+function readStyleKeys(options: any[] | null): string[] | null {
+  if (!options) return null
+  const opt = options.find((o: any) => o?.name === 'style')
+  if (!opt) return null
+  const vals: any[] = Array.isArray(opt.values) ? opt.values : []
+  return AAPP_STYLE_ORDER.filter(k => vals.some((v: any) => v?.value === k))
+}
+
+/** Flatten each option value's numeric params — mirrors useProductData.buildOptionValues. */
+function buildOptionValuesFromDraft(options: any[]): Record<string, Record<string, Record<string, number>>> {
+  const optionValues: Record<string, Record<string, Record<string, number>>> = {}
+  for (const opt of options || []) {
+    const valMap: Record<string, Record<string, number>> = {}
+    for (const v of opt?.values || []) {
+      const nums: Record<string, number> = {}
+      if (v?.params && typeof v.params === 'object') {
+        Object.entries(v.params).forEach(([k, val]) => {
+          if (typeof val === 'number') nums[k] = val
+        })
+      }
+      Object.entries(v || {}).forEach(([k, val]) => {
+        if (!['value', 'label', 'id', 'params', 'sort_order'].includes(k) && typeof val === 'number') {
+          nums[k] = val as number
+        }
+      })
+      valMap[v.value] = nums
+    }
+    if (Object.keys(valMap).length > 0) optionValues[opt.name] = valMap
+  }
+  return optionValues
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 function SaveStartingPriceButton({ productId, total }: { productId: string; total: number | null }) {
   const [saving, setSaving] = useState(false)
@@ -271,9 +400,310 @@ function HardwarePricingPreview({ params, productId }: {
   )
 }
 
-export default function ParamsConfig({ productType, productId, onChange }: ParamsConfigProps) {
+// ─────────────────────────────────────────────────────────────────────────────
+// AAPP drapery breakdown → bilingual rows (engine breakdown keys, spec §3)
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface AappRow { key: string; zh: string; en: string; value: string; money?: boolean; total?: boolean }
+
+const fmtNum = (v: any, dp = 3): string => {
+  const n = Number(v)
+  if (!Number.isFinite(n)) return String(v ?? '—')
+  return String(Math.round(n * 10 ** dp) / 10 ** dp)
+}
+const fmtMoney = (v: any): string => {
+  const n = Number(v)
+  return Number.isFinite(n) ? `$${n.toFixed(2)}` : '—'
+}
+
+function buildAappDraperyRows(bd: Record<string, any>, total: number): AappRow[] {
+  const rows: AappRow[] = []
+  const push = (key: string, zh: string, en: string, value: string, money = false) => {
+    rows.push({ key, zh, en, value, money })
+  }
+  const has = (k: string) => bd[k] !== undefined && bd[k] !== '' && bd[k] !== null
+
+  if (has('finishedWidthIn')) push('finishedWidthIn', '成品宽', 'Finished Width', `${fmtNum(bd.finishedWidthIn)}"`)
+  if (has('finishedHeightIn')) push('finishedHeightIn', '成品高', 'Finished Height', `${fmtNum(bd.finishedHeightIn)}"`)
+  if (has('operation')) {
+    const op = String(bd.operation)
+    push('operation', `开合方式 · ${AAPP_OPERATION_ZH[op] || op}`, 'Operation', AAPP_OPERATION_LABELS[op] || op)
+  }
+  if (has('styleKey')) {
+    const sk = String(bd.styleKey)
+    push('styleKey', `款式 · ${AAPP_STYLE_ZH[sk] || sk}`, 'Style', AAPP_STYLE_LABELS[sk] || sk)
+  }
+
+  // ── Main fabric layer ──
+  if (has('mainOrientation')) push('mainOrientation', '主布做法', 'Face Orientation', bd.mainOrientation === 'railroaded' ? '横做 railroaded' : '竖拼 vertical')
+  if (has('mainNp')) push('mainNp', bd.styleFamily === 'ripple' ? '载具数 N' : '褶数 np', bd.styleFamily === 'ripple' ? 'Carrier Count' : 'Pleats per Panel', fmtNum(bd.mainNp))
+  // Derived pleat spacing (engine breakdown carries np; spacing = panelW/(np+1))
+  if (bd.styleFamily === 'pleated' && has('mainNp') && has('finishedWidthIn')) {
+    const panelW = String(bd.operation) === 'split' ? Number(bd.finishedWidthIn) / 2 : Number(bd.finishedWidthIn)
+    const spacing = panelW / (Number(bd.mainNp) + 1)
+    if (Number.isFinite(spacing)) push('spacing', '褶距 spacing', 'Pleat Spacing', `${fmtNum(spacing)}"`)
+  }
+  if (has('mainWps')) push('mainWps', '幅数 wps（每片）', 'Widths per Side', fmtNum(bd.mainWps))
+  if (has('mainCutDrop')) push('mainCutDrop', '裁剪长 cutDrop', 'Cut Drop', `${fmtNum(bd.mainCutDrop)}"`)
+  if (has('mainPerSide')) push('mainPerSide', '每片用布宽', 'Per-Side Fabric Width', `${fmtNum(bd.mainPerSide)}"`)
+  if (has('mainFaceYds')) push('mainFaceYds', '面料用料 faceYds', 'Face Fabric Yardage', `${fmtNum(bd.mainFaceYds)} yd`)
+  if (has('mainFabricAmt')) push('mainFabricAmt', '面料金额', 'Fabric Cost', fmtMoney(bd.mainFabricAmt), true)
+  if (has('mainLiningType') && bd.mainLiningType !== 'NO') {
+    push('mainLiningType', '衬布类型', 'Lining Type', String(bd.mainLiningType))
+    if (has('mainLiningWps')) push('mainLiningWps', '衬布幅数', 'Lining Widths', fmtNum(bd.mainLiningWps))
+    if (has('mainLiningYds')) push('mainLiningYds', '衬布用料 liningYds', 'Lining Yardage', `${fmtNum(bd.mainLiningYds)} yd`)
+    if (has('mainLiningAmt')) push('mainLiningAmt', '衬布金额', 'Lining Cost', fmtMoney(bd.mainLiningAmt), true)
+  }
+  if (has('mainLaborWps')) push('mainLaborWps', '手工计费幅数 laborWps', 'Labor Widths', fmtNum(bd.mainLaborWps))
+  if (has('mainLaborAmt')) push('mainLaborAmt', '手工费', 'Labor Cost', fmtMoney(bd.mainLaborAmt), true)
+  if (has('mainTotal')) push('mainTotal', '主布层小计', 'Main Layer Subtotal', fmtMoney(bd.mainTotal), true)
+
+  // ── Sheer layer ──
+  if (has('sheerOrientation')) push('sheerOrientation', '纱层做法', 'Sheer Orientation', bd.sheerOrientation === 'railroaded' ? '横做 railroaded' : '竖拼 vertical')
+  if (has('sheerPerSide')) push('sheerPerSide', '纱每片用布宽', 'Sheer Per-Side Width', `${fmtNum(bd.sheerPerSide)}"`)
+  if (has('sheerYds')) push('sheerYds', '纱用料', 'Sheer Yardage', `${fmtNum(bd.sheerYds)} yd`)
+  if (has('sheerFabricAmt')) push('sheerFabricAmt', '纱金额', 'Sheer Fabric Cost', fmtMoney(bd.sheerFabricAmt), true)
+  if (has('sheerLaborWps')) push('sheerLaborWps', '纱手工幅数', 'Sheer Labor Widths', fmtNum(bd.sheerLaborWps))
+  if (has('sheerLaborAmt')) push('sheerLaborAmt', '纱手工费', 'Sheer Labor Cost', fmtMoney(bd.sheerLaborAmt), true)
+  if (has('sheerTotal')) push('sheerTotal', '纱层小计', 'Sheer Subtotal', fmtMoney(bd.sheerTotal), true)
+
+  // ── Bundled hardware ──
+  if (has('hardwareBilledFeet')) push('hardwareBilledFeet', '五金计费英尺 billedFeet', 'Hardware Billed Feet', `${fmtNum(bd.hardwareBilledFeet)} ft`)
+  if (has('hardwareSubtotal')) push('hardwareSubtotal', '五金小计', 'Hardware Subtotal', fmtMoney(bd.hardwareSubtotal), true)
+
+  // ── Banding ──
+  if (has('bandingTotalCount')) push('bandingTotalCount', '镶边条数', 'Banding Pieces', fmtNum(bd.bandingTotalCount))
+  if (has('bandingYardage')) push('bandingYardage', '镶边用料', 'Banding Yardage', `${fmtNum(bd.bandingYardage)} yd`)
+  if (has('bandingFabricAmt')) push('bandingFabricAmt', '镶边面料金额', 'Banding Fabric Cost', fmtMoney(bd.bandingFabricAmt), true)
+  if (has('bandingLaborAmt')) push('bandingLaborAmt', '镶边手工费', 'Banding Labor Cost', fmtMoney(bd.bandingLaborAmt), true)
+  if (has('bandingTotal')) push('bandingTotal', '镶边小计', 'Banding Subtotal', fmtMoney(bd.bandingTotal), true)
+
+  if (has('subtotalRaw')) push('subtotalRaw', '小计（未取整）', 'Subtotal (raw)', fmtMoney(bd.subtotalRaw), true)
+  rows.push({ key: 'total', zh: '单价合计', en: 'Unit Price', value: `$${Math.round(total)}`, money: true, total: true })
+  return rows
+}
+
+// Friendlier wording for the common engine failures.
+function explainAappError(err: string): string {
+  if (/no_spacing_solution/.test(err)) return `${err} — 该宽度在当前款式的褶距区间 (4.0"–4.75") 内无解，请换款式或调整宽度`
+  if (/missing fabric_price_per_yard/.test(err)) return `${err} — 请填写「面料默认价」或在选项配置里给面料颜色设 fabric_price_per_yard`
+  if (/missing sheer_price_per_yard/.test(err)) return `${err} — 请填写「纱层单价」`
+  if (/hardware_product/.test(err)) return `${err} — 所选五金商品没有可用的价格模型（rod 基础价/每尺价）`
+  return err
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AAPP drapery preview — debounced auto-recalc against the REAL pricing route
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface HwProduct { id: string; name: string; main_image_url: string | null; is_active: boolean }
+
+function AappDraperyPreview({ productId, params, draftOptions, hwList }: {
+  productId: string
+  params: ProductParams
+  draftOptions: any[]
+  hwList: HwProduct[]
+}) {
+  const [width, setWidth] = useState('100')
+  const [height, setHeight] = useState('96')
+  const [sel, setSel] = useState<Record<string, string>>({})
+  const [result, setResult] = useState<{ total: number; breakdown: Record<string, any> } | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const reqSeq = useRef(0)
+
+  const styleKeys = readStyleKeys(draftOptions) ?? []
+  const selectedHwIds: string[] = Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
+  const hwChoices = selectedHwIds
+    .map(id => hwList.find(h => h.id === id))
+    .filter((h): h is HwProduct => !!h)
+
+  // Fabric option (per-color overrides): any option whose values carry
+  // fabric_price_per_yard, falling back to a plain 'fabric_color' option.
+  const fabricOpt = useMemo(() => {
+    const managed = new Set(['style', 'lining', 'operation'])
+    return (draftOptions || []).find((o: any) =>
+      !managed.has(o?.name) &&
+      Array.isArray(o?.values) && o.values.length > 0 &&
+      (o.values.some((v: any) => typeof v?.params?.fabric_price_per_yard === 'number') || o?.name === 'fabric_color')
+    ) || null
+  }, [draftOptions])
+
+  // Keep selections valid as offerings change.
+  useEffect(() => {
+    setSel(prev => {
+      const next = { ...prev }
+      if (!next.style || !styleKeys.includes(next.style)) next.style = styleKeys[0] || ''
+      if (!next.lining || !AAPP_LINING_ORDER.includes(next.lining as any)) next.lining = 'NO'
+      if (!next.operation || !AAPP_OPERATION_ORDER.includes(next.operation as any)) next.operation = 'split'
+      if (next.hardware_product && next.hardware_product !== 'none' && !selectedHwIds.includes(next.hardware_product)) {
+        next.hardware_product = 'none'
+      }
+      if (!next.hardware_product) next.hardware_product = 'none'
+      if (fabricOpt) {
+        const vals = fabricOpt.values.map((v: any) => v.value)
+        if (next.__fabric && !vals.includes(next.__fabric)) delete next.__fabric
+      } else if (next.__fabric) {
+        delete next.__fabric
+      }
+      return JSON.stringify(next) === JSON.stringify(prev) ? prev : next
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(styleKeys), JSON.stringify(selectedHwIds), fabricOpt])
+
+  const calculate = useCallback(async () => {
+    const w = parseFloat(width)
+    const h = parseFloat(height)
+    if (!w || !h || w < 12 || h < 12) return
+    const seq = ++reqSeq.current
+    setLoading(true)
+    try {
+      const options: Record<string, string> = {}
+      if (sel.style) options.style = sel.style
+      if (sel.lining) options.lining = sel.lining
+      if (sel.operation) options.operation = sel.operation
+      if (fabricOpt && sel.__fabric) options[fabricOpt.name] = sel.__fabric
+      if (sel.hardware_product && sel.hardware_product !== 'none') options.hardware_product = sel.hardware_product
+
+      const res = await fetch('/api/store/pricing/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productType: 'drapery',
+          input: { width: w, height: h },
+          baseParams: { ...params },
+          options,
+          optionValues: buildOptionValuesFromDraft(draftOptions),
+        })
+      })
+      const data = await res.json()
+      if (seq !== reqSeq.current) return // stale response
+      if (data.ok && data.result) { setResult(data.result); setError('') }
+      else { setResult(null); setError(explainAappError(data.error || 'Calculation failed')) }
+    } catch (e: any) {
+      if (seq !== reqSeq.current) return
+      setResult(null); setError(e.message)
+    } finally {
+      if (seq === reqSeq.current) setLoading(false)
+    }
+  }, [width, height, sel, params, draftOptions, fabricOpt])
+
+  // Debounced AUTO-recalc on ANY field change (params draft, offerings,
+  // preview selections, dimensions) — the "preview doesn't update" fix.
+  useEffect(() => {
+    const t = setTimeout(calculate, 400)
+    return () => clearTimeout(t)
+  }, [calculate])
+
+  const rows = result ? buildAappDraperyRows(result.breakdown || {}, result.total) : []
+  const selCls = 'w-full px-2 py-1.5 border border-gray-300 rounded text-sm bg-white'
+
+  return (
+    <div className="mt-8 border-t border-gray-200 pt-6">
+      <div className="flex items-center justify-between mb-4">
+        <h4 className="text-sm font-semibold text-gray-900">计算过程预览 <span className="font-normal text-gray-400">/ AAPP Engine Preview</span></h4>
+        <span className="text-xs text-gray-400">任何参数修改后 0.4 秒自动重算</span>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">成品宽 Width (inch)</label>
+          <input type="number" value={width} onChange={e => setWidth(e.target.value)}
+            className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm text-center" />
+        </div>
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">成品高 Height (inch)</label>
+          <input type="number" value={height} onChange={e => setHeight(e.target.value)}
+            className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm text-center" />
+        </div>
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">款式 Style</label>
+          <select value={sel.style || ''} onChange={e => setSel(p => ({ ...p, style: e.target.value }))} className={selCls}>
+            {styleKeys.length === 0 && <option value="">（未勾选款式）</option>}
+            {styleKeys.map(k => <option key={k} value={k}>{AAPP_STYLE_LABELS[k] || k}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">衬布 Lining</label>
+          <select value={sel.lining || 'NO'} onChange={e => setSel(p => ({ ...p, lining: e.target.value }))} className={selCls}>
+            {AAPP_LINING_ORDER.map(k => <option key={k} value={k}>{k} · {AAPP_LINING_LABELS[k]}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">开合 Operation</label>
+          <select value={sel.operation || 'split'} onChange={e => setSel(p => ({ ...p, operation: e.target.value }))} className={selCls}>
+            {AAPP_OPERATION_ORDER.map(k => <option key={k} value={k}>{AAPP_OPERATION_ZH[k]} · {AAPP_OPERATION_LABELS[k]}</option>)}
+          </select>
+        </div>
+        {fabricOpt && (
+          <div>
+            <label className="block text-[11px] text-gray-500 mb-1">面料 {fabricOpt.display_label || 'Fabric'}</label>
+            <select value={sel.__fabric || ''} onChange={e => setSel(p => ({ ...p, __fabric: e.target.value }))} className={selCls}>
+              <option value="">默认价 (Default)</option>
+              {fabricOpt.values.map((v: any) => <option key={v.value} value={v.value}>{v.label || v.value}</option>)}
+            </select>
+          </div>
+        )}
+        <div>
+          <label className="block text-[11px] text-gray-500 mb-1">配套五金 Rod/Track</label>
+          <select value={sel.hardware_product || 'none'} onChange={e => setSel(p => ({ ...p, hardware_product: e.target.value }))} className={selCls}>
+            <option value="none">不配 (None)</option>
+            {hwChoices.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
+          </select>
+        </div>
+        <div className="flex items-end gap-2">
+          <button onClick={calculate} disabled={loading}
+            className="px-3 py-1.5 text-xs bg-[#3d3d3d] text-white rounded hover:bg-gray-700 disabled:opacity-50">
+            {loading ? '计算中…' : '计算'}
+          </button>
+          <SaveStartingPriceButton productId={productId} total={result?.total ?? null} />
+        </div>
+      </div>
+
+      {error && (
+        <div className="text-xs text-red-600 mb-3 px-3 py-2 bg-red-50 border border-red-200 rounded">
+          ⚠️ 引擎报错 / Engine error: {error}
+        </div>
+      )}
+
+      {rows.length > 0 && (
+        <div className="rounded-lg border border-gray-200 overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="px-4 py-2.5 text-left text-xs font-medium text-gray-500 w-1/2">项目</th>
+                <th className="px-4 py-2.5 text-right text-xs font-medium text-gray-500">数值</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {rows.map(row => (
+                <tr key={row.key} className={row.total ? 'bg-[#3d3d3d] text-white' : 'hover:bg-gray-50'}>
+                  <td className={`px-4 py-2.5 text-xs ${row.total ? 'text-gray-200 font-medium' : 'text-gray-600'}`}>
+                    <span className="block">{row.zh}</span>
+                    <span className="text-[11px] text-gray-400">{row.en}</span>
+                  </td>
+                  <td className={`px-4 py-2.5 text-right font-mono text-xs font-medium ${row.total ? 'text-white text-base' : row.money ? 'text-gray-900' : 'text-gray-700'}`}>
+                    {row.value}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+export default function ParamsConfig({ productType, productId, onChange, onOptionsChange }: ParamsConfigProps) {
   const [params, setParams] = useState<ProductParams>({})
   const [loading, setLoading] = useState(true)
+  // Drapery AAPP mode: draft copy of default_config.options (style/lining/
+  // operation are auto-managed here and reported up via onOptionsChange).
+  const [draftOptions, setDraftOptions] = useState<any[] | null>(null)
+  const [hwList, setHwList] = useState<HwProduct[] | null>(null)
 
   useEffect(() => { fetchParams() }, [productId])
 
@@ -281,10 +711,35 @@ export default function ParamsConfig({ productType, productId, onChange }: Param
     try {
       const res = await fetch(`/api/admin/products/${productId}/params`)
       const data = await res.json()
-      if (data.success && data.data.params) setParams(data.data.params)
+      if (data.success && data.data.params) {
+        const p: ProductParams = { ...data.data.params }
+        // AAPP-parity engine is the DEFAULT for drapery. aapp_engine === ''
+        // is the explicit legacy opt-out (isAappConfigured treats '' as off).
+        if (productType === 'drapery' && p.aapp_engine === undefined) {
+          p.aapp_engine = 'drapery'
+        }
+        setParams(p)
+      } else if (productType === 'drapery') {
+        setParams({ aapp_engine: 'drapery' })
+      }
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
   }
+
+  // Drapery only: load options draft + hardware product list.
+  useEffect(() => {
+    if (productType !== 'drapery') return
+    fetch(`/api/admin/products/${productId}/options`)
+      .then(r => r.json())
+      .then(d => setDraftOptions(d.data?.options || []))
+      .catch(() => setDraftOptions([]))
+    fetch('/api/admin/products?type=hardware&status=all&limit=200')
+      .then(r => r.json())
+      .then(d => setHwList((d.data?.products || []).map((p: any) => ({
+        id: p.id, name: p.name, main_image_url: p.main_image_url || null, is_active: !!p.is_active,
+      }))))
+      .catch(() => setHwList([]))
+  }, [productType, productId])
 
   const set = useCallback((key: keyof ProductParams, value: any) => {
     setParams(prev => {
@@ -294,59 +749,298 @@ export default function ParamsConfig({ productType, productId, onChange }: Param
     })
   }, [onChange])
 
+  const setMany = useCallback((patch: Record<string, any>, removals: string[] = []) => {
+    setParams(prev => {
+      const updated: ProductParams = { ...prev, ...patch }
+      removals.forEach(k => { delete updated[k] })
+      onChange(updated)
+      return updated
+    })
+  }, [onChange])
+
+  const aappOn = productType === 'drapery' && params.aapp_engine === 'drapery'
+
+  const applyOptionsSync = useCallback((base: any[], styleKeys: string[]) => {
+    const synced = syncAappDraperyOptions(base, styleKeys)
+    if (JSON.stringify(synced) !== JSON.stringify(base)) {
+      setDraftOptions(synced)
+      onOptionsChange?.(synced)
+      // Keep params and options consistent in the same save: the synced
+      // options only make sense with aapp_engine='drapery', so report the
+      // current params draft upward too (it carries the default-ON flag).
+      setParams(prev => { onChange(prev); return prev })
+    } else {
+      setDraftOptions(base)
+    }
+  }, [onOptionsChange, onChange])
+
+  // Reconcile once options are loaded (creates missing style/lining/operation
+  // options, repairs value sets) — marks the page dirty only when it actually
+  // changed something.
+  useEffect(() => {
+    if (!aappOn || !draftOptions) return
+    const styles = readStyleKeys(draftOptions) ?? ['2fold_pinch', '3fold_pinch']
+    applyOptionsSync(draftOptions, styles)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aappOn, draftOptions === null])
+
+  const toggleStyle = (key: string) => {
+    if (!draftOptions) return
+    const current = new Set(readStyleKeys(draftOptions) ?? [])
+    if (current.has(key)) current.delete(key)
+    else current.add(key)
+    const ordered = AAPP_STYLE_ORDER.filter(k => current.has(k))
+    applyOptionsSync(draftOptions, ordered)
+  }
+
+  const toggleHardwareProduct = (id: string) => {
+    const cur: string[] = Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
+    const next = cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id]
+    set('aapp_hardware_products', next)
+  }
+
   if (loading) return <div className="text-center py-8 text-gray-500">加载中...</div>
 
   const inputCls = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
   const labelCls = "block text-sm font-medium text-gray-700 mb-2"
   const hintCls = "text-xs text-gray-500 mt-1"
 
+  const checkedStyles = new Set(readStyleKeys(draftOptions) ?? [])
+  const sheerOn = params.aapp_composition === 'fabric_plus_sheer'
+  const selectedHwIds: string[] = Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
+
   return (
     <div className="space-y-6">
       {productType === 'drapery' && (
         <>
-          <div className="grid grid-cols-2 gap-6">
+          {/* ── AAPP engine switch ── */}
+          <div className={`flex items-start justify-between rounded-lg border p-4 ${aappOn ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 bg-gray-50'}`}>
             <div>
-              <label className={labelCls}>面料幅宽 (Fabric Width)</label>
-              <input type="number" step="0.1" value={params.fabric_width ?? ''} onChange={e => set('fabric_width', parseFloat(e.target.value))} className={inputCls} placeholder="如 55" />
-              <p className={hintCls}>单位：英寸，默认 55</p>
+              <p className="text-sm font-semibold text-gray-900">AAPP 对齐引擎 <span className="font-normal text-gray-500">/ AAPP-Parity Pricing Engine</span></p>
+              <p className="text-xs text-gray-500 mt-1 max-w-xl">
+                启用后与内部 AAPP 软件 1:1 同一套打褶求解器定价（spacing-first 褶距算法 + 幅数/衬布/手工规则），
+                不再使用旧的「宽度倍率 × 3」模型。关闭则保留旧模型（仅用于历史商品）。
+              </p>
             </div>
-            <div>
-              <label className={labelCls}>宽度倍率 (Width Multiplier)</label>
-              <input type="number" step="0.1" value={params.width_multiplier ?? ''} onChange={e => set('width_multiplier', parseFloat(e.target.value))} className={inputCls} placeholder="如 3" />
-              <p className={hintCls}>用于计算 Panel Count，默认 3</p>
-            </div>
-            <div>
-              <label className={labelCls}>高度余量 (Height Allowance)</label>
-              <input type="number" step="1" value={params.height_allowance ?? ''} onChange={e => set('height_allowance', parseFloat(e.target.value))} className={inputCls} placeholder="如 16" />
-              <p className={hintCls}>单位：英寸，默认 16</p>
-            </div>
-            <div>
-              <label className={labelCls}>最大高度 (Max Height)</label>
-              <input type="number" step="1" value={params.max_height ?? ''} onChange={e => set('max_height', parseFloat(e.target.value))} className={inputCls} placeholder="如 240" />
-              <p className={hintCls}>单位：英寸，默认 240</p>
-            </div>
+            <label className="flex items-center gap-2 cursor-pointer select-none shrink-0 ml-4">
+              <input
+                type="checkbox"
+                checked={aappOn}
+                onChange={e => {
+                  if (e.target.checked) set('aapp_engine', 'drapery')
+                  else set('aapp_engine', '')  // '' = explicit legacy opt-out
+                }}
+                className="h-4 w-4 accent-emerald-600"
+              />
+              <span className={`text-sm font-medium ${aappOn ? 'text-emerald-700' : 'text-gray-500'}`}>{aappOn ? 'ON' : 'OFF'}</span>
+            </label>
           </div>
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-sm font-semibold text-gray-900 mb-4">高度倍率参数</h4>
-            <div className="grid grid-cols-3 gap-6">
-              <div>
-                <label className={labelCls}>触发高度 (Height Trigger)</label>
-                <input type="number" step="1" value={params.height_trigger ?? ''} onChange={e => set('height_trigger', parseFloat(e.target.value))} className={inputCls} placeholder="如 120" />
-                <p className={hintCls}>高度 ≥ 此值时应用倍率</p>
+
+          {aappOn ? (
+            <>
+              {/* ── Main fabric defaults ── */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className={labelCls}>面料默认价 / Fabric Price ($/yd)</label>
+                  <input type="number" step="0.01" value={params.aapp_fabric_price_per_yard ?? ''}
+                    onChange={e => set('aapp_fabric_price_per_yard', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                    className={inputCls} placeholder="如 30" />
+                  <p className={hintCls}>每码单价。各颜色可在「选项配置」的面料选项值上用 fabric_price_per_yard 单独覆盖。</p>
+                </div>
+                <div>
+                  <label className={labelCls}>面料幅宽 / Fabric Width (inch)</label>
+                  <input type="number" step="0.1" value={params.aapp_fabric_width_in ?? ''}
+                    onChange={e => set('aapp_fabric_width_in', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                    className={inputCls} placeholder="默认 55" />
+                  <p className={hintCls}>默认 55"。≥110" 自动判横做（railroaded）。各颜色可用 fabric_width_in 覆盖。</p>
+                </div>
               </div>
-              <div>
-                <label className={labelCls}>基础倍率 (Base Multiplier)</label>
-                <input type="number" step="0.1" value={params.base_multiplier ?? ''} onChange={e => set('base_multiplier', parseFloat(e.target.value))} className={inputCls} placeholder="如 1.5" />
-                <p className={hintCls}>默认 1.5</p>
+
+              {/* ── Sheer layer ── */}
+              <div className="border border-gray-200 rounded-lg p-4">
+                <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={sheerOn}
+                    onChange={e => {
+                      if (e.target.checked) set('aapp_composition', 'fabric_plus_sheer')
+                      else setMany({}, ['aapp_composition', 'aapp_sheer_price_per_yard', 'aapp_sheer_width_in'])
+                    }}
+                    className="h-4 w-4 accent-gray-800"
+                  />
+                  <span className="text-sm font-medium text-gray-800">纱层 / Sheer Layer（主布 + 纱双层）</span>
+                </label>
+                <p className="text-xs text-gray-400 mt-1 ml-6">启用后此商品所有报价均含纱层（composition = fabric_plus_sheer）。如需让客户自选，请在选项配置中手动添加 composition 选项。</p>
+                {sheerOn && (
+                  <div className="grid grid-cols-2 gap-6 mt-4">
+                    <div>
+                      <label className={labelCls}>纱层单价 / Sheer Price ($/yd)</label>
+                      <input type="number" step="0.01" value={params.aapp_sheer_price_per_yard ?? ''}
+                        onChange={e => set('aapp_sheer_price_per_yard', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                        className={inputCls} placeholder="如 18" />
+                    </div>
+                    <div>
+                      <label className={labelCls}>纱层幅宽 / Sheer Width (inch)</label>
+                      <input type="number" step="0.1" value={params.aapp_sheer_width_in ?? ''}
+                        onChange={e => set('aapp_sheer_width_in', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                        className={inputCls} placeholder="默认 55" />
+                    </div>
+                  </div>
+                )}
               </div>
-              <div>
-                <label className={labelCls}>每 12 英寸增量</label>
-                <input type="number" step="0.1" value={params.increment_per_12 ?? ''} onChange={e => set('increment_per_12', parseFloat(e.target.value))} className={inputCls} placeholder="如 0.1" />
-                <p className={hintCls}>超出部分每 12" 增加的倍率</p>
+
+              {/* ── Style offering (auto-syncs the 'style' option) ── */}
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-gray-900">款式提供 / Styles Offered</h4>
+                <p className="text-xs text-gray-400 mt-1 mb-3">勾选即自动同步商品的 style 选项（客户前台可选）。已有的自定义 label 会保留。</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {AAPP_STYLE_ORDER.map(k => (
+                    <label key={k} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedStyles.has(k) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
+                      <input type="checkbox" checked={checkedStyles.has(k)} onChange={() => toggleStyle(k)} className="h-3.5 w-3.5 accent-gray-800" />
+                      <span>
+                        <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
+                        <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                {checkedStyles.size === 0 && (
+                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
+                )}
               </div>
-            </div>
-          </div>
-          <PricingPreview productType={productType} params={params} productId={productId} />
+
+              {/* ── Lining (engine built-in tiers, auto-synced option) ── */}
+              <div className="grid grid-cols-2 gap-6">
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-gray-900">衬布 / Lining（引擎内置价，自动同步 lining 选项）</h4>
+                  <table className="w-full text-xs mt-3">
+                    <thead>
+                      <tr className="text-gray-400 border-b border-gray-100">
+                        <th className="text-left py-1 font-medium">档位</th>
+                        <th className="text-right py-1 font-medium">衬布 $/yd</th>
+                        <th className="text-right py-1 font-medium">手工 $/幅</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {AAPP_LINING_TIERS.map(t => (
+                        <tr key={t.key} className="border-b border-gray-50">
+                          <td className="py-1.5 text-gray-700">{t.key} · {t.zh} <span className="text-gray-400">{AAPP_LINING_LABELS[t.key]}</span></td>
+                          <td className="py-1.5 text-right font-mono">${t.fabric}</td>
+                          <td className="py-1.5 text-right font-mono">${t.labor}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="text-[11px] text-gray-400 mt-2">与 AAPP 内部软件一致，不可在此修改（改价需同步内部软件与引擎）。</p>
+                </div>
+
+                {/* ── Operation (auto-synced option) ── */}
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-gray-900">对开 / 单开（自动同步 operation 选项）</h4>
+                  <ul className="text-xs text-gray-600 mt-3 space-y-1.5">
+                    {AAPP_OPERATION_ORDER.map(k => (
+                      <li key={k} className="flex items-center gap-2">
+                        <span className={`inline-block w-1.5 h-1.5 rounded-full ${k === 'split' ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+                        <span className="font-mono text-[11px] text-gray-400 w-24">{k}</span>
+                        <span>{AAPP_OPERATION_ZH[k]} · {AAPP_OPERATION_LABELS[k]}</span>
+                        {k === 'split' && <span className="text-[10px] text-emerald-600">默认</span>}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-[11px] text-gray-400 mt-3">对开 = 2 片（每片宽 = 成品宽 ÷ 2），单开 = 1 整片。片数直接进入褶距求解器。</p>
+                </div>
+              </div>
+
+              {/* ── Matching hardware (real store products) ── */}
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-gray-900">配套五金 / Matching Rod-Track Add-on</h4>
+                <p className="text-xs text-gray-400 mt-1 mb-3">
+                  从商店的真实五金商品中多选。前台按所选商品显示卡片；价格取自该五金商品自己的配置，
+                  杆长自动 = 窗帘成品宽。
+                </p>
+                {hwList === null ? (
+                  <p className="text-xs text-gray-400">加载五金商品…</p>
+                ) : hwList.length === 0 ? (
+                  <p className="text-xs text-gray-400">商店暂无 Hardware 类商品 — 先到产品管理里创建窗帘杆商品。</p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {hwList.map(h => {
+                      const on = selectedHwIds.includes(h.id)
+                      return (
+                        <label key={h.id} className={`flex items-center gap-2.5 border rounded-lg p-2 cursor-pointer select-none ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
+                          <input type="checkbox" checked={on} onChange={() => toggleHardwareProduct(h.id)} className="h-3.5 w-3.5 accent-gray-800 shrink-0" />
+                          {h.main_image_url
+                            ? <img src={h.main_image_url} alt="" className="w-10 h-10 object-cover rounded shrink-0" />
+                            : <div className="w-10 h-10 bg-gray-100 rounded shrink-0 flex items-center justify-center text-gray-300 text-lg">▭</div>}
+                          <span className="min-w-0">
+                            <span className="block text-xs text-gray-800 truncate">{h.name}</span>
+                            <span className={`block text-[10px] ${h.is_active ? 'text-emerald-600' : 'text-red-400'}`}>{h.is_active ? '上架中 Active' : '已下架 Inactive'}</span>
+                          </span>
+                        </label>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Live engine preview ── */}
+              {draftOptions && (
+                <AappDraperyPreview
+                  productId={productId}
+                  params={params}
+                  draftOptions={draftOptions}
+                  hwList={hwList || []}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {/* ── Legacy width-multiplier model (old products only) ── */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className={labelCls}>面料幅宽 (Fabric Width)</label>
+                  <input type="number" step="0.1" value={params.fabric_width ?? ''} onChange={e => set('fabric_width', parseFloat(e.target.value))} className={inputCls} placeholder="如 55" />
+                  <p className={hintCls}>单位：英寸，默认 55</p>
+                </div>
+                <div>
+                  <label className={labelCls}>宽度倍率 (Width Multiplier)</label>
+                  <input type="number" step="0.1" value={params.width_multiplier ?? ''} onChange={e => set('width_multiplier', parseFloat(e.target.value))} className={inputCls} placeholder="如 3" />
+                  <p className={hintCls}>用于计算 Panel Count，默认 3</p>
+                </div>
+                <div>
+                  <label className={labelCls}>高度余量 (Height Allowance)</label>
+                  <input type="number" step="1" value={params.height_allowance ?? ''} onChange={e => set('height_allowance', parseFloat(e.target.value))} className={inputCls} placeholder="如 16" />
+                  <p className={hintCls}>单位：英寸，默认 16</p>
+                </div>
+                <div>
+                  <label className={labelCls}>最大高度 (Max Height)</label>
+                  <input type="number" step="1" value={params.max_height ?? ''} onChange={e => set('max_height', parseFloat(e.target.value))} className={inputCls} placeholder="如 240" />
+                  <p className={hintCls}>单位：英寸，默认 240</p>
+                </div>
+              </div>
+              <div className="border-t border-gray-200 pt-6">
+                <h4 className="text-sm font-semibold text-gray-900 mb-4">高度倍率参数</h4>
+                <div className="grid grid-cols-3 gap-6">
+                  <div>
+                    <label className={labelCls}>触发高度 (Height Trigger)</label>
+                    <input type="number" step="1" value={params.height_trigger ?? ''} onChange={e => set('height_trigger', parseFloat(e.target.value))} className={inputCls} placeholder="如 120" />
+                    <p className={hintCls}>高度 ≥ 此值时应用倍率</p>
+                  </div>
+                  <div>
+                    <label className={labelCls}>基础倍率 (Base Multiplier)</label>
+                    <input type="number" step="0.1" value={params.base_multiplier ?? ''} onChange={e => set('base_multiplier', parseFloat(e.target.value))} className={inputCls} placeholder="如 1.5" />
+                    <p className={hintCls}>默认 1.5</p>
+                  </div>
+                  <div>
+                    <label className={labelCls}>每 12 英寸增量</label>
+                    <input type="number" step="0.1" value={params.increment_per_12 ?? ''} onChange={e => set('increment_per_12', parseFloat(e.target.value))} className={inputCls} placeholder="如 0.1" />
+                    <p className={hintCls}>超出部分每 12" 增加的倍率</p>
+                  </div>
+                </div>
+              </div>
+              <PricingPreview productType={productType} params={params} productId={productId} />
+            </>
+          )}
         </>
       )}
 

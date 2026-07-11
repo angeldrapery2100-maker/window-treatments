@@ -39,14 +39,47 @@ export default function DraperyProduct({ productId }: { productId: string }) {
     { value: '1/2', label: '1/2' }, { value: '3/4', label: '3/4' },
   ]
 
-  // Bundled rod/track add-on: hardware-related options are configured by the
-  // admin (option name starting with 'hardware_', or 'finial') and rendered in
-  // their own opt-in section instead of the main grid. If the product has no
-  // such options, the whole section is hidden.
+  // Bundled rod/track add-on — two sourcing models:
+  //   1. NEW (params.aapp_hardware_products non-empty): the admin picked REAL
+  //      store hardware products; we fetch their public data and render a card
+  //      picker. Selection is stored as selectedOptions.hardware_product =
+  //      <hardware product id> ('none' = declined); the server resolves that
+  //      product's price model at rod length = drapery finished width.
+  //   2. LEGACY (hardware_* / finial admin options exist): old dropdown UI,
+  //      unchanged, for products configured before the product-reference model.
   const isHardwareOpt = (name: string) => name.startsWith('hardware_') || name === 'finial'
   const hardwareOptions = options.filter(opt => isHardwareOpt(opt.name))
   const mainOptions = options.filter(opt => !isHardwareOpt(opt.name))
-  const hardwareOn = selectedOptions.hardware === 'yes'
+
+  const aappHwIds: string[] = Array.isArray(params?.aapp_hardware_products)
+    ? params.aapp_hardware_products.filter((x: any) => typeof x === 'string' && x)
+    : []
+  const useHwProductRef = aappHwIds.length > 0
+  const [hwProducts, setHwProducts] = useState<{ id: string; name: string; image: string | null }[]>([])
+
+  const selectedHwId = selectedOptions.hardware_product && selectedOptions.hardware_product !== 'none'
+    ? selectedOptions.hardware_product
+    : ''
+  const hardwareOn = useHwProductRef ? !!selectedHwId : selectedOptions.hardware === 'yes'
+
+  // Load the referenced hardware products' public data (name + image).
+  // Inactive products 404 on the public endpoint and simply don't render.
+  useEffect(() => {
+    if (!useHwProductRef) { setHwProducts([]); return }
+    let cancelled = false
+    Promise.all(aappHwIds.map(id =>
+      fetch(`/api/store/products/${id}`)
+        .then(r => r.json())
+        .then(d => (d.success && d.data?.product)
+          ? { id: d.data.product.id, name: d.data.product.name, image: d.data.images?.main?.[0]?.url || null }
+          : null)
+        .catch(() => null)
+    )).then(list => {
+      if (!cancelled) setHwProducts(list.filter((x): x is { id: string; name: string; image: string | null } => !!x))
+    })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useHwProductRef, JSON.stringify(aappHwIds)])
 
   // Restore dimensions/qty from a shared link (once, on mount).
   useEffect(() => {
@@ -70,9 +103,15 @@ export default function DraperyProduct({ productId }: { productId: string }) {
       // Rod/track add-on toggle (not an admin option value — client-driven).
       // Default OFF; restore from a shared link when valid.
       defaults.hardware = urlOpts.hardware === 'yes' ? 'yes' : 'none'
+      // Product-reference model: restore a valid hardware product id from a
+      // shared link, otherwise default declined.
+      defaults.hardware_product = urlOpts.hardware_product && aappHwIds.includes(urlOpts.hardware_product)
+        ? urlOpts.hardware_product
+        : 'none'
       setSelectedOptions(defaults)
     }
-  }, [options])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options, JSON.stringify(aappHwIds)])
 
   const handleWidthChange = (v: string) => {
     if (v !== '' && !/^\d+$/.test(v)) return
@@ -182,7 +221,46 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                     </div>
                   )}
 
-                  {hardwareOptions.length > 0 && (
+                  {useHwProductRef ? (
+                    <div className="border border-gray-200 rounded p-4">
+                      <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={hardwareOn}
+                          onChange={e => setSelectedOptions(prev => ({
+                            ...prev,
+                            hardware_product: e.target.checked ? (hwProducts[0]?.id || 'none') : 'none',
+                          }))}
+                          className="h-4 w-4 accent-gray-800"
+                        />
+                        <span className="text-sm font-medium text-gray-800">Add matching rod / track</span>
+                      </label>
+                      {hardwareOn && (
+                        <div className="grid grid-cols-2 gap-3 mt-3">
+                          {hwProducts.map(h => {
+                            const isSel = selectedHwId === h.id
+                            return (
+                              <button
+                                key={h.id}
+                                type="button"
+                                onClick={() => setSelectedOptions(prev => ({ ...prev, hardware_product: h.id }))}
+                                className={`flex items-center gap-3 border rounded p-2.5 text-left transition-colors ${isSel ? 'border-gray-800 bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+                              >
+                                {h.image
+                                  ? <img src={h.image} alt={h.name} className="w-14 h-14 object-cover rounded shrink-0" />
+                                  : <div className="w-14 h-14 bg-gray-100 rounded shrink-0" />}
+                                <span className="min-w-0">
+                                  <span className="block text-sm text-gray-800 truncate">{h.name}</span>
+                                  <span className="block text-[11px] text-gray-400 mt-0.5">Auto-matched to your drapery width</span>
+                                </span>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-400 mt-2">Rod/track length is automatically matched to your drapery width.</p>
+                    </div>
+                  ) : hardwareOptions.length > 0 && (
                     <div className="border border-gray-200 rounded p-4">
                       <label className="flex items-center gap-2.5 cursor-pointer select-none">
                         <input
@@ -248,13 +326,20 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                         // entirely (no hw params reach the server pricer).
                         // Accepted → keep them and add the explicit toggle
                         // marker the AAPP adapter looks for.
-                        const cartOptions = hardwareOn ? options : mainOptions
+                        // Product-reference model: main options only, plus a
+                        // hardware_product entry carrying the chosen hardware
+                        // product's id + human name (work orders show the name;
+                        // the 'hardware_' prefix keeps the PAIRED block working).
+                        const cartOptions = useHwProductRef ? mainOptions : (hardwareOn ? options : mainOptions)
                         const optionDetails = cartOptions.map(opt => {
                           const selVal = selectedOptions[opt.name]
                           const valObj = opt.values.find((v: any) => v.value === selVal)
                           return { name: opt.name, displayLabel: opt.display_label || opt.label, value: selVal || '', valueLabel: valObj?.label || selVal || '' }
                         })
-                        if (hardwareOn && hardwareOptions.length > 0) {
+                        if (useHwProductRef && hardwareOn && selectedHwId) {
+                          const hw = hwProducts.find(h => h.id === selectedHwId)
+                          optionDetails.push({ name: 'hardware_product', displayLabel: 'Rod/Track', value: selectedHwId, valueLabel: hw?.name || 'Matching rod/track' })
+                        } else if (!useHwProductRef && hardwareOn && hardwareOptions.length > 0) {
                           optionDetails.push({ name: 'hardware', displayLabel: 'Rod/Track', value: 'yes', valueLabel: 'Matching rod/track included' })
                         }
                         addToCart({

@@ -59,6 +59,28 @@ params: { "aapp_engine": "drapery" }
 
 宽高输入 = **成品尺寸**（配置器现有的 width/height 框）。
 
+**后台编辑器（2026-07-11）**：管理后台「编辑产品 → 计算参数」对 drapery 类型提供
+AAPP 专用编辑器（默认 ON，`aapp_engine=''` 为显式关闭走旧模型）：
+
+- 商品级默认价：`params.aapp_fabric_price_per_yard` / `aapp_fabric_width_in`；
+  每色覆盖仍走面料选项值的 `fabric_price_per_yard` / `fabric_width_in`。
+- 纱层：勾选写 `params.aapp_composition='fabric_plus_sheer'` +
+  `aapp_sheer_price_per_yard` / `aapp_sheer_width_in`。
+- 款式勾选（2fold_pinch / 3fold_pinch / cn_6cm / cn_7cm / us_60/80/100/120）
+  自动同步商品的 `style` 选项；`lining`（NO/LF/BO）与 `operation`
+  （split/single_left/single_right）选项也由编辑器自动同步（保留已有 label）。
+
+**配套五金（按商品引用，2026-07-11）**：drapery 商品的
+`params.aapp_hardware_products: string[]` 存商店真实 Hardware 商品的 id。
+前台把它们渲染成加购卡片，选择存为选项 `hardware_product = <商品 id>`
+（`'none'` = 不配）。两个定价入口（calculate 路由 & 结算核价）共用
+`lib/productPricing.applyHardwareProductSelection`：读取该五金商品的
+`default_config` 推导 hw_* 价格参数（优先 `aapp_hw_*`/`hw_*` params；否则映射
+旧模型 rod 第一个值的 `fixed_price`/`price_per_foot` + `params.base_length` →
+`hw_base_price`/`hw_add_per_foot`/`hw_min_width_in`；finial 不自动计入），
+合并进 optionParams 并置 `options.hardware='yes'`，由 adapter 现有捆绑五金
+路径按杆长 = 成品宽计价。引用商品无价格模型时报错（fail-closed）。
+
 ### 4. 窗帘杆 / 轨道
 
 ```json
