@@ -420,6 +420,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 productId={currentId}
                 onChange={p => { paramsRef.current = p; markDirty() }}
                 onOptionsChange={opts => { optionsRef.current = opts; markDirty() }}
+                optionsDraft={optionsRef.current}
               />
             )}
 
@@ -429,6 +430,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 productType={productType}
                 productId={currentId}
                 onChange={opts => { optionsRef.current = opts; markDirty() }}
+                optionsDraft={optionsRef.current}
+                paramsDraft={paramsRef.current}
               />
             )}
 

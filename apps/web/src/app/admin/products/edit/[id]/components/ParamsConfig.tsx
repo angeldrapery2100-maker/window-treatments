@@ -1,6 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import {
+  AAPP_STYLE_ORDER, AAPP_STYLE_LABELS, AAPP_STYLE_ZH,
+  AAPP_LINING_ORDER, AAPP_LINING_LABELS, AAPP_LINING_TIERS,
+  AAPP_OPERATION_ORDER, AAPP_OPERATION_LABELS, AAPP_OPERATION_ZH,
+} from './aappPresets'
 
 interface ProductParams {
   fabric_width?: number
@@ -32,61 +37,18 @@ interface ParamsConfigProps {
   /** Fired when this tab auto-syncs the product's default_config.options
    *  (AAPP drapery mode manages the style / lining / operation options). */
   onOptionsChange?: (options: any[]) => void
+  /** Unsaved edit-page draft of default_config.options (e.g. edits made in the
+   *  选项配置 tab that aren't saved yet). When present it replaces the server
+   *  fetch so the two tabs stay in two-way sync on the same values array. */
+  optionsDraft?: any[] | null
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AAPP drapery — managed option definitions (option VALUE strings are AAPP keys,
-// see docs/aapp-engine-wiring.md §3 and packages/shared/src/pricing/aapp/adapter.ts)
+// see docs/aapp-engine-wiring.md §3 and packages/shared/src/pricing/aapp/adapter.ts).
+// Key/label constants live in ./aappPresets — shared with OptionsManager's
+// fixed pick-list so the two tabs render the same engine presets.
 // ─────────────────────────────────────────────────────────────────────────────
-
-const AAPP_STYLE_ORDER = ['2fold_pinch', '3fold_pinch', 'cn_6cm', 'cn_7cm', 'us_60', 'us_80', 'us_100', 'us_120'] as const
-
-const AAPP_STYLE_LABELS: Record<string, string> = {
-  '2fold_pinch': '2-Fold Pinch Pleat',
-  '3fold_pinch': '3-Fold Pinch Pleat',
-  cn_6cm: 'Ripplefold 6cm (CN)',
-  cn_7cm: 'Ripplefold 7cm (CN)',
-  us_60: 'Ripplefold 60% (US)',
-  us_80: 'Ripplefold 80% (US)',
-  us_100: 'Ripplefold 100% (US)',
-  us_120: 'Ripplefold 120% (US)',
-}
-
-const AAPP_STYLE_ZH: Record<string, string> = {
-  '2fold_pinch': '两褶',
-  '3fold_pinch': '三褶',
-  cn_6cm: '蛇形帘 6cm (国标)',
-  cn_7cm: '蛇形帘 7cm (国标)',
-  us_60: '蛇形帘 60% (美标)',
-  us_80: '蛇形帘 80% (美标)',
-  us_100: '蛇形帘 100% (美标)',
-  us_120: '蛇形帘 120% (美标)',
-}
-
-const AAPP_LINING_ORDER = ['NO', 'LF', 'BO'] as const
-const AAPP_LINING_LABELS: Record<string, string> = {
-  NO: 'No Lining',
-  LF: 'Light Filtering Lining',
-  BO: 'Blackout Lining',
-}
-// Engine built-in tiers (packages/shared/src/pricing/aapp/constants.ts liningOptions)
-const AAPP_LINING_TIERS = [
-  { key: 'NO', zh: '无衬', fabric: 0, labor: 30 },
-  { key: 'LF', zh: '遮光衬', fabric: 6, labor: 36 },
-  { key: 'BO', zh: '全遮光衬', fabric: 8, labor: 38 },
-]
-
-const AAPP_OPERATION_ORDER = ['split', 'single_left', 'single_right'] as const
-const AAPP_OPERATION_LABELS: Record<string, string> = {
-  split: 'Split (Pair)',
-  single_left: 'Single Panel — Left',
-  single_right: 'Single Panel — Right',
-}
-const AAPP_OPERATION_ZH: Record<string, string> = {
-  split: '对开',
-  single_left: '单开（左）',
-  single_right: '单开（右）',
-}
 
 /** Upsert one managed option: keep option identity/labels/value params the
  *  admin already set, only enforce the value SET and ordering. */
@@ -697,7 +659,7 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList }: {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function ParamsConfig({ productType, productId, onChange, onOptionsChange }: ParamsConfigProps) {
+export default function ParamsConfig({ productType, productId, onChange, onOptionsChange, optionsDraft }: ParamsConfigProps) {
   const [params, setParams] = useState<ProductParams>({})
   const [loading, setLoading] = useState(true)
   // Drapery AAPP mode: draft copy of default_config.options (style/lining/
@@ -729,10 +691,16 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   // Drapery only: load options draft + hardware product list.
   useEffect(() => {
     if (productType !== 'drapery') return
-    fetch(`/api/admin/products/${productId}/options`)
-      .then(r => r.json())
-      .then(d => setDraftOptions(d.data?.options || []))
-      .catch(() => setDraftOptions([]))
+    // Prefer the page's unsaved draft (edits from the 选项配置 tab) so the
+    // 款式勾选 checkboxes and OptionsManager's pick-list never fight.
+    if (Array.isArray(optionsDraft) && optionsDraft.length > 0) {
+      setDraftOptions(optionsDraft)
+    } else {
+      fetch(`/api/admin/products/${productId}/options`)
+        .then(r => r.json())
+        .then(d => setDraftOptions(d.data?.options || []))
+        .catch(() => setDraftOptions([]))
+    }
     fetch('/api/admin/products?type=hardware&status=all&limit=200')
       .then(r => r.json())
       .then(d => setHwList((d.data?.products || []).map((p: any) => ({
