@@ -32,7 +32,7 @@ interface ProductParams {
 }
 
 interface ParamsConfigProps {
-  productType: 'drapery' | 'sheer' | 'shade' | 'hardware'
+  productType: 'drapery' | 'sheer' | 'shade' | 'hardware' | 'accessory'
   productId: string
   onChange: (params: ProductParams) => void
   /** Fired when this tab auto-syncs the product's default_config.options
@@ -1217,6 +1217,107 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
           <HardwarePricingPreview params={params} productId={productId} />
         </>
       )}
+
+      {productType === 'accessory' && (
+        <AccessoryParamsPanel productId={productId} params={params} set={set} />
+      )}
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Accessory 配件（店铺重设计 P1）— 固定价 SKU，无计算引擎。
+// 售价 = products.base_price（在「基础信息」标签编辑，随页面保存流程写入）；
+// 这里只管两个 params：compare_at_price（划线价，前台删除线促销位）和
+// related_product_ids（"Works with" 常配商品，前台成套推荐卡片）。
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface RelatedPickProduct { id: string; name: string; type: string; main_image_url: string | null; is_active: boolean }
+
+function AccessoryParamsPanel({ productId, params, set }: {
+  productId: string
+  params: ProductParams
+  set: (key: keyof ProductParams, value: any) => void
+}) {
+  const [allProducts, setAllProducts] = useState<RelatedPickProduct[] | null>(null)
+
+  useEffect(() => {
+    fetch('/api/admin/products?status=all&limit=200')
+      .then(r => r.json())
+      .then(d => setAllProducts((d.data?.products || [])
+        .filter((p: any) => p.id !== productId)
+        .map((p: any) => ({
+          id: p.id, name: p.name, type: p.type,
+          main_image_url: p.main_image_url || null, is_active: !!p.is_active,
+        }))))
+      .catch(() => setAllProducts([]))
+  }, [productId])
+
+  const relatedIds: string[] = Array.isArray(params.related_product_ids) ? params.related_product_ids : []
+  const toggleRelated = (id: string) => {
+    const next = relatedIds.includes(id) ? relatedIds.filter(x => x !== id) : [...relatedIds, id]
+    set('related_product_ids', next)
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* No engine — fixed price */}
+      <div className="rounded-lg border border-sky-200 bg-sky-50 p-4">
+        <p className="text-sm font-semibold text-gray-900">固定价商品 <span className="font-normal text-gray-500">/ Fixed-Price Accessory（无计算引擎）</span></p>
+        <p className="text-xs text-gray-600 mt-1">
+          配件不走任何定价引擎：前台直接显示售价，结算按 售价 × 数量 收费
+          （服务端沿用 base_price 最低价保护 + 5× 上限）。
+        </p>
+        <p className="text-xs text-gray-600 mt-1.5">
+          💲 <strong>售价（base_price）与库存（stock_qty）在「基础信息」标签编辑</strong>，与本页改动一起保存。
+          售价必须大于 0 才能发布。
+        </p>
+      </div>
+
+      {/* Compare-at price */}
+      <div className="grid grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">划线价 / Compare-at Price ($)</label>
+          <input type="number" step="0.01" min="0" value={params.compare_at_price ?? ''}
+            onChange={e => set('compare_at_price', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="可选，如 59" />
+          <p className="text-xs text-gray-500 mt-1">可选促销位：大于售价时前台显示删除线原价 + Sale 标签；留空不显示。</p>
+        </div>
+      </div>
+
+      {/* Works-with cross-sell */}
+      <div className="border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-semibold text-gray-900">常配商品 / Works With</h4>
+        <p className="text-xs text-gray-400 mt-1 mb-3">
+          多选商店里的真实商品（如：遥控 → 电动卷帘）。前台在配件页下方渲染 "Works with" 成套推荐卡片；不选则该区块隐藏。
+        </p>
+        {allProducts === null ? (
+          <p className="text-xs text-gray-400">加载商品列表…</p>
+        ) : allProducts.length === 0 ? (
+          <p className="text-xs text-gray-400">商店暂无其他商品。</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {allProducts.map(p => {
+              const on = relatedIds.includes(p.id)
+              return (
+                <label key={p.id} className={`flex items-center gap-2.5 border rounded-lg p-2 cursor-pointer select-none ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
+                  <input type="checkbox" checked={on} onChange={() => toggleRelated(p.id)} className="h-3.5 w-3.5 accent-gray-800 shrink-0" />
+                  {p.main_image_url
+                    ? <img src={p.main_image_url} alt="" className="w-10 h-10 object-cover rounded shrink-0" />
+                    : <div className="w-10 h-10 bg-gray-100 rounded shrink-0 flex items-center justify-center text-gray-300 text-lg">▭</div>}
+                  <span className="min-w-0">
+                    <span className="block text-xs text-gray-800 truncate">{p.name}</span>
+                    <span className={`block text-[10px] ${p.is_active ? 'text-emerald-600' : 'text-red-400'}`}>
+                      {p.type} · {p.is_active ? '上架中' : '已下架'}
+                    </span>
+                  </span>
+                </label>
+              )
+            })}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

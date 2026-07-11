@@ -16,6 +16,9 @@ interface ParcelRule {
 
 interface Props {
   productId: string
+  /** Accessory products default to ONE small-box rule (店铺重设计 P1) —
+   *  remotes/hubs/tiebacks ship in a small parcel, not the drapery tube. */
+  productType?: string
   onChange: (rules: ParcelRule[]) => void
 }
 
@@ -24,7 +27,13 @@ const defaultRule = (): ParcelRule => ({
   parcel_length: 24, parcel_width: 12, parcel_height: 6, parcel_weight: 5,
 })
 
-export default function ParcelRulesEditor({ productId, onChange }: Props) {
+// Small-box default for fixed-price accessories (remote / hub / tieback).
+const accessoryDefaultRule = (): ParcelRule => ({
+  rule_name: 'Small box (accessory)', min_width: 0, max_width: 999, min_height: 0, max_height: 999,
+  parcel_length: 10, parcel_width: 8, parcel_height: 4, parcel_weight: 2,
+})
+
+export default function ParcelRulesEditor({ productId, productType, onChange }: Props) {
   const [rules, setRules] = useState<ParcelRule[]>([])
   const [loaded, setLoaded] = useState(false)
 
@@ -40,10 +49,17 @@ export default function ParcelRulesEditor({ productId, onChange }: Props) {
             parcel_length: Number(r.parcel_length), parcel_width: Number(r.parcel_width),
             parcel_height: Number(r.parcel_height), parcel_weight: Number(r.parcel_weight),
           })))
+        } else if (productType === 'accessory') {
+          // No rules yet for an accessory → prefill the small-box default and
+          // report it up so the next save persists it.
+          const seeded = [accessoryDefaultRule()]
+          setRules(seeded)
+          onChange(seeded)
         }
       })
       .catch(() => {})
       .finally(() => setLoaded(true))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId])
 
   const update = (idx: number, field: keyof ParcelRule, value: string | number) => {
@@ -54,7 +70,7 @@ export default function ParcelRulesEditor({ productId, onChange }: Props) {
   }
 
   const addRule = () => {
-    const next = [...rules, defaultRule()]
+    const next = [...rules, productType === 'accessory' ? accessoryDefaultRule() : defaultRule()]
     setRules(next)
     onChange(next)
   }

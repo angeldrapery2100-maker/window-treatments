@@ -30,7 +30,7 @@ interface StoreCategory {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  drapery: 'Drapery', sheer: 'Sheer', shade: 'Shade', hardware: 'Hardware',
+  drapery: 'Drapery', sheer: 'Sheer', shade: 'Shade', hardware: 'Hardware', accessory: 'Accessory',
 }
 
 const STATUS_FILTERS = [
@@ -243,7 +243,7 @@ export default function StoreProductsPage() {
                 <svg className="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z" /></svg>
                 Categories
               </button>
-              <button onClick={() => router.push('/admin/products/edit/create')}
+              <button onClick={() => router.push('/admin/products/create')}
                 className="px-4 py-2 bg-[#3d3d3d] text-white rounded-md hover:bg-gray-700 text-sm font-medium">
                 <svg className="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
                 Add Product
@@ -315,7 +315,7 @@ export default function StoreProductsPage() {
         ) : filteredProducts.length === 0 ? (
           <div className="py-20 text-center">
             <p className="text-gray-400 mb-4">{searchTerm ? `No results for "${searchTerm}"` : 'No products in this category'}</p>
-            <button onClick={() => router.push('/admin/products/edit/create')}
+            <button onClick={() => router.push('/admin/products/create')}
               className="px-4 py-2 bg-[#3d3d3d] text-white rounded-md hover:bg-gray-700 text-sm">Add Product</button>
           </div>
         ) : viewMode === 'list' ? (
@@ -350,7 +350,12 @@ export default function StoreProductsPage() {
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{p.name}</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {p.name}
+                            {p.status !== 'active' && (
+                              <span className="ml-2 px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 text-[10px] font-medium align-middle">草稿 Draft</span>
+                            )}
+                          </p>
                           <span className="text-[10px] text-gray-400 uppercase tracking-wide">{TYPE_LABELS[p.type] || p.type}</span>
                         </div>
                       </div>

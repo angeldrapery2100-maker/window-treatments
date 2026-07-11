@@ -22,6 +22,7 @@ export function useProductData(productId: string) {
   const [options, setOptions] = useState<ProductOption[]>([])
   const [params, setParams] = useState<Record<string, any>>({})
   const [stockQty, setStockQty] = useState<number | null>(null) // null = untracked/unlimited
+  const [basePrice, setBasePrice] = useState(0) // fixed-price products (accessory)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export function useProductData(productId: string) {
           setOptions(data.data.options || [])
           setParams(data.data.params || {})
           setStockQty(data.data.product?.stock_qty ?? null)
+          setBasePrice(Number(data.data.product?.base_price) || 0)
         }
       }).catch(console.error)
       .finally(() => setLoading(false))
@@ -74,5 +76,5 @@ export function useProductData(productId: string) {
     return optionValues
   }
 
-  return { productName, productType, description, mainImages, galleryImages, options, params, stockQty, buildOptionValues, loading }
+  return { productName, productType, description, mainImages, galleryImages, options, params, stockQty, basePrice, buildOptionValues, loading }
 }

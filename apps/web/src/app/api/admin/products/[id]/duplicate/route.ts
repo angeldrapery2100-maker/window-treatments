@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { queryOne } from '@/lib/db'
+import { query, queryOne } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth'
 
 export async function POST(
@@ -13,9 +13,10 @@ export async function POST(
   const { id } = await params
 
   try {
+    await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS template_key varchar(32) DEFAULT NULL`).catch(() => {})
     // 读取原产品完整数据（所有内容都在 default_config 里）
     const original = await queryOne(
-      `SELECT product_type_id, sku, name, base_price, images, default_config, is_active
+      `SELECT product_type_id, sku, name, base_price, images, default_config, is_active, template_key
        FROM products WHERE id = $1`,
       [id]
     )
@@ -29,9 +30,10 @@ export async function POST(
     const newSku = `${original.sku || 'product'}-copy-${Date.now().toString().slice(-6)}`
 
     // 直接复制整行，default_config 包含 images/options/params/content_blocks 所有内容
+    // （template_key 一并复制 — 副本用同一套前台模板）
     const newProduct = await queryOne<{ id: string }>(
-      `INSERT INTO products (product_type_id, sku, name, base_price, images, default_config, is_active)
-       VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, false)
+      `INSERT INTO products (product_type_id, sku, name, base_price, images, default_config, is_active, template_key)
+       VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, false, $7)
        RETURNING id`,
       [
         original.product_type_id,
@@ -40,6 +42,7 @@ export async function POST(
         original.base_price,
         toJson(original.images),
         toJson(original.default_config),
+        original.template_key ?? null,
       ]
     )
 

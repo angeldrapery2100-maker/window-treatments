@@ -435,6 +435,19 @@ export async function computeServerUnitPrice(item: ServerPriceItem): Promise<{ u
     return { unitPrice, basePrice, type }
   }
 
+  // ── Accessory: fixed-price SKU — NO engine, ever ─────────────────────────
+  // Accessories are priced by products.base_price (> 0 required), so
+  // calcServerTotals takes its base_price>0 branch (min-floor + 5× cap) and
+  // never reaches this function. Landing here means base_price = 0 — a
+  // misconfigured listing. Fail closed with an actionable message instead of
+  // falling through to the dimension-engine path (which would throw a
+  // confusing "missing dimensions" error for a dimensionless product).
+  if (type === 'accessory') {
+    throw new Error(
+      'Accessory product has base_price = 0 — accessories are fixed-price and must have base_price > 0 (set it in the admin product editor)'
+    )
+  }
+
   // ── Engine types: drapery / sheer / shade ────────────────────────────────
   if (type !== 'drapery' && type !== 'sheer' && type !== 'shade') {
     throw new Error(`Unsupported product type for server pricing: ${type}`)

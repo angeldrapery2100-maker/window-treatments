@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import type { Metadata } from 'next'
 import { queryOne, query } from '@/lib/db'
+import { ensureStockColumn } from '@/lib/orderPricing'
 import StoreProductClient from './StoreProductClient'
 
 // Server wrapper for the store product page. Adds per-product metadata and
@@ -28,8 +29,11 @@ function absUrl(u?: unknown): string | undefined {
 const getProduct = cache(async (id: string) => {
   if (!UUID_RE.test(id)) return null
   try {
+    // template_key column is ensured lazily (same helper the pricing paths
+    // use) so this SELECT can't fail on a fresh database.
+    await ensureStockColumn().catch(() => {})
     const row = await queryOne<any>(
-      `SELECT p.id, p.name, pt.slug AS type, p.base_price, p.default_config
+      `SELECT p.id, p.name, pt.slug AS type, p.template_key, p.base_price, p.default_config
        FROM products p
        JOIN product_types pt ON pt.id = p.product_type_id
        WHERE p.id = $1 AND p.is_active = true`,
@@ -147,7 +151,11 @@ export default async function StoreProductPage({ params }: { params: Promise<{ i
       {jsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       )}
-      <StoreProductClient id={id} initialType={product?.type ?? null} />
+      <StoreProductClient
+        id={id}
+        initialType={product?.type ?? null}
+        initialTemplateKey={product?.template_key ?? null}
+      />
     </>
   )
 }

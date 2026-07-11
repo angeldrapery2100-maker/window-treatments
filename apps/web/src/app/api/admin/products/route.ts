@@ -20,8 +20,27 @@ async function ensureStoreCategories() {
     await query(`ALTER TABLE products ADD COLUMN store_category_id uuid REFERENCES store_categories(id) ON DELETE SET NULL`)
   }
   // Optional inventory tracking: NULL = untracked/unlimited (made-to-order),
-  // a number = finite stock (hardware).
+  // a number = finite stock (hardware/accessory).
   await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+  // Storefront template dispatch (store redesign P1): NULL = legacy
+  // type-based dispatch — zero behavior change for existing products.
+  await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS template_key varchar(32) DEFAULT NULL`).catch(() => {})
+}
+
+// Accessory product type (store redesign P1): fixed-price SKUs (remotes, hubs,
+// tiebacks, hooks). NO pricing engine — priced by products.base_price (> 0)
+// via calcServerTotals' existing base_price path. Idempotent by slug.
+let accessoryTypeEnsured = false
+async function ensureAccessoryProductType() {
+  if (accessoryTypeEnsured) return
+  await query(
+    `INSERT INTO product_types (slug, name, description, field_schema, is_active)
+     VALUES ('accessory', 'Accessory',
+             'Fixed-price accessories (remotes, hubs, tiebacks, hooks) — priced by base_price, no engine',
+             '{}'::jsonb, true)
+     ON CONFLICT (slug) DO NOTHING`
+  ).catch(() => {})
+  accessoryTypeEnsured = true
 }
 
 export async function GET(request: Request) {
@@ -34,10 +53,11 @@ export async function GET(request: Request) {
 
   try {
     await ensureStoreCategories()
+    await ensureAccessoryProductType()
 
     let sql = `
-      SELECT 
-        p.id, p.sku, p.name,
+      SELECT
+        p.id, p.sku, p.name, p.template_key,
         pt.slug AS type,
         p.base_price, p.images,
         COALESCE(
@@ -113,6 +133,11 @@ export async function POST(request: Request) {
     const adminUser = requireAdmin(request)
     const body = await request.json() as any
 
+    // Wizard-created products may arrive before the list GET ever ran on this
+    // instance — make sure the accessory type + template_key column exist.
+    await ensureStoreCategories()
+    await ensureAccessoryProductType()
+
     if (!body.name || !body.type) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: '产品名称和系列不能为空' } },
@@ -134,14 +159,19 @@ export async function POST(request: Request) {
     const productTypeId = typeRows[0].id
     const sku = `${body.type.toUpperCase()}-${Date.now()}`
     const isActive = body.status === 'active'
+    // Storefront template (creation wizard sets it from the category
+    // blueprint); NULL = legacy type-based dispatch.
+    const templateKey = typeof body.template_key === 'string' && body.template_key.trim()
+      ? body.template_key.trim().slice(0, 32)
+      : null
 
     const rows = await query(
-      `INSERT INTO products (product_type_id, sku, name, base_price, default_config, is_active)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO products (product_type_id, sku, name, base_price, default_config, is_active, template_key)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, name, sku, is_active, created_at`,
       [productTypeId, sku, body.name, body.base_price ?? 0,
        JSON.stringify({ description: body.description || '', sort_order: body.sort_order || 0 }),
-       isActive]
+       isActive, templateKey]
     )
     const newProduct = rows[0]
 

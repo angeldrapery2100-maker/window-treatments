@@ -103,13 +103,17 @@ export interface PricingResult {
 
 const MAX_SHIPPING_DOLLARS = 500  // sanity cap — well above any realistic rate
 
-// ── Optional inventory tracking ───────────────────────────────────────────────
+// ── Optional product columns ─────────────────────────────────────────────────
 // products.stock_qty: NULL = untracked/unlimited (made-to-order custom items),
-// integer = finite stock (hardware). Memoized per serverless instance.
+// integer = finite stock (hardware/accessory).
+// products.template_key: which storefront template renders the product page
+// (store redesign P1 — NULL = legacy type-based dispatch, zero behavior
+// change for existing products). Memoized per serverless instance.
 let stockColEnsured = false
 export async function ensureStockColumn(): Promise<void> {
   if (stockColEnsured) return
   await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+  await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS template_key varchar(32) DEFAULT NULL`).catch(() => {})
   stockColEnsured = true
 }
 

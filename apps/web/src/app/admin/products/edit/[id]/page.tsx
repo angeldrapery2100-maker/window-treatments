@@ -7,8 +7,9 @@ import ParamsConfig from './components/ParamsConfig'
 import OptionsManager from './components/OptionsManager'
 import ContentEditor from './components/ContentEditor'
 import ParcelRulesEditor from './components/ParcelRulesEditor'
+import { TEMPLATE_KEYS, getBlueprint } from '@/lib/categoryBlueprints'
 
-type ProductType = 'drapery' | 'sheer' | 'shade' | 'hardware'
+type ProductType = 'drapery' | 'sheer' | 'shade' | 'hardware' | 'accessory'
 
 export default function ProductEditPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
@@ -32,6 +33,10 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
   const [status, setStatus] = useState<'active' | 'inactive'>('inactive')
   const [sortOrder, setSortOrder] = useState(0)
   const [stockQty, setStockQty] = useState('')  // '' = untracked / unlimited
+  const [basePrice, setBasePrice] = useState('') // fixed price (accessory)
+  const [templateKey, setTemplateKey] = useState('') // '' = 按系列默认（legacy dispatch）
+  // Creation-wizard handoff (?created=<blueprint>&tab=params): success banner
+  const [createdBanner, setCreatedBanner] = useState<string | null>(null)
 
   // 子组件数据（由子组件通过 onChange 上报）
   const imagesRef = useRef<any>(null)
@@ -52,6 +57,16 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
     initDone.current = true
     if (isNew) createDraft()
     else fetchProduct(id)
+    // Wizard handoff: /admin/products/edit/<id>?tab=params&created=<blueprint>
+    try {
+      const sp = new URLSearchParams(window.location.search)
+      const tab = sp.get('tab')
+      if (tab && ['basic', 'images', 'params', 'options', 'content', 'parcels'].includes(tab)) {
+        setActiveTab(tab as any)
+      }
+      const created = sp.get('created')
+      if (created) setCreatedBanner(created)
+    } catch { /* SSR / malformed URL — ignore */ }
   }, [])
 
   // 浏览器关闭/刷新提示
@@ -91,6 +106,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         setStatus(p.status)
         setSortOrder(p.sort_order || 0)
         setStockQty(p.stock_qty == null ? '' : String(p.stock_qty))
+        setBasePrice(Number(p.base_price) > 0 ? String(Number(p.base_price)) : '')
+        setTemplateKey(p.template_key || '')
       }
     } catch (e) { console.error('Failed to fetch product:', e) }
     finally { setLoading(false) }
@@ -109,6 +126,12 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         body: JSON.stringify({
           name: productName, type: productType, description, status, sort_order: sortOrder,
           stock_qty: stockQty.trim() === '' ? null : parseInt(stockQty, 10),
+          template_key: templateKey,
+          // base_price: only sent when set — the API leaves it unchanged
+          // when absent (accessory fixed price lives on this field).
+          ...(basePrice.trim() !== '' && Number.isFinite(parseFloat(basePrice))
+            ? { base_price: parseFloat(basePrice) }
+            : {}),
         })
       })
 
@@ -217,9 +240,24 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {isNew ? '添加新产品' : '编辑产品'}
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {isNew ? '添加新产品' : '编辑产品'}
+                </h1>
+                {/* 状态 pill + 发布/下架 快速切换（保存时生效） */}
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                  status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                }`}>
+                  {status === 'active' ? '已上架 Active' : '草稿 Draft'}
+                </span>
+                <button
+                  onClick={() => { setStatus(status === 'active' ? 'inactive' : 'active'); markDirty() }}
+                  className="px-2.5 py-0.5 text-xs border border-gray-300 rounded-full text-gray-600 hover:bg-gray-50"
+                  title="切换后需点击保存才生效"
+                >
+                  {status === 'active' ? '下架' : '发布'}
+                </button>
+              </div>
               {currentId && (
                 <p className="text-xs text-gray-400 mt-0.5 font-mono">
                   ID: #{currentId.slice(0, 8)}
@@ -269,6 +307,19 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
       </div>
+
+      {/* ── Creation-wizard success banner ── */}
+      {createdBanner && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3 text-sm text-emerald-800">
+            <span>
+              ✅ 已按「{getBlueprint(createdBanner)?.label || createdBanner}」模板创建为草稿 —
+              完成价格配置后点击右上角「发布」上架。
+            </span>
+            <button onClick={() => setCreatedBanner(null)} className="ml-4 text-emerald-400 hover:text-emerald-600">✕</button>
+          </div>
+        </div>
+      )}
 
       {/* ── Save Error Toast ── */}
       {saveError && (
@@ -339,9 +390,55 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     <option value="sheer">Sheer（纱帘）</option>
                     <option value="shade">Shade（卷帘）</option>
                     <option value="hardware">Hardware（窗帘杆）</option>
+                    <option value="accessory">Accessory（配件·固定价）</option>
                   </select>
                   {!isNew && basicSaved && <p className="text-xs text-gray-400 mt-1">产品系列保存后不可修改</p>}
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">前台模板 / Template</label>
+                  <select
+                    value={templateKey}
+                    onChange={e => { setTemplateKey(e.target.value); markDirty() }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">默认（按产品系列分发 — 旧商品行为不变）</option>
+                    {TEMPLATE_KEYS.map(k => (
+                      <option key={k} value={k}>{k}</option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-400 mt-1">
+                    商品页按此模板渲染（drapery / sheer / hardware / luma / accessory）。向导建品时自动按类别设置；留空 = 沿用旧的系列分发。
+                  </p>
+                </div>
+
+                {productType === 'accessory' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      售价 / Fixed Price ($) <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      value={basePrice}
+                      onChange={e => { setBasePrice(e.target.value); markDirty() }}
+                      placeholder="如 45"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        !(parseFloat(basePrice) > 0) ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      }`}
+                    />
+                    {!(parseFloat(basePrice) > 0) ? (
+                      <p className="text-xs text-red-500 mt-1">
+                        配件是固定价商品（无计算引擎），售价必须大于 0 才能发布 — 结算按此价 × 数量收费。
+                      </p>
+                    ) : (
+                      <p className="text-xs text-gray-400 mt-1">
+                        配件按固定价 × 数量结算（无引擎）。划线价 / 常配商品在「计算参数」标签配置。
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">产品描述</label>
@@ -448,6 +545,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             {activeTab === 'parcels' && basicSaved && currentId && (
               <ParcelRulesEditor
                 productId={currentId}
+                productType={productType}
                 onChange={rules => { parcelsRef.current = rules; markDirty() }}
               />
             )}

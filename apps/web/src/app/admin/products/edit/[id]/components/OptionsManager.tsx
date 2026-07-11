@@ -25,7 +25,7 @@ interface ProductOption {
 }
 
 interface OptionsManagerProps {
-  productType: 'drapery' | 'sheer' | 'shade' | 'hardware'
+  productType: 'drapery' | 'sheer' | 'shade' | 'hardware' | 'accessory'
   productId: string
   onChange: (options: ProductOption[]) => void
   /** Unsaved edit-page draft of default_config.options (shared with
@@ -61,6 +61,12 @@ const DEFAULT_OPTIONS: Record<string, ProductOption[]> = {
     { id: 'finial', name: 'finial', type: 'select', display_label: 'Finial', values: [] },
     { id: 'color', name: 'color', type: 'select', display_label: 'Color', values: [] },
   ],
+  // Fixed-price accessory (店铺重设计 P1): a single free-form variant option
+  // (color / channel count / size…). Values carry NO price params — the price
+  // is the product's base_price, options are cosmetic variants only.
+  accessory: [
+    { id: 'variant', name: 'variant', type: 'select', display_label: 'Variant', values: [] },
+  ],
 }
 
 // AAPP drapery mode: no free-text pleat_style — style/lining/operation are
@@ -85,7 +91,13 @@ const PARAM_FIELDS: Record<string, Record<string, { key: string; label: string }
     operation: [{ key: 'stack_divisor', label: '堆叠除数' }],
   },
   sheer: {
-    fabric_color: [{ key: 'fabric_price', label: '面料单价 ($/yard)' }],
+    fabric_color: [
+      { key: 'fabric_price', label: '面料单价 ($/yard)（旧模型）' },
+      // AAPP sheer engine（新建纱帘商品，aapp_engine='drapery' + sheer_only）：
+      // 纱价挂在面料选项值上（docs/aapp-engine-wiring.md §3 纱层）。
+      { key: 'sheer_price_per_yard', label: 'AAPP 纱单价 ($/yd)' },
+      { key: 'sheer_width_in', label: 'AAPP 纱幅宽 (inch)' },
+    ],
   },
   shade: {
     fabric_color: [{ key: 'fabric_price', label: '面料单价 ($/sq ft)' }],

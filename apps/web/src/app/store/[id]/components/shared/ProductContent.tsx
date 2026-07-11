@@ -6,7 +6,7 @@ import ProductReviews from './ProductReviews'
 
 interface ProductContentProps {
   productId: string
-  productType: 'drapery' | 'sheer' | 'shade' | 'hardware'
+  productType: 'drapery' | 'sheer' | 'shade' | 'hardware' | 'accessory'
   extraContent?: React.ReactNode
 }
 

@@ -14,8 +14,9 @@ export async function GET(
 
   try {
     await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+    await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS template_key varchar(32) DEFAULT NULL`).catch(() => {})
     const product = await queryOne(
-      `SELECT 
+      `SELECT
         p.id,
         p.sku,
         p.name,
@@ -25,6 +26,7 @@ export async function GET(
         p.default_config,
         p.is_active,
         p.stock_qty,
+        p.template_key,
         p.created_at,
         p.updated_at
        FROM products p
@@ -96,7 +98,31 @@ export async function PUT(
         stockQty = n
       }
     }
+
+    // Optional fixed price (accessory products): undefined = leave unchanged.
+    let basePrice: number | undefined = undefined
+    if ('base_price' in body && body.base_price !== null && body.base_price !== '') {
+      const n = Number(body.base_price)
+      if (!Number.isFinite(n) || n < 0) {
+        return NextResponse.json(
+          { success: false, error: { code: 'VALIDATION_ERROR', message: 'base_price must be a non-negative number' } },
+          { status: 400 }
+        )
+      }
+      basePrice = n
+    }
+
+    // Optional storefront template override: undefined = leave unchanged;
+    // '' / null = clear (fall back to legacy type-based dispatch).
+    let templateKey: string | null | undefined = undefined
+    if ('template_key' in body) {
+      templateKey = typeof body.template_key === 'string' && body.template_key.trim()
+        ? body.template_key.trim().slice(0, 32)
+        : null
+    }
+
     await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_qty integer DEFAULT NULL`).catch(() => {})
+    await query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS template_key varchar(32) DEFAULT NULL`).catch(() => {})
 
     // 查出 product_type_id
     const productType = await queryOne<{ id: string }>(
@@ -106,7 +132,7 @@ export async function PUT(
 
     // 先读取现有 default_config，保留 options/params/images
     const existing = await queryOne(
-      'SELECT default_config FROM products WHERE id = $1',
+      'SELECT default_config, base_price FROM products WHERE id = $1',
       [id]
     )
     const mergedConfig = {
@@ -120,12 +146,20 @@ export async function PUT(
     // (inactive) can stay incomplete.
     if (isActive) {
       const cfg: any = mergedConfig
-      const hasPrice =
-        (Number(cfg?.starting_price) > 0) ||
-        (Array.isArray(cfg?.options) && cfg.options.length > 0)
+      // Accessory (fixed-price, no engine): the ONLY valid price is
+      // base_price > 0 — options/starting_price don't make it sellable.
+      const effectiveBasePrice = basePrice ?? (Number(existing?.base_price) || 0)
+      const hasPrice = body.type === 'accessory'
+        ? effectiveBasePrice > 0
+        : (Number(cfg?.starting_price) > 0) ||
+          (Array.isArray(cfg?.options) && cfg.options.length > 0)
       const hasImage = Array.isArray(cfg?.images?.main) && cfg.images.main.length > 0
       const missing: string[] = []
-      if (!hasPrice) missing.push('a starting price or at least one priced option')
+      if (!hasPrice) {
+        missing.push(body.type === 'accessory'
+          ? 'a fixed price (base_price) greater than 0'
+          : 'a starting price or at least one priced option')
+      }
       if (!hasImage) missing.push('at least one main image')
       if (missing.length > 0) {
         return NextResponse.json(
@@ -142,11 +176,15 @@ export async function PUT(
         is_active = $3,
         product_type_id = COALESCE($5, product_type_id),
         stock_qty = CASE WHEN $6::boolean THEN $7::int ELSE stock_qty END,
+        base_price = COALESCE($8::numeric, base_price),
+        template_key = CASE WHEN $9::boolean THEN $10::varchar ELSE template_key END,
         updated_at = NOW()
        WHERE id = $4
-       RETURNING id, name, is_active, stock_qty, updated_at`,
+       RETURNING id, name, is_active, stock_qty, base_price, template_key, updated_at`,
       [body.name, JSON.stringify(mergedConfig), isActive, id, productType?.id ?? null,
-       stockQty !== undefined, stockQty ?? null]
+       stockQty !== undefined, stockQty ?? null,
+       basePrice ?? null,
+       templateKey !== undefined, templateKey ?? null]
     )
 
     if (!updated) {

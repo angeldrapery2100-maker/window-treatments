@@ -22,6 +22,7 @@ export async function GET(
         p.default_config,
         p.is_active,
         p.stock_qty,
+        p.template_key,
         p.store_category_id
        FROM products p
        JOIN product_types pt ON pt.id = p.product_type_id
@@ -46,6 +47,8 @@ export async function GET(
           name:        row.name,
           type:        row.type,
           base_price:  row.base_price,
+          // Storefront template dispatch (NULL = legacy type-based mapping)
+          template_key: row.template_key || null,
           description: cfg.description || '',
           is_active:   row.is_active,
           // NULL = untracked/unlimited; number = finite stock (hardware)

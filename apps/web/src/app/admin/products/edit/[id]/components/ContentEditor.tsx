@@ -117,7 +117,7 @@ Due to shipping restrictions, any rod longer than **96 inches** will be cut in h
 }
 
 interface ContentEditorProps {
-  productType: 'drapery' | 'sheer' | 'shade' | 'hardware'
+  productType: 'drapery' | 'sheer' | 'shade' | 'hardware' | 'accessory'
   productId: string
   onChange: (blocks: ContentBlock[]) => void
 }
