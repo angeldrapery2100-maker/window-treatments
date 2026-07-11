@@ -49,7 +49,9 @@ params: { "aapp_engine": "roman_shade" }
 params: { "aapp_engine": "drapery" }
 ```
 选项：
-- `style` → 打褶 `2fold_pinch` / `3fold_pinch`；蛇形 `cn_6cm` / `cn_7cm` / `us_60` / `us_80` / `us_100` / `us_120`（cn_/us_ 前缀自动识别为 ripple）
+- `style` → 打褶 `2fold_pinch` / `2fold_tailored` / `3fold_pinch` / `3fold_tailored`
+  （tailored 平尾褶与同折数 pinch 共用 fold2/fold3 褶距参数，价格相同 — 引擎 isFold3 已识别）；
+  蛇形 `cn_6cm` / `cn_7cm` / `us_60` / `us_80` / `us_100` / `us_120`（cn_/us_ 前缀自动识别为 ripple）
 - `operation` → `split`（对开）/ `single_left` / `single_right`
 - `lining` → `NO` / `LF` / `BO`
 - `composition` → `fabric_only` / `sheer_only` / `fabric_plus_sheer`（不设选项时默认 fabric_only）
@@ -80,6 +82,27 @@ AAPP 专用编辑器（默认 ON，`aapp_engine=''` 为显式关闭走旧模型�
 `hw_base_price`/`hw_add_per_foot`/`hw_min_width_in`；finial 不自动计入），
 合并进 optionParams 并置 `options.hardware='yes'`，由 adapter 现有捆绑五金
 路径按杆长 = 成品宽计价。引用商品无价格模型时报错（fail-closed）。
+
+**全局定价参数（公用系统，2026-07-11）**：site-settings 组 `drapery_pricing`
+（`lib/settingGroups.ts`）存所有 drapery 商品共用的衬布/手工/镶边价：
+
+- `lining_no_price_per_yard` (0) / `lining_no_labor_per_panel` (30)
+- `lining_lf_price_per_yard` (6) / `lining_lf_labor_per_panel` (36)
+- `lining_bo_price_per_yard` (8) / `lining_bo_labor_per_panel` (38)
+- `sheer_labor_per_panel` (26)
+- `banding_std_price_per_yard` (15) / `banding_prem_price_per_yard` (25)
+- `banding_labor_per_foot` (10)
+
+括号内为默认值 = AAPP 出厂值（constants.ts DRAPERY_DEFAULTS），未设置时
+定价与从前完全一致。`lib/productPricing.getGlobalDraperyConfig()`（60 秒
+内存缓存）把它们组装成 DeepPartial\<DraperyConfig\>；两个定价入口
+（calculate 路由 & 结算核价 runAappForItem）共用
+`withGlobalDraperyConfig()` 做深合并，**优先级：引擎出厂默认 < 全局
+drapery_pricing 设置 < 商品级 params.aapp_config（商品级最优先）**。
+后台编辑入口：编辑任意 drapery 商品 → 计算参数 → 衬布卡片 →「编辑全局
+参数」。与 AAPP 内部软件的 library.draperyPricingCatalog 对应 —
+两边改价需同步。注意：不提供高度加价系数（heightSurcharge 在 AAPP
+目录里存在但定价代码未使用，网站不得自行发明）。
 
 ### 4. 窗帘杆 / 轨道
 

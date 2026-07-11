@@ -3,7 +3,7 @@ import { query, queryOne } from '@/lib/db'
 import { UnifiedPricingEngine } from '@window-treatments/shared/pricing/engines'
 import { explainDrapery, explainSheer, explainShade } from '@window-treatments/shared/pricing/explainers'
 import { isAappConfigured, calculateAapp } from '@window-treatments/shared/pricing/aapp'
-import { applyHardwareProductSelection } from '@/lib/productPricing'
+import { applyHardwareProductSelection, withGlobalDraperyConfig } from '@/lib/productPricing'
 
 type ProductType = 'drapery' | 'sheer' | 'shade'
 
@@ -151,15 +151,20 @@ export async function POST(request: Request) {
     // options.hardware_product（= 五金商品 id）→ 服务端解析该商品的 hw_* 价格
     // 参数并打开捆绑五金路径 — 与 lib/productPricing 的结算核价共用同一个 helper。
     if (isAappConfigured(mergedBaseParams)) {
+      const engine = String(mergedBaseParams.aapp_engine)
       const resolved = await applyHardwareProductSelection(
-        String(mergedBaseParams.aapp_engine),
+        engine,
         options,
         resolvedOptionValues,
       )
+      // 全局布帘定价（site_settings drapery_pricing 组）merge 在商品级
+      // aapp_config 之下（商品级优先）— 与 lib/productPricing 的结算核价
+      // 共用同一个 helper，两条链路不会漂移。
+      const aappBaseParams = await withGlobalDraperyConfig(engine, mergedBaseParams)
       const aapp = calculateAapp({
         width: input.width,
         height: input.height,
-        baseParams: mergedBaseParams,
+        baseParams: aappBaseParams,
         options: resolved.options,
         optionParams: resolved.optionParams,
       })

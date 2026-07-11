@@ -55,4 +55,75 @@ export const SETTING_GROUPS: Record<string, {
       },
     },
   },
+  // Global drapery pricing (公用系统) — shared by ALL drapery products with
+  // the AAPP engine. Merged UNDER any product-level params.aapp_config
+  // (product-level wins). Defaults = AAPP factory values
+  // (packages/shared/src/pricing/aapp/constants.ts DRAPERY_DEFAULTS); must
+  // stay in sync with AAPP's library.draperyPricingCatalog when prices change.
+  drapery_pricing: {
+    label: '布帘全局定价',
+    description: '所有 drapery 商品共用的衬布/手工/镶边价格（与 AAPP 内部软件对应，两边改价需同步）',
+    settings: {
+      lining_no_price_per_yard: {
+        label: '无衬 衬布价 ($/yd)',
+        description: 'NO 档衬布每码价格',
+        type: 'number',
+        defaultValue: '0',
+      },
+      lining_no_labor_per_panel: {
+        label: '无衬 手工费 ($/幅)',
+        description: 'NO 档每幅手工费',
+        type: 'number',
+        defaultValue: '30',
+      },
+      lining_lf_price_per_yard: {
+        label: '遮光衬 衬布价 ($/yd)',
+        description: 'LF 档衬布每码价格',
+        type: 'number',
+        defaultValue: '6',
+      },
+      lining_lf_labor_per_panel: {
+        label: '遮光衬 手工费 ($/幅)',
+        description: 'LF 档每幅手工费',
+        type: 'number',
+        defaultValue: '36',
+      },
+      lining_bo_price_per_yard: {
+        label: '全遮光衬 衬布价 ($/yd)',
+        description: 'BO 档衬布每码价格',
+        type: 'number',
+        defaultValue: '8',
+      },
+      lining_bo_labor_per_panel: {
+        label: '全遮光衬 手工费 ($/幅)',
+        description: 'BO 档每幅手工费',
+        type: 'number',
+        defaultValue: '38',
+      },
+      sheer_labor_per_panel: {
+        label: '纱层手工费 ($/幅)',
+        description: '纱层每幅手工费',
+        type: 'number',
+        defaultValue: '26',
+      },
+      banding_std_price_per_yard: {
+        label: '标准镶边 ($/yd)',
+        description: 'banding_std 每码价格',
+        type: 'number',
+        defaultValue: '15',
+      },
+      banding_prem_price_per_yard: {
+        label: '高级镶边 ($/yd)',
+        description: 'banding_prem 每码价格',
+        type: 'number',
+        defaultValue: '25',
+      },
+      banding_labor_per_foot: {
+        label: '镶边手工费 ($/ft)',
+        description: '镶边每英尺手工费',
+        type: 'number',
+        defaultValue: '10',
+      },
+    },
+  },
 }

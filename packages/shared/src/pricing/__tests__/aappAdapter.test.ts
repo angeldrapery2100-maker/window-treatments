@@ -42,6 +42,18 @@ describe('aapp adapter', () => {
     expect(r.total).toBe(660)
   })
 
+  it('D1 tailored variant: 2fold_tailored prices identically to 2fold_pinch = $660', () => {
+    // Tailored maps to the SAME fold2 spacing params as pinch (isFold3 in
+    // drapery.ts) — this test locks the style-key mapping, engine unchanged.
+    const r = calculateAapp({
+      width: 100, height: 96,
+      baseParams: { aapp_engine: 'drapery' },
+      options: { style: '2fold_tailored', operation: 'split', lining: 'NO' },
+      optionParams: { fabric_price_per_yard: 30, fabric_width_in: 55 },
+    })
+    expect(r.total).toBe(660)
+  })
+
   it('D2 via adapter: ripple key routes styleFamily=ripple, BO lining = $660', () => {
     const r = calculateAapp({
       width: 120, height: 100,

@@ -11,11 +11,13 @@
 // engine only understands these exact strings.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const AAPP_STYLE_ORDER = ['2fold_pinch', '3fold_pinch', 'cn_6cm', 'cn_7cm', 'us_60', 'us_80', 'us_100', 'us_120'] as const
+export const AAPP_STYLE_ORDER = ['2fold_pinch', '2fold_tailored', '3fold_pinch', '3fold_tailored', 'cn_6cm', 'cn_7cm', 'us_60', 'us_80', 'us_100', 'us_120'] as const
 
 export const AAPP_STYLE_LABELS: Record<string, string> = {
   '2fold_pinch': '2-Fold Pinch Pleat',
+  '2fold_tailored': '2-Fold Tailored Pleat',
   '3fold_pinch': '3-Fold Pinch Pleat',
+  '3fold_tailored': '3-Fold Tailored Pleat',
   cn_6cm: 'Ripplefold 6cm (CN)',
   cn_7cm: 'Ripplefold 7cm (CN)',
   us_60: 'Ripplefold 60% (US)',
@@ -24,9 +26,13 @@ export const AAPP_STYLE_LABELS: Record<string, string> = {
   us_120: 'Ripplefold 120% (US)',
 }
 
+// Admin-UI chrome ONLY (checkbox/pill hints beside the English labels).
+// NEVER written into default_config — stored option labels must be English.
 export const AAPP_STYLE_ZH: Record<string, string> = {
   '2fold_pinch': '两褶',
+  '2fold_tailored': '两褶平尾',
   '3fold_pinch': '三褶',
+  '3fold_tailored': '三褶平尾',
   cn_6cm: '蛇形帘 6cm (国标)',
   cn_7cm: '蛇形帘 7cm (国标)',
   us_60: '蛇形帘 60% (美标)',
@@ -50,14 +56,23 @@ export const AAPP_LINING_TIERS = [
 
 export const AAPP_OPERATION_ORDER = ['split', 'single_left', 'single_right'] as const
 export const AAPP_OPERATION_LABELS: Record<string, string> = {
-  split: 'Split (Pair)',
-  single_left: 'Single Panel — Left',
-  single_right: 'Single Panel — Right',
+  split: 'Split (Center Open)',
+  single_left: 'Single Panel – Left',
+  single_right: 'Single Panel – Right',
 }
+// Admin-UI chrome ONLY — never written into default_config.
 export const AAPP_OPERATION_ZH: Record<string, string> = {
   split: '对开',
   single_left: '单开（左）',
   single_right: '单开（右）',
+}
+
+/** True when a string contains CJK characters. The option auto-sync uses this
+ *  to self-heal engine-managed labels: stored product data (default_config
+ *  option labels / display_labels) is customer-facing and must be English
+ *  only — Chinese belongs exclusively in the admin UI chrome. */
+export function hasCjk(s: unknown): boolean {
+  return /[　-ヿ㐀-鿿豈-﫿！-｠]/.test(String(s ?? ''))
 }
 
 /**
@@ -65,8 +80,10 @@ export const AAPP_OPERATION_ZH: Record<string, string> = {
  * unrecognizable. Used by the one-click `pleat_style` → `style` migration.
  *
  * Recognized examples:
- *   "2 Fold Pinch" / "2 Fold Tailored" / "2fold_pinch"  → 2fold_pinch
+ *   "2 Fold Pinch" / "2fold_pinch"                      → 2fold_pinch
+ *   "2 Fold Tailored" / "2fold_tailored"                → 2fold_tailored
  *   "3 Fold Pinch Pleated"                              → 3fold_pinch
+ *   "3 Fold Tailored"                                   → 3fold_tailored
  *   "Ripplefold 6cm" / "CN 6cm"                         → cn_6cm
  *   "Ripplefold 80%" / "US 80"                          → us_80
  */
@@ -75,8 +92,12 @@ export function normalizePleatStyleValue(raw: unknown): string | null {
   if (!s) return null
   if ((AAPP_STYLE_ORDER as readonly string[]).includes(s)) return s
   const c = s.replace(/[\s\-_./()]+/g, '')
-  if (c.startsWith('2fold') || c.startsWith('twofold') || c.startsWith('doublepinch')) return '2fold_pinch'
-  if (c.startsWith('3fold') || c.startsWith('threefold') || c.startsWith('triplepinch')) return '3fold_pinch'
+  // 'tailored' must be checked BEFORE defaulting to pinch — "2 Fold Tailored"
+  // used to collapse into 2fold_pinch.
+  if (c.startsWith('2fold') || c.startsWith('twofold')) return c.includes('tailored') ? '2fold_tailored' : '2fold_pinch'
+  if (c.startsWith('doublepinch')) return '2fold_pinch'
+  if (c.startsWith('3fold') || c.startsWith('threefold')) return c.includes('tailored') ? '3fold_tailored' : '3fold_pinch'
+  if (c.startsWith('triplepinch')) return '3fold_pinch'
   if (c.includes('6cm')) return 'cn_6cm'
   if (c.includes('7cm')) return 'cn_7cm'
   if (/ripple|wave|snake|蛇形|^us/.test(c)) {

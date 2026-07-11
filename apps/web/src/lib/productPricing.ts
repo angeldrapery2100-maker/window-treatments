@@ -16,7 +16,8 @@
 
 import { query, queryOne } from '@/lib/db'
 import { UnifiedPricingEngine } from '@window-treatments/shared/pricing/engines'
-import { isAappConfigured, calculateAapp } from '@window-treatments/shared/pricing/aapp'
+import { isAappConfigured, calculateAapp, mergeAappConfig } from '@window-treatments/shared/pricing/aapp'
+import { SETTING_GROUPS } from '@/lib/settingGroups'
 
 export type EngineProductType = 'drapery' | 'sheer' | 'shade'
 export type OptionValues = Record<string, Record<string, Record<string, number>>>
@@ -156,6 +157,96 @@ function mergeSelectedOptionParams(cfgOptions: any[], sel: Record<string, string
   return optionParams
 }
 
+// ── Global drapery pricing settings (公用系统) ────────────────────────────────
+// Site-settings group `drapery_pricing` (lib/settingGroups.ts) holds the
+// lining/labor/banding tier prices shared by ALL drapery products, editable in
+// ONE place (admin product editor → 计算参数 → 衬布 card). Built into the
+// engine's DeepPartial<DraperyConfig> override shape and merged UNDER any
+// product-level baseParams.aapp_config, so precedence is:
+//   engine factory defaults < global drapery_pricing settings < product aapp_config
+// Defaults mirror AAPP factory values — when the site_settings table is empty
+// (or unreachable) pricing is identical to before this feature existed.
+
+const DRAPERY_PRICING_KEYS = Object.keys(SETTING_GROUPS.drapery_pricing.settings)
+
+let _gdcCache: { at: number; cfg: Record<string, any> | null } | null = null
+const GDC_TTL_MS = 60_000
+
+/** Test/ops hook: drop the 60s memo so the next call re-reads site_settings. */
+export function invalidateGlobalDraperyConfig(): void {
+  _gdcCache = null
+}
+
+/**
+ * Load the `drapery_pricing` settings group and shape it as a
+ * DeepPartial<DraperyConfig> override for the AAPP drapery engine.
+ * 60s in-memory memo. Returns null when settings can't be read (engine
+ * defaults then apply unchanged — fail-open to factory AAPP values).
+ */
+export async function getGlobalDraperyConfig(): Promise<Record<string, any> | null> {
+  if (_gdcCache && Date.now() - _gdcCache.at < GDC_TTL_MS) return _gdcCache.cfg
+
+  let cfg: Record<string, any> | null = null
+  try {
+    const rows = await query<{ key: string; value: string }>(
+      'SELECT key, value FROM site_settings WHERE key = ANY($1)',
+      [DRAPERY_PRICING_KEYS]
+    )
+    const stored: Record<string, string> = {}
+    for (const r of rows) stored[r.key] = r.value
+
+    // Unset keys fall back to the group's defaultValue (= AAPP factory value).
+    const val = (key: string): number => {
+      const meta = SETTING_GROUPS.drapery_pricing.settings[key]
+      const raw = stored[key] ?? meta.defaultValue
+      const n = Number(raw)
+      return Number.isFinite(n) && n >= 0 ? n : Number(meta.defaultValue)
+    }
+
+    cfg = {
+      liningOptions: {
+        NO: { liningPricePerYard: val('lining_no_price_per_yard'), laborPerPanel: val('lining_no_labor_per_panel') },
+        LF: { liningPricePerYard: val('lining_lf_price_per_yard'), laborPerPanel: val('lining_lf_labor_per_panel') },
+        BO: { liningPricePerYard: val('lining_bo_price_per_yard'), laborPerPanel: val('lining_bo_labor_per_panel') },
+      },
+      sheerLaborPerPanel: val('sheer_labor_per_panel'),
+      banding: {
+        laborPerFoot: val('banding_labor_per_foot'),
+        styles: {
+          banding_std: { pricePerYard: val('banding_std_price_per_yard') },
+          banding_prem: { pricePerYard: val('banding_prem_price_per_yard') },
+        },
+      },
+    }
+  } catch {
+    cfg = null // table missing / db hiccup → engine factory defaults
+  }
+
+  _gdcCache = { at: Date.now(), cfg }
+  return cfg
+}
+
+/**
+ * Shared by BOTH pricing entry points (runAappForItem here and the
+ * /api/store/pricing/calculate route) so the global-config merge can never
+ * drift between live quote and checkout re-verification.
+ * For engine 'drapery', returns baseParams with `aapp_config` = global
+ * settings deep-merged UNDER the product-level aapp_config (product wins).
+ * Other engines pass through untouched.
+ */
+export async function withGlobalDraperyConfig(
+  engine: string,
+  baseParams: Record<string, any>,
+): Promise<Record<string, any>> {
+  if (engine !== 'drapery') return baseParams
+  const global = await getGlobalDraperyConfig()
+  if (!global) return baseParams
+  const productCfg = baseParams.aapp_config && typeof baseParams.aapp_config === 'object'
+    ? baseParams.aapp_config
+    : undefined
+  return { ...baseParams, aapp_config: mergeAappConfig(global, productCfg) }
+}
+
 // ── Hardware-by-product-reference (drapery bundled rod/track) ────────────────
 // Convention: the drapery configurator stores the chosen add-on rod/track as
 // option `hardware_product` = <hardware product id> ('none' = declined). The
@@ -250,11 +341,14 @@ async function runAappForItem(cfg: any, item: ServerPriceItem, sel: Record<strin
 
   const optionParams = mergeSelectedOptionParams(cfg.options || [], sel)
   const resolved = await applyHardwareProductSelection(engine, sel, optionParams)
+  // Global drapery pricing settings merged UNDER product aapp_config —
+  // same helper as the calculate route (no drift).
+  const baseParams = await withGlobalDraperyConfig(engine, cfg.params || {})
 
   const result = calculateAapp({
     width,
     height,
-    baseParams: cfg.params || {},
+    baseParams,
     options: resolved.options,
     optionParams: resolved.optionParams,
   })

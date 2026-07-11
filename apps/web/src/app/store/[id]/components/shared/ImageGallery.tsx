@@ -22,7 +22,7 @@ export default function ImageGallery({ mainImages, galleryImages }: Props) {
         {current ? (
           <Image
             src={current.url}
-            alt={current.name || '产品图片'}
+            alt={current.name || 'Product image'}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"

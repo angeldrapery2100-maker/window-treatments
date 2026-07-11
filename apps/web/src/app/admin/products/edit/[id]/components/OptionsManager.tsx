@@ -66,7 +66,7 @@ const DEFAULT_OPTIONS: Record<string, ProductOption[]> = {
 // AAPP drapery mode: no free-text pleat_style — style/lining/operation are
 // engine-managed (auto-synced from the 计算参数 tab).
 const AAPP_DRAPERY_DEFAULTS: ProductOption[] = [
-  { id: 'style', name: 'style', type: 'select', display_label: 'Style', values: [] },
+  { id: 'style', name: 'style', type: 'select', display_label: 'Pleat Style', values: [] },
   { id: 'fabric_color', name: 'fabric_color', type: 'select', display_label: 'Fabric Color', values: [] },
   { id: 'lining', name: 'lining', type: 'select', display_label: 'Lining', values: [] },
   { id: 'operation', name: 'operation', type: 'select', display_label: 'Operation', values: [] },
@@ -304,7 +304,7 @@ export default function OptionsManager({ productType, productId, onChange, optio
     } else {
       // Rename pleat_style in place (keeps its sort order); remove any empty
       // placeholder style option elsewhere in the list.
-      next[idx] = { id: 'style', name: 'style', type: 'select', display_label: 'Style', values: styleValues }
+      next[idx] = { id: 'style', name: 'style', type: 'select', display_label: 'Pleat Style', values: styleValues }
       if (existingStyle) next.splice(next.findIndex(o => o === existingStyle), 1)
     }
     update(next)
