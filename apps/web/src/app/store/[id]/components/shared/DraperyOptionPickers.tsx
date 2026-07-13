@@ -92,38 +92,11 @@ export function FabricSwatchGrid({ values, selected, onSelect }: PickerProps) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ② Style — illustrated pleat-diagram cards (inline line-art SVG)
+// ② Style — clean text cards (the line-art pleat diagrams were removed
+//    2026-07-13 at Eddie's request: hand-drawn SVGs couldn't represent the
+//    real pleat construction faithfully. Photography belongs in the product
+//    gallery/description; the picker just needs clear labels.)
 // ─────────────────────────────────────────────────────────────────────────────
-
-type StyleDiagram =
-  | { family: 'pinch'; folds: 2 | 3 }
-  | { family: 'tailored'; folds: 2 | 3 }
-  | { family: 'ripple'; waves: number }
-
-/** Map an option value (engine key or legacy free text) to a diagram spec.
- *  null = unrecognized → plain text card. */
-export function styleDiagram(value: string, label?: string): StyleDiagram | null {
-  const exact: Record<string, StyleDiagram> = {
-    '2fold_pinch':    { family: 'pinch',    folds: 2 },
-    '2fold_tailored': { family: 'tailored', folds: 2 },
-    '3fold_pinch':    { family: 'pinch',    folds: 3 },
-    '3fold_tailored': { family: 'tailored', folds: 3 },
-    cn_6cm: { family: 'ripple', waves: 8 },
-    cn_7cm: { family: 'ripple', waves: 7 },
-    us_60:  { family: 'ripple', waves: 5 },
-    us_80:  { family: 'ripple', waves: 6 },
-    us_100: { family: 'ripple', waves: 7 },
-    us_120: { family: 'ripple', waves: 8 },
-  }
-  const key = (value || '').trim().toLowerCase()
-  if (exact[key]) return exact[key]
-  // Loose fallback for hand-typed legacy values ("2 Fold Pinch Pleated"…)
-  const c = `${key} ${(label || '').toLowerCase()}`.replace(/[\s\-_./()]+/g, '')
-  if (/ripple|wave|snake/.test(c)) return { family: 'ripple', waves: 6 }
-  if (/^2fold|^twofold|doublepinch/.test(c)) return c.includes('tailored') ? { family: 'tailored', folds: 2 } : { family: 'pinch', folds: 2 }
-  if (/^3fold|^threefold|triplepinch/.test(c)) return c.includes('tailored') ? { family: 'tailored', folds: 3 } : { family: 'pinch', folds: 3 }
-  return null
-}
 
 const svgProps = {
   viewBox: '0 0 72 48',
@@ -135,97 +108,24 @@ const svgProps = {
   'aria-hidden': true as const,
 }
 
-/** Pinch pleat: fabric gathered to a pinch point below the rod, flaring down. */
-function PinchPleatSvg({ folds }: { folds: 2 | 3 }) {
-  const groups = [16, 36, 56]
-  const spread = folds === 3 ? 5 : 3.5
-  return (
-    <svg {...svgProps} className="w-full h-12">
-      <line x1="4" y1="6" x2="68" y2="6" />
-      {groups.map(c => (
-        <g key={c}>
-          <line x1={c} y1="6" x2={c} y2="13" />
-          {(folds === 3 ? [-spread, 0, spread] : [-spread, spread]).map(dx => (
-            <path key={dx} d={`M${c} 13 C ${c + dx * 0.4} 24, ${c + dx} 34, ${c + dx} 44`} />
-          ))}
-        </g>
-      ))}
-    </svg>
-  )
-}
-
-/** Tailored pleat: straight-top pleats — parallel bars falling from the header. */
-function TailoredPleatSvg({ folds }: { folds: 2 | 3 }) {
-  const groups = [16, 36, 56]
-  const spread = folds === 3 ? 4 : 3
-  return (
-    <svg {...svgProps} className="w-full h-12">
-      <line x1="4" y1="6" x2="68" y2="6" />
-      {groups.map(c => (
-        <g key={c}>
-          {/* header box (sewn straight top) */}
-          <rect x={c - spread - 1.5} y="10" width={(spread + 1.5) * 2} height="6" rx="1" />
-          {(folds === 3 ? [-spread, 0, spread] : [-spread, spread]).map(dx => (
-            <line key={dx} x1={c + dx} y1="16" x2={c + dx} y2="44" />
-          ))}
-        </g>
-      ))}
-    </svg>
-  )
-}
-
-/** Ripplefold: one continuous S-wave along the track with soft drops. */
-function RipplefoldSvg({ waves }: { waves: number }) {
-  const x0 = 4
-  const width = 64
-  const seg = width / waves
-  const top = 12
-  let d = `M${x0} ${top}`
-  for (let i = 0; i < waves; i++) {
-    const dir = i % 2 === 0 ? -1 : 1
-    d += ` q ${seg / 2} ${dir * 10} ${seg} 0`
-  }
-  const drops: number[] = []
-  for (let i = 1; i < waves; i++) drops.push(x0 + i * seg)
-  return (
-    <svg {...svgProps} className="w-full h-12">
-      <line x1="4" y1="5" x2="68" y2="5" strokeDasharray="2 3" />
-      <path d={d} />
-      {drops.map(x => <line key={x} x1={x} y1={top} x2={x} y2="44" />)}
-    </svg>
-  )
-}
-
-function StyleSvg({ diagram }: { diagram: StyleDiagram }) {
-  if (diagram.family === 'pinch') return <PinchPleatSvg folds={diagram.folds} />
-  if (diagram.family === 'tailored') return <TailoredPleatSvg folds={diagram.folds} />
-  return <RipplefoldSvg waves={diagram.waves} />
-}
-
 export function StyleCardPicker({ values, selected, onSelect }: PickerProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {values.map(v => {
         const isSel = selected === v.value
-        const diagram = styleDiagram(v.value, v.label)
         return (
           <button
             key={v.value}
             type="button"
             onClick={() => onSelect(v.value)}
             aria-pressed={isSel}
-            className={`rounded border p-2.5 text-center transition-colors ${
+            className={`rounded border px-2.5 py-3.5 text-center transition-colors ${
               isSel
-                ? 'border-gray-900 ring-1 ring-gray-900 bg-gray-50 text-gray-900'
+                ? 'border-gray-900 ring-1 ring-gray-900 bg-gray-50 text-gray-900 font-medium'
                 : 'border-gray-200 text-gray-600 hover:border-gray-400'
             }`}
           >
-            {diagram ? (
-              <StyleSvg diagram={diagram} />
-            ) : (
-              <span className="flex h-12 items-center justify-center text-gray-300 text-lg">—</span>
-            )}
-            <span className="mt-1.5 block text-[11px] leading-tight">{v.label || v.value}</span>
+            <span className="block text-xs leading-snug">{v.label || v.value}</span>
           </button>
         )
       })}
