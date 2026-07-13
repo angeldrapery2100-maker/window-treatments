@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import {
   AAPP_STYLE_ORDER, AAPP_STYLE_LABELS, AAPP_STYLE_ZH,
-  AAPP_LINING_ORDER, AAPP_LINING_LABELS,
+  AAPP_LINING_ORDER, AAPP_LINING_LABELS, AAPP_LINING_TIERS,
   AAPP_OPERATION_ORDER, AAPP_OPERATION_LABELS, AAPP_OPERATION_ZH,
   hasCjk,
 } from './aappPresets'
@@ -82,10 +82,13 @@ function upsertManagedOption(options: any[], name: string, displayLabel: string,
   return out
 }
 
-/** Full sync of the three engine-managed options for an AAPP drapery product. */
-function syncAappDraperyOptions(options: any[], styleKeys: string[]): any[] {
+/** Full sync of the three engine-managed options for an AAPP drapery product.
+ *  liningKeys: which lining tiers this product offers (admin checkboxes —
+ *  page simplification 2026-07-13; empty array = no lining choice shown,
+ *  engine prices as NO). */
+function syncAappDraperyOptions(options: any[], styleKeys: string[], liningKeys: string[]): any[] {
   let out = upsertManagedOption(options, 'style', 'Pleat Style', styleKeys, AAPP_STYLE_LABELS)
-  out = upsertManagedOption(out, 'lining', 'Lining', [...AAPP_LINING_ORDER], AAPP_LINING_LABELS)
+  out = upsertManagedOption(out, 'lining', 'Lining', liningKeys, AAPP_LINING_LABELS)
   out = upsertManagedOption(out, 'operation', 'Operation', [...AAPP_OPERATION_ORDER], AAPP_OPERATION_LABELS)
   return out
 }
@@ -105,6 +108,15 @@ function readStyleKeys(options: any[] | null): string[] | null {
   if (!opt) return null
   const vals: any[] = Array.isArray(opt.values) ? opt.values : []
   return AAPP_STYLE_ORDER.filter(k => vals.some((v: any) => v?.value === k))
+}
+
+/** Lining tiers currently offered. null → option absent (treat as all three). */
+function readLiningKeys(options: any[] | null): string[] | null {
+  if (!options) return null
+  const opt = options.find((o: any) => o?.name === 'lining')
+  if (!opt) return null
+  const vals: any[] = Array.isArray(opt.values) ? opt.values : []
+  return AAPP_LINING_ORDER.filter(k => vals.some((v: any) => v?.value === k))
 }
 
 /** Flatten each option value's numeric params — mirrors useProductData.buildOptionValues. */
@@ -132,9 +144,9 @@ function buildOptionValuesFromDraft(options: any[]): Record<string, Record<strin
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Global drapery pricing card: extracted to
-// @/components/admin/GlobalDraperyPricingCard (store redesign P4) so this tab
-// and /admin/pricing-library render the SAME editor implementation.
+// Global drapery pricing card: @/components/admin/GlobalDraperyPricingCard.
+// This 计算参数 tab is its ONLY mount point since the /admin/pricing-library
+// page was removed (页面简化 2026-07-13) — saving here applies globally.
 // ─────────────────────────────────────────────────────────────────────────────
 
 function SaveStartingPriceButton({ productId, total }: { productId: string; total: number | null }) {
@@ -481,16 +493,13 @@ function explainAappError(err: string): string {
 // AAPP drapery preview — debounced auto-recalc against the REAL pricing route
 // ─────────────────────────────────────────────────────────────────────────────
 
-interface HwProduct { id: string; name: string; main_image_url: string | null; is_active: boolean }
-
-function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly = false }: {
+function AappDraperyPreview({ productId, params, draftOptions, sheerOnly = false }: {
   productId: string
   params: ProductParams
   draftOptions: any[]
-  hwList: HwProduct[]
-  /** Sheer migration mode (aapp_composition = sheer_only): no lining, no
-   *  bundled hardware; the fabric option's per-color override key is
-   *  sheer_price_per_yard instead of fabric_price_per_yard. */
+  /** Sheer migration mode (aapp_composition = sheer_only): no lining; the
+   *  fabric option's per-color override key is sheer_price_per_yard instead
+   *  of fabric_price_per_yard. */
   sheerOnly?: boolean
 }) {
   const [width, setWidth] = useState('100')
@@ -502,10 +511,9 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
   const reqSeq = useRef(0)
 
   const styleKeys = readStyleKeys(draftOptions) ?? []
-  const selectedHwIds: string[] = !sheerOnly && Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
-  const hwChoices = selectedHwIds
-    .map(id => hwList.find(h => h.id === id))
-    .filter((h): h is HwProduct => !!h)
+  // Lining tiers this product offers (admin checkboxes) — the preview only
+  // lets you pick what the storefront will actually show.
+  const liningKeys = sheerOnly ? [] : (readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER])
 
   // Fabric option (per-color overrides): any option whose values carry
   // fabric_price_per_yard (sheer_price_per_yard in sheer mode), falling back
@@ -525,12 +533,8 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
     setSel(prev => {
       const next = { ...prev }
       if (!next.style || !styleKeys.includes(next.style)) next.style = styleKeys[0] || ''
-      if (!next.lining || !AAPP_LINING_ORDER.includes(next.lining as any)) next.lining = 'NO'
+      if (!next.lining || !liningKeys.includes(next.lining)) next.lining = liningKeys[0] || ''
       if (!next.operation || !AAPP_OPERATION_ORDER.includes(next.operation as any)) next.operation = 'split'
-      if (next.hardware_product && next.hardware_product !== 'none' && !selectedHwIds.includes(next.hardware_product)) {
-        next.hardware_product = 'none'
-      }
-      if (!next.hardware_product) next.hardware_product = 'none'
       if (fabricOpt) {
         const vals = fabricOpt.values.map((v: any) => v.value)
         if (next.__fabric && !vals.includes(next.__fabric)) delete next.__fabric
@@ -540,7 +544,7 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
       return JSON.stringify(next) === JSON.stringify(prev) ? prev : next
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(styleKeys), JSON.stringify(selectedHwIds), fabricOpt])
+  }, [JSON.stringify(styleKeys), JSON.stringify(liningKeys), fabricOpt])
 
   const calculate = useCallback(async () => {
     const w = parseFloat(width)
@@ -554,7 +558,6 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
       if (!sheerOnly && sel.lining) options.lining = sel.lining
       if (sel.operation) options.operation = sel.operation
       if (fabricOpt && sel.__fabric) options[fabricOpt.name] = sel.__fabric
-      if (!sheerOnly && sel.hardware_product && sel.hardware_product !== 'none') options.hardware_product = sel.hardware_product
 
       // The calculate route's AAPP branch triggers on baseParams.aapp_engine
       // regardless of productType — post the storefront's own type so the
@@ -620,8 +623,9 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
         {!sheerOnly && (
           <div>
             <label className="block text-[11px] text-gray-500 mb-1">衬布 Lining</label>
-            <select value={sel.lining || 'NO'} onChange={e => setSel(p => ({ ...p, lining: e.target.value }))} className={selCls}>
-              {AAPP_LINING_ORDER.map(k => <option key={k} value={k}>{k} · {AAPP_LINING_LABELS[k]}</option>)}
+            <select value={sel.lining || ''} onChange={e => setSel(p => ({ ...p, lining: e.target.value }))} className={selCls}>
+              {liningKeys.length === 0 && <option value="">（未勾选衬布档 — 按无衬计价）</option>}
+              {liningKeys.map(k => <option key={k} value={k}>{k} · {AAPP_LINING_LABELS[k]}</option>)}
             </select>
           </div>
         )}
@@ -637,15 +641,6 @@ function AappDraperyPreview({ productId, params, draftOptions, hwList, sheerOnly
             <select value={sel.__fabric || ''} onChange={e => setSel(p => ({ ...p, __fabric: e.target.value }))} className={selCls}>
               <option value="">默认价 (Default)</option>
               {fabricOpt.values.map((v: any) => <option key={v.value} value={v.value}>{v.label || v.value}</option>)}
-            </select>
-          </div>
-        )}
-        {!sheerOnly && (
-          <div>
-            <label className="block text-[11px] text-gray-500 mb-1">配套五金 Rod/Track</label>
-            <select value={sel.hardware_product || 'none'} onChange={e => setSel(p => ({ ...p, hardware_product: e.target.value }))} className={selCls}>
-              <option value="none">不配 (None)</option>
-              {hwChoices.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
             </select>
           </div>
         )}
@@ -701,7 +696,6 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   // Drapery AAPP mode: draft copy of default_config.options (style/lining/
   // operation are auto-managed here and reported up via onOptionsChange).
   const [draftOptions, setDraftOptions] = useState<any[] | null>(null)
-  const [hwList, setHwList] = useState<HwProduct[] | null>(null)
 
   useEffect(() => { fetchParams() }, [productId])
 
@@ -724,12 +718,11 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
     finally { setLoading(false) }
   }
 
-  // Drapery + sheer: load options draft (both manage engine options here);
-  // the hardware product list is drapery-only (sheer has no bundled rod).
+  // Drapery + sheer: load options draft (both manage engine options here).
   useEffect(() => {
     if (productType !== 'drapery' && productType !== 'sheer') return
     // Prefer the page's unsaved draft (edits from the 选项配置 tab) so the
-    // 款式勾选 checkboxes and OptionsManager's pick-list never fight.
+    // two tabs never fight over the same values array.
     if (Array.isArray(optionsDraft) && optionsDraft.length > 0) {
       setDraftOptions(optionsDraft)
     } else {
@@ -738,13 +731,6 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
         .then(d => setDraftOptions(d.data?.options || []))
         .catch(() => setDraftOptions([]))
     }
-    if (productType !== 'drapery') { setHwList([]); return }
-    fetch('/api/admin/products?type=hardware&status=all&limit=200')
-      .then(r => r.json())
-      .then(d => setHwList((d.data?.products || []).map((p: any) => ({
-        id: p.id, name: p.name, main_image_url: p.main_image_url || null, is_active: !!p.is_active,
-      }))))
-      .catch(() => setHwList([]))
   }, [productType, productId])
 
   const set = useCallback((key: keyof ProductParams, value: any) => {
@@ -771,10 +757,10 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   // must be price-verified against AAPP before switching a live product.
   const sheerAappOn = productType === 'sheer' && params.aapp_engine === 'drapery'
 
-  const applyOptionsSync = useCallback((base: any[], styleKeys: string[], mode: 'drapery' | 'sheer' = 'drapery') => {
+  const applyOptionsSync = useCallback((base: any[], styleKeys: string[], liningKeys: string[], mode: 'drapery' | 'sheer' = 'drapery') => {
     const synced = mode === 'sheer'
       ? syncAappSheerOptions(base, styleKeys)
-      : syncAappDraperyOptions(base, styleKeys)
+      : syncAappDraperyOptions(base, styleKeys, liningKeys)
     if (JSON.stringify(synced) !== JSON.stringify(base)) {
       setDraftOptions(synced)
       onOptionsChange?.(synced)
@@ -793,7 +779,8 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   useEffect(() => {
     if (!aappOn || !draftOptions) return
     const styles = readStyleKeys(draftOptions) ?? ['2fold_pinch', '3fold_pinch']
-    applyOptionsSync(draftOptions, styles)
+    const linings = readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER]
+    applyOptionsSync(draftOptions, styles, linings)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aappOn, draftOptions === null])
 
@@ -802,7 +789,7 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   useEffect(() => {
     if (!sheerAappOn || !draftOptions) return
     const styles = readStyleKeys(draftOptions) ?? ['2fold_pinch', '3fold_pinch']
-    applyOptionsSync(draftOptions, styles, 'sheer')
+    applyOptionsSync(draftOptions, styles, [], 'sheer')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheerAappOn, draftOptions === null])
 
@@ -812,13 +799,18 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
     if (current.has(key)) current.delete(key)
     else current.add(key)
     const ordered = AAPP_STYLE_ORDER.filter(k => current.has(k))
-    applyOptionsSync(draftOptions, ordered, sheerAappOn ? 'sheer' : 'drapery')
+    const linings = readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER]
+    applyOptionsSync(draftOptions, ordered, linings, sheerAappOn ? 'sheer' : 'drapery')
   }
 
-  const toggleHardwareProduct = (id: string) => {
-    const cur: string[] = Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
-    const next = cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id]
-    set('aapp_hardware_products', next)
+  const toggleLining = (key: string) => {
+    if (!draftOptions) return
+    const current = new Set(readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER])
+    if (current.has(key)) current.delete(key)
+    else current.add(key)
+    const ordered = AAPP_LINING_ORDER.filter(k => current.has(k))
+    const styles = readStyleKeys(draftOptions) ?? ['2fold_pinch', '3fold_pinch']
+    applyOptionsSync(draftOptions, styles, ordered)
   }
 
   if (loading) return <div className="text-center py-8 text-gray-500">加载中...</div>
@@ -828,35 +820,35 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   const hintCls = "text-xs text-gray-500 mt-1"
 
   const checkedStyles = new Set(readStyleKeys(draftOptions) ?? [])
-  const sheerOn = params.aapp_composition === 'fabric_plus_sheer'
-  const selectedHwIds: string[] = Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
+  const checkedLinings = new Set(readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER])
+  // Leftover data from removed features (page simplification 2026-07-13):
+  // drapery products are single-layer, no bundled-hardware add-on. If an old
+  // draft still carries these params they'd silently affect pricing — surface
+  // a one-click cleanup instead of hiding them.
+  const legacySheerOn = productType === 'drapery' && params.aapp_composition === 'fabric_plus_sheer'
+  const legacyHwIds: string[] = productType === 'drapery' && Array.isArray(params.aapp_hardware_products) ? params.aapp_hardware_products : []
 
   return (
     <div className="space-y-6">
       {productType === 'drapery' && (
         <>
-          {/* ── AAPP engine switch ── */}
-          <div className={`flex items-start justify-between rounded-lg border p-4 ${aappOn ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 bg-gray-50'}`}>
-            <div>
-              <p className="text-sm font-semibold text-gray-900">AAPP 对齐引擎 <span className="font-normal text-gray-500">/ AAPP-Parity Pricing Engine</span></p>
-              <p className="text-xs text-gray-500 mt-1 max-w-xl">
-                启用后与内部 AAPP 软件 1:1 同一套打褶求解器定价（spacing-first 褶距算法 + 幅数/衬布/手工规则），
-                不再使用旧的「宽度倍率 × 3」模型。关闭则保留旧模型（仅用于历史商品）。
+          {/* Legacy width-multiplier products only: slim re-enable banner
+              (the old big engine ON/OFF card was removed — AAPP engine is the
+              standard, page simplification 2026-07-13). */}
+          {!aappOn && (
+            <div className="flex items-start justify-between rounded-lg border border-amber-300 bg-amber-50 p-3">
+              <p className="text-xs text-amber-800">
+                此商品仍在使用旧「宽度倍率 × 3」定价模型（仅限历史商品）。新商品一律使用与内部
+                AAPP 软件 1:1 的对齐引擎。
               </p>
+              <button
+                onClick={() => set('aapp_engine', 'drapery')}
+                className="shrink-0 ml-3 px-2.5 py-1 text-xs border border-amber-400 rounded text-amber-800 hover:bg-amber-100"
+              >
+                切换到 AAPP 引擎
+              </button>
             </div>
-            <label className="flex items-center gap-2 cursor-pointer select-none shrink-0 ml-4">
-              <input
-                type="checkbox"
-                checked={aappOn}
-                onChange={e => {
-                  if (e.target.checked) set('aapp_engine', 'drapery')
-                  else set('aapp_engine', '')  // '' = explicit legacy opt-out
-                }}
-                className="h-4 w-4 accent-emerald-600"
-              />
-              <span className={`text-sm font-medium ${aappOn ? 'text-emerald-700' : 'text-gray-500'}`}>{aappOn ? 'ON' : 'OFF'}</span>
-            </label>
-          </div>
+          )}
 
           {aappOn ? (
             <>
@@ -878,43 +870,43 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                 </div>
               </div>
 
-              {/* ── Sheer layer ── */}
-              <div className="border border-gray-200 rounded-lg p-4">
-                <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={sheerOn}
-                    onChange={e => {
-                      if (e.target.checked) set('aapp_composition', 'fabric_plus_sheer')
-                      else setMany({}, ['aapp_composition', 'aapp_sheer_price_per_yard', 'aapp_sheer_width_in'])
-                    }}
-                    className="h-4 w-4 accent-gray-800"
-                  />
-                  <span className="text-sm font-medium text-gray-800">纱层 / Sheer Layer（主布 + 纱双层）</span>
-                </label>
-                <p className="text-xs text-gray-400 mt-1 ml-6">启用后此商品所有报价均含纱层（composition = fabric_plus_sheer）。如需让客户自选，请在选项配置中手动添加 composition 选项。</p>
-                {sheerOn && (
-                  <div className="grid grid-cols-2 gap-6 mt-4">
-                    <div>
-                      <label className={labelCls}>纱层单价 / Sheer Price ($/yd)</label>
-                      <input type="number" step="0.01" value={params.aapp_sheer_price_per_yard ?? ''}
-                        onChange={e => set('aapp_sheer_price_per_yard', e.target.value === '' ? undefined : parseFloat(e.target.value))}
-                        className={inputCls} placeholder="如 18" />
-                    </div>
-                    <div>
-                      <label className={labelCls}>纱层幅宽 / Sheer Width (inch)</label>
-                      <input type="number" step="0.1" value={params.aapp_sheer_width_in ?? ''}
-                        onChange={e => set('aapp_sheer_width_in', e.target.value === '' ? undefined : parseFloat(e.target.value))}
-                        className={inputCls} placeholder="默认 55" />
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* ── Leftover-data cleanup notices (removed features) ── */}
+              {legacySheerOn && (
+                <div className="flex items-start justify-between rounded-lg border border-amber-300 bg-amber-50 p-3">
+                  <p className="text-xs text-amber-800">
+                    ⚠️ 此商品还带着旧的「纱层」参数（composition = fabric_plus_sheer），会继续按双层计价。
+                    drapery 商品现在只做单层 — 建议移除。
+                  </p>
+                  <button
+                    onClick={() => setMany({}, ['aapp_composition', 'aapp_sheer_price_per_yard', 'aapp_sheer_width_in'])}
+                    className="shrink-0 ml-3 px-2.5 py-1 text-xs border border-amber-400 rounded text-amber-800 hover:bg-amber-100"
+                  >
+                    移除纱层参数
+                  </button>
+                </div>
+              )}
+              {legacyHwIds.length > 0 && (
+                <div className="flex items-start justify-between rounded-lg border border-amber-300 bg-amber-50 p-3">
+                  <p className="text-xs text-amber-800">
+                    ⚠️ 此商品还带着旧的「配套五金」引用（{legacyHwIds.length} 件），前台仍会显示加购卡片。
+                    该功能已从编辑页移除 — 建议清除。
+                  </p>
+                  <button
+                    onClick={() => setMany({}, ['aapp_hardware_products'])}
+                    className="shrink-0 ml-3 px-2.5 py-1 text-xs border border-amber-400 rounded text-amber-800 hover:bg-amber-100"
+                  >
+                    清除五金引用
+                  </button>
+                </div>
+              )}
 
               {/* ── Style offering (auto-syncs the 'style' option) ── */}
               <div className="border border-gray-200 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-900">款式提供 / Styles Offered</h4>
-                <p className="text-xs text-gray-400 mt-1 mb-3">勾选即自动同步商品的 style 选项（客户前台可选）。已有的自定义 label 会保留。</p>
+                <p className="text-xs text-gray-400 mt-1 mb-3">
+                  勾选 = 前台提供该款式（唯一编辑入口，选项配置页为只读展示）。
+                  对开/单开（operation）选项自动同步，无需配置。
+                </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {AAPP_STYLE_ORDER.map(k => (
                     <label key={k} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedStyles.has(k) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
@@ -931,58 +923,30 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                 )}
               </div>
 
-              {/* ── Lining / global drapery pricing (site-settings group) ── */}
-              <div className="grid grid-cols-2 gap-6">
-                <GlobalDraperyPricingCard />
-
-                {/* ── Operation (auto-synced option) ── */}
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-gray-900">对开 / 单开（自动同步 operation 选项）</h4>
-                  <ul className="text-xs text-gray-600 mt-3 space-y-1.5">
-                    {AAPP_OPERATION_ORDER.map(k => (
-                      <li key={k} className="flex items-center gap-2">
-                        <span className={`inline-block w-1.5 h-1.5 rounded-full ${k === 'split' ? 'bg-emerald-500' : 'bg-gray-300'}`} />
-                        <span className="font-mono text-[11px] text-gray-400 w-24">{k}</span>
-                        <span>{AAPP_OPERATION_ZH[k]} · {AAPP_OPERATION_LABELS[k]}</span>
-                        {k === 'split' && <span className="text-[10px] text-emerald-600">默认</span>}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-[11px] text-gray-400 mt-3">对开 = 2 片（每片宽 = 成品宽 ÷ 2），单开 = 1 整片。片数直接进入褶距求解器。</p>
-                </div>
-              </div>
-
-              {/* ── Matching hardware (real store products) ── */}
+              {/* ── Lining tiers offered (auto-syncs the 'lining' option) ── */}
               <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-900">配套五金 / Matching Rod-Track Add-on</h4>
+                <h4 className="text-sm font-semibold text-gray-900">衬布提供 / Lining Tiers Offered</h4>
                 <p className="text-xs text-gray-400 mt-1 mb-3">
-                  从商店的真实五金商品中多选。前台按所选商品显示卡片；价格取自该五金商品自己的配置，
-                  杆长自动 = 窗帘成品宽。
+                  勾选 = 前台提供该衬布档。各档价格是全局参数（下方卡片统一编辑，所有 drapery 商品共用）。
                 </p>
-                {hwList === null ? (
-                  <p className="text-xs text-gray-400">加载五金商品…</p>
-                ) : hwList.length === 0 ? (
-                  <p className="text-xs text-gray-400">商店暂无 Hardware 类商品 — 先到产品管理里创建窗帘杆商品。</p>
-                ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {hwList.map(h => {
-                      const on = selectedHwIds.includes(h.id)
-                      return (
-                        <label key={h.id} className={`flex items-center gap-2.5 border rounded-lg p-2 cursor-pointer select-none ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-                          <input type="checkbox" checked={on} onChange={() => toggleHardwareProduct(h.id)} className="h-3.5 w-3.5 accent-gray-800 shrink-0" />
-                          {h.main_image_url
-                            ? <img src={h.main_image_url} alt="" className="w-10 h-10 object-cover rounded shrink-0" />
-                            : <div className="w-10 h-10 bg-gray-100 rounded shrink-0 flex items-center justify-center text-gray-300 text-lg">▭</div>}
-                          <span className="min-w-0">
-                            <span className="block text-xs text-gray-800 truncate">{h.name}</span>
-                            <span className={`block text-[10px] ${h.is_active ? 'text-emerald-600' : 'text-red-400'}`}>{h.is_active ? '上架中 Active' : '已下架 Inactive'}</span>
-                          </span>
-                        </label>
-                      )
-                    })}
-                  </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {AAPP_LINING_TIERS.map(t => (
+                    <label key={t.key} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedLinings.has(t.key) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
+                      <input type="checkbox" checked={checkedLinings.has(t.key)} onChange={() => toggleLining(t.key)} className="h-3.5 w-3.5 accent-gray-800" />
+                      <span>
+                        <span className="block text-gray-800">{t.key} · {t.zh}</span>
+                        <span className="block text-[10px] text-gray-400">{AAPP_LINING_LABELS[t.key]}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                {checkedLinings.size === 0 && (
+                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何衬布档 — 前台不显示衬布选择，引擎按无衬（NO）计价。</p>
                 )}
               </div>
+
+              {/* ── Global drapery pricing (site-settings group, shared by all drapery products) ── */}
+              <GlobalDraperyPricingCard />
 
               {/* ── Live engine preview + blueprint acceptance samples ── */}
               {draftOptions && (
@@ -990,7 +954,6 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                   productId={productId}
                   params={params}
                   draftOptions={draftOptions}
-                  hwList={hwList || []}
                 />
               )}
               <AcceptanceCheck blueprintKey="drapery_fabric" />
@@ -1124,7 +1087,6 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                   productId={productId}
                   params={params}
                   draftOptions={draftOptions}
-                  hwList={[]}
                   sheerOnly
                 />
               )}

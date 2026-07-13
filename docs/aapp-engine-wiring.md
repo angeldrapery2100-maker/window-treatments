@@ -61,16 +61,23 @@ params: { "aapp_engine": "drapery" }
 
 宽高输入 = **成品尺寸**（配置器现有的 width/height 框）。
 
-**后台编辑器（2026-07-11）**：管理后台「编辑产品 → 计算参数」对 drapery 类型提供
-AAPP 专用编辑器（默认 ON，`aapp_engine=''` 为显式关闭走旧模型）：
+**后台编辑器（2026-07-11，2026-07-13 简化）**：管理后台「编辑产品 → 计算参数」对
+drapery 类型提供 AAPP 专用编辑器（默认 ON；引擎开关卡片已移除，`aapp_engine=''`
+的历史商品显示一条「切换到 AAPP 引擎」提示条）：
 
 - 商品级默认价：`params.aapp_fabric_price_per_yard` / `aapp_fabric_width_in`；
   每色覆盖仍走面料选项值的 `fabric_price_per_yard` / `fabric_width_in`。
-- 纱层：勾选写 `params.aapp_composition='fabric_plus_sheer'` +
-  `aapp_sheer_price_per_yard` / `aapp_sheer_width_in`。
 - 款式勾选（2fold_pinch / 3fold_pinch / cn_6cm / cn_7cm / us_60/80/100/120）
-  自动同步商品的 `style` 选项；`lining`（NO/LF/BO）与 `operation`
-  （split/single_left/single_right）选项也由编辑器自动同步（保留已有 label）。
+  自动同步商品的 `style` 选项；**衬布档勾选（2026-07-13 新增）**同步 `lining`
+  选项的 value 集合（可只上部分档位；全不勾 = 前台无衬布选择，按 NO 计价）；
+  `operation` 选项自动同步全部三个值。**编辑入口唯一在计算参数页签** ——
+  选项配置页里 style/lining/operation 均为只读展示（消灭双入口）。
+- **纱层与配套五金的编辑 UI 已移除（2026-07-13）**：drapery 商品只做单层、
+  不带杆轨加购。引擎与结算链路仍完整支持 `aapp_composition='fabric_plus_sheer'`
+  与 `params.aapp_hardware_products`（老数据不会静默改价 —— 编辑器检测到这些
+  遗留参数时显示一键清除提示条）。sheer 商品的 sheer_only 迁移开关不受影响。
+- **/admin/pricing-library 页面已删除（2026-07-13）**：全局定价参数卡片
+  （drapery_pricing 组）唯一入口 = 计算参数页签，保存即全局生效。
 
 **配套五金（按商品引用，2026-07-11）**：drapery 商品的
 `params.aapp_hardware_products: string[]` 存商店真实 Hardware 商品的 id。
@@ -92,6 +99,15 @@ AAPP 专用编辑器（默认 ON，`aapp_engine=''` 为显式关闭走旧模型�
 - `sheer_labor_per_panel` (26)
 - `banding_std_price_per_yard` (15) / `banding_prem_price_per_yard` (25)
 - `banding_labor_per_foot` (10)
+- **手工费倍数因子（2026-07-13，AAPP v782 报价同步）**：
+  `height_surcharge_start_height_in` (120) /
+  `height_surcharge_base_multiplier` (1.5) /
+  `height_surcharge_increment_per_12in` (0.1) /
+  `large_panel_threshold_panels` (5) / `large_panel_multiplier` (1.5)
+  — 成品高超过起算高度、或单侧计费幅数达到起算幅数时，**只把手工费**
+  乘上对应倍数（主布层与纱层都生效；面料/衬布不乘）。与 AAPP 报价引擎
+  （v782 起）及工厂制作单 buildLabor 同一公式，对应 AAPP
+  `library.draperyPricingCatalog.main.heightSurcharge / largePanelSurcharge`。
 
 括号内为默认值 = AAPP 出厂值（constants.ts DRAPERY_DEFAULTS），未设置时
 定价与从前完全一致。`lib/productPricing.getGlobalDraperyConfig()`（60 秒
@@ -101,8 +117,9 @@ AAPP 专用编辑器（默认 ON，`aapp_engine=''` 为显式关闭走旧模型�
 drapery_pricing 设置 < 商品级 params.aapp_config（商品级最优先）**。
 后台编辑入口：编辑任意 drapery 商品 → 计算参数 → 衬布卡片 →「编辑全局
 参数」。与 AAPP 内部软件的 library.draperyPricingCatalog 对应 —
-两边改价需同步。注意：不提供高度加价系数（heightSurcharge 在 AAPP
-目录里存在但定价代码未使用，网站不得自行发明）。
+两边改价需同步。（历史注：2026-07-13 前这里写的是「不提供高度加价系数」，
+因为当时 AAPP 报价代码未使用 heightSurcharge——AAPP v782 已把倍数接进
+报价引擎，网站同步实现。）
 
 ### 4. 窗帘杆 / 轨道
 

@@ -210,6 +210,16 @@ export async function getGlobalDraperyConfig(): Promise<Record<string, any> | nu
         BO: { liningPricePerYard: val('lining_bo_price_per_yard'), laborPerPanel: val('lining_bo_labor_per_panel') },
       },
       sheerLaborPerPanel: val('sheer_labor_per_panel'),
+      // Labor multipliers (quote parity with AAPP v782 — labor only):
+      heightSurcharge: {
+        startHeightIn: val('height_surcharge_start_height_in'),
+        baseMultiplier: val('height_surcharge_base_multiplier'),
+        incrementPerExtra12In: val('height_surcharge_increment_per_12in'),
+      },
+      largePanelSurcharge: {
+        thresholdSingleSidePanelCount: val('large_panel_threshold_panels'),
+        multiplier: val('large_panel_multiplier'),
+      },
       banding: {
         laborPerFoot: val('banding_labor_per_foot'),
         styles: {

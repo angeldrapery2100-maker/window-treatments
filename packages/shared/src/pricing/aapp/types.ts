@@ -298,6 +298,22 @@ export interface RippleSystemParams {
   baseAdd: number;
 }
 
+/** Height surcharge on LABOR (AAPP library.draperyPricingCatalog.main.heightSurcharge).
+ *  finishedHeight ≤ startHeightIn → ×1; above → ×(baseMultiplier +
+ *  (H − start)/12 × incrementPerExtra12In). */
+export interface DraperyHeightSurcharge {
+  startHeightIn: number;
+  baseMultiplier: number;
+  incrementPerExtra12In: number;
+}
+
+/** Large-panel surcharge on LABOR (…main.largePanelSurcharge). Single-side
+ *  labor widths ≥ threshold → ×multiplier, else ×1. */
+export interface DraperyLargePanelSurcharge {
+  thresholdSingleSidePanelCount: number;
+  multiplier: number;
+}
+
 export interface DraperyConfig {
   /** Spacing-first solver params per layer kind × fold count. */
   spacingFirst: {
@@ -311,6 +327,12 @@ export interface DraperyConfig {
   liningOptions: Record<LiningType, { liningPricePerYard: number; laborPerPanel: number }>;
   /** Sheer labor $/panel-width. Default $26. */
   sheerLaborPerPanel: number;
+  /** Labor multipliers — applied to BOTH main and sheer labor (AAPP v782 quote
+   *  parity; the AAPP work-order engine has always applied them). AAPP keeps
+   *  these under catalog.main.*; the sheer layer uses the SAME main config
+   *  (AAPP's separate sheer.heightSurcharge field is unused on both sides). */
+  heightSurcharge: DraperyHeightSurcharge;
+  largePanelSurcharge: DraperyLargePanelSurcharge;
   banding: {
     laborPerFoot: number;
     styles: Record<string, { pricePerYard: number; name?: string }>;

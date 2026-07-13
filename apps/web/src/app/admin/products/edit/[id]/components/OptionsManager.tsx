@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import {
-  AAPP_STYLE_ORDER, AAPP_STYLE_LABELS, AAPP_STYLE_ZH,
-  AAPP_LINING_ORDER, AAPP_LINING_LABELS,
+  AAPP_STYLE_ORDER, AAPP_STYLE_LABELS,
   AAPP_OPERATION_ORDER, AAPP_OPERATION_LABELS, AAPP_OPERATION_ZH,
   normalizePleatStyleValue,
 } from './aappPresets'
@@ -267,23 +266,6 @@ export default function OptionsManager({ productType, productId, onChange, optio
       return { ...o, values: vals.map((v, i) => ({ ...v, sort_order: i })) }
     }))
 
-  // ── AAPP style pick-list: checked = value present, order = engine order ──
-  const toggleStyleKey = (optionId: string, key: string) => {
-    update(options.map(o => {
-      if (o.id !== optionId) return o
-      const cur = new Set(o.values.map(v => v.value))
-      if (cur.has(key)) cur.delete(key)
-      else cur.add(key)
-      const values = AAPP_STYLE_ORDER.filter(k => cur.has(k)).map((k, i) => {
-        const existing = o.values.find(v => v.value === k)
-        return existing
-          ? { ...existing, sort_order: i }
-          : { id: `style_${k}`, value: k, label: AAPP_STYLE_LABELS[k] || k, params: {}, sort_order: i }
-      })
-      return { ...o, values }
-    }))
-  }
-
   // ── One-click pleat_style → style migration ──
   const migratePleatStyle = (legacyOptionId: string) => {
     const idx = options.findIndex(o => o.id === legacyOptionId)
@@ -339,20 +321,16 @@ export default function OptionsManager({ productType, productId, onChange, optio
 
       {options.map(option => {
         const nameLc = (option.name || '').toLowerCase()
-        const isAappStyle = aapp && option.name === 'style'
         const isAappLegacyPleat = aapp && nameLc === 'pleat_style'
-        const isAappManaged = aapp && (option.name === 'lining' || option.name === 'operation')
+        // style joined lining/operation as read-only here（页面简化 2026-07-13）:
+        // 款式/衬布勾选的唯一编辑入口在「计算参数」页签，本页只展示，消灭双入口。
+        const isAappManaged = aapp && (option.name === 'style' || option.name === 'lining' || option.name === 'operation')
         const isAappFabric = aapp && isFabricOptionName(option.name)
-        const isAappGeneric = aapp && !isAappStyle && !isAappLegacyPleat && !isAappManaged && !isAappFabric
+        const isAappGeneric = aapp && !isAappLegacyPleat && !isAappManaged && !isAappFabric
         const paramFields = PARAM_FIELDS[productType]?.[option.name] || []
         const adv = !!advOpen[option.id]
-        const showAddButton = !isAappStyle && !isAappManaged && !isAappLegacyPleat
+        const showAddButton = !isAappManaged && !isAappLegacyPleat
         const singleInputAdd = isAappFabric || (isAappGeneric && !adv)
-        // Non-engine values sitting inside a style option (hand-typed before
-        // the pick-list existed) — surfaced, and removed on the next toggle.
-        const strayStyleValues = isAappStyle
-          ? option.values.filter(v => !(AAPP_STYLE_ORDER as readonly string[]).includes(v.value))
-          : []
 
         return (
           <div key={option.id} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -361,8 +339,7 @@ export default function OptionsManager({ productType, productId, onChange, optio
                 <span className="font-semibold text-gray-900">{option.display_label}</span>
                 <code className="ml-3 text-xs bg-gray-200 px-2 py-0.5 rounded text-gray-600">{option.name}</code>
                 {isAappLegacyPleat && <span className="ml-2 text-xs text-amber-600 font-medium">待迁移</span>}
-                {isAappStyle && <span className="ml-2 text-xs text-gray-400">（引擎标准款式，固定选项）</span>}
-                {isAappManaged && <span className="ml-2 text-xs text-gray-400">（由计算参数自动管理）</span>}
+                {isAappManaged && <span className="ml-2 text-xs text-gray-400">（由计算参数管理，此处只读）</span>}
                 {!aapp && paramFields.length > 0 && <span className="ml-2 text-xs text-gray-400">（含价格参数）</span>}
               </div>
               <div className="flex items-center gap-2">
@@ -413,53 +390,28 @@ export default function OptionsManager({ productType, productId, onChange, optio
               </div>
             )}
 
-            {/* ── AAPP style: fixed engine pick-list（与计算参数的款式勾选双向同步）── */}
-            {isAappStyle && (
-              <div className="px-5 py-4">
-                <p className="text-xs text-gray-400 mb-3">
-                  勾选 = 前台提供该款式。Value / Label 为引擎内置，不可自由输入；与「计算参数」的款式勾选双向同步。
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {AAPP_STYLE_ORDER.map(k => {
-                    const on = option.values.some(v => v.value === k)
-                    return (
-                      <label key={k} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-                        <input type="checkbox" checked={on} onChange={() => toggleStyleKey(option.id, k)} className="h-3.5 w-3.5 accent-gray-800" />
-                        <span>
-                          <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
-                          <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
-                        </span>
-                      </label>
-                    )
-                  })}
-                </div>
-                {option.values.length === 0 && (
-                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
-                )}
-                {strayStyleValues.length > 0 && (
-                  <p className="text-xs text-red-500 mt-2">
-                    ⚠️ 存在引擎无法识别的值（将在下次勾选变动时移除）：{strayStyleValues.map(v => v.label || v.value).join('、')}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* ── AAPP lining / operation: read-only chips ── */}
+            {/* ── AAPP style / lining / operation: read-only chips ──
+                 编辑入口统一在「计算参数」页签（款式勾选 / 衬布勾选），此处只展示
+                 当前前台会提供什么，避免两个页签重复编辑（页面简化 2026-07-13）。 */}
             {isAappManaged && (
               <div className="px-5 py-4">
-                <div className="flex flex-wrap gap-2">
-                  {(option.values.length > 0
-                    ? option.values.map(v => ({ k: v.value, l: v.label || v.value }))
-                    : option.name === 'lining'
-                      ? AAPP_LINING_ORDER.map(k => ({ k: k as string, l: AAPP_LINING_LABELS[k] }))
+                {option.values.length > 0 || option.name === 'operation' ? (
+                  <div className="flex flex-wrap gap-2">
+                    {(option.values.length > 0
+                      ? option.values.map(v => ({ k: v.value, l: v.label || v.value }))
                       : AAPP_OPERATION_ORDER.map(k => ({ k: k as string, l: `${AAPP_OPERATION_ZH[k]} · ${AAPP_OPERATION_LABELS[k]}` }))
-                  ).map(c => (
-                    <span key={c.k} className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-gray-200 bg-gray-50 text-gray-700">
-                      <code className="text-[10px] text-gray-400">{c.k}</code> {c.l}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-[11px] text-gray-400 mt-2">由计算参数自动管理 — 此处不可编辑，价格为引擎内置。</p>
+                    ).map(c => (
+                      <span key={c.k} className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-gray-200 bg-gray-50 text-gray-700">
+                        <code className="text-[10px] text-gray-400">{c.k}</code> {c.l}
+                      </span>
+                    ))}
+                  </div>
+                ) : option.name === 'style' ? (
+                  <p className="text-xs text-amber-600">⚠️ 未勾选任何款式 — 去「计算参数」页签勾选。</p>
+                ) : (
+                  <p className="text-xs text-gray-400">未勾选衬布档 — 前台不显示衬布选择，按无衬计价。去「计算参数」页签勾选。</p>
+                )}
+                <p className="text-[11px] text-gray-400 mt-2">在「计算参数」页签编辑（款式提供 / 衬布提供），此处只读。</p>
               </div>
             )}
 
@@ -512,7 +464,7 @@ export default function OptionsManager({ productType, productId, onChange, optio
             )}
 
             {/* ── Value rows ── */}
-            {!isAappStyle && !isAappManaged && !isAappLegacyPleat && (
+            {!isAappManaged && !isAappLegacyPleat && (
               <>
                 {isAappFabric && (
                   <div className="px-5 pt-3">

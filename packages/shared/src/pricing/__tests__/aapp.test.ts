@@ -312,6 +312,85 @@ describe("AAPP handcrafted drapery (spec §3)", () => {
     expect(r.total).toBe(905); // 660 + 245
   });
 
+  // ── Labor multipliers (AAPP v782 quote parity — height + large-panel) ──────
+
+  it("D4 — height surcharge: D1 geometry at H=132 → labor ×1.6 → $918", () => {
+    const r = priceHandcraftedDrapery({ ...D1_INPUT, finishedHeightIn: 132 });
+    // solver is height-independent: np=11, wps=2.5, ps=137.5 (as D1)
+    expect(r.breakdown.mainWps).toBe(2.5);
+    expect(r.breakdown.mainCutDrop).toBe(148); // 132 + 16
+    expect(r.breakdown.mainFaceYds).toBe(21); // ceilHalfYd(2.5×148/36×2)=ceilHalfYd(20.5556)
+    expect(r.breakdown.mainFabricAmt).toBe(630); // 21 × $30 — fabric NOT multiplied
+    expect(r.breakdown.mainLaborWps).toBe(6);
+    // hMult = 1.5 + (132−120)/12 × 0.1 = 1.6; sspc = 6/2 = 3 < 5 → lpMult 1
+    expect(r.breakdown.mainHeightMultiplier).toBeCloseTo(1.6, 10);
+    expect(r.breakdown.mainLargePanelMultiplier).toBe(1);
+    expect(r.breakdown.mainLaborAmt).toBeCloseTo(288, 10); // 6 × $30 × 1.6
+    expect(r.total).toBe(918); // 630 + 288
+  });
+
+  it("D4b — height surcharge boundary: H=120 exactly → ×1 (no surcharge)", () => {
+    const r = priceHandcraftedDrapery({ ...D1_INPUT, finishedHeightIn: 120 });
+    expect(r.breakdown.mainHeightMultiplier).toBe(1);
+    // cutDrop 136 → faceYds = ceilHalfYd(2.5×136/36×2)=ceilHalfYd(18.8889)=19
+    expect(r.breakdown.mainFaceYds).toBe(19);
+    expect(r.breakdown.mainLaborAmt).toBe(180); // 6 × $30, unmultiplied
+    expect(r.total).toBe(750); // 19×30 + 180
+  });
+
+  it("D5 — large-panel surcharge: single_left 200×96 → single-side 9.5 wps ≥ 5 → labor ×1.5 → $1223", () => {
+    const r = priceHandcraftedDrapery({
+      ...D1_INPUT,
+      finishedWidthIn: 200,
+      operation: "single_left",
+    });
+    // solver: npBase=round(200/4.375)=46; spacing 200/47≈4.2553 ✓
+    // psMin = 200 + 46×5 + 13 = 443 → wps = ceil(443/55/0.5)×0.5 = 8.5; ps 467.5
+    // PA = (467.5−213)/46 ≈ 5.5326 ∈ [5,7] ✓
+    expect(r.breakdown.mainNp).toBe(46);
+    expect(r.breakdown.mainWps).toBe(8.5);
+    expect(r.breakdown.mainPerSide).toBe(467.5);
+    expect(r.breakdown.mainFaceYds).toBe(26.5); // ceilHalfYd(8.5×112/36)
+    expect(r.breakdown.mainFabricAmt).toBe(795); // 26.5 × $30 — NOT multiplied
+    expect(r.breakdown.mainLaborWps).toBe(9.5); // ceil(467.5/50/0.5)×0.5 × 1 side
+    // sspc = 9.5 (single side) ≥ 5 → ×1.5; H 96 ≤ 120 → hMult 1
+    expect(r.breakdown.mainHeightMultiplier).toBe(1);
+    expect(r.breakdown.mainLargePanelMultiplier).toBe(1.5);
+    expect(r.breakdown.mainLaborAmt).toBeCloseTo(427.5, 10); // 9.5 × $30 × 1.5
+    expect(r.total).toBe(1223); // priceInt(795 + 427.5) = round(1222.5)
+  });
+
+  it("D6 — sheer layer gets the same labor multipliers (sheer_only, H=132 → ×1.6)", () => {
+    const r = priceHandcraftedDrapery({
+      finishedWidthIn: 100,
+      finishedHeightIn: 132,
+      composition: "sheer_only",
+      styleFamily: "pleated",
+      styleKey: "2fold_pinch",
+      operation: "split",
+      layers: {
+        sheer: { enabled: true, pricePerYard: 12, widthNormalizedIn: 55 },
+      },
+    });
+    expect(r.breakdown.sheerYds).toBe(21); // ceilHalfYd(2.5×148/36×2)
+    expect(r.breakdown.sheerLaborWps).toBe(6);
+    expect(r.breakdown.sheerHeightMultiplier).toBeCloseTo(1.6, 10);
+    expect(r.breakdown.sheerLargePanelMultiplier).toBe(1);
+    expect(r.breakdown.sheerLaborAmt).toBeCloseTo(249.6, 10); // 6 × $26 × 1.6
+    expect(r.total).toBe(502); // priceInt(21×12 + 249.6) = round(501.6)
+  });
+
+  it("D7 — surcharge config is overridable (startHeightIn 200 disables the H=132 surcharge)", () => {
+    const r = priceHandcraftedDrapery({
+      ...D1_INPUT,
+      finishedHeightIn: 132,
+      config: { heightSurcharge: { startHeightIn: 200 } },
+    });
+    expect(r.breakdown.mainHeightMultiplier).toBe(1);
+    expect(r.breakdown.mainLaborAmt).toBe(180); // back to 6 × $30
+    expect(r.total).toBe(810); // 630 + 180
+  });
+
   it("edge — no_spacing_solution throws (panel too narrow for min spacing)", () => {
     expect(() =>
       priceHandcraftedDrapery({

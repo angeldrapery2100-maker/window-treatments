@@ -308,6 +308,11 @@ export const DRAPERY_DEFAULTS: DraperyConfig = {
     BO: { liningPricePerYard: 8, laborPerPanel: 38 },
   },
   sheerLaborPerPanel: 26,
+  // Labor multipliers (AAPP v782 quote parity — _DPC_PRICING_DEFAULTS.main.*):
+  // height: >120" → ×(1.5 + extra-feet × 0.1); large panel: single side ≥5
+  // labor widths → ×1.5. Applied to labor only, main AND sheer layers.
+  heightSurcharge: { startHeightIn: 120, baseMultiplier: 1.5, incrementPerExtra12In: 0.1 },
+  largePanelSurcharge: { thresholdSingleSidePanelCount: 5, multiplier: 1.5 },
   banding: {
     laborPerFoot: 10,
     styles: {

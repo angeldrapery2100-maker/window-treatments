@@ -124,6 +124,39 @@ export const SETTING_GROUPS: Record<string, {
         type: 'number',
         defaultValue: '10',
       },
+      // 手工费倍数因子（只乘手工费，不乘面料/衬布 — 与 AAPP 报价 v782 及
+      // 工厂制作单 buildLabor 同一公式；对应 AAPP
+      // library.draperyPricingCatalog.main.heightSurcharge / largePanelSurcharge）
+      height_surcharge_start_height_in: {
+        label: '超高加价 起算高度 (in)',
+        description: '成品高 ≤ 此值不加价；超过后手工费乘超高倍数',
+        type: 'number',
+        defaultValue: '120',
+      },
+      height_surcharge_base_multiplier: {
+        label: '超高加价 基础倍数',
+        description: '成品高超过起算高度时的基础手工费倍数',
+        type: 'number',
+        defaultValue: '1.5',
+      },
+      height_surcharge_increment_per_12in: {
+        label: '超高加价 每+12" 增量',
+        description: '超出起算高度的部分，每 12 英寸在基础倍数上再加的增量',
+        type: 'number',
+        defaultValue: '0.1',
+      },
+      large_panel_threshold_panels: {
+        label: '大幅数加价 起算幅数 (单侧)',
+        description: '单侧手工计费幅数达到此值时手工费乘大幅数倍数',
+        type: 'number',
+        defaultValue: '5',
+      },
+      large_panel_multiplier: {
+        label: '大幅数加价 倍数',
+        description: '单侧幅数达到起算幅数时的手工费倍数',
+        type: 'number',
+        defaultValue: '1.5',
+      },
     },
   },
 }

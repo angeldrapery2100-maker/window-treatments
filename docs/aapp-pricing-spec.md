@@ -282,21 +282,31 @@ perSide = spl
   无衬布:  laborWps = ceil(perSide / 50 / 0.5) * 0.5 * sides   // 按 50"/幅折算
 ```
 
-**D. 主层金额**（functions/index.js:4060-4075）：
+**D. 主层金额**（functions/index.js `_dpcCalcMainLayerPrice`；2026-07-13 AAPP v782 起含手工费倍数因子）：
 ```
-fabricAmt = faceYds   * pricePerYard          // 无 round2，原始浮点
-liningAmt = liningYds * liningPricePerYard    // NO 0 / LF 6 / BO 8
-laborAmt  = laborWps  * laborPerPanel         // 按 lining 档: NO $30 / LF $36 / BO $38 每幅
+// 手工费倍数因子（v782 起报价与工厂制作单 buildLabor 同一公式；只乘手工费）
+// 配置: library.draperyPricingCatalog.main.heightSurcharge / largePanelSurcharge
+hMult  = H <= startHeightIn(120) ? 1
+       : baseMultiplier(1.5) + ((H − startHeightIn) / 12) * incrementPerExtra12In(0.1)
+sspc   = sides == 2 ? laborWps / 2 : laborWps          // 单侧计费幅数
+lpMult = sspc >= thresholdSingleSidePanelCount(5) ? multiplier(1.5) : 1
+
+fabricAmt = faceYds   * pricePerYard                   // 无 round2，原始浮点；不乘倍数
+liningAmt = liningYds * liningPricePerYard             // NO 0 / LF 6 / BO 8；不乘倍数
+laborAmt  = laborWps  * laborPerPanel * hMult * lpMult // 按 lining 档: NO $30 / LF $36 / BO $38 每幅
 mainTotal = fabricAmt + liningAmt + laborAmt
 ```
-> 注：`library.draperyPricingCatalog.main.heightSurcharge / largePanelSurcharge` 字段存在于默认目录（app-catalog.js:1642-1650）但**当前定价代码未启用**，网站不要实现。
+> 历史注：2026-07-05 版规格曾写明 heightSurcharge/largePanelSurcharge「定价代码未启用，网站不要实现」。**2026-07-13 起该状态已改变**：AAPP v782 把这两个倍数接进了报价引擎（客户端 draperyCalc*LayerPrice + 服务端 _dpcCalc*LayerPrice，与制作单 buildLabor 一致），网站已同步实现（heightSurcharge/largePanelSurcharge 在 DraperyConfig 顶层，对应 AAPP 的 main.*；全局可编辑字段见 settingGroups drapery_pricing）。
 
 ### 3.4 纱层公式（`_dpcCalcSheerMath` functions/index.js:3972-4027）
 与主布层同一求解器（pleated 用 `spacingFirst.sheer` 参数组，默认与 fabric 相同；ripple 同公式），无衬布；
 ```
 sheerFabricAmt = yds * pricePerYard
 sheerLaborWps  = ceil(perSide / 50 / 0.5) * 0.5 * sides
-sheerLaborAmt  = sheerLaborWps * sheerLaborPerPanel      // 默认 $26/幅, library.draperyPricingCatalog.sheer.laborPerPanel
+sheerLaborAmt  = sheerLaborWps * sheerLaborPerPanel * hMult * lpMult
+                 // 默认 $26/幅, library.draperyPricingCatalog.sheer.laborPerPanel
+                 // hMult/lpMult 与主层同一套 main.* 倍数配置（v782；WO parity —
+                 // 目录里的 sheer.heightSurcharge 字段两边都仍未使用）
 sheerTotal     = sheerFabricAmt + sheerLaborAmt
 ```
 高级模式（`advancedMode && composition=='fabric_plus_sheer'`）允许主层单独指定 style/尺寸（functions/index.js:4039-4050）。
@@ -564,6 +574,9 @@ subtotal = round2(2491.65 + 84) = **2575.65**    （此产品保留 2 位小数�
 | D1 | 布帘打褶 | 100×96 对开, $30/yd 55", 无衬 | $660 |
 | D2 | 布帘 ripple | 120×100 对开, $45/yd 118" 横做, BO | $660 |
 | D3 | 布帘+镶边 | D1 + banding_std ×1/片 | $905 |
+| D4 | 布帘超高 | D1 几何 @ H=132（手工×1.6：faceYds 21→$630 + 6×30×1.6=$288） | $918 |
+| D5 | 布帘大幅数 | 200×96 单开, $30/yd 55", 无衬（单侧 9.5 幅 ≥5 → 手工×1.5：$795+$427.5） | $1,223 |
+| D6 | 纱层超高 | 100×132 对开纱层 $12/yd（纱手工同样×1.6：21×12 + 6×26×1.6=501.6） | $502 |
 | H1 | 窗帘杆 | 100", 起步$120@4ft +$18/ft | $210 |
 | H2 | SOMFY 轨道 | pinch 100" split + glydea60 + situo1 | $2,575.65 |
 

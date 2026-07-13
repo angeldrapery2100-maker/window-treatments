@@ -13,9 +13,9 @@ import {
 // aapp_config (lib/productPricing.withGlobalDraperyConfig, used by BOTH
 // pricing entry points).
 //
-// Extracted from ParamsConfig (store redesign P4) so the product 计算参数 tab
-// and the admin Pricing Library page render the SAME implementation — one
-// editor, one source of truth.
+// Extracted from ParamsConfig (store redesign P4). The product 计算参数 tab is
+// now the only mount point — the /admin/pricing-library page was removed in
+// the 2026-07-13 page simplification (one editor, one source of truth).
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DRAPERY_PRICING_DEFAULTS: Record<string, number> = {
@@ -26,6 +26,12 @@ const DRAPERY_PRICING_DEFAULTS: Record<string, number> = {
   banding_std_price_per_yard: 15,
   banding_prem_price_per_yard: 25,
   banding_labor_per_foot: 10,
+  // 手工费倍数因子（与 AAPP 报价 v782 / 工厂制作单同一公式，只乘手工费）
+  height_surcharge_start_height_in: 120,
+  height_surcharge_base_multiplier: 1.5,
+  height_surcharge_increment_per_12in: 0.1,
+  large_panel_threshold_panels: 5,
+  large_panel_multiplier: 1.5,
 }
 
 export default function GlobalDraperyPricingCard() {
@@ -89,12 +95,13 @@ export default function GlobalDraperyPricingCard() {
     }
   }
 
-  const numCell = (key: string) => editing ? (
+  // plain = true renders the bare number (multipliers / inches / counts — not $).
+  const numCell = (key: string, plain = false) => editing ? (
     <input type="number" step="0.01" min="0" value={draft[key] ?? ''}
       onChange={e => setDraft(p => ({ ...p, [key]: e.target.value }))}
       className="w-20 px-1.5 py-0.5 border border-gray-300 rounded text-right font-mono text-xs" />
   ) : (
-    <span className="font-mono">${values[key]}</span>
+    <span className="font-mono">{plain ? values[key] : `$${values[key]}`}</span>
   )
 
   return (
@@ -154,10 +161,41 @@ export default function GlobalDraperyPricingCard() {
                 <td className="py-1.5 text-right">{numCell('banding_prem_price_per_yard')}</td>
                 <td className="py-1.5" />
               </tr>
-              <tr>
+              <tr className="border-b border-gray-50">
                 <td className="py-1.5 text-gray-700">镶边手工 <span className="text-gray-400">Banding Labor $/ft</span></td>
                 <td className="py-1.5" />
                 <td className="py-1.5 text-right">{numCell('banding_labor_per_foot')}</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-1.5 text-gray-700" colSpan={3}>
+                  <span className="font-medium">手工费倍数因子</span>{' '}
+                  <span className="text-gray-400">Labor Multipliers（只乘手工费，主布层与纱层均生效）</span>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-1.5 text-gray-700 pl-3">超高加价 起算高度 <span className="text-gray-400">Height Start (in)</span></td>
+                <td className="py-1.5" />
+                <td className="py-1.5 text-right">{numCell('height_surcharge_start_height_in', true)}</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-1.5 text-gray-700 pl-3">超高加价 基础倍数 <span className="text-gray-400">Base Multiplier</span></td>
+                <td className="py-1.5" />
+                <td className="py-1.5 text-right">{numCell('height_surcharge_base_multiplier', true)}</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-1.5 text-gray-700 pl-3">超高加价 每+12&quot; 增量 <span className="text-gray-400">Increment / extra 12&quot;</span></td>
+                <td className="py-1.5" />
+                <td className="py-1.5 text-right">{numCell('height_surcharge_increment_per_12in', true)}</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-1.5 text-gray-700 pl-3">大幅数加价 起算幅数(单侧) <span className="text-gray-400">Panel Threshold</span></td>
+                <td className="py-1.5" />
+                <td className="py-1.5 text-right">{numCell('large_panel_threshold_panels', true)}</td>
+              </tr>
+              <tr>
+                <td className="py-1.5 text-gray-700 pl-3">大幅数加价 倍数 <span className="text-gray-400">Large-Panel Multiplier</span></td>
+                <td className="py-1.5" />
+                <td className="py-1.5 text-right">{numCell('large_panel_multiplier', true)}</td>
               </tr>
             </tbody>
           </table>
@@ -166,7 +204,9 @@ export default function GlobalDraperyPricingCard() {
             全局生效于所有 drapery 商品；与 AAPP 内部软件对应 library.draperyPricingCatalog — 两边改价需同步。
           </p>
           <p className="text-[11px] text-gray-400 mt-1">
-            不提供高度加价系数（height multiplier）：AAPP 引擎定价不使用该参数（其目录里的 heightSurcharge 字段未参与计算），网站与内部软件保持一致。
+            倍数因子公式：成品高超过起算高度时 手工费 ×（基础倍数 + 超出部分每12&quot;×增量）；
+            单侧计费幅数 ≥ 起算幅数时 手工费 × 大幅数倍数。两者只乘手工费（主布层与纱层），
+            不乘面料/衬布 — 与 AAPP 报价引擎（v782 起）及工厂制作单同一公式。
           </p>
         </>
       )}

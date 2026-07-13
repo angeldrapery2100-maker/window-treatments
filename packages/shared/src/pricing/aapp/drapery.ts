@@ -14,6 +14,8 @@
 import type {
   AappPriceResult,
   DraperyConfig,
+  DraperyHeightSurcharge,
+  DraperyLargePanelSurcharge,
   DraperyLayerInput,
   HandcraftedDraperyInput,
   LiningType,
@@ -55,6 +57,26 @@ function resolveOrientation(fw: number, fH: number, mode: string | undefined): O
   if (mode === "railroaded") return canRR ? "railroaded" : "vertical";
   if (mode === "vertical") return "vertical";
   return autoRR ? "railroaded" : "vertical";
+}
+
+/** Height surcharge multiplier on LABOR — mirrors AAPP
+ *  draperyComputeHeightMultiplier (client) / _dpcComputeHeightMultiplier
+ *  (server, v782). ≤ start → ×1. */
+function heightMultiplier(finishedHeightIn: number, cfg: DraperyHeightSurcharge): number {
+  const h = Number(finishedHeightIn || 0);
+  if (!h || h <= cfg.startHeightIn) return 1;
+  return cfg.baseMultiplier + ((h - cfg.startHeightIn) / 12) * cfg.incrementPerExtra12In;
+}
+
+/** Large-panel surcharge multiplier on LABOR — mirrors AAPP
+ *  draperyComputeLargePanelMultiplier / _dpcComputeLargePanelMultiplier.
+ *  singleSidePanelCount = laborWps / 2 for split, laborWps otherwise. */
+function largePanelMultiplier(
+  singleSidePanelCount: number,
+  cfg: DraperyLargePanelSurcharge,
+): number {
+  const spc = Number(singleSidePanelCount || 0);
+  return spc >= cfg.thresholdSingleSidePanelCount ? cfg.multiplier : 1;
 }
 
 function isFold3(styleKey: string): boolean {
@@ -302,10 +324,19 @@ export function priceHandcraftedDrapery(input: HandcraftedDraperyInput): AappPri
     const calc = calcFabricMath(mainLayer, common, fW, fH, cfg);
     const liningType: LiningType = mainLayer.liningType ?? "NO";
     const liningCfg = cfg.liningOptions[liningType];
+    // Labor multipliers (AAPP v782 quote parity — labor only, never fabric/lining).
+    const hMult = heightMultiplier(fH, cfg.heightSurcharge);
+    const sspc = calc.sides === 2 ? calc.laborWps / 2 : calc.laborWps;
+    const lpMult = largePanelMultiplier(sspc, cfg.largePanelSurcharge);
+    const lbMult = hMult * lpMult;
     const fabricAmt = calc.faceYds * price; // raw float (spec §3.3 D)
     const liningAmt = calc.liningYds * liningCfg.liningPricePerYard;
-    const laborAmt = calc.laborWps * liningCfg.laborPerPanel;
+    const laborAmt = calc.laborWps * liningCfg.laborPerPanel * lbMult;
     mainTotal = fabricAmt + liningAmt + laborAmt;
+
+    breakdown.mainHeightMultiplier = hMult;
+    breakdown.mainLargePanelMultiplier = lpMult;
+    breakdown.mainLaborMultiplier = lbMult;
 
     breakdown.mainOrientation = calc.orient;
     breakdown.mainNp = calc.np;
@@ -329,9 +360,19 @@ export function priceHandcraftedDrapery(input: HandcraftedDraperyInput): AappPri
     const price = resolveLayerPrice(sheerLayer);
     if (price == null) throw new Error("sheer_layer: missing_price");
     const calc = calcSheerMath(sheerLayer, common, fW, fH, cfg);
+    // Same labor multipliers as the main layer (AAPP WO parity: the MAIN
+    // catalog's surcharge config applies to the sheer layer too).
+    const hMult = heightMultiplier(fH, cfg.heightSurcharge);
+    const sspc = calc.sides === 2 ? calc.laborWps / 2 : calc.laborWps;
+    const lpMult = largePanelMultiplier(sspc, cfg.largePanelSurcharge);
+    const lbMult = hMult * lpMult;
     const fabricAmt = calc.yds * price;
-    const laborAmt = calc.laborWps * cfg.sheerLaborPerPanel;
+    const laborAmt = calc.laborWps * cfg.sheerLaborPerPanel * lbMult;
     sheerTotal = fabricAmt + laborAmt;
+
+    breakdown.sheerHeightMultiplier = hMult;
+    breakdown.sheerLargePanelMultiplier = lpMult;
+    breakdown.sheerLaborMultiplier = lbMult;
 
     breakdown.sheerOrientation = calc.orient;
     breakdown.sheerYds = calc.yds;
