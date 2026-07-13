@@ -31,12 +31,13 @@ interface PickerProps {
 // Option-name routing — which options get a visual picker
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type DraperyPickerKind = 'fabric' | 'style' | 'lining' | 'operation'
+export type DraperyPickerKind = 'fabric' | 'lining' | 'operation'
 
 export function draperyPickerKind(name: string): DraperyPickerKind | null {
   const n = (name || '').toLowerCase()
   if (n === 'fabric_color' || n === 'fabric') return 'fabric'
-  if (n === 'style' || n === 'pleat_style') return 'style'
+  // style / pleat_style intentionally NOT visual (2026-07-13, Eddie's call):
+  // returning null routes it to the page's plain <select> dropdown.
   if (n === 'lining') return 'lining'
   if (n === 'operation') return 'operation'
   return null
@@ -92,10 +93,9 @@ export function FabricSwatchGrid({ values, selected, onSelect }: PickerProps) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ② Style — clean text cards (the line-art pleat diagrams were removed
-//    2026-07-13 at Eddie's request: hand-drawn SVGs couldn't represent the
-//    real pleat construction faithfully. Photography belongs in the product
-//    gallery/description; the picker just needs clear labels.)
+// ② Style — no visual picker (2026-07-13, Eddie's call): pleat style renders
+//    as the page's standard <select> dropdown. The earlier line-art pleat
+//    diagrams (and their text-card replacement) were removed entirely.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const svgProps = {
@@ -106,31 +106,6 @@ const svgProps = {
   strokeLinecap: 'round' as const,
   strokeLinejoin: 'round' as const,
   'aria-hidden': true as const,
-}
-
-export function StyleCardPicker({ values, selected, onSelect }: PickerProps) {
-  return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      {values.map(v => {
-        const isSel = selected === v.value
-        return (
-          <button
-            key={v.value}
-            type="button"
-            onClick={() => onSelect(v.value)}
-            aria-pressed={isSel}
-            className={`rounded border px-2.5 py-3.5 text-center transition-colors ${
-              isSel
-                ? 'border-gray-900 ring-1 ring-gray-900 bg-gray-50 text-gray-900 font-medium'
-                : 'border-gray-200 text-gray-600 hover:border-gray-400'
-            }`}
-          >
-            <span className="block text-xs leading-snug">{v.label || v.value}</span>
-          </button>
-        )
-      })}
-    </div>
-  )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -310,7 +285,6 @@ export function DraperyOptionPicker({ name, values, selected, onSelect }: Picker
   const kind = draperyPickerKind(name)
   if (!kind || !values || values.length === 0) return null
   if (kind === 'fabric') return <FabricSwatchGrid values={values} selected={selected} onSelect={onSelect} />
-  if (kind === 'style') return <StyleCardPicker values={values} selected={selected} onSelect={onSelect} />
   if (kind === 'lining') return <LiningCardPicker values={values} selected={selected} onSelect={onSelect} />
   return <OperationSegment values={values} selected={selected} onSelect={onSelect} />
 }

@@ -53,12 +53,17 @@ export default function DraperyProduct({ productId }: { productId: string }) {
   //      unchanged, for products configured before the product-reference model.
   const isHardwareOpt = (name: string) => name.startsWith('hardware_') || name === 'finial'
   const hardwareOptions = options.filter(opt => isHardwareOpt(opt.name))
-  const mainOptions = options.filter(opt => !isHardwareOpt(opt.name))
+  // `return` is hidden from the configurator (2026-07-13, Eddie's call): the
+  // AAPP engine never reads the return OPTION (ripple return depth comes from
+  // params.aapp_return_in), so hiding it does not affect pricing. Its default
+  // value still lands in selectedOptions — harmless.
+  const mainOptions = options.filter(opt => !isHardwareOpt(opt.name) && opt.name !== 'return')
 
-  // P2 visual pickers (store redesign): fabric color → swatch grid, style →
-  // SVG pleat-diagram cards, lining → icon cards, operation → segmented
-  // control. Everything else keeps the original <select>. Presentation only —
-  // the pickers write the exact same selectedOptions[name] = value strings.
+  // Visual pickers (store redesign P2, trimmed 2026-07-13): fabric color →
+  // swatch grid, lining → icon cards, operation → segmented control. Pleat
+  // style and everything else render as the original <select> dropdowns.
+  // Presentation only — the pickers write the exact same
+  // selectedOptions[name] = value strings.
   const visualOptions = mainOptions.filter(opt => draperyPickerKind(opt.name))
   const selectOptions = mainOptions.filter(opt => !draperyPickerKind(opt.name))
 
