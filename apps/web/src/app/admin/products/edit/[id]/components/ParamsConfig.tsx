@@ -10,6 +10,11 @@ import {
 import GlobalDraperyPricingCard from '@/components/admin/GlobalDraperyPricingCard'
 import AcceptanceCheck from './AcceptanceCheck'
 
+// 上架配置 v2 (2026-07-14, Eddie-approved redesign): pleated styles show as
+// image cards, ripplefold styles collapse behind a toggle.
+const PLEATED_STYLES = AAPP_STYLE_ORDER.filter(k => k.includes('fold'))
+const RIPPLE_STYLES = AAPP_STYLE_ORDER.filter(k => !k.includes('fold'))
+
 interface ProductParams {
   fabric_width?: number
   width_multiplier?: number
@@ -508,6 +513,7 @@ function AappDraperyPreview({ productId, params, draftOptions, sheerOnly = false
   const [result, setResult] = useState<{ total: number; breakdown: Record<string, any> } | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [expanded, setExpanded] = useState(false)
   const reqSeq = useRef(0)
 
   const styleKeys = readStyleKeys(draftOptions) ?? []
@@ -595,8 +601,19 @@ function AappDraperyPreview({ productId, params, draftOptions, sheerOnly = false
   const rows = result ? buildAappDraperyRows(result.breakdown || {}, result.total) : []
   const selCls = 'w-full px-2 py-1.5 border border-gray-300 rounded text-sm bg-white'
 
+  // 上架配置 v2: collapsed by default — a sticky live-price bar pins to the
+  // bottom of the tab; the input grid + step table expand on demand.
+  const summary = [
+    `${width}″ × ${height}″`,
+    sel.style ? (AAPP_STYLE_ZH[sel.style] || AAPP_STYLE_LABELS[sel.style] || sel.style) : '',
+    !sheerOnly && sel.lining ? (AAPP_LINING_LABELS[sel.lining] || sel.lining) : '',
+    sel.operation ? (AAPP_OPERATION_ZH[sel.operation] || sel.operation) : '',
+  ].filter(Boolean).join(' · ')
+
   return (
-    <div className="mt-8 border-t border-gray-200 pt-6">
+    <>
+    {expanded && (
+    <div className="mt-8 border border-gray-200 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-sm font-semibold text-gray-900">计算过程预览 <span className="font-normal text-gray-400">/ AAPP Engine Preview</span></h4>
         <span className="text-xs text-gray-400">任何参数修改后 0.4 秒自动重算</span>
@@ -649,7 +666,6 @@ function AappDraperyPreview({ productId, params, draftOptions, sheerOnly = false
             className="px-3 py-1.5 text-xs bg-[#3d3d3d] text-white rounded hover:bg-gray-700 disabled:opacity-50">
             {loading ? '计算中…' : '计算'}
           </button>
-          <SaveStartingPriceButton productId={productId} total={result?.total ?? null} />
         </div>
       </div>
 
@@ -685,6 +701,28 @@ function AappDraperyPreview({ productId, params, draftOptions, sheerOnly = false
         </div>
       )}
     </div>
+    )}
+
+    {/* ── 常驻实时价格条（上架配置 v2）── */}
+    <div className="sticky bottom-3 z-10 mt-6 flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+      <p className="min-w-0 truncate text-xs text-gray-500">
+        实时预览 <span className="text-gray-700">{summary}</span>
+        {loading ? (
+          <span className="ml-2 text-gray-300">计算中…</span>
+        ) : error ? (
+          <span className="ml-2 text-red-500">⚠️ 引擎报错{expanded ? '' : ' — 展开查看'}</span>
+        ) : result ? (
+          <b className="ml-2 align-middle text-lg font-semibold text-gray-900">${Math.round(result.total)}</b>
+        ) : null}
+      </p>
+      <div className="flex shrink-0 items-center gap-2.5">
+        <button type="button" onClick={() => setExpanded(o => !o)} className="text-xs text-gray-500 underline hover:text-gray-800">
+          {expanded ? '收起计算过程' : '展开计算过程'}
+        </button>
+        <SaveStartingPriceButton productId={productId} total={result?.total ?? null} />
+      </div>
+    </div>
+    </>
   )
 }
 
@@ -861,6 +899,120 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
     finally { setStyleImgBusy(p => ({ ...p, [key]: false })) }
   }
 
+  // ── 上架配置 v2 states (2026-07-14) ───────────────────────────────────────
+  // Ripplefold styles collapse behind a toggle; auto-open when any is offered.
+  const [rippleOpen, setRippleOpen] = useState(false)
+  useEffect(() => {
+    if (!draftOptions) return
+    const offered = readStyleKeys(draftOptions) ?? []
+    if (RIPPLE_STYLES.some(k => offered.includes(k))) setRippleOpen(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftOptions === null])
+
+  // Lining tier prices shown on the offer pills (site-settings group values;
+  // fall back to AAPP factory defaults when unset/unreachable).
+  const [gp, setGp] = useState<Record<string, number>>({})
+  useEffect(() => {
+    if (productType !== 'drapery') return
+    fetch('/api/admin/site-settings')
+      .then(r => r.json())
+      .then(d => {
+        if (d.success && d.data) {
+          const num = (k: string, dflt: number) => {
+            const n = Number(d.data[k])
+            return Number.isFinite(n) && n >= 0 ? n : dflt
+          }
+          setGp({
+            no_py: num('lining_no_price_per_yard', 0), no_lp: num('lining_no_labor_per_panel', 30),
+            lf_py: num('lining_lf_price_per_yard', 6), lf_lp: num('lining_lf_labor_per_panel', 36),
+            bo_py: num('lining_bo_price_per_yard', 8), bo_lp: num('lining_bo_labor_per_panel', 38),
+          })
+        }
+      })
+      .catch(() => {})
+  }, [productType])
+  const tierPrice = (k: string): string => {
+    const py = k === 'NO' ? (gp.no_py ?? 0) : k === 'LF' ? (gp.lf_py ?? 6) : (gp.bo_py ?? 8)
+    const lp = k === 'NO' ? (gp.no_lp ?? 30) : k === 'LF' ? (gp.lf_lp ?? 36) : (gp.bo_lp ?? 38)
+    return `$${py}/yd · 手工 $${lp}/幅`
+  }
+
+  // ── Fabric colors — managed here (选项配置 kept in two-way sync via the
+  //    shared draftOptions array; the fabric option lives on option name
+  //    'fabric_color' / 'fabric', per-color params: image_url /
+  //    fabric_price_per_yard / fabric_width_in) ────────────────────────────
+  const [selColorId, setSelColorId] = useState<string | null>(null)
+  const [newColorName, setNewColorName] = useState('')
+  const [colorImgBusy, setColorImgBusy] = useState(false)
+
+  const fabricOptName = (draftOptions || []).find((o: any) => o?.name === 'fabric_color' || o?.name === 'fabric')?.name || 'fabric_color'
+  const fabricValues: any[] = (draftOptions || []).find((o: any) => o?.name === fabricOptName)?.values || []
+  const selColor = fabricValues.find((v: any) => v.id === selColorId) || null
+
+  const mutateFabric = (mutate: (values: any[]) => any[]) => {
+    if (!draftOptions) return
+    let found = false
+    let next = draftOptions.map((o: any) => {
+      if (o?.name !== fabricOptName) return o
+      found = true
+      return { ...o, values: mutate(Array.isArray(o.values) ? o.values : []).map((v: any, i: number) => ({ ...v, sort_order: i })) }
+    })
+    if (!found) {
+      next = [...next, {
+        id: fabricOptName, name: fabricOptName, type: 'select', display_label: 'Fabric Color',
+        values: mutate([]).map((v: any, i: number) => ({ ...v, sort_order: i })),
+      }]
+    }
+    setDraftOptions(next)
+    onOptionsChange?.(next)
+    setParams(prev => { onChange(prev); return prev })
+  }
+
+  const addColor = () => {
+    const name = newColorName.trim()
+    if (!name) return
+    const id = `fabric_${Date.now()}`
+    mutateFabric(values => [...values, { id, value: name, label: name, params: {} }])
+    setNewColorName('')
+    setSelColorId(id)
+  }
+  const renameColor = (id: string, text: string) =>
+    mutateFabric(values => values.map((v: any) => v.id === id ? { ...v, value: text, label: text } : v))
+  const setColorParam = (id: string, key: string, raw: string) =>
+    mutateFabric(values => values.map((v: any) => {
+      if (v.id !== id) return v
+      const params = { ...(v.params || {}) }
+      const n = parseFloat(raw)
+      if (raw === '' || !Number.isFinite(n) || n <= 0) delete params[key]
+      else params[key] = n
+      return { ...v, params }
+    }))
+  const setColorImage = (id: string, url: string | null) =>
+    mutateFabric(values => values.map((v: any) => {
+      if (v.id !== id) return v
+      const params = { ...(v.params || {}) }
+      if (url) params.image_url = url
+      else delete params.image_url
+      return { ...v, params }
+    }))
+  const removeColor = (id: string) => {
+    if (!confirm('删除这个颜色？')) return
+    if (selColorId === id) setSelColorId(null)
+    mutateFabric(values => values.filter((v: any) => v.id !== id))
+  }
+  const uploadColorImage = async (id: string, file: File) => {
+    setColorImgBusy(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('productId', productId)
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (data.success && data.data?.url) setColorImage(id, data.data.url)
+    } catch { /* keep old */ }
+    finally { setColorImgBusy(false) }
+  }
+
   if (loading) return <div className="text-center py-8 text-gray-500">加载中...</div>
 
   const inputCls = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -870,45 +1022,74 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   const checkedStyles = new Set(readStyleKeys(draftOptions) ?? [])
   const checkedLinings = new Set(readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER])
 
-  // One style cell = offer checkbox + (when offered) showcase-image uploader.
-  // Shared by the drapery and sheer 款式提供 cards.
+  // One style card = 16:9 image (with upload overlay) + offer checkbox row.
+  // Shared by the drapery and sheer style sections (上架配置 v2).
   const renderStyleCell = (k: string) => {
     const on = checkedStyles.has(k)
     const img = styleImageOf(k)
     return (
-      <div key={k} className={`border rounded px-3 py-2 ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-        <label className="flex items-center gap-2 cursor-pointer select-none text-xs">
-          <input type="checkbox" checked={on} onChange={() => toggleStyle(k)} className="h-3.5 w-3.5 accent-gray-800" />
-          <span>
-            <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
-            <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
-          </span>
-        </label>
-        {on && (
-          <div className="mt-2 flex items-center gap-1.5">
-            {img ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={img} alt="" className="w-9 h-9 object-cover rounded shrink-0" />
-            ) : (
-              <span className="w-9 h-9 rounded bg-gray-100 text-gray-300 text-[9px] grid place-items-center shrink-0">无图</span>
-            )}
-            <label className="text-[10px] text-gray-500 border border-gray-300 rounded px-1.5 py-0.5 cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+      <div key={k} className={`rounded-lg border overflow-hidden transition-colors ${on ? 'border-gray-800' : 'border-gray-200'}`}>
+        <div className={`relative aspect-video bg-[#f4f1ec] ${on ? '' : 'opacity-50'}`}>
+          {img ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-300">
+              {on ? '未传图' : '未上架'}
+            </span>
+          )}
+          {on && (
+            <label className="absolute bottom-2 right-2 cursor-pointer rounded bg-white/90 px-2.5 py-1 text-[11px] text-gray-700 shadow-sm hover:bg-white">
               {styleImgBusy[k] ? '上传中…' : img ? '换图' : '传图'}
               <input
                 type="file" accept="image/*" className="hidden" disabled={!!styleImgBusy[k]}
                 onChange={e => { const f = e.target.files?.[0]; if (f) uploadStyleImage(k, f); e.target.value = '' }}
               />
             </label>
-            {img && !styleImgBusy[k] && (
-              <button type="button" onClick={() => setStyleImage(k, null)} className="text-[10px] text-red-400 hover:text-red-600">
-                移除
-              </button>
-            )}
-          </div>
-        )}
+          )}
+          {on && img && !styleImgBusy[k] && (
+            <button
+              type="button" onClick={() => setStyleImage(k, null)}
+              className="absolute bottom-2 left-2 rounded bg-white/90 px-2 py-1 text-[11px] text-red-500 shadow-sm hover:bg-white"
+            >
+              移除图
+            </button>
+          )}
+        </div>
+        <label className="flex cursor-pointer select-none items-center gap-2.5 px-3.5 py-3 text-sm">
+          <input type="checkbox" checked={on} onChange={() => toggleStyle(k)} className="h-4 w-4 accent-gray-900" />
+          <span className="text-gray-800">
+            {AAPP_STYLE_ZH[k]} <span className="text-xs text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
+          </span>
+        </label>
       </div>
     )
   }
+
+  // Styles section: pleated cards up front, ripplefold collapsed behind a toggle.
+  const rippleOffered = RIPPLE_STYLES.filter(k => checkedStyles.has(k)).length
+  const renderStylesSection = () => (
+    <>
+      <div className="grid grid-cols-2 gap-3">
+        {PLEATED_STYLES.map(renderStyleCell)}
+      </div>
+      <button
+        type="button"
+        onClick={() => setRippleOpen(o => !o)}
+        className="mt-3 text-xs text-gray-500 underline hover:text-gray-800"
+      >
+        {rippleOpen ? '－ 收起蛇形帘款式' : `＋ 展开蛇形帘款式 (${RIPPLE_STYLES.length}${rippleOffered ? ` · 已上架 ${rippleOffered}` : ''})`}
+      </button>
+      {rippleOpen && (
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          {RIPPLE_STYLES.map(renderStyleCell)}
+        </div>
+      )}
+      {checkedStyles.size === 0 && (
+        <p className="text-xs text-amber-600 mt-3">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
+      )}
+    </>
+  )
   // Leftover data from removed features (page simplification 2026-07-13):
   // drapery products are single-layer, no bundled-hardware add-on. If an old
   // draft still carries these params they'd silently affect pricing — surface
@@ -940,21 +1121,25 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
 
           {aappOn ? (
             <>
-              {/* ── Main fabric defaults ── */}
+              {/* ── Main fabric defaults（说明收进 ⓘ，上架配置 v2）── */}
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className={labelCls}>面料默认价 / Fabric Price ($/yd)</label>
+                  <label className={labelCls}>
+                    面料默认价 / Fabric Price ($/yd)
+                    <span className="ml-1.5 cursor-help text-gray-300" title="每码单价。各颜色可在下方「面料颜色」里单独覆盖。">ⓘ</span>
+                  </label>
                   <input type="number" step="0.01" value={params.aapp_fabric_price_per_yard ?? ''}
                     onChange={e => set('aapp_fabric_price_per_yard', e.target.value === '' ? undefined : parseFloat(e.target.value))}
                     className={inputCls} placeholder="如 30" />
-                  <p className={hintCls}>每码单价。各颜色可在「选项配置」的面料选项值上用 fabric_price_per_yard 单独覆盖。</p>
                 </div>
                 <div>
-                  <label className={labelCls}>面料幅宽 / Fabric Width (inch)</label>
+                  <label className={labelCls}>
+                    面料幅宽 / Fabric Width (inch)
+                    <span className="ml-1.5 cursor-help text-gray-300" title="默认 55&quot;。≥110&quot; 自动判横做（railroaded）。各颜色可在下方「面料颜色」里单独覆盖。">ⓘ</span>
+                  </label>
                   <input type="number" step="0.1" value={params.aapp_fabric_width_in ?? ''}
                     onChange={e => set('aapp_fabric_width_in', e.target.value === '' ? undefined : parseFloat(e.target.value))}
                     className={inputCls} placeholder="默认 55" />
-                  <p className={hintCls}>默认 55"。≥110" 自动判横做（railroaded）。各颜色可用 fabric_width_in 覆盖。</p>
                 </div>
               </div>
 
@@ -989,46 +1174,117 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
               )}
 
               {/* ── Style offering (auto-syncs the 'style' option) ── */}
+              {/* ── 款式 Styles（图片卡 + 勾选，蛇形帘折叠 — 上架配置 v2）── */}
               <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-900">款式提供 / Styles Offered</h4>
-                <p className="text-xs text-gray-400 mt-1 mb-3">
-                  勾选 = 前台提供该款式（唯一编辑入口，选项配置页为只读展示）。
-                  对开/单开（operation）选项自动同步，无需配置。
-                  每个已勾选款式可上传展示图 — 客户在前台下拉选中某款式时，
-                  左侧主图会自动切换为该款式的图（建议横构图实拍）；不传图则主图不变。
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {AAPP_STYLE_ORDER.map(renderStyleCell)}
-                </div>
-                {checkedStyles.size === 0 && (
-                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
-                )}
+                <h4 className="text-sm font-semibold text-gray-900">
+                  款式 <span className="font-normal text-gray-400">Styles</span>
+                  <span className="ml-1.5 cursor-help font-normal text-gray-300" title="勾选 = 前台提供该款式。传的图会在客户选中该款式时显示在商品页左侧主图区（建议 16:9 横构图实拍）。对开/单开选项自动同步。">ⓘ</span>
+                </h4>
+                <div className="mt-4">{renderStylesSection()}</div>
               </div>
 
-              {/* ── Lining tiers offered (auto-syncs the 'lining' option) ── */}
+              {/* ── 衬布 Lining（勾选药丸 + 档位价，全局参数折叠 — 上架配置 v2）── */}
               <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-900">衬布提供 / Lining Tiers Offered</h4>
-                <p className="text-xs text-gray-400 mt-1 mb-3">
-                  勾选 = 前台提供该衬布档。各档价格是全局参数（下方卡片统一编辑，所有 drapery 商品共用）。
-                </p>
-                <div className="grid grid-cols-3 gap-2">
+                <h4 className="text-sm font-semibold text-gray-900">
+                  衬布 <span className="font-normal text-gray-400">Lining</span>
+                  <span className="ml-1.5 cursor-help font-normal text-gray-300" title="勾选 = 前台提供该衬布档。价格为全局参数，所有 drapery 商品共用。">ⓘ</span>
+                </h4>
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                   {AAPP_LINING_TIERS.map(t => (
-                    <label key={t.key} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedLinings.has(t.key) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-                      <input type="checkbox" checked={checkedLinings.has(t.key)} onChange={() => toggleLining(t.key)} className="h-3.5 w-3.5 accent-gray-800" />
-                      <span>
-                        <span className="block text-gray-800">{t.key} · {t.zh}</span>
-                        <span className="block text-[10px] text-gray-400">{AAPP_LINING_LABELS[t.key]}</span>
-                      </span>
+                    <label key={t.key} className={`flex flex-1 cursor-pointer select-none items-center gap-2.5 rounded-lg border px-4 py-3.5 text-sm transition-colors ${checkedLinings.has(t.key) ? 'border-gray-800' : 'border-gray-200'}`}>
+                      <input type="checkbox" checked={checkedLinings.has(t.key)} onChange={() => toggleLining(t.key)} className="h-4 w-4 accent-gray-900" />
+                      <span className="text-gray-800">{t.zh}</span>
+                      <span className="ml-auto text-xs text-gray-400">{tierPrice(t.key)}</span>
                     </label>
                   ))}
                 </div>
                 {checkedLinings.size === 0 && (
-                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何衬布档 — 前台不显示衬布选择，引擎按无衬（NO）计价。</p>
+                  <p className="text-xs text-amber-600 mt-3">⚠️ 未勾选任何衬布档 — 前台不显示衬布选择，引擎按无衬（NO）计价。</p>
                 )}
+                <details className="mt-4">
+                  <summary className="cursor-pointer select-none text-xs text-gray-500 underline hover:text-gray-800">
+                    编辑全局参数（衬布/手工/镶边/倍数 — 所有 drapery 商品共用）
+                  </summary>
+                  <div className="mt-3"><GlobalDraperyPricingCard /></div>
+                </details>
               </div>
 
-              {/* ── Global drapery pricing (site-settings group, shared by all drapery products) ── */}
-              <GlobalDraperyPricingCard />
+              {/* ── 面料颜色 Colors（色卡集中管理 — 上架配置 v2）── */}
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-gray-900">
+                  面料颜色 <span className="font-normal text-gray-400">Colors</span>
+                  <span className="ml-1.5 cursor-help font-normal text-gray-300" title="点色块编辑名称/图片/单色价格覆盖（留空 = 用上方商品级默认价）。与选项配置页的数据实时同步。">ⓘ</span>
+                </h4>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {fabricValues.map((v: any) => {
+                    const img = typeof v?.params?.image_url === 'string' && v.params.image_url ? v.params.image_url : (typeof v?.image_url === 'string' ? v.image_url : '')
+                    const on = selColorId === v.id
+                    return (
+                      <button
+                        key={v.id} type="button"
+                        onClick={() => setSelColorId(on ? null : v.id)}
+                        className="w-[76px] text-center focus:outline-none"
+                        title={v.label || v.value}
+                      >
+                        <span className={`block h-[76px] w-[76px] overflow-hidden rounded-md ${on ? 'ring-2 ring-gray-900 ring-offset-2' : 'ring-1 ring-gray-200'}`}>
+                          {img ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={img} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            <span className="flex h-full w-full items-center justify-center bg-[#f4f1ec] px-1 text-[10px] leading-tight text-gray-400">{v.label || v.value}</span>
+                          )}
+                        </span>
+                        <span className="mt-1.5 block truncate text-[11px] text-gray-600">{v.label || v.value}</span>
+                      </button>
+                    )
+                  })}
+                  <div className="w-[76px]">
+                    <div className="flex h-[76px] w-[76px] items-center justify-center rounded-md border-[1.5px] border-dashed border-gray-300 bg-gray-50 text-xl text-gray-300">＋</div>
+                    <input
+                      value={newColorName}
+                      onChange={e => setNewColorName(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && addColor()}
+                      placeholder="颜色名"
+                      className="mt-1.5 w-full rounded border border-gray-200 px-1 py-0.5 text-center text-[11px]"
+                    />
+                    <button type="button" onClick={addColor} disabled={!newColorName.trim()}
+                      className="mt-1 w-full rounded bg-gray-900 py-0.5 text-[11px] text-white disabled:opacity-30">添加</button>
+                  </div>
+                </div>
+                {selColor && (
+                  <div className="mt-4 rounded-lg bg-gray-50 p-4">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                      <div>
+                        <label className="mb-1.5 block text-xs text-gray-500">颜色名称</label>
+                        <input value={selColor.label || selColor.value}
+                          onChange={e => renameColor(selColor.id, e.target.value)}
+                          className="w-full rounded border border-gray-300 px-2.5 py-1.5 text-sm" />
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-xs text-gray-500">单色价 ($/yd，留空用默认)</label>
+                        <input type="number" step="0.01" value={selColor.params?.fabric_price_per_yard ?? ''}
+                          onChange={e => setColorParam(selColor.id, 'fabric_price_per_yard', e.target.value)}
+                          placeholder="默认" className="w-full rounded border border-gray-300 px-2.5 py-1.5 text-sm" />
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-xs text-gray-500">幅宽 (inch，留空用默认)</label>
+                        <input type="number" step="0.1" value={selColor.params?.fabric_width_in ?? ''}
+                          onChange={e => setColorParam(selColor.id, 'fabric_width_in', e.target.value)}
+                          placeholder="默认" className="w-full rounded border border-gray-300 px-2.5 py-1.5 text-sm" />
+                      </div>
+                      <div className="flex items-end gap-2 pb-0.5">
+                        <label className="cursor-pointer rounded border border-gray-300 px-2.5 py-1.5 text-xs text-gray-600 hover:bg-gray-100">
+                          {colorImgBusy ? '上传中…' : '传色卡图'}
+                          <input type="file" accept="image/*" className="hidden" disabled={colorImgBusy}
+                            onChange={e => { const f = e.target.files?.[0]; if (f) uploadColorImage(selColor.id, f); e.target.value = '' }} />
+                        </label>
+                        <button type="button" onClick={() => removeColor(selColor.id)}
+                          className="rounded border border-red-200 px-2.5 py-1.5 text-xs text-red-500 hover:bg-red-50">删除</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* ── Live engine preview + blueprint acceptance samples ── */}
               {draftOptions && (
@@ -1145,14 +1401,11 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                     ripplefold only — the engine key set has no other styles;
                     sheer has NO lining card by design) ── */}
               <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-gray-900">款式提供 / Styles Offered</h4>
-                <p className="text-xs text-gray-400 mt-1 mb-3">勾选即自动同步商品的 style 选项（打褶 + 蛇形；纱层无衬布选项）。operation（对开/单开）选项也自动同步。</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {AAPP_STYLE_ORDER.map(renderStyleCell)}
-                </div>
-                {checkedStyles.size === 0 && (
-                  <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
-                )}
+                <h4 className="text-sm font-semibold text-gray-900">
+                  款式 <span className="font-normal text-gray-400">Styles</span>
+                  <span className="ml-1.5 cursor-help font-normal text-gray-300" title="勾选 = 前台提供该款式（打褶 + 蛇形；纱层无衬布选项）。operation 选项自动同步。传的图会在客户选中该款式时显示在商品页主图区。">ⓘ</span>
+                </h4>
+                <div className="mt-4">{renderStylesSection()}</div>
               </div>
 
               {/* ── Live engine preview (proves the sheer_only wiring) + samples ── */}
