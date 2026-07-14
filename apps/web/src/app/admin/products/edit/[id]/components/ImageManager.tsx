@@ -199,6 +199,18 @@ export default function ImageManager({ productId, onChange }: ImageManagerProps)
     persistImages(updated, galleryRef.current)
   }
 
+  // ── Gallery editorial helpers (2026-07-14) ────────────────────────────────
+  // The storefront's magazine layout reads title as "英文眉题 | 中文大标题".
+  // The editor splits that into two friendly inputs; joining happens here so
+  // the stored data model stays a single title string (no schema change).
+  const splitGalleryTitle = (title: string): { kicker: string; heading: string } => {
+    const idx = (title || '').indexOf('|')
+    if (idx > 0) return { kicker: title.slice(0, idx).trim(), heading: title.slice(idx + 1).trim() }
+    return { kicker: '', heading: (title || '').trim() }
+  }
+  const joinGalleryTitle = (kicker: string, heading: string): string =>
+    kicker.trim() ? `${kicker.trim()} | ${heading.trim()}` : heading.trim()
+
   const updateGallery = (id: string, field: 'title' | 'description', value: string) => {
     const updated = galleryRef.current.map(img => img.id === id ? { ...img, [field]: value } : img)
     setGalleryImages(updated)
@@ -364,23 +376,94 @@ export default function ImageManager({ productId, onChange }: ImageManagerProps)
             <p className="text-xs text-gray-400 mt-1">上传后可裁剪选择展示位置</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {galleryImages.map((image) => (
-              <div key={image.id} className="border border-gray-300 rounded-lg p-4 bg-white flex gap-4">
-                <div className="relative w-32 h-32 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                  <Image src={image.url} alt={image.title} fill sizes="128px" className="object-cover" />
-                </div>
-                <div className="flex-1 space-y-3">
-                  <input type="text" value={image.title} onChange={(e) => updateGallery(image.id, 'title', e.target.value)} placeholder="标题（可选）" className="w-full px-3 py-2 border border-gray-300 rounded" />
-                  <textarea value={image.description} onChange={(e) => updateGallery(image.id, 'description', e.target.value)} placeholder="描述（可选）" rows={2} className="w-full px-3 py-2 border border-gray-300 rounded" />
-                  <div className="flex gap-2">
-                    <button onClick={() => moveGallery(image.id, 'up')} disabled={image.sort_order === 0} className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-40">↑ 上移</button>
-                    <button onClick={() => moveGallery(image.id, 'down')} disabled={image.sort_order === galleryImages.length - 1} className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-40">↓ 下移</button>
-                    <button onClick={() => deleteGallery(image.id)} className="px-3 py-1 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded ml-auto">删除</button>
+          <div className="space-y-5">
+            {galleryImages.map((image, gi) => {
+              const t = splitGalleryTitle(image.title)
+              const isFullBleed = !t.kicker && !t.heading && !(image.description || '').trim()
+              return (
+                <div key={image.id} className="border border-gray-200 rounded-lg bg-white overflow-hidden">
+                  {/* 头部：序号/布局标注 + 排序/删除 */}
+                  <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-4 py-2.5">
+                    <p className="text-xs text-gray-500">
+                      第 {gi + 1} 块 ·{' '}
+                      {isFullBleed
+                        ? <span className="rounded bg-gray-800 px-1.5 py-0.5 text-[11px] text-white">16:9 通栏大图</span>
+                        : <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[11px] text-gray-700">{gi % 2 === 0 ? '图左 · 文右' : '图右 · 文左'}</span>}
+                    </p>
+                    <div className="flex gap-2">
+                      <button onClick={() => moveGallery(image.id, 'up')} disabled={image.sort_order === 0} className="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:bg-gray-100 rounded disabled:opacity-40">↑ 上移</button>
+                      <button onClick={() => moveGallery(image.id, 'down')} disabled={image.sort_order === galleryImages.length - 1} className="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:bg-gray-100 rounded disabled:opacity-40">↓ 下移</button>
+                      <button onClick={() => deleteGallery(image.id)} className="px-2.5 py-1 text-xs bg-red-50 text-red-600 hover:bg-red-100 rounded">删除</button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-5 p-4 lg:flex-row">
+                    {/* 左：编辑区 */}
+                    <div className="flex-1 space-y-3">
+                      <div className="flex gap-3">
+                        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded bg-gray-100">
+                          <Image src={image.url} alt={image.title} fill sizes="96px" className="object-cover" />
+                        </div>
+                        <div className="flex-1 space-y-2.5">
+                          <div>
+                            <label className="mb-1 block text-xs text-gray-500">英文眉题（可选，前台显示为小号大写字母）</label>
+                            <input
+                              type="text" value={t.kicker}
+                              onChange={(e) => updateGallery(image.id, 'title', joinGalleryTitle(e.target.value, t.heading))}
+                              placeholder="如 MEMORY SHAPING"
+                              className="w-full rounded border border-gray-300 px-3 py-2 text-sm uppercase tracking-wide"
+                            />
+                          </div>
+                          <div>
+                            <label className="mb-1 block text-xs text-gray-500">大标题（前台显示为衬线大字）</label>
+                            <input
+                              type="text" value={t.heading}
+                              onChange={(e) => updateGallery(image.id, 'title', joinGalleryTitle(t.kicker, e.target.value))}
+                              placeholder="如 高温记忆定型，持久垂顺"
+                              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-gray-500">正文描述（可换行；标题和描述都留空 = 通栏大图）</label>
+                        <textarea
+                          value={image.description}
+                          onChange={(e) => updateGallery(image.id, 'description', e.target.value)}
+                          placeholder="写这一块想讲的故事…"
+                          rows={4}
+                          className="w-full rounded border border-gray-300 px-3 py-2 text-sm leading-relaxed"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 右：前台效果实时预览 */}
+                    <div className="w-full flex-shrink-0 lg:w-[340px]">
+                      <p className="mb-1.5 text-xs text-gray-400">前台效果预览</p>
+                      <div className="rounded border border-gray-100 bg-[#faf9f6] p-4">
+                        {isFullBleed ? (
+                          <div className="relative aspect-video w-full overflow-hidden">
+                            <Image src={image.url} alt="" fill sizes="340px" className="object-cover" />
+                          </div>
+                        ) : (
+                          <div className={`flex items-center gap-3 ${gi % 2 === 1 ? 'flex-row-reverse' : ''}`}>
+                            <div className="relative aspect-[4/3] w-[55%] flex-shrink-0 overflow-hidden">
+                              <Image src={image.url} alt="" fill sizes="190px" className="object-cover" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              {t.kicker && <p className="mb-1 text-[8px] uppercase tracking-[0.25em] text-gray-400">{t.kicker}</p>}
+                              {t.heading && <p className="font-serif text-[13px] leading-snug text-gray-900">{t.heading}</p>}
+                              <span className="my-1.5 block h-px w-5 bg-gray-300" />
+                              {image.description && <p className="line-clamp-4 whitespace-pre-line text-[9px] leading-relaxed text-gray-500">{image.description}</p>}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
