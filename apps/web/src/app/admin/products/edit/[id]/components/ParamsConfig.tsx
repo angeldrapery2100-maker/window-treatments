@@ -816,9 +816,9 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
   // ── Per-style showcase images (2026-07-13) ────────────────────────────────
   // Stored on the style option VALUE's params.image_url (same convention as
   // fabric swatches; upsertManagedOption preserves value params so the image
-  // survives style/lining re-syncs). The storefront's StyleShowcasePicker
-  // renders the image box + one-column style list only when at least one
-  // offered style carries an image — otherwise it stays a plain dropdown.
+  // survives style/lining re-syncs). Storefront (v4): the style renders as a
+  // dropdown, and the selected style's image displays in the LEFT main
+  // gallery stage (extra thumbnail slot). No images → gallery unchanged.
   const [styleImgBusy, setStyleImgBusy] = useState<Record<string, boolean>>({})
 
   const styleImageOf = (key: string): string => {
@@ -994,8 +994,8 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                 <p className="text-xs text-gray-400 mt-1 mb-3">
                   勾选 = 前台提供该款式（唯一编辑入口，选项配置页为只读展示）。
                   对开/单开（operation）选项自动同步，无需配置。
-                  每个已勾选款式可上传展示图 — 前台款式区将显示「左图右列」选择器，
-                  客户点选款式时图片实时切换；一张图都不传则前台为普通下拉框。
+                  每个已勾选款式可上传展示图 — 客户在前台下拉选中某款式时，
+                  左侧主图会自动切换为该款式的图（建议横构图实拍）；不传图则主图不变。
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {AAPP_STYLE_ORDER.map(renderStyleCell)}

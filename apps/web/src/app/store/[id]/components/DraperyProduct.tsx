@@ -13,7 +13,7 @@ import { parseConfigFromUrl } from './shared/configLink'
 import CopyConfigLink from './shared/CopyConfigLink'
 import SwatchCard from './shared/SwatchCard'
 import SheerCrossSell from './shared/SheerCrossSell'
-import { DraperyOptionPicker, draperyPickerKind } from './shared/DraperyOptionPickers'
+import { DraperyOptionPicker, draperyPickerKind, swatchImage } from './shared/DraperyOptionPickers'
 import StickyPriceBar from './shared/StickyPriceBar'
 import TrustStrip from './shared/TrustStrip'
 import { addToCart } from '@/lib/cart'
@@ -59,14 +59,21 @@ export default function DraperyProduct({ productId }: { productId: string }) {
   // value still lands in selectedOptions — harmless.
   const mainOptions = options.filter(opt => !isHardwareOpt(opt.name) && opt.name !== 'return')
 
-  // Visual pickers (store redesign P2, reworked 2026-07-13): fabric color →
-  // swatch grid, pleat style → showcase picker (image box + one-column list,
-  // only when style images are uploaded — otherwise dropdown), lining → icon
-  // cards, operation → segmented control. Everything else renders as the
-  // original <select> dropdowns. Presentation only — the pickers write the
-  // exact same selectedOptions[name] = value strings.
+  // v4 pickers (2026-07-13): fabric color → swatch grid; style / lining /
+  // operation / everything else → full-width <select> rows (one per row,
+  // equal width). Presentation only — the pickers write the exact same
+  // selectedOptions[name] = value strings.
   const visualOptions = mainOptions.filter(opt => draperyPickerKind(opt.name, opt.values))
   const selectOptions = mainOptions.filter(opt => !draperyPickerKind(opt.name, opt.values))
+
+  // v4 (2026-07-13): the selected pleat style's showcase image displays in the
+  // LEFT main gallery stage (extra thumbnail slot; stage auto-switches on
+  // style change). Sourced from the style value's image_url, uploaded in the
+  // admin 计算参数 → 款式提供 card. No image → no slot, gallery unchanged.
+  const styleOpt = mainOptions.find(opt => opt.name === 'style' || opt.name === 'pleat_style')
+  const styleVal = styleOpt?.values?.find((v: any) => v.value === selectedOptions[styleOpt.name])
+  const styleImgUrl = swatchImage(styleVal)
+  const styleImage = styleImgUrl ? { url: styleImgUrl, label: styleVal?.label || 'Selected style' } : null
 
   const aappHwIds: string[] = Array.isArray(params?.aapp_hardware_products)
     ? params.aapp_hardware_products.filter((x: any) => typeof x === 'string' && x)
@@ -211,7 +218,7 @@ export default function DraperyProduct({ productId }: { productId: string }) {
           <>
             <div className="grid md:grid-cols-2 gap-12 mt-4">
               <div>
-                <ImageGallery mainImages={mainImages} galleryImages={[]} />
+                <ImageGallery mainImages={mainImages} galleryImages={[]} styleImage={styleImage} />
               </div>
               <div>
                 <div className="flex items-center gap-2 text-xs text-gray-400 tracking-wide uppercase mb-4">
@@ -252,9 +259,28 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                     </div>
                   </div>
 
+                  {/* v4 (2026-07-13): style / lining / operation — one full-width
+                      dropdown per row, equal width; fabric swatches below. */}
+                  {selectOptions.length > 0 && (
+                    <div className="space-y-6">
+                      {selectOptions.map(opt => (
+                        <div key={opt.id}>
+                          <label className="block text-[13px] text-gray-600 mb-2">{opt.display_label || opt.label}</label>
+                          <select
+                            value={selectedOptions[opt.name] || ''}
+                            onChange={e => setSelectedOptions(prev => ({ ...prev, [opt.name]: e.target.value }))}
+                            className="w-full px-3.5 py-3 border border-gray-300 rounded-sm text-sm text-gray-800 bg-white focus:border-gray-800 focus:outline-none"
+                          >
+                            {opt.values.map((v: any) => <option key={v.value} value={v.value}>{v.label}</option>)}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   {visualOptions.map(opt => (
                     <div key={opt.id}>
-                      <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">{opt.display_label || opt.label} *</label>
+                      <label className="block text-[13px] text-gray-600 mb-2">{opt.display_label || opt.label}</label>
                       <DraperyOptionPicker
                         name={opt.name}
                         values={opt.values}
@@ -263,23 +289,6 @@ export default function DraperyProduct({ productId }: { productId: string }) {
                       />
                     </div>
                   ))}
-
-                  {selectOptions.length > 0 && (
-                    <div className="grid grid-cols-2 gap-4">
-                      {selectOptions.map(opt => (
-                        <div key={opt.id}>
-                          <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-1.5">{opt.display_label || opt.label} *</label>
-                          <select
-                            value={selectedOptions[opt.name] || ''}
-                            onChange={e => setSelectedOptions(prev => ({ ...prev, [opt.name]: e.target.value }))}
-                            className="w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:border-gray-800 focus:outline-none"
-                          >
-                            {opt.values.map((v: any) => <option key={v.value} value={v.value}>{v.label}</option>)}
-                          </select>
-                        </div>
-                      ))}
-                    </div>
-                  )}
 
                   {useHwProductRef ? (
                     <div className="border border-gray-200 rounded p-4">
