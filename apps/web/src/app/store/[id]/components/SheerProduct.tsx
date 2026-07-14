@@ -164,8 +164,8 @@ export default function SheerProduct({ productId }: { productId: string }) {
 
   // 「光」option routing: fabric_color → swatch grid, style / operation →
   // the shared visual pickers; anything unrecognized keeps a plain <select>.
-  const visualOptions = options.filter(opt => draperyPickerKind(opt.name))
-  const selectOptions = options.filter(opt => !draperyPickerKind(opt.name))
+  const visualOptions = options.filter(opt => draperyPickerKind(opt.name, opt.values))
+  const selectOptions = options.filter(opt => !draperyPickerKind(opt.name, opt.values))
 
   // Day / Evening paired hero — only when the gallery carries ≥ 2 images.
   const dayEvening = mainImages.length >= 2

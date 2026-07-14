@@ -59,13 +59,14 @@ export default function DraperyProduct({ productId }: { productId: string }) {
   // value still lands in selectedOptions — harmless.
   const mainOptions = options.filter(opt => !isHardwareOpt(opt.name) && opt.name !== 'return')
 
-  // Visual pickers (store redesign P2, trimmed 2026-07-13): fabric color →
-  // swatch grid, lining → icon cards, operation → segmented control. Pleat
-  // style and everything else render as the original <select> dropdowns.
-  // Presentation only — the pickers write the exact same
-  // selectedOptions[name] = value strings.
-  const visualOptions = mainOptions.filter(opt => draperyPickerKind(opt.name))
-  const selectOptions = mainOptions.filter(opt => !draperyPickerKind(opt.name))
+  // Visual pickers (store redesign P2, reworked 2026-07-13): fabric color →
+  // swatch grid, pleat style → showcase picker (image box + one-column list,
+  // only when style images are uploaded — otherwise dropdown), lining → icon
+  // cards, operation → segmented control. Everything else renders as the
+  // original <select> dropdowns. Presentation only — the pickers write the
+  // exact same selectedOptions[name] = value strings.
+  const visualOptions = mainOptions.filter(opt => draperyPickerKind(opt.name, opt.values))
+  const selectOptions = mainOptions.filter(opt => !draperyPickerKind(opt.name, opt.values))
 
   const aappHwIds: string[] = Array.isArray(params?.aapp_hardware_products)
     ? params.aapp_hardware_products.filter((x: any) => typeof x === 'string' && x)

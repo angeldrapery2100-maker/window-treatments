@@ -31,13 +31,17 @@ interface PickerProps {
 // Option-name routing — which options get a visual picker
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type DraperyPickerKind = 'fabric' | 'lining' | 'operation'
+export type DraperyPickerKind = 'fabric' | 'style' | 'lining' | 'operation'
 
-export function draperyPickerKind(name: string): DraperyPickerKind | null {
+export function draperyPickerKind(name: string, values?: OptionValue[]): DraperyPickerKind | null {
   const n = (name || '').toLowerCase()
   if (n === 'fabric_color' || n === 'fabric') return 'fabric'
-  // style / pleat_style intentionally NOT visual (2026-07-13, Eddie's call):
-  // returning null routes it to the page's plain <select> dropdown.
+  // style → showcase picker (image box + vertical option list) ONLY when at
+  // least one value carries an image (uploaded in 计算参数 → 款式提供).
+  // Without images it falls back to the page's plain <select> dropdown.
+  if (n === 'style' || n === 'pleat_style') {
+    return Array.isArray(values) && values.some(v => !!swatchImage(v)) ? 'style' : null
+  }
   if (n === 'lining') return 'lining'
   if (n === 'operation') return 'operation'
   return null
@@ -93,10 +97,59 @@ export function FabricSwatchGrid({ values, selected, onSelect }: PickerProps) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ② Style — no visual picker (2026-07-13, Eddie's call): pleat style renders
-//    as the page's standard <select> dropdown. The earlier line-art pleat
-//    diagrams (and their text-card replacement) were removed entirely.
+// ② Style — showcase picker (2026-07-13, Eddie's design): an image display
+//    box on the left, the style options stacked in ONE column on the right at
+//    matching height. Selecting a style swaps the image instantly. Images come
+//    from each style value's image_url / params.image_url (uploaded in the
+//    admin 计算参数 → 款式提供 card). A style without an image shows a neutral
+//    placeholder; if NO style has an image the option falls back to the plain
+//    dropdown (see draperyPickerKind).
 // ─────────────────────────────────────────────────────────────────────────────
+
+export function StyleShowcasePicker({ values, selected, onSelect }: PickerProps) {
+  const current = values.find(v => v.value === selected) || values[0]
+  const img = current ? swatchImage(current) : null
+  return (
+    <div className="flex flex-col sm:flex-row gap-3 sm:items-stretch">
+      {/* Image display box — stretches to the height of the option column */}
+      <div className="relative w-full sm:w-[46%] shrink-0 aspect-[4/3] sm:aspect-auto sm:min-h-[180px] rounded overflow-hidden ring-1 ring-gray-200 bg-[#f4f1ec]">
+        {img ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={img}
+            alt={current?.label || current?.value || ''}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center px-4 text-xs text-gray-400 text-center leading-relaxed">
+            {current?.label || current?.value || ''}
+          </span>
+        )}
+      </div>
+      {/* Style options — one vertical column */}
+      <div className="flex-1 flex flex-col gap-2">
+        {values.map(v => {
+          const isSel = selected === v.value
+          return (
+            <button
+              key={v.value}
+              type="button"
+              onClick={() => onSelect(v.value)}
+              aria-pressed={isSel}
+              className={`flex-1 min-h-[42px] w-full rounded border px-3 py-2 text-left text-xs leading-snug transition-colors ${
+                isSel
+                  ? 'border-gray-900 ring-1 ring-gray-900 bg-gray-50 text-gray-900 font-medium'
+                  : 'border-gray-200 text-gray-600 hover:border-gray-400'
+              }`}
+            >
+              {v.label || v.value}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 const svgProps = {
   viewBox: '0 0 72 48',
@@ -282,9 +335,10 @@ export function OperationSegment({ values, selected, onSelect }: PickerProps) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function DraperyOptionPicker({ name, values, selected, onSelect }: PickerProps & { name: string }) {
-  const kind = draperyPickerKind(name)
+  const kind = draperyPickerKind(name, values)
   if (!kind || !values || values.length === 0) return null
   if (kind === 'fabric') return <FabricSwatchGrid values={values} selected={selected} onSelect={onSelect} />
+  if (kind === 'style') return <StyleShowcasePicker values={values} selected={selected} onSelect={onSelect} />
   if (kind === 'lining') return <LiningCardPicker values={values} selected={selected} onSelect={onSelect} />
   return <OperationSegment values={values} selected={selected} onSelect={onSelect} />
 }

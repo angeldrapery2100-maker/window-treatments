@@ -813,6 +813,54 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
     applyOptionsSync(draftOptions, styles, ordered)
   }
 
+  // ── Per-style showcase images (2026-07-13) ────────────────────────────────
+  // Stored on the style option VALUE's params.image_url (same convention as
+  // fabric swatches; upsertManagedOption preserves value params so the image
+  // survives style/lining re-syncs). The storefront's StyleShowcasePicker
+  // renders the image box + one-column style list only when at least one
+  // offered style carries an image — otherwise it stays a plain dropdown.
+  const [styleImgBusy, setStyleImgBusy] = useState<Record<string, boolean>>({})
+
+  const styleImageOf = (key: string): string => {
+    const opt = (draftOptions || []).find((o: any) => o?.name === 'style')
+    const v = opt?.values?.find((x: any) => x?.value === key)
+    const u = v?.params?.image_url ?? v?.image_url
+    return typeof u === 'string' ? u : ''
+  }
+
+  const setStyleImage = (key: string, url: string | null) => {
+    if (!draftOptions) return
+    const next = draftOptions.map((o: any) => {
+      if (o?.name !== 'style') return o
+      return {
+        ...o,
+        values: (o.values || []).map((v: any) => {
+          if (v?.value !== key) return v
+          const params = { ...(v.params || {}) }
+          if (url) params.image_url = url
+          else delete params.image_url
+          return { ...v, params }
+        }),
+      }
+    })
+    setDraftOptions(next)
+    onOptionsChange?.(next)
+    setParams(prev => { onChange(prev); return prev })
+  }
+
+  const uploadStyleImage = async (key: string, file: File) => {
+    setStyleImgBusy(p => ({ ...p, [key]: true }))
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('productId', productId)
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (data.success && data.data?.url) setStyleImage(key, data.data.url)
+    } catch { /* upload failed — keep the previous image */ }
+    finally { setStyleImgBusy(p => ({ ...p, [key]: false })) }
+  }
+
   if (loading) return <div className="text-center py-8 text-gray-500">加载中...</div>
 
   const inputCls = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -821,6 +869,46 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
 
   const checkedStyles = new Set(readStyleKeys(draftOptions) ?? [])
   const checkedLinings = new Set(readLiningKeys(draftOptions) ?? [...AAPP_LINING_ORDER])
+
+  // One style cell = offer checkbox + (when offered) showcase-image uploader.
+  // Shared by the drapery and sheer 款式提供 cards.
+  const renderStyleCell = (k: string) => {
+    const on = checkedStyles.has(k)
+    const img = styleImageOf(k)
+    return (
+      <div key={k} className={`border rounded px-3 py-2 ${on ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
+        <label className="flex items-center gap-2 cursor-pointer select-none text-xs">
+          <input type="checkbox" checked={on} onChange={() => toggleStyle(k)} className="h-3.5 w-3.5 accent-gray-800" />
+          <span>
+            <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
+            <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
+          </span>
+        </label>
+        {on && (
+          <div className="mt-2 flex items-center gap-1.5">
+            {img ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={img} alt="" className="w-9 h-9 object-cover rounded shrink-0" />
+            ) : (
+              <span className="w-9 h-9 rounded bg-gray-100 text-gray-300 text-[9px] grid place-items-center shrink-0">无图</span>
+            )}
+            <label className="text-[10px] text-gray-500 border border-gray-300 rounded px-1.5 py-0.5 cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+              {styleImgBusy[k] ? '上传中…' : img ? '换图' : '传图'}
+              <input
+                type="file" accept="image/*" className="hidden" disabled={!!styleImgBusy[k]}
+                onChange={e => { const f = e.target.files?.[0]; if (f) uploadStyleImage(k, f); e.target.value = '' }}
+              />
+            </label>
+            {img && !styleImgBusy[k] && (
+              <button type="button" onClick={() => setStyleImage(k, null)} className="text-[10px] text-red-400 hover:text-red-600">
+                移除
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
   // Leftover data from removed features (page simplification 2026-07-13):
   // drapery products are single-layer, no bundled-hardware add-on. If an old
   // draft still carries these params they'd silently affect pricing — surface
@@ -906,17 +994,11 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                 <p className="text-xs text-gray-400 mt-1 mb-3">
                   勾选 = 前台提供该款式（唯一编辑入口，选项配置页为只读展示）。
                   对开/单开（operation）选项自动同步，无需配置。
+                  每个已勾选款式可上传展示图 — 前台款式区将显示「左图右列」选择器，
+                  客户点选款式时图片实时切换；一张图都不传则前台为普通下拉框。
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {AAPP_STYLE_ORDER.map(k => (
-                    <label key={k} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedStyles.has(k) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-                      <input type="checkbox" checked={checkedStyles.has(k)} onChange={() => toggleStyle(k)} className="h-3.5 w-3.5 accent-gray-800" />
-                      <span>
-                        <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
-                        <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
-                      </span>
-                    </label>
-                  ))}
+                  {AAPP_STYLE_ORDER.map(renderStyleCell)}
                 </div>
                 {checkedStyles.size === 0 && (
                   <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
@@ -1066,15 +1148,7 @@ export default function ParamsConfig({ productType, productId, onChange, onOptio
                 <h4 className="text-sm font-semibold text-gray-900">款式提供 / Styles Offered</h4>
                 <p className="text-xs text-gray-400 mt-1 mb-3">勾选即自动同步商品的 style 选项（打褶 + 蛇形；纱层无衬布选项）。operation（对开/单开）选项也自动同步。</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {AAPP_STYLE_ORDER.map(k => (
-                    <label key={k} className={`flex items-center gap-2 border rounded px-3 py-2 cursor-pointer select-none text-xs ${checkedStyles.has(k) ? 'border-gray-800 bg-gray-50' : 'border-gray-200'}`}>
-                      <input type="checkbox" checked={checkedStyles.has(k)} onChange={() => toggleStyle(k)} className="h-3.5 w-3.5 accent-gray-800" />
-                      <span>
-                        <span className="block text-gray-800">{AAPP_STYLE_ZH[k]}</span>
-                        <span className="block text-[10px] text-gray-400">{AAPP_STYLE_LABELS[k]}</span>
-                      </span>
-                    </label>
-                  ))}
+                  {AAPP_STYLE_ORDER.map(renderStyleCell)}
                 </div>
                 {checkedStyles.size === 0 && (
                   <p className="text-xs text-amber-600 mt-2">⚠️ 未勾选任何款式 — 前台将无款式可选，引擎会按 2fold_pinch 默认计价。</p>
