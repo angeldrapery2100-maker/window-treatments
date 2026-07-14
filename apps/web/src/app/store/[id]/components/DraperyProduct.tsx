@@ -6,6 +6,7 @@ import Link from 'next/link'
 import ProductLayout from './shared/ProductLayout'
 import ImageGallery from './shared/ImageGallery'
 import GalleryCards from './shared/GalleryCards'
+import DetailCanvas from './shared/DetailCanvas'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
@@ -20,7 +21,7 @@ import { addToCart } from '@/lib/cart'
 
 export default function DraperyProduct({ productId }: { productId: string }) {
   const router = useRouter()
-  const { productName, description, mainImages, galleryImages, options, params, buildOptionValues, loading } = useProductData(productId)
+  const { productName, description, mainImages, galleryImages, options, params, detailCanvas, buildOptionValues, loading } = useProductData(productId)
 
   const [width, setWidth] = useState('')
   const [height, setHeight] = useState('')
@@ -407,11 +408,16 @@ export default function DraperyProduct({ productId }: { productId: string }) {
               </div>
             </div>
 
-            {galleryImages.length > 0 && (
+            {detailCanvas?.blocks?.length ? (
+              /* 详情版面（自由排版画布）优先；无版面时回退 Gallery 图文 */
+              <div className="mt-6">
+                <DetailCanvas canvas={detailCanvas} />
+              </div>
+            ) : galleryImages.length > 0 ? (
               <div className="mt-6">
                 <GalleryCards galleryImages={galleryImages} />
               </div>
-            )}
+            ) : null}
 
             <div className="mt-12">
               <ProductContent productId={productId} productType="drapery" />

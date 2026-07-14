@@ -3,6 +3,7 @@
 import { use, useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import ImageManager from './components/ImageManager'
+import DetailCanvasEditor from './components/DetailCanvasEditor'
 import ParamsConfig from './components/ParamsConfig'
 import OptionsManager from './components/OptionsManager'
 import ContentEditor from './components/ContentEditor'
@@ -45,7 +46,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
   const contentRef = useRef<any>(null)
   const parcelsRef = useRef<any>(null)
 
-  const [activeTab, setActiveTab] = useState<'basic' | 'images' | 'params' | 'options' | 'content' | 'parcels'>('basic')
+  const [activeTab, setActiveTab] = useState<'basic' | 'images' | 'canvas' | 'params' | 'options' | 'content' | 'parcels'>('basic')
 
   const isBasicComplete = productName.trim().length > 0
 
@@ -61,7 +62,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
     try {
       const sp = new URLSearchParams(window.location.search)
       const tab = sp.get('tab')
-      if (tab && ['basic', 'images', 'params', 'options', 'content', 'parcels'].includes(tab)) {
+      if (tab && ['basic', 'images', 'canvas', 'params', 'options', 'content', 'parcels'].includes(tab)) {
         setActiveTab(tab as any)
       }
       const created = sp.get('created')
@@ -352,8 +353,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         <div className="bg-white rounded-lg shadow">
           <div className="border-b border-gray-200">
             <nav className="flex -mb-px">
-              {(['basic', 'images', 'params', 'options', 'content', 'parcels'] as const).map(tab => {
-                const labels = { basic: '基础信息', images: '图片管理', params: '计算参数', options: '选项配置', content: '产品说明', parcels: '包裹规则' }
+              {(['basic', 'images', 'canvas', 'params', 'options', 'content', 'parcels'] as const).map(tab => {
+                const labels = { basic: '基础信息', images: '图片管理', canvas: '详情版面', params: '计算参数', options: '选项配置', content: '产品说明', parcels: '包裹规则' }
                 const locked = !basicSaved && tab !== 'basic'
                 return (
                   <button key={tab} onClick={() => !locked && setActiveTab(tab)} disabled={locked}
@@ -524,6 +525,11 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                   onChange={images => { imagesRef.current = images; markDirty() }}
                 />
               </div>
+            )}
+
+            {/* 详情版面（自由排版画布，自带保存按钮） */}
+            {activeTab === 'canvas' && basicSaved && currentId && (
+              <DetailCanvasEditor productId={currentId} />
             )}
 
             {/* 计算参数 */}

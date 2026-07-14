@@ -92,6 +92,7 @@ export async function GET(
         },
         options:        cfg.options        || [],
         params:         cfg.params         || {},
+        detail_canvas:  cfg.detail_canvas  || null,
         content_blocks: cfg.content_blocks || [],
       }
     })

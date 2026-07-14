@@ -33,6 +33,7 @@ export function useProductData(productId: string) {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
   const [options, setOptions] = useState<ProductOption[]>([])
   const [params, setParams] = useState<Record<string, any>>({})
+  const [detailCanvas, setDetailCanvas] = useState<any>(null)
   const [stockQty, setStockQty] = useState<number | null>(null) // null = untracked/unlimited
   const [basePrice, setBasePrice] = useState(0) // fixed-price products (accessory)
   const [loading, setLoading] = useState(true)
@@ -51,6 +52,7 @@ export function useProductData(productId: string) {
           setGalleryImages(data.data.images?.gallery || [])
           setOptions(data.data.options || [])
           setParams(data.data.params || {})
+          setDetailCanvas(data.data.detail_canvas || null)
           setStockQty(data.data.product?.stock_qty ?? null)
           setBasePrice(Number(data.data.product?.base_price) || 0)
         }
@@ -88,5 +90,5 @@ export function useProductData(productId: string) {
     return optionValues
   }
 
-  return { productName, productType, description, mainImages, galleryImages, options, params, stockQty, basePrice, buildOptionValues, loading }
+  return { productName, productType, description, mainImages, galleryImages, options, params, detailCanvas, stockQty, basePrice, buildOptionValues, loading }
 }
