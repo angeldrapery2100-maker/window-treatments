@@ -61,7 +61,8 @@ export default function DetailCanvas({ canvas }: { canvas: DetailCanvasData }) {
             if (!b.url) return null
             return (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={b.id} src={b.url} alt="" loading="lazy" style={{ ...pos, objectFit: 'cover' }} />
+              <img key={b.id} src={b.url} alt="" loading="lazy"
+                style={{ ...pos, objectFit: 'cover', borderRadius: `${12 / U}cqw` }} />
             )
           }
           return (

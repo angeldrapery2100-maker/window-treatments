@@ -22,21 +22,22 @@ const W = 960
 
 const PRESET: DetailCanvasData = {
   bg: '#faf9f6',
-  height: 2180,
+  height: 2360,
   blocks: [
-    { id: 'img-1', type: 'image', x: 56, y: 80, w: 520, h: 390 },
-    { id: 't-1k', type: 'text', x: 620, y: 170, w: 290, h: 26, text: 'HANDCRAFTED PLEATS', size: 12, color: '#9ca3af' },
-    { id: 't-1h', type: 'text', x: 620, y: 206, w: 290, h: 84, text: '每一个褶，都是手工缝制', size: 26, serif: true, color: '#111827' },
-    { id: 't-1b', type: 'text', x: 620, y: 310, w: 280, h: 140, text: '资深工匠逐褶定位、手工缝制，褶距经打褶求解器精确计算。褶型饱满一致，悬垂利落。', size: 14, color: '#6b7280' },
-    { id: 'img-2', type: 'image', x: 384, y: 560, w: 520, h: 390 },
-    { id: 't-2k', type: 'text', x: 56, y: 650, w: 290, h: 26, text: 'MEMORY SHAPING', size: 12, color: '#9ca3af' },
-    { id: 't-2h', type: 'text', x: 56, y: 686, w: 300, h: 84, text: '高温记忆定型，持久垂顺', size: 26, serif: true, color: '#111827' },
-    { id: 't-2b', type: 'text', x: 56, y: 790, w: 280, h: 140, text: '面料经高温记忆定型工艺处理，垂感如瀑；日常开合、洗护之后褶形依旧笔挺。', size: 14, color: '#6b7280' },
-    { id: 'img-3', type: 'image', x: 0, y: 1040, w: 960, h: 540 },
-    { id: 'img-4', type: 'image', x: 56, y: 1660, w: 520, h: 390 },
-    { id: 't-4k', type: 'text', x: 620, y: 1750, w: 290, h: 26, text: 'MADE TO MEASURE', size: 12, color: '#9ca3af' },
-    { id: 't-4h', type: 'text', x: 620, y: 1786, w: 290, h: 84, text: '按窗定制，分毫合身', size: 26, serif: true, color: '#111827' },
-    { id: 't-4b', type: 'text', x: 620, y: 1890, w: 280, h: 140, text: '每一幅窗帘按你的窗户尺寸单独裁制，宽高精确到 1/8 英寸。', size: 14, color: '#6b7280' },
+    // ── 顶部通栏大图 ×3（不需要的选中后删除即可）──
+    { id: 'hero-1', type: 'image', x: 24, y: 40, w: 912, h: 480 },
+    { id: 'hero-2', type: 'image', x: 24, y: 544, w: 912, h: 480 },
+    { id: 'hero-3', type: 'image', x: 24, y: 1048, w: 912, h: 480 },
+    // ── 图文对半 · 图左文右 ──
+    { id: 'img-a', type: 'image', x: 24, y: 1572, w: 444, h: 340 },
+    { id: 't-ak', type: 'text', x: 516, y: 1650, w: 396, h: 24, text: 'HANDCRAFTED PLEATS', size: 12, color: '#9ca3af' },
+    { id: 't-ah', type: 'text', x: 516, y: 1684, w: 396, h: 76, text: '每一个褶，都是手工缝制', size: 26, serif: true, color: '#111827' },
+    { id: 't-ab', type: 'text', x: 516, y: 1780, w: 380, h: 120, text: '资深工匠逐褶定位、手工缝制，褶距精确计算。褶型饱满一致，悬垂利落。', size: 14, color: '#6b7280' },
+    // ── 图文对半 · 图右文左 ──
+    { id: 'img-b', type: 'image', x: 492, y: 1956, w: 444, h: 340 },
+    { id: 't-bk', type: 'text', x: 24, y: 2034, w: 396, h: 24, text: 'MADE TO MEASURE', size: 12, color: '#9ca3af' },
+    { id: 't-bh', type: 'text', x: 24, y: 2068, w: 396, h: 76, text: '按窗定制，分毫合身', size: 26, serif: true, color: '#111827' },
+    { id: 't-bb', type: 'text', x: 24, y: 2164, w: 380, h: 120, text: '每一幅窗帘按你的窗户尺寸单独裁制，宽高精确到 1/8 英寸。', size: 14, color: '#6b7280' },
   ],
 }
 
@@ -287,9 +288,9 @@ export default function DetailCanvasEditor({ productId }: { productId: string })
                   {b.type === 'image' ? (
                     b.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={b.url} alt="" draggable={false} className="h-full w-full object-cover" />
+                      <img src={b.url} alt="" draggable={false} className="h-full w-full rounded-xl object-cover" />
                     ) : (
-                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-300 bg-white/50 text-gray-400">
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 bg-white/50 text-gray-400">
                         <span className="text-xs">空图片框</span>
                         <label className="cursor-pointer rounded bg-gray-900 px-3 py-1 text-[11px] text-white" onPointerDown={e => e.stopPropagation()}>
                           上传图片
@@ -327,7 +328,18 @@ export default function DetailCanvasEditor({ productId }: { productId: string })
                   {/* selection chrome */}
                   {isSel && (
                     <>
-                      <span className="pointer-events-none absolute inset-0 ring-2 ring-blue-500" />
+                      <span className={'pointer-events-none absolute inset-0 ring-2 ring-blue-500 ' + (b.type === 'image' ? 'rounded-xl' : '')} />
+                      {/* 选中有图的框 → 框上直接给换图按钮（更直观，工具栏里也保留） */}
+                      {b.type === 'image' && b.url && (
+                        <label
+                          onPointerDown={e => e.stopPropagation()}
+                          className="absolute bottom-2 right-2 cursor-pointer rounded bg-white/95 px-3 py-1.5 text-xs text-gray-800 shadow-md hover:bg-white"
+                        >
+                          {uploading ? '上传中…' : '换图'}
+                          <input type="file" accept="image/*" className="hidden" disabled={uploading}
+                            onChange={e => { const f = e.target.files?.[0]; if (f) uploadImage(b.id, f); e.target.value = '' }} />
+                        </label>
+                      )}
                       <span
                         onPointerDown={e => startDrag(e, b, 'resize')}
                         className="absolute -bottom-1.5 -right-1.5 h-3.5 w-3.5 cursor-nwse-resize rounded-sm border border-white bg-blue-500"
