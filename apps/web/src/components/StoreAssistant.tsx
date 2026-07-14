@@ -188,6 +188,12 @@ export default function StoreAssistant() {
     : (onCheckout || onProductPage)
       ? 'bottom-24 sm:bottom-6'
       : 'bottom-5 sm:bottom-6'
+  // Store pages keep the account + cart stack at the bottom-RIGHT corner
+  // (ProductLayout floating buttons) — the assistant launcher moves to the
+  // bottom-LEFT there so the two stacks never pile up on each other or cover
+  // the config column's buttons (2026-07-13 fix). Elsewhere it stays right.
+  const btnSide = onStore ? 'left-4 sm:left-6' : 'right-4 sm:right-6'
+  const panelSide = onStore ? 'sm:left-6' : 'sm:right-6'
   const panelPos = onStore
     ? 'z-50 sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
     : 'z-[1000] sm:bottom-24 sm:max-h-[calc(100vh-8rem)]'
@@ -198,7 +204,7 @@ export default function StoreAssistant() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Open design assistant chat"
-        className={`fixed ${btnOffset} right-4 sm:right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#3d3d3d] text-white shadow-lg transition-all duration-300 hover:bg-gray-700 hover:shadow-xl ${
+        className={`fixed ${btnOffset} ${btnSide} z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#3d3d3d] text-white shadow-lg transition-all duration-300 hover:bg-gray-700 hover:shadow-xl ${
           open ? 'pointer-events-none scale-0 opacity-0' : 'scale-100 opacity-100'
         }`}
       >
@@ -209,7 +215,7 @@ export default function StoreAssistant() {
 
       {/* Chat panel: mobile = bottom sheet, desktop = card */}
       <div
-        className={`fixed inset-x-0 bottom-0 flex h-[70vh] w-full flex-col overflow-hidden rounded-t-xl bg-white shadow-2xl transition-all duration-300 ease-out sm:inset-x-auto sm:right-6 sm:h-[560px] sm:w-[380px] sm:rounded-xl ${panelPos} ${
+        className={`fixed inset-x-0 bottom-0 flex h-[70vh] w-full flex-col overflow-hidden rounded-t-xl bg-white shadow-2xl transition-all duration-300 ease-out sm:inset-x-auto ${panelSide} sm:h-[560px] sm:w-[380px] sm:rounded-xl ${panelPos} ${
           open ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
         }`}
         role="dialog"
