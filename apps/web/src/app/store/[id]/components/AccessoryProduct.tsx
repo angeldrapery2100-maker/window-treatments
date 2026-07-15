@@ -14,6 +14,7 @@ import Image from 'next/image'
 import ProductLayout from './shared/ProductLayout'
 import ImageGallery from './shared/ImageGallery'
 import GalleryCards from './shared/GalleryCards'
+import DetailCanvas from './shared/DetailCanvas'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
@@ -76,7 +77,7 @@ function WorksWith({ ids, currentId }: { ids: string[]; currentId: string }) {
 }
 
 export default function AccessoryProduct({ productId }: { productId: string }) {
-  const { productName, description, mainImages, galleryImages, options, params, stockQty, basePrice, loading } = useProductData(productId)
+  const { productName, description, mainImages, galleryImages, detailCanvas, options, params, stockQty, basePrice, loading } = useProductData(productId)
   const outOfStock = stockQty === 0
   const lowStock = stockQty !== null && stockQty > 0 && stockQty <= 5
 
@@ -228,11 +229,15 @@ export default function AccessoryProduct({ productId }: { productId: string }) {
               </div>
             </div>
 
-            {galleryImages.length > 0 && (
+            {detailCanvas?.blocks?.length ? (
+              <div className="mt-6">
+                <DetailCanvas canvas={detailCanvas} />
+              </div>
+            ) : galleryImages.length > 0 ? (
               <div className="mt-6">
                 <GalleryCards galleryImages={galleryImages} />
               </div>
-            )}
+            ) : null}
 
             <WorksWith ids={relatedIds} currentId={productId} />
 

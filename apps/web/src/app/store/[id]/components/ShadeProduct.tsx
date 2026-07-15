@@ -6,6 +6,7 @@ import Link from 'next/link'
 import ProductLayout from './shared/ProductLayout'
 import ImageGallery from './shared/ImageGallery'
 import GalleryCards from './shared/GalleryCards'
+import DetailCanvas from './shared/DetailCanvas'
 import ProductContent from './shared/ProductContent'
 import RelatedProducts from './shared/RelatedProducts'
 import { useProductData } from './shared/useProductData'
@@ -33,7 +34,7 @@ import { addToCart } from '@/lib/cart'
 
 export default function ShadeProduct({ productId }: { productId: string }) {
   const router = useRouter()
-  const { productName, description, mainImages, galleryImages, options, params, buildOptionValues, loading } = useProductData(productId)
+  const { productName, description, mainImages, galleryImages, detailCanvas, options, params, buildOptionValues, loading } = useProductData(productId)
 
   const [width, setWidth] = useState('')
   const [height, setHeight] = useState('')
@@ -332,11 +333,15 @@ export default function ShadeProduct({ productId }: { productId: string }) {
               </div>
             </div>
 
-            {galleryImages.length > 0 && (
+            {detailCanvas?.blocks?.length ? (
+              <div className="mt-6">
+                <DetailCanvas canvas={detailCanvas} />
+              </div>
+            ) : galleryImages.length > 0 ? (
               <div className="mt-6">
                 <GalleryCards galleryImages={galleryImages} />
               </div>
-            )}
+            ) : null}
 
             <div className="mt-12">
               <ProductContent productId={productId} productType="shade" />
