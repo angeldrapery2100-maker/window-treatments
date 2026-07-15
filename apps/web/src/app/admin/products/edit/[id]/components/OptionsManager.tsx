@@ -492,7 +492,7 @@ export default function OptionsManager({ productType, productId, onChange, optio
                                   <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
                                   <input type="number" step="0.01" value={val.params?.[f.key] ?? ''}
                                     placeholder="默认"
-                                    onChange={e => updateValueParam(option.id, val.id, f.key, e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
+                                    onChange={e => updateValueParam(option.id, val.id, f.key, e.target.value === '' ? '' : parseFloat(e.target.value) || 0)}
                                     className="w-full px-2 py-1 text-sm border border-gray-300 rounded" />
                                 </div>
                               ))}
@@ -517,8 +517,8 @@ export default function OptionsManager({ productType, productId, onChange, optio
                               {paramFields.map(f => (
                                 <div key={f.key}>
                                   <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
-                                  <input type="number" step="0.01" value={val.params?.[f.key] ?? 0}
-                                    onChange={e => updateValueParam(option.id, val.id, f.key, parseFloat(e.target.value) || 0)}
+                                  <input type="number" step="0.01" value={val.params?.[f.key] ?? ''}
+                                    onChange={e => updateValueParam(option.id, val.id, f.key, e.target.value === '' ? '' : parseFloat(e.target.value) || 0)}
                                     className="w-full px-2 py-1 text-sm border border-gray-300 rounded" />
                                 </div>
                               ))}
@@ -540,8 +540,8 @@ export default function OptionsManager({ productType, productId, onChange, optio
                           {paramFields.length > 0 && paramFields.map(f => (
                             <div key={f.key}>
                               <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
-                              <input type="number" step="0.01" value={val.params?.[f.key] ?? 0}
-                                onChange={e => updateValueParam(option.id, val.id, f.key, parseFloat(e.target.value) || 0)}
+                              <input type="number" step="0.01" value={val.params?.[f.key] ?? ''}
+                                onChange={e => updateValueParam(option.id, val.id, f.key, e.target.value === '' ? '' : parseFloat(e.target.value) || 0)}
                                 className="w-full px-2 py-1 text-sm border border-gray-300 rounded" />
                             </div>
                           ))}

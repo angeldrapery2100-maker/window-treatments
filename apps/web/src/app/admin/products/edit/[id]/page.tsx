@@ -483,8 +483,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     <label className="block text-sm font-medium text-gray-700 mb-2">排序权重</label>
                     <input
                       type="number"
-                      value={sortOrder}
-                      onChange={e => { setSortOrder(parseInt(e.target.value) || 0); markDirty() }}
+                      value={sortOrder || ''}
+                      onChange={e => { setSortOrder(e.target.value === '' ? 0 : parseInt(e.target.value) || 0); markDirty() }}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                     />
                     <p className="text-xs text-gray-400 mt-1">数字越小越靠前</p>

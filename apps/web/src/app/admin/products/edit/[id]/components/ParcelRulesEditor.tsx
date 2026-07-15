@@ -2,16 +2,20 @@
 
 import { useState, useEffect } from 'react'
 
+// 数字字段允许暂存 ''（正在编辑、被删空的状态）——上报给保存流程前统一
+// 转成数字，输入框里就不会出现"删不掉的 0 / 096"问题（2026-07-14 修复）。
+type Num = number | ''
+
 interface ParcelRule {
   rule_name: string
-  min_width: number
-  max_width: number
-  min_height: number
-  max_height: number
-  parcel_length: number
-  parcel_width: number
-  parcel_height: number
-  parcel_weight: number
+  min_width: Num
+  max_width: Num
+  min_height: Num
+  max_height: Num
+  parcel_length: Num
+  parcel_width: Num
+  parcel_height: Num
+  parcel_weight: Num
 }
 
 interface Props {
@@ -62,11 +66,27 @@ export default function ParcelRulesEditor({ productId, productType, onChange }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId])
 
+  // 空字符串保留为 ''（编辑中），非法输入忽略；上报的规则统一转数字。
+  const sanitize = (list: ParcelRule[]): ParcelRule[] => list.map(r => ({
+    ...r,
+    min_width: Number(r.min_width) || 0, max_width: Number(r.max_width) || 0,
+    min_height: Number(r.min_height) || 0, max_height: Number(r.max_height) || 0,
+    parcel_length: Number(r.parcel_length) || 0, parcel_width: Number(r.parcel_width) || 0,
+    parcel_height: Number(r.parcel_height) || 0, parcel_weight: Number(r.parcel_weight) || 0,
+  }))
+
   const update = (idx: number, field: keyof ParcelRule, value: string | number) => {
     const next = [...rules]
-    ;(next[idx] as any)[field] = typeof value === 'string' && field !== 'rule_name' ? parseFloat(value) || 0 : value
+    if (field === 'rule_name' || typeof value === 'number') {
+      ;(next[idx] as any)[field] = value
+    } else if (value === '') {
+      ;(next[idx] as any)[field] = ''
+    } else {
+      const n = parseFloat(value)
+      if (Number.isFinite(n)) (next[idx] as any)[field] = n
+    }
     setRules(next)
-    onChange(next)
+    onChange(sanitize(next))
   }
 
   const addRule = () => {
@@ -147,25 +167,27 @@ export default function ParcelRulesEditor({ productId, productType, onChange }: 
                   </div>
                 </div>
 
-                {/* Right: Parcel dimensions */}
+                {/* Right: Parcel dimensions — 长/宽/高 一排三个，重量单独一行 */}
                 <div>
                   <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">包裹尺寸</p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] text-gray-400 mb-1">包裹长 (in)</label>
+                      <label className="block text-[11px] text-gray-400 mb-1">长 (in)</label>
                       <input type="number" value={rule.parcel_length} onChange={e => update(idx, 'parcel_length', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     </div>
                     <div>
-                      <label className="block text-[11px] text-gray-400 mb-1">包裹宽 (in)</label>
+                      <label className="block text-[11px] text-gray-400 mb-1">宽 (in)</label>
                       <input type="number" value={rule.parcel_width} onChange={e => update(idx, 'parcel_width', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     </div>
                     <div>
-                      <label className="block text-[11px] text-gray-400 mb-1">包裹高 (in)</label>
+                      <label className="block text-[11px] text-gray-400 mb-1">高 (in)</label>
                       <input type="number" value={rule.parcel_height} onChange={e => update(idx, 'parcel_height', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     </div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-3 gap-3">
                     <div>
                       <label className="block text-[11px] text-gray-400 mb-1">重量 (lb)</label>
                       <input type="number" value={rule.parcel_weight} onChange={e => update(idx, 'parcel_weight', e.target.value)}

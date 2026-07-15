@@ -215,8 +215,9 @@ export default function DetailCanvasEditor({ productId }: { productId: string })
         <input type="color" value={canvas.bg || '#faf9f6'} onChange={e => patchCanvas({ bg: e.target.value })}
           className="h-6 w-8 cursor-pointer rounded border border-gray-200" title="自定义背景色" />
         <span className="ml-3 text-xs text-gray-400">版面高度</span>
-        <input type="number" step="10" value={canvas.height}
-          onChange={e => patchCanvas({ height: Math.max(200, parseInt(e.target.value) || 0) })}
+        <input type="number" step="10" value={canvas.height || ''}
+          onChange={e => patchCanvas({ height: parseInt(e.target.value) || 0 })}
+          onBlur={() => patchCanvas({ height: Math.max(200, canvas.height || 0) })}
           className="w-20 rounded border border-gray-300 px-2 py-1 text-xs" />
         <span className="mx-1 h-5 w-px bg-gray-200" />
         <button className={btn} onClick={() => addBlock('image')}>＋ 图片框</button>
@@ -247,8 +248,9 @@ export default function DetailCanvasEditor({ productId }: { productId: string })
           {sel.type === 'text' && (
             <>
               <span className="text-xs text-gray-400">字号</span>
-              <input type="number" min="8" max="80" value={sel.size || 14}
-                onChange={e => patchBlock(sel.id, { size: Math.min(120, Math.max(8, parseInt(e.target.value) || 14)) })}
+              <input type="number" min="8" max="120" value={sel.size || ''}
+                onChange={e => patchBlock(sel.id, { size: Math.min(120, parseInt(e.target.value) || 0) })}
+                onBlur={() => patchBlock(sel.id, { size: Math.min(120, Math.max(8, sel.size || 14)) })}
                 className="w-14 rounded border border-gray-300 px-1.5 py-1 text-xs" />
               <button className={sel.serif ? btnOn : btn} onClick={() => patchBlock(sel.id, { serif: !sel.serif })}>宋体</button>
               <button className={sel.bold ? btnOn : btn} onClick={() => patchBlock(sel.id, { bold: !sel.bold })}>加粗</button>
