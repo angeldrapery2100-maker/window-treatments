@@ -35,6 +35,10 @@ export interface HdEstimate {
   label?: string
   rangeLow?: number
   rangeHigh?: number
+  /** True when no fabric was given and the range spans this series' fabric tiers. */
+  fabricDependent?: boolean
+  /** Engine needs the customer to pick something first (e.g. sub_product). */
+  needsChoice?: { field: string; options: string[] }
   warnings?: string[]
   needsHuman?: boolean
   error?: string
@@ -49,50 +53,104 @@ export function toReferenceRange(total: number): { low: number; high: number } {
   return { low, high }
 }
 
-/**
- * Call hd_price_lookup and convert to a range. Without `series`, returns the
- * available series list (for the AI to guide the customer). Never throws —
- * returns { ok:false, error } so the chat degrades to "let a person quote it".
- */
-export async function hdEstimate(params: HdLookupParams): Promise<HdEstimate> {
-  const token = process.env.AAPP_CHATGPT_ACTION_TOKEN
-  if (!token) return { ok: false, error: 'hd_estimate_not_configured' }
-
-  let res: Response
+async function callAction(token: string, body: Record<string, unknown>): Promise<{ status: number; data: any } | null> {
   try {
-    res = await fetch(ACTION_URL(), {
+    const res = await fetch(ACTION_URL(), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        action: 'hd_price_lookup',
-        series: params.series,
-        subProduct: params.subProduct,
-        fabricCode: params.fabricCode,
-        widthIn: params.widthIn,
-        heightIn: params.heightIn,
-        operatingSystem: params.operatingSystem,
-        mountType: params.mountType,
-        designOptions: params.designOptions || [],
-        accessories: params.accessories || [],
-      }),
+      body: JSON.stringify({ action: 'hd_price_lookup', ...body }),
       signal: AbortSignal.timeout(12_000),
     })
+    return { status: res.status, data: await res.json().catch(() => null) }
   } catch {
-    return { ok: false, error: 'hd_lookup_unreachable' }
+    return null
   }
+}
 
-  const data: any = await res.json().catch(() => null)
-  if (!res.ok || !data) return { ok: false, error: `hd_lookup_http_${res.status}` }
+/** Sample up to `max` chart ids evenly across the list (keeps min & max tiers in play). */
+function sampleCharts(charts: string[], max: number): string[] {
+  if (charts.length <= max) return charts
+  const out: string[] = []
+  for (let i = 0; i < max; i++) out.push(charts[Math.round((i * (charts.length - 1)) / (max - 1))])
+  return [...new Set(out)]
+}
+
+/**
+ * Call hd_price_lookup and convert to a range. Without `series`, returns the
+ * available series list (for the AI to guide the customer). Without a fabric
+ * code, sweeps the series' price charts and returns a cross-fabric range —
+ * customers rarely know their fabric yet. Never throws — returns
+ * { ok:false, error } so the chat degrades to "let a person quote it".
+ */
+export async function hdEstimate(params: HdLookupParams): Promise<HdEstimate> {
+  const token = process.env.AAPP_CHATGPT_ACTION_TOKEN
+  if (!token) return { ok: false, error: 'hd_estimate_not_configured' }
+
+  const baseBody = {
+    series: params.series,
+    subProduct: params.subProduct,
+    fabricCode: params.fabricCode,
+    widthIn: params.widthIn,
+    heightIn: params.heightIn,
+    operatingSystem: params.operatingSystem,
+    mountType: params.mountType,
+    designOptions: params.designOptions || [],
+    accessories: params.accessories || [],
+  }
+  const first = await callAction(token, baseBody)
+  if (!first) return { ok: false, error: 'hd_lookup_unreachable' }
+  if (!first.data) return { ok: false, error: `hd_lookup_http_${first.status}` }
+  const data = first.data
 
   // No series passed → series list mode.
   if (!params.series) {
     return { ok: true, seriesList: Array.isArray(data.series) ? data.series : [] }
   }
+
   if (data.ok === false) {
-    return { ok: false, error: String(data.error || 'hd_lookup_failed') }
+    const need = String(data.need || '')
+    // Sub-product must be picked by the customer (e.g. vignette rolling/stacking).
+    if (need.startsWith('subProduct')) {
+      return { ok: true, series: params.series, needsChoice: { field: 'sub_product', options: (data.options || []).map(String) } }
+    }
+    if (need.startsWith('series')) {
+      return { ok: true, seriesList: (data.options || []).map((s: string) => ({ series: String(s), label: String(s) })) }
+    }
+    if (need.includes('widthIn')) return { ok: false, error: 'missing_dimensions' }
+    // No fabric given → sweep the series' charts for a cross-fabric range.
+    if (need.includes('fabricCode')) {
+      const charts: string[] = Array.isArray(data.charts) ? data.charts.map(String) : []
+      const prices: number[] = []
+      const sweepWarnings: string[] = []
+      for (const chartId of sampleCharts(charts, 6)) {
+        const r = await callAction(token, { ...baseBody, chartId })
+        const p = Number(r?.data?.listPrice ?? r?.data?.total)
+        if (r?.data?.ok !== false && Number.isFinite(p) && p > 0) {
+          prices.push(p)
+          if (r?.data?.motorizedPriceIncomplete) {
+            sweepWarnings.push('Motorization for this series is priced separately — the range does NOT include the motor.')
+          }
+        }
+      }
+      if (prices.length === 0) {
+        return { ok: true, series: params.series, needsHuman: true, warnings: ['no chart could be priced automatically'] }
+      }
+      const low = Math.max(50, round50(Math.min(...prices) * 0.95, false))
+      const high = Math.max(low + 50, round50(Math.max(...prices) * 1.1, true))
+      return {
+        ok: true,
+        series: params.series,
+        rangeLow: low,
+        rangeHigh: high,
+        fabricDependent: true,
+        warnings: [...new Set(sweepWarnings)],
+        needsHuman: false,
+      }
+    }
+    return { ok: false, error: String(data.error || need || 'hd_lookup_failed') }
   }
 
   const warnings: string[] = Array.isArray(data.warnings) ? data.warnings.map(String) : []

@@ -645,6 +645,13 @@ export async function executeAssistantTool(
         return { error: est.error, note: 'Could not compute an HD reference range — tell the customer a designer will quote it at the free in-home consultation. Do NOT invent a number.' }
       }
       if (est.seriesList) return { series_list: est.seriesList }
+      if (est.needsChoice) {
+        return {
+          ask_customer: est.needsChoice.field,
+          options: est.needsChoice.options,
+          note: `Ask the customer to choose a ${est.needsChoice.field} from the options, then call get_hd_estimate again with sub_product set.`,
+        }
+      }
       if (est.needsHuman || !est.rangeLow) {
         return { needs_human: true, warnings: est.warnings, note: 'This configuration needs a person to quote — offer the free consultation. Do NOT invent a number.' }
       }
@@ -653,6 +660,7 @@ export async function executeAssistantTool(
         reference_range: `$${est.rangeLow.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
         range_low: est.rangeLow,
         range_high: est.rangeHigh,
+        ...(est.fabricDependent ? { fabric_note: 'Range spans this series\' fabric tiers — it narrows once the customer picks a fabric collection at the consultation.' } : {}),
         warnings: est.warnings?.length ? est.warnings : undefined,
         must_say: 'Reference range only (list-price基准, per shade, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.',
       }
