@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { getAappLibrary, syncAappLibrary } from '@/lib/aappLibrary'
+import { reapplyAllLumaBindings } from '@/lib/lumaBinding'
 
 // Admin AAPP-library sync.
 //   GET  → snapshot status (when last synced / exported)
@@ -39,7 +40,10 @@ export async function POST(request: Request) {
   try {
     requireAdmin(request)
     const report = await syncAappLibrary()
-    return NextResponse.json({ success: true, data: { report } })
+    // Re-apply every bound Luma product against the fresh snapshot so prices
+    // and fabric availability follow AAPP automatically (下架自动).
+    const bindings = await reapplyAllLumaBindings()
+    return NextResponse.json({ success: true, data: { report, bindings } })
   } catch (e: any) {
     const u = unauthorized(e); if (u) return u
     console.error('[admin/aapp-library] sync failed:', e)

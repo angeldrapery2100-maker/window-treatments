@@ -4,6 +4,7 @@ import { use, useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import ImageManager from './components/ImageManager'
 import ParamsConfig from './components/ParamsConfig'
+import AappLumaBinding from './components/AappLumaBinding'
 import OptionsManager from './components/OptionsManager'
 import ContentEditor from './components/ContentEditor'
 import ParcelRulesEditor from './components/ParcelRulesEditor'
@@ -528,13 +529,17 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
 
             {/* 计算参数 */}
             {activeTab === 'params' && basicSaved && currentId && (
-              <ParamsConfig
-                productType={productType}
-                productId={currentId}
-                onChange={p => { paramsRef.current = p; markDirty() }}
-                onOptionsChange={opts => { optionsRef.current = opts; markDirty() }}
-                optionsDraft={optionsRef.current}
-              />
+              <>
+                {/* Shade 类:绑定 AAPP 产品(Luma)— 选型号勾面料,报价配置自动生成 */}
+                {productType === 'shade' && <AappLumaBinding productId={currentId} />}
+                <ParamsConfig
+                  productType={productType}
+                  productId={currentId}
+                  onChange={p => { paramsRef.current = p; markDirty() }}
+                  onOptionsChange={opts => { optionsRef.current = opts; markDirty() }}
+                  optionsDraft={optionsRef.current}
+                />
+              </>
             )}
 
             {/* 选项配置 */}
