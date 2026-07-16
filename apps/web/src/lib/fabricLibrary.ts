@@ -19,6 +19,7 @@
 
 import { query, queryOne } from '@/lib/db'
 import { FABRIC_CATALOG } from '@/lib/fabricCatalog.generated'
+import { LOCAL_SWATCH_FILES } from '@/lib/swatchManifest.generated'
 import { uploadToR2 } from '@/lib/r2'
 
 export const HARDWARE_COLORS = ['white', 'grey', 'beige', 'brown', 'black'] as const
@@ -234,6 +235,56 @@ const SWATCH_FOLDERS: Record<string, string> = {
   zebra: 'Swatches/Zebra Shade swatchs',
   sheer: 'Swatches/Sheer Shade Swatch',
   roman: 'Swatches/Roman Shade Swatch',
+}
+
+// ── Local swatch fill (preferred, instant) ──────────────────────────────────
+// The website itself ships professional swatch photos in apps/web/public:
+//   roller-collection/swatches/MB1-001.jpg   (full code)
+//   sheer-collection/swatches/E1-001.jpg     (full code)
+//   luma-collection/swatches/DB1-1.jpg       (zebra, short color index)
+// For any fabric row missing an image, point image_url straight at the
+// static file — no fetching, no re-hosting. Roman has no local set and falls
+// through to the AAPP (Netlify) fetch batches.
+
+function localSwatchPath(series: string, family: string, code: string): string | null {
+  if (series === 'roller') {
+    const f = `${code}.jpg`
+    return LOCAL_SWATCH_FILES.roller.includes(f) ? `/roller-collection/swatches/${f}` : null
+  }
+  if (series === 'sheer') {
+    const f = `${code}.jpg`
+    return LOCAL_SWATCH_FILES.sheer.includes(f) ? `/sheer-collection/swatches/${f}` : null
+  }
+  if (series === 'zebra') {
+    const color = code.slice(family.length + 1) // "DB1-001" → "001"
+    const f = `${family}-${parseInt(color, 10)}.jpg` // → "DB1-1.jpg"
+    return LOCAL_SWATCH_FILES.zebra.includes(f) ? `/luma-collection/swatches/${f}` : null
+  }
+  return null
+}
+
+/** One-shot: fill every missing image from the site's own public swatch files. */
+export async function fillImagesFromLocalSwatches(): Promise<{ filled: number }> {
+  await ensureFabricTable()
+  const rows = await query<{ code: string; series: string; family: string }>(
+    `SELECT code, series, family FROM fabric_library
+      WHERE discontinued = false AND (image_url IS NULL OR image_url = '')`
+  )
+  const codes: string[] = []
+  const urls: string[] = []
+  for (const r of rows) {
+    const p = localSwatchPath(r.series, r.family, r.code)
+    if (p) { codes.push(r.code); urls.push(p) }
+  }
+  if (codes.length > 0) {
+    await query(
+      `UPDATE fabric_library fl SET image_url = t.url, updated_at = now()
+         FROM unnest($1::text[], $2::text[]) AS t(code, url)
+        WHERE fl.code = t.code`,
+      [codes, urls]
+    )
+  }
+  return { filled: codes.length }
 }
 
 export interface SwatchImportBatch {

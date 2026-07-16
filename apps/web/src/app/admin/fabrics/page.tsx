@@ -145,6 +145,7 @@ export default function FabricsPage() {
     setBusy('swatches')
     setNotice('抓取色卡图中… 0 张')
     let after = ''
+    let localFilled = 0
     let uploaded = 0
     const allFailed: string[] = []
     try {
@@ -155,21 +156,22 @@ export default function FabricsPage() {
           body: JSON.stringify({ action: 'import-swatches', after }),
         })
         const json = await res.json()
-        if (!json?.success) { setNotice(json?.error || '抓取失败'); return }
+        if (!json?.success) { setNotice(json?.error || '导入失败'); return }
         const b = json.data.batch
+        if (b.localFilled) localFilled = b.localFilled
         uploaded += b.uploaded
         allFailed.push(...(b.failed || []))
-        setNotice(`抓取色卡图中… 已上传 ${uploaded} 张,剩余约 ${b.remaining}`)
+        setNotice(`导入中… 本站图已关联 ${localFilled} 张,另抓取 ${uploaded} 张,剩余约 ${b.remaining}`)
         if (!b.nextCursor) break
         after = b.nextCursor
       }
       setNotice(
-        `色卡图抓取完成:上传 ${uploaded} 张。` +
+        `色卡图导入完成:${localFilled} 张直接使用本站现有图片,另从 AAPP 抓取 ${uploaded} 张。` +
         (allFailed.length ? ` 未找到 ${allFailed.length} 个(可手动补传):${allFailed.slice(0, 20).join(', ')}${allFailed.length > 20 ? ' …' : ''}` : '')
       )
       await load()
     } catch {
-      setNotice(`抓取中断(已上传 ${uploaded} 张)— 再点一次会从断点继续。`)
+      setNotice(`导入中断(本站 ${localFilled} / 抓取 ${uploaded})— 再点一次会从断点继续。`)
     } finally {
       setBusy('')
     }
@@ -247,9 +249,9 @@ export default function FabricsPage() {
             onClick={() => void importSwatches()}
             disabled={!!busy}
             className="rounded-md border border-gray-300 bg-white px-4 py-2 text-[13px] text-gray-700 hover:border-gray-500 disabled:opacity-40"
-            title="从 AAPP 应用(Netlify)按面料代码自动抓取全部色卡照片并存入网站图床"
+            title="优先直接关联本站 public 里现有的色卡图(roller/sheer/zebra);缺的再从 AAPP 应用抓取"
           >
-            {busy === 'swatches' ? '抓取中…' : '抓取 AAPP 色卡图'}
+            {busy === 'swatches' ? '导入中…' : '一键导入色卡图'}
           </button>
           <button
             onClick={() => void runAction('import')}

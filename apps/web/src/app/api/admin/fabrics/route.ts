@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import {
   listFabrics, updateFabric, setFamilyHardwareColor,
-  syncFabricCatalog, importFromProducts, importSwatchesBatch, ensureFabricTable,
+  syncFabricCatalog, importFromProducts, importSwatchesBatch,
+  fillImagesFromLocalSwatches, ensureFabricTable,
 } from '@/lib/fabricLibrary'
 import { queryOne } from '@/lib/db'
 
@@ -88,11 +89,19 @@ export async function POST(request: Request) {
       const report = await importFromProducts()
       return NextResponse.json({ success: true, data: { report } })
     }
-    // Batched swatch photo import from the AAPP app (Netlify) — the page
-    // loops with `after` until nextCursor is null.
+    // Swatch photo import. First pass (after=''): instantly link every code
+    // to the site's OWN public swatch files (roller/sheer/zebra folders in
+    // apps/web/public). Whatever is still missing (roman, gaps) is then
+    // fetched from the AAPP app (Netlify) in batches — the page loops with
+    // `after` until nextCursor is null.
     if (action === 'import-swatches') {
-      const batch = await importSwatchesBatch(String(body?.after ?? ''), 10)
-      return NextResponse.json({ success: true, data: { batch } })
+      const after = String(body?.after ?? '')
+      let localFilled = 0
+      if (!after) {
+        localFilled = (await fillImagesFromLocalSwatches()).filled
+      }
+      const batch = await importSwatchesBatch(after, 10)
+      return NextResponse.json({ success: true, data: { batch: { ...batch, localFilled } } })
     }
     return bad('Unknown action.')
   } catch (e: any) {
