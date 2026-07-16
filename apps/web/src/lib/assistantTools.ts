@@ -529,6 +529,21 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'quote_store_product',
+    description:
+      "Get the REAL price of an online-store product (Luma shades, drapery, hardware) for a given size and options — computed by the SAME server pricing engine as checkout, without saving anything. Use this whenever a customer asks what a store product costs: get product_id from list_store_products and valid option values from get_product_options first. Present the result softly ('大约 $X' / 'around $X') and mention the product page configurator shows it live. If it returns an error, that configuration needs the page configurator or a person — do NOT guess.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        product_id: { type: 'string', description: 'Product id from list_store_products.' },
+        width_in: { type: 'number', description: 'Width in inches.' },
+        height_in: { type: 'number', description: 'Height in inches (omit for hardware/accessory).' },
+        options: { type: 'object', description: 'Option selections {option_name: value} using EXACT values from get_product_options.' },
+      },
+      required: ['product_id'],
+    },
+  },
+  {
     name: 'get_hd_estimate',
     description:
       "Get a Hunter Douglas REFERENCE PRICE RANGE (list-price based, computed by our internal HD pricing engine — never estimate HD prices yourself). Call with NO arguments first to get the list of available series (Duette, Silhouette, Vignette, Pirouette, Luminette, Designer Roller, shutters, wood blinds, …). Then collect the window size in INCHES and call again with series + width_in + height_in (+ fabric_code if the customer knows it, + operating_system e.g. 'powerview' for motorized). Present the returned range as a REFERENCE ONLY: the final price always comes from our salesperson after a free in-home measure — say that every time, then offer to book the consultation. If the result has needs_human=true or warnings, tell the customer that part needs a person to quote.",
@@ -624,6 +639,32 @@ export async function executeAssistantTool(
 ): Promise<unknown> {
   const owner: ProjectOwnerCtx = { userId, anonId, campaignId }
   switch (name) {
+    case 'quote_store_product': {
+      // Same authority as checkout: computeServerUnitPrice — never estimated.
+      try {
+        const { computeServerUnitPrice } = await import('@/lib/productPricing')
+        const priced = await computeServerUnitPrice({
+          productId: String(input?.product_id ?? ''),
+          width: input?.width_in != null ? Number(input.width_in) : undefined,
+          height: input?.height_in != null ? Number(input.height_in) : undefined,
+          options: input?.options && typeof input.options === 'object' ? input.options : {},
+        })
+        logLeadEvent({
+          userId, anonId, type: 'store_estimate', value: priced.unitPrice,
+          meta: { product_id: input?.product_id, width: input?.width_in, height: input?.height_in },
+          campaignId,
+        })
+        return {
+          unit_price: priced.unitPrice,
+          say_it_as: `大约 $${priced.unitPrice.toLocaleString()} / around $${priced.unitPrice.toLocaleString()} per shade — the product page configurator shows this live for their exact size.`,
+        }
+      } catch (e: any) {
+        return {
+          error: String(e?.message || 'could_not_price'),
+          note: 'This configuration needs the product page configurator or a person — do NOT guess a number. Check get_product_options for valid values, or point them to the product page.',
+        }
+      }
+    }
     case 'get_hd_estimate': {
       const est = await hdEstimate({
         series: typeof input?.series === 'string' && input.series ? input.series : undefined,
