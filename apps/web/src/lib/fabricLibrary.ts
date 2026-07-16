@@ -77,23 +77,51 @@ export async function ensureFabricTable(): Promise<void> {
 export async function syncFabricCatalog(): Promise<{ inserted: number; discontinued: number; restored: number; total: number }> {
   await ensureFabricTable()
 
+  // Flatten the catalog into parallel arrays and insert in ONE batched
+  // statement per chunk. (The first version did 738 sequential INSERT
+  // round-trips and got killed by the serverless timeout after ~24 rows.)
+  const series: string[] = []
+  const families: string[] = []
+  const codes: string[] = []
+  const categories: string[] = []
+  const legacies: string[] = []
+  const sorts: number[] = []
   const catalogCodes = new Set<string>()
-  let inserted = 0
   let sort = 0
   for (const fam of FABRIC_CATALOG) {
     for (const color of fam.colors) {
       const code = `${fam.code}-${color}`
       catalogCodes.add(code)
       sort++
-      const res = await query<{ id: string }>(
-        `INSERT INTO fabric_library (series, family, code, category, legacy_codes, sort_order)
-         VALUES ($1,$2,$3,$4,$5::jsonb,$6)
-         ON CONFLICT (code) DO NOTHING
-         RETURNING id`,
-        [fam.series, fam.code, code, fam.category, JSON.stringify(fam.legacyCodes || []), sort]
-      )
-      if (res.length > 0) inserted++
+      series.push(fam.series)
+      families.push(fam.code)
+      codes.push(code)
+      categories.push(fam.category)
+      legacies.push(JSON.stringify(fam.legacyCodes || []))
+      sorts.push(sort)
     }
+  }
+
+  let inserted = 0
+  const CHUNK = 250
+  for (let i = 0; i < codes.length; i += CHUNK) {
+    const res = await query<{ code: string }>(
+      `INSERT INTO fabric_library (series, family, code, category, legacy_codes, sort_order)
+       SELECT s, f, c, cat, l::jsonb, so
+         FROM unnest($1::text[], $2::text[], $3::text[], $4::text[], $5::text[], $6::int[])
+              AS t(s, f, c, cat, l, so)
+       ON CONFLICT (code) DO NOTHING
+       RETURNING code`,
+      [
+        series.slice(i, i + CHUNK),
+        families.slice(i, i + CHUNK),
+        codes.slice(i, i + CHUNK),
+        categories.slice(i, i + CHUNK),
+        legacies.slice(i, i + CHUNK),
+        sorts.slice(i, i + CHUNK),
+      ]
+    )
+    inserted += res.length
   }
 
   // Restore codes that reappeared in the catalog.
