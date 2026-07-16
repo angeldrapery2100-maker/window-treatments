@@ -127,7 +127,11 @@ export default function FabricsPage() {
       const json = await res.json()
       if (json?.success) {
         const r = json.data.report
-        setNotice(`AAPP 价格同步完成:${r.fabricFamiliesPriced} 个面料家族 / ${r.colorwaysPriced} 个色号已更新价格。`)
+        setNotice(
+          `AAPP 价格同步完成:${r.fabricFamiliesPriced} 个面料家族 / ${r.colorwaysPriced} 个色号已更新价格。` +
+          (r.colorwaysDiscontinued ? ` ${r.colorwaysDiscontinued} 个色号因 AAPP 已下架被标记停产。` : '') +
+          (r.colorwaysRestored ? ` ${r.colorwaysRestored} 个色号恢复可用。` : '')
+        )
         await load()
       } else {
         setNotice(json?.error || 'AAPP 同步失败')

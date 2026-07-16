@@ -62,6 +62,10 @@ export interface SyncReport {
   exportedAt: string | null
   fabricFamiliesPriced: number
   colorwaysPriced: number
+  /** Colorways discontinued because their family vanished from the AAPP live library. */
+  colorwaysDiscontinued: number
+  /** Colorways restored because their family reappeared in the AAPP live library. */
+  colorwaysRestored: number
   hasShadeCatalog: boolean
   hasLumaMotors: boolean
   hasDraperyCatalog: boolean
@@ -132,10 +136,41 @@ export async function syncAappLibrary(): Promise<SyncReport> {
     colorwaysPriced = updated.length
   }
 
+  // ── Follow AAPP availability (下架自动) ────────────────────────────────────
+  // A fabric family missing from the AAPP live library = discontinued there
+  // (Eddie removes the price row to retire a fabric). Mark those colorways
+  // discontinued + inactive so photo import, product binding, and the store
+  // all skip them. Families that reappear are restored (discontinued flag
+  // cleared; manual is_active is left alone). Only series actually present in
+  // the feed are touched — an empty/missing table never mass-discontinues.
+  let colorwaysDiscontinued = 0
+  let colorwaysRestored = 0
+  for (const [series, rows] of Object.entries(fabricsBySeries)) {
+    if (!Array.isArray(rows) || rows.length === 0) continue
+    const families = rows.map((r: any) => String(r?.code || '').trim()).filter(Boolean)
+    if (families.length === 0) continue
+    const gone = await query<{ code: string }>(
+      `UPDATE fabric_library SET discontinued = true, is_active = false, updated_at = now()
+        WHERE series = $1 AND discontinued = false AND NOT (family = ANY($2))
+        RETURNING code`,
+      [series, families]
+    )
+    colorwaysDiscontinued += gone.length
+    const back = await query<{ code: string }>(
+      `UPDATE fabric_library SET discontinued = false, updated_at = now()
+        WHERE series = $1 AND discontinued = true AND family = ANY($2)
+        RETURNING code`,
+      [series, families]
+    )
+    colorwaysRestored += back.length
+  }
+
   return {
     exportedAt: payload.exportedAt ?? null,
     fabricFamiliesPriced: familyArr.length,
     colorwaysPriced,
+    colorwaysDiscontinued,
+    colorwaysRestored,
     hasShadeCatalog: !!data.shadeCatalog?.variants && Object.keys(data.shadeCatalog.variants).length > 0,
     hasLumaMotors: !!data.lumaMotorSystem,
     hasDraperyCatalog: !!data.draperyPricingCatalog,
