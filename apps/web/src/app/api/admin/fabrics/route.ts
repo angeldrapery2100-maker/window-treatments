@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import {
   listFabrics, updateFabric, setFamilyHardwareColor,
-  syncFabricCatalog, importFromProducts, ensureFabricTable,
+  syncFabricCatalog, importFromProducts, importSwatchesBatch, ensureFabricTable,
 } from '@/lib/fabricLibrary'
 import { queryOne } from '@/lib/db'
 
@@ -87,6 +87,12 @@ export async function POST(request: Request) {
     if (action === 'import') {
       const report = await importFromProducts()
       return NextResponse.json({ success: true, data: { report } })
+    }
+    // Batched swatch photo import from the AAPP app (Netlify) — the page
+    // loops with `after` until nextCursor is null.
+    if (action === 'import-swatches') {
+      const batch = await importSwatchesBatch(String(body?.after ?? ''), 10)
+      return NextResponse.json({ success: true, data: { batch } })
     }
     return bad('Unknown action.')
   } catch (e: any) {

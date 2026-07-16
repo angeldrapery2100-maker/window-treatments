@@ -19,6 +19,7 @@
 
 import { query, queryOne } from '@/lib/db'
 import { FABRIC_CATALOG } from '@/lib/fabricCatalog.generated'
+import { uploadToR2 } from '@/lib/r2'
 
 export const HARDWARE_COLORS = ['white', 'grey', 'beige', 'brown', 'black'] as const
 export type HardwareColor = (typeof HARDWARE_COLORS)[number]
@@ -215,6 +216,78 @@ export async function setFamilyHardwareColor(family: string, hardwareColor: stri
     [family, hc]
   )
   return rows.length
+}
+
+// ── Swatch image import from the AAPP app (Netlify) ─────────────────────────
+// The AAPP web app ships the full swatch photo set at /Swatches/<folder>/
+// <FULLCODE>.jpg (app-catalog.js SWATCH_FOLDERS; SWATCH_FILE_MAP is empty —
+// filenames are exactly the code). We fetch each missing image server-side,
+// re-host it on our R2 bucket (products/fabric-library/<code>.jpg) and set
+// image_url. Batched (cursor + small limit) to stay inside the serverless
+// timeout — the admin page loops until done.
+
+const AAPP_APP_URL = () =>
+  (process.env.AAPP_APP_URL || 'https://angeldraperyapp.netlify.app').replace(/\/$/, '')
+
+const SWATCH_FOLDERS: Record<string, string> = {
+  roller: 'Swatches/ Roller Shade swatch',
+  zebra: 'Swatches/Zebra Shade swatchs',
+  sheer: 'Swatches/Sheer Shade Swatch',
+  roman: 'Swatches/Roman Shade Swatch',
+}
+
+export interface SwatchImportBatch {
+  processed: number
+  uploaded: number
+  failed: string[]
+  /** Pass back as `after` for the next call; null when finished. */
+  nextCursor: string | null
+  remaining: number
+}
+
+export async function importSwatchesBatch(afterCode: string, limit = 10): Promise<SwatchImportBatch> {
+  await ensureFabricTable()
+  const rows = await query<{ code: string; series: string }>(
+    `SELECT code, series FROM fabric_library
+      WHERE discontinued = false AND (image_url IS NULL OR image_url = '') AND code > $1
+      ORDER BY code LIMIT $2`,
+    [afterCode || '', limit]
+  )
+  const remainRow = await queryOne<{ n: string }>(
+    `SELECT COUNT(*) AS n FROM fabric_library
+      WHERE discontinued = false AND (image_url IS NULL OR image_url = '') AND code > $1`,
+    [afterCode || '']
+  )
+
+  let uploaded = 0
+  const failed: string[] = []
+  for (const row of rows) {
+    const folder = SWATCH_FOLDERS[row.series]
+    if (!folder) { failed.push(row.code); continue }
+    try {
+      const url = `${AAPP_APP_URL()}/${encodeURI(folder)}/${encodeURIComponent(row.code)}.jpg`
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
+      const type = res.headers.get('content-type') || ''
+      if (!res.ok || !type.startsWith('image/')) { failed.push(row.code); continue }
+      const buf = Buffer.from(await res.arrayBuffer())
+      if (buf.length < 100) { failed.push(row.code); continue }
+      const hosted = await uploadToR2(`products/fabric-library/${row.code}.jpg`, buf, 'image/jpeg')
+      await updateFabric(row.code, { image_url: hosted })
+      uploaded++
+    } catch {
+      failed.push(row.code)
+    }
+  }
+
+  const last = rows.length > 0 ? rows[rows.length - 1].code : null
+  const remaining = Math.max(0, (Number(remainRow?.n) || 0) - rows.length)
+  return {
+    processed: rows.length,
+    uploaded,
+    failed,
+    nextCursor: rows.length === limit ? last : null,
+    remaining,
+  }
 }
 
 /**

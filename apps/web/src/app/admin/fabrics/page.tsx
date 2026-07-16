@@ -139,6 +139,42 @@ export default function FabricsPage() {
     }
   }
 
+  // Bulk swatch import: loop the batched endpoint until every missing image
+  // has been pulled from the AAPP app and re-hosted on our bucket.
+  const importSwatches = async () => {
+    setBusy('swatches')
+    setNotice('抓取色卡图中… 0 张')
+    let after = ''
+    let uploaded = 0
+    const allFailed: string[] = []
+    try {
+      for (let i = 0; i < 120; i++) {
+        const res = await fetch('/api/admin/fabrics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'import-swatches', after }),
+        })
+        const json = await res.json()
+        if (!json?.success) { setNotice(json?.error || '抓取失败'); return }
+        const b = json.data.batch
+        uploaded += b.uploaded
+        allFailed.push(...(b.failed || []))
+        setNotice(`抓取色卡图中… 已上传 ${uploaded} 张,剩余约 ${b.remaining}`)
+        if (!b.nextCursor) break
+        after = b.nextCursor
+      }
+      setNotice(
+        `色卡图抓取完成:上传 ${uploaded} 张。` +
+        (allFailed.length ? ` 未找到 ${allFailed.length} 个(可手动补传):${allFailed.slice(0, 20).join(', ')}${allFailed.length > 20 ? ' …' : ''}` : '')
+      )
+      await load()
+    } catch {
+      setNotice(`抓取中断(已上传 ${uploaded} 张)— 再点一次会从断点继续。`)
+    } finally {
+      setBusy('')
+    }
+  }
+
   const pickImage = (code: string) => {
     uploadFor.current = code
     fileRef.current?.click()
@@ -207,6 +243,14 @@ export default function FabricsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <button
+            onClick={() => void importSwatches()}
+            disabled={!!busy}
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-[13px] text-gray-700 hover:border-gray-500 disabled:opacity-40"
+            title="从 AAPP 应用(Netlify)按面料代码自动抓取全部色卡照片并存入网站图床"
+          >
+            {busy === 'swatches' ? '抓取中…' : '抓取 AAPP 色卡图'}
+          </button>
           <button
             onClick={() => void runAction('import')}
             disabled={!!busy}
