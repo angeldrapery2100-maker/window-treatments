@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { rateLimit, getClientIp } from '@/lib/rateLimit'
 import { getUserFromRequest } from '@/lib/auth'
 import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
+import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
+import { getCampaignFromRequest } from '@/lib/campaigns'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 // AI shopping assistant for the store — proxies chat turns to the Anthropic
@@ -111,6 +113,14 @@ ${escalate}
 - When it returns a link, present it clearly as a booking button/link ("📅 Book your appointment") and, if it texted them, add that the link was also sent to their phone.
 - Offer three easy paths and let them pick: (1) visit the Temple City showroom (by appointment), (2) a free in-home measure/consultation with a designer (do NOT say it's free of any service fee, and never quote a fee amount), or (3) send photos for a preliminary quote. Repairs use intent="repair".
 - Our phone is 626-451-9841. We work by appointment. Never quote any price.
+
+10. HOME PROJECT — room-by-room planning (you have tools). Customers can build a saved whole-home plan with you: drapery for the living room, shades for the bedrooms, and so on. This works for guests too (saved to their browser; it follows their account if they sign in).
+- To see the current plan (rooms, items, exact prices, subtotal), call get_home_project.
+- To add or update an item, work in this order: find the product with list_store_products → get its valid option values with get_product_options → collect the ROOM NAME and measurements in INCHES (help them measure first — see YOUR JOBS #1) → call upsert_room_item. The tool returns the exact computed price for that configuration.
+- PRICES: quote ONLY numbers these tools return. If a result carries price_error instead of a price, the item was saved without a price — say a person will confirm that item's price; never guess or estimate it.
+- Use remove_room_item only after the customer confirms the removal.
+- After saving items, point them to /store/project ("My Project") to review everything and add items to the cart when ready.
+- Keep it conversational: one room at a time — ask which room, then the window sizes, then preferences (style, lining, operation). Don't interrogate; suggest sensible defaults and confirm.
 
 STYLE: Warm, concise, and practical — usually 2-6 sentences. Plain text only: no markdown headers, no bullet lists unless genuinely helpful, no code blocks. Ask one clarifying question when the customer's window or room details are unclear. Never make up product names, promotions, or policies beyond what is described here.`
 }
@@ -267,6 +277,17 @@ export async function POST(request: Request) {
     // anything the model says). Guests are null and must verify via ZIP.
     const userId = getUserFromRequest(request)?.id ?? null
 
+    // Anonymous visitor id for the Home Project tools — read the ad_anon
+    // cookie, minting one when absent (set on the response below) so a
+    // guest's project persists across visits on this browser.
+    const cookieAnonId = getAnonIdFromRequest(request)
+    const anonId = cookieAnonId ?? newAnonId()
+    const campaignId = getCampaignFromRequest(request)
+
+    // Behavioral signal for lead scoring (P2) — one event per chat turn,
+    // best-effort, never blocks the reply.
+    logLeadEvent({ userId, anonId, type: 'assistant_chat', meta: { surface: body?.surface === 'main' ? 'main' : 'store' }, campaignId })
+
     // ── Anthropic Messages API with a SERVER-SIDE tool-use loop ──────────────
     // The client only ever sends/receives plain text turns. The multi-turn
     // tool loop (lookup order → verify → submit request) runs entirely here;
@@ -313,7 +334,7 @@ export async function POST(request: Request) {
           if (block?.type !== 'tool_use') continue
           let result: unknown
           try {
-            result = await executeAssistantTool(block.name, block.input, userId)
+            result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId)
           } catch (err) {
             console.error(`[assistant] tool ${block?.name} failed:`, err)
             result = { error: 'tool_failed' }
@@ -343,10 +364,20 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       data: { reply, ...(bookingLink ? { bookingLink } : {}) },
     })
+    if (!cookieAnonId) {
+      response.cookies.set(ANON_COOKIE, anonId, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: ANON_COOKIE_MAX_AGE,
+        path: '/',
+      })
+    }
+    return response
   } catch (e) {
     console.error('[assistant] Unexpected error:', e)
     return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 500)

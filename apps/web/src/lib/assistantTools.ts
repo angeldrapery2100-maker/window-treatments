@@ -20,6 +20,12 @@ import {
 import { Resend } from 'resend'
 import { escapeHtml, safeUrl } from '@/lib/html'
 import { submitWebsiteInquiry } from '@/lib/aappIntake'
+import {
+  getActiveProject, getOrCreateActiveProject, mergeAnonProjectIntoUser,
+  listItems, projectSummary, upsertItem, removeItem, logLeadEvent,
+  type ProjectItemRow,
+} from '@/lib/homeProjects'
+import { getLeadScoreForOwner } from '@/lib/leadScoring'
 
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
@@ -223,6 +229,229 @@ async function notifyMerchant(
   })
 }
 
+// ── Home Project tools (AI sales consultant) ────────────────────────────────
+// A guest is identified by the ad_anon cookie id (anonId), a signed-in
+// customer by their session userId — both come from the REQUEST, never from
+// the model. Prices in the returned views come exclusively from the server
+// pricing engine (homeProjects.upsertItem → computeServerUnitPrice); the
+// model is instructed to quote ONLY numbers these tools return.
+
+interface ProjectOwnerCtx {
+  userId: string | null
+  anonId: string | null
+  /** ad_campaign cookie slug (request-derived) — attribution for lead events. */
+  campaignId?: string | null
+}
+
+async function resolveProjectOwner(ctx: ProjectOwnerCtx): Promise<ProjectOwnerCtx> {
+  if (ctx.userId && ctx.anonId) {
+    await mergeAnonProjectIntoUser(ctx.userId, ctx.anonId).catch(() => {})
+  }
+  return ctx
+}
+
+function itemToolView(it: ProjectItemRow) {
+  const price = it.quoted_price != null ? Number(it.quoted_price) : null
+  const size = [
+    it.width != null ? `W ${Number(it.width)}${it.width_fraction ? ` ${it.width_fraction}` : ''}"` : null,
+    it.height != null ? `H ${Number(it.height)}${it.height_fraction ? ` ${it.height_fraction}` : ''}"` : null,
+  ].filter(Boolean).join(' × ')
+  return {
+    item_id: it.id,
+    room: it.room_name || '(no room)',
+    product_id: it.product_id,
+    product: it.product_name,
+    type: it.product_type,
+    size: size || null,
+    options: (it.options_display || []).map(o => `${o.displayLabel}: ${o.valueLabel}`).join(', ') || null,
+    quantity: Number(it.quantity) || 1,
+    unit_price: price != null && Number.isFinite(price) && price > 0 ? price : null,
+    line_total: price != null && Number.isFinite(price) && price > 0 ? Math.round(price * (Number(it.quantity) || 1)) : null,
+    price_error: it.quote_error || undefined,
+    notes: it.notes || undefined,
+  }
+}
+
+function projectToolView(projectName: string, items: ProjectItemRow[]) {
+  const s = projectSummary(items)
+  return {
+    project: {
+      name: projectName,
+      items: items.map(itemToolView),
+      item_count: s.itemCount,
+      priced_subtotal: s.pricedSubtotal,
+      unpriced_item_count: s.unpricedCount,
+      review_page: '/store/project',
+    },
+  }
+}
+
+export async function getHomeProjectTool(ctx: ProjectOwnerCtx): Promise<unknown> {
+  const owner = await resolveProjectOwner(ctx)
+  if (!owner.userId && !owner.anonId) return { project: null, note: 'No visitor identity on this request.' }
+  const project = await getActiveProject({ userId: owner.userId, anonId: owner.anonId })
+  if (!project) {
+    return { project: null, note: 'No home project yet — create one by saving the first room item with upsert_room_item.' }
+  }
+  const items = await listItems(project.id)
+  return projectToolView(project.name, items)
+}
+
+export async function upsertRoomItemTool(ctx: ProjectOwnerCtx, input: any): Promise<unknown> {
+  const owner = await resolveProjectOwner(ctx)
+  if (!owner.userId && !owner.anonId) return { error: 'no_visitor_identity' }
+  const project = await getOrCreateActiveProject({ userId: owner.userId, anonId: owner.anonId }, owner.campaignId ?? null)
+
+  let result
+  try {
+    result = await upsertItem(project.id, {
+      itemId: typeof input?.item_id === 'string' ? input.item_id : null,
+      roomName: input?.room,
+      productId: input?.product_id,
+      width: input?.width_in,
+      height: input?.height_in,
+      options: input?.options && typeof input.options === 'object' ? input.options : null,
+      quantity: input?.quantity,
+      notes: input?.notes,
+    })
+  } catch (e: any) {
+    const msg = String(e?.message || '')
+    if (msg === 'product_not_found' || msg === 'invalid_product_id') {
+      return { error: 'product_not_found', note: 'Use list_store_products to get a valid product_id.' }
+    }
+    if (msg === 'item_not_found') return { error: 'item_not_found' }
+    throw e
+  }
+
+  logLeadEvent({
+    userId: owner.userId, anonId: owner.anonId, projectId: project.id,
+    type: 'project_item_added',
+    value: result.item.quoted_price != null ? Number(result.item.quoted_price) : null,
+    meta: { product_id: result.item.product_id, room: result.item.room_name, via: 'assistant' },
+    campaignId: owner.campaignId ?? null,
+  })
+
+  const items = await listItems(project.id)
+  const s = projectSummary(items)
+  return {
+    saved: true,
+    item: itemToolView(result.item),
+    project_priced_subtotal: s.pricedSubtotal,
+    project_item_count: s.itemCount,
+    review_page: '/store/project',
+    ...(result.priced
+      ? {}
+      : { note: 'This item could not be auto-priced — tell the customer a person will confirm its price. Do NOT guess a number.' }),
+  }
+}
+
+export async function removeRoomItemTool(ctx: ProjectOwnerCtx, input: any): Promise<unknown> {
+  const owner = await resolveProjectOwner(ctx)
+  if (!owner.userId && !owner.anonId) return { error: 'no_visitor_identity' }
+  const project = await getActiveProject({ userId: owner.userId, anonId: owner.anonId })
+  if (!project) return { error: 'no_project' }
+  const itemId = String(input?.item_id ?? '')
+  if (!itemId) return { error: 'item_id_required' }
+  const removed = await removeItem(project.id, itemId)
+  if (!removed) return { error: 'item_not_found' }
+  logLeadEvent({ userId: owner.userId, anonId: owner.anonId, projectId: project.id, type: 'project_item_removed', meta: { item_id: itemId, via: 'assistant' }, campaignId: owner.campaignId ?? null })
+  const items = await listItems(project.id)
+  const s = projectSummary(items)
+  return { removed: true, project_item_count: s.itemCount, project_priced_subtotal: s.pricedSubtotal }
+}
+
+export async function listStoreProductsTool(input: any): Promise<unknown> {
+  const typeFilter = typeof input?.type === 'string' && input.type ? input.type : null
+  const rows = await query<any>(
+    `SELECT p.id, p.name, pt.slug AS type, sc.name AS category
+       FROM products p
+       JOIN product_types pt ON pt.id = p.product_type_id
+       LEFT JOIN store_categories sc ON sc.id = p.store_category_id
+      WHERE p.is_active = true ${typeFilter ? 'AND pt.slug = $1' : ''}
+      ORDER BY pt.slug, p.name
+      LIMIT 100`,
+    typeFilter ? [typeFilter] : []
+  ).catch(() => [])
+  return {
+    products: rows.map(r => ({ product_id: r.id, name: r.name, type: r.type, category: r.category || undefined })),
+    note: 'Prices depend on size and options — use upsert_room_item (or the product page configurator) to get an exact price. Never estimate.',
+  }
+}
+
+export async function getProductOptionsTool(input: any): Promise<unknown> {
+  const productId = String(input?.product_id ?? '').trim()
+  if (!/^[0-9a-f-]{36}$/i.test(productId)) return { error: 'invalid_product_id' }
+  const row = await queryOne<{ name: string; default_config: any; type: string }>(
+    `SELECT p.name, p.default_config, pt.slug AS type
+       FROM products p JOIN product_types pt ON pt.id = p.product_type_id
+      WHERE p.id = $1 AND p.is_active = true`,
+    [productId]
+  ).catch(() => null)
+  if (!row) return { error: 'product_not_found' }
+
+  const cfg = row.default_config || {}
+  const options = (cfg.options || [])
+    .filter((o: any) => o?.name && Array.isArray(o?.values) && o.values.length > 0)
+    .map((o: any) => ({
+      name: String(o.name),
+      label: String(o.label || o.name),
+      values: o.values.slice(0, 60).map((v: any) => ({ value: String(v?.value ?? ''), label: String(v?.label ?? v?.value ?? '') })),
+    }))
+
+  const dims =
+    row.type === 'accessory' ? 'none'
+    : row.type === 'hardware' ? 'width_in only (rod/track length in inches)'
+    : 'width_in and height_in (inches; finished size)'
+
+  return { product_id: productId, name: row.name, type: row.type, required_dimensions: dims, options }
+}
+
+// ── AI Sales Summary (handoff enrichment, P2) ────────────────────────────────
+// When the assistant registers a lead (submit_website_inquiry), we append a
+// compact summary of the visitor's Home Project + engagement score to the
+// inquiry message. It travels through the EXISTING AAPP websiteInquiry channel
+// (lands in the customer's profile notes) — no AAPP-side change required, and
+// the salesperson calls back already knowing rooms, sizes, and budget signals.
+
+export async function buildAiSalesSummary(ctx: ProjectOwnerCtx): Promise<string> {
+  try {
+    const owner = await resolveProjectOwner(ctx)
+    if (!owner.userId && !owner.anonId) return ''
+    const [project, lead] = await Promise.all([
+      getActiveProject({ userId: owner.userId, anonId: owner.anonId }),
+      getLeadScoreForOwner(owner.userId ?? null, owner.anonId ?? null),
+    ])
+
+    const lines: string[] = ['', '--- AI Sales Summary ---']
+    if (project) {
+      const items = await listItems(project.id)
+      if (items.length > 0) {
+        const s = projectSummary(items)
+        lines.push(
+          `Home Project "${project.name}": ${s.itemCount} item(s) in ${s.rooms.length || 1} room(s), priced subtotal $${s.pricedSubtotal.toLocaleString()}` +
+          (s.unpricedCount > 0 ? ` (+${s.unpricedCount} unpriced)` : '')
+        )
+        for (const it of items.slice(0, 12)) {
+          const v = itemToolView(it)
+          lines.push(
+            `- ${v.room}: ${v.product}${v.size ? ` ${v.size}` : ''}${v.options ? ` (${v.options})` : ''} ×${v.quantity}` +
+            (v.line_total != null ? ` — $${v.line_total.toLocaleString()}` : ' — price pending')
+          )
+        }
+        if (items.length > 12) lines.push(`… and ${items.length - 12} more item(s)`)
+      }
+    }
+    if (lead.eventCount > 0) {
+      lines.push(`Engagement: score ${lead.score} (${lead.tier}), ${lead.eventCount} tracked action(s) in 90 days`)
+    }
+    if (ctx.campaignId) lines.push(`Campaign: ${ctx.campaignId}`)
+    // Nothing worth sending? Return empty so the message stays untouched.
+    return lines.length > 2 ? lines.join('\n').slice(0, 2500) : ''
+  } catch {
+    return ''
+  }
+}
+
 // ── Anthropic tool schemas ──────────────────────────────────────────────────
 
 export const ASSISTANT_TOOLS = [
@@ -281,18 +510,96 @@ export const ASSISTANT_TOOLS = [
       required: ['name'],
     },
   },
+  {
+    name: 'get_home_project',
+    description:
+      "Get the customer's saved Home Project (their room-by-room plan: rooms, items, sizes, options, exact computed prices, subtotal). Works for guests too (tied to their browser). Call this before adding/updating items, or whenever the customer asks what's in their project / their total.",
+    input_schema: { type: 'object' as const, properties: {} },
+  },
+  {
+    name: 'upsert_room_item',
+    description:
+      "Add an item to the customer's Home Project, or update one (pass item_id to update). The server computes the EXACT price with the same engine as checkout and returns it — quote ONLY prices returned by this tool, never estimate. Before calling: get a valid product_id from list_store_products and valid option values from get_product_options, and collect the room name and measurements in INCHES. If the result has a price_error/note instead of a price, the item is saved but needs a human to price it — say exactly that.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        item_id: { type: 'string', description: 'Existing project item id — ONLY when updating an item returned by get_home_project.' },
+        room: { type: 'string', description: 'Room name, e.g. "Living Room" / "主卧".' },
+        product_id: { type: 'string', description: 'Product id from list_store_products.' },
+        width_in: { type: 'number', description: 'Finished width in inches (rod/track length for hardware).' },
+        height_in: { type: 'number', description: 'Finished height in inches (omit for hardware/accessory).' },
+        options: {
+          type: 'object',
+          description: 'Option selections as {option_name: value} using EXACT values from get_product_options, e.g. {"style":"pinch3","lining":"BO"}.',
+        },
+        quantity: { type: 'number', description: 'How many windows/units (default 1).' },
+        notes: { type: 'string', description: "Optional note in the customer's words (mount type, special requests)." },
+      },
+      required: ['room', 'product_id'],
+    },
+  },
+  {
+    name: 'remove_room_item',
+    description:
+      "Remove an item from the customer's Home Project. Get the item_id from get_home_project and confirm with the customer first.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        item_id: { type: 'string', description: 'The project item id to remove.' },
+      },
+      required: ['item_id'],
+    },
+  },
+  {
+    name: 'list_store_products',
+    description:
+      'List the online store products that can be added to a Home Project (id, name, type, category). Use the returned product_id with get_product_options / upsert_room_item. Optional type filter: drapery, sheer, shade, hardware, accessory.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        type: { type: 'string', description: 'Optional product type filter: drapery | sheer | shade | hardware | accessory.' },
+      },
+    },
+  },
+  {
+    name: 'get_product_options',
+    description:
+      "Get a product's configurable options and their VALID values (plus which dimensions it needs) before calling upsert_room_item. Always call this for a product you haven't configured yet in this conversation — invalid option values produce wrong or failed prices.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        product_id: { type: 'string', description: 'Product id from list_store_products.' },
+      },
+      required: ['product_id'],
+    },
+  },
 ]
 
 /**
- * Execute a tool call by name. `userId` is the signed-in user's id (or null for
- * guests) taken from the request session — NOT from anything the model said.
+ * Execute a tool call by name. `userId` is the signed-in user's id (or null
+ * for guests) taken from the request session, and `anonId` is the guest's
+ * ad_anon cookie id — BOTH come from the request, NOT from anything the
+ * model said.
  */
 export async function executeAssistantTool(
   name: string,
   input: any,
-  userId: string | null
+  userId: string | null,
+  anonId: string | null = null,
+  campaignId: string | null = null
 ): Promise<unknown> {
+  const owner: ProjectOwnerCtx = { userId, anonId, campaignId }
   switch (name) {
+    case 'get_home_project':
+      return await getHomeProjectTool(owner)
+    case 'upsert_room_item':
+      return await upsertRoomItemTool(owner, input)
+    case 'remove_room_item':
+      return await removeRoomItemTool(owner, input)
+    case 'list_store_products':
+      return await listStoreProductsTool(input)
+    case 'get_product_options':
+      return await getProductOptionsTool(input)
     case 'lookup_my_orders':
       return userId ? await lookupMyOrders(userId) : { orders: [], note: 'Customer is not signed in. Ask for their order number and shipping ZIP and use verify_guest_order.' }
     case 'verify_guest_order':
@@ -307,18 +614,32 @@ export async function executeAssistantTool(
         message: input?.message,
         requestedChanges: input?.requested_changes ?? null,
       })
-    case 'submit_website_inquiry':
-      return await submitWebsiteInquiry({
+    case 'submit_website_inquiry': {
+      // P2 handoff enrichment: append the AI Sales Summary (project contents,
+      // engagement score, campaign) to the message that lands in the AAPP
+      // customer profile. Best-effort — an empty summary changes nothing.
+      const summary = await buildAiSalesSummary(owner)
+      const baseMessage = String(input?.message ?? '').trim()
+      const inquiry = await submitWebsiteInquiry({
         name: input?.name,
         phone: input?.phone,
         email: input?.email,
         address: input?.address,
-        message: input?.message,
+        message: (baseMessage + summary).slice(0, 6000),
         productType: input?.product_type,
         intent: input?.intent === 'repair' ? 'repair' : 'triage',
         smsConsent: input?.sms_consent === true,
         source: 'website_chat',
       })
+      if (inquiry.ok) {
+        logLeadEvent({
+          userId, anonId, type: 'inquiry_submitted',
+          meta: { via: 'assistant', intent: input?.intent === 'repair' ? 'repair' : 'triage' },
+          campaignId,
+        })
+      }
+      return inquiry
+    }
     default:
       return { error: `unknown_tool: ${name}` }
   }
