@@ -70,6 +70,13 @@ export interface MotorSystem {
   accessories: MotorSystemItem[];
 }
 
+/** Sell-rate knob for one fabric table (v810, 2026-07-16 Eddie):
+ *  sell $/sqm = factory pricePerSqm × mult + addPerSqm. */
+export interface LumaFabricMarkup {
+  mult: number;
+  addPerSqm?: number;
+}
+
 export interface LumaShadeConfig {
   variants: Record<LumaVariantKey, LumaVariantConfig>;
   /** Control-option surcharge in dollars (plastic_chain 0 / stainless_chain 15 / cordless 50). */
@@ -77,6 +84,12 @@ export interface LumaShadeConfig {
   fabrics: Record<LumaFabricTableKey, LumaFabricRow[]>;
   /** Luma motor system (used when option === "motorized"). */
   motorSystem: MotorSystem;
+  /** v810 factory-price model gate. Present (from a synced aapp_config) ⇒
+   *  fabric rows hold FACTORY NET $/sqm and sell = net × mult + addPerSqm.
+   *  Absent ⇒ rows hold sell-level prices and the legacy v808 ×0.75 applies.
+   *  Deliberately NOT part of the engine defaults — presence is the switch,
+   *  mirroring AAPP's migration gating. */
+  fabricMarkup?: Partial<Record<LumaFabricTableKey, LumaFabricMarkup>>;
 }
 
 export type LumaControlOption =

@@ -25,8 +25,13 @@ import type {
 // §1 Luma shades
 // ────────────────────────────────────────────────────────────────────────────
 
-describe("AAPP Luma shade (spec §1)", () => {
-  it("L1 — roller 60×72, ME8, round_fabric cassette, plastic chain → $226", () => {
+// v808 reprice (2026-07-16 Eddie 定稿): fabric ×0.75, min billable 1.2 sqm,
+// hardware min 1.2 m + ×1.2 over 95.7", $100 floor, roller cassettes
+// open 30 / round 50 / square 55. Expected values below are re-derived by
+// hand from the NEW AAPP shadeCalcPrice and cross-checked against AAPP's
+// refrozen pricing-regression cases.json (v808, 61/61 green).
+describe("AAPP Luma shade (spec §1, v808)", () => {
+  it("L1 — roller 60×72, ME8, round_fabric cassette, plastic chain → $223", () => {
     const r = priceLumaShade({
       variant: "roller_shade",
       widthIn: 60,
@@ -38,13 +43,13 @@ describe("AAPP Luma shade (spec §1)", () => {
     // sqm = 60×84/1550 = 3.2516129
     expect(r.breakdown.sqm).toBeCloseTo(3.2516, 4);
     expect(r.breakdown.billableSqm).toBeCloseTo(3.2516, 4);
-    expect(r.breakdown.fabricAmount).toBe(195.78); // round2(3.2516129 × 60.21)
-    expect(r.breakdown.hardwareAmount).toBe(30.48); // round2(60 × 0.0254 × 20)
+    expect(r.breakdown.fabricAmount).toBe(146.83); // round2(3.2516129 × 60.21 × 0.75)
+    expect(r.breakdown.hardwareAmount).toBe(76.2); // round2(1.524 × 50)
     expect(r.breakdown.controlAmount).toBe(0);
-    expect(r.total).toBe(226);
+    expect(r.total).toBe(223);
   });
 
-  it("L2 — roller 24×36, MB2, open roll, stainless chain (min 1 sqm) → $93", () => {
+  it("L2 — roller 24×36, MB2, open roll, stainless chain (min 1.2 sqm + 1.2 m) → $121", () => {
     const r = priceLumaShade({
       variant: "roller_shade",
       widthIn: 24,
@@ -53,16 +58,16 @@ describe("AAPP Luma shade (spec §1)", () => {
       cassette: "open_roll",
       option: "stainless_chain",
     });
-    // sqm = 24×48/1550 = 0.7432 < 1 → billed at 1 sqm
+    // sqm = 24×48/1550 = 0.7432 < 1.2 → billed at 1.2 sqm
     expect(r.breakdown.sqm).toBeCloseTo(0.7432, 4);
-    expect(r.breakdown.billableSqm).toBe(1);
-    expect(r.breakdown.fabricAmount).toBe(77.76);
-    expect(r.breakdown.hardwareAmount).toBe(0);
+    expect(r.breakdown.billableSqm).toBe(1.2);
+    expect(r.breakdown.fabricAmount).toBe(69.98); // round2(1.2 × 77.76 × 0.75)
+    expect(r.breakdown.hardwareAmount).toBe(36); // round2(1.2 m min × $30 open roll)
     expect(r.breakdown.controlAmount).toBe(15);
-    expect(r.total).toBe(93);
+    expect(r.total).toBe(121);
   });
 
-  it("L3 — zebra 80×90, DB8, square cassette, cordless → $811", () => {
+  it("L3 — zebra 80×90, DB8, square cassette, cordless → $628", () => {
     const r = priceLumaShade({
       variant: "zebra_shade",
       widthIn: 80,
@@ -71,46 +76,149 @@ describe("AAPP Luma shade (spec §1)", () => {
       cassette: "square",
       option: "cordless",
     });
-    expect(r.breakdown.fabricAmount).toBe(732.82); // round2(5.2645161 × 139.20)
+    expect(r.breakdown.fabricAmount).toBe(549.62); // round2(5.2645161 × 139.20 × 0.75)
     expect(r.breakdown.hardwareAmount).toBe(28.45); // round2(2.032 × 14)
     expect(r.breakdown.controlAmount).toBe(50);
-    expect(r.total).toBe(811);
+    expect(r.total).toBe(628);
   });
 
-  it("edge — billable sqm floors at exactly 1 sqm (25×50 → sqm = 1)", () => {
-    // 25 × (50+12) / 1550 = 1550/1550 = 1 exactly
+  it("edge — billable sqm floors at 1.2 sqm (30×50 → sqm = 1.2 exactly)", () => {
+    // 30 × (50+12) / 1550 = 1860/1550 = 1.2 exactly
     const exact = priceLumaShade({
       variant: "roller_shade",
-      widthIn: 25,
+      widthIn: 30,
       heightIn: 50,
       fabricFullCode: "ME8-005",
       option: "plastic_chain",
     });
-    expect(exact.breakdown.sqm).toBe(1);
-    expect(exact.breakdown.billableSqm).toBe(1);
-    expect(exact.breakdown.fabricAmount).toBe(60.21);
+    expect(exact.breakdown.sqm).toBe(1.2);
+    expect(exact.breakdown.billableSqm).toBe(1.2);
+    expect(exact.breakdown.fabricAmount).toBe(54.19); // round2(1.2 × 60.21 × 0.75)
 
-    // Just below the boundary still bills 1 sqm
+    // Just below the boundary still bills 1.2 sqm
     const below = priceLumaShade({
       variant: "roller_shade",
-      widthIn: 24.5,
+      widthIn: 29,
       heightIn: 50,
       fabricFullCode: "ME8-005",
       option: "plastic_chain",
     });
-    expect(Number(below.breakdown.sqm)).toBeLessThan(1);
-    expect(below.breakdown.billableSqm).toBe(1);
-    expect(below.breakdown.fabricAmount).toBe(60.21);
+    expect(Number(below.breakdown.sqm)).toBeLessThan(1.2);
+    expect(below.breakdown.billableSqm).toBe(1.2);
+    expect(below.breakdown.fabricAmount).toBe(54.19);
 
     // Just above the boundary bills the actual area
     const above = priceLumaShade({
       variant: "roller_shade",
-      widthIn: 26,
+      widthIn: 31,
       heightIn: 50,
       fabricFullCode: "ME8-005",
       option: "plastic_chain",
     });
-    expect(Number(above.breakdown.billableSqm)).toBeGreaterThan(1);
+    expect(Number(above.breakdown.billableSqm)).toBeGreaterThan(1.2);
+  });
+
+  it('edge — hardware ×1.2 past the 95.7" freight boundary', () => {
+    const under = priceLumaShade({
+      variant: "roller_shade",
+      widthIn: 95,
+      heightIn: 60,
+      fabricFullCode: "ME8-005",
+      cassette: "round_fabric",
+      option: "plastic_chain",
+    });
+    expect(under.breakdown.hardwareAmount).toBe(120.65); // round2(95×0.0254 × 50)
+
+    const over = priceLumaShade({
+      variant: "roller_shade",
+      widthIn: 96,
+      heightIn: 60,
+      fabricFullCode: "ME8-005",
+      cassette: "round_fabric",
+      option: "plastic_chain",
+    });
+    expect(over.breakdown.hardwareAmount).toBe(146.3); // round2(96×0.0254 × 1.2 × 50)
+  });
+
+  it("edge — $100 finished-product floor (small shade, cheap fabric)", () => {
+    const r = priceLumaShade({
+      variant: "roller_shade",
+      widthIn: 20,
+      heightIn: 20,
+      fabricFullCode: "ME8-005",
+      cassette: "open_roll",
+      option: "plastic_chain",
+    });
+    // fabric 54.19 + hw 36 + 0 = 90.19 < 100 → floored
+    expect(r.breakdown.priceFloorApplied).toBe(1);
+    expect(r.total).toBe(100);
+  });
+
+  // v810 factory-price model (2026-07-16 Eddie): fabric tables hold FACTORY
+  // NET $/sqm once fabricMarkup is present; sell = net × mult + addPerSqm.
+  // Knobs (roller 3.32+13.5 / zebra 4.06) reproduce the same integer totals
+  // as the legacy sell-price path — assert both cents (new math) and totals.
+  it("v810 — fabricMarkup config: factory-net pricing, same totals as legacy", () => {
+    // roller ME8: net 9.52 → sell 9.52×3.32+13.5 = 45.1064
+    const roller = priceLumaShade({
+      variant: "roller_shade", widthIn: 60, heightIn: 72,
+      fabricFullCode: "ME8-005", cassette: "round_fabric", option: "plastic_chain",
+      config: {
+        fabrics: { roller: [{ code: "ME8", pricePerSqm: 9.52 }] },
+        fabricMarkup: { roller: { mult: 3.32, addPerSqm: 13.5 } },
+      },
+    });
+    expect(roller.breakdown.fabricAmount).toBe(146.67); // round2(3.2516129 × 45.1064)
+    expect(roller.total).toBe(223); // same integer total as the legacy path (L1)
+
+    // zebra DB8: net 25.71 → sell 25.71×4.06 = 104.3826 (no adder)
+    const zebra = priceLumaShade({
+      variant: "zebra_shade", widthIn: 80, heightIn: 90,
+      fabricFullCode: "DB8-001", cassette: "square", option: "cordless",
+      config: {
+        fabrics: { zebra: [{ code: "DB8", pricePerSqm: 25.71 }] },
+        fabricMarkup: { zebra: { mult: 4.06 } },
+      },
+    });
+    expect(zebra.breakdown.fabricAmount).toBe(549.52); // round2(5.2645161 × 104.3826)
+    expect(zebra.total).toBe(628); // same as L3
+
+    // AAPP frozen regression case under the new model: MB8 net 11.43,
+    // roller knobs → 47×70 round_fabric stainless = $203 (unchanged).
+    const frozen = priceLumaShade({
+      variant: "roller_shade", widthIn: 47, heightIn: 70,
+      fabricFullCode: "MB8-002", cassette: "round_fabric", option: "stainless_chain",
+      config: {
+        fabrics: { roller: [{ code: "MB8", pricePerSqm: 11.43 }] },
+        fabricMarkup: { roller: { mult: 3.32, addPerSqm: 13.5 } },
+      },
+    });
+    expect(frozen.total).toBe(203);
+  });
+
+  // Mirrors of AAPP tests/pricing-regression/cases.json (v808 refrozen values).
+  it("AAPP regression parity — 4 frozen v808 cases", () => {
+    // luma_roller_min_1sqm_billable: MB1-001, open_roll, cordless, 20×20 → 172
+    expect(priceLumaShade({
+      variant: "roller_shade", widthIn: 20, heightIn: 20,
+      fabricFullCode: "MB1-001", cassette: "open_roll", option: "cordless",
+    }).total).toBe(172);
+    // luma_roller_mid_cassette_chain: MB8-002, round_fabric, stainless, 47×70 → 203
+    expect(priceLumaShade({
+      variant: "roller_shade", widthIn: 47, heightIn: 70,
+      fabricFullCode: "MB8-002", cassette: "round_fabric", option: "stainless_chain",
+    }).total).toBe(203);
+    // luma_zebra_round_cassette: DB5-001, round, plastic, 40×60 → 163
+    expect(priceLumaShade({
+      variant: "zebra_shade", widthIn: 40, heightIn: 60,
+      fabricFullCode: "DB5-001", cassette: "round", option: "plastic_chain",
+    }).total).toBe(163);
+    // luma_dual_roller_two_fabrics: MB1-001 + ME8-001, 5inch_square, cordless, 47×70 → 357
+    expect(priceLumaShade({
+      variant: "dual_roller_shade", widthIn: 47, heightIn: 70,
+      frontFabricFullCode: "MB1-001", backFabricFullCode: "ME8-001",
+      cassette: "5inch_square", option: "cordless",
+    }).total).toBe(357);
   });
 
   it("edge — max width 118 / max height 120 validation throws", () => {
@@ -156,15 +264,15 @@ describe("AAPP Luma shade (spec §1)", () => {
     const r = priceLumaShade({
       variant: "dual_sheer_shade",
       widthIn: 25,
-      heightIn: 50, // exactly 1 sqm → amounts are the raw table prices
+      heightIn: 50, // sqm = 1 → billed at the 1.2 sqm minimum (v808)
       frontFabricFullCode: "E8-001", // sheer table $123.03
       backFabricFullCode: "ME8-005", // roller table $60.21
       cassette: "5inch_square",
       option: "plastic_chain",
     });
-    expect(r.breakdown.frontFabricAmount).toBe(123.03);
-    expect(r.breakdown.backFabricAmount).toBe(60.21);
-    expect(r.breakdown.fabricAmount).toBe(183.24);
+    expect(r.breakdown.frontFabricAmount).toBe(110.73); // round2(1.2 × 123.03 × 0.75)
+    expect(r.breakdown.backFabricAmount).toBe(54.19); // round2(1.2 × 60.21 × 0.75)
+    expect(r.breakdown.fabricAmount).toBe(164.92);
   });
 });
 

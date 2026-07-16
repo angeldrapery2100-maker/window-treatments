@@ -86,15 +86,29 @@ export const LUMA_SQM_DIVISOR = 1550;
 export const LUMA_SQM_HEIGHT_ADD_IN = 12;
 export const INCH_TO_METER = 0.0254;
 
+// ── Luma 计价参数 v808（2026-07-16 Eddie 定稿）— AAPP app-quotes-shades.js ────
+// 面料倍率 ×0.75（rate ×4→×3，按各支面料现价缩放，保留价差）；
+// 面料最低计费面积 1.2㎡；五金最低计费帘宽 1.2m；
+// 帘宽 > 95.7″（2430mm / DHL 分界）时五金每米价 ×1.2（宽度≈运费）；
+// 成品最低价 $100。Mirrors shadeCalcPrice — keep in lockstep with AAPP.
+export const LUMA_FABRIC_MULT = 0.75;
+export const LUMA_MIN_BILLABLE_SQM = 1.2;
+export const LUMA_MIN_HW_WIDTH_M = 1.2;
+export const LUMA_HW_OVERSIZE_WIDTH_IN = 95.7;
+export const LUMA_HW_OVERSIZE_MULT = 1.2;
+export const LUMA_PRICE_FLOOR = 100;
+
 export const LUMA_SHADE_DEFAULTS: LumaShadeConfig = {
   variants: {
     roller_shade: {
       maxWidth: LUMA_MAX_WIDTH_IN,
       maxHeight: LUMA_MAX_HEIGHT_IN,
       cassettes: [
-        { key: "open_roll", label: "Open Roll", pricePerMeter: 0 },
-        { key: "round_fabric", label: "Round + Fabric Wrap", pricePerMeter: 20 },
-        { key: "square_fabric", label: "Square + Fabric Wrap", pricePerMeter: 28 },
+        // v808 (2026-07-16) roller cassette reprice: open 0→30, round 20→50,
+        // square 28→55 — mirrors AAPP's _lumaRollerCas2026Migrated migration.
+        { key: "open_roll", label: "Open Roll", pricePerMeter: 30 },
+        { key: "round_fabric", label: "Round + Fabric Wrap", pricePerMeter: 50 },
+        { key: "square_fabric", label: "Square + Fabric Wrap", pricePerMeter: 55 },
       ],
     },
     dual_roller_shade: {

@@ -108,11 +108,32 @@ export async function syncAappLibrary(): Promise<SyncReport> {
   invalidateAappLibraryMemo()
 
   // ── Propagate per-family $/sqm into fabric_library ─────────────────────────
+  // v810 (2026-07-16): the AAPP fabric tables hold FACTORY NET prices and the
+  // feed ships shadeCatalog.fabricMarkup (sell = net × mult + addPerSqm).
+  // fabric_library stores the SELL price (what admin/binding display).
+  // A feed with fabrics but no fabricMarkup means the AAPP-side libraryExport
+  // function predates v810 — fail closed, or we'd record净价当售价.
+  const fabricsBySeries: Record<string, any[]> = data.shadeCatalog?.fabrics || {}
+  const markup: Record<string, { mult?: number; addPerSqm?: number }> | null =
+    data.shadeCatalog?.fabricMarkup && typeof data.shadeCatalog.fabricMarkup === 'object'
+      ? data.shadeCatalog.fabricMarkup
+      : null
+  if (Object.keys(fabricsBySeries).length > 0 && !markup) {
+    throw new Error(
+      'AAPP 导出数据缺少 fabricMarkup(v810 出厂价模型)— 请先重新部署 AAPP 导出函数:firebase deploy --only functions:libraryExport'
+    )
+  }
+  const toSell = (series: string, net: number): number => {
+    const mk = markup?.[series]
+    const mult = Number(mk?.mult)
+    if (!Number.isFinite(mult) || mult <= 0) return net
+    return Math.round((net * mult + (Number(mk?.addPerSqm) || 0)) * 100) / 100
+  }
+
   await ensureFabricTable()
   const seriesArr: string[] = []
   const familyArr: string[] = []
   const priceArr: number[] = []
-  const fabricsBySeries: Record<string, any[]> = data.shadeCatalog?.fabrics || {}
   for (const [series, rows] of Object.entries(fabricsBySeries)) {
     for (const r of Array.isArray(rows) ? rows : []) {
       const price = Number(r?.pricePerSqm)
@@ -120,7 +141,7 @@ export async function syncAappLibrary(): Promise<SyncReport> {
       if (!family || !Number.isFinite(price) || price <= 0) continue
       seriesArr.push(series)
       familyArr.push(family)
-      priceArr.push(price)
+      priceArr.push(toSell(series, price))
     }
   }
   let colorwaysPriced = 0

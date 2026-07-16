@@ -65,6 +65,8 @@ function mapMotorRows(rows: any[]): Array<{ key: string; label: string; netPrice
 
 interface SnapshotSlices {
   fabricsTable: Array<{ code: string; pricePerSqm: number }>
+  /** v810: sell = factory-net pricePerSqm × mult + addPerSqm; REQUIRED for pricing. */
+  fabricMarkup: { mult: number; addPerSqm?: number } | null
   variant: { maxWidth?: number | null; maxHeight?: number | null; cassettes: Array<{ key: string; label: string; pricePerMeter: number }> }
   options: Record<string, number>
   motorSystem: any | null
@@ -80,6 +82,17 @@ async function loadSnapshotSlices(variantKey: string): Promise<SnapshotSlices> {
   const fabricsTable = (Array.isArray(shade.fabrics?.[meta.table]) ? shade.fabrics[meta.table] : [])
     .map((f: any) => ({ code: String(f?.code || ''), pricePerSqm: Number(f?.pricePerSqm) || 0 }))
     .filter((f: any) => f.code && f.pricePerSqm > 0)
+
+  // v810 factory-price model: fabric rows above are FACTORY NET — the sell
+  // knob MUST accompany them into aapp_config or the engine would fall back
+  // to legacy math on net prices (massively underpriced). Fail closed.
+  const rawMk = shade.fabricMarkup?.[meta.table]
+  const fabricMarkup = rawMk && Number.isFinite(Number(rawMk.mult)) && Number(rawMk.mult) > 0
+    ? { mult: Number(rawMk.mult), ...(Number(rawMk.addPerSqm) ? { addPerSqm: Number(rawMk.addPerSqm) } : {}) }
+    : null
+  if (fabricsTable.length > 0 && !fabricMarkup) {
+    throw new Error('AAPP 快照缺少 fabricMarkup(v810)— 请重新部署 libraryExport 后重新同步')
+  }
 
   const rawVariant = shade.variants?.[variantKey] || {}
   const cassettes = (Array.isArray(rawVariant.cassettes) ? rawVariant.cassettes : [])
@@ -105,6 +118,7 @@ async function loadSnapshotSlices(variantKey: string): Promise<SnapshotSlices> {
 
   return {
     fabricsTable,
+    fabricMarkup,
     variant: {
       maxWidth: rawVariant.maxWidth ?? null,
       maxHeight: rawVariant.maxHeight ?? null,
@@ -203,8 +217,10 @@ export async function applyLumaBinding(productId: string, spec: LumaBindingSpec)
   const usedFamilies = [...new Set(kept.map(f => f.family))]
   const aappConfig = {
     fabrics: {
+      // v810: FACTORY NET prices, paired with the fabricMarkup knob below.
       [meta.table]: usedFamilies.map(fam => ({ code: fam, pricePerSqm: familyPrice.get(fam)! })),
     },
+    ...(slices.fabricMarkup ? { fabricMarkup: { [meta.table]: slices.fabricMarkup } } : {}),
     variants: {
       [spec.variantKey]: {
         ...(slices.variant.maxWidth != null ? { maxWidth: slices.variant.maxWidth } : {}),

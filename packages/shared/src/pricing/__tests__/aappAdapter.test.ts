@@ -12,14 +12,14 @@ describe('aapp adapter', () => {
     expect(isAappConfigured(null)).toBe(false)
   })
 
-  it('L1 via adapter: Luma roller 60×72 ME8 + round_fabric + plastic chain = $226', () => {
+  it('L1 via adapter: Luma roller 60×72 ME8 + round_fabric + plastic chain = $223 (v808)', () => {
     const r = calculateAapp({
       width: 60, height: 72,
       baseParams: { aapp_engine: 'luma_shade', aapp_variant: 'roller_shade' },
       options: { fabric_code: 'ME8', cassette: 'round_fabric', control: 'plastic_chain' },
       optionParams: {},
     })
-    expect(r.total).toBe(226)
+    expect(r.total).toBe(223)
   })
 
   it('R1 via adapter: roman flat inner 36×48, $40/yd 54", BO = $391', () => {
