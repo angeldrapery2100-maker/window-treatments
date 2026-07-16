@@ -16,6 +16,7 @@ interface Fabric {
   name: string
   hardware_color: string
   image_url: string | null
+  price_per_sqm: string | number | null
   is_active: boolean
   discontinued: boolean
 }
@@ -117,6 +118,27 @@ export default function FabricsPage() {
     }
   }
 
+  // Pull fabric family prices (and the full library snapshot) from AAPP.
+  const syncAappPrices = async () => {
+    setBusy('aapp')
+    setNotice('')
+    try {
+      const res = await fetch('/api/admin/aapp-library', { method: 'POST' })
+      const json = await res.json()
+      if (json?.success) {
+        const r = json.data.report
+        setNotice(`AAPP 价格同步完成:${r.fabricFamiliesPriced} 个面料家族 / ${r.colorwaysPriced} 个色号已更新价格。`)
+        await load()
+      } else {
+        setNotice(json?.error || 'AAPP 同步失败')
+      }
+    } catch {
+      setNotice('AAPP 同步失败')
+    } finally {
+      setBusy('')
+    }
+  }
+
   const pickImage = (code: string) => {
     uploadFor.current = code
     fileRef.current?.click()
@@ -193,6 +215,14 @@ export default function FabricsPage() {
             {busy === 'import' ? '导入中…' : '从现有商品导入图/名'}
           </button>
           <button
+            onClick={() => void syncAappPrices()}
+            disabled={!!busy}
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-[13px] text-gray-700 hover:border-gray-500 disabled:opacity-40"
+            title="从 AAPP libraryExport 接口拉取每个面料家族的 $/sqm(需先批准并部署 AAPP 导出函数)"
+          >
+            {busy === 'aapp' ? '同步中…' : '同步 AAPP 价格'}
+          </button>
+          <button
             onClick={() => void runAction('sync')}
             disabled={!!busy}
             className="rounded-md bg-[#3d3d3d] px-4 py-2 text-[13px] text-white hover:bg-gray-700 disabled:opacity-40"
@@ -256,6 +286,11 @@ export default function FabricsPage() {
                   {CAT_LABELS[g.category] || g.category}
                 </span>
                 <span className="text-[11px] text-gray-400">{g.rows.length} 色</span>
+                {Number(g.rows[0]?.price_per_sqm) > 0 && (
+                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] text-emerald-700">
+                    ${Number(g.rows[0].price_per_sqm)}/sqm · AAPP
+                  </span>
+                )}
                 <label className="ml-auto flex items-center gap-1.5 text-[11px] text-gray-400">
                   整族 Hardware:
                   <select
