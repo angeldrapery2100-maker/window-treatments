@@ -260,6 +260,10 @@ function localSwatchPath(series: string, family: string, code: string): string |
     const f = `${family}-${parseInt(color, 10)}.jpg` // → "DB1-1.jpg"
     return LOCAL_SWATCH_FILES.zebra.includes(f) ? `/luma-collection/swatches/${f}` : null
   }
+  if (series === 'roman') {
+    const f = `${code}.jpg`
+    return LOCAL_SWATCH_FILES.roman?.includes(f) ? `/roman-collection/swatches/${f}` : null
+  }
   return null
 }
 
