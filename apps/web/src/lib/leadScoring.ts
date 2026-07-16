@@ -21,6 +21,7 @@ export const LEAD_SCORE_WEIGHTS: Record<string, ScoreWeight> = {
   assistant_chat:        { points: 2,  cap: 20 },
   project_viewed:        { points: 3,  cap: 12 },
   project_item_added:    { points: 12, cap: 60 },
+  hd_estimate:           { points: 15, cap: 30 },
   project_added_to_cart: { points: 20, cap: 40 },
   inquiry_submitted:     { points: 35, cap: 35 },
 }

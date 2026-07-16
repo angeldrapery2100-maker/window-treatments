@@ -26,6 +26,7 @@ import {
   type ProjectItemRow,
 } from '@/lib/homeProjects'
 import { getLeadScoreForOwner } from '@/lib/leadScoring'
+import { hdEstimate } from '@/lib/hdPricing'
 
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
@@ -444,6 +445,23 @@ export async function buildAiSalesSummary(ctx: ProjectOwnerCtx): Promise<string>
     if (lead.eventCount > 0) {
       lines.push(`Engagement: score ${lead.score} (${lead.tier}), ${lead.eventCount} tracked action(s) in 90 days`)
     }
+    // Recent Hunter Douglas reference estimates the AI gave this visitor —
+    // the salesperson should know what was already discussed.
+    const hdEvents = await query<{ meta: any }>(
+      `SELECT meta FROM lead_events
+        WHERE type = 'hd_estimate'
+          AND ((($1::uuid IS NOT NULL) AND user_id = $1::uuid) OR (($2::text IS NOT NULL) AND anon_id = $2))
+        ORDER BY created_at DESC LIMIT 4`,
+      [owner.userId ?? null, owner.anonId ?? null]
+    ).catch(() => [])
+    for (const ev of hdEvents) {
+      const m = ev.meta || {}
+      if (!m.series) continue
+      lines.push(
+        `HD estimate given: ${m.series}${m.width && m.height ? ` ${m.width}×${m.height}"` : ''}` +
+        (m.low && m.high ? ` — reference $${m.low}–$${m.high}` : ' — needs human quote')
+      )
+    }
     if (ctx.campaignId) lines.push(`Campaign: ${ctx.campaignId}`)
     // Nothing worth sending? Return empty so the message stays untouched.
     return lines.length > 2 ? lines.join('\n').slice(0, 2500) : ''
@@ -508,6 +526,22 @@ export const ASSISTANT_TOOLS = [
         sms_consent: { type: 'boolean', description: 'True ONLY if the customer explicitly agreed to receive a text message.' },
       },
       required: ['name'],
+    },
+  },
+  {
+    name: 'get_hd_estimate',
+    description:
+      "Get a Hunter Douglas REFERENCE PRICE RANGE (list-price based, computed by our internal HD pricing engine — never estimate HD prices yourself). Call with NO arguments first to get the list of available series (Duette, Silhouette, Vignette, Pirouette, Luminette, Designer Roller, shutters, wood blinds, …). Then collect the window size in INCHES and call again with series + width_in + height_in (+ fabric_code if the customer knows it, + operating_system e.g. 'powerview' for motorized). Present the returned range as a REFERENCE ONLY: the final price always comes from our salesperson after a free in-home measure — say that every time, then offer to book the consultation. If the result has needs_human=true or warnings, tell the customer that part needs a person to quote.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        series: { type: 'string', description: "HD series name, e.g. 'duette', 'silhouette', 'vignette', 'designer roller'. Omit to get the full series list." },
+        sub_product: { type: 'string', description: 'Sub-product where the series has them (e.g. vignette/provenance styles).' },
+        fabric_code: { type: 'string', description: 'HD fabric/chart code if the customer knows it (optional).' },
+        width_in: { type: 'number', description: 'Window width in inches.' },
+        height_in: { type: 'number', description: 'Window height in inches.' },
+        operating_system: { type: 'string', description: "Operating system, e.g. 'powerview' (motorized), 'ultraglide', 'literise'. Optional." },
+      },
     },
   },
   {
@@ -590,6 +624,39 @@ export async function executeAssistantTool(
 ): Promise<unknown> {
   const owner: ProjectOwnerCtx = { userId, anonId, campaignId }
   switch (name) {
+    case 'get_hd_estimate': {
+      const est = await hdEstimate({
+        series: typeof input?.series === 'string' && input.series ? input.series : undefined,
+        subProduct: input?.sub_product,
+        fabricCode: input?.fabric_code,
+        widthIn: input?.width_in != null ? Number(input.width_in) : undefined,
+        heightIn: input?.height_in != null ? Number(input.height_in) : undefined,
+        operatingSystem: input?.operating_system,
+      })
+      if (est.ok && (est.rangeLow || est.needsHuman)) {
+        logLeadEvent({
+          userId, anonId, type: 'hd_estimate',
+          value: est.rangeLow ?? null,
+          meta: { series: est.series, width: input?.width_in, height: input?.height_in, low: est.rangeLow, high: est.rangeHigh },
+          campaignId,
+        })
+      }
+      if (!est.ok) {
+        return { error: est.error, note: 'Could not compute an HD reference range — tell the customer a designer will quote it at the free in-home consultation. Do NOT invent a number.' }
+      }
+      if (est.seriesList) return { series_list: est.seriesList }
+      if (est.needsHuman || !est.rangeLow) {
+        return { needs_human: true, warnings: est.warnings, note: 'This configuration needs a person to quote — offer the free consultation. Do NOT invent a number.' }
+      }
+      return {
+        series: est.series,
+        reference_range: `$${est.rangeLow.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+        range_low: est.rangeLow,
+        range_high: est.rangeHigh,
+        warnings: est.warnings?.length ? est.warnings : undefined,
+        must_say: 'Reference range only (list-price基准, per shade, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.',
+      }
+    }
     case 'get_home_project':
       return await getHomeProjectTool(owner)
     case 'upsert_room_item':
