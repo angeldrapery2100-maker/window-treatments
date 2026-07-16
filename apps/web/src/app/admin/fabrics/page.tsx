@@ -54,6 +54,7 @@ export default function FabricsPage() {
   const [onlyIncomplete, setOnlyIncomplete] = useState(false)
   const [busy, setBusy] = useState('')
   const [notice, setNotice] = useState('')
+  const [preview, setPreview] = useState<Fabric | null>(null)
   const uploadFor = useRef<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -72,6 +73,7 @@ export default function FabricsPage() {
 
   const patch = async (code: string, body: Record<string, unknown>) => {
     setFabrics(prev => prev.map(f => (f.code === code ? { ...f, ...body } as Fabric : f)))
+    setPreview(prev => (prev && prev.code === code ? ({ ...prev, ...body } as Fabric) : prev))
     try {
       await fetch('/api/admin/fabrics', {
         method: 'PATCH',
@@ -357,22 +359,28 @@ export default function FabricsPage() {
                 {g.rows.map(f => (
                   <div key={f.code} className={`flex items-center gap-3 px-4 py-2 ${f.discontinued ? 'opacity-45' : ''}`}>
                     <code className="w-24 shrink-0 text-[12px] font-medium text-gray-800">{f.code}</code>
-                    <button
-                      onClick={() => pickImage(f.code)}
-                      disabled={busy === `img:${f.code}`}
-                      className="group relative h-11 w-16 shrink-0 overflow-hidden rounded border border-gray-200 bg-gray-50"
-                      title="点击上传/更换图片"
-                    >
-                      {f.image_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={f.image_url} alt={f.code} className="h-full w-full object-cover" />
-                      ) : (
-                        <span className="flex h-full w-full items-center justify-center text-[10px] text-gray-400">传图</span>
-                      )}
-                      <span className="absolute inset-0 hidden items-center justify-center bg-black/40 text-[10px] text-white group-hover:flex">
-                        {busy === `img:${f.code}` ? '…' : '换图'}
-                      </span>
-                    </button>
+                    <div className="flex shrink-0 flex-col items-center gap-0.5">
+                      <button
+                        onClick={() => (f.image_url ? setPreview(f) : pickImage(f.code))}
+                        disabled={busy === `img:${f.code}`}
+                        className="h-11 w-16 overflow-hidden rounded border border-gray-200 bg-gray-50 transition-transform hover:scale-105"
+                        title={f.image_url ? '点击放大查看' : '点击上传图片'}
+                      >
+                        {f.image_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={f.image_url} alt={f.code} className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="flex h-full w-full items-center justify-center text-[10px] text-gray-400">传图</span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => pickImage(f.code)}
+                        disabled={busy === `img:${f.code}`}
+                        className="text-[10px] text-gray-400 underline underline-offset-2 hover:text-gray-700"
+                      >
+                        {busy === `img:${f.code}` ? '上传中…' : '换图'}
+                      </button>
+                    </div>
                     <input
                       defaultValue={f.name}
                       key={`${f.code}:${f.name}`}
@@ -411,6 +419,64 @@ export default function FabricsPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Image lightbox — 看大图,顺手选 hardware 颜色 / 换图 */}
+      {preview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setPreview(null)}
+        >
+          <div
+            className="w-full max-w-lg rounded-xl bg-white p-5"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <p className="text-[15px] font-semibold text-gray-900">
+                {preview.code}
+                {preview.name && <span className="ml-2 font-normal text-gray-500">{preview.name}</span>}
+              </p>
+              <button
+                onClick={() => setPreview(null)}
+                className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                aria-label="关闭"
+              >✕</button>
+            </div>
+            {preview.image_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={preview.image_url}
+                alt={preview.code}
+                className="mt-3 max-h-[60vh] w-full rounded-lg object-contain bg-gray-50"
+              />
+            )}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-[13px] text-gray-500">Hardware 颜色:</span>
+                {HW_COLORS.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => void patch(preview.code, { hardware_color: c })}
+                    title={c}
+                    className={`h-7 w-7 rounded-full border-2 transition-transform hover:scale-110 ${
+                      preview.hardware_color === c ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'
+                    }`}
+                    style={{ background: HW_SWATCH[c] }}
+                  />
+                ))}
+                {preview.hardware_color && (
+                  <span className="text-[12px] text-gray-600">{preview.hardware_color}</span>
+                )}
+              </div>
+              <button
+                onClick={() => { pickImage(preview.code); setPreview(null) }}
+                className="rounded-md border border-gray-300 px-3 py-1.5 text-[12px] text-gray-600 hover:border-gray-500"
+              >
+                更换图片
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
