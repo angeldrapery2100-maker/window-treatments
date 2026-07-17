@@ -115,7 +115,13 @@ if (!files.includes(CORE_FILE)) {
   process.exit(1)
 }
 
-const coreKnowledge = readFileSync(join(KNOWLEDGE_DIR, CORE_FILE), 'utf8').trim()
+const coreBase = readFileSync(join(KNOWLEDGE_DIR, CORE_FILE), 'utf8').trim()
+// 业务事实单源(docs/business-facts.md)— 三个 AI 共享的事实层,追加进 CORE
+// (始终在上下文中,不走检索)。维护规则见该文件头部。
+const FACTS_FILE = join(__dirname, '..', '..', '..', 'docs', 'business-facts.md')
+const factsRaw = readFileSync(FACTS_FILE, 'utf8')
+const businessFacts = factsRaw.split('\n').filter(l => !l.startsWith('> ')).join('\n').trim()
+const coreKnowledge = coreBase + '\n\n' + businessFacts
 
 const sections = []
 for (const file of files) {

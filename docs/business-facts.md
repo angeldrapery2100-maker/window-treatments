@@ -1,0 +1,52 @@
+# Angel Drapery 业务事实单源 / BUSINESS FACTS (SINGLE SOURCE)
+
+> ⚠️ 这是三个 AI(网站客服 / 电话客服 / GPT 助手)共享的业务事实唯一维护处。
+> 改动流程:改这个文件 → 跑 `node apps/web/scripts/generate-assistant-knowledge.mjs`(网站 AI 即更新)
+> → 同步 AAPP/ai-phone/businessFacts.lite.txt(电话 AI,需重新部署 Cloud Run)
+> → 同步 AAPP/"ChatGPT Assistant"/业务事实单源.md(GPT 助手,需在 GPT Builder 重新上传)。
+> 三处同步交给 Claude 一句话即可完成。只放"事实",不放各 AI 的话术风格。
+
+## 公司
+- Angel Drapery, Inc.(洛杉矶天使窗帘)— 1984 年创立,家族经营;自有工坊(handcrafted)与自有安装团队。
+
+## 联系方式与营业
+- 展厅/办公室:8831 E Las Tunas Dr, Temple City, CA 91780(街边停车 + 店铺后方小停车场,店前右转进入;不保证车位)。
+- 电话:626-451-9841(客服/网站线);办公室 626-703-2929。
+- Email:admin@angel-drapery.com;支持 LINE 与微信;中英双语服务。
+- 营业时间:周一至周五 9am–5pm,周六 10am–3pm,周日休息。
+- 一律预约制(BY APPOINTMENT ONLY):展厅参观与上门服务都需预约,不接受 walk-in。
+
+## 服务范围
+- 大洛杉矶地区 + San Gabriel Valley。范围外(如 Orange County / Irvine)按具体地址逐单确认——不直接承诺上门,也不报上门费用。
+
+## 服务流程(三步)与三条路径
+- 三步:① 设计咨询(免费)→ ② 上门测量 → ③ 专业安装(自有团队)。
+- 上门测量在部分区域可能收取服务费,可抵扣订单金额,以具体地址由办公室确认;永远不说"上门免费",也不报固定费用数字。
+- 客户可三选一:到店看样(预约)/ 上门量尺与设计咨询 / 先发窗户照片和大概尺寸获得初步报价。
+
+## 产品与品牌
+- 自有工坊定制布帘(招牌):pinch pleat、ripple fold、纱帘、遮光、亚麻等。
+- Roman shades(手工罗马帘);Luma Collection:roller / zebra / sheer shades(电动、无绳、链条)。
+- Hunter Douglas:Silhouette、Nantucket、Applause、Vignette、Designer Roller/Screen、Skyline、Aria、Alustra、Palm Beach shutters 等。
+- Plantation shutters、woven wood;电动/智能:Hunter Douglas PowerView、Somfy、Lutron(Palladiom、Triathlon),兼容 Matter、Apple HomeKit、Google Home、Home Assistant。
+- 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。
+
+## 线上渠道
+- 官网 angel-drapery.com:展示全线产品(含 Hunter Douglas / Lutron)。
+- 在线商店 /store:精选可直接下单的品类——定制布帘、罗马帘、Luma 卷帘/斑马帘/柔纱帘、窗帘杆/电动轨。
+- 另有 Etsy 店铺。
+
+## 网店政策(仅适用于在线商店订单,订单号 AD 开头)
+- 下单后 48 小时内可修改或取消;取消退款需扣除银行卡手续费(不报具体金额,人工确认)。
+- 免费面料色卡:每单最多 10 片,仅付运费 —— USPS 普通 $2.99(5-8 天)/ 加急 $9.99(2-3 天)。
+- 订单查询与售后入口:/store/track(订单号 + 邮箱)。
+
+## 报价口径(所有 AI 必须遵守)
+- 在线商店产品:价格来自真实报价引擎(商品页配置器 / AI 工具),可给准确数字。
+- Hunter Douglas:仅可给"参考价区间"(标价口径、单幅、不含测量安装),必须说明最终价格以免费上门测量后的正式报价为准;电动不全时说明电机部分人工另报。
+- Sundance / Lutron / JC:一律不在线报价,引导免费咨询。
+- 交货期、保修、安装日期:因产品和项目而异,不给固定承诺,由办公室/销售确认。
+
+## 常用知识口径
+- Light filtering / sheer:柔化自然光;Blackout:近乎完全遮光(适合卧室/影音室)——永不承诺 100% 无漏光(边缝有微光属正常)。
+- 电动窗帘:有线款最好装修时预留电源线;不便拉线可选电池/可充电款,装修后也能装;先确认客户电源情况再推荐。
