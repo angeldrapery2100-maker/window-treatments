@@ -356,7 +356,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
             {/* 1. Somfy */}
             <motion.div initial={isOverlay ? "reveal" : "rest"} whileHover={!isOverlay ? "hover" : undefined} animate={isOverlay ? "reveal" : getLogoAnimate('somfy')} variants={logoHover} onClick={() => !isOverlay && toggleLogo('somfy')} className="cursor-pointer w-28">
-              <svg viewBox="0 0 652 652" className="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 652 652" width="652" height="652" className="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(0.000000, 9.000000)">
                   <g transform="translate(0.000000, 11.000000)">
                     {/* 第一个圆点 */}
@@ -431,7 +431,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
               {/* 中央：Hunter Douglas */}
               <motion.div initial={isOverlay ? "reveal" : "rest"} whileHover={!isOverlay ? "hover" : undefined} animate={isOverlay ? "reveal" : getLogoAnimate('hd')} variants={hdVariants} onClick={() => !isOverlay && toggleLogo('hd')} className="cursor-pointer flex flex-col items-center justify-center">
-                <svg viewBox="0 0 1518 1850" className="w-32 md:w-44 h-auto drop-shadow-sm transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 1518 1850" width="1518" height="1850" className="w-32 md:w-44 h-auto drop-shadow-sm transition-all duration-300" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <clipPath id="cp1"><path d="m-27.78 0h1605.52v1520.29h-1605.52z"/></clipPath>
                     <clipPath id="cp2"><path d="m774.98 767h802.76v753.29h-802.76z"/></clipPath>
@@ -514,7 +514,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
 
             {/* 8. R-TEC */}
             <motion.div initial={isOverlay ? "reveal" : "rest"} whileHover={!isOverlay ? "hover" : undefined} animate={isOverlay ? "reveal" : getLogoAnimate('rtec')} variants={logoHover} onClick={() => !isOverlay && toggleLogo('rtec')} className="cursor-pointer w-24">
-              <svg viewBox="0 0 120 40" className="w-full h-auto">
+              <svg viewBox="0 0 120 40" width="120" height="40" className="w-full h-auto">
                 <rect x="2" y="2" width="116" height="36" rx="6" fill="none" stroke="#525659" strokeWidth="2"/>
                 <path d="M4 6 L 30 6 L 30 34 L 20 34 L 12 24 L 4 34 Z" fill="#525659" />
                 <rect x="25" y="4" width="91" height="32" rx="4" fill="#E2943A"/>
@@ -824,7 +824,7 @@ export default function HomeClient({ hero, gallery, about, process: processData,
               </div>
 
               {/* 核心巨型 SVG — iPhone + 卷帘 + 滑块 + 9褶帘 全在同一坐标系 */}
-              <svg viewBox="0 0 1600 590" className="hidden w-full h-auto drop-shadow-2xl font-sans md:block">
+              <svg viewBox="0 0 1600 590" width="1600" height="590" className="hidden w-full h-auto drop-shadow-2xl font-sans md:block">
                 <defs>
                   {/* 面料渐变：浅蓝灰，参照真实卷帘面料色调 */}
                   <linearGradient id="shadeGrad" x1="0" y1="0" x2="1" y2="0">

@@ -87,7 +87,7 @@ export const SmartEssentialsSection = () => {
           {/* ================= 右侧：科技信息图 SVG 动画 ================= */}
           <div className="lg:col-span-8 relative flex justify-center w-full">
             <div className="w-full max-w-[900px]">
-              <svg viewBox="0 0 800 600" className="w-full h-auto drop-shadow-2xl">
+              <svg viewBox="0 0 800 600" width="800" height="600" className="w-full h-auto drop-shadow-2xl">
                 <defs>
                   <linearGradient id="shadeGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#334155" stopOpacity="0.9" />
