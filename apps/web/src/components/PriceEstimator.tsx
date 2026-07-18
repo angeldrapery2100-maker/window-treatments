@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { m as motion, AnimatePresence } from 'framer-motion'
 
@@ -26,36 +26,46 @@ const ESTIMATOR_CONFIG = {
       { key: 'rd', label: 'Room Darkening',  minPrice: 105, maxPrice: 120 },
     ],
   } as Record<string, { key: string; label: string; minPrice: number; maxPrice: number }[]>,
-  hardwarePerMeter: 22,
+  // v808: cassette $/m band per series (roller open/round/square 30-55;
+  // zebra & sheer round/square 14-16). Billed at ≥1.2 m, ×1.2 past 95.7".
+  cassetteBand: {
+    zebra:  { min: 14, max: 16 },
+    roller: { min: 30, max: 55 },
+    sheer:  { min: 14, max: 16 },
+  } as Record<string, { min: number; max: number }>,
   controlKeys: {
     zebra:  ['cordless', 'chain', 'motorized'],
     roller: ['cordless', 'chain', 'motorized'],
     sheer:  ['chain', 'motorized'],
   } as Record<string, string[]>,
   allControls: [
-    { key: 'cordless',  label: 'Cordless',  addOn: 40  },
-    { key: 'chain',     label: 'Chain',     addOn: 20  },
+    { key: 'cordless',  label: 'Cordless',  addOn: 50  },
+    { key: 'chain',     label: 'Chain',     addOn: 0   },
     { key: 'motorized', label: 'Motorized', addOn: 150 },
   ],
 }
 
+// v808 pricing math (2026-07 reprice) — mirrors the real engine:
+// billable area ≥ 1.2 sqm; hardware billed at ≥ 1.2 m of width, ×1.2 past
+// 95.7"; finished-product floor $100 (before motor add-on).
 function calcEstimate(
+  product: string,
   widthIn: number,
   heightIn: number,
   minFabricPrice: number,
   maxFabricPrice: number,
+  controlKey: string,
   controlAddOn: number,
 ) {
-  if (!widthIn || !heightIn || widthIn < 12 || widthIn > 96 || heightIn < 12 || heightIn > 120) return null
-  const areaSqm   = Math.max(1, (widthIn * (heightIn + 12)) / 1550)
-  const widthM    = widthIn * 0.0254
-  const hardware  = Math.ceil(widthM * ESTIMATOR_CONFIG.hardwarePerMeter)
-  const minFabric = Math.ceil(areaSqm * minFabricPrice)
-  const maxFabric = Math.ceil(areaSqm * maxFabricPrice)
-  return {
-    minTotal: minFabric + hardware + controlAddOn,
-    maxTotal: maxFabric + hardware + controlAddOn,
-  }
+  if (!widthIn || !heightIn || widthIn < 12 || widthIn > 118 || heightIn < 12 || heightIn > 120) return null
+  const areaSqm = Math.max(1.2, (widthIn * (heightIn + 12)) / 1550)
+  const hwMeters = Math.max(widthIn * 0.0254, 1.2) * (widthIn > 95.7 ? 1.2 : 1)
+  const cas = ESTIMATOR_CONFIG.cassetteBand[product] ?? { min: 14, max: 16 }
+  const nonMotorAddOn = controlKey === 'motorized' ? 0 : controlAddOn
+  const motorAddOn = controlKey === 'motorized' ? controlAddOn : 0
+  const minTotal = Math.max(Math.ceil(areaSqm * minFabricPrice + hwMeters * cas.min + nonMotorAddOn), 100) + motorAddOn
+  const maxTotal = Math.max(Math.ceil(areaSqm * maxFabricPrice + hwMeters * cas.max + nonMotorAddOn), 100) + motorAddOn
+  return { minTotal, maxTotal }
 }
 
 // ── Component ─────────────────────────────────────────────────
@@ -71,11 +81,24 @@ export default function PriceEstimator({ defaultProduct = 'zebra' }: PriceEstima
   const [estFabric,  setEstFabric]  = useState(ESTIMATOR_CONFIG.fabrics[product][0].key)
   const [estControl, setEstControl] = useState(ESTIMATOR_CONFIG.controlKeys[product][0])
 
-  const fabricOpts   = ESTIMATOR_CONFIG.fabrics[product]
+  // Live sell-price bands from the fabric library (follows AAPP pricing via
+  // sync); the hardcoded numbers above stay as offline fallback.
+  const [liveBands, setLiveBands] = useState<Record<string, Record<string, { min: number; max: number }>> | null>(null)
+  useEffect(() => {
+    fetch('/api/store/luma-bands')
+      .then(r => r.json())
+      .then(j => { if (j?.success && j.data?.bands) setLiveBands(j.data.bands) })
+      .catch(() => {})
+  }, [])
+
+  const fabricOpts   = ESTIMATOR_CONFIG.fabrics[product].map(f => {
+    const live = liveBands?.[product]?.[f.key]
+    return live ? { ...f, minPrice: live.min, maxPrice: live.max } : f
+  })
   const selectedFab  = fabricOpts.find(f => f.key === estFabric) ?? fabricOpts[0]
   const controlOpts  = ESTIMATOR_CONFIG.allControls.filter(c => ESTIMATOR_CONFIG.controlKeys[product].includes(c.key))
   const selectedCtrl = controlOpts.find(c => c.key === estControl) ?? controlOpts[0]
-  const estimate     = calcEstimate(+estWidth, +estHeight, selectedFab.minPrice, selectedFab.maxPrice, selectedCtrl.addOn)
+  const estimate     = calcEstimate(product, +estWidth, +estHeight, selectedFab.minPrice, selectedFab.maxPrice, selectedCtrl.key, selectedCtrl.addOn)
 
   return (
     <section className="w-full bg-white py-14 md:py-18 border-t border-gray-100">
