@@ -560,6 +560,12 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'list_measured_windows',
+    description:
+      "Read the customer's saved measurement sheet from the /measure-wizard page (their windows: location, product type, frame depth, mount type, dimensions in inches with A=left/B=right/C=top/D=bottom wall clearances, and the computed recommendation or reference price). Call this FIRST whenever a customer mentions having measured windows, asks about 'my windows/my sheet', or when starting any sizing/quoting conversation — if the sheet has entries you can skip re-collecting measurements. Works for guests too (tied to their browser).",
+    input_schema: { type: 'object' as const, properties: {} },
+  },
+  {
     name: 'recommend_drapery_size',
     description:
       "MEASUREMENT WIZARD — compute the RECOMMENDED finished drapery size from the customer's window measurements, using the exact same rules our designers use. Collect first, in inches: window width + height (outer frame preferred), then rod type (motorized ceiling track / ceiling track / wall rod) and opening (center split or one-way). Optional but improves accuracy: wall space left/right of the window, window-top-to-ceiling gap, window-bottom-to-floor, and measured floor-to-ceiling height. Present the result as our recommendation, explain in one short sentence why it's larger than the window (stacking room / rod position), and offer to save it to their Home Project via upsert_room_item.",
@@ -750,6 +756,25 @@ export async function executeAssistantTool(
         ...(est.fabricDependent ? { fabric_note: 'Range spans this series\' fabric tiers — it narrows once the customer picks a fabric collection at the consultation.' } : {}),
         warnings: est.warnings?.length ? est.warnings : undefined,
         must_say: 'Reference range only (list-price基准, per shade, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.',
+      }
+    }
+    case 'list_measured_windows': {
+      const { listMeasuredWindows } = await import('@/lib/windowMeasurements')
+      const rows = await listMeasuredWindows({ userId, anonId })
+      if (rows.length === 0) {
+        return { windows: [], note: 'No saved measurements. Offer the /measure-wizard page, or collect measurements in chat.' }
+      }
+      return {
+        windows: rows.map((r) => ({
+          id: r.id,
+          location: r.label,
+          opening: r.kind,
+          product: r.product,
+          config: r.config,
+          dims_in: r.dims,
+          result: r.result,
+        })),
+        note: 'Dims use inches; A/B/C/D = wall space left/right and gaps to ceiling/floor. Results are reference-only — final sizes/prices come from the free in-home measure.',
       }
     }
     case 'recommend_drapery_size': {
