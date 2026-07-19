@@ -68,3 +68,108 @@ export async function getLeadScoreForOwner(userId: string | null, anonId: string
     return { score: 0, tier: 'cool', eventCount: 0 }
   }
 }
+
+export interface LeadRow {
+  ownerKey: string
+  userId: string | null
+  anonId: string | null
+  name: string | null
+  email: string | null
+  phone: string | null
+  score: number
+  tier: LeadTier
+  eventCount: number
+  inquiries: number
+  lastActivity: string
+  topSignals: string[]
+}
+
+// Score contribution of a (type,count) pair under the per-type cap.
+function contribution(type: string, count: number): number {
+  const w = LEAD_SCORE_WEIGHTS[type]
+  if (!w) return 0
+  return Math.min(count * w.points, w.cap)
+}
+
+const SIGNAL_LABEL: Record<string, string> = {
+  inquiry_submitted: '已留资',
+  project_added_to_cart: '加购',
+  project_item_added: '方案条目',
+  hd_estimate: 'HD 询价',
+  shutter_estimate: '百叶询价',
+  store_estimate: '商店询价',
+  measure_wizard: '量窗',
+  assistant_chat: 'AI 对话',
+  campaign_visit: '活动访问',
+  project_viewed: '看方案',
+}
+
+/**
+ * Rank recent leads by computed score (last 90 days). Groups lead_events by
+ * owner, computes each score + tier in JS (respecting per-type caps), enriches
+ * signed-in owners with account name/email/phone. Best-effort — [] on error.
+ */
+export async function listLeads(limit = 100): Promise<LeadRow[]> {
+  try {
+    await ensureProjectTables()
+    const rows = await query<{ user_id: string | null; anon_id: string | null; type: string; n: string; last_at: string }>(
+      `SELECT user_id, anon_id, type, COUNT(*) AS n, MAX(created_at) AS last_at
+         FROM lead_events
+        WHERE created_at > now() - interval '90 days'
+        GROUP BY user_id, anon_id, type`
+    )
+    // Aggregate per owner.
+    const byOwner = new Map<string, { userId: string | null; anonId: string | null; byType: Record<string, number>; last: string }>()
+    for (const r of rows) {
+      const key = r.user_id ? 'u:' + r.user_id : r.anon_id ? 'a:' + r.anon_id : null
+      if (!key) continue
+      const n = Number(r.n) || 0
+      const cur = byOwner.get(key) || { userId: r.user_id, anonId: r.anon_id, byType: {}, last: r.last_at }
+      cur.byType[r.type] = (cur.byType[r.type] || 0) + n
+      if (r.last_at > cur.last) cur.last = r.last_at
+      byOwner.set(key, cur)
+    }
+    let leads: LeadRow[] = [...byOwner.entries()].map(([ownerKey, o]) => {
+      const score = Object.entries(o.byType).reduce((sum, [t, c]) => sum + contribution(t, c), 0)
+      const eventCount = Object.values(o.byType).reduce((a, b) => a + b, 0)
+      const topSignals = Object.keys(o.byType)
+        .filter((t) => LEAD_SCORE_WEIGHTS[t])
+        .sort((a, b) => contribution(b, o.byType[b]) - contribution(a, o.byType[a]))
+        .slice(0, 3)
+        .map((t) => SIGNAL_LABEL[t] || t)
+      return {
+        ownerKey,
+        userId: o.userId,
+        anonId: o.anonId,
+        name: null,
+        email: null,
+        phone: null,
+        score,
+        tier: scoreTier(score),
+        eventCount,
+        inquiries: o.byType['inquiry_submitted'] || 0,
+        lastActivity: o.last,
+        topSignals,
+      }
+    })
+    leads.sort((a, b) => b.score - a.score || (a.lastActivity < b.lastActivity ? 1 : -1))
+    leads = leads.slice(0, limit)
+
+    // Enrich signed-in owners with account details.
+    const userIds = leads.map((l) => l.userId).filter((v): v is string => !!v)
+    if (userIds.length) {
+      const users = await query<{ id: string; name: string; email: string; phone: string }>(
+        `SELECT id, name, email, phone FROM users WHERE id = ANY($1::uuid[])`,
+        [userIds]
+      )
+      const byId = new Map(users.map((u) => [u.id, u]))
+      leads = leads.map((l) => {
+        const u = l.userId ? byId.get(l.userId) : null
+        return u ? { ...l, name: u.name || null, email: u.email || null, phone: u.phone || null } : l
+      })
+    }
+    return leads
+  } catch {
+    return []
+  }
+}

@@ -273,16 +273,31 @@ function itemToolView(it: ProjectItemRow) {
   }
 }
 
+// Big-project handoff thresholds (Eddie 2026-07-19): once a plan reaches this
+// size the assistant should proactively steer toward the free in-home
+// consultation (prompt rule "BIG-PROJECT HANDOFF").
+const HANDOFF_SUBTOTAL = 5000
+const HANDOFF_ITEM_COUNT = 10
+
 function projectToolView(projectName: string, items: ProjectItemRow[]) {
   const s = projectSummary(items)
+  const totalUnits = items.reduce((n, it) => n + (Number(it.quantity) || 1), 0)
+  const suggest = s.pricedSubtotal >= HANDOFF_SUBTOTAL || totalUnits >= HANDOFF_ITEM_COUNT
   return {
     project: {
       name: projectName,
       items: items.map(itemToolView),
       item_count: s.itemCount,
+      total_units: totalUnits,
       priced_subtotal: s.pricedSubtotal,
       unpriced_item_count: s.unpricedCount,
       review_page: '/store/project',
+    },
+    handoff: {
+      suggest_consultation: suggest,
+      ...(suggest
+        ? { reason: `Project is ${s.pricedSubtotal >= HANDOFF_SUBTOTAL ? `$${s.pricedSubtotal.toLocaleString()} (≥ $${HANDOFF_SUBTOTAL.toLocaleString()})` : `${totalUnits} units (≥ ${HANDOFF_ITEM_COUNT})`} — recommend the free in-home consultation (rule 9).` }
+        : {}),
     },
   }
 }
