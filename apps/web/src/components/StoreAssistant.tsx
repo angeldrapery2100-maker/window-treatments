@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
 
 // Site-wide floating AI shopping assistant. Talks to /api/store/assistant
@@ -10,6 +10,17 @@ import { usePathname } from 'next/navigation'
 // widget stays visible and shows a human-fallback message (see
 // UNAVAILABLE_MSG below) instead of disappearing — it recovers automatically
 // on the next send once the server is healthy again.
+//
+// 2026-07-19 redesign ("气泡改版+快捷选项"):
+// - Launcher is a labeled pill ("AI 助手 · Ask AI") with a soft ping ring and
+//   a one-time teaser bubble a few seconds after page load (per-session).
+// - Panel got a brand gradient header with avatar + online dot; messages area
+//   is gray-50 with white bordered assistant bubbles.
+// - Assistant text is linkified: product/store paths, full URLs, and the
+//   phone number become tappable links.
+// - Every assistant turn can carry server-parsed quick replies (see
+//   extractQuickReplies in the API route) rendered as tap-to-send chips under
+//   the LATEST assistant message only.
 //
 // Positioning: on /store pages the bottom-right slot is free (the site-wide
 // ConsultationWidget returns null there), so the launcher sits at bottom-5/6
@@ -25,11 +36,17 @@ interface ChatMessage {
   // Set on an assistant turn when the backend registered a lead and returned an
   // appointment link — rendered as a "Book now" button under the message.
   bookingLink?: string
+  // Tap-to-send quick replies for this assistant turn (server-generated).
+  // Only rendered on the latest assistant message.
+  suggestions?: string[]
 }
 
 const STORAGE_KEY = 'store_assistant_chat'
+const TEASER_KEY = 'store_assistant_teaser_done'
+const OPENED_KEY = 'store_assistant_opened'
 const MAX_MESSAGES = 30
 const MAX_CONTENT_CHARS = 2000
+const TEASER_DELAY_MS = 4000
 
 // Main marketing site: steer toward understanding the company and finding
 // the right product (funnels to a local in-home consultation).
@@ -60,6 +77,9 @@ const QUICK_PROMPTS_STORE = [
   'I need to change or cancel my order',
 ]
 
+const TEASER_MAIN = '窗帘怎么选？随时问我 — Not sure which treatment fits? Ask me!'
+const TEASER_STORE = '量窗、选帘、算价格，随时问我 — Measuring or pricing? Ask me!'
+
 // NOTE (fix 2026-07-05): we previously hid the whole widget permanently when
 // the server reported 'assistant_unavailable'. That made the bubble vanish
 // mid-conversation (e.g. env var not yet live, key rotated, quota exhausted)
@@ -70,16 +90,77 @@ const UNAVAILABLE_MSG =
   'or request a free design consultation at /store/whole-home — a real person will help you. ' +
   'AI 客服暂时不可用，请拨打 626-451-9841 或提交免费设计咨询，我们的设计师会协助您。'
 
+const PHONE_DISPLAY = '626-451-9841'
+const PHONE_HREF = 'tel:+16264519841'
+
+// Turn plain assistant text into text + tappable links. Recognizes, in one
+// left-to-right pass: full http(s) URLs, site-relative paths the assistant is
+// allowed to send (/products…, /store…, /how-to-measure, /faq), and the shop
+// phone number. Everything else passes through untouched (whitespace-pre-wrap
+// on the bubble preserves newlines).
+const RICH_RE =
+  /(https?:\/\/[^\s)）\]】>，。；]+)|(\/(?:products|store|how-to-measure|faq)(?:\/[A-Za-z0-9\-_]+)*\/?)|(626-451-9841)/g
+
+function renderRich(text: string): ReactNode[] {
+  const nodes: ReactNode[] = []
+  let last = 0
+  let key = 0
+  RICH_RE.lastIndex = 0
+  let m: RegExpExecArray | null
+  while ((m = RICH_RE.exec(text)) !== null) {
+    let tok = m[0]
+    // Trailing sentence punctuation is never part of the link.
+    const trimmed = tok.replace(/[.,!?;:，。！？；：]+$/, '')
+    if (trimmed !== tok) {
+      tok = trimmed
+      RICH_RE.lastIndex = m.index + tok.length
+    }
+    if (!tok) continue
+    if (m.index > last) nodes.push(text.slice(last, m.index))
+    const cls = 'font-medium underline underline-offset-2 decoration-gray-400 hover:decoration-gray-800 break-all'
+    if (m[3] !== undefined && tok === PHONE_DISPLAY) {
+      nodes.push(
+        <a key={key++} href={PHONE_HREF} className={cls}>
+          {tok}
+        </a>
+      )
+    } else if (tok.startsWith('http')) {
+      nodes.push(
+        <a key={key++} href={tok} target="_blank" rel="noopener noreferrer" className={cls}>
+          {tok}
+        </a>
+      )
+    } else {
+      nodes.push(
+        <a key={key++} href={tok} className={cls}>
+          {tok}
+        </a>
+      )
+    }
+    last = m.index + tok.length
+  }
+  if (last < text.length) nodes.push(text.slice(last))
+  return nodes
+}
+
+function sanitizeSuggestions(v: unknown): string[] | undefined {
+  if (!Array.isArray(v)) return undefined
+  const out = [...new Set(v.filter((s): s is string => typeof s === 'string' && !!s.trim()))].slice(0, 4)
+  return out.length ? out : undefined
+}
+
 function loadStored(): ChatMessage[] {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
-    return parsed.filter(
-      (m): m is ChatMessage =>
-        m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'
-    )
+    return parsed
+      .filter(
+        (m): m is ChatMessage =>
+          m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'
+      )
+      .map((m) => ({ ...m, suggestions: sanitizeSuggestions((m as ChatMessage).suggestions) }))
   } catch {
     return []
   }
@@ -93,9 +174,27 @@ function saveStored(messages: ChatMessage[]) {
   }
 }
 
+// Small brand avatar used in the header and next to assistant bubbles.
+function AssistantAvatar({ size = 30 }: { size?: number }) {
+  return (
+    <span
+      className="flex shrink-0 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30"
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <svg width={size * 0.55} height={size * 0.55} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3l1.7 4.6L18 9.3l-4.3 1.7L12 15.6l-1.7-4.6L6 9.3l4.3-1.7L12 3z" />
+        <path d="M18.5 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z" />
+      </svg>
+    </span>
+  )
+}
+
 export default function StoreAssistant() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [openedOnce, setOpenedOnce] = useState(false)
+  const [teaserVisible, setTeaserVisible] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
@@ -107,7 +206,49 @@ export default function StoreAssistant() {
   // Hydrate persisted conversation once on mount (client only).
   useEffect(() => {
     setMessages(loadStored())
+    try {
+      if (sessionStorage.getItem(OPENED_KEY)) setOpenedOnce(true)
+    } catch {
+      /* ignore */
+    }
     setHydrated(true)
+  }, [])
+
+  // One-time attention teaser: pops a few seconds after load, once per
+  // session, and never once the chat has been opened or used.
+  useEffect(() => {
+    if (!hydrated) return
+    let done = false
+    try {
+      done = !!sessionStorage.getItem(TEASER_KEY)
+    } catch {
+      /* ignore */
+    }
+    if (done || openedOnce || messages.length > 0) return
+    const t = setTimeout(() => setTeaserVisible(true), TEASER_DELAY_MS)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated])
+
+  const dismissTeaser = useCallback(() => {
+    setTeaserVisible(false)
+    try {
+      sessionStorage.setItem(TEASER_KEY, '1')
+    } catch {
+      /* ignore */
+    }
+  }, [])
+
+  const openChat = useCallback(() => {
+    setOpen(true)
+    setOpenedOnce(true)
+    setTeaserVisible(false)
+    try {
+      sessionStorage.setItem(OPENED_KEY, '1')
+      sessionStorage.setItem(TEASER_KEY, '1')
+    } catch {
+      /* ignore */
+    }
   }, [])
 
   // Auto-scroll to bottom whenever the transcript grows or the panel opens.
@@ -142,13 +283,23 @@ export default function StoreAssistant() {
         const res = await fetch('/api/store/assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, surface }),
+          // Strip client-only fields — the API expects bare {role, content}.
+          body: JSON.stringify({ messages: next.map(({ role, content: c }) => ({ role, content: c })), surface }),
         })
         const json = await res.json().catch(() => null)
 
         if (json?.success && json.data?.reply) {
           const link = typeof json.data.bookingLink === 'string' ? json.data.bookingLink : undefined
-          const withReply = [...next, { role: 'assistant' as const, content: String(json.data.reply), ...(link ? { bookingLink: link } : {}) }]
+          const suggestions = sanitizeSuggestions(json.data.suggestions)
+          const withReply = [
+            ...next,
+            {
+              role: 'assistant' as const,
+              content: String(json.data.reply),
+              ...(link ? { bookingLink: link } : {}),
+              ...(suggestions ? { suggestions } : {}),
+            },
+          ]
           setMessages(withReply)
           saveStored(withReply)
         } else if (json?.error === 'assistant_unavailable') {
@@ -198,24 +349,65 @@ export default function StoreAssistant() {
     ? 'z-50 sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
     : 'z-[1000] sm:bottom-24 sm:max-h-[calc(100vh-8rem)]'
 
+  const lastIdx = messages.length - 1
+
+  const chipClass =
+    'rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[12px] text-gray-700 shadow-sm transition-all hover:border-gray-800 hover:bg-gray-900 hover:text-white disabled:opacity-50'
+
   return (
     <>
-      {/* Launcher button */}
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open design assistant chat"
-        className={`fixed ${btnOffset} ${btnSide} z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#3d3d3d] text-white shadow-lg transition-all duration-300 hover:bg-gray-700 hover:shadow-xl ${
-          open ? 'pointer-events-none scale-0 opacity-0' : 'scale-100 opacity-100'
-        }`}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-      </button>
+      {/* Launcher: teaser bubble + labeled pill button */}
+      <div className={`fixed ${btnOffset} ${btnSide} z-50 flex flex-col gap-2 ${onStore ? 'items-start' : 'items-end'}`}>
+        {teaserVisible && !open && (
+          <div className="relative max-w-[240px] animate-[fadeSlideIn_.35s_ease-out] rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 pr-7 text-[12px] leading-relaxed text-gray-700 shadow-xl">
+            <button
+              type="button"
+              onClick={openChat}
+              className="text-left"
+              aria-label="Open design assistant chat"
+            >
+              {onStore ? TEASER_STORE : TEASER_MAIN}
+            </button>
+            <button
+              type="button"
+              onClick={dismissTeaser}
+              aria-label="Dismiss"
+              className="absolute right-1.5 top-1.5 rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={openChat}
+          aria-label="Open design assistant chat"
+          className={`group relative flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2f2f2f] to-[#4a4a4a] py-3 pl-4 pr-5 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:brightness-110 ${
+            open ? 'pointer-events-none scale-0 opacity-0' : 'scale-100 opacity-100'
+          }`}
+        >
+          {/* Soft attention ring until the chat has been opened once */}
+          {!openedOnce && (
+            <span
+              className="absolute inset-0 -z-10 rounded-full bg-[#3d3d3d] opacity-25 [animation:ping_2.5s_cubic-bezier(0,0,0.2,1)_infinite]"
+              aria-hidden="true"
+            />
+          )}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+          <span className="flex flex-col items-start leading-none">
+            <span className="text-[13px] font-medium tracking-wide">AI 助手</span>
+            <span className="mt-0.5 text-[10px] text-gray-300">Ask AI</span>
+          </span>
+        </button>
+      </div>
 
       {/* Chat panel: mobile = bottom sheet, desktop = card */}
       <div
-        className={`fixed inset-x-0 bottom-0 flex h-[70vh] w-full flex-col overflow-hidden rounded-t-xl bg-white shadow-2xl transition-all duration-300 ease-out sm:inset-x-auto ${panelSide} sm:h-[560px] sm:w-[380px] sm:rounded-xl ${panelPos} ${
+        className={`fixed inset-x-0 bottom-0 flex h-[72vh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl transition-all duration-300 ease-out sm:inset-x-auto ${panelSide} sm:h-[560px] sm:w-[384px] sm:rounded-2xl ${panelPos} ${
           open ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
         }`}
         role="dialog"
@@ -223,20 +415,27 @@ export default function StoreAssistant() {
         aria-hidden={!open}
       >
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-gray-100 bg-[#3d3d3d] px-4 py-3 text-white">
-          <div>
-            <p className="text-sm font-medium tracking-wide">Design Assistant · Angel Drapery</p>
-            <p className="mt-0.5 text-[11px] text-gray-300">
-              {onStore
-                ? 'AI assistant — measuring, ordering & order help · any language'
-                : 'AI assistant — get to know us & find your product · any language'}
-            </p>
-            <a
-              href="/store/whole-home"
-              className="mt-1 inline-block text-[11px] text-gray-200 underline underline-offset-2 hover:text-white"
-            >
-              Talk to a human &rarr;
-            </a>
+        <div className="flex items-start justify-between bg-gradient-to-r from-[#262626] to-[#454545] px-4 py-3 text-white">
+          <div className="flex items-start gap-3">
+            <AssistantAvatar />
+            <div>
+              <p className="text-sm font-medium tracking-wide">Angel Drapery · AI 设计助手</p>
+              <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-gray-300">
+                <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                </span>
+                {onStore
+                  ? 'Online — measuring, ordering & order help · any language'
+                  : 'Online — get to know us & find your product · any language'}
+              </p>
+              <a
+                href="/store/whole-home"
+                className="mt-1 inline-block text-[11px] text-gray-200 underline underline-offset-2 hover:text-white"
+              >
+                Talk to a human &rarr;
+              </a>
+            </div>
           </div>
           <button
             onClick={() => setOpen(false)}
@@ -250,20 +449,15 @@ export default function StoreAssistant() {
         </div>
 
         {/* Messages */}
-        <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+        <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-gray-50 px-4 py-4">
           {showWelcome && hydrated && (
             <>
-              <div className="max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800">
+              <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                 {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
                 {(onStore ? QUICK_PROMPTS_STORE : QUICK_PROMPTS_MAIN).map((q) => (
-                  <button
-                    key={q}
-                    onClick={() => send(q)}
-                    disabled={sending}
-                    className="rounded-full border border-gray-300 px-3 py-1.5 text-[12px] text-gray-700 transition-colors hover:border-gray-800 hover:bg-gray-50 disabled:opacity-50"
-                  >
+                  <button key={q} onClick={() => send(q)} disabled={sending} className={chipClass}>
                     {q}
                   </button>
                 ))}
@@ -274,14 +468,14 @@ export default function StoreAssistant() {
           {messages.map((m, i) =>
             m.role === 'user' ? (
               <div key={i} className="flex justify-end">
-                <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-[#3d3d3d] px-3.5 py-2.5 text-[13px] leading-relaxed text-white">
+                <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-gradient-to-r from-[#2f2f2f] to-[#454545] px-3.5 py-2.5 text-[13px] leading-relaxed text-white shadow-sm">
                   {m.content}
                 </div>
               </div>
             ) : (
               <div key={i} className="max-w-[85%] space-y-2">
-                <div className="whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-gray-100 px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800">
-                  {m.content}
+                <div className="whitespace-pre-wrap rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
+                  {renderRich(m.content)}
                 </div>
                 {m.bookingLink && (
                   <a
@@ -293,13 +487,23 @@ export default function StoreAssistant() {
                     📅 Book your appointment / 点此预约
                   </a>
                 )}
+                {/* Contextual quick replies — latest assistant turn only */}
+                {i === lastIdx && !sending && !!m.suggestions?.length && (
+                  <div className="flex flex-wrap gap-2 pt-0.5">
+                    {m.suggestions.map((s) => (
+                      <button key={s} onClick={() => send(s)} disabled={sending} className={chipClass}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )
           )}
 
           {/* Typing indicator */}
           {sending && (
-            <div className="flex w-fit items-center gap-1 rounded-2xl rounded-bl-sm bg-gray-100 px-4 py-3" aria-label="Assistant is typing">
+            <div className="flex w-fit items-center gap-1 rounded-2xl rounded-bl-md border border-gray-200 bg-white px-4 py-3 shadow-sm" aria-label="Assistant is typing">
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:0ms]" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:150ms]" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:300ms]" />
@@ -308,7 +512,7 @@ export default function StoreAssistant() {
 
           {/* Error bubble with retry */}
           {errorMsg && !sending && (
-            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-red-100 bg-red-50 px-3.5 py-2.5 text-[13px] leading-relaxed text-red-700">
+            <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-red-100 bg-red-50 px-3.5 py-2.5 text-[13px] leading-relaxed text-red-700">
               {errorMsg}
               {messages.length > 0 && messages[messages.length - 1].role === 'user' && (
                 <button
@@ -333,7 +537,7 @@ export default function StoreAssistant() {
             e.preventDefault()
             void send(input)
           }}
-          className="flex items-center gap-2 border-t border-gray-100 px-3 py-3"
+          className="flex items-center gap-2 border-t border-gray-100 bg-white px-3 py-3"
         >
           <input
             ref={inputRef}
@@ -342,7 +546,7 @@ export default function StoreAssistant() {
             onChange={(e) => setInput(e.target.value)}
             maxLength={MAX_CONTENT_CHARS}
             placeholder="Ask a question… 输入问题…"
-            className="min-w-0 flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-[13px] focus:border-gray-800 focus:outline-none"
+            className="min-w-0 flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2.5 text-[13px] transition-colors focus:border-gray-800 focus:bg-white focus:outline-none"
           />
           <button
             type="submit"
@@ -356,6 +560,20 @@ export default function StoreAssistant() {
           </button>
         </form>
       </div>
+
+      {/* Teaser entrance animation (scoped, no Tailwind config change needed) */}
+      <style jsx global>{`
+        @keyframes fadeSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </>
   )
 }

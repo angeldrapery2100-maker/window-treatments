@@ -4,6 +4,7 @@ import { getUserFromRequest } from '@/lib/auth'
 import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
 import { getCampaignFromRequest } from '@/lib/campaigns'
+import { extractQuickReplies } from '@/lib/quickReplies'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 // AI shopping assistant for the store — proxies chat turns to the Anthropic
@@ -135,7 +136,13 @@ STYLE — talk like a warm, experienced shop assistant, not a manual:
 - No walls of text, no markdown headers, no bullet lists unless the customer asks for a comparison. Plain conversational text.
 - The customer may be more honest with you than with a salesperson — gently learn their preferences as you chat (style/colors they like, budget comfort, rooms they care about) and NOTE these in project item notes and inquiry messages so our designer arrives already understanding them. Never interrogate; pick these up naturally.
 - PRICES: every number you say must come from a tool result (quote_store_product / upsert_room_item / get_hd_estimate) — look up the real pricing first, answer with a soft "大约/around" framing, and never guess even a rough figure from memory.
-- Never make up product names, promotions, or policies beyond what is described here.`
+- Never make up product names, promotions, or policies beyond what is described here.
+
+QUICK REPLIES — after EVERY reply, add ONE extra final line in exactly this format (it does not count toward your length limit):
+[quick] option one | option two | option three
+- 2-4 options, each under ~20 characters, in the customer's language. Each option is something the CUSTOMER would tap to say next: a direct answer to the question you just asked, or the most natural next step — never your own words, never a heading.
+- Examples: you asked which room → "[quick] 卧室 | 客厅 | 整个家都要"; you explained blackout lining → "[quick] 帮我算价格 | 免费布样怎么拿 | 再比较下罗马帘"; you asked inside or outside mount → "[quick] Inside mount | Outside mount | Not sure — help me".
+- This line is stripped from your text and rendered as tap buttons, so NEVER mention it or refer to "the options below" in your reply. Skip the line only when you just presented a booking link.`
 }
 
 function systemPromptFor(surface: Surface): string {
@@ -377,9 +384,21 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
+    // Split the tap-to-send quick replies off the visible text.
+    const { reply: cleanReply, suggestions } = extractQuickReplies(reply)
+    if (!cleanReply) {
+      // Degenerate case: the model sent ONLY a [quick] line. Treat as failure.
+      console.error('[assistant] Reply was empty after quick-reply extraction')
+      return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+    }
+
     const response = NextResponse.json({
       success: true,
-      data: { reply, ...(bookingLink ? { bookingLink } : {}) },
+      data: {
+        reply: cleanReply,
+        ...(suggestions.length ? { suggestions } : {}),
+        ...(bookingLink ? { bookingLink } : {}),
+      },
     })
     if (!cookieAnonId) {
       response.cookies.set(ANON_COOKIE, anonId, {
