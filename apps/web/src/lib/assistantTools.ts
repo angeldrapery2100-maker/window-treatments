@@ -593,11 +593,11 @@ export const ASSISTANT_TOOLS = [
   {
     name: 'get_product_specs',
     description:
-      "Get LIVE product specifications (no prices) from our catalog: 'shades' = Luma variant size limits, cassette styles, available options; 'motors' = motorization system components (motors, remotes with channel counts, accessories); 'drapery' = lining tiers and pleat styles; 'shutters' = materials, louver sizes, panel and depth rules. Use this for spec questions like 'how wide can a zebra shade go', 'what remotes are there', 'what louver sizes do shutters come in'. NEVER quote prices from this tool — it returns none; prices always come from the pricing tools.",
+      "Get LIVE product specifications (no prices) from our catalog: 'shades' = Luma variant size limits, cassette styles, available options; 'motors' = motorization system components (motors, remotes with channel counts, accessories); 'drapery' = lining tiers and pleat styles; 'shutters' = materials, louver sizes, panel and depth rules; 'hardware' = drapery rod/track thickness, finished-height formulas, mount rules. Use this for spec questions like 'how wide can a zebra shade go', 'what remotes are there', 'how high can the rod go', 'what louver sizes do shutters come in'. NEVER quote prices from this tool — it returns none; prices always come from the pricing tools.",
     input_schema: {
       type: 'object' as const,
       properties: {
-        area: { type: 'string', description: "'shades' | 'motors' | 'drapery' | 'shutters'" },
+        area: { type: 'string', description: "'shades' | 'motors' | 'drapery' | 'shutters' | 'hardware'" },
       },
       required: ['area'],
     },
@@ -868,7 +868,7 @@ export async function executeAssistantTool(
     }
     case 'get_product_specs': {
       const { getProductSpecs } = await import('@/lib/aappCatalogQA')
-      const area = ['shades', 'motors', 'drapery', 'shutters'].includes(input?.area) ? input.area : 'shades'
+      const area = ['shades', 'motors', 'drapery', 'shutters', 'hardware'].includes(input?.area) ? input.area : 'shades'
       return await getProductSpecs(area)
     }
     case 'identify_fabric_code': {

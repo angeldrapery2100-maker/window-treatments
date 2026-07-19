@@ -45,6 +45,14 @@ export async function POST(request: Request) {
     }
     const quantity = Math.min(Math.max(Math.trunc(Number(body?.quantity) || 1), 1), 20)
 
+    // Optional upgrades (all validated against known enums; unknown → ignored).
+    const STYLES = ['standard', 'bay_window', 'bi_fold', 'by_pass_closed', 'by_pass_open', 'corner_window', 'double_hung', 'skylight', 'specialty_shape']
+    const styleId = STYLES.includes(body?.style) ? body.style : 'standard'
+    const panelSpecialty = ['liberty_arch', 'raised_panel', 'solid_panel'].includes(body?.panel_specialty) ? body.panel_specialty : 'no'
+    const tiltControl = ['standard_tilt_rod', 'hidden_tilt_rod', 'invisible_tilt'].includes(body?.tilt) ? body.tilt : 'hidden_tilt_rod'
+    const buildoutType = body?.buildout === 'lt1' || body?.buildout === '1_3' ? body.buildout : 'none'
+    const customFinishType = body?.custom_finish === 'custom_paint' || body?.custom_finish === 'custom_stain' ? body.custom_finish : 'none'
+
     // Rates: AAPP sync snapshot → inline defaults (same chain as AAPP itself).
     let rates: CambridgeShutterRatesTable = CAMBRIDGE_SHUTTER_DEFAULT_RATES
     try {
@@ -65,8 +73,14 @@ export async function POST(request: Request) {
         colorType,
         widthIn,
         heightIn,
-        styleId: 'standard',
-        tiltControl: 'hidden_tilt_rod', // AAPP quote UI default
+        styleId,
+        panelSpecialty: panelSpecialty as any,
+        tiltControl: tiltControl as any,
+        buildoutType: buildoutType as any,
+        dividerRailEnabled: body?.divider_rail === true,
+        knobEnabled: body?.knob === true,
+        lockEnabled: body?.lock === true,
+        customFinishType: customFinishType as any,
         quantity,
       },
       rates

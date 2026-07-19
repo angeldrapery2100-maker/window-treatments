@@ -440,14 +440,12 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    // Cross-device conversation persistence for signed-in customers (P1-6):
-    // store the capped transcript incl. this reply, best-effort.
-    if (userId) {
-      void saveChatHistory(userId, [
-        ...messages,
-        { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
-      ])
-    }
+    // Conversation persistence (P1-6 signed-in cross-device + A3 guest by anon
+    // cookie): store the capped transcript incl. this reply, best-effort.
+    void saveChatHistory({ userId, anonId }, [
+      ...messages,
+      { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
+    ])
 
     const response = NextResponse.json({
       success: true,
@@ -473,13 +471,15 @@ export async function POST(request: Request) {
   }
 }
 
-// GET → stored conversation for the signed-in customer (empty for guests).
-// The widget calls this on mount so a conversation continues across devices.
+// GET → stored conversation. Signed-in customers get their cross-device
+// history; guests get the transcript saved against their ad_anon cookie
+// (same browser). The widget calls this on mount to resume a conversation.
 export async function GET(request: Request) {
   try {
     const userId = getUserFromRequest(request)?.id ?? null
-    if (!userId) return NextResponse.json({ success: true, data: { messages: [] } })
-    const messages = await loadChatHistory(userId)
+    const anonId = getAnonIdFromRequest(request)
+    if (!userId && !anonId) return NextResponse.json({ success: true, data: { messages: [] } })
+    const messages = await loadChatHistory({ userId, anonId })
     return NextResponse.json({ success: true, data: { messages } })
   } catch {
     return NextResponse.json({ success: true, data: { messages: [] } })

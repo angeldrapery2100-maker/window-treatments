@@ -54,6 +54,13 @@ interface Draft {
   hasTrim: boolean | null
   mount: '' | 'inside' | 'inside_z' | 'outside'
   material: 'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood_paint' | 'basswood_stain'
+  // shutter options (optional price movers)
+  shStyle: string
+  shDivider: boolean
+  shKnob: boolean
+  shLock: boolean
+  shCustomFinish: '' | 'custom_paint' | 'custom_stain'
+  shQty: string
   // dims (inches) — A=left, B=right, C=top, D=bottom
   w: string
   h: string
@@ -75,6 +82,12 @@ const EMPTY_DRAFT: Draft = {
   hasTrim: null,
   mount: '',
   material: 'poly_vinyl',
+  shStyle: 'standard',
+  shDivider: false,
+  shKnob: false,
+  shLock: false,
+  shCustomFinish: '',
+  shQty: '1',
   w: '',
   h: '',
   A: '',
@@ -389,9 +402,12 @@ export default function MeasureWizardClient() {
     return { mode: 'outside', w: Math.round((w + 5) * 100) / 100, h: Math.round((h + 6) * 100) / 100 }
   }, [draft, useTrimSize])
 
-  const [shutterPrice, setShutterPrice] = useState<{ price: number; install_fee: number; billed_width_in: number; billed_height_in: number } | null>(null)
+  const [shutterPrice, setShutterPrice] = useState<{ price: number; install_fee: number; billed_width_in: number; billed_height_in: number; quantity: number } | null>(null)
   const [shutterLoading, setShutterLoading] = useState(false)
-  useEffect(() => setShutterPrice(null), [draft.w, draft.h, draft.material, draft.mount])
+  useEffect(() => setShutterPrice(null), [
+    draft.w, draft.h, draft.material, draft.mount,
+    draft.shStyle, draft.shDivider, draft.shKnob, draft.shLock, draft.shCustomFinish, draft.shQty,
+  ])
 
   const quoteShutter = async () => {
     const w = num(draft.w)
@@ -405,9 +421,14 @@ export default function MeasureWizardClient() {
         body: JSON.stringify({
           material: draft.material.startsWith('basswood') ? 'basswood' : draft.material,
           color_type: draft.material === 'basswood_stain' ? 'stain' : 'paint',
+          style: draft.shStyle,
+          divider_rail: draft.shDivider,
+          knob: draft.shKnob,
+          lock: draft.shLock,
+          custom_finish: draft.shCustomFinish || undefined,
+          quantity: Math.min(Math.max(parseInt(draft.shQty) || 1, 1), 20),
           width_in: w,
           height_in: h,
-          quantity: 1,
         }),
       })
       const json = await res.json().catch(() => null)
@@ -438,7 +459,17 @@ export default function MeasureWizardClient() {
             depthLabel: depthLabelFor(draft.product as Product, draft.depthChoice),
             hasTrim: askTrim ? draft.hasTrim : false,
             mount: draft.mount,
-            ...(draft.product === 'shutters' ? { material: draft.material } : {}),
+            ...(draft.product === 'shutters'
+              ? {
+                  material: draft.material,
+                  shStyle: draft.shStyle,
+                  shDivider: draft.shDivider,
+                  shKnob: draft.shKnob,
+                  shLock: draft.shLock,
+                  shCustomFinish: draft.shCustomFinish,
+                  shQty: Math.min(Math.max(parseInt(draft.shQty) || 1, 1), 20),
+                }
+              : {}),
           }
     const dims: Record<string, unknown> = {
       widthIn: num(draft.w),
@@ -455,7 +486,7 @@ export default function MeasureWizardClient() {
         ? { type: 'drapery_recommendation', recommendedWidthIn: draperyRec?.recommendedFinishedWidthIn, recommendedHeightIn: draperyRec?.recommendedFinishedHeightIn }
         : draft.product === 'shades'
           ? { type: 'shade_order_size', mode: shadeResult?.mode, orderWidthIn: shadeResult?.w, orderHeightIn: shadeResult?.h }
-          : { type: 'shutter_reference_price', price: shutterPrice?.price, installFee: shutterPrice?.install_fee, billedWidthIn: shutterPrice?.billed_width_in, billedHeightIn: shutterPrice?.billed_height_in, material: draft.material }
+          : { type: 'shutter_reference_price', price: shutterPrice?.price, installFee: shutterPrice?.install_fee, billedWidthIn: shutterPrice?.billed_width_in, billedHeightIn: shutterPrice?.billed_height_in, quantity: shutterPrice?.quantity ?? 1, material: draft.material, style: draft.shStyle }
     try {
       const res = await fetch('/api/store/measure/windows', {
         method: 'POST',
@@ -492,6 +523,12 @@ export default function MeasureWizardClient() {
       hasTrim: typeof c.hasTrim === 'boolean' ? c.hasTrim : null,
       mount: c.mount || '',
       material: c.material || 'poly_vinyl',
+      shStyle: c.shStyle || 'standard',
+      shDivider: !!c.shDivider,
+      shKnob: !!c.shKnob,
+      shLock: !!c.shLock,
+      shCustomFinish: ['custom_paint', 'custom_stain'].includes(c.shCustomFinish) ? c.shCustomFinish : '',
+      shQty: c.shQty != null ? String(c.shQty) : '1',
       w: d.widthIn != null ? String(d.widthIn) : '',
       h: d.heightIn != null ? String(d.heightIn) : '',
       A: d.A_leftIn != null ? String(d.A_leftIn) : '',
@@ -502,7 +539,7 @@ export default function MeasureWizardClient() {
     })
     setShutterPrice(
       wdw.product === 'shutters' && wdw.result?.price
-        ? { price: wdw.result.price, install_fee: wdw.result.installFee, billed_width_in: wdw.result.billedWidthIn, billed_height_in: wdw.result.billedHeightIn }
+        ? { price: wdw.result.price, install_fee: wdw.result.installFee, billed_width_in: wdw.result.billedWidthIn, billed_height_in: wdw.result.billedHeightIn, quantity: wdw.result.quantity ?? 1 }
         : null
     )
     setView('edit')
@@ -737,17 +774,64 @@ export default function MeasureWizardClient() {
         </div>
       )}
 
-      {/* Shutter material */}
+      {/* Shutter material + options */}
       {draft.product === 'shutters' && (
-        <div className="mt-8 max-w-sm">
-          <label className={label}>Material *</label>
-          <select className={inputCls} value={draft.material} onChange={(e) => set('material', e.target.value as Draft['material'])}>
-            <option value="poly_vinyl">Poly-Vinyl (aluminum reinforced)</option>
-            <option value="hardwood">Hardwood</option>
-            <option value="paulownia">Grained Paulownia</option>
-            <option value="basswood_paint">Basswood — painted</option>
-            <option value="basswood_stain">Basswood — stained</option>
-          </select>
+        <div className="mt-8 space-y-5">
+          <div className="grid gap-5 md:grid-cols-2">
+            <div>
+              <label className={label}>Material *</label>
+              <select className={inputCls} value={draft.material} onChange={(e) => set('material', e.target.value as Draft['material'])}>
+                <option value="poly_vinyl">Poly-Vinyl (aluminum reinforced)</option>
+                <option value="hardwood">Hardwood</option>
+                <option value="paulownia">Grained Paulownia</option>
+                <option value="basswood_paint">Basswood — painted</option>
+                <option value="basswood_stain">Basswood — stained</option>
+              </select>
+            </div>
+            <div>
+              <label className={label}>Window style</label>
+              <select className={inputCls} value={draft.shStyle} onChange={(e) => set('shStyle', e.target.value)}>
+                <option value="standard">Standard</option>
+                <option value="bay_window">Bay window</option>
+                <option value="corner_window">Corner window</option>
+                <option value="double_hung">Double hung</option>
+                <option value="bi_fold">Bi-fold</option>
+                <option value="by_pass_closed">By-pass</option>
+                <option value="skylight">Skylight</option>
+                <option value="specialty_shape">Specialty shape</option>
+              </select>
+            </div>
+            <div>
+              <label className={label}>How many (same size)</label>
+              <input className={inputCls} type="number" inputMode="numeric" min={1} max={20} value={draft.shQty} onChange={(e) => set('shQty', e.target.value)} />
+            </div>
+            <div>
+              <label className={label}>Custom finish</label>
+              <select className={inputCls} value={draft.shCustomFinish} onChange={(e) => set('shCustomFinish', e.target.value as Draft['shCustomFinish'])}>
+                <option value="">None</option>
+                <option value="custom_paint">Custom paint color</option>
+                <option value="custom_stain">Custom stain color</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <span className={label}>Add-ons (optional)</span>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" className={pillBtn(draft.shDivider)} onClick={() => set('shDivider', !draft.shDivider)}>
+                Divider rail
+              </button>
+              <button type="button" className={pillBtn(draft.shKnob)} onClick={() => set('shKnob', !draft.shKnob)}>
+                Knob
+              </button>
+              <button type="button" className={pillBtn(draft.shLock)} onClick={() => set('shLock', !draft.shLock)}>
+                Lock
+              </button>
+            </div>
+            <p className="mt-2 text-[12px] leading-relaxed text-gray-400">
+              Other details (tilt style, buildout, specialty cut-outs) are finalized at your free in-home
+              measure — the price here is a reference.
+            </p>
+          </div>
         </div>
       )}
 
@@ -909,11 +993,17 @@ export default function MeasureWizardClient() {
             {draft.product === 'shutters' &&
               (shutterPrice ? (
                 <>
-                  <p className="text-3xl font-light tracking-tight md:text-4xl">${shutterPrice.price.toLocaleString()}</p>
+                  <p className="text-3xl font-light tracking-tight md:text-4xl">
+                    ${shutterPrice.price.toLocaleString()}
+                    {shutterPrice.quantity > 1 && (
+                      <span className="ml-2 text-base text-white/50">for {shutterPrice.quantity} shutters</span>
+                    )}
+                  </p>
                   <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
-                    Based on {shutterPrice.billed_width_in}″ × {shutterPrice.billed_height_in}″ finished size,
-                    standard style. Installation adds ${shutterPrice.install_fee.toLocaleString()}. Reference
-                    price only — the final quote comes from the free in-home measurement.
+                    Based on {shutterPrice.billed_width_in}″ × {shutterPrice.billed_height_in}″ finished size
+                    {draft.shStyle !== 'standard' ? ` (${draft.shStyle.replace(/_/g, ' ')})` : ''}. Installation adds $
+                    {shutterPrice.install_fee.toLocaleString()}. Reference price only — the final quote comes from
+                    the free in-home measurement.
                   </p>
                 </>
               ) : (

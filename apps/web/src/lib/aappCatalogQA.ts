@@ -31,9 +31,27 @@ export function stripPriceFields(value: any, depth = 0): any {
 }
 
 // ── Product specs from the synced library snapshot ──────────────────────────
-export type SpecArea = 'shades' | 'motors' | 'drapery' | 'shutters'
+export type SpecArea = 'shades' | 'motors' | 'drapery' | 'shutters' | 'hardware'
 
 export async function getProductSpecs(area: SpecArea): Promise<any> {
+  if (area === 'hardware') {
+    // Static drapery rod/track specs + finished-height formulas (Eddie-verified
+    // business facts). The synced snapshot doesn't carry rod hardware specs, so
+    // these answer "how high can the rod go / where does it mount" questions
+    // without needing the internal library_query action.
+    return {
+      track_thickness_in: { motorized_ceiling_track: 1.25, standard_ceiling_track: 1.0 },
+      finished_height_rules: {
+        motorized_ceiling_track: 'ceiling height − 1.25" − floor clearance (0.5–1")',
+        ceiling_track: 'ceiling height − 1" − floor clearance (0.5–1")',
+        wall_mounted_rod: 'ceiling height − 4.5" (no separate floor clearance)',
+        high_window_gap: 'If the gap from window-top to ceiling is over 30", the rod can mount at the midpoint instead of the ceiling.',
+      },
+      width_rule: 'Rod/track width = window width + about 10" or more per side of stacking room, scaling up for wider windows.',
+      operation: ['cordless', 'corded', 'motorized (Somfy / Lutron on request)'],
+      note: 'Measure ceiling height at left, center and right (ceilings are uneven) and use the smallest. These are planning formulas — the designer confirms exact rod placement at the free in-home measure. Motorized-track and premium-hardware pricing is quoted at the consultation.',
+    }
+  }
   if (area === 'shutters') {
     // Static business facts (AAPP catalog constants, recon 2026-07-19).
     return {

@@ -1,10 +1,16 @@
-// Server-side chat history for LOGGED-IN customers (GPT-porting P1-6).
+// Server-side chat history for the store assistant (GPT-porting P1-6 + A3).
 //
-// Guests keep the existing sessionStorage-only behavior. When a customer is
-// signed in, the assistant route persists the capped transcript after every
-// reply, and the widget loads it on mount — so a conversation continues
-// across devices and days, like a ChatGPT thread. Images are never persisted
-// (data URLs are heavy); a photo turn is stored with its text (or '[photo]').
+// Persisted per owner so a conversation continues across page loads, tab
+// closes, and (for signed-in customers) across devices:
+//   signed-in customer → owner key 'u:<userId>'  (follows the account, any device)
+//   guest              → owner key 'a:<anonId>'   (same browser, survives
+//                        sessionStorage loss; not cross-device by nature)
+// Images are never persisted (data URLs are heavy); a photo turn is stored as
+// its text, or '[photo]' when it was image-only.
+//
+// Table is keyed by a generic text owner_key (not the old uuid PK) so both
+// identities fit one table. Best-effort throughout — history is a convenience
+// and must never break the chat.
 
 import { query, queryOne } from '@/lib/db'
 
@@ -13,8 +19,8 @@ const MAX_MESSAGES = 30
 let _ensured = false
 async function ensureTable(): Promise<void> {
   if (_ensured) return
-  await query(`CREATE TABLE IF NOT EXISTS assistant_chat_history (
-    user_id uuid PRIMARY KEY,
+  await query(`CREATE TABLE IF NOT EXISTS assistant_chat (
+    owner_key text PRIMARY KEY,
     messages jsonb NOT NULL DEFAULT '[]',
     updated_at timestamptz DEFAULT now()
   )`)
@@ -26,6 +32,18 @@ export interface StoredChatMessage {
   content: string
   bookingLink?: string
   suggestions?: string[]
+}
+
+export interface ChatOwner {
+  userId?: string | null
+  anonId?: string | null
+}
+
+// Signed-in customers key by user (cross-device); guests key by anon cookie.
+function ownerKey(owner: ChatOwner): string | null {
+  if (owner.userId) return 'u:' + owner.userId
+  if (owner.anonId) return 'a:' + owner.anonId
+  return null
 }
 
 function sanitize(messages: any[]): StoredChatMessage[] {
@@ -43,21 +61,29 @@ function sanitize(messages: any[]): StoredChatMessage[] {
     }))
 }
 
-export async function loadChatHistory(userId: string): Promise<StoredChatMessage[]> {
-  await ensureTable()
-  const row = await queryOne<{ messages: any }>(`SELECT messages FROM assistant_chat_history WHERE user_id = $1`, [userId])
-  return sanitize(row?.messages || [])
+export async function loadChatHistory(owner: ChatOwner): Promise<StoredChatMessage[]> {
+  const key = ownerKey(owner)
+  if (!key) return []
+  try {
+    await ensureTable()
+    const row = await queryOne<{ messages: any }>(`SELECT messages FROM assistant_chat WHERE owner_key = $1`, [key])
+    return sanitize(row?.messages || [])
+  } catch {
+    return []
+  }
 }
 
 /** Best-effort save — never throws, never blocks the reply. */
-export async function saveChatHistory(userId: string, messages: any[]): Promise<void> {
+export async function saveChatHistory(owner: ChatOwner, messages: any[]): Promise<void> {
+  const key = ownerKey(owner)
+  if (!key) return
   try {
     await ensureTable()
     await query(
-      `INSERT INTO assistant_chat_history (user_id, messages, updated_at)
+      `INSERT INTO assistant_chat (owner_key, messages, updated_at)
        VALUES ($1, $2::jsonb, now())
-       ON CONFLICT (user_id) DO UPDATE SET messages = $2::jsonb, updated_at = now()`,
-      [userId, JSON.stringify(sanitize(messages))]
+       ON CONFLICT (owner_key) DO UPDATE SET messages = $2::jsonb, updated_at = now()`,
+      [key, JSON.stringify(sanitize(messages))]
     )
   } catch {
     /* history is a convenience — never break the chat over it */
