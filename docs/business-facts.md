@@ -11,7 +11,8 @@
 
 ## 联系方式与营业
 - 展厅/办公室:8831 E Las Tunas Dr, Temple City, CA 91780(街边停车 + 店铺后方小停车场,店前右转进入;不保证车位)。
-- 电话:626-451-9841(客服/网站线);办公室 626-703-2929。
+- 客户联系电话(对外统一只给这一个):626-451-9841。
+- 626-703-2929 是 Eddie 的个人工作电话 —— 任何 AI 都不要把它提供给客户。
 - Email:admin@angel-drapery.com;支持 LINE 与微信;中英双语服务。
 - 营业时间:周一至周五 9am–5pm,周六 10am–3pm,周日休息。
 - 一律预约制(BY APPOINTMENT ONLY):展厅参观与上门服务都需预约,不接受 walk-in。
@@ -30,6 +31,7 @@
 - Hunter Douglas:Silhouette、Nantucket、Applause、Vignette、Designer Roller/Screen、Skyline、Aria、Alustra、Palm Beach shutters 等。
 - Plantation shutters、woven wood;电动/智能:Hunter Douglas PowerView、Somfy、Lutron(Palladiom、Triathlon),兼容 Matter、Apple HomeKit、Google Home、Home Assistant。
 - 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。
+- Sundance Window Covering:与我们合作已有几十年的工厂,厂址就在洛杉矶 Arcadia(本地制造,交期与售后都近);质量非常可靠,价位属于中等 —— 想要可靠品质、预算又不到 Hunter Douglas 级别时,Sundance 是我们主动推荐的选择(具体价格仍以免费上门测量后的正式报价为准)。
 
 ## 线上渠道
 - 官网 angel-drapery.com:展示全线产品(含 Hunter Douglas / Lutron)。
@@ -44,7 +46,8 @@
 ## 报价口径(所有 AI 必须遵守)
 - 在线商店产品:价格来自真实报价引擎(商品页配置器 / AI 工具),可给准确数字。
 - Hunter Douglas:仅可给"参考价区间"(标价口径、单幅、不含测量安装),必须说明最终价格以免费上门测量后的正式报价为准;电动不全时说明电机部分人工另报。
-- Sundance / Lutron / JC:一律不在线报价,引导免费咨询。
+- Sundance:可以主动推荐并介绍品牌背景(合作几十年的 Arcadia 本地工厂、质量非常可靠、价位中等),可用"中等价位/mid-range"这类定性说法,但不给任何具体数字,报价引导免费咨询。
+- Lutron / JC:一律不在线报价,引导免费咨询。
 - 交货期、保修、安装日期:因产品和项目而异,不给固定承诺,由办公室/销售确认。
 
 ## 常用知识口径

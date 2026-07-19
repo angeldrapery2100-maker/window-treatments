@@ -1,5 +1,11 @@
 # Sundance 产品知识库(卷帘 A-11/25 · 蜂巢帘 I-5/25 · 横百叶 J-12/25 · 垂直帘 K-8/24)
 
+## 品牌背景(向客户介绍 Sundance 时使用)
+- Sundance Window Covering 是与 Angel Drapery 合作了几十年的窗饰工厂,工厂就在洛杉矶 Arcadia——本地制造,交期快、售后近。
+- 质量非常可靠,是我们长期验证过、放心主动推荐的品牌。
+- 价位属于中等(mid-range):想要可靠品质、预算又不到 Hunter Douglas 级别的客户,Sundance 通常是最合适的选择。
+- 价格口径:可以说"中等价位/mid-range"这类定性描述,但不给任何具体数字——正式报价来自免费上门测量(free in-home consultation)。
+
 
 ## 卷一 · Roller Shades(A 册,2025-11-01 生效,34 页)
 
