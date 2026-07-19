@@ -39,6 +39,10 @@ interface ChatMessage {
   // Tap-to-send quick replies for this assistant turn (server-generated).
   // Only rendered on the latest assistant message.
   suggestions?: string[]
+  // Compressed data-URL photos attached to a user turn. Displayed as
+  // thumbnails; only ever POSTed for the LATEST turn (history turns send a
+  // "[photo]" placeholder instead — see send()).
+  images?: string[]
 }
 
 const STORAGE_KEY = 'store_assistant_chat'
@@ -47,6 +51,17 @@ const OPENED_KEY = 'store_assistant_opened'
 const MAX_MESSAGES = 30
 const MAX_CONTENT_CHARS = 2000
 const TEASER_DELAY_MS = 4000
+
+// Photo attachments (② 图片上传): compressed in-browser before sending.
+const MAX_IMAGES = 3
+const IMAGE_MAX_SIDE = 1280
+const IMAGE_JPEG_QUALITY = 0.8
+// Keep the whole request comfortably under Vercel's ~4.5MB body limit; must
+// stay in sync with MAX_TOTAL_IMAGE_B64_CHARS in lib/chatImages.ts.
+const MAX_TOTAL_IMAGE_CHARS = 3_000_000
+// Placeholder sent for photo-only turns in HISTORY (photos themselves are only
+// POSTed for the latest turn; the assistant's prior reply is the context).
+const PHOTO_PLACEHOLDER = '[photo]'
 
 // Main marketing site: steer toward understanding the company and finding
 // the right product (funnels to a local in-home consultation).
@@ -143,6 +158,42 @@ function renderRich(text: string): ReactNode[] {
   return nodes
 }
 
+// Downscale + re-encode a photo in the browser so uploads stay small (a phone
+// photo shrinks from ~4MB to ~200KB). Throws if the browser can't decode the
+// file (e.g. HEIC on some platforms) — caller shows a friendly format hint.
+async function compressImage(file: File): Promise<string> {
+  const url = URL.createObjectURL(file)
+  try {
+    const img = new Image()
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve()
+      img.onerror = () => reject(new Error('decode_failed'))
+      img.src = url
+    })
+    const w = img.naturalWidth
+    const h = img.naturalHeight
+    if (!w || !h) throw new Error('decode_failed')
+    const scale = Math.min(1, IMAGE_MAX_SIDE / Math.max(w, h))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(w * scale))
+    canvas.height = Math.max(1, Math.round(h * scale))
+    const ctx = canvas.getContext('2d')
+    if (!ctx) throw new Error('no_canvas')
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    return canvas.toDataURL('image/jpeg', IMAGE_JPEG_QUALITY)
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
+function sanitizeImages(v: unknown): string[] | undefined {
+  if (!Array.isArray(v)) return undefined
+  const out = v
+    .filter((s): s is string => typeof s === 'string' && s.startsWith('data:image/'))
+    .slice(0, MAX_IMAGES)
+  return out.length ? out : undefined
+}
+
 function sanitizeSuggestions(v: unknown): string[] | undefined {
   if (!Array.isArray(v)) return undefined
   const out = [...new Set(v.filter((s): s is string => typeof s === 'string' && !!s.trim()))].slice(0, 4)
@@ -160,7 +211,11 @@ function loadStored(): ChatMessage[] {
         (m): m is ChatMessage =>
           m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'
       )
-      .map((m) => ({ ...m, suggestions: sanitizeSuggestions((m as ChatMessage).suggestions) }))
+      .map((m) => ({
+        ...m,
+        suggestions: sanitizeSuggestions((m as ChatMessage).suggestions),
+        images: sanitizeImages((m as ChatMessage).images),
+      }))
   } catch {
     return []
   }
@@ -170,7 +225,16 @@ function saveStored(messages: ChatMessage[]) {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
   } catch {
-    /* quota / private mode — chat just won't persist */
+    // Quota (photos are heavy) or private mode. Retry without the image data
+    // so at least the text conversation survives navigation.
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(messages.map(({ images: _images, ...rest }) => rest))
+      )
+    } catch {
+      /* still no luck — chat just won't persist */
+    }
   }
 }
 
@@ -197,11 +261,14 @@ export default function StoreAssistant() {
   const [teaserVisible, setTeaserVisible] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
+  const [pendingImages, setPendingImages] = useState<string[]>([])
+  const [attaching, setAttaching] = useState(false)
   const [sending, setSending] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [hydrated, setHydrated] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Hydrate persisted conversation once on mount (client only).
   useEffect(() => {
@@ -266,25 +333,41 @@ export default function StoreAssistant() {
   const surface: 'main' | 'store' = onStore ? 'store' : 'main'
 
   const send = useCallback(
-    async (text: string, baseHistory?: ChatMessage[]) => {
+    async (text: string, baseHistory?: ChatMessage[], images?: string[]) => {
       const content = text.trim().slice(0, MAX_CONTENT_CHARS)
-      if (!content || sending) return
+      const imgs = (images ?? []).slice(0, MAX_IMAGES)
+      if ((!content && imgs.length === 0) || sending) return
       setErrorMsg('')
 
       // Cap history client-side: keep the most recent turns under the server limit.
       const base = baseHistory ?? messages
-      const next = [...base, { role: 'user' as const, content }].slice(-(MAX_MESSAGES - 1))
+      const next = [
+        ...base,
+        { role: 'user' as const, content, ...(imgs.length ? { images: imgs } : {}) },
+      ].slice(-(MAX_MESSAGES - 1))
       setMessages(next)
       saveStored(next)
       setInput('')
+      setPendingImages([])
       setSending(true)
 
       try {
         const res = await fetch('/api/store/assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          // Strip client-only fields — the API expects bare {role, content}.
-          body: JSON.stringify({ messages: next.map(({ role, content: c }) => ({ role, content: c })), surface }),
+          // Photos are only uploaded for the LATEST turn; older photo turns
+          // become a "[photo]" placeholder (the assistant's earlier reply
+          // about them is the context). Other client-only fields are stripped
+          // — the API expects bare {role, content} plus optional last-turn
+          // images.
+          body: JSON.stringify({
+            messages: next.map(({ role, content: c, images: im }, idx) =>
+              idx === next.length - 1 && im?.length
+                ? { role, content: c, images: im }
+                : { role, content: c || PHOTO_PLACEHOLDER }
+            ),
+            surface,
+          }),
         })
         const json = await res.json().catch(() => null)
 
@@ -322,6 +405,44 @@ export default function StoreAssistant() {
       }
     },
     [messages, sending, surface]
+  )
+
+  // Compress and queue photos picked from the file input.
+  const handleFiles = useCallback(
+    async (files: FileList | null) => {
+      if (!files || files.length === 0) return
+      setErrorMsg('')
+      setAttaching(true)
+      try {
+        const picked = Array.from(files).slice(0, MAX_IMAGES)
+        const added: string[] = []
+        let failed = false
+        for (const f of picked) {
+          if (pendingImages.length + added.length >= MAX_IMAGES) break
+          if (!f.type.startsWith('image/')) {
+            failed = true
+            continue
+          }
+          try {
+            added.push(await compressImage(f))
+          } catch {
+            failed = true
+          }
+        }
+        const total = [...pendingImages, ...added].reduce((n, s) => n + s.length, 0)
+        if (total > MAX_TOTAL_IMAGE_CHARS) {
+          setErrorMsg('Photos are too large altogether — please send fewer at once. 照片总体积太大，请分开发送。')
+          return
+        }
+        if (added.length) setPendingImages((prev) => [...prev, ...added].slice(0, MAX_IMAGES))
+        if (failed) {
+          setErrorMsg('Some photos could not be read — please use JPG or PNG. 有照片无法读取，请使用 JPG 或 PNG 格式。')
+        }
+      } finally {
+        setAttaching(false)
+      }
+    },
+    [pendingImages]
   )
 
   const showWelcome = messages.length === 0
@@ -467,10 +588,25 @@ export default function StoreAssistant() {
 
           {messages.map((m, i) =>
             m.role === 'user' ? (
-              <div key={i} className="flex justify-end">
-                <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-gradient-to-r from-[#2f2f2f] to-[#454545] px-3.5 py-2.5 text-[13px] leading-relaxed text-white shadow-sm">
-                  {m.content}
-                </div>
+              <div key={i} className="flex flex-col items-end gap-1.5">
+                {!!m.images?.length && (
+                  <div className="flex max-w-[85%] flex-wrap justify-end gap-1.5">
+                    {m.images.map((src, j) => (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        key={j}
+                        src={src}
+                        alt="Attached photo"
+                        className="max-h-40 max-w-[180px] rounded-xl border border-gray-200 object-cover shadow-sm"
+                      />
+                    ))}
+                  </div>
+                )}
+                {!!m.content && (
+                  <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-gradient-to-r from-[#2f2f2f] to-[#454545] px-3.5 py-2.5 text-[13px] leading-relaxed text-white shadow-sm">
+                    {m.content}
+                  </div>
+                )}
               </div>
             ) : (
               <div key={i} className="max-w-[85%] space-y-2">
@@ -520,7 +656,7 @@ export default function StoreAssistant() {
                     // Retry the last user turn without duplicating it: re-send
                     // against the history with that turn popped off.
                     const last = messages[messages.length - 1]
-                    void send(last.content, messages.slice(0, -1))
+                    void send(last.content, messages.slice(0, -1), last.images)
                   }}
                   className="mt-1.5 block text-[12px] font-medium underline underline-offset-2 hover:text-red-900"
                 >
@@ -531,14 +667,75 @@ export default function StoreAssistant() {
           )}
         </div>
 
+        {/* Pending photo previews */}
+        {pendingImages.length > 0 && (
+          <div className="flex items-center gap-2 border-t border-gray-100 bg-white px-3 pt-2.5">
+            {pendingImages.map((src, i) => (
+              <div key={i} className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`Photo ${i + 1} to send`}
+                  className="h-14 w-14 rounded-lg border border-gray-200 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPendingImages((prev) => prev.filter((_, j) => j !== i))}
+                  aria-label={`Remove photo ${i + 1}`}
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-800 text-white shadow hover:bg-black"
+                >
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+            <span className="text-[11px] text-gray-400">
+              {pendingImages.length}/{MAX_IMAGES}
+            </span>
+          </div>
+        )}
+
         {/* Input */}
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            void send(input)
+            void send(input, undefined, pendingImages)
           }}
-          className="flex items-center gap-2 border-t border-gray-100 bg-white px-3 py-3"
+          className={`flex items-center gap-2 bg-white px-3 py-3 ${pendingImages.length ? '' : 'border-t border-gray-100'}`}
         >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            aria-hidden="true"
+            tabIndex={-1}
+            onChange={(e) => {
+              void handleFiles(e.target.files)
+              e.target.value = '' // allow re-picking the same file
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={sending || attaching || pendingImages.length >= MAX_IMAGES}
+            aria-label="Attach a photo of your window / 上传窗户照片"
+            title="Attach a photo of your window / 上传窗户照片"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 disabled:opacity-40"
+          >
+            {attaching ? (
+              <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M21 12a9 9 0 1 1-6.2-8.56" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+            )}
+          </button>
           <input
             ref={inputRef}
             type="text"
@@ -550,7 +747,7 @@ export default function StoreAssistant() {
           />
           <button
             type="submit"
-            disabled={sending || !input.trim()}
+            disabled={sending || attaching || (!input.trim() && pendingImages.length === 0)}
             aria-label="Send message"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#3d3d3d] text-white transition-colors hover:bg-gray-700 disabled:opacity-40"
           >

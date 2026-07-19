@@ -5,6 +5,7 @@ import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
 import { getCampaignFromRequest } from '@/lib/campaigns'
 import { extractQuickReplies } from '@/lib/quickReplies'
+import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 // AI shopping assistant for the store — proxies chat turns to the Anthropic
@@ -137,6 +138,13 @@ STYLE — talk like a warm, experienced shop assistant, not a manual:
 - The customer may be more honest with you than with a salesperson — gently learn their preferences as you chat (style/colors they like, budget comfort, rooms they care about) and NOTE these in project item notes and inquiry messages so our designer arrives already understanding them. Never interrogate; pick these up naturally.
 - PRICES: every number you say must come from a tool result (quote_store_product / upsert_room_item / get_hd_estimate) — look up the real pricing first, answer with a soft "大约/around" framing, and never guess even a rough figure from memory.
 - Never make up product names, promotions, or policies beyond what is described here.
+
+PHOTOS — customers can attach photos of their windows in this chat (you only ever see the photos from their latest message; earlier photos appear as "[photo]" — rely on what you already said about them).
+- When a photo arrives, first briefly acknowledge what you see that matters (window shape, frame depth, existing treatment, room style) in one short sentence, then give ONE useful next step — a product suggestion with its link, an inside/outside-mount observation, or the next measuring question.
+- NEVER read measurements off a photo or guess sizes from it. Sizes always come from the customer measuring with a tape (YOUR JOBS #1) — say so if they ask you to estimate from the photo.
+- Photos change nothing about pricing rules: still no invented numbers, ever.
+- If a photo is too blurry/dark to help, or isn't a window, say so kindly and ask for another.
+- A great photo-based reply often ends by offering the free in-home consultation (rule 9) for anything the photo can't settle.
 
 QUICK REPLIES — after EVERY reply, add ONE extra final line in exactly this format (it does not count toward your length limit):
 [quick] option one | option two | option three
@@ -272,13 +280,29 @@ export async function POST(request: Request) {
       return bad('Conversation too long. Please start a new chat.')
     }
 
+    // Photos ride ONLY on the last (current) user turn — the client strips
+    // them from history turns (older photo-only turns arrive as "[photo]").
+    // Validate them up front so the message loop below can allow an empty
+    // text on a photo-carrying final turn.
+    let lastImages: ParsedChatImage[] = []
+    {
+      const lastRaw = raw[raw.length - 1]
+      if (lastRaw && lastRaw.images !== undefined) {
+        const v = validateChatImages(lastRaw.images)
+        if ('error' in v) return bad(v.error)
+        lastImages = v.images
+      }
+    }
+
     const messages: ChatMessage[] = []
-    for (const m of raw) {
+    for (let i = 0; i < raw.length; i++) {
+      const m = raw[i]
       if (!m || (m.role !== 'user' && m.role !== 'assistant') || typeof m.content !== 'string') {
         return bad('Each message needs a role (user/assistant) and string content.')
       }
       const content = m.content.trim()
-      if (!content) return bad('Empty message content.')
+      const isLastWithImages = i === raw.length - 1 && lastImages.length > 0
+      if (!content && !isLastWithImages) return bad('Empty message content.')
       if (content.length > MAX_CONTENT_CHARS) {
         return bad('Message too long (max 2000 characters).')
       }
@@ -315,7 +339,19 @@ export async function POST(request: Request) {
     // forge a "verified" result — and submit_service_request re-verifies anyway.
     const model = process.env.ASSISTANT_MODEL || 'claude-haiku-4-5'
     const system = buildSystemPrompt(messages, surface)
-    const apiMessages: any[] = messages.map(m => ({ role: m.role, content: m.content }))
+    // Final turn with photos becomes an image+text content-block array; every
+    // other turn stays plain text.
+    const apiMessages: any[] = messages.map((m, i) => {
+      if (i === messages.length - 1 && lastImages.length > 0) {
+        const blocks: any[] = lastImages.map(img => ({
+          type: 'image',
+          source: { type: 'base64', media_type: img.mediaType, data: img.data },
+        }))
+        if (m.content) blocks.push({ type: 'text', text: m.content })
+        return { role: 'user', content: blocks }
+      }
+      return { role: m.role, content: m.content }
+    })
     const MAX_TOOL_ITERATIONS = 5
 
     let reply = ''
