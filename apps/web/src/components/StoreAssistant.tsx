@@ -65,30 +65,31 @@ const PHOTO_PLACEHOLDER = '[photo]'
 
 // Main marketing site: steer toward understanding the company and finding
 // the right product (funnels to a local in-home consultation).
+// Widget copy is ENGLISH-ONLY (Eddie 2026-07-19) — the single Chinese line in
+// the greeting tells customers we also speak Chinese/other languages; the
+// assistant then replies in whatever language the customer uses.
 const WELCOME_MAIN: ChatMessage = {
   role: 'assistant',
   content:
-    "Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product, in whatever language is easiest for you. 你好！我是安琪窗帘的设计助手，想了解我们公司，或者想知道哪款产品适合你，都可以用中文、英文或其他语言问我。",
+    "Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product. 我们也说中文，其他语言也都可以。",
 }
 
 const QUICK_PROMPTS_MAIN = [
   'Tell me about Angel Drapery',
   'Which product is right for my window?',
-  '帮我选适合的窗帘',
-  '介绍一下你们公司',
+  'What brands do you carry?',
 ]
 
 // Online store: steer toward measuring, configuring, ordering, and after-sales.
 const WELCOME_STORE: ChatMessage = {
   role: 'assistant',
   content:
-    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows, choosing shades and drapery, or your order, in whatever language is easiest for you. 你好！我是安琪窗帘的设计助手，量窗、选帘、订单问题都可以问我，中文、英文或其他语言都可以直接问我。",
+    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows, choosing shades and drapery, or your order. 我们也说中文，其他语言也都可以。",
 }
 
 const QUICK_PROMPTS_STORE = [
   'How do I measure my window?',
   'Which shade is best for a bedroom?',
-  '帮我选窗帘',
   'I need to change or cancel my order',
 ]
 
@@ -101,14 +102,14 @@ const TEASER_STORE = 'Measuring, choosing, or pricing? Ask me anything!'
 // the showroom is APPOINTMENT-ONLY, so the widget says so up front and offers
 // both booking paths as one-tap actions (each starts the assistant's
 // consultation-booking flow, rule 9).
-const SHOWROOM_NOTE = 'Our Temple City showroom is by appointment only · 展厅仅接受预约参观'
+const SHOWROOM_NOTE = 'Our Temple City showroom is by appointment only.'
 const BOOKING_ACTIONS: { label: string; prompt: string }[] = [
   {
-    label: '📅 Book in-home measure · 预约免费上门测量',
+    label: '📅 Book a free in-home measure',
     prompt: "I'd like to book a free in-home measure / design consultation.",
   },
   {
-    label: '🏬 Book showroom visit · 预约到店参观',
+    label: '🏬 Book a showroom visit',
     prompt: "I'd like to book an appointment to visit your showroom.",
   },
 ]
