@@ -156,6 +156,12 @@ export default function HowToMeasurePage() {
             mistakes that trip people up — plus, every Angel Drapery order includes a free in-home
             measurement, so you never have to get it exactly right on your own.
           </p>
+          <Link
+            href="/measure-wizard"
+            className="mt-8 inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-[#12141C] transition-opacity hover:opacity-90"
+          >
+            Try the interactive Measurement Wizard →
+          </Link>
         </div>
       </section>
 
