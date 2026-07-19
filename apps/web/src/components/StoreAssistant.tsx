@@ -337,6 +337,14 @@ export default function StoreAssistant() {
     }
   }, [])
 
+  // Other pages (e.g. /measure-wizard's "ask our AI assistant" button) can pop
+  // the chat open by dispatching this window event.
+  useEffect(() => {
+    const onOpen = () => openChat()
+    window.addEventListener('ad:open-assistant', onOpen)
+    return () => window.removeEventListener('ad:open-assistant', onOpen)
+  }, [openChat])
+
   // Auto-scroll to bottom whenever the transcript grows or the panel opens.
   useEffect(() => {
     if (!open) return

@@ -18,7 +18,6 @@
 //   shutter reference prices come from /api/store/measure/shutter.
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
 import { recommendDraperySize } from '@window-treatments/shared/measure'
 
 type Product = 'drapery' | 'shades' | 'shutters'
@@ -48,8 +47,10 @@ interface Draft {
   rodType: 'motorized_ceiling_track' | 'ceiling_track' | 'wall_rod'
   operation: 'split' | 'single_left' | 'single_right'
   styleFamily: 'pleated' | 'ripple'
-  // shades / shutters
-  depth: string
+  // shades / shutters — depth is a CHOICE, not a measurement (Eddie 2026-07-19):
+  // shades: 'deep' = more than 1.5", 'shallow' = less than 1.5"
+  // shutters: 'deep' = more than 2.5", 'mid' = 2–2.5", 'shallow' = less than 2"
+  depthChoice: '' | 'deep' | 'mid' | 'shallow'
   hasTrim: boolean | null
   mount: '' | 'inside' | 'inside_z' | 'outside'
   material: 'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood_paint' | 'basswood_stain'
@@ -70,7 +71,7 @@ const EMPTY_DRAFT: Draft = {
   rodType: 'ceiling_track',
   operation: 'split',
   styleFamily: 'pleated',
-  depth: '',
+  depthChoice: '',
   hasTrim: null,
   mount: '',
   material: 'poly_vinyl',
@@ -98,29 +99,45 @@ const num = (v: string): number | undefined => {
   return Number.isFinite(n) && n > 0 ? n : undefined
 }
 
-// ── Depth gating ─────────────────────────────────────────────────────────────
-function mountOptionsFor(product: Product, depthIn: number | undefined): {
+// ── Depth gating (choice-based) ─────────────────────────────────────────────
+function depthChoicesFor(product: Product): { v: 'deep' | 'mid' | 'shallow'; t: string }[] {
+  if (product === 'shades')
+    return [
+      { v: 'deep', t: 'More than 1.5″' },
+      { v: 'shallow', t: 'Less than 1.5″' },
+    ]
+  return [
+    { v: 'deep', t: 'More than 2.5″' },
+    { v: 'mid', t: 'Between 2″ and 2.5″' },
+    { v: 'shallow', t: 'Less than 2″' },
+  ]
+}
+
+function depthLabelFor(product: Product, choice: string): string {
+  const found = depthChoicesFor(product).find((c) => c.v === choice)
+  return found ? found.t : ''
+}
+
+function mountOptionsFor(product: Product, choice: string): {
   options: { v: 'inside' | 'inside_z' | 'outside'; t: string; recommended?: boolean }[]
   note: string
 } {
+  if (!choice) return { options: [], note: 'Pick the frame depth first.' }
   if (product === 'shades') {
-    if (depthIn === undefined) return { options: [], note: 'Enter the frame depth first.' }
-    if (depthIn >= 1.5)
+    if (choice === 'deep')
       return {
         options: [
           { v: 'inside', t: 'Inside mount', recommended: true },
           { v: 'outside', t: 'Outside mount' },
         ],
-        note: 'Your frame is deep enough for a clean inside mount (recommended) — outside mount also works.',
+        note: 'Deep enough for a clean inside mount (recommended) — outside mount also works.',
       }
     return {
       options: [{ v: 'outside', t: 'Outside mount' }],
       note: 'Under 1.5″ of depth, shades must be outside-mounted.',
     }
   }
-  // shutters
-  if (depthIn === undefined) return { options: [], note: 'Enter the frame depth first.' }
-  if (depthIn > 2.5)
+  if (choice === 'deep')
     return {
       options: [
         { v: 'inside', t: 'Inside mount — any frame style', recommended: true },
@@ -128,7 +145,7 @@ function mountOptionsFor(product: Product, depthIn: number | undefined): {
       ],
       note: 'Over 2.5″ of depth fits every inside-mount frame style.',
     }
-  if (depthIn > 2)
+  if (choice === 'mid')
     return {
       options: [
         { v: 'inside_z', t: 'Inside mount — Z-frame', recommended: true },
@@ -138,16 +155,13 @@ function mountOptionsFor(product: Product, depthIn: number | undefined): {
     }
   return {
     options: [{ v: 'outside', t: 'Outside mount' }],
-    note: 'At 2″ of depth or less, shutters must be outside-mounted.',
+    note: 'Under 2″ of depth, shutters must be outside-mounted.',
   }
 }
 
-// Trim question applies below the product's depth threshold.
-function trimQuestionApplies(product: Product, depthIn: number | undefined): boolean {
-  if (depthIn === undefined) return false
-  if (product === 'shades') return depthIn < 1.5
-  if (product === 'shutters') return depthIn < 2
-  return false
+// Trim question applies at the shallowest choice.
+function trimQuestionApplies(_product: Product, choice: string): boolean {
+  return choice === 'shallow'
 }
 
 // ── SVG diagrams ─────────────────────────────────────────────────────────────
@@ -208,12 +222,57 @@ function DraperyDiagram({ kind }: { kind: Kind }) {
   )
 }
 
+function OperationDiagram({ op }: { op: 'split' | 'single_left' | 'single_right' }) {
+  const caption =
+    op === 'split'
+      ? 'Center split: two panels meet in the middle and open outward to stack on both sides.'
+      : op === 'single_left'
+        ? 'One-way: a single panel that slides open and stacks on the LEFT side.'
+        : 'One-way: a single panel that slides open and stacks on the RIGHT side.'
+  return (
+    <DiagramFrame caption={caption}>
+      {/* rod */}
+      <line x1="20" y1="35" x2="240" y2="35" stroke="#12141C" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="20" cy="35" r="5" fill="#12141C" />
+      <circle cx="240" cy="35" r="5" fill="#12141C" />
+      {op === 'split' ? (
+        <>
+          <rect x="40" y="42" width="88" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
+          <rect x="132" y="42" width="88" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
+          <line x1="70" y1="42" x2="70" y2="172" stroke="#12141C" strokeWidth="0.75" />
+          <line x1="100" y1="42" x2="100" y2="172" stroke="#12141C" strokeWidth="0.75" />
+          <line x1="160" y1="42" x2="160" y2="172" stroke="#12141C" strokeWidth="0.75" />
+          <line x1="190" y1="42" x2="190" y2="172" stroke="#12141C" strokeWidth="0.75" />
+          <Arrow x1={122} y1={105} x2={52} y2={105} labelText="" lx={0} ly={0} />
+          <Arrow x1={138} y1={105} x2={208} y2={105} labelText="" lx={0} ly={0} />
+        </>
+      ) : op === 'single_left' ? (
+        <>
+          <rect x="40" y="42" width="180" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
+          {[70, 100, 130, 160, 190].map((x) => (
+            <line key={x} x1={x} y1="42" x2={x} y2="172" stroke="#12141C" strokeWidth="0.75" />
+          ))}
+          <Arrow x1={200} y1={105} x2={60} y2={105} labelText="" lx={0} ly={0} />
+        </>
+      ) : (
+        <>
+          <rect x="40" y="42" width="180" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
+          {[70, 100, 130, 160, 190].map((x) => (
+            <line key={x} x1={x} y1="42" x2={x} y2="172" stroke="#12141C" strokeWidth="0.75" />
+          ))}
+          <Arrow x1={60} y1={105} x2={200} y2={105} labelText="" lx={0} ly={0} />
+        </>
+      )}
+    </DiagramFrame>
+  )
+}
+
 function OpeningDiagram({ inside }: { inside: boolean }) {
   return (
     <DiagramFrame
       caption={
         inside
-          ? 'Inside mount: measure the opening width at 3 heights and the height at 3 points — a rough middle measurement is fine for this estimate; we re-measure precisely at your free in-home visit.'
+          ? 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.'
           : 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.'
       }
     >
@@ -221,11 +280,8 @@ function OpeningDiagram({ inside }: { inside: boolean }) {
       <rect x="70" y="45" width="120" height="110" fill="#F7F5F2" stroke="#12141C" strokeWidth="1" />
       {inside ? (
         <>
-          <Arrow x1={72} y1={65} x2={188} y2={65} labelText="W" lx={126} ly={61} />
           <Arrow x1={72} y1={100} x2={188} y2={100} labelText="W" lx={126} ly={96} />
-          <Arrow x1={72} y1={135} x2={188} y2={135} labelText="W" lx={126} ly={131} />
-          <Arrow x1={85} y1={47} x2={85} y2={153} labelText="H" lx={90} ly={104} />
-          <Arrow x1={168} y1={47} x2={168} y2={153} labelText="H" lx={173} ly={104} />
+          <Arrow x1={130} y1={47} x2={130} y2={153} labelText="H" lx={136} ly={80} />
         </>
       ) : (
         <>
@@ -290,19 +346,18 @@ export default function MeasureWizardClient() {
     void refresh()
   }, [refresh])
 
-  const depthIn = num(draft.depth)
   const needsDepth = draft.product === 'shades' || draft.product === 'shutters'
-  const mountInfo = needsDepth && draft.product ? mountOptionsFor(draft.product as Product, depthIn) : null
-  const askTrim = needsDepth && draft.product ? trimQuestionApplies(draft.product as Product, depthIn) : false
+  const mountInfo = needsDepth && draft.product ? mountOptionsFor(draft.product as Product, draft.depthChoice) : null
+  const askTrim = needsDepth && draft.product ? trimQuestionApplies(draft.product as Product, draft.depthChoice) : false
   const useTrimSize = askTrim && draft.hasTrim === true
   const mountReady = !needsDepth || (draft.mount !== '' && (!askTrim || draft.hasTrim !== null))
 
-  // Auto-clear an invalid mount when depth changes.
+  // Auto-clear an invalid mount when the depth choice changes.
   useEffect(() => {
     if (!mountInfo) return
     if (draft.mount && !mountInfo.options.some((o) => o.v === draft.mount)) set('mount', '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draft.depth, draft.product])
+  }, [draft.depthChoice, draft.product])
 
   // ── Live result ──
   const draperyRec = useMemo(() => {
@@ -379,7 +434,8 @@ export default function MeasureWizardClient() {
       draft.product === 'drapery'
         ? { rodType: draft.rodType, operation: draft.operation, styleFamily: draft.styleFamily }
         : {
-            depthIn: depthIn ?? null,
+            depthChoice: draft.depthChoice,
+            depthLabel: depthLabelFor(draft.product as Product, draft.depthChoice),
             hasTrim: askTrim ? draft.hasTrim : false,
             mount: draft.mount,
             ...(draft.product === 'shutters' ? { material: draft.material } : {}),
@@ -432,7 +488,7 @@ export default function MeasureWizardClient() {
       rodType: c.rodType || 'ceiling_track',
       operation: c.operation || 'split',
       styleFamily: c.styleFamily || 'pleated',
-      depth: c.depthIn != null ? String(c.depthIn) : '',
+      depthChoice: ['deep', 'mid', 'shallow'].includes(c.depthChoice) ? c.depthChoice : '',
       hasTrim: typeof c.hasTrim === 'boolean' ? c.hasTrim : null,
       mount: c.mount || '',
       material: c.material || 'poly_vinyl',
@@ -459,6 +515,55 @@ export default function MeasureWizardClient() {
       body: JSON.stringify({ id }),
     }).catch(() => {})
     await refresh()
+  }
+
+  // Export the sheet as a printable page → user saves it as PDF from the
+  // system print dialog. No PDF library needed; works on every device.
+  const exportPdf = () => {
+    const mountLabel = (c: any) =>
+      c?.mount === 'outside' ? 'Outside mount' : c?.mount === 'inside_z' ? 'Inside (Z-frame)' : c?.mount === 'inside' ? 'Inside mount' : ''
+    const dimsText = (d: any) => {
+      const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? ' (trim)' : ''}`]
+      if (d?.A_leftIn) parts.push(`A ${d.A_leftIn}″`)
+      if (d?.B_rightIn) parts.push(`B ${d.B_rightIn}″`)
+      if (d?.C_topIn) parts.push(`C ${d.C_topIn}″`)
+      if (d?.D_bottomIn) parts.push(`D ${d.D_bottomIn}″`)
+      if (d?.wallHeightIn) parts.push(`ceiling ${d.wallHeightIn}″`)
+      return parts.join(' · ')
+    }
+    const rows = saved
+      .map(
+        (x) => `<tr>
+          <td>${x.label}</td>
+          <td>${x.kind === 'sliding_door' ? 'Sliding door' : 'Window'}</td>
+          <td>${x.product === 'drapery' ? 'Custom drapery' : x.product === 'shades' ? 'Shades' : 'Shutters'}</td>
+          <td>${[x.config?.depthLabel ? `Depth ${x.config.depthLabel}` : '', mountLabel(x.config), x.config?.hasTrim ? 'has trim' : ''].filter(Boolean).join(' · ')}</td>
+          <td>${dimsText(x.dims)}</td>
+          <td>${resultSummary(x)}</td>
+        </tr>`
+      )
+      .join('')
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Angel Drapery — Measurement Sheet</title>
+      <style>body{font-family:-apple-system,Helvetica,Arial,sans-serif;color:#12141C;padding:32px}
+      h1{font-size:22px;font-weight:600;margin-bottom:2px}
+      .sub{color:#6b7280;font-size:12px;margin-bottom:20px}
+      table{width:100%;border-collapse:collapse;font-size:12px}
+      th{text-align:left;text-transform:uppercase;letter-spacing:.08em;font-size:10px;color:#6b7280;border-bottom:2px solid #12141C;padding:6px 8px}
+      td{border-bottom:1px solid #e5e7eb;padding:8px;vertical-align:top}
+      .foot{margin-top:24px;color:#6b7280;font-size:11px;line-height:1.6}</style></head><body>
+      <h1>Angel Drapery — Measurement Sheet</h1>
+      <div class="sub">angel-drapery.com · 626-451-9841 · exported ${new Date().toLocaleDateString()}</div>
+      <table><thead><tr><th>Location</th><th>Opening</th><th>Treatment</th><th>Depth / Mount</th><th>Measurements</th><th>Reference result</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="foot">A = wall space left · B = wall space right · C = top of opening → ceiling · D = bottom → floor. All sizes in inches.<br>
+      Reference sizes and prices only — final measurements and quote are confirmed at your free in-home measurement.</div>
+      </body></html>`
+    const win = window.open('', '_blank')
+    if (!win) return
+    win.document.write(html)
+    win.document.close()
+    win.focus()
+    setTimeout(() => win.print(), 350)
   }
 
   const resultSummary = (wdw: SavedWindow): string => {
@@ -529,19 +634,25 @@ export default function MeasureWizardClient() {
 
         {saved.length > 0 && (
           <div className="mt-10 rounded-3xl bg-[#F7F5F2] p-8 md:p-10">
-            <h3 className="mb-2 text-xl font-semibold tracking-tight text-[#12141C]">Your sheet is ready to use.</h3>
+            <h3 className="mb-2 text-xl font-semibold tracking-tight text-[#12141C]">Your sheet is saved.</h3>
             <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-500">
-              Open the chat bubble and our AI assistant can read this sheet to recommend products and reference
-              pricing for every window — or book the free in-home measure and our designer arrives already
-              knowing your home.
+              Every window you added is stored automatically. Continue in the chat — our AI assistant reads
+              your sheet and can recommend products and reference pricing for each window — or export a PDF
+              copy for yourself.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/store/whole-home" className="rounded-full bg-[#12141C] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90">
-                Book a free in-home measure
-              </Link>
-              <a href="tel:+16264519841" className="rounded-full border border-gray-300 px-6 py-3 text-sm font-medium text-[#12141C] transition-colors hover:border-gray-500">
-                Call 626-451-9841
-              </a>
+              <button
+                onClick={() => window.dispatchEvent(new Event('ad:open-assistant'))}
+                className="rounded-full bg-[#12141C] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              >
+                Continue with our AI assistant →
+              </button>
+              <button
+                onClick={exportPdf}
+                className="rounded-full border border-gray-300 px-6 py-3 text-sm font-medium text-[#12141C] transition-colors hover:border-gray-500"
+              >
+                Export my sheet (PDF)
+              </button>
             </div>
           </div>
         )}
@@ -602,25 +713,10 @@ export default function MeasureWizardClient() {
         ))}
       </div>
 
-      {/* Drapery style */}
+      {/* Drapery: opening direction only (rod type & header style are collected
+          by the designer later — the wizard keeps sensible defaults) */}
       {draft.product === 'drapery' && (
-        <div className="mt-8 space-y-5">
-          <div>
-            <span className={label}>Rod / track type</span>
-            <div className="flex flex-wrap gap-2">
-              {(
-                [
-                  ['ceiling_track', 'Ceiling track'],
-                  ['motorized_ceiling_track', 'Motorized ceiling track'],
-                  ['wall_rod', 'Wall-mounted rod'],
-                ] as const
-              ).map(([v, t]) => (
-                <button key={v} className={pillBtn(draft.rodType === v)} onClick={() => set('rodType', v)}>
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="mt-8 grid items-start gap-6 md:grid-cols-2">
           <div>
             <span className={label}>Opening direction</span>
             <div className="flex flex-wrap gap-2">
@@ -637,17 +733,7 @@ export default function MeasureWizardClient() {
               ))}
             </div>
           </div>
-          <div>
-            <span className={label}>Header style</span>
-            <div className="flex flex-wrap gap-2">
-              <button className={pillBtn(draft.styleFamily === 'pleated')} onClick={() => set('styleFamily', 'pleated')}>
-                Pinch pleat
-              </button>
-              <button className={pillBtn(draft.styleFamily === 'ripple')} onClick={() => set('styleFamily', 'ripple')}>
-                Ripplefold
-              </button>
-            </div>
-          </div>
+          <OperationDiagram op={draft.operation} />
         </div>
       )}
 
@@ -671,13 +757,19 @@ export default function MeasureWizardClient() {
           <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>Step 3 · Frame depth</span>
           <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">How deep is the frame?</h2>
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
-            This is the one measurement worth doing carefully — it decides which mounting types are possible.
+            Hold a tape at the glass and check the flat depth — this decides which mounting types are possible.
           </p>
           <div className="grid items-start gap-6 md:grid-cols-2">
             <div>
-              <label className={label}>Frame depth (inches) *</label>
-              <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.depth} onChange={(e) => set('depth', e.target.value)} placeholder="inches" />
-              {mountInfo && <p className="mt-2 text-[13px] leading-relaxed text-gray-500">{mountInfo.note}</p>}
+              <span className={label}>Frame depth *</span>
+              <div className="flex flex-wrap gap-2">
+                {depthChoicesFor(draft.product as Product).map((c) => (
+                  <button key={c.v} className={pillBtn(draft.depthChoice === c.v)} onClick={() => set('depthChoice', c.v)}>
+                    {c.t}
+                  </button>
+                ))}
+              </div>
+              {mountInfo && draft.depthChoice && <p className="mt-2 text-[13px] leading-relaxed text-gray-500">{mountInfo.note}</p>}
 
               {askTrim && (
                 <div className="mt-5">
@@ -763,7 +855,7 @@ export default function MeasureWizardClient() {
                   )}
                   <div>
                     <label className={label}>Floor-to-ceiling height</label>
-                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.wallH} onChange={(e) => set('wallH', e.target.value)} placeholder="inches (optional, smallest of 3 points)" />
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.wallH} onChange={(e) => set('wallH', e.target.value)} placeholder="inches (optional)" />
                   </div>
                 </>
               )}
