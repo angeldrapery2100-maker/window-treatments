@@ -17,3 +17,4 @@ export * from "./lumaShade";
 export * from "./romanShade";
 export * from "./drapery";
 export * from "./hardware";
+export * from "./cambridgeShutter";

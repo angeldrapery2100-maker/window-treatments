@@ -9,6 +9,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
+    "./measure": "./src/measure/index.ts",
     "./pricing": "./src/pricing/index.ts",
     "./pricing/aapp": "./src/pricing/aapp/index.ts",
     "./pricing/engines": "./src/pricing/engines/index.ts",

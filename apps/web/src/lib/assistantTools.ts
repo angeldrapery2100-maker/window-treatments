@@ -560,6 +560,52 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'recommend_drapery_size',
+    description:
+      "MEASUREMENT WIZARD — compute the RECOMMENDED finished drapery size from the customer's window measurements, using the exact same rules our designers use. Collect first, in inches: window width + height (outer frame preferred), then rod type (motorized ceiling track / ceiling track / wall rod) and opening (center split or one-way). Optional but improves accuracy: wall space left/right of the window, window-top-to-ceiling gap, window-bottom-to-floor, and measured floor-to-ceiling height. Present the result as our recommendation, explain in one short sentence why it's larger than the window (stacking room / rod position), and offer to save it to their Home Project via upsert_room_item.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        window_width_in: { type: 'number', description: 'Window width in inches (outer frame edge to edge preferred).' },
+        window_height_in: { type: 'number', description: 'Window height in inches.' },
+        clear_left_in: { type: 'number', description: 'Usable wall space LEFT of the window in inches. Omit if not measured.' },
+        clear_right_in: { type: 'number', description: 'Usable wall space RIGHT of the window in inches. Omit if not measured.' },
+        clear_top_in: { type: 'number', description: 'Window top → ceiling gap in inches. Omit if not measured.' },
+        clear_bottom_in: { type: 'number', description: 'Window bottom → floor in inches. Omit if not measured.' },
+        wall_height_in: { type: 'number', description: 'Measured floor-to-ceiling height in inches (measure at left/center/right, give the SMALLEST). Omit if not measured.' },
+        rod_type: { type: 'string', description: "'motorized_ceiling_track' | 'ceiling_track' | 'wall_rod' (default ceiling_track)." },
+        operation: { type: 'string', description: "'split' (center open, default) | 'single_left' | 'single_right'." },
+        style_family: { type: 'string', description: "'pleated' (pinch pleat, default) | 'ripple' (ripplefold)." },
+      },
+      required: ['window_width_in', 'window_height_in'],
+    },
+  },
+  {
+    name: 'quote_shutter_estimate',
+    description:
+      "Get an EXACT computed price for a JC Cambridge shutter (plantation shutter) — same engine as our internal quoting. You MUST present it as a reference price: final price is confirmed after the FREE in-home measurement (say that every time, then offer to book). Collect in inches: window width + height (the engine adds the standard frame allowance automatically — pass size_is_finished=true only if the customer already has a finished/panel size, e.g. french doors). Then material (poly_vinyl / hardwood / paulownia / basswood — for basswood also ask paint or stain finish). Style and upgrades are optional; quantity defaults to 1. Never invent shutter prices yourself — always use this tool.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        material: { type: 'string', description: "'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood'." },
+        color_type: { type: 'string', description: "For basswood only: 'paint' (default) or 'stain'." },
+        width_in: { type: 'number', description: 'Window width in inches (or finished width when size_is_finished=true).' },
+        height_in: { type: 'number', description: 'Window height in inches (or finished height when size_is_finished=true).' },
+        size_is_finished: { type: 'boolean', description: 'true = width/height are already the finished/panel size (no frame allowance added). Default false.' },
+        style: { type: 'string', description: "Optional: 'standard' (default) | 'bay_window' | 'bi_fold' | 'by_pass_closed' | 'by_pass_open' | 'corner_window' | 'double_hung' | 'skylight' | 'specialty_shape' | french door styles." },
+        panel_specialty: { type: 'string', description: "Optional: 'liberty_arch' | 'raised_panel' | 'solid_panel'." },
+        tilt: { type: 'string', description: "Optional tilt control: 'standard_tilt_rod' | 'hidden_tilt_rod' (our usual default) | 'invisible_tilt'." },
+        buildout: { type: 'string', description: "Optional buildout: 'lt1' (<1\") | '1_3' (1–3\")." },
+        divider_rail: { type: 'boolean', description: 'Optional divider rail.' },
+        knob: { type: 'boolean' },
+        lock: { type: 'boolean' },
+        custom_finish: { type: 'string', description: "Optional: 'custom_paint' | 'custom_stain' (per color)." },
+        quantity: { type: 'number', description: 'Number of identical shutters (default 1).' },
+      },
+      required: ['material', 'width_in', 'height_in'],
+    },
+  },
+  {
     name: 'get_home_project',
     description:
       "Get the customer's saved Home Project (their room-by-room plan: rooms, items, sizes, options, exact computed prices, subtotal). Works for guests too (tied to their browser). Call this before adding/updating items, or whenever the customer asks what's in their project / their total.",
@@ -704,6 +750,109 @@ export async function executeAssistantTool(
         ...(est.fabricDependent ? { fabric_note: 'Range spans this series\' fabric tiers — it narrows once the customer picks a fabric collection at the consultation.' } : {}),
         warnings: est.warnings?.length ? est.warnings : undefined,
         must_say: 'Reference range only (list-price基准, per shade, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.',
+      }
+    }
+    case 'recommend_drapery_size': {
+      const { recommendDraperySize } = await import('@window-treatments/shared/measure')
+      const num = (v: any) => (v != null && isFinite(Number(v)) && Number(v) > 0 ? Number(v) : undefined)
+      const rec = recommendDraperySize({
+        windowWidthIn: Number(input?.window_width_in) || 0,
+        windowHeightIn: Number(input?.window_height_in) || 0,
+        clearLeftIn: num(input?.clear_left_in),
+        clearRightIn: num(input?.clear_right_in),
+        clearTopIn: num(input?.clear_top_in),
+        clearBottomIn: num(input?.clear_bottom_in),
+        wallHeightsIn: num(input?.wall_height_in) ? [Number(input.wall_height_in)] : undefined,
+        rodType: ['motorized_ceiling_track', 'ceiling_track', 'wall_rod'].includes(input?.rod_type)
+          ? input.rod_type
+          : 'ceiling_track',
+        operation: ['split', 'single_left', 'single_right'].includes(input?.operation) ? input.operation : 'split',
+        styleFamily: input?.style_family === 'ripple' ? 'ripple' : 'pleated',
+      })
+      if (!rec) {
+        return { error: 'need_window_size', note: 'Ask for the window width and height in inches first.' }
+      }
+      logLeadEvent({
+        userId, anonId, type: 'measure_wizard',
+        meta: { w: input?.window_width_in, h: input?.window_height_in, recW: rec.recommendedFinishedWidthIn, recH: rec.recommendedFinishedHeightIn },
+        campaignId,
+      })
+      return {
+        recommended_finished_width_in: rec.recommendedFinishedWidthIn,
+        recommended_finished_height_in: rec.recommendedFinishedHeightIn,
+        note:
+          'Same rules our designers use: width adds stacking room so panels clear the glass when open; height hangs from the rod/track position down to ~1/2" off the floor. ' +
+          'If the customer could not measure side clearances or ceiling height, mention the recommendation gets even more accurate with those numbers.',
+      }
+    }
+    case 'quote_shutter_estimate': {
+      const { priceCambridgeShutter, billingSizeFromWindow, CAMBRIDGE_SHUTTER_DEFAULT_RATES } = await import(
+        '@window-treatments/shared/pricing/aapp'
+      )
+      const material = String(input?.material || '')
+      if (!['poly_vinyl', 'hardwood', 'paulownia', 'basswood'].includes(material)) {
+        return { error: 'bad_material', note: "Ask which material: poly_vinyl, hardwood, paulownia, or basswood (paint/stain)." }
+      }
+      // Rates: AAPP library sync snapshot wins (admin-customized rates), else
+      // the inline defaults — the same fallback chain AAPP itself uses.
+      let rates = CAMBRIDGE_SHUTTER_DEFAULT_RATES
+      let ratesSource = 'defaults'
+      try {
+        const { getAappLibrary } = await import('@/lib/aappLibrary')
+        const snap = await getAappLibrary()
+        const lib = snap?.data?.cambridgeShutter?.pricingRates
+        if (lib && typeof lib === 'object' && lib.rates && lib.options_psf && lib.options_ea) {
+          rates = lib
+          ratesSource = 'aapp_sync'
+        }
+      } catch {
+        /* snapshot unavailable → defaults */
+      }
+      const rawW = Number(input?.width_in) || 0
+      const rawH = Number(input?.height_in) || 0
+      const finished = input?.size_is_finished === true
+      const isFrench = typeof input?.style === 'string' && input.style.startsWith('french_door')
+      const { widthIn, heightIn } = finished || isFrench ? { widthIn: rawW, heightIn: rawH } : billingSizeFromWindow(rawW, rawH)
+      const r = priceCambridgeShutter(
+        {
+          materialId: material as any,
+          colorType: input?.color_type === 'stain' ? 'stain' : 'paint',
+          widthIn,
+          heightIn,
+          styleId: typeof input?.style === 'string' ? input.style : 'standard',
+          panelSpecialty: ['liberty_arch', 'raised_panel', 'solid_panel'].includes(input?.panel_specialty)
+            ? input.panel_specialty
+            : 'no',
+          tiltControl: ['standard_tilt_rod', 'hidden_tilt_rod', 'offset_tilt_rod', 'invisible_tilt'].includes(input?.tilt)
+            ? input.tilt
+            : 'hidden_tilt_rod', // AAPP quote UI default
+          buildoutType: input?.buildout === 'lt1' || input?.buildout === '1_3' ? input.buildout : 'none',
+          dividerRailEnabled: input?.divider_rail === true,
+          knobEnabled: input?.knob === true,
+          lockEnabled: input?.lock === true,
+          customFinishType:
+            input?.custom_finish === 'custom_paint' || input?.custom_finish === 'custom_stain'
+              ? input.custom_finish
+              : 'none',
+          quantity: Number(input?.quantity) || 1,
+        },
+        rates
+      )
+      if (!r) return { error: 'could_not_price', note: 'Need material plus width and height in inches.' }
+      logLeadEvent({
+        userId, anonId, type: 'shutter_estimate', value: r.subtotal,
+        meta: { material, w: widthIn, h: heightIn, qty: r.qty, source: ratesSource },
+        campaignId,
+      })
+      return {
+        price: r.subtotal,
+        install_fee: r.installAmount,
+        area_sqft: r.areaSqFt,
+        billed_size: `${widthIn}" × ${heightIn}"${finished || isFrench ? '' : ' (window size + standard frame allowance)'}`,
+        upgrades: r.lines.map((l) => l.label),
+        quantity: r.qty,
+        must_say:
+          'Present as a REFERENCE price (加装费 install listed separately). The final price is confirmed by our designer after the FREE in-home measurement — say that every time, then offer to book the consultation.',
       }
     }
     case 'get_home_project':
