@@ -298,6 +298,32 @@ export default function StoreAssistant() {
       /* ignore */
     }
     setHydrated(true)
+    // Signed-in customers also get their server-stored conversation
+    // (cross-device / cross-day continuity). Guests get an empty list back
+    // and keep the sessionStorage transcript.
+    void (async () => {
+      try {
+        const res = await fetch('/api/store/assistant')
+        const json = await res.json().catch(() => null)
+        const server = Array.isArray(json?.data?.messages) ? json.data.messages : []
+        if (server.length > 0) {
+          const cleaned: ChatMessage[] = server
+            .filter((m: any) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+            .map((m: any) => ({
+              role: m.role,
+              content: m.content,
+              ...(typeof m.bookingLink === 'string' ? { bookingLink: m.bookingLink } : {}),
+              suggestions: sanitizeSuggestions(m.suggestions),
+            }))
+          if (cleaned.length > 0) {
+            setMessages(cleaned)
+            saveStored(cleaned)
+          }
+        }
+      } catch {
+        /* offline / guest — local transcript stands */
+      }
+    })()
   }, [])
 
   // One-time attention teaser: pops a few seconds after load, once per

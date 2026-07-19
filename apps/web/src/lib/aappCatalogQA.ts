@@ -1,0 +1,142 @@
+// Customer-safe product-spec Q&A + fabric-code identification for the store
+// AI assistant (GPT-porting P1, Eddie 2026-07-19).
+//
+// get_product_specs  → reads the LOCAL AAPP library snapshot (aapp_library,
+//   filled by the admin 同步AAPP价格 button) — no network, always as fresh as
+//   the last sync. EVERY price-ish field is stripped before anything reaches
+//   the model: specs yes, numbers never (prices go through the pricing tools).
+// resolveFabricCode  → proxies the EXISTING AAPP chatgptAction
+//   `resolve_product` (same Bearer token as hd_price_lookup) so a customer
+//   can say "EB12-005" and the assistant knows which catalog/product it is.
+//   Output is filtered to catalog/product identity only.
+
+import { getAappLibrary } from '@/lib/aappLibrary'
+
+// ── Price stripping ─────────────────────────────────────────────────────────
+const PRICE_KEY_RE =
+  /price|cost|amount|fee|markup|mult|addper|net|msrp|sell|dollar|charge|surcharge|rate$/i
+
+export function stripPriceFields(value: any, depth = 0): any {
+  if (depth > 8 || value == null) return value
+  if (Array.isArray(value)) return value.map((v) => stripPriceFields(v, depth + 1))
+  if (typeof value === 'object') {
+    const out: Record<string, any> = {}
+    for (const [k, v] of Object.entries(value)) {
+      if (PRICE_KEY_RE.test(k)) continue
+      out[k] = stripPriceFields(v, depth + 1)
+    }
+    return out
+  }
+  return value
+}
+
+// ── Product specs from the synced library snapshot ──────────────────────────
+export type SpecArea = 'shades' | 'motors' | 'drapery' | 'shutters'
+
+export async function getProductSpecs(area: SpecArea): Promise<any> {
+  if (area === 'shutters') {
+    // Static business facts (AAPP catalog constants, recon 2026-07-19).
+    return {
+      materials: ['Poly-Vinyl (aluminum reinforced)', 'Hardwood', 'Grained Paulownia', 'Basswood (painted or stained)'],
+      louver_sizes_in: [2.5, 3.5, 4.5],
+      louver_styles: { basswood: ['flat', 'elliptical'], paulownia: ['flat', 'elliptical'], hardwood: ['elliptical'], poly_vinyl: [] },
+      panel_rule: 'Each panel must be between 8" and 36" wide; 1–6 panels per opening.',
+      depth_rule: 'Inside mount needs more than 2.5" of frame depth (2–2.5" works with a Z-frame); less than 2" is outside mount only.',
+      styles: ['standard', 'bay window', 'bi-fold', 'by-pass', 'corner window', 'double hung', 'french door', 'skylight', 'specialty shape'],
+    }
+  }
+
+  const snap = await getAappLibrary().catch(() => null)
+  const data = snap?.data
+  if (!data) return { error: 'specs_not_synced', note: 'Library snapshot not synced yet — answer from general knowledge and offer the free consultation for specifics.' }
+
+  if (area === 'shades') {
+    const variants = data.shadeCatalog?.variants || {}
+    const out: Record<string, any> = {}
+    for (const [k, v] of Object.entries<any>(variants)) {
+      out[k] = {
+        maxWidthIn: v?.maxWidth ?? null,
+        maxHeightIn: v?.maxHeight ?? null,
+        cassettes: Array.isArray(v?.cassettes) ? v.cassettes.map((c: any) => c?.label || c?.key).filter(Boolean) : [],
+        options: Array.isArray(v?.optionKeys) ? v.optionKeys : [],
+        hasControlSide: !!v?.hasControlSide,
+      }
+    }
+    return { variants: out, note: 'Luma shade variants: size limits in inches, cassette styles, and available options. Prices via quote_store_product only.' }
+  }
+
+  if (area === 'motors') {
+    const sys = data.lumaMotorSystem
+    if (!sys) return { error: 'no_motor_data', note: 'Motor specs not in the current sync — offer the free consultation.' }
+    const clean = stripPriceFields(sys)
+    return {
+      motors: Array.isArray(clean?.motors) ? clean.motors.map((m: any) => ({ key: m?.key, label: m?.label || m?.name, notes: m?.notes })) : [],
+      remotes: Array.isArray(clean?.remotes) ? clean.remotes.map((r: any) => ({ key: r?.key, label: r?.label || r?.key, channels: r?.channels })) : [],
+      accessories: Array.isArray(clean?.accessories) ? clean.accessories.map((a: any) => a?.label || a?.key).filter(Boolean) : [],
+      note: 'Luma motorization system components. Motor pricing is part of the product configurator / quote tools — never quote motor prices from memory.',
+    }
+  }
+
+  // drapery
+  const dpc = data.draperyPricingCatalog
+  if (!dpc) return { error: 'no_drapery_data', note: 'Drapery catalog not in the current sync.' }
+  const clean = stripPriceFields(dpc)
+  return {
+    lining_options: clean?.main?.liningOptions ? Object.keys(clean.main.liningOptions) : ['NO', 'LF', 'BO'],
+    notes: 'Lining tiers: NO (unlined), LF (light filtering), BO (blackout). Pleat styles: 2-fold pinch, 3-fold pinch, ripplefold. Prices via quote_store_product only.',
+  }
+}
+
+// ── Fabric code identification via AAPP resolve_product ─────────────────────
+const ACTION_URL = () =>
+  process.env.AAPP_CHATGPT_ACTION_URL ||
+  'https://us-central1-angel-drapery.cloudfunctions.net/chatgptAction'
+
+export interface FabricCodeResult {
+  ok: boolean
+  matches?: Array<{ catalog: string; product?: string; family?: string; sold_online: boolean; note?: string }>
+  error?: string
+}
+
+// Luma tables → the store products that sell them online.
+const LUMA_TABLE_TO_STORE: Record<string, string> = {
+  roller: 'Roller shades (Luma Collection, sold online)',
+  zebra: 'Zebra shades (Luma Collection, sold online)',
+  sheer: 'Sheer shades (Luma Collection, sold online)',
+  roman: 'Modern roman shades (Luma Collection, sold online)',
+}
+
+export async function resolveFabricCode(query: string): Promise<FabricCodeResult> {
+  const token = process.env.AAPP_CHATGPT_ACTION_TOKEN
+  if (!token) return { ok: false, error: 'not_configured' }
+  const q = String(query || '').trim().slice(0, 120)
+  if (q.length < 2) return { ok: false, error: 'query_too_short' }
+  try {
+    const res = await fetch(ACTION_URL(), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+      body: JSON.stringify({ action: 'resolve_product', query: q }),
+      signal: AbortSignal.timeout(12_000),
+    })
+    if (!res.ok) return { ok: false, error: `upstream_${res.status}` }
+    const json: any = await res.json().catch(() => null)
+    const raw: any[] = Array.isArray(json?.matches) ? json.matches : Array.isArray(json?.result?.matches) ? json.result.matches : []
+    // Filter to identity only — no config templates, no price groups.
+    const matches = raw.slice(0, 6).map((m: any) => {
+      const catalog = String(m?.catalog || 'Unknown')
+      const isLuma = catalog.toLowerCase() === 'luma'
+      return {
+        catalog,
+        product: isLuma ? LUMA_TABLE_TO_STORE[String(m?.table)] || 'Luma shade' : String(m?.productLine || m?.displayName || m?.note || '').slice(0, 80) || undefined,
+        family: m?.fabricFamily ? String(m.fabricFamily) : undefined,
+        sold_online: isLuma,
+        note: isLuma
+          ? 'Sold in our online store — use list_store_products/get_product_options/quote_store_product to configure and price it.'
+          : 'Consultation line (not sold online) — describe it and offer the free in-home consultation.',
+      }
+    })
+    return { ok: true, matches }
+  } catch {
+    return { ok: false, error: 'network' }
+  }
+}

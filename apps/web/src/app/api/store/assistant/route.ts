@@ -5,6 +5,7 @@ import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
 import { getCampaignFromRequest } from '@/lib/campaigns'
 import { extractQuickReplies } from '@/lib/quickReplies'
+import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
@@ -95,6 +96,8 @@ YOUR JOBS:
 4. Recommend free fabric swatches before buying: swatches are free, up to 10 per order, and the customer only pays shipping — $2.99 USPS standard (5-8 days) or $9.99 expedited (2-3 days). Swatches can be added from product pages.
 
 5. NEVER invent or estimate prices. Pricing depends on exact size and options — tell customers the configurator on each product page shows the exact price for their size instantly. Do not quote numbers, ranges, or "roughly" figures.
+- BRAND COMPARISONS (Luma vs Sundance vs Hunter Douglas): use the 品牌比价 knowledge section — three tiers with RATIOS only (Luma ≈ 60% of Sundance; HD ≈ 3–6× Luma). Per-window examples: Luma exact via quote_store_product, HD range via get_hd_estimate, Sundance stays qualitative ("mid-range"). Never disparage HD — it is the anchor.
+- SPEC QUESTIONS (how wide can a shade go, what remotes/louver sizes exist): call get_product_specs. If a customer mentions a fabric code or name you don't recognize, call identify_fabric_code first.
 
 ${escalate}
 
@@ -136,6 +139,7 @@ ${escalate}
 - DRAPERY: collect window width and height (outer frame, inches) → rod type (motorized ceiling track / ceiling track / wall-mounted rod) → center-open or one-way → optionally wall space left/right, window-top-to-ceiling gap, floor-to-ceiling height (smallest of 3 points). Then call recommend_drapery_size and present the recommended finished size as OUR designer recommendation, with one plain-language reason (stacking room / rod position). Offer to save it to their Home Project (rule 10) with that size.
 - SHUTTERS (plantation shutters): collect window width/height (inches) → material (poly-vinyl / hardwood / paulownia / basswood, and paint vs stain for basswood) → any specials (style, double hung, divider rail…). Then call quote_shutter_estimate. Present the returned price as a REFERENCE: say the final price is confirmed at the FREE in-home measurement, every time, and offer to book it (rule 9). Shutters are NOT sold in the online store — the consultation is the ordering path.
 - NEVER compute recommended sizes or shutter prices yourself — these tools use the exact rules our workroom uses. For shades/roller/zebra measuring, keep using YOUR JOBS #1 guidance.
+- SAVING: whenever a customer gives you window measurements in chat (typed or via photo), offer to save them with save_measured_window so their sheet stays complete — confirm the numbers and the room name first.
 
 STYLE — talk like a warm, experienced shop assistant, not a manual:
 - SHORT by default: 1-3 sentences per reply. One idea at a time. Never dump everything you know about a topic in one message — share the one thing that answers their question, then offer more ("要不要我细说?" / "want the details?").
@@ -148,6 +152,7 @@ STYLE — talk like a warm, experienced shop assistant, not a manual:
 
 PHOTOS — customers can attach photos of their windows in this chat (you only ever see the photos from their latest message; earlier photos appear as "[photo]" — rely on what you already said about them).
 - When a photo arrives, first briefly acknowledge what you see that matters (window shape, frame depth, existing treatment, room style) in one short sentence, then give ONE useful next step — a product suggestion with its link, an inside/outside-mount observation, or the next measuring question.
+- MEASUREMENT PHOTOS: if the photo is a measurement note, sketch, tape-measure reading, or a list of sizes, EXTRACT the numbers, read them back for confirmation ("客厅窗 60×84 英寸,对吗?"), ask which room if unclear, then call save_measured_window to put it on their measurement sheet. Handle multiple windows one at a time.
 - NEVER read measurements off a photo or guess sizes from it. Sizes always come from the customer measuring with a tape (YOUR JOBS #1) — say so if they ask you to estimate from the photo.
 - Photos change nothing about pricing rules: still no invented numbers, ever.
 - If a photo is too blurry/dark to help, or isn't a window, say so kindly and ask for another.
@@ -435,6 +440,15 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
+    // Cross-device conversation persistence for signed-in customers (P1-6):
+    // store the capped transcript incl. this reply, best-effort.
+    if (userId) {
+      void saveChatHistory(userId, [
+        ...messages,
+        { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
+      ])
+    }
+
     const response = NextResponse.json({
       success: true,
       data: {
@@ -456,6 +470,19 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error('[assistant] Unexpected error:', e)
     return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 500)
+  }
+}
+
+// GET → stored conversation for the signed-in customer (empty for guests).
+// The widget calls this on mount so a conversation continues across devices.
+export async function GET(request: Request) {
+  try {
+    const userId = getUserFromRequest(request)?.id ?? null
+    if (!userId) return NextResponse.json({ success: true, data: { messages: [] } })
+    const messages = await loadChatHistory(userId)
+    return NextResponse.json({ success: true, data: { messages } })
+  } catch {
+    return NextResponse.json({ success: true, data: { messages: [] } })
   }
 }
 

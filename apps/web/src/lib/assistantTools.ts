@@ -566,6 +566,55 @@ export const ASSISTANT_TOOLS = [
     input_schema: { type: 'object' as const, properties: {} },
   },
   {
+    name: 'save_measured_window',
+    description:
+      "Save (or update, by passing id) a window on the customer's measurement sheet — the same sheet as the /measure-wizard page. Use this when the customer gives you measurements in chat OR sends a PHOTO of a measurement note/sketch: extract the numbers, CONFIRM them back to the customer first ('客厅窗 60×84,对吗?'), then save. Always collect a location name. Inches only. After saving, tell them it's on their sheet and they can see/edit it at /measure-wizard.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        id: { type: 'string', description: 'Existing window id from list_measured_windows — ONLY when updating.' },
+        location: { type: 'string', description: 'Room/position name, e.g. "Living Room — left window".' },
+        opening: { type: 'string', description: "'window' (default) or 'sliding_door'." },
+        product: { type: 'string', description: "Planned treatment: 'drapery' | 'shades' | 'shutters'. Default 'drapery' if undecided." },
+        width_in: { type: 'number', description: 'Width in inches.' },
+        height_in: { type: 'number', description: 'Height in inches.' },
+        clear_left_in: { type: 'number', description: 'A — wall space left of the window (optional).' },
+        clear_right_in: { type: 'number', description: 'B — wall space right (optional).' },
+        clear_top_in: { type: 'number', description: 'C — window top → ceiling (optional).' },
+        clear_bottom_in: { type: 'number', description: 'D — window bottom → floor (optional).' },
+        wall_height_in: { type: 'number', description: 'Floor-to-ceiling height (optional).' },
+        depth_choice: { type: 'string', description: "Shades/shutters frame depth choice: 'deep' | 'mid' | 'shallow' (optional)." },
+        mount: { type: 'string', description: "'inside' | 'inside_z' | 'outside' (optional)." },
+        notes: { type: 'string', description: 'Anything else the customer mentioned (optional).' },
+      },
+      required: ['location', 'width_in', 'height_in'],
+    },
+  },
+  {
+    name: 'get_product_specs',
+    description:
+      "Get LIVE product specifications (no prices) from our catalog: 'shades' = Luma variant size limits, cassette styles, available options; 'motors' = motorization system components (motors, remotes with channel counts, accessories); 'drapery' = lining tiers and pleat styles; 'shutters' = materials, louver sizes, panel and depth rules. Use this for spec questions like 'how wide can a zebra shade go', 'what remotes are there', 'what louver sizes do shutters come in'. NEVER quote prices from this tool — it returns none; prices always come from the pricing tools.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        area: { type: 'string', description: "'shades' | 'motors' | 'drapery' | 'shutters'" },
+      },
+      required: ['area'],
+    },
+  },
+  {
+    name: 'identify_fabric_code',
+    description:
+      "Identify which product a fabric name or code belongs to across ALL our catalogs (Luma, Sundance, JC, drapery/roman fabrics). Call this whenever a customer mentions a code or fabric name you don't recognize — e.g. 'EB12-005', 'DB1-1', 'Dorus', 'Linen White'. If it's a Luma family, it's sold online: continue with the store tools. If it's Sundance/JC, describe the line and funnel to the free consultation.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        query: { type: 'string', description: 'The fabric code or name exactly as the customer said it.' },
+      },
+      required: ['query'],
+    },
+  },
+  {
     name: 'recommend_drapery_size',
     description:
       "MEASUREMENT WIZARD — compute the RECOMMENDED finished drapery size from the customer's window measurements, using the exact same rules our designers use. Collect first, in inches: window width + height (outer frame preferred), then rod type (motorized ceiling track / ceiling track / wall rod) and opening (center split or one-way). Optional but improves accuracy: wall space left/right of the window, window-top-to-ceiling gap, window-bottom-to-floor, and measured floor-to-ceiling height. Present the result as our recommendation, explain in one short sentence why it's larger than the window (stacking room / rod position), and offer to save it to their Home Project via upsert_room_item.",
@@ -776,6 +825,65 @@ export async function executeAssistantTool(
         })),
         note: 'Dims use inches; A/B/C/D = wall space left/right and gaps to ceiling/floor. Results are reference-only — final sizes/prices come from the free in-home measure.',
       }
+    }
+    case 'save_measured_window': {
+      const { saveMeasuredWindow } = await import('@/lib/windowMeasurements')
+      const numOr = (v: any) => (v != null && isFinite(Number(v)) && Number(v) > 0 ? Number(v) : null)
+      const w = numOr(input?.width_in)
+      const h = numOr(input?.height_in)
+      if (!w || !h) return { error: 'need_dims', note: 'Width and height in inches are required.' }
+      const product = ['drapery', 'shades', 'shutters'].includes(input?.product) ? input.product : 'drapery'
+      const row = await saveMeasuredWindow(
+        { userId, anonId },
+        {
+          id: typeof input?.id === 'string' ? input.id : undefined,
+          label: String(input?.location || ''),
+          kind: input?.opening === 'sliding_door' ? 'sliding_door' : 'window',
+          product,
+          config: {
+            ...(['deep', 'mid', 'shallow'].includes(input?.depth_choice) ? { depthChoice: input.depth_choice } : {}),
+            ...(['inside', 'inside_z', 'outside'].includes(input?.mount) ? { mount: input.mount } : {}),
+            ...(typeof input?.notes === 'string' && input.notes ? { notes: String(input.notes).slice(0, 300) } : {}),
+            savedVia: 'chat',
+          },
+          dims: {
+            widthIn: w,
+            heightIn: h,
+            A_leftIn: numOr(input?.clear_left_in),
+            B_rightIn: numOr(input?.clear_right_in),
+            C_topIn: numOr(input?.clear_top_in),
+            D_bottomIn: numOr(input?.clear_bottom_in),
+            wallHeightIn: numOr(input?.wall_height_in),
+            measured: 'opening',
+          },
+          result: {},
+        }
+      )
+      if (!row) return { error: 'could_not_save', note: 'Saving failed — check the location name, or the sheet may be full (60 windows).' }
+      logLeadEvent({ userId, anonId, type: 'measure_wizard', meta: { source: 'chat', action: input?.id ? 'update' : 'add', label: row.label }, campaignId })
+      return {
+        saved: { id: row.id, location: row.label, product: row.product, width_in: w, height_in: h },
+        note: "Saved to their measurement sheet. Tell the customer it's saved and they can review/edit everything at /measure-wizard.",
+      }
+    }
+    case 'get_product_specs': {
+      const { getProductSpecs } = await import('@/lib/aappCatalogQA')
+      const area = ['shades', 'motors', 'drapery', 'shutters'].includes(input?.area) ? input.area : 'shades'
+      return await getProductSpecs(area)
+    }
+    case 'identify_fabric_code': {
+      const { resolveFabricCode } = await import('@/lib/aappCatalogQA')
+      const r = await resolveFabricCode(String(input?.query || ''))
+      if (!r.ok) {
+        return {
+          error: r.error,
+          note: 'Could not identify the code right now — ask the customer where they saw it, answer generally, and offer the free consultation.',
+        }
+      }
+      if (!r.matches || r.matches.length === 0) {
+        return { matches: [], note: 'No catalog match — it may be a competitor code or a custom fabric. Ask where they saw it; offer the free consultation.' }
+      }
+      return { matches: r.matches }
     }
     case 'recommend_drapery_size': {
       const { recommendDraperySize } = await import('@window-treatments/shared/measure')
