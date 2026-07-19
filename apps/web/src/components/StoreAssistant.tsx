@@ -97,10 +97,21 @@ const QUICK_PROMPTS_STORE = [
 const TEASER_MAIN = 'Not sure which window treatment fits? Ask me anything!'
 const TEASER_STORE = 'Measuring, choosing, or pricing? Ask me anything!'
 
-// Always-visible booking entry on the welcome screen (Eddie 2026-07-19):
-// tapping it starts the assistant's consultation-booking flow (rule 9).
-const BOOKING_PROMPT = "I'd like to book a free in-home design consultation."
-const BOOKING_CHIP_LABEL = '📅 Book a free in-home consultation · 预约免费上门测量'
+// Always-visible booking entries on the welcome screen (Eddie 2026-07-19):
+// the showroom is APPOINTMENT-ONLY, so the widget says so up front and offers
+// both booking paths as one-tap actions (each starts the assistant's
+// consultation-booking flow, rule 9).
+const SHOWROOM_NOTE = 'Our Temple City showroom is by appointment only · 展厅仅接受预约参观'
+const BOOKING_ACTIONS: { label: string; prompt: string }[] = [
+  {
+    label: '📅 Book in-home measure · 预约免费上门测量',
+    prompt: "I'd like to book a free in-home measure / design consultation.",
+  },
+  {
+    label: '🏬 Book showroom visit · 预约到店参观',
+    prompt: "I'd like to book an appointment to visit your showroom.",
+  },
+]
 
 // NOTE (fix 2026-07-05): we previously hid the whole widget permanently when
 // the server reported 'assistant_unavailable'. That made the bubble vanish
@@ -580,15 +591,21 @@ export default function StoreAssistant() {
               <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                 {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {/* Primary action: booking is always one tap away on open */}
-                <button
-                  onClick={() => send(BOOKING_PROMPT)}
-                  disabled={sending}
-                  className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
-                >
-                  {BOOKING_CHIP_LABEL}
-                </button>
+              <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
+              <div className="flex flex-wrap gap-2">
+                {/* Primary actions: both booking paths are one tap from open */}
+                {BOOKING_ACTIONS.map((a) => (
+                  <button
+                    key={a.label}
+                    onClick={() => send(a.prompt)}
+                    disabled={sending}
+                    className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
+                  >
+                    {a.label}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 pt-0.5">
                 {(onStore ? QUICK_PROMPTS_STORE : QUICK_PROMPTS_MAIN).map((q) => (
                   <button key={q} onClick={() => send(q)} disabled={sending} className={chipClass}>
                     {q}
