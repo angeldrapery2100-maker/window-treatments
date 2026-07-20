@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drapery Work Order — editable</title>
+<style>
+  :root{--bg:#f5f5f7;--card:#fff;--line:#cfcfd4;--ink:#1d1d1f;--muted:#6e6e73;--brand:#1f6f5c;--brand-d:#155244;--accent:#6d28d9;--warn:#c0392b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+  header{background:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line)}
+  header h1{font-size:16px;margin:0;font-weight:700}
+  .wrap{max-width:920px;margin:14px auto;padding:0 14px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .letterhead{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .co-name{font-weight:800;font-size:18px;color:var(--brand-d)}
+  .co-meta{font-size:11px;color:var(--muted);margin-top:1px}
+  .doc-title{text-align:right}
+  .doc-title .t{font-size:16px;font-weight:800}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px}
+  .fld label{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+  .fld input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  button.act{background:var(--brand);color:#fff;border:0;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13px}
+  button.act.ghost{background:#fff;color:var(--brand-d);border:1px solid var(--line)}
+  .xbtn{background:none;border:1px solid var(--line);color:var(--warn);border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;padding:3px 10px}
+  .hint{color:var(--muted);font-size:12px}
+  /* inline editable inputs: look like text until focused */
+  .e{border:1px solid transparent;background:transparent;font-size:12px;font-weight:700;color:#1c1c1e;padding:1px 3px;border-radius:5px;font-family:inherit;width:100%;text-align:center}
+  .e:focus{border-color:var(--brand);background:#fff;outline:none}
+  /* ── work-order card (mirrors the exported drapery format) ── */
+  .wo{position:relative;background:#fff;border:1.5px solid #1c1c1e;border-radius:8px;padding:0;margin-bottom:14px;overflow:hidden}
+  /* subtle, hard-to-mis-tap remove: faint corner dot, only colors on hover, confirm on click */
+  .delx{position:absolute;top:4px;right:6px;width:18px;height:18px;border:0;background:transparent;color:#e0e0e4;font-size:12px;line-height:1;cursor:pointer;border-radius:50%;z-index:3;opacity:.6;transition:.15s}
+  .delx:hover{color:#fff;background:var(--warn);opacity:1}
+  .wo .hdr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 28px 8px 12px;border-bottom:2px solid #1c1c1e}
+  .seq{font-size:14px;font-weight:800;white-space:nowrap}
+  .wo .hdr .loc{font-size:14px;font-weight:800;border:0;background:transparent;font-family:inherit;color:#1c1c1e;min-width:120px}
+  .wo .hdr .size{flex:1;text-align:left;padding-left:6px;font-size:16px;font-weight:800;border:0;background:transparent;font-family:inherit;color:#1c1c1e;min-width:140px}
+  .wo .hdr .sub{display:flex;align-items:center;gap:4px;color:var(--accent);font-weight:700;font-size:12px;white-space:nowrap;flex-shrink:0;margin-left:auto}
+  .wo .hdr .sub input{border:0;background:transparent;color:var(--accent);font-weight:700;font-size:12px;font-family:inherit;text-align:center;width:auto}
+  .wo .hdr .sub select{border:0;background:transparent;color:var(--accent);font-weight:700;font-size:12px;font-family:inherit;cursor:pointer;max-width:130px}
+  .wo .hdr .sub select:focus{outline:1px solid var(--brand);border-radius:4px}
+  .wo .hdr .sub .dot{color:#bbb}
+  table.dt{width:100%;border-collapse:collapse}
+  .dt th,.dt td{border:1px solid var(--line);padding:4px 5px;text-align:center;vertical-align:middle}
+  .dt thead th{background:#fff;font-size:9.5px;color:#333;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+  .dt td.fab{text-align:center}
+  .dt td.fab .fn{display:block;border:0;background:transparent;color:var(--accent);font-weight:800;font-size:15px;font-family:inherit;width:100%;text-align:center}
+  .dt td.fab .fc{display:block;border:0;background:transparent;color:var(--muted);font-weight:700;font-size:12px;font-family:inherit;width:100%;text-align:center;margin-top:1px}
+  .dt td.fab .fw{display:block;border:0;background:transparent;color:var(--muted);font-weight:700;font-size:11px;font-family:inherit;width:100%;text-align:center;margin-top:1px}
+  .dt .fab{min-width:150px;width:150px}
+  .dt .dim{min-width:64px;width:64px}
+  .dt .pan{min-width:42px;width:42px}
+  .dt .bfc{min-width:74px;width:74px}
+  .dt .ret{min-width:86px;width:86px}
+  .dt .lin{min-width:39px;width:39px}
+  .dt td .e{font-size:16px;font-weight:800}
+  select.e{font-weight:800}
+  /* Lining dropdown — half width, no native arrow, centered value */
+  .dt .lin select.e{appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:none;text-align:center;text-align-last:center;padding:0 1px}
+  .dt .lin select.e::-ms-expand{display:none}
+  .acc{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:11px;color:#1c1c1e;border-top:1px solid #f0f0f0}
+  .acc .k{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+  .acc input{flex:1;border:0;background:transparent;font-family:inherit;font-size:11px;color:#1c1c1e;outline:none}
+  .notes{display:flex;align-items:flex-start;gap:6px;padding:6px 12px;background:#fffaf0;border-top:1px solid #ffe8c2}
+  .notes textarea{flex:1;border:0;background:transparent;font-family:inherit;font-size:11px;color:#7a4a00;resize:vertical;min-height:26px;outline:none}
+  /* repeating page header — a <thead> in a full-page table reliably reprints
+     PO / Sidemark / Completion date at the top of EVERY printed page */
+  .pgwrap{width:100%;border-collapse:collapse}
+  .pgwrap>thead>tr>td,.pgwrap>tbody>tr>td{padding:0;border:0;vertical-align:top}
+  .run-head{display:none}
+  @media print{
+    @page{size:A4;margin:12mm 10mm 10mm}
+    header,.toolbar,.no-print,.meta-panel{display:none!important}
+    body{background:#fff}.wrap{max-width:none;margin:0;padding:0}
+    .panel{border:0;box-shadow:none}.e,.notes textarea,.acc input{border:0}
+    .wo .hdr .sub select{appearance:none;-webkit-appearance:none;-moz-appearance:none;text-align:center}
+    .run-head{display:flex!important;justify-content:space-between;align-items:center;gap:12px;
+      padding:5px 2px 6px;margin-bottom:9px;border-bottom:2.5px solid #1c1c1e}
+    .run-head .L{font-size:13.5px;font-weight:800;color:#1c1c1e}
+    .run-head .L b{color:var(--accent)}
+    .run-head .R{font-size:12px;font-weight:800;color:#1c1c1e;text-align:right;white-space:nowrap}
+    .run-head .R b{color:var(--warn)}
+    /* keep each window card whole — never split across pages */
+    .wo{break-inside:avoid;page-break-inside:avoid}
+    /* empty notes / accessories are marked .print-hide just before printing */
+    .print-hide{display:none!important}
+    /* belt-and-suspenders: hide a notes row whose textarea is still empty
+       (showing only its placeholder) so blank notes never print */
+    .wo .notes:has(textarea:placeholder-shown){display:none!important}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Drapery Work Order <span style="font-weight:400;color:var(--muted);font-size:12px">· editable · 可编辑</span></h1>
+  <div class="toolbar">
+    <button class="act ghost" onclick="addWindow()">＋ Add window</button>
+    <button class="act ghost" onclick="printDoc()">🖨️ Print / PDF</button>
+    <button class="act ghost" onclick="saveOrder()">💾 Save</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="panel letterhead">
+    <div>
+      <div class="co-name" id="coName">Angel Drapery, Inc</div>
+      <div class="co-meta" id="coMeta">8831 Las Tunas Dr, Temple City, CA 91780 · 888-689-9989 · angel-drapery.com</div>
+    </div>
+    <div class="doc-title"><div class="t">Drapery Work Order</div><div class="co-meta">Handcrafted Drapery · 手工窗帘工单</div></div>
+  </div>
+
+  <div class="panel meta-panel">
+    <div class="meta-grid">
+      <div class="fld"><label>PO #</label><input id="m_po" placeholder="PO-..."></div>
+      <div class="fld"><label>Sidemark</label><input id="m_sidemark"></div>
+      <div class="fld"><label>Order Date</label><input id="m_date" type="date"></div>
+      <div class="fld"><label>完成日期 / Completion</label><input id="m_complete" type="date"></div>
+    </div>
+    <div class="hint no-print" style="margin-top:8px">💡 每个值都可直接点改;每个窗户底部有备注。修改后自动保存;点 Print / PDF 导出。</div>
+  </div>
+
+  <table class="pgwrap">
+    <thead><tr><td>
+      <div class="run-head" id="printRunning"></div>
+    </td></tr></thead>
+    <tbody><tr><td>
+      <div id="cards"></div>
+    </td></tr></tbody>
+  </table>
+</div>
+
+<script>
+/* Rows are pushed in by the host page via postMessage DRAPERY_LOAD
+   (see the App integration bridge at the bottom). Starts empty. */
+var WINDOWS = [];
+
+var DRMETA={};  // {ops:[{k,label}], styles:{pleated:[...],ripple:[...]}} — pushed by the app
+function escAttr(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function escHtml(s){return String(s==null?"":s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function ed(idx,path,val,cls,extra){
+  return '<input class="e '+(cls||'')+'" value="'+escAttr(val)+'" '+(extra||'')+' oninput="setField('+idx+',\''+path+'\',this.value)">';
+}
+function liningSel(idx,path,val){
+  var opts=['—','NO','LF','BO'],o=val||'—';
+  var h='<select class="e" onchange="setField('+idx+',\''+path+'\',this.value)">';
+  opts.forEach(function(x){h+='<option'+(x===o?' selected':'')+'>'+escHtml(x)+'</option>';});
+  return h+'</select>';
+}
+function layerRow(idx,li,L){
+  var p='layers.'+li+'.';
+  return '<tr>'
+    + '<td class="fab">'+ed(idx,p+'name',L.name,'fn')+ed(idx,p+'color',L.color,'fc','placeholder="color / 颜色"')+ed(idx,p+'width',L.width,'fw','placeholder="幅宽 width"')+'</td>'
+    + '<td class="dim">'+ed(idx,p+'cutW',L.cutW)+'</td>'
+    + '<td class="dim">'+ed(idx,p+'cutH',L.cutH)+'</td>'
+    + '<td class="pan">'+ed(idx,p+'panels',L.panels)+'</td>'
+    + '<td class="bfc">'+ed(idx,p+'botton',L.botton)+'</td>'
+    + '<td class="lin">'+liningSel(idx,p+'lining',L.lining)+'</td>'
+    + '<td class="ret">'+ed(idx,p+'ret',L.ret)+'</td>'
+    + '</tr>';
+}
+/* operation / pleat-style as dropdowns (fall back to text input when the app
+   hasn't supplied option lists, e.g. standalone demo). Changing either asks the
+   app to recompute panels / single width / 扣幅裁 with the software engine. */
+function opStyleField(idx,w,which){
+  if(which==='op'){
+    var ops=DRMETA.ops;
+    if(!ops||!ops.length) return ed(idx,'operation',w.operation,'','style="width:104px"');
+    var cur=w.operationKey||'';
+    var h='<select class="e" onchange="changeOpStyle('+idx+',\'op\',this.value)">';
+    ops.forEach(function(o){h+='<option value="'+escAttr(o.k)+'"'+(o.k===cur?' selected':'')+'>'+escHtml(o.label)+'</option>';});
+    return h+'</select>';
+  }
+  /* v699: show ALL styles (打褶 + 蛇形) in one dropdown so a pleated row can
+     switch to Perfect/Grand Wave or US % fullness and vice versa — the style
+     family follows the picked key (cn_/us_ → ripple). */
+  var pl=(DRMETA.styles&&DRMETA.styles.pleated)||[];
+  var rp=(DRMETA.styles&&DRMETA.styles.ripple)||[];
+  var list=pl.concat(rp);
+  if(!list.length) return ed(idx,'style',(w.style||'2-Fold Pinch'),'','style="width:104px"');
+  var curS=w.styleKey||'';
+  var h2='<select class="e" onchange="changeOpStyle('+idx+',\'style\',this.value)">';
+  if(curS && !list.some(function(s){return s.k===curS;})) h2+='<option value="'+escAttr(curS)+'" selected>'+escHtml(w.style||curS)+'</option>';
+  list.forEach(function(s){h2+='<option value="'+escAttr(s.k)+'"'+(s.k===curS?' selected':'')+'>'+escHtml(s.label)+'</option>';});
+  return h2+'</select>';
+}
+function _opLabelOf(k){var o=(DRMETA.ops||[]).find(function(x){return x.k===k;});return o?o.label:k;}
+function _styleFamOf(k){return /^(cn_|us_)/.test(String(k||''))?'ripple':'pleated';}
+function _styleLabelOf(k,fam){
+  var all=((DRMETA.styles&&DRMETA.styles.pleated)||[]).concat((DRMETA.styles&&DRMETA.styles.ripple)||[]);
+  var s=all.find(function(x){return x.k===k;});return s?s.label:k;
+}
+function changeOpStyle(idx,which,val){
+  var w=WINDOWS[idx]; if(!w) return;
+  if(which==='op'){ w.operationKey=val; w.operation=_opLabelOf(val); }
+  else { w.styleKey=val; w.styleFamily=_styleFamOf(val); w.style=_styleLabelOf(val,w.styleFamily); }
+  render();
+  if(window._drRequestRecalc) window._drRequestRecalc(idx);
+  if(window._emitSave) window._emitSave();
+}
+/* size edited (fires on blur/Enter) → ask the host app to re-run the drapery
+   engine with the new finished size so 单片尺寸 / 幅数(扣幅裁) / fabric usage
+   all follow. oninput above already keeps the raw string saved. */
+function sizeChanged(idx){
+  if(window._drRequestRecalc) window._drRequestRecalc(idx);
+}
+function buildCard(w,idx){
+  var rows=(w.layers||[]).map(function(L,li){return layerRow(idx,li,L);}).join('');
+  return '<div class="wo">'
+    + '<button class="delx no-print" title="Remove window" onclick="delWindow('+idx+')">✕</button>'
+    + '<div class="hdr">'
+    +   '<span class="seq">#'+(idx+1)+'</span>'
+    +   '<input class="loc" value="'+escAttr(w.location)+'" oninput="setField('+idx+',\'location\',this.value)">'
+    +   '<input class="size" value="'+escAttr(w.size)+'" oninput="setField('+idx+',\'size\',this.value)" onchange="sizeChanged('+idx+')" title="改尺寸后按回车或点击别处，单片尺寸/幅数/用料自动重算">'
+    +   '<div class="sub">'
+    +     opStyleField(idx,w,'op')+'<span class="dot">·</span>'
+    // 款式 / style — operation + pleat are click-to-select; changing either
+    // recomputes panels / single width / 扣幅裁 via the software engine.
+    +     opStyleField(idx,w,'style')
+    +   '</div>'
+    + '</div>'
+    + '<table class="dt"><thead>'
+    +   '<tr><th rowspan="2" class="fab">布料 FABRIC</th><th colspan="2">单片尺寸</th><th rowspan="2" class="pan">PANELS</th><th rowspan="2" class="bfc">扣/幅/裁</th><th rowspan="2" class="lin">LINING</th><th rowspan="2" class="ret">RETURN</th></tr>'
+    +   '<tr><th class="dim">宽</th><th class="dim">高</th></tr>'
+    + '</thead><tbody>'+rows+'</tbody></table>'
+    + '<div class="notes">📝<textarea placeholder="窗户备注 / Notes for this window..." oninput="setField('+idx+',\'notes\',this.value)">'+escHtml(w.notes||'')+'</textarea></div>'
+    + '</div>';
+}
+function render(){var html='';WINDOWS.forEach(function(w,i){html+=buildCard(w,i);});document.getElementById('cards').innerHTML=html;}
+function setField(idx,path,val){var w=WINDOWS[idx];if(!w)return;var parts=path.split('.'),o=w;
+  for(var i=0;i<parts.length-1;i++){var k=parts[i];if(/^\d+$/.test(parts[i+1])&&!Array.isArray(o[k]))o[k]=o[k]||[];if(o[k]==null)o[k]={};o=o[k];}
+  o[parts[parts.length-1]]=val;
+  if(window._emitSave)window._emitSave();}
+function addWindow(){WINDOWS.push({location:'New Window',size:'',operation:'Split Draw',style:'2-Fold Pinch',
+  layers:[{name:'',width:'',cutW:'',cutH:'',panels:'2',botton:'',lining:'—',ret:'3 1/2"'}],notes:''});render();}
+function delWindow(idx){if(!confirm('Remove this window?'))return;WINDOWS.splice(idx,1);render();}
+function val(id){var e=document.getElementById(id);return e?e.value:'';}
+function saveOrder(){ if(window._emitSave){window._emitSave();} toast('Saved'); }
+var _tt;function toast(m){var t=document.getElementById('_t');if(!t){t=document.createElement('div');t.id='_t';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1d1d1f;color:#fff;padding:10px 18px;border-radius:24px;font-size:13px;z-index:99;transition:opacity .3s';document.body.appendChild(t);}t.textContent=m;t.style.opacity='1';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';},1500);}
+/* don't export an empty Notes / Accessories row — mark blank ones .print-hide right before printing */
+function _markEmptyForPrint(on){
+  document.querySelectorAll('.wo .notes').forEach(function(n){var ta=n.querySelector('textarea');
+    n.classList.toggle('print-hide', on && !(ta && ta.value.trim()));});
+}
+/* fill the repeating page header (PO / Sidemark / Completion on every page) */
+function _fillPrintRunning(){
+  var po=val('m_po'),sm=val('m_sidemark'),cd=val('m_complete'),dt=val('m_date');
+  document.getElementById('printRunning').innerHTML=
+     '<span class="L">PO <b>'+escHtml(po||'—')+'</b> &nbsp;·&nbsp; Sidemark <b>'+escHtml(sm||'—')+'</b></span>'
+   + '<span class="R">完成日期 / Due: <b>'+escHtml(cd||'—')+'</b>'+(dt?' &nbsp;·&nbsp; Ordered '+escHtml(dt):'')+'</span>';
+}
+/* PDF filename = the document title at print time → include PO + Sidemark.
+   Chrome snapshots the filename when print() is CALLED, so the title must be set
+   BEFORE window.print(), not only inside beforeprint. */
+var _savedTitle=document.title;
+function _sanFn(s){return String(s||'').replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,' ').trim();}
+function _applyPrintTitle(){
+  var po=_sanFn(val('m_po')),sm=_sanFn(val('m_sidemark'));
+  var name='Drapery WO'+(po?' '+po:'')+(sm?' - '+sm:'');
+  if(document.title!==name){ _savedTitle=document.title; document.title=name||_savedTitle; }
+}
+window.addEventListener('beforeprint',function(){ _fillPrintRunning();_markEmptyForPrint(true);_applyPrintTitle(); });
+window.addEventListener('afterprint',function(){ _markEmptyForPrint(false);document.title=_savedTitle; });
+/* manual Print/PDF button + popup print both go through here */
+function printDoc(){ _fillPrintRunning();_markEmptyForPrint(true);_applyPrintTitle(); window.print(); }
+/* completion date defaults to order date + 2 weeks */
+function _addDays(iso,n){var d=new Date(iso+'T00:00:00');if(isNaN(d))return'';d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+var _completeEdited=false;
+function _syncCompletion(){ // refresh default only while user hasn't manually set it
+  if(_completeEdited)return;
+  var od=val('m_date'); if(od) document.getElementById('m_complete').value=_addDays(od,14);
+}
+['m_po','m_sidemark','m_complete','m_date'].forEach(function(id){
+  var el=document.getElementById(id); if(el) el.addEventListener('input',_fillPrintRunning);
+});
+document.getElementById('m_date').addEventListener('input',function(){_syncCompletion();_fillPrintRunning();});
+document.getElementById('m_complete').addEventListener('input',function(){_completeEdited=true;});
+
+(function init(){var today=new Date().toISOString().slice(0,10);
+  document.getElementById('m_date').value=today;
+  document.getElementById('m_complete').value=_addDays(today,14);
+  _fillPrintRunning();render();})();
+
+/* ===== App integration bridge (embedded iframe + print popup) =====
+   DRAPERY_READY  → announce to host
+   DRAPERY_LOAD   → host pushes {payload, print} → populate + (optionally) print
+   DRAPERY_SAVE   → form pushes edits back to host (debounced)               */
+(function(){
+  var TGT = window.opener || (window.parent !== window ? window.parent : null);
+  function post(type, extra){ if(!TGT) return; try{ var o={type:type}; if(extra) for(var k in extra) o[k]=extra[k]; TGT.postMessage(o,'*'); }catch(e){} }
+  function normWin(w){ w=w||{}; return {
+    location:w.location||'', size:w.size||'', operation:w.operation||'',
+    operationKey:w.operationKey||'', styleKey:w.styleKey||'', styleFamily:w.styleFamily||'pleated',
+    style:w.style||w.pleat||w.usPct||'',
+    layers:(w.layers||[]).map(function(L){L=L||{};return {name:L.name||'',color:L.color||'',width:L.width||'',cutW:L.cutW||'',cutH:L.cutH||'',panels:L.panels||'',botton:L.botton||'',lining:L.lining||'—',ret:L.ret||''};}),
+    notes:w.notes||'' }; }
+  function setMeta(m){ m=m||{};
+    if(m.company!=null){var c=document.getElementById('coName');if(c)c.textContent=m.company;}
+    var cm=[]; if(m.address)cm.push(m.address); if(m.phone)cm.push(m.phone); if(m.website)cm.push(m.website);
+    if(cm.length){var e=document.getElementById('coMeta');if(e)e.textContent=cm.join(' · ');}
+    if(m.po!=null)document.getElementById('m_po').value=m.po;
+    if(m.sidemark!=null)document.getElementById('m_sidemark').value=m.sidemark;
+    if(m.date!=null)document.getElementById('m_date').value=m.date;
+    if(m.complete!=null&&m.complete!==''){document.getElementById('m_complete').value=m.complete;_completeEdited=true;}
+    else if(m.date){document.getElementById('m_complete').value=_addDays(m.date,14);}
+    _fillPrintRunning(); }
+  window.applyPayload=function(payload){ payload=payload||{};
+    if(payload.meta){ if(payload.meta.ops)DRMETA.ops=payload.meta.ops; if(payload.meta.styles)DRMETA.styles=payload.meta.styles; }
+    var rows = payload.rows || payload.windows;
+    if(Array.isArray(rows)) WINDOWS = rows.map(normWin);
+    setMeta(payload.meta); render(); };
+  // op/style/size change → ask the host app to recompute geometry (WO-only)
+  window._drRequestRecalc=function(idx){ var w=WINDOWS[idx]; if(!w||!TGT) return;
+    post('DRAPERY_RECALC',{ idx:idx, opKey:w.operationKey||'', styleKey:w.styleKey||'', size:w.size||'', data:window.collectData() }); };
+  window.collectData=function(){ return {
+    meta:{ po:val('m_po'), sidemark:val('m_sidemark'), date:val('m_date'), complete:val('m_complete') },
+    rows: WINDOWS }; };
+  var _sv; window._emitSave=function(){ if(!TGT)return; clearTimeout(_sv); _sv=setTimeout(function(){ post('DRAPERY_SAVE',{data:window.collectData()}); },400); };
+  ['m_po','m_sidemark','m_complete','m_date'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.addEventListener('input',function(){ if(window._emitSave)window._emitSave(); }); });
+  window.addEventListener('message',function(e){ var d=e.data||{};
+    if(d.type==='DRAPERY_LOAD'){ window.applyPayload(d.payload); if(d.print){ setTimeout(function(){ (window.printDoc||window.print)(); },350); } } });
+  post('DRAPERY_READY');
+})();
+</script>
+</body>
+</html>

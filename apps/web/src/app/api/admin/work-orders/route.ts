@@ -91,4 +91,52 @@ export async function POST(request: Request) {
   }
 }
 
+// PATCH: autosave hand-edits from an embedded work-order form (drapery / luma).
+// Stores { [formType]: formData } into work_orders.form_data on the LATEST
+// version, without minting a new version (edits are continuous). Creates a
+// version-1 row on the fly if the order has no work order yet (e.g. a legacy
+// order that never got the auto-generated snapshot).
+export async function PATCH(request: Request) {
+  try { requireAdmin(request) } catch {
+    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  }
+  try {
+    await ensureWorkOrdersTable()
+    const body = await request.json()
+    const { orderId, formType, formData } = body || {}
+
+    if (!orderId) return NextResponse.json({ success: false, error: 'orderId required' }, { status: 400 })
+    if (formType !== 'drapery' && formType !== 'luma') {
+      return NextResponse.json({ success: false, error: "formType must be 'drapery' or 'luma'" }, { status: 400 })
+    }
+
+    // Latest version row for this order (create one if none exists).
+    let latest = await queryOne<{ id: string; form_data: any }>(
+      'SELECT id, form_data FROM work_orders WHERE order_id = $1 ORDER BY version DESC LIMIT 1',
+      [orderId]
+    )
+    if (!latest) {
+      latest = await queryOne<{ id: string; form_data: any }>(
+        `INSERT INTO work_orders (order_id, version, created_by, notes)
+         VALUES ($1, 1, 'admin', '') RETURNING id, form_data`,
+        [orderId]
+      )
+    }
+    if (!latest) return NextResponse.json({ success: false, error: 'Could not locate work order' }, { status: 500 })
+
+    // jsonb_set merges the one formType key without clobbering the other form.
+    await query(
+      `UPDATE work_orders
+          SET form_data = jsonb_set(COALESCE(form_data, '{}'::jsonb), $2, $3::jsonb, true),
+              updated_at = NOW()
+        WHERE id = $1`,
+      [latest.id, `{${formType}}`, JSON.stringify(formData ?? {})]
+    )
+
+    return NextResponse.json({ success: true })
+  } catch (e) {
+    return errorResponse('Could not autosave the work order.', 500, e)
+  }
+}
+
 export const dynamic = 'force-dynamic'

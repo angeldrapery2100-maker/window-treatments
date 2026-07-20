@@ -67,6 +67,12 @@ export async function ensureWorkOrdersColumns(): Promise<void> {
   await query(`CREATE INDEX IF NOT EXISTS idx_work_orders_order_id ON work_orders(order_id)`).catch(() => {})
   await query(`ALTER TABLE work_orders ADD COLUMN IF NOT EXISTS items_snapshot jsonb DEFAULT NULL`).catch(() => {})
   await query(`ALTER TABLE work_orders ADD COLUMN IF NOT EXISTS auto_generated boolean DEFAULT false`).catch(() => {})
+  // form_data: hand-edits made in the embedded AAPP-style work-order forms
+  // (drapery / luma), keyed by form type: { drapery: {meta,rows}, luma: {...} }.
+  // Autosaved on every edit (see PATCH /api/admin/work-orders) so the workshop's
+  // corrections survive reloads. The auto-generated items_snapshot stays the
+  // untouched production truth; form_data is the editable overlay on top of it.
+  await query(`ALTER TABLE work_orders ADD COLUMN IF NOT EXISTS form_data jsonb DEFAULT NULL`).catch(() => {})
   columnsEnsured = true
 }
 
