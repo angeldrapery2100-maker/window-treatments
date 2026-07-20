@@ -676,6 +676,21 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'get_sundance_jc_estimate',
+    description:
+      "Get a Sundance or JC REFERENCE PRICE RANGE for a shade/blind. Use for Sundance (roller / faux-wood or wood horizontal blind / vertical blind / cellular) and JC (horizontal faux-wood or wood blind / woven woods) — NOT Hunter Douglas (use get_hd_estimate), NOT Cambridge shutter (use quote_shutter_estimate), NOT Luma store products (use quote_store_product). First identify the exact product with identify_fabric_code, then call this with the variant, the fabric/config it returned, and width/height in inches. Present ONLY the returned range as a REFERENCE: say the final price comes from our designer after the free in-home measure, every time, then offer to book. If it returns needs_more, ask the customer for the listed missing details (or offer the consultation); if it can't price, offer the consultation. Never state an exact figure or any wholesale/net price.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        variant: { type: 'string', description: "Exact product variant, e.g. 'sundance_roller_shade', 'sundance_wood_blind', 'sundance_cellular_shade', 'jc_woven_woods_standard', 'jc_horizontal_blinds_wood' — from identify_fabric_code." },
+        config: { type: 'object', description: 'Product configuration (fabric/color/price-group/cassette/control etc.) — use the configTemplate identify_fabric_code returned, filling in what the customer told you.' },
+        width_in: { type: 'number', description: 'Window width in inches.' },
+        height_in: { type: 'number', description: 'Window height in inches.' },
+      },
+      required: ['variant'],
+    },
+  },
+  {
     name: 'get_home_project',
     description:
       "Get the customer's saved Home Project (their room-by-room plan: rooms, items, sizes, options, exact computed prices, subtotal). Works for guests too (tied to their browser). Call this before adding/updating items, or whenever the customer asks what's in their project / their total.",
@@ -1002,6 +1017,35 @@ export async function executeAssistantTool(
         must_say:
           'Present as a REFERENCE price (加装费 install listed separately). The final price is confirmed by our designer after the FREE in-home measurement — say that every time, then offer to book the consultation.',
       }
+    }
+    case 'get_sundance_jc_estimate': {
+      const { sundanceJcEstimate } = await import('@/lib/sundanceJcPricing')
+      const est = await sundanceJcEstimate({
+        variant: String(input?.variant || ''),
+        productConfig: input?.config && typeof input.config === 'object' ? input.config : {},
+        widthIn: input?.width_in != null ? Number(input.width_in) : undefined,
+        heightIn: input?.height_in != null ? Number(input.height_in) : undefined,
+      })
+      if (est.ok && est.rangeLow) {
+        logLeadEvent({
+          userId, anonId, type: 'sundance_jc_estimate',
+          value: est.rangeLow, meta: { brand: est.brand, variant: input?.variant, w: input?.width_in, h: input?.height_in }, campaignId,
+        })
+        return {
+          brand: est.brand,
+          reference_range: `$${est.rangeLow.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+          range_low: est.rangeLow,
+          range_high: est.rangeHigh,
+          must_say: `Reference range only (per shade/blind, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.`,
+        }
+      }
+      if (est.error === 'needs_more') {
+        return { needs_more: true, missing: est.needs, note: 'Ask the customer for these details, or offer the free consultation to finalize.' }
+      }
+      if (est.error === 'not_configured') {
+        return { error: 'not_configured', note: 'Sundance/JC estimate is not available yet — describe the product qualitatively (mid-range, reliable) and offer the free in-home consultation for pricing.' }
+      }
+      return { error: est.error, note: 'Could not compute a Sundance/JC reference range — tell the customer a designer will quote it at the free in-home consultation. Do NOT invent a number.' }
     }
     case 'get_home_project':
       return await getHomeProjectTool(owner)
