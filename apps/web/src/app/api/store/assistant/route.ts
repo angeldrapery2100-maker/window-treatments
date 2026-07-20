@@ -376,7 +376,7 @@ export async function POST(request: Request) {
     // tool loop (lookup order → verify → submit request) runs entirely here;
     // tool_use / tool_result blocks never leave the server, so a client can't
     // forge a "verified" result — and submit_service_request re-verifies anyway.
-    const model = process.env.ASSISTANT_MODEL || 'claude-haiku-4-5'
+    const model = process.env.ASSISTANT_MODEL || 'claude-sonnet-5'
     const system = buildSystemPrompt(messages, surface)
     // Final turn with photos becomes an image+text content-block array; every
     // other turn stays plain text.

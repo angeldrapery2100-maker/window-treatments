@@ -88,7 +88,19 @@ need track length and drop.
   hub for app & voice control).
 - Cassette 帘头盒: open roll (no cassette) / round fabric-wrapped / square fabric-wrapped.
 - Control side: left or right — pick the side easiest to reach.
-- Zebra shades: alternate sheer & solid bands; align bands for view+light, offset for privacy.
+- Roller shade fabrics come in three light levels: SUNSCREEN / solar — has an openness %
+  (e.g. 1% / 3% / 5% / 10%); higher % = more see-through by day, and at night with the
+  lights on people outside can see in more. LIGHT-FILTERING — softens daylight, you can't
+  see figures through it, so better privacy than sunscreen. BLACKOUT — blocks light for
+  bedrooms; never promise 100% (edges can leak a little).
+- Zebra shades: alternate sheer & solid bands; align bands for view+light, offset for
+  privacy. Durability note: a plain roller is the most hard-wearing of the shades; zebra's
+  alternating bands and extra mechanism make it slightly less durable over years of heavy
+  use or strong sun — say so honestly, don't claim zebra is tougher than a roller.
+- Handcrafted roman styles: FLAT = crisp flat panel with clean horizontal folds, most
+  modern; SLOUCH / SOFT = relaxed, gently rounded folds; FRONT FOLD vs REVERSE FOLD = the
+  folds face the room vs face the window; HOBBLED = permanent overlapping looped folds that
+  STAY looped even when the shade is raised (full, traditional, soft look — uses more fabric).
 - Cellular/honeycomb: best insulation (energy saving); single vs double cell; light-filtering
   vs blackout; cordless and top-down-bottom-up available.
 - Room tips: bedrooms → BO lining or blackout cellular/roller; bathrooms → faux-wood

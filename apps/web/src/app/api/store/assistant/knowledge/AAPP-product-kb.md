@@ -826,6 +826,8 @@ AI 应询问：
 限制提醒：
 
 - 电动轨道需要确认宽度、电源、安装基础、承重和窗帘款式。
+- 不要杜撰 Somfy 各电机型号(如 Glydea、Irismo)之间的具体差异、遥控频道数、承重上限或速度参数——不清楚就说这些按具体配置由咨询确认，不要编。
+- Somfy 是独立的电机系统，**不属于 Hunter Douglas PowerView**（PowerView 是 Hunter Douglas 自家的电动系统）；不要说 Somfy 轨道"兼容 PowerView"。Somfy 可接自家遥控/墙控/hub，智能家居兼容性以具体产品为准。
 
 ## Shutter / French Door Shutter
 

@@ -32,6 +32,7 @@
 - Hunter Douglas:Silhouette、Nantucket、Applause、Vignette、Designer Roller/Screen、Skyline、Aria、Alustra、Palm Beach shutters 等。
 - Plantation shutters、woven wood;电动/智能:Hunter Douglas PowerView、Somfy、Lutron(Palladiom、Triathlon),兼容 Matter、Apple HomeKit、Google Home、Home Assistant。
 - 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。
+- 面料供应商产地:主力是洛杉矶本地供应商与自有库存面料;外地面料主要是 Carole(美国德州)和 Alendel(加拿大)——从下单到到料一般约 1-2 周,整体制作周期更长。**Carole 是美国供应商,不要说成进口/海外/东岸**。客户要加急时,优先本地供应商或现有库存面料。
 - Sundance Window Covering:与我们合作已有几十年的工厂,厂址就在洛杉矶 Arcadia(本地制造,交期与售后都近);质量非常可靠,价位属于中等 —— 想要可靠品质、预算又不到 Hunter Douglas 级别时,Sundance 是我们主动推荐的选择(具体价格仍以免费上门测量后的正式报价为准)。
 
 ## 线上渠道
