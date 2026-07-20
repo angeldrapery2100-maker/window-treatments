@@ -200,10 +200,64 @@ function bottonVal(
   return wps != null && !Number.isNaN(wps) && wps !== 0 ? String(wps) : ''
 }
 
+// Parse an inch string like "3 1/2", "3 1/2 inches", "3½"" → 3.5.
+function parseInches(s: unknown): number {
+  if (s == null) return 0
+  let t = String(s).toLowerCase().replace(/inches?|in\b|["″']/g, '').trim()
+  for (const [g, v] of Object.entries({ '⅛': .125, '¼': .25, '⅜': .375, '½': .5, '⅝': .625, '¾': .75, '⅞': .875 })) t = t.replace(g, ' ' + v)
+  const m = t.match(/^(\d+)\s+(\d+)\/(\d+)$/) // "3 1/2"
+  if (m) return Number(m[1]) + (Number(m[3]) ? Number(m[2]) / Number(m[3]) : 0)
+  const f = t.match(/^(\d+)\/(\d+)$/) // "1/2"
+  if (f) return Number(f[2]) ? Number(f[1]) / Number(f[2]) : 0
+  const n = Number(t)
+  return Number.isFinite(n) ? n : 0
+}
+
+// ── Fallbacks from the ORDER OPTIONS (used when there's no engine breakdown) ──
+// Website drapery lines carry pleat_style / operation / lining / return as
+// selected options; the AAPP-parity engine isn't always wired, so these are
+// usually the real source of truth for the work order.
+function opKeyFromOption(item: FormOrderItem): string {
+  const o = findOption(item, [/^operation$/i, /operation|draw|split/i])
+  const s = `${o?.value || ''} ${o?.valueLabel || ''}`.toLowerCase()
+  if (!s.trim()) return ''
+  if (/left|owl|\bl\b/.test(s)) return 'single_left'
+  if (/right|owr|\br\b/.test(s)) return 'single_right'
+  if (/center|c\/o|split|both/.test(s)) return 'split'
+  return ''
+}
+function styleFromOption(item: FormOrderItem): { key: string; family: string } {
+  const o = findOption(item, [/pleat_style|^pleat$|^style$/i, /pleat|fold|wave/i])
+  const s = `${o?.value || ''} ${o?.valueLabel || ''}`.toLowerCase()
+  if (!s.trim()) return { key: '', family: '' }
+  if (/us\s*120|120%/.test(s)) return { key: 'us_120', family: 'ripple' }
+  if (/us\s*100|100%/.test(s)) return { key: 'us_100', family: 'ripple' }
+  if (/us\s*80|80%/.test(s)) return { key: 'us_80', family: 'ripple' }
+  if (/us\s*60|60%/.test(s)) return { key: 'us_60', family: 'ripple' }
+  if (/grand|7\s*cm/.test(s)) return { key: 'cn_7cm', family: 'ripple' }
+  if (/perfect|ripple|wave|6\s*cm/.test(s)) return { key: 'cn_6cm', family: 'ripple' }
+  if (/3.*tailor|tailor.*3/.test(s)) return { key: 'tailored_3', family: 'pleated' }
+  if (/tailor/.test(s)) return { key: 'tailored_2', family: 'pleated' }
+  if (/3.*(fold|pinch)|pinch.*3|triple/.test(s)) return { key: 'pinch_3', family: 'pleated' }
+  if (/pinch|fold/.test(s)) return { key: 'pinch_2', family: 'pleated' }
+  return { key: '', family: '' }
+}
+function liningFromOption(item: FormOrderItem): string {
+  const o = findOption(item, [/^lining$/i, /lining/i])
+  const s = `${o?.value || ''} ${o?.valueLabel || ''}`.toLowerCase()
+  if (!s.trim()) return ''
+  if (/black\s*out|\bbo\b/.test(s)) return 'BO'
+  if (/light|filter|\blf\b|privacy|interlin/.test(s)) return 'LF'
+  if (/no\b|none|unlined/.test(s)) return 'NO'
+  return ''
+}
+
 /**
  * Build one drapery-form row from an order line + its engine breakdown.
- * Best-effort: any field the breakdown/options don't supply is left blank for
- * the workshop to fill in the (fully editable) form.
+ * Prefers the engine breakdown when present; otherwise pulls operation / pleat
+ * style / lining / return straight from the order options. Anything still
+ * unknown (e.g. 扣/幅/裁 widths, which only the engine computes) is left blank
+ * for the workshop to fill in the fully-editable form.
  */
 export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): DraperyFormRow {
   const { item } = entry
@@ -214,9 +268,10 @@ export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): Dra
   const finW = num(p.finishedWidthIn) || (num(item.width) + parseFraction(item.widthFraction))
   const finH = num(p.finishedHeightIn) || (num(item.height) + parseFraction(item.heightFraction))
 
-  const operation = String(p.operation || '') || 'split'
-  const styleKey = String(p.styleKey || '')
-  const styleFamily = String(p.styleFamily || '') || styleFamilyFromKey(styleKey)
+  const optStyle = styleFromOption(item)
+  const operation = String(p.operation || '') || opKeyFromOption(item) || 'split'
+  const styleKey = String(p.styleKey || '') || optStyle.key
+  const styleFamily = String(p.styleFamily || '') || optStyle.family || styleFamilyFromKey(styleKey)
   const panelCt = operation === 'split' ? 2 : 1
   const singleW = panelCt > 1 ? finW / panelCt : finW
 
@@ -232,8 +287,12 @@ export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): Dra
 
   const mainFabOpt = findOption(item, [/^fabric_color$/i, /main.*fabric/i, /^fabric$/i, /fabric.*color/i])
   const sheerFabOpt = findOption(item, [/sheer.*fabric/i, /sheer.*color/i, /^sheer$/i])
-  const hwReturnOpt = findOption(item, [/return/i])
-  const hwReturn = hwReturnOpt ? num(hwReturnOpt.value || hwReturnOpt.valueLabel) || 3.5 : 3.5
+  const hwReturnOpt = findOption(item, [/^return$/i, /return/i])
+  // Explicit return chosen on the order (e.g. "3 1/2 inches") wins over the
+  // style-derived default; fall back to 3.5" only when nothing is set.
+  const returnOptIn = hwReturnOpt ? parseInches(hwReturnOpt.value || hwReturnOpt.valueLabel) : 0
+  const hwReturn = returnOptIn > 0 ? returnOptIn : 3.5
+  const optLining = liningFromOption(item)
 
   const layers: DraperyFormLayer[] = []
 
@@ -247,7 +306,7 @@ export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): Dra
     // same N (same window width + system) so reuse mainNp when present.
     const n = num(p[`${prefix}Np`]) || num(p.mainNp)
     const ret = calcDraperyReturnIn(isSheer, hwReturn, composition, styleFamily)
-    const liningCode = isSheer ? '—' : (p.mainLiningType != null ? p.mainLiningType : 'NO')
+    const liningCode = isSheer ? '—' : (p.mainLiningType != null ? p.mainLiningType : (optLining || 'NO'))
     return {
       name: fabOpt?.valueLabel || '',
       color: fabOpt?.value && fabOpt.value !== fabOpt.valueLabel ? String(fabOpt.value) : '',

@@ -104,6 +104,58 @@ describe('draperyRowFromEntry', () => {
     expect(row.layers[1].ret).toBe('5"')        // sheer pleated fabric+sheer: 1.5+3.5
   })
 
+  it('falls back to order OPTIONS when there is no engine breakdown', () => {
+    // Real shape from a website order: no production snapshot, all real data in options.
+    const entry: DraperyFormEntry = {
+      item: {
+        productType: 'drapery',
+        location: 'Bedroom',
+        width: 123, height: 56,
+        options: [
+          { name: 'pleat_style', displayLabel: 'Pleat', value: '2 Fold Pinch', valueLabel: '2 Fold Pinch Pleat' },
+          { name: 'fabric_color', displayLabel: 'Fabric', value: 'Natural', valueLabel: 'Natural' },
+          { name: 'lining', displayLabel: 'Lining', value: 'NO', valueLabel: 'No Lining' },
+          { name: 'operation', displayLabel: 'Operation', value: 'C/O', valueLabel: 'Center Split' },
+          { name: 'return', displayLabel: 'Return', value: '3 1/2', valueLabel: '3 1/2 inches' },
+        ],
+      },
+      production: null,
+    }
+    const row = draperyRowFromEntry(entry, 0)
+    expect(row.operation).toBe('Split Draw')   // "Center Split" / C/O → split
+    expect(row.operationKey).toBe('split')
+    expect(row.style).toBe('2-Fold Pinch')      // from pleat_style option
+    expect(row.styleKey).toBe('pinch_2')
+    expect(row.styleFamily).toBe('pleated')
+    expect(row.layers).toHaveLength(1)
+    expect(row.layers[0].name).toBe('Natural')
+    expect(row.layers[0].cutW).toBe('61 ½"')    // 123/2
+    expect(row.layers[0].lining).toBe('NO')     // from lining option
+    expect(row.layers[0].ret).toBe('7"')        // 3.5 return + 3.5 pleated offset
+    expect(row.layers[0].botton).toBe('')       // no engine → widths/side blank (hand-filled)
+  })
+
+  it('reads One Way Left + 3-fold + blackout from options', () => {
+    const entry: DraperyFormEntry = {
+      item: {
+        productType: 'drapery', width: 60, height: 84,
+        options: [
+          { name: 'operation', displayLabel: 'Operation', value: 'OWL', valueLabel: 'One Way Left' },
+          { name: 'pleat_style', displayLabel: 'Pleat', value: '3 Fold Pinch', valueLabel: '3 Fold Pinch Pleat' },
+          { name: 'lining', displayLabel: 'Lining', value: 'BO', valueLabel: 'Blackout Lining' },
+          { name: 'fabric_color', displayLabel: 'Fabric', value: 'Slate', valueLabel: 'Slate' },
+        ],
+      },
+    }
+    const row = draperyRowFromEntry(entry, 0)
+    expect(row.operationKey).toBe('single_left')
+    expect(row.style).toBe('3-Fold Pinch')
+    expect(row.styleKey).toBe('pinch_3')
+    expect(row.layers[0].panels).toBe('1')      // one-way → single panel
+    expect(row.layers[0].cutW).toBe('60"')      // not split
+    expect(row.layers[0].lining).toBe('BO')
+  })
+
   it('standalone sheer line → single sheer-only row', () => {
     const entry: DraperyFormEntry = {
       item: { productType: 'sheer', location: 'Office', width: 60, height: 90, options: [{ name: 'fabric_color', displayLabel: 'Fabric', value: 'MV', valueLabel: 'Mesh Voile' }] },
