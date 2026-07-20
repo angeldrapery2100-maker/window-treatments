@@ -6,6 +6,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { resolveTrackingUrl } from '@/lib/carrierTracking'
 
 interface TrackItem {
   productName: string
@@ -218,16 +219,18 @@ function TrackContent() {
               <div className="mb-6">
                 <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Shipment Tracking</p>
                 <div className="space-y-2">
-                  {data.shipments.length > 0 ? data.shipments.map((s, i) => (
+                  {data.shipments.length > 0 ? data.shipments.map((s, i) => {
+                    const url = resolveTrackingUrl(s.trackingUrl, s.carrier, s.trackingNumber)
+                    return (
                     <div key={i} className="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2.5 text-sm">
                       <span className="text-gray-600">{[s.carrier, s.service].filter(Boolean).join(' · ') || 'Package'} {data.shipments.length > 1 ? `#${i + 1}` : ''}</span>
-                      {s.trackingUrl ? (
-                        <a href={s.trackingUrl} target="_blank" rel="noopener noreferrer" className="font-mono text-blue-600 hover:underline">{s.trackingNumber}</a>
+                      {url ? (
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="font-mono text-blue-600 hover:underline">{s.trackingNumber}</a>
                       ) : (
                         <span className="font-mono text-gray-900">{s.trackingNumber}</span>
                       )}
                     </div>
-                  )) : (
+                  )}) : (
                     <div className="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2.5 text-sm">
                       <span className="text-gray-600">{data.shippingMethod || 'Package'}</span>
                       {data.trackingUrl ? (

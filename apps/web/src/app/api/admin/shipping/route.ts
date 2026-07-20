@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { requireAdmin } from '@/lib/auth'
 import { recordAudit } from '@/lib/audit'
 import { escapeHtml, safeUrl } from '@/lib/html'
+import { resolveTrackingUrl } from '@/lib/carrierTracking'
 
 const SHIPPO_API = 'https://api.goshippo.com'
 const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY || ''
@@ -88,7 +89,7 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
         ${itemLines}
         <div style="margin-top:10px;padding-top:10px;border-top:1px solid #dee2e6;">
           <p style="margin:0 0 4px;font-size:13px;color:#666;">Tracking #: <strong style="font-family:monospace;">${escapeHtml(s.tracking_number)}</strong></p>
-          ${s.tracking_url ? `<a href="${safeUrl(s.tracking_url)}" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#1a1a1a;color:#fff;text-decoration:none;border-radius:5px;font-size:12px;">Track Package →</a>` : ''}
+          ${(() => { const u = resolveTrackingUrl(s.tracking_url, s.carrier, s.tracking_number); return u ? `<a href="${safeUrl(u)}" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#1a1a1a;color:#fff;text-decoration:none;border-radius:5px;font-size:12px;">Track Package →</a>` : '' })()}
         </div>
       </div>
     `
