@@ -36,3 +36,19 @@ export function extractQuickReplies(text: string): { reply: string; suggestions:
   }
   return { reply: lines.join('\n').trim(), suggestions }
 }
+
+// The chat widget renders the reply as PLAIN TEXT (no Markdown), and the system
+// prompt asks for plain conversational text — but the model (Haiku) still
+// sometimes emits **bold**, *italic*, `code`, # headings or > quotes, which then
+// show up as literal ** / * / ` symbols to the customer. Strip those emphasis
+// markers server-side so the visible reply stays clean regardless. Links and
+// ordinary punctuation are left untouched.
+export function stripInlineMarkdown(text: string): string {
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, '$1') // **bold**
+    .replace(/__([^_]+)__/g, '$1') // __bold__
+    .replace(/\*([^*\n]+)\*/g, '$1') // *italic* (run after bold so no ** remain)
+    .replace(/`([^`\n]+)`/g, '$1') // `code`
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '') // # heading markers
+    .replace(/^\s{0,3}>\s?/gm, '') // > blockquote markers
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { extractQuickReplies } from './quickReplies'
+import { extractQuickReplies, stripInlineMarkdown } from './quickReplies'
 
 describe('extractQuickReplies', () => {
   it('pulls a standard [quick] line off the end', () => {
@@ -48,5 +48,24 @@ describe('extractQuickReplies', () => {
     const { reply, suggestions } = extractQuickReplies('[quick] a | b')
     expect(reply).toBe('')
     expect(suggestions).toEqual(['a', 'b'])
+  })
+})
+
+describe('stripInlineMarkdown', () => {
+  it('strips **bold** and *italic* markers, keeping the words', () => {
+    expect(stripInlineMarkdown('Here is what I **can** tell you: *Sundance* is mid-range.'))
+      .toBe('Here is what I can tell you: Sundance is mid-range.')
+  })
+  it('strips __bold__, `code`, headings and blockquotes', () => {
+    expect(stripInlineMarkdown('# Title\n> quoted\nUse __this__ and `that`.'))
+      .toBe('Title\nquoted\nUse this and that.')
+  })
+  it('leaves a lone asterisk / bullet-style line and phone numbers untouched', () => {
+    expect(stripInlineMarkdown('Call 626-451-9841 for a 5* service.'))
+      .toBe('Call 626-451-9841 for a 5* service.')
+  })
+  it('does not mangle a URL or plain text', () => {
+    expect(stripInlineMarkdown('See /store/whole-home for details.'))
+      .toBe('See /store/whole-home for details.')
   })
 })

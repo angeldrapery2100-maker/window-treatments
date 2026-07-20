@@ -4,7 +4,7 @@ import { getUserFromRequest } from '@/lib/auth'
 import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
 import { getCampaignFromRequest } from '@/lib/campaigns'
-import { extractQuickReplies } from '@/lib/quickReplies'
+import { extractQuickReplies, stripInlineMarkdown } from '@/lib/quickReplies'
 import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
@@ -459,8 +459,10 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    // Split the tap-to-send quick replies off the visible text.
-    const { reply: cleanReply, suggestions } = extractQuickReplies(reply)
+    // Split the tap-to-send quick replies off the visible text, then strip any
+    // Markdown emphasis the model still emitted (widget renders plain text).
+    const { reply: rawReply, suggestions } = extractQuickReplies(reply)
+    const cleanReply = stripInlineMarkdown(rawReply)
     if (!cleanReply) {
       // Degenerate case: the model sent ONLY a [quick] line. Treat as failure.
       console.error('[assistant] Reply was empty after quick-reply extraction')
