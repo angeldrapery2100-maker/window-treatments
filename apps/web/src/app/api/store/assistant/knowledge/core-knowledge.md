@@ -25,7 +25,8 @@ internal markups, or employee workflow details.
 - Luma collection 自家卷帘系列 — roller shade 卷帘, zebra shade 斑马帘 (alternating
   sheer/solid bands), sheer shade 柔纱帘, dual (double-layer) shades 双层帘, modern
   roman shade. Cassette headrail options; plastic chain / stainless chain / cordless /
-  motorized. Max width 118"; wider windows are split into multiple panels.
+  motorized. Max width 118", max height about 120"; wider or taller windows are
+  split into multiple panels (exact workable size confirmed by our team).
 - Drapery hardware 窗帘杆/轨道 — rods, finials, rings, brackets; ceiling & wall track;
   SOMFY motorized tracks (Glydea / Irismo motors) for pinch pleat or ripplefold.
 

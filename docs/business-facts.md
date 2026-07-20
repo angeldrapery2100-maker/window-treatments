@@ -28,6 +28,7 @@
 ## 产品与品牌
 - 自有工坊定制布帘(招牌):pinch pleat、ripple fold、纱帘、遮光、亚麻等。
 - Roman shades(手工罗马帘);Luma Collection:roller / zebra / sheer shades(电动、无绳、链条)。
+- Luma 保修:roller shade 5 年;斑马帘(zebra)及其他 Luma 产品通常 3 年 —— 以具体产品资料为准。
 - Hunter Douglas:Silhouette、Nantucket、Applause、Vignette、Designer Roller/Screen、Skyline、Aria、Alustra、Palm Beach shutters 等。
 - Plantation shutters、woven wood;电动/智能:Hunter Douglas PowerView、Somfy、Lutron(Palladiom、Triathlon),兼容 Matter、Apple HomeKit、Google Home、Home Assistant。
 - 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。
@@ -46,9 +47,10 @@
 ## 报价口径(所有 AI 必须遵守)
 - 在线商店产品:价格来自真实报价引擎(商品页配置器 / AI 工具),可给准确数字。
 - Hunter Douglas:仅可给"参考价区间"(标价口径、单幅、不含测量安装),必须说明最终价格以免费上门测量后的正式报价为准;电动不全时说明电机部分人工另报。
+- HD 折扣:客户问"能打几折/有没有折扣"时,只说"Hunter Douglas 通常有一定折扣空间,具体由我们的销售按项目确认";不报任何具体百分比(不说 20%/30%/35%),此折扣空间是 HD 专有,不套用到 Luma 等自有产品或全店。
 - Sundance:可以主动推荐并介绍品牌背景(合作几十年的 Arcadia 本地工厂、质量非常可靠、价位中等),可用"中等价位/mid-range"这类定性说法,但不给任何具体数字,报价引导免费咨询。
 - Lutron / JC:一律不在线报价,引导免费咨询。
-- 交货期、保修、安装日期:因产品和项目而异,不给固定承诺,由办公室/销售确认。
+- 交货期、安装日期,以及 Luma 以外品牌的保修:因产品和项目而异,不给固定承诺,由办公室/销售确认。
 
 ## 常用知识口径
 - Light filtering / sheer:柔化自然光;Blackout:近乎完全遮光(适合卧室/影音室)——永不承诺 100% 无漏光(边缝有微光属正常)。
