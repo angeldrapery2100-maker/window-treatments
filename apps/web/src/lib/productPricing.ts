@@ -236,12 +236,99 @@ export async function getGlobalDraperyConfig(): Promise<Record<string, any> | nu
   return cfg
 }
 
+// ── AAPP-feed drapery config (C3, Eddie 2026-07-19: feed OVERRIDES manual settings) ──
+// The synced AAPP library (aapp_library snapshot) carries the same drapery
+// lining/labor/surcharge/banding params under `draperyPricingCatalog`. Eddie
+// chose for the feed to auto-drive drapery pricing, WINNING over the manual
+// `drapery_pricing` site-settings — so drapery prices follow AAPP without
+// re-entering them. FAIL-SAFE: when the snapshot has no draperyPricingCatalog
+// (never synced, or the feed predates it), this returns null and pricing is
+// exactly the manual-settings behavior. Shape mirrors getGlobalDraperyConfig()
+// and AAPP `_DPC_PRICING_DEFAULTS`.
+//
+// ⚠️ Enabling this makes live drapery prices follow whatever is in AAPP's
+// library — verify drapery price parity after the first sync, same as Luma.
+
+let _adcCache: { at: number; cfg: Record<string, any> | null } | null = null
+
+export function invalidateAappDraperyConfig(): void {
+  _adcCache = null
+}
+
+const posNum = (v: unknown): number | undefined => {
+  const n = Number(v)
+  return Number.isFinite(n) && n >= 0 ? n : undefined
+}
+
+export async function getAappDraperyConfigOverride(): Promise<Record<string, any> | null> {
+  if (_adcCache && Date.now() - _adcCache.at < GDC_TTL_MS) return _adcCache.cfg
+  let cfg: Record<string, any> | null = null
+  try {
+    const { getAappLibrary } = await import('@/lib/aappLibrary')
+    const snap = await getAappLibrary()
+    const dpc = snap?.data?.draperyPricingCatalog
+    const main = dpc?.main
+    // Require at least the lining table — that's the load-bearing part.
+    if (dpc && main && main.liningOptions && typeof main.liningOptions === 'object') {
+      const lo = main.liningOptions
+      const out: Record<string, any> = {}
+      const lining: Record<string, any> = {}
+      for (const k of ['NO', 'LF', 'BO'] as const) {
+        const row = lo[k]
+        if (row && typeof row === 'object') {
+          const o: Record<string, number> = {}
+          if (posNum(row.liningPricePerYard) !== undefined) o.liningPricePerYard = posNum(row.liningPricePerYard)!
+          if (posNum(row.laborPerPanel) !== undefined) o.laborPerPanel = posNum(row.laborPerPanel)!
+          if (Object.keys(o).length) lining[k] = o
+        }
+      }
+      if (Object.keys(lining).length) out.liningOptions = lining
+      if (main.heightSurcharge && typeof main.heightSurcharge === 'object') {
+        const h = main.heightSurcharge
+        out.heightSurcharge = {
+          ...(posNum(h.startHeightIn) !== undefined ? { startHeightIn: posNum(h.startHeightIn) } : {}),
+          ...(posNum(h.baseMultiplier) !== undefined ? { baseMultiplier: posNum(h.baseMultiplier) } : {}),
+          ...(posNum(h.incrementPerExtra12In) !== undefined ? { incrementPerExtra12In: posNum(h.incrementPerExtra12In) } : {}),
+        }
+      }
+      if (main.largePanelSurcharge && typeof main.largePanelSurcharge === 'object') {
+        const p = main.largePanelSurcharge
+        out.largePanelSurcharge = {
+          ...(posNum(p.thresholdSingleSidePanelCount) !== undefined ? { thresholdSingleSidePanelCount: posNum(p.thresholdSingleSidePanelCount) } : {}),
+          ...(posNum(p.multiplier) !== undefined ? { multiplier: posNum(p.multiplier) } : {}),
+        }
+      }
+      if (dpc.sheer && posNum(dpc.sheer.laborPerPanel) !== undefined) {
+        out.sheerLaborPerPanel = posNum(dpc.sheer.laborPerPanel)
+      }
+      if (dpc.banding && typeof dpc.banding === 'object') {
+        const b = dpc.banding
+        const banding: Record<string, any> = {}
+        if (posNum(b.laborPerFoot) !== undefined) banding.laborPerFoot = posNum(b.laborPerFoot)
+        const styles: Record<string, any> = {}
+        for (const sk of ['banding_std', 'banding_prem'] as const) {
+          const row = b.styles?.[sk]
+          if (row && posNum(row.pricePerYard) !== undefined) styles[sk] = { pricePerYard: posNum(row.pricePerYard) }
+        }
+        if (Object.keys(styles).length) banding.styles = styles
+        if (Object.keys(banding).length) out.banding = banding
+      }
+      cfg = Object.keys(out).length ? out : null
+    }
+  } catch {
+    cfg = null // snapshot unreachable → manual-settings behavior unchanged
+  }
+  _adcCache = { at: Date.now(), cfg }
+  return cfg
+}
+
 /**
  * Shared by BOTH pricing entry points (runAappForItem here and the
- * /api/store/pricing/calculate route) so the global-config merge can never
- * drift between live quote and checkout re-verification.
- * For engine 'drapery', returns baseParams with `aapp_config` = global
- * settings deep-merged UNDER the product-level aapp_config (product wins).
+ * /api/store/pricing/calculate route) so the config merge can never drift
+ * between live quote and checkout re-verification.
+ * For engine 'drapery', precedence (low→high):
+ *   engine factory defaults < global drapery_pricing settings < AAPP feed
+ *   (draperyPricingCatalog) < product-level aapp_config.
  * Other engines pass through untouched.
  */
 export async function withGlobalDraperyConfig(
@@ -250,11 +337,16 @@ export async function withGlobalDraperyConfig(
 ): Promise<Record<string, any>> {
   if (engine !== 'drapery') return baseParams
   const global = await getGlobalDraperyConfig()
-  if (!global) return baseParams
+  const feed = await getAappDraperyConfigOverride()
   const productCfg = baseParams.aapp_config && typeof baseParams.aapp_config === 'object'
     ? baseParams.aapp_config
     : undefined
-  return { ...baseParams, aapp_config: mergeAappConfig(global, productCfg) }
+  // Layer settings, then feed on top (feed wins), then product on top.
+  let merged: Record<string, any> | undefined = global ?? undefined
+  if (feed) merged = merged ? mergeAappConfig(merged, feed) : feed
+  if (!merged && !productCfg) return baseParams
+  const finalCfg = productCfg ? (merged ? mergeAappConfig(merged, productCfg) : productCfg) : merged
+  return { ...baseParams, aapp_config: finalCfg }
 }
 
 // ── Hardware-by-product-reference (drapery bundled rod/track) ────────────────
