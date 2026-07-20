@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luma 系列下单表 / Luma Order Form</title>
+<style>
+  :root{
+    --bg:#f5f5f7;--card:rgba(255,255,255,.92);--line:#d2d2d7;--ink:#1d1d1f;--muted:#6e6e73;
+    --brand:#007aff;--brand-d:#0057d9;--accent:#f2f2f7;--warn:#ff3b30;--chip:#f2f2f7;--lock:#fff7d6;
+    --shadow:0 14px 38px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+  header{background:rgba(255,255,255,.86);color:var(--ink);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(0,0,0,.08);backdrop-filter:saturate(180%) blur(18px)}
+  header h1{font-size:17px;margin:0;font-weight:680;letter-spacing:0}
+  header h1 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:8px}
+  .tabs{display:flex;gap:6px}
+  .tab{background:var(--accent);color:var(--ink);border:1px solid transparent;padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600}
+  .tab.active{background:var(--brand);color:#fff}
+  .wrap{max-width:1640px;margin:16px auto;padding:0 14px}
+  .card{background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  /* letterhead */
+  .letterhead{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .letterhead .co{display:flex;align-items:center;gap:12px}
+  .letterhead #company_logo{height:46px;max-width:150px;object-fit:contain}
+  .letterhead .co-text{display:flex;flex-direction:column}
+  .letterhead .co-text input{border:0;border-bottom:1px dashed transparent;font-weight:750;font-size:20px;color:var(--ink);padding:1px 0;width:360px;max-width:60vw;background:transparent}
+  .letterhead .co-text input:focus{border-bottom-color:var(--brand);outline:none}
+  .letterhead .meta{font-size:12px;color:var(--muted);margin-top:2px}
+  .letterhead .badge{font-size:11px;color:var(--muted);text-align:right}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;align-items:end}
+  .fld label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+  .fld input,.fld textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-family:inherit;background:#fff}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  button.act{background:var(--brand);color:#fff;border:0;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:650;font-size:13px}
+  button.act.ghost{background:#fff;color:var(--brand);border:1px solid var(--line)}
+  button.act.red{background:#fff;color:var(--warn);border:1px solid rgba(255,59,48,.35)}
+  button.act.proc{background:#1d1d1f}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+  table{border-collapse:collapse;width:100%;min-width:1380px}
+  th,td{border:1px solid var(--line);padding:3px 4px;text-align:center;vertical-align:middle}
+  thead th{background:#f9f9fb;color:var(--ink);font-size:11px;line-height:1.25;position:sticky;top:0;z-index:5}
+  thead .grp{background:#1d1d1f;color:#fff;font-size:12px}
+  thead .en{font-weight:700}thead .cn{font-weight:400;opacity:.85;font-size:10px}
+  td input,td select{width:100%;border:1px solid transparent;background:transparent;padding:5px 3px;font-size:12px;border-radius:8px;font-family:inherit}
+  td input:focus,td select:focus{border-color:var(--brand);background:#fff;outline:none}
+  td select{min-width:90px}
+  td.rownum{background:#fafbfc;color:var(--muted);font-weight:600;width:30px}
+  td.del{width:28px}
+  .xbtn{background:none;border:0;color:var(--warn);cursor:pointer;font-size:15px;line-height:1}
+  .lockcell{font-size:11px;color:#8a5a14;background:var(--lock);border-radius:4px;padding:4px 3px;font-weight:600}
+  .muted{color:#b3bcc6;font-size:14px}
+  .w-cust{min-width:108px}.w-prod{min-width:120px}.w-fab{min-width:92px}.w-win{min-width:64px}
+  .w-sz{min-width:54px}.w-op{min-width:112px}.w-rmk{min-width:108px}
+  .fillcol{display:block;margin:2px auto 0;cursor:pointer;border:0;background:#e8f1ff;color:var(--brand-d);border-radius:999px;font-size:9px;padding:1px 6px;font-weight:600}
+  .fillcol:hover{background:#d7e7ff}
+  /* double-layer roller groups: alternating fill colors */
+  tr.group-a>td{background:#eef5ff}
+  tr.group-b>td{background:#fff7eb}
+  tr.group-a>td.rownum,tr.group-b>td.rownum{font-weight:700;color:var(--brand-d)}
+  td.merged{vertical-align:middle}
+  td.merged .lockcell{background:#eef5ff;color:var(--brand-d)}
+  .hint{color:var(--muted);font-size:12px;margin:2px}
+  /* admin */
+  .opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .opt-card{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+  .opt-card h3{margin:0 0 2px;font-size:14px;color:var(--ink)}
+  .opt-card .sub{font-size:11px;color:var(--muted);margin-bottom:8px}
+  .opt-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+  .opt-row{display:flex;gap:6px;align-items:center}
+  .opt-row input{flex:1;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:12px}
+  .opt-row .mv{background:#f0f3f5;border:1px solid var(--line);border-radius:5px;cursor:pointer;width:24px;height:28px;font-size:11px}
+  .opt-row .rm{background:#fff;border:1px solid var(--warn);color:var(--warn);border-radius:5px;cursor:pointer;width:28px;height:28px}
+  .add-opt{background:var(--accent);border:1px dashed var(--brand);color:var(--brand-d);border-radius:6px;padding:6px;width:100%;cursor:pointer;font-size:12px;font-weight:600}
+  .save-bar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 35%);padding:14px 0;display:flex;gap:10px;justify-content:flex-end}
+  .pill{display:inline-block;background:var(--chip);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--muted);margin-left:6px}
+  .setting-row{display:flex;align-items:center;gap:10px;font-size:13px;margin:6px 0}
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(8px)}
+  .modal{background:#fff;border-radius:18px;padding:18px 20px;width:380px;max-width:92vw;box-shadow:0 18px 60px rgba(0,0,0,.22)}
+  .modal h3{margin:0 0 4px;font-size:15px;color:var(--ink)}
+  .modal .msub{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .modal select,.modal input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:12px}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end}
+  @media print{
+    @page{size:A4 landscape;margin:6mm}
+    header,.tabs,.toolbar,.no-print,.fillcol{display:none!important}
+    body{background:#fff;font-size:7.4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wrap{max-width:none;margin:0;padding:0}
+    .tbl-scroll{overflow:visible;border:0}
+    /* fixed layout + wrapping makes ALL columns fit on the landscape page (no data cut off) */
+    #orderTable{min-width:0;width:100%;table-layout:fixed}
+    th,td{padding:1.5px 2px;font-size:7.4px;line-height:1.14;word-break:break-word;overflow-wrap:anywhere;vertical-align:top}
+    thead th{background:#f4f4f6;color:#1d1d1f}
+    thead .grp{background:#1d1d1f;color:#fff}
+    thead .cn{font-size:6.6px}
+    td input,td select{border:0;-webkit-appearance:none;appearance:none;font-size:7.4px;line-height:1.14;padding:0;height:auto;white-space:normal;overflow:visible}
+    td.print-value-cell input,td.print-value-cell select,td.print-value-cell .lockcell,td.print-value-cell .muted{display:none!important}
+    td.print-value-cell::after{content:attr(data-print-value);display:block;min-height:8px;font-size:7.4px;line-height:1.14;white-space:normal;word-break:break-word;overflow-wrap:anywhere}
+    .card{border:0;padding:0;margin-bottom:6px;box-shadow:none}
+    .letterhead .co-text input{border:0}
+    tr{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Luma 系列下单表 <small>Luma Order Form · 卷帘 / 斑马帘 / 香格里拉</small></h1>
+  <div class="tabs">
+    <button class="tab active" id="tabOrderBtn" onclick="showTab('order')">📋 下单表 / Order</button>
+    <button class="tab" id="tabAdminBtn" onclick="showTab('admin')">⚙️ 后台选项 / Admin</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ ORDER TAB ============ -->
+<section id="tab-order">
+  <div class="card letterhead">
+    <div class="co">
+      <img id="company_logo" alt="" style="display:none">
+      <div class="co-text">
+        <input id="company_name" placeholder="公司名称 / Company name">
+        <div id="company_meta" class="meta"></div>
+      </div>
+    </div>
+    <div class="badge">Luma Series · Work Order<br>工单 / 下单表</div>
+  </div>
+
+  <div class="card">
+    <div class="meta-grid">
+      <div class="fld"><label>PO # 采购单号</label><input id="m_po" placeholder="PO-..."></div>
+      <div class="fld"><label>Customer 客户</label><input id="m_customer" placeholder="客户名称"></div>
+      <div class="fld"><label>PI No. 单号</label><input id="m_pi" placeholder="PI-..."></div>
+      <div class="fld"><label>Date 日期</label><input id="m_date" type="date"></div>
+      <div class="fld no-print"><button class="act proc" style="width:100%" onclick="processOrder()">⚙️ Process 生成工单</button></div>
+    </div>
+    <div class="hint no-print">Process：把客户 + PO 填充到每一行（合约产品明细的自动带入预留给 AAPP 工单流程对接）。</div>
+  </div>
+
+  <div class="toolbar no-print">
+    <button class="act" onclick="addRow(1)">＋ 添加行</button>
+    <button class="act ghost" onclick="addRow(5)">＋ 加 5 行</button>
+    <button class="act ghost" onclick="addDoubleRoller()">⧉ 双层卷帘 (2行)</button>
+    <button class="act ghost" onclick="addMultiOnOne()">⊞ N-on-1 联窗</button>
+    <button class="act ghost" onclick="printOrder()">🖨️ 打印 / PDF</button>
+    <button class="act ghost" onclick="saveOrder()">💾 暂存</button>
+    <button class="act red" onclick="clearOrder()">清空</button>
+    <span class="hint">💡 列批量填充：点表头「⤵填充」；选中单元格按 <b>Ctrl+D</b> 复制上一行 · 下拉可选「自定义」手动输入</span>
+  </div>
+
+  <div class="tbl-scroll card" style="padding:0">
+    <table id="orderTable">
+      <thead>
+        <tr>
+          <th rowspan="2" class="rownum">#</th>
+          <th rowspan="2" class="w-cust"><div class="en">Customer</div><div class="cn">客户</div><button class="fillcol" onclick="bulkFill('customer','__text__')">⤵填充</button></th>
+          <th rowspan="2"><div class="en">Product</div><div class="cn">产品</div><button class="fillcol" onclick="bulkFill('product','product')">⤵填充</button></th>
+          <th rowspan="2"><div class="en">Fabric</div><div class="cn">面料</div></th>
+          <th rowspan="2"><div class="en">Window</div><div class="cn">窗号</div></th>
+          <th colspan="2" class="grp">Blinds size (inch) 成品</th>
+          <th colspan="2" class="grp">Production (mm) 生产</th>
+          <th colspan="4" class="grp">Production detail 生产明细</th>
+          <th colspan="3" class="grp">Cassette / Downrail 外罩·下杆</th>
+          <th rowspan="2"><div class="en">Remark</div><div class="cn">备注</div></th>
+          <th rowspan="2" class="del no-print"></th>
+        </tr>
+        <tr>
+          <th><div class="en">Width</div><div class="cn">宽</div></th>
+          <th><div class="en">Height</div><div class="cn">高</div></th>
+          <th><div class="en">Width−2</div><div class="cn">宽</div></th>
+          <th><div class="en">Height</div><div class="cn">高</div></th>
+          <th><div class="en">Operation</div><div class="cn">操作方式</div><button class="fillcol" onclick="bulkFill('operation','operation')">⤵填充</button></th>
+          <th><div class="en">Chain side</div><div class="cn">拉珠/电机方向</div><button class="fillcol" onclick="bulkFill('dir','chainSide')">⤵填充</button></th>
+          <th><div class="en">Bead height</div><div class="cn">拉珠高度/电机型号</div><button class="fillcol" onclick="bulkFill('height','beadHeight')">⤵填充</button></th>
+          <th><div class="en">Chain color</div><div class="cn">拉珠颜色/遥控频道</div><button class="fillcol" onclick="bulkFill('color','chainColor')">⤵填充</button></th>
+          <th><div class="en">Cassette</div><div class="cn">外罩</div><button class="fillcol" onclick="bulkFill('cassette','cassette')">⤵填充</button></th>
+          <th><div class="en">Cassette type</div><div class="cn">外罩类型</div><button class="fillcol" onclick="bulkFill('cassetteType','cassetteType')">⤵填充</button></th>
+          <th><div class="en">Downrail</div><div class="cn">下杆</div><button class="fillcol" onclick="bulkFill('downrail','downrail')">⤵填充</button></th>
+        </tr>
+      </thead>
+      <tbody id="orderBody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="fld"><label>Remark 总备注 / Order remark</label>
+      <textarea id="m_remark" rows="2" placeholder="交期、运输、付款等说明..."></textarea></div>
+  </div>
+</section>
+
+<!-- ============ ADMIN TAB ============ -->
+<section id="tab-admin" style="display:none">
+  <div class="card">
+    <div class="toolbar">
+      <strong style="font-size:15px;color:var(--brand-d)">下拉选项管理 / Dropdown Options</strong>
+      <span class="hint">编辑后点「保存选项」，下单表立即生效（保存在本机浏览器 localStorage）。</span>
+    </div>
+    <div class="opt-grid" id="adminGrid"></div>
+    <div class="save-bar">
+      <button class="act red" onclick="resetDefaults()">↺ 恢复默认</button>
+      <button class="act" onclick="saveOptions()">💾 保存选项</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- bulk fill modal -->
+<div class="modal-bg" id="bulkModal" style="display:none">
+  <div class="modal">
+    <h3 id="bulkTitle">批量填充</h3>
+    <div class="msub">选择一个值，应用到当前表格的所有行（不适用的行会自动忽略）。</div>
+    <div id="bulkPicker"></div>
+    <div class="modal-actions">
+      <button class="act ghost" onclick="closeBulk()">取消</button>
+      <button class="act" onclick="applyBulk()">应用到全部行</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== default dropdown data ===== */
+var DEFAULTS = {
+  product:      {label:"Product",cn:"产品",items:["Roller shade","Zebra shade","Sheer shade"]},
+  operation:    {label:"Operation",cn:"操作方式",items:["Polyester chain","Stainless chain","Cordless","Motorized"]},
+  chainSide:    {label:"Chain side",cn:"拉珠方向",items:["Left","Right"]},
+  motorDir:     {label:"Motor direction",cn:"电机方向",items:["Left","Right"]},
+  beadHeight:   {label:"Bead chain height",cn:"拉珠高度",items:["0.4m","0.6m","0.8m","1.0m","1.2m","1.5m","1.8m","2.0m","2.2m","2.5m","2.8m","3.0m"]},
+  motorModel:   {label:"Motor model",cn:"电机型号",items:["25 Zigbee","25 Battery","25 Wired","25 Wand","35 Built-in 110V","35 Built-in 230V"]},
+  chainColor:   {label:"Chain color",cn:"拉珠颜色",items:["White","Grey","Beige","Brown","Black","304"]},
+  remoteChannel:{label:"Remote channel",cn:"遥控器频道",items:["Remote#1 Channel#1","Remote#1 Channel#2","Remote#2 Channel#1"]},
+  cassette:     {label:"Cassette",cn:"外罩",items:["Square","Round"]},
+  cassetteType: {label:"Cassette type",cn:"外罩类型",items:[
+                   "Insert fabric with PVC","White not stick fabric","Grey not stick fabric",
+                   "Beige not stick fabric","Brown not stick fabric","Black not stick fabric",
+                   "White stick fabric","Grey stick fabric","Beige stick fabric",
+                   "Brown stick fabric","Black stick fabric"]},
+  downrail:     {label:"Downrail",cn:"下杆",items:["White","Grey","Beige","Brown","Black","fabric downrail","fabric Oval Downrail"]},
+  sheerColor:   {label:"Sheer color (follow cassette)",cn:"香格里拉颜色",items:["White","Grey","Beige","Brown","Black"]}
+};
+var LS_OPTS="luma_opts_v2", LS_ORDER="luma_order_v2", LS_CO="luma_company_v2";
+var OPTS = loadOpts();
+var COMPANY = loadJSON(LS_CO,{name:"",phone:"",address:"",website:"",email:"",logo:""});
+
+function loadJSON(k,def){try{var s=localStorage.getItem(k);return s?JSON.parse(s):def;}catch(e){return def;}}
+function loadOpts(){
+  var saved=loadJSON(LS_OPTS,null), out=JSON.parse(JSON.stringify(DEFAULTS));
+  if(saved) Object.keys(out).forEach(function(k){ if(saved[k]&&Array.isArray(saved[k].items)) out[k].items=saved[k].items.slice(); });
+  out.operation.items = Array.from(new Set((out.operation.items||[]).map(canonicalOperation).filter(Boolean)));
+  ["Polyester chain","Stainless chain","Cordless","Motorized"].forEach(function(v){if(out.operation.items.indexOf(v)<0)out.operation.items.push(v);});
+  out.cassette.items = ["Square","Round"];
+  return out;
+}
+
+/* ===== type detectors ===== */
+function opType(s){s=(s||"").toLowerCase();
+  if(s.indexOf("cordless")>=0||s.indexOf("无拉")>=0)return"cordless";
+  if(s.indexOf("motor")>=0||s.indexOf("电动")>=0)return"motor";
+  if(s.indexOf("stainless")>=0||s.indexOf("不锈钢")>=0)return"stainless";
+  if(s.indexOf("polyester")>=0||s.indexOf("plastic")>=0||s.indexOf("bead")>=0||s.indexOf("chain")>=0||s.indexOf("涤纶")>=0||s.indexOf("拉珠")>=0)return"polyester";
+  return"polyester";}
+function prodType(s){s=(s||"").toLowerCase();
+  if(s.indexOf("zebra")>=0||s.indexOf("斑马")>=0)return"zebra";
+  if(s.indexOf("sheer")>=0||s.indexOf("香格里拉")>=0||s.indexOf("柔纱")>=0)return"sheer";
+  if(s.indexOf("roller")>=0||s.indexOf("卷帘")>=0)return"roller";
+  return"";}
+function cassetteColor(s){if(!s)return"";s=s.toLowerCase();
+  var m=[["white","White"],["grey","Grey"],["gray","Grey"],["beige","Beige"],["brown","Brown"],["black","Black"],["clear","Clear"]];
+  for(var i=0;i<m.length;i++) if(s.indexOf(m[i][0])>=0) return m[i][1];
+  return"";}
+function inList(v,arr){return v&&arr.indexOf(v)>=0;}
+function isBeadVal(v){return inList(v,OPTS.beadHeight.items)||/^\d+(\.\d+)?m$/.test(v||"");}
+function isRemote(v){return /remote|channel|频道|#/i.test(v||"");}
+function canonicalOperation(v){
+  var t=opType(v);
+  if(t==="motor")return"Motorized";
+  if(t==="cordless")return"Cordless";
+  if(t==="stainless")return"Stainless chain";
+  return"Polyester chain";
+}
+function canonicalCassette(v,product){
+  var s=String(v||"").toLowerCase(),p=prodType(product);
+  if(s.indexOf("round")>=0||s.indexOf("6#")>=0||s.indexOf("8#")>=0)return"Round";
+  if(s.indexOf("square")>=0||s.indexOf("sqaure")>=0||s.indexOf("7#")>=0||s.indexOf("5")>=0||s.indexOf("fabric wrap")>=0)return"Square";
+  if(s.indexOf("open")>=0||s.indexOf("none")>=0)return"";
+  if(p==="roller"||p==="zebra"||p==="sheer")return v?String(v):"";
+  return v?String(v):"";
+}
+function normalizeRowValues(r){
+  r=r||{};
+  if(r.operation)r.operation=canonicalOperation(r.operation);
+  if(r.cassette)r.cassette=canonicalCassette(r.cassette,r.product);
+  return r;
+}
+
+/* ===== Production size (mm) = inch size converted; width carries the −2mm fit deduction ===== */
+function computeMM(r){
+  var wi=parseFloat(r.w_in),hi=parseFloat(r.h_in);
+  if(!isNaN(wi)&&wi>0)r.w_mm=String(Math.round(wi*25.4)-2);   /* Width −2mm */
+  if(!isNaN(hi)&&hi>0)r.h_mm=String(Math.round(hi*25.4));
+}
+/* ===== bead height = largest option NOT taller than the mm height (round down) ===== */
+function autoMatchHeight(r){
+  var hm=parseFloat(r.h_mm),hin=parseFloat(r.h_in),wh=null;
+  if(!isNaN(hm)&&hm>0)wh=hm/1000; else if(!isNaN(hin)&&hin>0)wh=hin*0.0254;
+  if(wh==null)return;
+  var best=null,min=null;
+  OPTS.beadHeight.items.forEach(function(o){var m=parseFloat(o);if(isNaN(m))return;
+    if(min==null||m<min.m)min={m:m,label:o};
+    if(m<=wh+1e-9){ if(best==null||m>best.m)best={m:m,label:o}; }});
+  if(!best)best=min;   /* window shorter than smallest option → use smallest */
+  if(best)r.height=best.label;
+}
+
+/* ===== per-row logic ===== */
+function normalizeForOp(r,forceH){
+  var op=opType(r.operation);
+  if(op==="cordless"){r.dir="";r.height="";r.color="";return;}
+  if(op==="motor"){
+    /* keep motor dir (Left/Right or custom); drop only chain-family artifacts so
+       imported motor model / remote channel survive */
+    if(isBeadVal(r.height))r.height="";              /* a bead-height value isn't a motor model */
+    if(inList(r.color,OPTS.chainColor.items))r.color="";  /* a chain colour isn't a remote channel */
+    return;
+  }
+  /* chain family: bead / stainless / polyester */
+  if(!(r.dir==="Left"||r.dir==="Right"||inList(r.dir,OPTS.chainSide.items)))r.dir="";
+  if(forceH||!isBeadVal(r.height))autoMatchHeight(r);
+  if(op==="stainless"){r.color="304";}
+  else{
+    if(!inList(r.color,OPTS.chainColor.items)||r.color==="304"||!r.color){
+      var cc=cassetteColor(r.cassetteType);
+      r.color=cc?cc:(r.color==="304"?"":r.color||"");
+    }
+  }
+}
+function applyDownrail(r){
+  var p=prodType(r.product);
+  if(p==="zebra"){r.downrail="fabric Oval Downrail";}
+  else if(p==="sheer"){ if(!inList(r.downrail,OPTS.sheerColor.items)){var cc=cassetteColor(r.cassetteType);r.downrail=cc||"";} }
+  else if(p==="roller"){ if(!r.downrail)r.downrail="fabric downrail"; }
+}
+function finalizeRow(r){normalizeRowValues(r);computeMM(r);normalizeForOp(r,false);applyDownrail(r);}
+
+/* ===== cell renderers ===== */
+function escHtml(s){return String(s==null?"":s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function escAttr(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function eSel(field,val,key){
+  var items=OPTS[key].items,h='<select data-k="'+field+'" data-prev="'+escAttr(val||"")+'"><option value=""></option>',found=false;
+  for(var i=0;i<items.length;i++){var o=items[i],sel=(o===val)?" selected":"";if(o===val)found=true;
+    h+='<option value="'+escAttr(o)+'"'+sel+'>'+escHtml(o)+'</option>';}
+  if(val&&!found)h+='<option value="'+escAttr(val)+'" selected>'+escHtml(val)+'</option>';
+  h+='<option value="__custom__">＋ 自定义/Custom…</option></select>';
+  return h;
+}
+function lockCell(field,val){return '<div class="lockcell">'+escHtml(val)+'</div><input type="hidden" data-k="'+field+'" value="'+escAttr(val)+'">';}
+function blankCell(field){return '<span class="muted">—</span><input type="hidden" data-k="'+field+'" value="">';}
+function inp(k,r,cls){return '<input class="'+(cls||"")+'" data-k="'+k+'" value="'+escAttr(r[k]||"")+'">';}
+
+function dirInner(r){var op=opType(r.operation);
+  if(op==="cordless")return blankCell("dir");
+  if(op==="motor")return eSel("dir",r.dir,"motorDir");
+  return eSel("dir",r.dir,"chainSide");}
+function heightInner(r){var op=opType(r.operation);
+  if(op==="cordless")return blankCell("height");
+  if(op==="motor")return eSel("height",r.height,"motorModel");
+  return eSel("height",r.height,"beadHeight");}
+function colorInner(r){var op=opType(r.operation);
+  if(op==="cordless")return blankCell("color");
+  if(op==="motor")return eSel("color",r.color,"remoteChannel");
+  if(op==="stainless")return lockCell("color","304");
+  return eSel("color",r.color,"chainColor");}
+function downrailInner(r){var p=prodType(r.product);
+  if(p==="zebra")return lockCell("downrail","fabric Oval Downrail");
+  if(p==="sheer")return eSel("downrail",r.downrail,"sheerColor");
+  return eSel("downrail",r.downrail,"downrail");}
+
+function rowInner(idx,r){
+  var grouped=!!r.dl, top=(String(r.dlpos)==="0"), hideM=grouped&&!top, rs=grouped?' rowspan="2"':"";
+  var mgGroup=!!r.mg, mgTop=(String(r.mgpos)==="0"), mgN=parseInt(r.mgN,10)||2;
+  /* group markers travel in the always-present product cell */
+  var hidden='<input type="hidden" data-k="dl" value="'+escAttr(r.dl||"")+'">'+
+             '<input type="hidden" data-k="dlpos" value="'+escAttr(r.dlpos==null?"":r.dlpos)+'">'+
+             '<input type="hidden" data-k="mg" value="'+escAttr(r.mg||"")+'">'+
+             '<input type="hidden" data-k="mgpos" value="'+escAttr(r.mgpos==null?"":r.mgpos)+'">'+
+             '<input type="hidden" data-k="mgN" value="'+escAttr(r.mgN==null?"":r.mgN)+'">';
+  /* double-roller: merged-or-omitted cell (rowspan on top row, omitted on bottom) */
+  function mtd(cls,inner){ return hideM ? "" : '<td class="'+cls+'"'+rs+'>'+inner+'</td>'; }
+  var numCell = hideM ? "" : '<td class="rownum"'+rs+'>'+idx+'</td>';
+  var cassetteCell;
+  if(grouped){ cassetteCell = top ? '<td data-col="cassette" rowspan="2" class="merged">'+lockCell("cassette","Square")+'</td>' : ""; }
+  else { cassetteCell = '<td data-col="cassette">'+eSel("cassette",r.cassette,"cassette")+'</td>'; }
+  /* N-on-1: each blind keeps its own row; only the Remark column merges (rowspan=N) as the group label */
+  var remarkCell;
+  if(mgGroup){ remarkCell = mgTop ? '<td class="w-rmk merged" rowspan="'+mgN+'"><input data-k="remark" value="'+escAttr(r.remark||(mgN+" on 1"))+'"></td>' : ""; }
+  else { remarkCell = '<td class="w-rmk">'+inp("remark",r)+'</td>'; }
+  return numCell+
+    mtd("w-cust",inp("customer",r))+
+    '<td data-col="product" class="w-prod">'+hidden+eSel("product",r.product,"product")+'</td>'+
+    '<td class="w-fab">'+inp("fabric",r)+'</td>'+
+    mtd("w-win",inp("window",r))+
+    mtd("w-sz",inp("w_in",r))+
+    mtd("w-sz",inp("h_in",r))+
+    mtd("w-sz",inp("w_mm",r))+
+    mtd("w-sz",inp("h_mm",r))+
+    '<td data-col="operation" class="w-op">'+eSel("operation",r.operation,"operation")+'</td>'+
+    '<td data-col="dir">'+dirInner(r)+'</td>'+
+    '<td data-col="height">'+heightInner(r)+'</td>'+
+    '<td data-col="color">'+colorInner(r)+'</td>'+
+    cassetteCell+
+    '<td data-col="cassetteType">'+eSel("cassetteType",r.cassetteType,"cassetteType")+'</td>'+
+    '<td data-col="downrail">'+downrailInner(r)+'</td>'+
+    remarkCell+
+    '<td class="del no-print"><button class="xbtn" onclick="delRow(this)">✕</button></td>';
+}
+
+/* ===== row ops ===== */
+function readRow(tr){var o={};tr.querySelectorAll("[data-k]").forEach(function(el){if(el.dataset.k)o[el.dataset.k]=el.value;});return o;}
+function rowIndex(tr){return Array.prototype.indexOf.call(tr.parentNode.children,tr)+1;}
+function rerenderRow(tr,r){tr.innerHTML=rowInner(rowIndex(tr),r);}
+/* number per item: single rows and double-roller pairs each count once (bottom rows have no number cell) */
+function renumber(){var n=0;document.querySelectorAll("#orderBody tr").forEach(function(tr){var c=tr.querySelector(".rownum");if(c){n++;c.textContent=n;}});}
+function addRow(n,data){var body=document.getElementById("orderBody");n=n||1;
+  for(var i=0;i<n;i++){var r=Object.assign({},data||{});finalizeRow(r);
+    var tr=document.createElement("tr");tr.innerHTML=rowInner(body.children.length+1,r);body.appendChild(tr);}
+  renumber();recolorGroups();
+}
+/* read the shared sizes from a group's top row (used to match the bottom layer's bead height) */
+function groupTopSizes(gid){
+  var top=null;
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){
+    var d=tr.querySelector('[data-k="dl"]'),p=tr.querySelector('[data-k="dlpos"]');
+    if(d&&d.value===gid&&p&&String(p.value)==="0")top=tr;});
+  if(!top)return{};
+  function gv(k){var e=top.querySelector('[data-k="'+k+'"]');return e?e.value:"";}
+  return{w_in:gv("w_in"),h_in:gv("h_in"),w_mm:gv("w_mm"),h_mm:gv("h_mm")};
+}
+function rematchGroupBottoms(gid){
+  var s=groupTopSizes(gid);
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){
+    var d=tr.querySelector('[data-k="dl"]'),p=tr.querySelector('[data-k="dlpos"]');
+    if(d&&d.value===gid&&p&&String(p.value)!=="0"){
+      var r=readRow(tr);r.w_in=s.w_in;r.h_in=s.h_in;r.w_mm=s.w_mm;r.h_mm=s.h_mm;
+      normalizeForOp(r,true);applyDownrail(r);rerenderRow(tr,r);}
+  });
+}
+/* double-layer roller: two linked rows, merged cassette = Square */
+function addDoubleRoller(){
+  var gid="g"+Date.now()+Math.floor(Math.random()*1e4);
+  addRow(1,{product:"Roller shade",dl:gid,dlpos:0,cassette:"Square"});
+  addRow(1,{product:"Roller shade",dl:gid,dlpos:1,cassette:"Square"});
+  toast("已添加双层卷帘（2行）/ Double roller added");
+}
+/* N-on-1: N blinds each on its own row; the Remark column merges to show "N on 1" */
+function addMultiOnOne(){
+  var raw=prompt("几扇卷帘共用一组（N on 1）? 输入数量：","2");
+  if(raw==null)return;
+  var n=parseInt(raw,10);
+  if(!n||n<2){toast("数量需 ≥ 2");return;}
+  var gid="m"+Date.now()+Math.floor(Math.random()*1e4);
+  for(var i=0;i<n;i++){addRow(1,{mg:gid,mgpos:i,mgN:n,remark:(i===0?(n+" on 1"):"")});}
+  toast("已添加 "+n+" on 1 联窗");
+}
+/* assign alternating fill colors to each group (double-roller dl OR N-on-1 mg) in order */
+function recolorGroups(){
+  var seen={},idx=0;
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){
+    tr.classList.remove("group-a","group-b");
+    var d=tr.querySelector('[data-k="dl"]'),m=tr.querySelector('[data-k="mg"]');
+    var key=(d&&d.value)||(m&&m.value)||"";
+    if(key){ if(!(key in seen)){seen[key]=idx%2;idx++;} tr.classList.add(seen[key]?"group-b":"group-a"); }
+  });
+}
+function delRow(btn){
+  var tr=btn.closest("tr"),d=tr.querySelector('[data-k="dl"]'),m=tr.querySelector('[data-k="mg"]');
+  var key=(d&&d.value)||(m&&m.value)||"",isMg=!!(m&&m.value);
+  if(key){ if(!confirm(isMg?"删除整组 N-on-1 联窗？/ Delete the whole N-on-1 group?":"删除整组双层卷帘（2行）？/ Delete the whole double-roller group?"))return;
+    Array.prototype.slice.call(document.querySelectorAll("#orderBody tr")).forEach(function(x){
+      var a=x.querySelector('[data-k="dl"]'),b=x.querySelector('[data-k="mg"]');
+      if((a&&a.value&&a.value===key)||(b&&b.value&&b.value===key))x.remove();});
+  } else tr.remove();
+  renumber();recolorGroups();autosave();
+}
+function clearOrder(){if(!confirm("清空所有行？"))return;document.getElementById("orderBody").innerHTML="";addRow(8);}
+
+/* ===== change handling ===== */
+function onCellChange(e){
+  var t=e.target;if(!t.dataset||!t.dataset.k)return;
+  var k=t.dataset.k;
+  if(t.tagName==="SELECT"&&t.value==="__custom__"){
+    var c=prompt("输入自定义值 / Enter custom value:","");
+    if(c&&c.trim()){var o=document.createElement("option");o.value=c.trim();o.textContent=c.trim();
+      t.insertBefore(o,t.querySelector('option[value="__custom__"]'));t.value=c.trim();}
+    else{t.value=t.dataset.prev||"";}
+  }
+  if(t.tagName==="SELECT")t.dataset.prev=t.value;
+  var drivers={operation:1,product:1,cassetteType:1,h_mm:1,h_in:1,w_in:1};
+  if(drivers[k]){
+    var tr=t.closest("tr"),r=readRow(tr);
+    /* a double-roller bottom layer shares the top row's sizes for bead-height matching */
+    if(r.dl&&String(r.dlpos)!=="0"){var s=groupTopSizes(r.dl);r.w_in=s.w_in;r.h_in=s.h_in;r.w_mm=s.w_mm;r.h_mm=s.h_mm;}
+    /* recompute mm only when an inch field was edited (don't clobber a manual mm edit) */
+    if(k==="w_in"||k==="h_in")computeMM(r);
+    if(k==="cassetteType"){var op=opType(r.operation);if(op==="polyester"){var cc=cassetteColor(r.cassetteType);if(cc)r.color=cc;}}
+    normalizeForOp(r,(k==="h_mm"||k==="h_in"||k==="w_in"||k==="operation"));
+    applyDownrail(r);
+    rerenderRow(tr,r);
+    /* when the shared size on the top row changes, re-match the bottom layer too */
+    if(r.dl&&String(r.dlpos)==="0"&&(k==="h_mm"||k==="h_in"||k==="w_mm"||k==="w_in"))rematchGroupBottoms(r.dl);
+  }
+  autosave();
+}
+/* Ctrl+D = fill from row above (Excel style) */
+function onKey(e){
+  if(!(e.ctrlKey||e.metaKey)||(e.key!=="d"&&e.key!=="D"))return;
+  var t=document.activeElement;if(!t||!t.dataset||!t.dataset.k)return;
+  var tr=t.closest("tr");if(!tr||!tr.previousElementSibling)return;
+  e.preventDefault();
+  var k=t.dataset.k,prev=tr.previousElementSibling.querySelector('[data-k="'+k+'"]');
+  if(!prev)return;var val=prev.value;
+  var r=readRow(tr);r[k]=val;finalizeRow(r);rerenderRow(tr,r);autosave();
+}
+
+/* ===== bulk column fill ===== */
+var _bulk=null;
+function bulkFill(field,key){
+  _bulk={field:field,key:key};
+  document.getElementById("bulkTitle").textContent="批量填充：" + (key==="__text__"?"文本列":OPTS[key].label+" / "+OPTS[key].cn);
+  var p=document.getElementById("bulkPicker");
+  if(key==="__text__"){p.innerHTML='<input id="bulkVal" placeholder="输入要填充的内容">';}
+  else{var h='<select id="bulkVal"><option value=""></option>';
+    OPTS[key].items.forEach(function(o){h+='<option value="'+escAttr(o)+'">'+escHtml(o)+'</option>';});
+    h+='</select>';p.innerHTML=h;}
+  document.getElementById("bulkModal").style.display="flex";
+}
+function closeBulk(){document.getElementById("bulkModal").style.display="none";_bulk=null;}
+function applyBulk(){
+  if(!_bulk)return;var val=document.getElementById("bulkVal").value;
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){
+    var r=readRow(tr);r[_bulk.field]=val;finalizeRow(r);rerenderRow(tr,r);});
+  closeBulk();toast("已批量填充 / Filled");autosave();
+}
+
+/* ===== process ===== */
+function processOrder(){
+  var cust=v("m_customer"),po=v("m_po");
+  if(!cust&&!po){toast("请先填客户与 PO / Fill customer & PO first");return;}
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){
+    var ci=tr.querySelector('[data-k="customer"]');if(ci&&!ci.value.trim())ci.value=cust;});
+  toast("已生成工单：客户"+(po?(" + PO "+po):"")+" 已填充");autosave();
+}
+
+/* ===== persistence ===== */
+function collectOrder(){
+  var meta={company:COMPANY.name,phone:COMPANY.phone,address:COMPANY.address,website:COMPANY.website,email:COMPANY.email,logo:COMPANY.logo,po:v("m_po"),customer:v("m_customer"),pi:v("m_pi"),date:v("m_date"),remark:v("m_remark")},rows=[];
+  document.querySelectorAll("#orderBody tr").forEach(function(tr){rows.push(normalizeRowValues(readRow(tr)));});
+  return{meta:meta,rows:rows};
+}
+function saveOrder(){
+  var data=collectOrder();
+  localStorage.setItem(LS_ORDER,JSON.stringify(data));
+  if(EMBEDDED){ post({type:"LUMA_SAVE",data:data}); toast("已保存到工单 / Saved to order"); }
+  else toast("已暂存 / Saved");
+}
+function loadOrder(){
+  var d=loadJSON(LS_ORDER,null);if(!d)return false;
+  setV("m_po",d.meta.po);setV("m_customer",d.meta.customer);setV("m_pi",d.meta.pi);setV("m_date",d.meta.date);setV("m_remark",d.meta.remark);
+  document.getElementById("orderBody").innerHTML="";
+  (d.rows||[]).forEach(function(row){addRow(1,row);});
+  if(!d.rows||!d.rows.length)addRow(8);
+  return true;
+}
+
+/* ===== admin ===== */
+function renderAdmin(){
+  var g=document.getElementById("adminGrid");g.innerHTML="";
+  Object.keys(OPTS).forEach(function(key){
+    var cfg=OPTS[key],card=document.createElement("div");card.className="opt-card";
+    card.innerHTML='<h3>'+escHtml(cfg.label)+' <span class="pill">'+escHtml(cfg.cn)+'</span></h3>'+
+      '<div class="sub">key: '+key+'</div><div class="opt-list" data-key="'+key+'"></div>'+
+      '<button class="add-opt" onclick="addOpt(\''+key+'\')">＋ 添加选项</button>';
+    g.appendChild(card);
+    var list=card.querySelector(".opt-list");
+    cfg.items.forEach(function(it){list.appendChild(optRow(it));});
+  });
+}
+function optRow(val){var d=document.createElement("div");d.className="opt-row";
+  d.innerHTML='<button class="mv" onclick="mvOpt(this,-1)">▲</button><button class="mv" onclick="mvOpt(this,1)">▼</button>'+
+    '<input value="'+escAttr(val)+'"><button class="rm" onclick="this.closest(\'.opt-row\').remove()">✕</button>';return d;}
+function addOpt(key){var list=document.querySelector('.opt-list[data-key="'+key+'"]');list.appendChild(optRow(""));list.lastChild.querySelector("input").focus();}
+function mvOpt(btn,dir){var row=btn.closest(".opt-row"),list=row.parentNode;
+  if(dir<0&&row.previousElementSibling)list.insertBefore(row,row.previousElementSibling);
+  if(dir>0&&row.nextElementSibling)list.insertBefore(row.nextElementSibling,row);}
+function saveOptions(){
+  Object.keys(OPTS).forEach(function(key){var list=document.querySelector('.opt-list[data-key="'+key+'"]'),items=[];
+    list.querySelectorAll("input").forEach(function(i){var x=i.value.trim();if(x)items.push(x);});OPTS[key].items=items;});
+  OPTS.operation.items = Array.from(new Set((OPTS.operation.items||[]).map(canonicalOperation).filter(Boolean)));
+  ["Polyester chain","Stainless chain","Cordless","Motorized"].forEach(function(v){if(OPTS.operation.items.indexOf(v)<0)OPTS.operation.items.push(v);});
+  OPTS.cassette.items = ["Square","Round"];
+  localStorage.setItem(LS_OPTS,JSON.stringify(OPTS));toast("选项已保存 / Saved");
+}
+function resetDefaults(){if(!confirm("恢复出厂默认选项？"))return;OPTS=JSON.parse(JSON.stringify(DEFAULTS));localStorage.removeItem(LS_OPTS);renderAdmin();toast("已恢复默认");}
+
+/* ===== misc ===== */
+function showTab(t){
+  document.getElementById("tab-order").style.display=t==="order"?"":"none";
+  document.getElementById("tab-admin").style.display=t==="admin"?"":"none";
+  document.getElementById("tabOrderBtn").classList.toggle("active",t==="order");
+  document.getElementById("tabAdminBtn").classList.toggle("active",t==="admin");
+  if(t==="admin")renderAdmin();
+}
+function v(id){return document.getElementById(id).value;}
+function setV(id,val){var e=document.getElementById(id);if(e)e.value=val||"";}
+var _tt;function toast(m){var t=document.getElementById("_toast");
+  if(!t){t=document.createElement("div");t.id="_toast";t.style.cssText="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f2933;color:#fff;padding:10px 18px;border-radius:24px;font-size:13px;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:opacity .3s";document.body.appendChild(t);}
+  t.textContent=m;t.style.opacity="1";clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity="0";},1700);}
+
+function syncPrintValues(){
+  document.querySelectorAll("#orderTable td").forEach(function(td){
+    td.classList.remove("print-value-cell");
+    td.removeAttribute("data-print-value");
+    var ctrl=td.querySelector("select[data-k],input:not([type='hidden'])[data-k],textarea[data-k]");
+    var lock=td.querySelector(".lockcell");
+    if(ctrl){
+      var val=ctrl.value||"";
+      if(ctrl.tagName==="SELECT"&&ctrl.selectedIndex>=0)val=ctrl.options[ctrl.selectedIndex].text||val;
+      if(val==="__custom__")val="";
+      td.setAttribute("data-print-value",val);
+      td.classList.add("print-value-cell");
+    }else if(lock){
+      td.setAttribute("data-print-value",lock.textContent||"");
+      td.classList.add("print-value-cell");
+    }
+  });
+}
+function printOrder(){syncPrintValues();setTimeout(function(){window.print();},20);}
+
+/* ===== embedded mode (inside the AAPP work-order preview iframe) ===== */
+var EMBEDDED=false, _printMode=false, _loading=false, _autoT;
+function post(msg){try{(window.opener||window.parent||window).postMessage(msg,"*");}catch(e){}}
+/* embedded auto-save: push edits (incl. PO) back to the order, debounced.
+   Skipped while loading a payload and in the print popup. */
+function autosave(){
+  if(!EMBEDDED||_printMode||_loading)return;
+  clearTimeout(_autoT);
+  _autoT=setTimeout(function(){
+    try{var data=collectOrder();localStorage.setItem(LS_ORDER,JSON.stringify(data));post({type:"LUMA_SAVE",data:data});}catch(e){}
+  },600);
+}
+/* payload from the app: {meta:{company,phone,po,customer,pi,date,remark}, rows:[...] } */
+function renderCompanyMeta(){
+  var parts=[COMPANY.address,COMPANY.phone,COMPANY.website,COMPANY.email].filter(Boolean);
+  var el=document.getElementById("company_meta"); if(el)el.textContent=parts.join("  ·  ");
+  var logo=document.getElementById("company_logo");
+  if(logo){ if(COMPANY.logo){logo.src=COMPANY.logo;logo.style.display="";logo.onerror=function(){this.style.display="none";};} else logo.style.display="none"; }
+}
+function applyPayload(p){
+  if(!p)return;
+  _loading=true;
+  var m=p.meta||{};
+  if(m.title){try{document.title=m.title;}catch(e){}}   /* drives the printed PDF filename (PO-named) */
+  var co=m.company;
+  if(co&&typeof co==="object"){ if(co.name!=null)COMPANY.name=co.name; }   /* tolerate legacy object form */
+  else if(co!=null)COMPANY.name=co;
+  if(m.phone!=null)COMPANY.phone=m.phone;
+  if(m.address!=null)COMPANY.address=m.address;
+  if(m.website!=null)COMPANY.website=m.website;
+  if(m.email!=null)COMPANY.email=m.email;
+  if(m.logo!=null)COMPANY.logo=m.logo;
+  try{localStorage.setItem(LS_CO,JSON.stringify(COMPANY));}catch(e){}
+  setV("company_name",COMPANY.name);renderCompanyMeta();
+  setV("m_po",m.po);setV("m_customer",m.customer);setV("m_pi",m.pi);
+  setV("m_date",m.date||new Date().toISOString().slice(0,10));setV("m_remark",m.remark);
+  document.getElementById("orderBody").innerHTML="";
+  var rows=p.rows||[];
+  if(rows.length)rows.forEach(function(row){addRow(1,row);}); else addRow(6);
+  _loading=false;
+}
+function onMessage(e){
+  var d=e.data||{};
+  if(d.type==="LUMA_LOAD"){
+    EMBEDDED=true; if(d.print)_printMode=true;
+    applyPayload(d.payload);
+    if(d.print){ setTimeout(function(){try{printOrder();}catch(_){}}, 450); }  /* popup export → auto-print */
+    else toast("已带入订单数据 / Order data loaded");
+  }
+}
+
+/* ===== init ===== */
+(function init(){
+  document.getElementById("orderBody").addEventListener("change",onCellChange);
+  document.getElementById("orderBody").addEventListener("input",autosave);   /* text-cell typing → embedded auto-save */
+  ["m_po","m_customer","m_pi","m_date","m_remark"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("input",autosave);});
+  document.addEventListener("keydown",onKey);
+  window.addEventListener("message",onMessage);
+  window.addEventListener("beforeprint",syncPrintValues);
+  setV("company_name",COMPANY.name);renderCompanyMeta();
+  document.getElementById("company_name").addEventListener("input",function(){COMPANY.name=this.value;localStorage.setItem(LS_CO,JSON.stringify(COMPANY));});
+  EMBEDDED = (function(){try{return (window.parent&&window.parent!==window)||!!window.opener;}catch(e){return false;}})();
+  if(EMBEDDED){
+    /* wait for the app to send the order payload; tell it we're ready */
+    addRow(1);                 /* placeholder until payload arrives */
+    post({type:"LUMA_READY"});
+  } else {
+    if(!loadOrder())addRow(8);
+    if(!v("m_date"))setV("m_date",new Date().toISOString().slice(0,10));
+  }
+})();
+</script>
+</body>
+</html>
