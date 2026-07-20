@@ -632,7 +632,7 @@ export const ASSISTANT_TOOLS = [
   {
     name: 'recommend_drapery_size',
     description:
-      "MEASUREMENT WIZARD — compute the RECOMMENDED finished drapery size from the customer's window measurements, using the exact same rules our designers use. Collect first, in inches: window width + height (outer frame preferred), then rod type (motorized ceiling track / ceiling track / wall rod) and opening (center split or one-way). Optional but improves accuracy: wall space left/right of the window, window-top-to-ceiling gap, window-bottom-to-floor, and measured floor-to-ceiling height. Present the result as our recommendation, explain in one short sentence why it's larger than the window (stacking room / rod position), and offer to save it to their Home Project via upsert_room_item.",
+      "MEASUREMENT WIZARD — compute the RECOMMENDED finished drapery size from the customer's window measurements, using the exact same rules our designers use. CALL THIS THE MOMENT you have enough inputs — never re-ask for a number the customer already gave, and never compute finished sizes or panel/fabric-width counts in your head instead. Full mode: window width + height in inches (outer frame preferred) + rod type (motorized ceiling track / ceiling track / wall rod) + opening (center split or one-way). HEIGHT-ONLY mode: if the customer gave the floor-to-ceiling height (min of 3 points) + rod type but no window size yet, call with just wall_height_in (+ floor_clearance_in if they stated one) — you get the finished height immediately, then ask for the window width to finish the width side. Optional accuracy inputs: wall space left/right, window-top-to-ceiling gap, window-bottom-to-floor. Present the result as our recommendation with one short reason (stacking room scales with window width — narrow windows may add as little as ~7\" per side, wide windows much more), and offer to save it via upsert_room_item.",
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -643,11 +643,12 @@ export const ASSISTANT_TOOLS = [
         clear_top_in: { type: 'number', description: 'Window top → ceiling gap in inches. Omit if not measured.' },
         clear_bottom_in: { type: 'number', description: 'Window bottom → floor in inches. Omit if not measured.' },
         wall_height_in: { type: 'number', description: 'Measured floor-to-ceiling height in inches (measure at left/center/right, give the SMALLEST). Omit if not measured.' },
+        floor_clearance_in: { type: 'number', description: 'Hem-off-the-floor clearance in inches if the customer stated one (default 0.5).' },
         rod_type: { type: 'string', description: "'motorized_ceiling_track' | 'ceiling_track' | 'wall_rod' (default ceiling_track)." },
         operation: { type: 'string', description: "'split' (center open, default) | 'single_left' | 'single_right'." },
         style_family: { type: 'string', description: "'pleated' (pinch pleat, default) | 'ripple' (ripplefold)." },
       },
-      required: ['window_width_in', 'window_height_in'],
+      required: [],
     },
   },
   {
@@ -787,7 +788,10 @@ export async function executeAssistantTool(
         })
         return {
           unit_price: priced.unitPrice,
-          say_it_as: `大约 $${priced.unitPrice.toLocaleString()} / around $${priced.unitPrice.toLocaleString()} per shade — the product page configurator shows this live for their exact size.`,
+          // EXACT store price — never hedge it with 大约/around (it IS the
+          // price for that size; the old wording here contradicted the
+          // prompt's exact-price rule and made the model hedge).
+          say_it_as: `$${priced.unitPrice.toLocaleString()} per shade for that exact size and configuration — state it plainly (no "around"/"大约"); the product page configurator shows the same live price.`,
         }
       } catch (e: any) {
         return {
@@ -907,7 +911,7 @@ export async function executeAssistantTool(
       if (!r.ok) {
         return {
           error: r.error,
-          note: 'Could not identify the code right now — ask the customer where they saw it, answer generally, and offer the free consultation.',
+          note: 'Could not identify the code right now — NEVER guess which brand or product a code belongs to. Say you could not verify it just now, ask where they saw it, and offer the free consultation. Do not proceed to any pricing tool with an unverified code.',
         }
       }
       if (!r.matches || r.matches.length === 0) {
@@ -916,8 +920,39 @@ export async function executeAssistantTool(
       return { matches: r.matches }
     }
     case 'recommend_drapery_size': {
-      const { recommendDraperySize } = await import('@window-treatments/shared/measure')
+      const { recommendDraperySize, recommendFinishedHeightOnly } = await import('@window-treatments/shared/measure')
       const num = (v: any) => (v != null && isFinite(Number(v)) && Number(v) > 0 ? Number(v) : undefined)
+      const floorClearance = input?.floor_clearance_in != null && isFinite(Number(input.floor_clearance_in)) && Number(input.floor_clearance_in) >= 0
+        ? Number(input.floor_clearance_in)
+        : undefined
+      const rodType = ['motorized_ceiling_track', 'ceiling_track', 'wall_rod'].includes(input?.rod_type)
+        ? input.rod_type
+        : 'ceiling_track'
+
+      // HEIGHT-ONLY mode (G5 2026-07-20): customer measured the ceiling but
+      // not the window — the finished height is still fully computable. Never
+      // send the model back to re-ask for numbers it doesn't need.
+      if ((!num(input?.window_width_in) || !num(input?.window_height_in)) && num(input?.wall_height_in)) {
+        const recH = recommendFinishedHeightOnly({
+          wallHeightsIn: [Number(input.wall_height_in)],
+          rodType,
+          clearanceFromFloorIn: floorClearance,
+        })
+        if (recH != null) {
+          logLeadEvent({
+            userId, anonId, type: 'measure_wizard',
+            meta: { wallH: input?.wall_height_in, recH, mode: 'height_only' },
+            campaignId,
+          })
+          return {
+            recommended_finished_height_in: recH,
+            note:
+              'Finished HEIGHT computed from the measured ceiling height with the same rules our designers use. ' +
+              'State it as the recommendation. For the finished WIDTH, ask for the window width (and height) — do not estimate width yourself.',
+          }
+        }
+      }
+
       const rec = recommendDraperySize({
         windowWidthIn: Number(input?.window_width_in) || 0,
         windowHeightIn: Number(input?.window_height_in) || 0,
@@ -926,9 +961,8 @@ export async function executeAssistantTool(
         clearTopIn: num(input?.clear_top_in),
         clearBottomIn: num(input?.clear_bottom_in),
         wallHeightsIn: num(input?.wall_height_in) ? [Number(input.wall_height_in)] : undefined,
-        rodType: ['motorized_ceiling_track', 'ceiling_track', 'wall_rod'].includes(input?.rod_type)
-          ? input.rod_type
-          : 'ceiling_track',
+        clearanceFromFloorIn: floorClearance,
+        rodType,
         operation: ['split', 'single_left', 'single_right'].includes(input?.operation) ? input.operation : 'split',
         styleFamily: input?.style_family === 'ripple' ? 'ripple' : 'pleated',
       })

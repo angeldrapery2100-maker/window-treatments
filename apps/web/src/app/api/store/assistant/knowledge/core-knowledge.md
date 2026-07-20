@@ -22,13 +22,38 @@ internal markups, or employee workflow details.
   optional lining, sheer layer, banding trim; made to the inch.
 - Handcrafted roman shades 手工罗马帘 — styles: flat / slouch / soft / front fold /
   reverse fold / hobbled; optional lining, valance, cordless or motorized.
-- Luma collection 自家卷帘系列 — roller shade 卷帘, zebra shade 斑马帘 (alternating
-  sheer/solid bands), sheer shade 柔纱帘, dual (double-layer) shades 双层帘, modern
-  roman shade. Cassette headrail options; plastic chain / stainless chain / cordless /
-  motorized. Max width 118", max height about 120"; wider or taller windows are
-  split into multiple panels (exact workable size confirmed by our team).
+- Luma collection 自家卷帘系列 — SIX product lines (list all six when asked what Luma
+  offers): ① roller shade 卷帘, ② zebra shade 斑马帘 (alternating sheer/solid bands),
+  ③ sheer shade 柔纱帘, ④ dual ROLLER shade 双层卷帘 (front + back roller fabrics, one
+  5" square cassette), ⑤ dual SHEER shade 双层柔纱帘 (sheer front + roller back, one
+  5" square cassette) — dual roller and dual sheer are TWO different products, and
+  neither is a zebra shade — and ⑥ modern roman shade 现代罗马帘 (Luma-made, distinct
+  from our handcrafted roman shades). Max width 118", max height about 120" — NEVER
+  quote a larger single-panel size; wider or taller windows are split into multiple
+  panels (exact workable size confirmed by our team).
+  CONTROL OPTIONS differ BY PRODUCT — never assume every control fits every product:
+  roller & zebra = plastic chain / stainless chain / cordless / motorized;
+  sheer, dual sheer & modern roman = plastic chain / stainless chain / MOTORIZED ONLY
+  (NO cordless); dual roller = plastic chain / stainless chain / cordless / motorized.
+  Modern roman uses a square cassette and has no control-side choice. If a customer
+  asks for a combination not listed here (e.g. cordless on a modern roman), say that
+  combination isn't offered and give the closest real options.
 - Drapery hardware 窗帘杆/轨道 — rods, finials, rings, brackets; ceiling & wall track;
   SOMFY motorized tracks (Glydea / Irismo motors) for pinch pleat or ripplefold.
+- Luma RELATIVE price order at the same size & config (rough ratios — roller 1.0 <
+  zebra ≈1.2 < sheer ≈1.4 < modern roman ≈1.45 < dual roller ≈1.65 < dual sheer ≈2.05):
+  use ONLY as a relative comparison ("a dual sheer runs about twice a roller"), e.g.
+  when the pricing tool is down — NEVER multiply these into dollar amounts; exact
+  prices come only from the configurator / pricing tools.
+- SOMFY HARD LIMIT (always applies): both Glydea and Irismo motors drive pinch pleat
+  or ripplefold on our tracks — and that is ALL we state about the model families.
+  NEVER describe Glydea-vs-Irismo differences (positioning/tier, quietness, speed,
+  load rating, channel counts, battery ability, smart-home support) — not documented
+  for us; say those are confirmed per configuration by our team, and ask for track
+  length + curtain weight + whether power is pre-wired. Somfy is NOT Hunter Douglas
+  PowerView. Power-outage behavior and HomeKit/Matter/Google compatibility vary BY
+  SYSTEM — never generalize; Luma motorized shades use a rechargeable motor with a
+  Matter hub (that fact is safe), other systems need team confirmation.
 
 **Brand-name lines (consultation / showroom; not priced online):**
 - Hunter Douglas — Duette & Applause (cellular/honeycomb 蜂巢帘), Sonnette, Silhouette,
@@ -58,8 +83,10 @@ and guide the customer to a free consultation for exact pricing.
   If you already know the exact finished size you want, enter that in the configurator.
 
 **Drapery finished size:**
-- Width: window/opening width + stacking room, generally +10" or more per side of clearance
-  depending on how wide the window is — wider windows need proportionally more stack room.
+- Width: window/opening width + stacking room per side. Stack room SCALES with window
+  width and pleat style — a narrow (~60") window may need only ~7" per side while wide
+  windows need much more. There is NO fixed per-side number; the measurement tool /
+  designer computes the exact figure with the workroom's own rules.
 - Height (ceiling-mounted rods/tracks): ceiling height is often uneven, so measure it at
   left, center, and right. Finished height = ceiling height − rod/track thickness − floor
   clearance (0.5-1"). Track/rod thickness: motorized ceiling track ≈ 1.25"; standard ceiling

@@ -54,20 +54,34 @@ export function toReferenceRange(total: number): { low: number; high: number } {
 }
 
 async function callAction(token: string, body: Record<string, unknown>): Promise<{ status: number; data: any } | null> {
-  try {
-    const res = await fetch(ACTION_URL(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ action: 'hd_price_lookup', ...body }),
-      signal: AbortSignal.timeout(12_000),
-    })
-    return { status: res.status, data: await res.json().catch(() => null) }
-  } catch {
-    return null
+  // One retry on transient failures (network error / 5xx / 429): the eval
+  // runs hit intermittent "pricing tool having a hiccup" moments that a
+  // single retry absorbs. Non-transient statuses return immediately.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(ACTION_URL(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ action: 'hd_price_lookup', ...body }),
+        signal: AbortSignal.timeout(12_000),
+      })
+      if ((res.status >= 500 || res.status === 429) && attempt === 0) {
+        console.warn(`[hdPricing] upstream ${res.status} — retrying once`)
+        continue
+      }
+      return { status: res.status, data: await res.json().catch(() => null) }
+    } catch (err) {
+      if (attempt === 0) {
+        console.warn('[hdPricing] network/timeout error — retrying once:', String(err).slice(0, 120))
+        continue
+      }
+      return null
+    }
   }
+  return null
 }
 
 /** Sample up to `max` chart ids evenly across the list (keeps min & max tiers in play). */

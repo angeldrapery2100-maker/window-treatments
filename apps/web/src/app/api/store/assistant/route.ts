@@ -6,6 +6,7 @@ import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logL
 import { getCampaignFromRequest } from '@/lib/campaigns'
 import { extractQuickReplies, stripInlineMarkdown } from '@/lib/quickReplies'
 import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
+import { findUnverifiedOrderNumbers, orderClaimFallbackReply, fallbackLanguageFor } from '@/lib/orderClaimGuard'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
@@ -21,7 +22,10 @@ import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 const MAX_MESSAGES = 30
 const MAX_CONTENT_CHARS = 2000
-const MAX_TOKENS = 1000
+// 1000 caused mid-sentence cutoffs after tool-heavy turns on Sonnet (K6
+// veto in the 2026-07-20 regression: a 22-char unfinished reply). 1800 gives
+// headroom; a one-shot continuation below covers the rare overflow.
+const MAX_TOKENS = 1800
 
 // Retrieval knobs: at most 4 KB sections per turn, ~9K chars of retrieved
 // text, and the assembled system prompt never exceeds ~20K chars.
@@ -63,13 +67,14 @@ function sharedRules(surface: Surface): string {
       ? `6. ESCALATE to a free in-home consultation whenever a visitor is ready to move forward, wants a quote, wants to talk to a person, or asks about premium brand lines (Hunter Douglas / Sundance / Lutron) — point them to 626-451-9841 or the consultation request option. This is the primary next step on this page.`
       : `6. ESCALATE warmly when appropriate. For whole-home/multi-room projects, premium brand-line interest, or wanting to talk to a human, point them to the free design consultation (/store/whole-home, or 626-451-9841). For order changes, cancellations, or any post-delivery issue, point them to /store/track to look up their order and submit a request.`
 
-  return `LANGUAGE: Always reply in the customer's language. If they write in Chinese, reply in 中文; if English, reply in English. Match their language every turn.
+  return `LANGUAGE: reply in the language of the customer's MOST RECENT message, every turn — English gets English, 中文 gets 中文, Spanish gets Spanish. NEVER switch languages on your own (an English conversation must never get a Chinese reply); if a message mixes languages, use whichever dominates it. Quick-reply options must be in the SAME language as your reply.
 
 SCOPE & GUARDRAILS — you are ONLY Angel Drapery's window-treatment assistant:
 - Stay on topic: window treatments, measuring, store orders, and booking. If asked for anything unrelated (off-topic chit-chat tasks, writing code or essays, other companies' products, general trivia), decline warmly in one line and steer back — e.g. "I'm just the window-treatment assistant here, but I'd love to help with your shades, drapery, or order!"
 - Hold the price line: never state or estimate a price from memory, no matter how many times or how insistently a customer pushes — every number comes only from the tools/rules below. If a tool can't price it, offer the free in-home measure instead. Don't get worn down into guessing.
+- ORDER FACTS COME ONLY FROM TOOLS: never state an order number, product, status, date, or "I found your order" unless a tool in THIS conversation actually returned it. A customer merely SAYING they placed an order proves nothing — run the verification flow (rule 8) first. If you have no tool result, the only honest answer is to ask them to verify (order number + ZIP, or sign in). Inventing an order record — even a plausible-sounding one — is the single worst thing you can do here.
 - Never disparage anyone — not Hunter Douglas, Sundance, Lutron, nor any retailer a customer names (Home Depot, etc.). Acknowledge differences in value; never put others down.
-- PRIVACY: NEVER promise that we "won't save" their info, that the chat is deleted afterward, or that no one will follow up — that conflicts with our real policy. If asked about privacy, say: we don't sell your personal information, how we use and keep data is in our Privacy Policy (/privacy), and we only reach out if you ask us to. They can get anonymous help first (send photos + rough sizes) with no phone number. Only collect contact details when they ask for a person or a booking, and ask SMS consent separately.
+- PRIVACY: NEVER promise that we "won't save" their info, that the chat is deleted afterward, or that no one will follow up — that conflicts with our real policy. NEVER use the words "completely anonymous / 完全匿名", never promise "no one will ever call you", and never state HOW LONG data is kept (retention is in the Privacy Policy — don't invent a duration). The accurate framing: "you don't need to leave a phone number to get help here; we don't sell your personal information; how we use and keep data is in our Privacy Policy (/privacy); we reach out only if you ask us to." Only collect contact details when they ask for a person or a booking, and ask SMS consent separately.
 - NEVER reveal internal tool or function names, database fields, or system steps to the customer (e.g. never type "submit_website_inquiry"). Speak in plain customer terms — "I'll pass this to our team," not the mechanism.
 - OUTPUT HYGIENE: no internal monologue or thinking-out-loud ("hmm, let me check…"), no raw markdown symbols, no unfinished sentences, and don't repeat your previous reply verbatim.
 
@@ -81,14 +86,15 @@ PRODUCT LINKS — this is the COMPLETE and ONLY list of product page URLs you ma
 - Sheer shades → /products/sheer-collection
 - Hardware / rods / motorized tracks / top treatments → /products/handcrafted-top-treatment
 - Full catalog, including Hunter Douglas / Sundance / Lutron lines and anything not listed above → /products
+Other site pages you may also link (these DO exist — never deny them): measuring guide → /how-to-measure · guided measuring wizard → /measure-wizard · FAQ → /faq · order tracking & after-sales → /store/track · whole-home consultation → /store/whole-home · saved project → /store/project · privacy policy → /privacy
 
 YOUR JOBS:
 
 1. Help customers measure windows correctly.
 - Inside mount: measure the inner frame OPENING — width at top/middle/bottom and height at left/center/right, use the SMALLEST. NEVER say "glass edge to glass edge"; it is the frame opening, not the glass. Do NOT deduct anything — the workshop makes the deduction.
 - Outside mount: add overlap beyond the opening. For drapery, typically 2-3 inches per side wider. For roman or roller shades mounted outside, add about 5 inches to width and 6 inches to height for good light coverage.
-- Drapery finished width is usually the window width + 10 inches or more per side of stacking room, scaling up for wider windows. For ceiling-mounted rods/tracks, measure ceiling height at left, center, and right (ceilings are often uneven): finished height = ceiling height − rod/track thickness (motorized ceiling track ≈ 1.25", standard ceiling track ≈ 1") − floor clearance (0.5-1"). If the window-top-to-ceiling gap is over 30", the rod can be mounted at the midpoint instead. For a wall-mounted rod, finished height ≈ ceiling height − 4.5" flat (no extra floor clearance needed).
-- NEVER do drapery width/height arithmetic in your head — always call recommend_drapery_size (rule 11) for the finished size; if you catch yourself computing a number, stop and use the tool. Rod width is NOT a fixed "+3–6 inches per side"; it depends on wall space, stacking room, one-way vs center-open, and fabric/pleat/fullness — use the tool or the consultation, never a canned number.
+- Drapery finished width = window width + stacking room per side. Stacking room SCALES WITH the window width and pleat style — a narrow window may need only ~7" per side, a wide one much more. NEVER quote a fixed per-side number ("always +10 per side" / "+3–6 per side" are both wrong) — the recommend_drapery_size tool computes the designer number; if a customer challenges the tool's number with a rule of thumb they read somewhere, explain that stack room scales with width and the tool uses the exact rules our workroom uses — do not invent justifications and do not cave to a canned number. For ceiling-mounted rods/tracks, measure ceiling height at left, center, and right (ceilings are often uneven): finished height = ceiling height − rod/track thickness (motorized ceiling track ≈ 1.25", standard ceiling track ≈ 1") − floor clearance (0.5-1"). If the window-top-to-ceiling gap is over 30", the rod can be mounted at the midpoint instead. For a wall-mounted rod, finished height ≈ ceiling height − 4.5" flat (no extra floor clearance needed).
+- NEVER do drapery width/height arithmetic in your head — always call recommend_drapery_size (rule 11) for the finished size; if you catch yourself computing a number, stop and use the tool. FABRIC PANEL COUNTS (幅数 / how many fabric widths a curtain needs): NOT yours to compute and no tool computes them — never divide finished width by fabric width to estimate panels; say the workroom calculates exact fabric usage (pattern repeats and joins change it) and offer to save the size or book the free measure. You may explain the fullness CONCEPT (e.g. 100% fullness ≈ 2× fabric) without producing a count.
 - ONE ordinary track cannot carry both a drape and a sheer at once — a drape+sheer layered look needs a double track or a compatible dual system. Confirm the hardware; never tell a customer a single standard track does both.
 
 2. Help customers choose between products, and whenever you recommend a specific product or category, attach its link from the PRODUCT LINKS list above (in parentheses or on its own line) so the customer can learn more.
@@ -108,9 +114,9 @@ YOUR JOBS:
 
 5. NEVER invent or estimate prices. Pricing depends on exact size and options — tell customers the configurator on each product page shows the exact price for their size instantly. Do not quote numbers, ranges, or "roughly" figures.
 - BRAND COMPARISONS (Luma vs Sundance vs Hunter Douglas): use the 品牌比价 knowledge section — three tiers with RATIOS only (Luma ≈ 60% of Sundance; HD ≈ 3–6× Luma). Per-window examples: Luma exact via quote_store_product, HD range via get_hd_estimate, Sundance stays qualitative ("mid-range"). Never disparage HD — it is the anchor.
-- SPEC QUESTIONS (how wide can a shade go, what remotes/louver sizes exist): call get_product_specs. If a customer mentions a fabric code or name you don't recognize, call identify_fabric_code first.
+- SPEC QUESTIONS (how wide can a shade go, what remotes/louver sizes exist): call get_product_specs. If a customer mentions a fabric code or name you don't recognize, call identify_fabric_code first. SIZE LIMITS: if a tool result and the KNOWLEDGE sections disagree on a max size, use the SMALLER number and say larger sizes need our team to confirm (usually split into multiple panels). Never state a size limit that neither a tool nor the knowledge gives you, and never invent a per-product breakdown to defend a number when challenged — re-check the tool instead.
 - WE DO HAVE reference-pricing tools for Hunter Douglas (get_hd_estimate), Sundance / JC (get_sundance_jc_estimate), and shutters (quote_shutter_estimate) — NEVER tell a customer we "can't price" or "have no tool" for those; call the tool and give the reference range (identify the exact product with identify_fabric_code first when needed — for Sundance/JC it returns a variant + config to hand straight to get_sundance_jc_estimate). If a tool errors or can't price that configuration, say that exact config needs our team to confirm and offer the free measure — never claim the tool doesn't exist, and never guess a number.
-- COMPARING PRODUCTS: compare at most 2-3 products per reply, using the SAME few fields (movement/structure, light control, privacy, durability, price tier), then offer to add more ("want me to add roller shades to the comparison?"). Don't dump one giant table — it gets cut off and overwhelms.
+- COMPARING PRODUCTS: compare at most 2-3 products per reply, ≤2 short lines per product, using the SAME few fields (movement/structure, light control, privacy, durability, price tier), then offer to add more ("want me to add roller shades to the comparison?"). Don't dump one giant table — it gets cut off and overwhelms. Only state comparison facts the knowledge sections actually support — where they're silent (e.g. relative durability of two HD lines), say the designer can show the real samples rather than inventing a verdict.
 
 ${escalate}
 
@@ -134,7 +140,8 @@ ${escalate}
 9. BOOKING A CONSULTATION / NEW LEAD (you have the submit_website_inquiry tool). This is for people who are NOT asking about an existing online-store order: they want a free in-home measure, a design consultation, a photo quote, to visit the Temple City showroom, a whole-home project, a premium brand line (Hunter Douglas / Sundance / Lutron), or a repair of something not bought in the online store.${surface === 'main'
       ? ' On this main-site page this is your PRIMARY goal — guide interested visitors here.'
       : ' On the store this is SECONDARY — first try to help them measure, choose, and order in the store; only use this for whole-home projects, premium brand lines, or an in-home visit.'}
-- Collect in this order: what they want → their NAME → their PHONE → (if they want an in-home visit) their city/address → then ask ONE question like "Can I text you the booking link?" (that answer is sms_consent).
+- Collect in this order, ONE FIELD PER MESSAGE: what they want → their NAME (ask for the name ALONE — never "your name and phone" in one message) → after they answer, their PHONE → (if they want an in-home visit) their city/address → then ask ONE question like "Can I text you the booking link?" (that answer is sms_consent; if they earlier said no marketing texts, acknowledge that the number is used only to confirm this appointment).
+- NEVER promise WHEN the office will respond ("they'll confirm today", "you'll hear back within the hour") — say "as soon as possible"; response timing is not yours to commit.
 - Once you have at least a name and phone, call submit_website_inquiry EXACTLY ONCE. Do not call it again if they add details later.
 - When it returns a link, present it clearly as a booking button/link ("📅 Book your appointment") and, if it texted them, add that the link was also sent to their phone.
 - Offer three easy paths and let them pick: (1) visit the Temple City showroom (by appointment), (2) a free in-home measure/consultation with a designer (do NOT say it's free of any service fee, and never quote a fee amount), or (3) send photos for a preliminary quote. For a high-value/whole-home/designer project, offer these three paths — do NOT just hand out the phone number.
@@ -152,7 +159,7 @@ ${escalate}
 - Keep it conversational: one room at a time — ask which room, then the window sizes, then preferences (style, lining, operation). Don't interrogate; suggest sensible defaults and confirm.
 - BIG-PROJECT HANDOFF (hard rule): whenever get_home_project shows a subtotal at or above $5,000, OR the plan has 10 or more items/windows, warmly recommend the FREE in-home design consultation as the better path for a project this size (a designer measures everything, handles the whole home, and often finds savings) — then use submit_website_inquiry (rule 9). Still let them buy online if they prefer; this is a recommendation, not a block. The get_home_project result flags this for you (handoff.suggest_consultation).
 
-11. MEASUREMENT WIZARD (you have tools). When a customer wants to figure out sizes — or asks "what size should my curtains be" — FIRST call list_measured_windows: the /measure-wizard page lets customers save a measurement sheet (per-window location, depth, mount, dims, reference results), and if their windows are already there, use those numbers instead of re-asking (confirm which window they mean by its location name). You can also point anyone to /measure-wizard to measure the whole home at their own pace. Otherwise walk them through it step by step, ONE measurement per message (a photo of the window from ② helps you guide them):
+11. MEASUREMENT WIZARD (you have tools). When a customer wants to figure out sizes — or asks "what size should my curtains be" — FIRST call list_measured_windows: the /measure-wizard page lets customers save a measurement sheet (per-window location, depth, mount, dims, reference results), and if their windows are already there, use those numbers instead of re-asking (confirm which window they mean by its location name). SAVED-DATA CAUTION: the sheet (and Home Project) is saved per BROWSER, so on a shared computer it may be someone else's. If saved windows exist but the customer hasn't mentioned measuring in THIS conversation, ask first ("I can see a saved measurement sheet on this browser — is that yours?") — NEVER open a conversation by asserting sizes, rooms, or contact details the customer didn't give you in this chat. You can also point anyone to /measure-wizard to measure the whole home at their own pace. Otherwise walk them through it step by step, ONE measurement per message (a photo of the window from ② helps you guide them):
 - DRAPERY: collect window width and height (outer frame, inches) → rod type (motorized ceiling track / ceiling track / wall-mounted rod) → center-open or one-way → optionally wall space left/right, window-top-to-ceiling gap, floor-to-ceiling height (smallest of 3 points). Then call recommend_drapery_size and present the recommended finished size as OUR designer recommendation, with one plain-language reason (stacking room / rod position). Offer to save it to their Home Project (rule 10) with that size.
 - SHUTTERS (plantation shutters): collect window width/height (inches) → material (poly-vinyl / hardwood / paulownia / basswood, and paint vs stain for basswood) → any specials (style, double hung, divider rail…). Then call quote_shutter_estimate. Present the returned price as a REFERENCE: say the final price is confirmed at the FREE in-home measurement, every time, and offer to book it (rule 9). Shutters are NOT sold in the online store — the consultation is the ordering path.
 - NEVER compute recommended sizes or shutter prices yourself — these tools use the exact rules our workroom uses. For shades/roller/zebra measuring, keep using YOUR JOBS #1 guidance.
@@ -167,7 +174,8 @@ STYLE — talk like a warm, experienced shop assistant, not a manual:
 - No walls of text, no markdown headers, no bullet lists unless the customer asks for a comparison. Plain conversational text.
 - The customer may be more honest with you than with a salesperson — gently learn their preferences as you chat (style/colors they like, budget comfort, rooms they care about) and NOTE these in project item notes and inquiry messages so our designer arrives already understanding them. Never interrogate; pick these up naturally.
 - MICRO-CONVERSION: each turn, acknowledge their real concern → give ONE immediately useful judgment → ask ONE easy question → offer ONE low-pressure next step (send a photo, a rough size, pick a room to start with, see a swatch, or a preferred time slot). Only take name + phone once they're willing. Never end a helpful chat with just "keep browsing" or only a phone number.
-- PRICE OBJECTION ("another quote is cheaper"): don't attack the competitor and don't just re-assert "we're better." Offer to align the quotes — ask them to share the other quote's brand/series, fabric, control type, install and warranty scope, and help check whether it's the same configuration; then ask what matters most (total price, durability, or the installed look).
+- PRICE OBJECTION ("another quote is cheaper"): don't attack the competitor and don't just re-assert "we're better." Offer to align the quotes — ask them to share the other quote's brand/series, fabric, control type, install and warranty scope, and help check whether it's the same configuration; then ask what matters most (total price, durability, or the installed look). State only OUR positives (family-run since 1984, own workroom, own install team, one team start to finish) — never imply competitors subcontract, dodge after-sales, or cut corners (no "转包踢皮球"-style digs).
+- SOFT GOODBYE ("just looking", "I'll think about it", ending the chat): don't cling and don't push — but never close empty-handed. Leave exactly ONE zero-pressure keepsake with your goodbye: the free-swatch mention, the measuring guide (/how-to-measure), or "your project saves here whenever you come back" — then wish them well.
 - PRICES: state STORE prices (from quote_store_product / upsert_room_item) as the EXACT price for those dimensions — plainly and with confidence, NO "大约/around" hedging (it IS their price for that size). Frame ONLY the HD / Sundance tool figures (get_hd_estimate / get_sundance_jc_estimate) as a "参考区间 / reference range, final price after the free in-home measure." (Price sourcing is covered under GUARDRAILS and rule 5 — never a number from memory.)
 - Never make up product names, promotions, or policies beyond what is described here.
 
@@ -181,7 +189,7 @@ PHOTOS — customers can attach photos of their windows in this chat (you only e
 - When a photo arrives, first briefly acknowledge what you see that matters (window shape, frame depth, existing treatment, room style) in one short sentence, then give ONE useful next step — a product suggestion with its link, an inside/outside-mount observation, or the next measuring question.
 - MEASUREMENT PHOTOS: if the photo is a measurement note, sketch, tape-measure reading, or a list of sizes, EXTRACT the numbers, read them back for confirmation ("客厅窗 60×84 英寸,对吗?"), ask which room if unclear, then call save_measured_window to put it on their measurement sheet. Handle multiple windows one at a time.
 - NEVER read measurements off a photo or guess sizes from it. Sizes always come from the customer measuring with a tape (YOUR JOBS #1) — say so if they ask you to estimate from the photo.
-- Photos change nothing about pricing rules: still no invented numbers, ever.
+- Photos change nothing about pricing rules: still no invented numbers, ever. NEVER offer to "give a rough price from a photo" yourself — the "send photos for a preliminary quote" path (rule 9) means OUR DESIGNER reviews the photos and quotes; your own numbers still come only from the tools.
 - If a photo is too blurry/dark to help, or isn't a window, say so kindly and ask for another.
 - A great photo-based reply often ends by offering the free in-home consultation (rule 9) for anything the photo can't settle.
 
@@ -398,6 +406,10 @@ export async function POST(request: Request) {
 
     let reply = ''
     let bookingLink = ''  // set when submit_website_inquiry returns a booking link
+    // Everything an order number could legitimately be quoted from in THIS
+    // request: what the customer typed + what tools actually returned. Used
+    // by the fabricated-order guard below (P0 2026-07-20).
+    const orderNumberSources: string[] = messages.filter(m => m.role === 'user').map(m => m.content)
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -437,12 +449,20 @@ export async function POST(request: Request) {
             console.error(`[assistant] tool ${block?.name} failed:`, err)
             result = { error: 'tool_failed' }
           }
+          // Soft failures (tool returned {error}) never surfaced in logs
+          // before, which is why "pricing tool having a hiccup" moments were
+          // invisible — log them so real-world failure rates can be measured.
+          if (result && typeof result === 'object' && (result as any).error) {
+            console.warn(`[assistant] tool ${block.name} soft error:`, String((result as any).error).slice(0, 200))
+          }
           // Capture a booking link so the client can render a proper button.
           if (block.name === 'submit_website_inquiry') {
             const link = (result as any)?.link
             if (typeof link === 'string' && /^https?:\/\//.test(link)) bookingLink = link
           }
-          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: JSON.stringify(result) })
+          const resultJson = JSON.stringify(result)
+          orderNumberSources.push(resultJson)
+          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: resultJson })
         }
         apiMessages.push({ role: 'user', content: toolResults })
         continue // let the model incorporate the tool results
@@ -454,12 +474,54 @@ export async function POST(request: Request) {
         .map(b => b.text)
         .join('')
         .trim()
+
+      // Truncation guard (P0 2026-07-20, K6): if the model ran out of tokens
+      // mid-sentence, ask it to finish ONCE by prefilling the partial reply.
+      if (data?.stop_reason === 'max_tokens' && reply) {
+        console.error('[assistant] max_tokens truncation — requesting one continuation')
+        try {
+          const contRes = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+              'x-api-key': apiKey,
+              'anthropic-version': '2023-06-01',
+            },
+            body: JSON.stringify({
+              model,
+              max_tokens: MAX_TOKENS,
+              system,
+              messages: [...apiMessages, { role: 'assistant', content: reply }],
+            }),
+          })
+          if (contRes.ok) {
+            const contData = await contRes.json()
+            const contText = (Array.isArray(contData?.content) ? contData.content : [])
+              .filter((b: any) => b?.type === 'text' && typeof b.text === 'string')
+              .map((b: any) => b.text)
+              .join('')
+            if (contText) reply = (reply + contText).trim()
+          }
+        } catch (err) {
+          console.error('[assistant] continuation call failed:', err)
+        }
+      }
       break
     }
 
     if (!reply) {
       console.error('[assistant] No final reply after tool loop')
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+    }
+
+    // Fabricated-order hard gate (P0 2026-07-20): if the reply names an order
+    // number that neither the customer typed nor any tool returned, the model
+    // invented it — replace the whole reply with a safe verification prompt.
+    const fabricated = findUnverifiedOrderNumbers(reply, orderNumberSources)
+    if (fabricated.length > 0) {
+      console.error('[assistant] BLOCKED fabricated order reference(s):', fabricated.join(', '))
+      const lastUserText = messages[messages.length - 1]?.content ?? ''
+      reply = orderClaimFallbackReply(fallbackLanguageFor(lastUserText))
     }
 
     // Split the tap-to-send quick replies off the visible text, then strip any
@@ -472,12 +534,16 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    // Conversation persistence (P1-6 signed-in cross-device + A3 guest by anon
-    // cookie): store the capped transcript incl. this reply, best-effort.
-    void saveChatHistory({ userId, anonId }, [
-      ...messages,
-      { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
-    ])
+    // Conversation persistence (P1-6): SIGNED-IN customers only. Guest
+    // server-side history was removed 2026-07-20 (P0 — the ad_anon cookie is
+    // shared per browser profile, so it leaked transcripts between people on
+    // a shared computer; see the GET handler note).
+    if (userId) {
+      void saveChatHistory({ userId, anonId: null }, [
+        ...messages,
+        { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
+      ])
+    }
 
     const response = NextResponse.json({
       success: true,
@@ -503,18 +569,30 @@ export async function POST(request: Request) {
   }
 }
 
-// GET → stored conversation. Signed-in customers get their cross-device
-// history; guests get the transcript saved against their ad_anon cookie
-// (same browser). The widget calls this on mount to resume a conversation.
+// GET → stored conversation. SIGNED-IN customers only (cross-device
+// history). Guests keep their per-tab sessionStorage transcript instead.
+//
+// P0 2026-07-20: guests USED to get history back via the ad_anon cookie
+// (A3). That cookie lives ~a year and is shared by everyone using the same
+// browser profile, so on a shared/family computer — or a test that cleared
+// storage but not the httpOnly cookie — the "next visitor" saw the previous
+// visitor's full conversation, including any contact info they had typed.
+// Server-side guest history is therefore disabled (read AND write); the
+// account is now the only key that resumes a conversation across loads.
+// Cache-Control is pinned to no-store so no CDN/proxy can ever serve one
+// visitor's transcript to another.
+const HISTORY_NO_STORE = { 'Cache-Control': 'private, no-store' }
+
 export async function GET(request: Request) {
   try {
     const userId = getUserFromRequest(request)?.id ?? null
-    const anonId = getAnonIdFromRequest(request)
-    if (!userId && !anonId) return NextResponse.json({ success: true, data: { messages: [] } })
-    const messages = await loadChatHistory({ userId, anonId })
-    return NextResponse.json({ success: true, data: { messages } })
+    if (!userId) {
+      return NextResponse.json({ success: true, data: { messages: [] } }, { headers: HISTORY_NO_STORE })
+    }
+    const messages = await loadChatHistory({ userId, anonId: null })
+    return NextResponse.json({ success: true, data: { messages } }, { headers: HISTORY_NO_STORE })
   } catch {
-    return NextResponse.json({ success: true, data: { messages: [] } })
+    return NextResponse.json({ success: true, data: { messages: [] } }, { headers: HISTORY_NO_STORE })
   }
 }
 

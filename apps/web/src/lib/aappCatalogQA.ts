@@ -12,6 +12,12 @@
 
 import { getAappLibrary } from '@/lib/aappLibrary'
 
+// Customer-safe Luma size ceilings (Eddie-confirmed; see business-facts /
+// core-knowledge "Max width 118", max height about 120""). The AAPP library
+// snapshot can only tighten these — never widen them (P0 2026-07-20).
+const LUMA_SAFE_MAX_WIDTH_IN = 118
+const LUMA_SAFE_MAX_HEIGHT_IN = 120
+
 // ── Price stripping ─────────────────────────────────────────────────────────
 const PRICE_KEY_RE =
   /price|cost|amount|fee|markup|mult|addper|net|msrp|sell|dollar|charge|surcharge|rate$/i
@@ -103,15 +109,28 @@ export async function getProductSpecs(area: SpecArea): Promise<any> {
     const variants = data.shadeCatalog?.variants || {}
     const out: Record<string, any> = {}
     for (const [k, v] of Object.entries<any>(variants)) {
+      // Customer-safe ceiling (Eddie-confirmed 2026-07: ~118"W × ~120"H for
+      // Luma shades). The live AAPP snapshot may only TIGHTEN these numbers,
+      // never raise them — a stale snapshot claiming e.g. a 180" roller
+      // height is exactly how the assistant told a customer "the system
+      // confirms 180"" (P0 A10/H2, 2026-07-20). Anything at/over the ceiling
+      // is reported as the safe value with a team-confirmation flag instead.
+      const rawW = typeof v?.maxWidth === 'number' ? v.maxWidth : null
+      const rawH = typeof v?.maxHeight === 'number' ? v.maxHeight : null
+      const cappedW = rawW == null ? LUMA_SAFE_MAX_WIDTH_IN : Math.min(rawW, LUMA_SAFE_MAX_WIDTH_IN)
+      const cappedH = rawH == null ? LUMA_SAFE_MAX_HEIGHT_IN : Math.min(rawH, LUMA_SAFE_MAX_HEIGHT_IN)
       out[k] = {
-        maxWidthIn: v?.maxWidth ?? null,
-        maxHeightIn: v?.maxHeight ?? null,
+        maxWidthIn: cappedW,
+        maxHeightIn: cappedH,
+        ...(rawW == null || rawH == null || rawW > LUMA_SAFE_MAX_WIDTH_IN || rawH > LUMA_SAFE_MAX_HEIGHT_IN
+          ? { size_limit_note: 'Larger sizes may be possible as split/multiple panels — our team confirms the exact workable size.' }
+          : {}),
         cassettes: Array.isArray(v?.cassettes) ? v.cassettes.map((c: any) => c?.label || c?.key).filter(Boolean) : [],
         options: Array.isArray(v?.optionKeys) ? v.optionKeys : [],
         hasControlSide: !!v?.hasControlSide,
       }
     }
-    return { variants: out, note: 'Luma shade variants: size limits in inches, cassette styles, and available options. Prices via quote_store_product only.' }
+    return { variants: out, note: 'Luma shade variants: size limits in inches, cassette styles, and available options. NEVER promise a size beyond these limits — larger windows are split into panels, confirmed by our team. Prices via quote_store_product only.' }
   }
 
   if (area === 'motors') {
@@ -171,12 +190,24 @@ export async function resolveFabricCode(query: string): Promise<FabricCodeResult
   const q = String(query || '').trim().slice(0, 120)
   if (q.length < 2) return { ok: false, error: 'query_too_short' }
   try {
-    const res = await fetch(ACTION_URL(), {
+    // One retry on transient failures — same rationale as hdPricing.
+    let res = await fetch(ACTION_URL(), {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
       body: JSON.stringify({ action: 'resolve_product', query: q }),
       signal: AbortSignal.timeout(12_000),
+    }).catch((err) => {
+      console.warn('[aappCatalogQA] resolve_product network error — retrying once:', String(err).slice(0, 120))
+      return null
     })
+    if (!res || res.status >= 500 || res.status === 429) {
+      res = await fetch(ACTION_URL(), {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action: 'resolve_product', query: q }),
+        signal: AbortSignal.timeout(12_000),
+      })
+    }
     if (!res.ok) return { ok: false, error: `upstream_${res.status}` }
     const json: any = await res.json().catch(() => null)
     const raw: any[] = Array.isArray(json?.matches) ? json.matches : Array.isArray(json?.result?.matches) ? json.result.matches : []
@@ -204,7 +235,7 @@ export async function resolveFabricCode(query: string): Promise<FabricCodeResult
         ...(variant ? { variant } : {}),
         ...(config ? { config } : {}),
         note: isLuma
-          ? 'Sold in our online store — use list_store_products/get_product_options/quote_store_product to configure and price it.'
+          ? 'This is a Luma fabric code, but the online store lists only a CURATED subset of Luma fabrics. Check list_store_products for a matching listing first: if found, configure/price it with get_product_options + quote_store_product; if NOT listed, say this exact fabric is available through the free consultation instead — do NOT promise it can be bought online, and do NOT guess a price.'
           : canEstimate
             ? 'Not sold online, but you CAN price a reference range: call get_sundance_jc_estimate with this variant + config + the window size, then present it as a reference and offer the free in-home measure.'
             : 'Consultation line (not sold online) — describe it and offer the free in-home consultation.',

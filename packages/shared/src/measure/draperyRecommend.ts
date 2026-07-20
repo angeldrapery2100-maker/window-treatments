@@ -193,3 +193,38 @@ export function recommendDraperySize(input: DraperyRecommendInput): DraperyRecom
     recommendedFinishedHeightIn: Math.round(recH * 4) / 4,
   }
 }
+
+// ── Height-only recommendation ───────────────────────────────────────────────
+// For customers who measured the ceiling but not the window (chat wizard G5
+// case, 2026-07-20): finished HEIGHT depends only on floor-to-ceiling, rod
+// type, and floor clearance — same constants as recommendDraperySize above
+// (kept in one place so the two can never drift). Width still requires the
+// window size. Wall-rod mid-mount needs the window-top-to-ceiling gap, so the
+// gap-adjustment branch is intentionally NOT applied here (no window height
+// available); callers pass a measured wall height, which matches the engine's
+// hasWallHeight branch anyway.
+
+export interface FinishedHeightOnlyInput {
+  /** Measured floor-to-ceiling heights (L/C/R); min wins. */
+  wallHeightsIn: number[]
+  rodType?: 'motorized_ceiling_track' | 'ceiling_track' | 'wall_rod'
+  /** Hem-off-the-floor clearance; AAPP default 0.5". */
+  clearanceFromFloorIn?: number
+}
+
+export function recommendFinishedHeightOnly(input: FinishedHeightOnlyInput): number | null {
+  const wallHts = (input.wallHeightsIn || []).filter((v) => Number(v) > 0).map(Number)
+  if (wallHts.length === 0) return null
+  const H_fc = Math.min(...wallHts)
+  const floor = input.clearanceFromFloorIn != null ? Number(input.clearanceFromFloorIn) : 0.5
+  const rodType = input.rodType || 'ceiling_track'
+  let recH: number
+  if (rodType === 'motorized_ceiling_track') {
+    recH = H_fc - 1.25 - floor
+  } else if (rodType === 'ceiling_track') {
+    recH = H_fc - 0.8 - floor
+  } else {
+    recH = H_fc - 4.0 - floor
+  }
+  return Math.round(recH * 4) / 4
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { recommendDraperySize } from './draperyRecommend'
+import { recommendDraperySize, recommendFinishedHeightOnly } from './draperyRecommend'
 
 // ⚠️ FROZEN AAPP-PARITY EXPECTATIONS — do not edit the numbers.
 // Generated 2026-07-19 by executing the ORIGINAL AAPP draperyRecommendSize
@@ -120,5 +120,34 @@ describe('recommendDraperySize — frozen AAPP parity', () => {
 
   it('missing window dims → null', () => {
     expect(recommendDraperySize({ windowWidthIn: 0, windowHeightIn: 80 })).toBeNull()
+  })
+})
+
+// Height-only helper (2026-07-20, chat-wizard G5): same constants as the
+// full engine — these expectations mirror the height branch above, NOT new
+// AAPP behavior.
+describe('recommendFinishedHeightOnly', () => {
+  it('G5 regression: 110" ceiling, motorized track, 0.75" clearance → 108', () => {
+    expect(
+      recommendFinishedHeightOnly({ wallHeightsIn: [110], rodType: 'motorized_ceiling_track', clearanceFromFloorIn: 0.75 })
+    ).toBe(108)
+  })
+
+  it('matches the full engine height for a measured wall height (ceiling track, default clearance)', () => {
+    const full = recommendDraperySize({
+      windowWidthIn: 50, windowHeightIn: 60, clearTopIn: 30, clearBottomIn: 10,
+      wallHeightsIn: [100], rodType: 'ceiling_track',
+    })
+    expect(recommendFinishedHeightOnly({ wallHeightsIn: [100], rodType: 'ceiling_track' })).toBe(
+      full!.recommendedFinishedHeightIn
+    )
+  })
+
+  it('min of multiple wall heights wins; wall rod deducts 4.0', () => {
+    expect(recommendFinishedHeightOnly({ wallHeightsIn: [110, 108, 109], rodType: 'wall_rod' })).toBe(103.5)
+  })
+
+  it('no wall height → null', () => {
+    expect(recommendFinishedHeightOnly({ wallHeightsIn: [] })).toBeNull()
   })
 })
