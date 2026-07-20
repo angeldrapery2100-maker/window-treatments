@@ -21,6 +21,8 @@ const STORE_NAV = [
   // Pricing Library 页已移除（页面简化 2026-07-13）：全局定价参数在
   // 商品编辑页「计算参数」页签的全局卡片里编辑，一处保存即全局生效。
   { href: '/admin/orders', label: 'Orders', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+  // 打包发货台：生产完成后的装箱 → 建运单号 → 发货 工作队列（连通工单与运单）
+  { href: '/admin/packing', label: 'Packing', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4M4 7l8 4' },
   { href: '/admin/shipments', label: 'Shipments', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
   { href: '/admin/discount-codes', label: 'Discounts', icon: 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z' },
   { href: '/admin/support', label: 'Support', icon: 'M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414' },
@@ -47,7 +49,7 @@ const AREAS: Record<Area, { label: string; dashboard: string; nav: typeof WEBSIT
 // Map any admin path to its area. Defaults to "website" for shared/system
 // pages (e.g. Accounts) so the sidebar always has a sensible context.
 function areaForPath(pathname: string): Area {
-  const storePrefixes = ['/admin/store', '/admin/products', '/admin/orders', '/admin/shipments', '/admin/discount-codes', '/admin/support', '/admin/reviews', '/admin/leads', '/admin/campaigns', '/admin/fabrics']
+  const storePrefixes = ['/admin/store', '/admin/products', '/admin/orders', '/admin/packing', '/admin/shipments', '/admin/discount-codes', '/admin/support', '/admin/reviews', '/admin/leads', '/admin/campaigns', '/admin/fabrics']
   if (storePrefixes.some(p => pathname === p || pathname.startsWith(p + '/'))) return 'store'
   return 'website'
 }

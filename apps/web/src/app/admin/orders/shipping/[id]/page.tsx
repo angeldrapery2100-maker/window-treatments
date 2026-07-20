@@ -4,10 +4,16 @@ import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 
 interface OrderItem {
+  productId?: string
   productName: string; productType: string; mainImageUrl: string | null
   width?: number; height?: number; heightFraction?: string
   options: { displayLabel: string; valueLabel: string }[]
   quantity: number; unitPrice: number
+}
+// Per-product box rule (product_parcel_rules) — a box size keyed by W/H range.
+interface ParcelRule {
+  min_width: number; max_width: number; min_height: number; max_height: number
+  parcel_length: number; parcel_width: number; parcel_height: number; parcel_weight: number
 }
 interface Order {
   id: string; order_number: string; status: string
@@ -48,6 +54,8 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
   const [deletingShipment, setDeletingShipment] = useState<string | null>(null)
   const [notifiedShipments, setNotifiedShipments] = useState<Set<string>>(new Set())
   const [notifyingShipment, setNotifyingShipment] = useState<string | null>(null)
+  // Catalog box rules per product — used to auto-suggest a parcel size when packing.
+  const [parcelRules, setParcelRules] = useState<Record<string, ParcelRule[]>>({})
 
   useEffect(() => {
     fetch(`/api/admin/orders?status=all`).then(r => r.json()).then(d => {
@@ -64,10 +72,56 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
             }
           })
           setAllUnits(units)
+
+          // Fetch catalog box rules for each distinct product (for box auto-suggest).
+          const pids = [...new Set((found.items as OrderItem[]).map(it => it.productId).filter(Boolean))] as string[]
+          Promise.all(pids.map(async pid => {
+            try {
+              const r = await fetch(`/api/admin/products/${pid}/parcels`).then(x => x.json())
+              return [pid, (r?.success && Array.isArray(r.data)) ? r.data : []] as [string, ParcelRule[]]
+            } catch { return [pid, [] as ParcelRule[]] as [string, ParcelRule[]] }
+          })).then(pairs => {
+            const map: Record<string, ParcelRule[]> = {}
+            for (const [pid, rules] of pairs) if (rules.length) map[pid] = rules
+            setParcelRules(map)
+          }).catch(() => {})
         }
       }
     }).catch(() => {}).finally(() => setLoading(false))
   }, [orderId])
+
+  // Catalog box for one item: first rule whose W/H range contains the item.
+  const boxForItem = (item?: OrderItem): ParcelRule | null => {
+    if (!item?.productId) return null
+    const rules = parcelRules[item.productId]
+    if (!rules || rules.length === 0) return null
+    const w = Number(item.width) || 0
+    const h = Number(item.height) || 0
+    const hit = rules.find(r => w >= Number(r.min_width) && w <= Number(r.max_width) && h >= Number(r.min_height) && h <= Number(r.max_height))
+    return hit || rules[0]
+  }
+  const anyBoxRules = Object.keys(parcelRules).length > 0
+
+  // Suggest a box that fits every unit in the parcel: max of each dimension
+  // across the units' catalog boxes, summed weight. Leaves dims untouched if no
+  // rule matched any unit (operator keeps the manual defaults).
+  const suggestParcelBox = (pid: string) => {
+    const parcel = parcels.find(p => p.id === pid)
+    if (!parcel) return
+    let L = 0, W = 0, H = 0, WT = 0, matched = false
+    for (const u of parcel.unitIds) {
+      const item = order?.items[Number(u.split('-')[0])]
+      const box = boxForItem(item)
+      if (!box) continue
+      matched = true
+      L = Math.max(L, Number(box.parcel_length) || 0)
+      W = Math.max(W, Number(box.parcel_width) || 0)
+      H = Math.max(H, Number(box.parcel_height) || 0)
+      WT += Number(box.parcel_weight) || 0
+    }
+    if (!matched) { setError('No catalog box rule matched these items — enter dimensions manually.'); setTimeout(() => setError(''), 4000); return }
+    setParcels(prev => prev.map(p => p.id === pid ? { ...p, length: String(L), width: String(W), height: String(H), weight: String(Math.round(WT * 100) / 100) } : p))
+  }
 
   const loadShipments = () => {
     fetch('/api/admin/shipping', { method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -458,7 +512,13 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
                         {!parcel.purchased && (
                           <>
                             <div>
-                              <p className="text-xs text-gray-500 font-medium mb-2">Dimensions</p>
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-xs text-gray-500 font-medium">Dimensions</p>
+                                {anyBoxRules && parcel.unitIds.length > 0 && (
+                                  <button onClick={() => suggestParcelBox(parcel.id)}
+                                    className="text-[11px] text-gray-600 hover:text-gray-900 underline decoration-dotted">↺ Suggest box from catalog</button>
+                                )}
+                              </div>
                               <div className="grid grid-cols-4 gap-2">
                                 {(['length', 'width', 'height', 'weight'] as const).map(f => (
                                   <div key={f}>
