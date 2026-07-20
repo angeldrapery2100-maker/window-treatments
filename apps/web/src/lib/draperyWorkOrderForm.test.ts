@@ -65,6 +65,23 @@ describe('draperyRowFromEntry', () => {
     expect(L.ret).toBe('7"')        // pleated main: 3.5 + 3.5
   })
 
+  it('normalizes engine style keys (2fold_pinch → 2-Fold Pinch) from the snapshot', () => {
+    const entry: DraperyFormEntry = {
+      item: { productType: 'drapery', options: [] },
+      production: {
+        finishedWidthIn: 100, finishedHeightIn: 96, operation: 'split',
+        styleFamily: 'pleated', styleKey: '2fold_pinch', // engine namespace
+        mainPerSide: 137.5, mainNp: 11, mainWps: 1.25, mainOrientation: 'vertical', mainLiningType: 'NO',
+      },
+    }
+    const row = draperyRowFromEntry(entry, 0)
+    expect(row.styleKey).toBe('pinch_2')      // normalized to WO namespace
+    expect(row.style).toBe('2-Fold Pinch')    // label resolves
+    expect(row.operation).toBe('Split Draw')
+    expect(row.layers[0].botton).toBe('1.25') // engine widths/side
+    expect(row.layers[0].cutW).toBe('50"')
+  })
+
   it('ripple botton shows N+3', () => {
     const entry: DraperyFormEntry = {
       item: { productType: 'drapery', options: [] },

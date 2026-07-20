@@ -161,6 +161,20 @@ function styleFamilyFromKey(k: string): string {
   return /^(cn_|us_)/.test(String(k || '')) ? 'ripple' : 'pleated'
 }
 
+// The pricing engine stores pleated style keys as "2fold_pinch" / "3fold_tailored",
+// but the work-order form's dropdown (DR_STYLES / STYLE_LABELS) uses "pinch_2" /
+// "tailored_3". Normalize the engine namespace → WO namespace so the label maps
+// and the dropdown selects the right option. Ripple keys (cn_*, us_*) already match.
+const ENGINE_STYLE_ALIAS: Record<string, string> = {
+  '2fold_pinch': 'pinch_2', '3fold_pinch': 'pinch_3',
+  '2fold_tailored': 'tailored_2', '3fold_tailored': 'tailored_3',
+  fold2_pinch: 'pinch_2', fold3_pinch: 'pinch_3',
+}
+function normalizeStyleKey(k: string): string {
+  const s = String(k || '').toLowerCase()
+  return ENGINE_STYLE_ALIAS[s] || s
+}
+
 function num(v: unknown): number {
   const n = Number(v)
   return Number.isFinite(n) ? n : 0
@@ -278,7 +292,7 @@ export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): Dra
 
   const optStyle = styleFromOption(item)
   const operation = String(p.operation || '') || opKeyFromOption(item) || 'split'
-  const styleKey = String(p.styleKey || '') || optStyle.key
+  const styleKey = normalizeStyleKey(String(p.styleKey || '')) || optStyle.key
   const styleFamily = String(p.styleFamily || '') || optStyle.family || styleFamilyFromKey(styleKey)
   const panelCt = operation === 'split' ? 2 : 1
   const singleW = panelCt > 1 ? finW / panelCt : finW
