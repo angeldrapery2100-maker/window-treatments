@@ -11,7 +11,12 @@ import { sendOrderStatusEmail } from '@/lib/orderEmails'
 // ─── Valid status transitions ─────────────────────────────────────────────────
 const VALID_TRANSITIONS: Record<string, string[]> = {
   pending:       ['in_production', 'cancelled'],
-  in_production: ['shipped', 'cancelled'],
+  // 'packed' = boxed / packing under way (some or no labels bought yet), a
+  // holding state between production and fully-shipped. The shipping route sets
+  // it automatically when a partial label is bought; the packing station can
+  // also set it manually ("Mark Packed").
+  in_production: ['packed', 'shipped', 'cancelled'],
+  packed:        ['shipped', 'in_production', 'cancelled'],
   shipped:       ['completed', 'cancelled'],
   completed:     [],
   cancelled:     [],

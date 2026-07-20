@@ -59,6 +59,7 @@ interface Shipment {
 const STATUS_OPTIONS = [
   { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-700' },
   { value: 'in_production', label: 'In Production', color: 'bg-purple-100 text-purple-700' },
+  { value: 'packed', label: 'Packed', color: 'bg-blue-100 text-blue-700' },
   { value: 'shipped', label: 'Shipped', color: 'bg-cyan-100 text-cyan-700' },
   { value: 'completed', label: 'Completed', color: 'bg-green-100 text-green-700' },
   { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-600' },
@@ -67,7 +68,7 @@ const STATUS_OPTIONS = [
 // Human-readable label for an order_history entry.
 function historyLabel(action: string, from?: string | null, to?: string | null): string {
   const S: Record<string, string> = {
-    pending: 'Pending', in_production: 'In Production', shipped: 'Shipped',
+    pending: 'Pending', in_production: 'In Production', packed: 'Packed', shipped: 'Shipped',
     completed: 'Completed', cancelled: 'Cancelled',
   }
   switch (action) {

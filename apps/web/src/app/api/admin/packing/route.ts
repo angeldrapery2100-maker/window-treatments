@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic'
 // Fulfillment / packing queue — the operator's work-list after production.
 // One server round-trip computes, per order, how many units are shipped vs
 // total, whether a work order exists, and which fulfillment STAGE it's in:
-//   to_pack  — paid, in production, nothing shipped yet → needs packing & label
-//   partial  — some units shipped, some still to pack
+//   to_pack  — paid, in production, nothing packed/shipped yet
+//   packed   — boxed / packing under way (status 'packed', or some units shipped)
 //   shipped  — every unit has a label, awaiting delivery
 // Delivered/cancelled orders are summarised as counts only (not action items).
 //
@@ -28,7 +28,7 @@ interface PackingOrder {
   shippedUnits: number
   hasWorkOrder: boolean
   workOrderVersion: number | null
-  stage: 'to_pack' | 'partial' | 'shipped'
+  stage: 'to_pack' | 'packed' | 'shipped'
 }
 
 function unitsFromItems(items: any[]): number {
@@ -48,14 +48,14 @@ export async function GET(request: Request) {
     const orders = await query<any>(
       `SELECT id, order_number, customer_name, created_at, status, items
          FROM orders
-        WHERE status IN ('in_production', 'shipped', 'completed')
+        WHERE status IN ('in_production', 'packed', 'shipped', 'completed')
         ORDER BY created_at ASC`
     ).catch((e: any) => {
       if (e instanceof Error && e.message.includes('does not exist')) return []
       throw e
     })
     if (orders.length === 0) {
-      return NextResponse.json({ success: true, data: { stages: { to_pack: [], partial: [], shipped: [] }, counts: { to_pack: 0, partial: 0, shipped: 0, delivered: 0 } } })
+      return NextResponse.json({ success: true, data: { stages: { to_pack: [], packed: [], shipped: [] }, counts: { to_pack: 0, packed: 0, shipped: 0, delivered: 0 } } })
     }
 
     const orderIds = orders.map((o: any) => o.id)
@@ -97,7 +97,7 @@ export async function GET(request: Request) {
       shippedByOrder.set(s.order_id, (shippedByOrder.get(s.order_id) || 0) + n)
     }
 
-    const stages: Record<'to_pack' | 'partial' | 'shipped', PackingOrder[]> = { to_pack: [], partial: [], shipped: [] }
+    const stages: Record<'to_pack' | 'packed' | 'shipped', PackingOrder[]> = { to_pack: [], packed: [], shipped: [] }
     let delivered = 0
 
     for (const o of orders) {
@@ -109,7 +109,7 @@ export async function GET(request: Request) {
 
       let stage: PackingOrder['stage']
       if (o.status === 'shipped' || (totalUnits > 0 && shippedUnits >= totalUnits)) stage = 'shipped'
-      else if (shippedUnits > 0) stage = 'partial'
+      else if (o.status === 'packed' || shippedUnits > 0) stage = 'packed'
       else stage = 'to_pack'
 
       const entry: PackingOrder = {
@@ -129,7 +129,7 @@ export async function GET(request: Request) {
     }
 
     // Newest first within each actionable stage.
-    for (const k of ['to_pack', 'partial', 'shipped'] as const) {
+    for (const k of ['to_pack', 'packed', 'shipped'] as const) {
       stages[k].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     }
 
@@ -137,7 +137,7 @@ export async function GET(request: Request) {
       success: true,
       data: {
         stages,
-        counts: { to_pack: stages.to_pack.length, partial: stages.partial.length, shipped: stages.shipped.length, delivered },
+        counts: { to_pack: stages.to_pack.length, packed: stages.packed.length, shipped: stages.shipped.length, delivered },
       },
     })
   } catch (e) {

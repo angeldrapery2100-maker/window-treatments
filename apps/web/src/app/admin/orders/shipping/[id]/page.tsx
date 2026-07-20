@@ -56,6 +56,10 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
   const [notifyingShipment, setNotifyingShipment] = useState<string | null>(null)
   // Catalog box rules per product — used to auto-suggest a parcel size when packing.
   const [parcelRules, setParcelRules] = useState<Record<string, ParcelRule[]>>({})
+  // Auto-send the customer a consolidated shipped email when the last label
+  // completes the order. Buy-all-remaining orchestrates all parcels at once.
+  const [autoNotify, setAutoNotify] = useState(true)
+  const [buyingAll, setBuyingAll] = useState(false)
 
   useEffect(() => {
     fetch(`/api/admin/orders?status=all`).then(r => r.json()).then(d => {
@@ -177,26 +181,72 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
     finally { setRatesLoading(null) }
   }
 
+  // Low-level buy for one parcel with an explicit rate. Sends autoNotify so the
+  // server emails the customer ONCE, when this purchase completes the order.
+  const purchaseWithRate = async (parcel: Parcel, rateId: string): Promise<{ ok: boolean; data?: any; error?: string }> => {
+    const qtys: Record<number, number> = {}
+    parcel.unitIds.forEach(u => { const [i] = u.split('-').map(Number); qtys[i] = (qtys[i] || 0) + 1 })
+    const itemIndices = [...new Set(parcel.unitIds.map(u => Number(u.split('-')[0])))]
+    try {
+      const res = await fetch('/api/admin/shipping', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'purchase_label', orderId, rateId, itemIndices, itemQuantities: qtys, skipEmail: true, autoNotify })
+      })
+      const data = await res.json()
+      if (data.success) {
+        setParcels(prev => prev.map(p => p.id !== parcel.id ? p : { ...p, purchased: true, trackingNumber: data.data.trackingNumber, trackingUrl: data.data.trackingUrl, labelUrl: data.data.labelUrl, carrier: data.data.carrier }))
+        return { ok: true, data: data.data }
+      }
+      return { ok: false, error: data.error || 'Purchase failed' }
+    } catch (e: any) { return { ok: false, error: e.message } }
+  }
+
   const purchaseParcelLabel = async (pid: string) => {
     const parcel = parcels.find(p => p.id === pid)
     if (!parcel?.rateId) { setError('Please select a shipping service'); return }
     setPurchasingParcel(pid); setError('')
-    try {
-      const qtys: Record<number, number> = {}
-      parcel.unitIds.forEach(u => { const [i] = u.split('-').map(Number); qtys[i] = (qtys[i] || 0) + 1 })
-      const itemIndices = [...new Set(parcel.unitIds.map(u => Number(u.split('-')[0])))]
-      const res = await fetch('/api/admin/shipping', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'purchase_label', orderId, rateId: parcel.rateId, itemIndices, itemQuantities: qtys, skipEmail: true })
-      })
-      const data = await res.json()
-      if (data.success) {
-        setParcels(prev => prev.map(p => p.id !== pid ? p : { ...p, purchased: true, trackingNumber: data.data.trackingNumber, trackingUrl: data.data.trackingUrl, labelUrl: data.data.labelUrl, carrier: data.data.carrier }))
-        setMessage(`Label purchased — ${data.data.trackingNumber}`)
-        setTimeout(() => setMessage(''), 4000)
-        loadShipments()
-      } else setError(data.error || 'Purchase failed')
-    } catch (e: any) { setError(e.message) }
-    finally { setPurchasingParcel(null) }
+    const r = await purchaseWithRate(parcel, parcel.rateId)
+    if (r.ok) {
+      setMessage(`Label purchased — ${r.data.trackingNumber}${r.data.notified ? ' · customer notified ✉️' : ''}`)
+      setTimeout(() => setMessage(''), 4500)
+      loadShipments()
+    } else setError(r.error || 'Purchase failed')
+    setPurchasingParcel(null)
+  }
+
+  // 一键买齐剩余运单 — for every unpurchased parcel with items, fetch rates if
+  // needed, pick the cheapest, and buy sequentially (so the coverage tally +
+  // double-purchase guard stay correct). The label that completes the order
+  // triggers the server's consolidated auto-notify.
+  const buyAllRemaining = async () => {
+    const targets = parcels.filter(p => !p.purchased && p.unitIds.length > 0)
+    if (targets.length === 0) { setError('No packed parcels ready to buy'); return }
+    setBuyingAll(true); setError('')
+    let bought = 0, notified = false
+    for (const parcel of targets) {
+      let rateId = parcel.rateId
+      const label = `Parcel ${parcels.findIndex(p => p.id === parcel.id) + 1}`
+      if (!rateId) {
+        try {
+          const res = await fetch('/api/admin/shipping', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'get_rates', orderId, parcel: { length: parcel.length, width: parcel.width, height: parcel.height, distance_unit: 'in', weight: parcel.weight, mass_unit: 'lb' } })
+          })
+          const d = await res.json()
+          if (!d.success || !d.data?.rates?.length) { setError(`${label}: ${d.error || 'no rates'}`); continue }
+          setRatesMap(prev => ({ ...prev, [parcel.id]: d.data.rates }))
+          rateId = d.data.rates[0].rateId // rates come back sorted cheapest-first
+        } catch (e: any) { setError(`${label}: ${e.message}`); continue }
+      }
+      if (!rateId) { setError(`${label}: no rate selected`); continue }
+      setPurchasingParcel(parcel.id)
+      const r = await purchaseWithRate(parcel, rateId)
+      setPurchasingParcel(null)
+      if (r.ok) { bought++; if (r.data?.notified) notified = true }
+      else setError(`${label}: ${r.error}`)
+    }
+    setMessage(`Bought ${bought} label${bought === 1 ? '' : 's'}${notified ? ' · customer notified ✉️' : ''}`)
+    setTimeout(() => setMessage(''), 5000)
+    setBuyingAll(false)
+    loadShipments()
   }
 
   const sendNotificationEmail = async () => {
@@ -384,6 +434,12 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wider">Parcels ({parcels.length})</h2>
               <div className="flex gap-2">
+                {unpurchasedParcels.some(p => p.unitIds.length > 0) && (
+                  <button onClick={buyAllRemaining} disabled={buyingAll || purchasingParcel !== null}
+                    className="px-3 py-1.5 bg-green-600 text-white text-xs rounded-md hover:bg-green-700 disabled:opacity-50 whitespace-nowrap">
+                    {buyingAll ? 'Buying…' : '⚡ Buy all remaining (cheapest)'}
+                  </button>
+                )}
                 <button onClick={() => { setShowManualForm(true); setManualTracking(''); setManualCarrier(''); setManualUnitIds([]) }}
                   className="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs rounded-md hover:bg-gray-50">Add Manual Shipment</button>
                 <button onClick={addParcel} className="px-3 py-1.5 bg-[#3d3d3d] text-white text-xs rounded-md hover:bg-gray-700">Add Parcel</button>
@@ -563,15 +619,21 @@ export default function ShippingPage({ params }: { params: Promise<{ id: string 
 
         {/* Bottom Bar */}
         {(dbShipments.length > 0 || purchasedParcels.length > 0) && (
-          <div className="mt-8 bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between">
+          <div className="mt-8 bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between flex-wrap gap-3">
             <div className="text-sm text-gray-600">
               <span className="font-semibold text-gray-900">{dbShipments.length + purchasedParcels.length}</span> labels purchased
               {availableUnits.length > 0 && <span className="text-gray-400 ml-3">({availableUnits.length} items remaining)</span>}
             </div>
-            <button onClick={sendNotificationEmail} disabled={sendingEmail}
-              className="px-5 py-2.5 bg-[#3d3d3d] text-white text-sm rounded-md hover:bg-gray-700 disabled:opacity-50 font-medium">
-              {sendingEmail ? 'Sending...' : 'Send Notification Email'}
-            </button>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer select-none" title="Email the customer a consolidated shipped notification the moment the last label completes this order.">
+                <input type="checkbox" checked={autoNotify} onChange={e => setAutoNotify(e.target.checked)} className="w-3.5 h-3.5 rounded border-gray-300 text-gray-900" />
+                Auto-notify when fully shipped
+              </label>
+              <button onClick={sendNotificationEmail} disabled={sendingEmail}
+                className="px-5 py-2.5 bg-[#3d3d3d] text-white text-sm rounded-md hover:bg-gray-700 disabled:opacity-50 font-medium">
+                {sendingEmail ? 'Sending...' : 'Send Notification Email'}
+              </button>
+            </div>
           </div>
         )}
       </div>

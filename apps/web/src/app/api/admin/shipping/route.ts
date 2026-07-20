@@ -11,6 +11,10 @@ const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY || ''
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
 
+// Public site origin for the branded tracking-page link in the shipped email
+// (same pattern/env as lib/orderEmails.ts).
+const SITE_URL = () => (process.env.NEXT_PUBLIC_SITE_URL || 'https://angel-drapery.com').replace(/\/$/, '')
+
 async function shippoFetch(endpoint: string, method = 'GET', body?: any) {
   const res = await fetch(`${SHIPPO_API}${endpoint}`, {
     method,
@@ -92,6 +96,9 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
 
   const esName    = escapeHtml(order.customer_name)
   const esOrderNo = escapeHtml(order.order_number)
+  // Branded, order-scoped tracking page (order number prefilled; customer
+  // confirms with their checkout email). safeUrl guards the interpolation.
+  const trackPageUrl = safeUrl(`${SITE_URL()}/store/track?order=${encodeURIComponent(order.order_number || '')}`)
 
   const html = `
     <div style="font-family:-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:32px 20px;">
@@ -108,6 +115,11 @@ async function sendConsolidatedEmail(order: any, shipments: any[]) {
       </p>
 
       ${parcelsHtml}
+
+      <div style="text-align:center;margin:24px 0 8px;">
+        <a href="${trackPageUrl}" style="display:inline-block;padding:12px 28px;background:#1a1a1a;color:#fff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:600;">Track all packages →</a>
+        <p style="color:#aaa;font-size:11px;margin-top:8px;">See every package and its live status on one page (enter the email used at checkout).</p>
+      </div>
 
       <p style="color:#999;font-size:12px;margin-top:24px;">If you have any questions, please contact us at admin@angel-drapery.com or call (626) 703-2929.</p>
     </div>
@@ -267,22 +279,37 @@ export async function POST(request: Request) {
           [transaction.tracking_number, transaction.tracking_url_provider, transaction.label_url, transaction.rate?.provider || '', transaction.object_id, orderId]
         )
       } else {
+        // Partial: buying a label means packing is under way → advance an
+        // in-production order to 'packed' (awaiting the rest of its labels).
+        await query(`UPDATE orders SET status = 'packed', updated_at = NOW() WHERE id = $1 AND status = 'in_production'`, [orderId]).catch(() => {})
         await query(`UPDATE orders SET updated_at = NOW() WHERE id = $1`, [orderId])
       }
 
-      // Only send email if not skipped (打包台 uses skipEmail=true, then sends consolidated later)
-      if (!skipEmail) {
-        const shippedItems = indices.map((i: number) => items[i]).filter(Boolean)
-        const emailShipment = {
-          carrier: transaction.rate?.provider || '',
-          tracking_number: transaction.tracking_number,
-          tracking_url: transaction.tracking_url_provider,
-        }
-        // Send single-parcel email
+      // Notify:
+      //  - autoNotify (打包台 default): when THIS purchase completes the order,
+      //    send ONE consolidated email covering every shipped parcel.
+      //  - !skipEmail (legacy single-buy): send this parcel's email immediately.
+      let notified = false
+      const wantConsolidated = allItemsShipped && (body.autoNotify || !skipEmail)
+      const wantSingle = !allItemsShipped && !skipEmail
+      if (wantConsolidated) {
+        try {
+          const allShipped = await query<any>(
+            `SELECT * FROM order_shipments WHERE order_id = $1 AND status = 'shipped' ORDER BY created_at`,
+            [orderId]
+          )
+          await sendConsolidatedEmail(order, allShipped)
+          notified = true
+        } catch (e) { console.error('[shipping] auto-notify (consolidated) error:', e) }
+      } else if (wantSingle) {
         try {
           await sendConsolidatedEmail(order, [{
-            ...emailShipment, item_indices: indices, item_quantities: qtys,
+            carrier: transaction.rate?.provider || '',
+            tracking_number: transaction.tracking_number,
+            tracking_url: transaction.tracking_url_provider,
+            item_indices: indices, item_quantities: qtys,
           }])
+          notified = true
         } catch (e) { console.error('[shipping] email error:', e) }
       }
 
@@ -294,6 +321,7 @@ export async function POST(request: Request) {
           trackingUrl: transaction.tracking_url_provider,
           carrier: transaction.rate?.provider || '',
           allItemsShipped,
+          notified,
         }
       })
     }

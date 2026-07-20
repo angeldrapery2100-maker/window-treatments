@@ -50,6 +50,9 @@ const STEPS = [
 ]
 
 function statusIndex(status: string): number {
+  // 'packed' is an internal fulfillment sub-state — show it to customers as
+  // "In Production" (their order is being prepared, not yet shipped).
+  if (status === 'packed') return STEPS.findIndex(s => s.key === 'in_production')
   const i = STEPS.findIndex(s => s.key === status)
   return i === -1 ? 0 : i
 }
