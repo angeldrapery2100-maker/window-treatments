@@ -30,6 +30,37 @@ export function stripPriceFields(value: any, depth = 0): any {
   return value
 }
 
+// Drop ONLY true money fields (net/cost/markup/msrp/sell/…) from a config
+// template while KEEPING the catalog identifiers the pricer needs — priceGroup,
+// colorName, hardwareType, controlSystem, etc. (stripPriceFields is too broad:
+// its /price/ rule would also delete "priceGroup", which Sundance pricing
+// REQUIRES.) Used to pass a resolve_product configTemplate on to the AI so it
+// can price Sundance/JC via get_sundance_jc_estimate — the actual dollars still
+// only ever come back blurred to a $50 range from the pricer.
+// True for keys that are dollar/cost fields, but NOT for catalog tier ids like
+// priceGroup / priceTier (which the pricer needs). Normalizes camelCase to
+// underscores so "unitPrice"/"dealerNet" match on word boundaries and a field
+// like "manufacturer" (contains "factor") does not.
+export function isConfigDollarKey(key: string): boolean {
+  const norm = String(key).replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase()
+  if (/(^|_)(price_group|price_tier|pricegroup|pricetier)(_|$)/.test(norm)) return false
+  return /(^|_)(net|cost|markup|factor|msrp|wholesale|surcharge|amount|dollar|retail|sell|price)(_|$)/.test(norm)
+}
+
+export function stripConfigDollars(value: any, depth = 0): any {
+  if (depth > 6 || value == null) return value
+  if (Array.isArray(value)) return value.map((v) => stripConfigDollars(v, depth + 1))
+  if (typeof value === 'object') {
+    const out: Record<string, any> = {}
+    for (const [k, v] of Object.entries(value)) {
+      if (isConfigDollarKey(k)) continue
+      out[k] = stripConfigDollars(v, depth + 1)
+    }
+    return out
+  }
+  return value
+}
+
 // ── Product specs from the synced library snapshot ──────────────────────────
 export type SpecArea = 'shades' | 'motors' | 'drapery' | 'shutters' | 'hardware'
 
@@ -112,7 +143,17 @@ const ACTION_URL = () =>
 
 export interface FabricCodeResult {
   ok: boolean
-  matches?: Array<{ catalog: string; product?: string; family?: string; sold_online: boolean; note?: string }>
+  matches?: Array<{
+    catalog: string
+    product?: string
+    family?: string
+    sold_online: boolean
+    /** Product variant for pricing (e.g. 'sundance_roller_shade') when known. */
+    variant?: string
+    /** Catalog config identifiers (priceGroup/colorName/…) — dollar fields stripped — to hand to get_sundance_jc_estimate. */
+    config?: Record<string, unknown>
+    note?: string
+  }>
   error?: string
 }
 
@@ -139,18 +180,34 @@ export async function resolveFabricCode(query: string): Promise<FabricCodeResult
     if (!res.ok) return { ok: false, error: `upstream_${res.status}` }
     const json: any = await res.json().catch(() => null)
     const raw: any[] = Array.isArray(json?.matches) ? json.matches : Array.isArray(json?.result?.matches) ? json.result.matches : []
-    // Filter to identity only — no config templates, no price groups.
+    // Identity + a pricing-ready variant/config (dollar fields stripped). The
+    // configTemplate is what makes the Sundance/JC quote chain work: without it
+    // get_sundance_jc_estimate has nothing to price. Luma stays store-tool only.
     const matches = raw.slice(0, 6).map((m: any) => {
       const catalog = String(m?.catalog || 'Unknown')
       const isLuma = catalog.toLowerCase() === 'luma'
+      const tmpl = m?.configTemplate ?? m?.config ?? null
+      const rawCfg =
+        (tmpl && typeof tmpl === 'object' ? (tmpl.productConfig ?? tmpl) : null) ?? m?.productConfig ?? null
+      const variant = m?.productVariant
+        ? String(m.productVariant)
+        : tmpl && typeof tmpl === 'object' && tmpl.productVariant
+          ? String(tmpl.productVariant)
+          : undefined
+      const config = rawCfg && typeof rawCfg === 'object' ? stripConfigDollars(rawCfg) : undefined
+      const canEstimate = !isLuma && !!variant && (variant.startsWith('sundance') || variant.startsWith('jc'))
       return {
         catalog,
         product: isLuma ? LUMA_TABLE_TO_STORE[String(m?.table)] || 'Luma shade' : String(m?.productLine || m?.displayName || m?.note || '').slice(0, 80) || undefined,
         family: m?.fabricFamily ? String(m.fabricFamily) : undefined,
         sold_online: isLuma,
+        ...(variant ? { variant } : {}),
+        ...(config ? { config } : {}),
         note: isLuma
           ? 'Sold in our online store — use list_store_products/get_product_options/quote_store_product to configure and price it.'
-          : 'Consultation line (not sold online) — describe it and offer the free in-home consultation.',
+          : canEstimate
+            ? 'Not sold online, but you CAN price a reference range: call get_sundance_jc_estimate with this variant + config + the window size, then present it as a reference and offer the free in-home measure.'
+            : 'Consultation line (not sold online) — describe it and offer the free in-home consultation.',
       }
     })
     return { ok: true, matches }

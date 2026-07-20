@@ -620,7 +620,7 @@ export const ASSISTANT_TOOLS = [
   {
     name: 'identify_fabric_code',
     description:
-      "Identify which product a fabric name or code belongs to across ALL our catalogs (Luma, Sundance, JC, drapery/roman fabrics). Call this whenever a customer mentions a code or fabric name you don't recognize — e.g. 'EB12-005', 'DB1-1', 'Dorus', 'Linen White'. If it's a Luma family, it's sold online: continue with the store tools. If it's Sundance/JC, describe the line and funnel to the free consultation.",
+      "Identify which product a fabric name or code belongs to across ALL our catalogs (Luma, Sundance, JC, drapery/roman fabrics). Call this whenever a customer mentions a code or fabric name you don't recognize — e.g. 'EB12-005', 'DB1-1', 'Dorus', 'Linen White'. If it's a Luma family, it's sold online: continue with the store tools. If it's Sundance/JC, the match includes a `variant` + `config` — pass those straight to get_sundance_jc_estimate (with the window size) to give a reference price, then offer the free in-home measure.",
     input_schema: {
       type: 'object' as const,
       properties: {
