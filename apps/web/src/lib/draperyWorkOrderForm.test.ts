@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { priceHandcraftedDrapery } from '@window-treatments/shared/pricing/aapp'
 import {
   fmtInch,
   calcDraperyReturnIn,
@@ -132,7 +133,32 @@ describe('draperyRowFromEntry', () => {
     expect(row.layers[0].cutW).toBe('61 ½"')    // 123/2
     expect(row.layers[0].lining).toBe('NO')     // from lining option
     expect(row.layers[0].ret).toBe('7"')        // 3.5 return + 3.5 pleated offset
-    expect(row.layers[0].botton).toBe('')       // no engine → widths/side blank (hand-filled)
+    // no engine snapshot → 扣/幅/裁 recomputed from geometry (same spacing math),
+    // so it's now a positive widths-per-side number, not blank.
+    expect(row.layers[0].botton).not.toBe('')
+    expect(Number(row.layers[0].botton)).toBeGreaterThan(0)
+  })
+
+  it('geometry botton matches the pricing engine (no-engine path)', () => {
+    // The recomputed widths-per-side must equal what the real engine produces.
+    const bd = priceHandcraftedDrapery({
+      finishedWidthIn: 123, finishedHeightIn: 56,
+      styleFamily: 'pleated', styleKey: 'pinch_2', operation: 'split',
+      layers: { main: { enabled: true, pricePerYard: 10, widthNormalizedIn: 54, liningType: 'NO' } },
+    }).breakdown
+    const entry: DraperyFormEntry = {
+      item: {
+        productType: 'drapery', width: 123, height: 56,
+        options: [
+          { name: 'pleat_style', displayLabel: 'Pleat', value: '2 Fold Pinch', valueLabel: '2 Fold Pinch Pleat' },
+          { name: 'operation', displayLabel: 'Operation', value: 'C/O', valueLabel: 'Center Split' },
+          { name: 'fabric_color', displayLabel: 'Fabric', value: 'Natural', valueLabel: 'Natural' },
+        ],
+      },
+    }
+    const row = draperyRowFromEntry(entry, 0)
+    // engine breakdown mainWps is the vertical widths/side; form botton shows it.
+    expect(row.layers[0].botton).toBe(String(bd.mainWps))
   })
 
   it('reads One Way Left + 3-fold + blackout from options', () => {

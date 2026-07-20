@@ -13,6 +13,7 @@
 
 import type {
   AappPriceResult,
+  DeepPartial,
   DraperyConfig,
   DraperyHeightSurcharge,
   DraperyLargePanelSurcharge,
@@ -436,4 +437,63 @@ export function priceHandcraftedDrapery(input: HandcraftedDraperyInput): AappPri
   breakdown.subtotalRaw = subtotalRaw;
 
   return { total: priceInt(subtotalRaw), breakdown };
+}
+
+// ── Geometry-only (no pricing) ──────────────────────────────────────────────
+// Runs the SAME spacing-first fabric math priceHandcraftedDrapery uses, but
+// returns only the shop geometry (panel count / widths-per-side / single-panel
+// width / orientation) — no fabric price required. Used by the website work
+// order to fill 扣/幅/裁 when a product isn't wired to the pricing engine, so the
+// factory number matches what the engine would compute WITHOUT touching price.
+
+export interface DraperyMainGeometryInput {
+  finishedWidthIn: number;
+  finishedHeightIn: number;
+  styleFamily: string; // "pleated" | "ripple"
+  styleKey: string; // pinch_2 | pinch_3 | tailored_2 | tailored_3 | cn_6cm | cn_7cm | us_60..120
+  operation?: string; // "split" | "single_left" | "single_right"
+  fabricWidthIn?: number; // fabric bolt width (default 54")
+  returnIn?: number;
+  liningType?: LiningType;
+  config?: DeepPartial<DraperyConfig>;
+}
+
+export interface DraperyMainGeometry {
+  np: number; // pleats (pleated) or ripple carriers N
+  widthsPerSide: number | null; // null when railroaded (横做)
+  perSide: number; // inches of fabric per side / single panel length
+  orientation: Orientation; // "railroaded" | "vertical"
+  cutDrop: number;
+  sides: number; // 2 for split, else 1
+}
+
+/** Shop geometry for a drapery main layer — spacing-first math, no pricing. */
+export function draperyMainGeometry(input: DraperyMainGeometryInput): DraperyMainGeometry {
+  const cfg = mergeAappConfig(DRAPERY_DEFAULTS, input.config);
+  const fW = Number(input.finishedWidthIn);
+  const fH = Number(input.finishedHeightIn);
+  if (!Number.isFinite(fW) || !Number.isFinite(fH) || fW <= 0 || fH <= 0) {
+    throw new Error("size_out_of_range: finished width/height must be positive inches");
+  }
+  const common: CommonCfg = {
+    styleFamily: input.styleFamily,
+    styleKey: input.styleKey,
+    operation: input.operation ?? "split",
+    returnIn: Number(input.returnIn) || 0,
+  };
+  const layer: DraperyLayerInput = {
+    enabled: true,
+    pricePerYard: 1, // geometry only — value irrelevant, never read here
+    liningType: input.liningType ?? "NO",
+    widthNormalizedIn: input.fabricWidthIn ?? 54,
+  };
+  const calc = calcFabricMath(layer, common, fW, fH, cfg);
+  return {
+    np: calc.np,
+    widthsPerSide: calc.wps,
+    perSide: calc.perSide,
+    orientation: calc.orient,
+    cutDrop: calc.cutDrop,
+    sides: calc.sides,
+  };
 }

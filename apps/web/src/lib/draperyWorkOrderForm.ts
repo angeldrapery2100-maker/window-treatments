@@ -14,6 +14,14 @@
 //   ret  = calcDraperyReturnIn(isSheer, hwReturn, composition, styleFamily)
 // Everything the autofill can't determine is left blank — the form is fully
 // editable, exactly like AAPP's, so the workshop completes it by hand.
+//
+// 扣/幅/裁 (widths-per-side) is normally computed by the pricing engine. When a
+// product isn't wired to that engine (no production snapshot), we recompute JUST
+// the geometry with the same spacing-first math (draperyMainGeometry) — no
+// pricing touched — so the factory number still appears. Fabric bolt width falls
+// back to 54" when unknown; the workshop can adjust.
+
+import { draperyMainGeometry } from '@window-treatments/shared/pricing/aapp'
 
 export interface FormOption {
   name?: string
@@ -294,17 +302,32 @@ export function draperyRowFromEntry(entry: DraperyFormEntry, index: number): Dra
   const hwReturn = returnOptIn > 0 ? returnOptIn : 3.5
   const optLining = liningFromOption(item)
 
+  // No engine breakdown → recompute the MAIN layer's shop geometry (same spacing
+  // math the engine uses) so 扣/幅/裁 fills. Pricing is never touched.
+  let geo: ReturnType<typeof draperyMainGeometry> | null = null
+  if (!hasMain && finW > 0 && finH > 0 && styleKey) {
+    try {
+      geo = draperyMainGeometry({
+        finishedWidthIn: finW, finishedHeightIn: finH,
+        styleFamily, styleKey, operation,
+        fabricWidthIn: entry.mainFabricWidthIn ?? 54,
+        returnIn: hwReturn,
+      })
+    } catch { geo = null }
+  }
+
   const layers: DraperyFormLayer[] = []
 
   const mkLayer = (isSheer: boolean, fabOpt: FormOption | undefined, fabricWidthIn: number | undefined): DraperyFormLayer => {
     const prefix = isSheer ? 'sheer' : 'main'
-    const perSide = num(p[`${prefix}PerSide`])
-    const orientation = String(p[`${prefix}Orientation`] || '')
+    const useGeo = !isSheer && geo
+    const perSide = useGeo ? geo!.perSide : num(p[`${prefix}PerSide`])
+    const orientation = useGeo ? geo!.orientation : String(p[`${prefix}Orientation`] || '')
     const wpsRaw = p[`${prefix}Wps`]
-    const wps = wpsRaw === '' || wpsRaw == null ? null : num(wpsRaw)
+    const wps = useGeo ? geo!.widthsPerSide : (wpsRaw === '' || wpsRaw == null ? null : num(wpsRaw))
     // ripple carrier count N: main has it (mainNp); the sheer layer shares the
     // same N (same window width + system) so reuse mainNp when present.
-    const n = num(p[`${prefix}Np`]) || num(p.mainNp)
+    const n = useGeo ? geo!.np : (num(p[`${prefix}Np`]) || num(p.mainNp))
     const ret = calcDraperyReturnIn(isSheer, hwReturn, composition, styleFamily)
     const liningCode = isSheer ? '—' : (p.mainLiningType != null ? p.mainLiningType : (optLining || 'NO'))
     return {
