@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { usePathname } from 'next/navigation'
 
 // The AI design assistant is a floating chat widget rendered on every page
 // (it repositions itself around the ConsultationWidget on marketing pages).
@@ -14,5 +15,9 @@ const StoreAssistant = dynamic(() => import('./StoreAssistant'), {
 })
 
 export default function StoreAssistantLoader() {
+  const pathname = usePathname()
+  // The customer-facing shopping assistant has no place in the admin / sales
+  // back office — hide it on every /admin route.
+  if (pathname?.startsWith('/admin')) return null
   return <StoreAssistant />
 }
