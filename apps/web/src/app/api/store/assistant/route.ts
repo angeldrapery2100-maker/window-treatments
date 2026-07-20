@@ -298,7 +298,10 @@ export async function POST(request: Request) {
 
     // Rate limit: 20 requests / 10 minutes per IP (same helper as /api/consultation).
     const ip = getClientIp(request)
-    const limit = await rateLimit('assistant', ip, { max: 20, windowSeconds: 600 })
+    // Default 20 req / 10 min per IP. ASSISTANT_RATE_MAX env can raise it
+    // temporarily (e.g. for a supervised eval run); unset it to return to 20.
+    const rateMax = Number(process.env.ASSISTANT_RATE_MAX) || 20
+    const limit = await rateLimit('assistant', ip, { max: rateMax, windowSeconds: 600 })
     if (!limit.allowed) {
       return bad('You are sending messages too quickly. Please wait a few minutes and try again.', 429)
     }
