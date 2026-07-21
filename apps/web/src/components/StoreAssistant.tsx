@@ -65,13 +65,14 @@ const PHOTO_PLACEHOLDER = '[photo]'
 
 // Main marketing site: steer toward understanding the company and finding
 // the right product (funnels to a local in-home consultation).
-// Widget copy is ENGLISH-ONLY (Eddie 2026-07-19) — the single Chinese line in
-// the greeting tells customers we also speak Chinese/other languages; the
-// assistant then replies in whatever language the customer uses.
+// Widget copy is ENGLISH-ONLY (Eddie 2026-07-19; language line switched to
+// English 2026-07-22 so non-Chinese speakers understand it too — the 中文
+// characters stay visible so Chinese customers still spot it at a glance).
+// The assistant replies in whatever language the customer uses.
+const LANGUAGE_LINE = 'Feel free to chat in any language — we also speak 中文.'
 const WELCOME_MAIN: ChatMessage = {
   role: 'assistant',
-  content:
-    "Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product. 我们也说中文，其他语言也都可以。",
+  content: `Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product. ${LANGUAGE_LINE}`,
 }
 
 const QUICK_PROMPTS_MAIN = [
@@ -80,17 +81,19 @@ const QUICK_PROMPTS_MAIN = [
   'What brands do you carry?',
 ]
 
-// Online store: steer toward measuring, configuring, ordering, and after-sales.
+// Online store: steer toward ordering, product details, and after-sales
+// (Eddie 2026-07-22: NO consultation-booking buttons here — booking belongs
+// to the marketing site; the store welcome is purely shop-task presets).
 const WELCOME_STORE: ChatMessage = {
   role: 'assistant',
-  content:
-    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows, choosing shades and drapery, or your order. 我们也说中文，其他语言也都可以。",
+  content: `Hi! I'm the Angel Drapery design assistant — ask me about our products, placing an order, or help with an existing order. ${LANGUAGE_LINE}`,
 }
 
 const QUICK_PROMPTS_STORE = [
+  'How do I place a custom order?',
+  'Help me choose the right product',
   'How do I measure my window?',
-  'Which shade is best for a bedroom?',
-  'I need to change or cancel my order',
+  'Change, cancel, or track my order',
 ]
 
 // Launcher/teaser chrome is ENGLISH-ONLY (Eddie 2026-07-19) — the conversation
@@ -98,10 +101,11 @@ const QUICK_PROMPTS_STORE = [
 const TEASER_MAIN = 'Not sure which window treatment fits? Ask me anything!'
 const TEASER_STORE = 'Measuring, choosing, or pricing? Ask me anything!'
 
-// Always-visible booking entries on the welcome screen (Eddie 2026-07-19):
-// the showroom is APPOINTMENT-ONLY, so the widget says so up front and offers
-// both booking paths as one-tap actions (each starts the assistant's
-// consultation-booking flow, rule 9).
+// Booking entries on the welcome screen — MARKETING PAGES ONLY (Eddie
+// 2026-07-22; originally always-visible per 2026-07-19): the showroom is
+// APPOINTMENT-ONLY, so the widget says so up front and offers both booking
+// paths as one-tap actions (each starts the assistant's consultation-booking
+// flow, rule 9). On /store the welcome shows only shop-task presets instead.
 const SHOWROOM_NOTE = 'Our Temple City showroom is by appointment only.'
 const BOOKING_ACTIONS: { label: string; prompt: string }[] = [
   {
@@ -661,20 +665,26 @@ export default function StoreAssistant() {
               <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                 {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
-              <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
-              <div className="flex flex-wrap gap-2">
-                {/* Primary actions: both booking paths are one tap from open */}
-                {BOOKING_ACTIONS.map((a) => (
-                  <button
-                    key={a.label}
-                    onClick={() => send(a.prompt)}
-                    disabled={sending}
-                    className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
+              {!onStore && (
+                <>
+                  <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {/* Primary actions (marketing pages only): both booking
+                        paths are one tap from open. The store welcome skips
+                        booking entirely — shop-task presets only. */}
+                    {BOOKING_ACTIONS.map((a) => (
+                      <button
+                        key={a.label}
+                        onClick={() => send(a.prompt)}
+                        disabled={sending}
+                        className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
+                      >
+                        {a.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
               <div className="flex flex-wrap gap-2 pt-0.5">
                 {(onStore ? QUICK_PROMPTS_STORE : QUICK_PROMPTS_MAIN).map((q) => (
                   <button key={q} onClick={() => send(q)} disabled={sending} className={chipClass}>
