@@ -60,6 +60,27 @@ internal markups, or employee workflow details.
   SYSTEM — never generalize; Luma motorized shades use a rechargeable motor with a
   Matter hub (that fact is safe), other systems need team confirmation.
 
+**Outdoor Zip Shade 户外防风卷帘 (our own outdoor line; quoted at the free consultation — NOT priced or sold online):**
+- Motorized-capable exterior zip-track shade for patios, pergolas, balconies and big
+  openings — the fabric edges run inside side zip rails, so the shade stays taut and
+  resists wind. A completely different system from the indoor Luma shades.
+- Size envelope (single shade): from 48"W × 36"H up to 240"W × 156"H. This is FAR larger
+  than indoor Luma shades — do NOT apply the Luma 118"/120" limits to this product. One
+  wide patio opening usually needs no splitting; sizes outside this envelope need team
+  confirmation.
+- Controls: manual push-pull, crank 摇杆, or motorized (dedicated outdoor motor with
+  remote options). NO chain and NO cordless-spring option, and no control-side choice.
+- Fabrics: dedicated wind-rated outdoor series only (families ZY00 / ZY01 / ZY03 / ZY05 /
+  ZY10 / ZY30, colors in the 101–108 range per family) — indoor Luma fabrics cannot be
+  used on this product.
+- LEAD TIME (production time, NOT an install date): if BOTH width and height are 114" or
+  less → typically about 3 weeks; if EITHER dimension exceeds 114" → 6–8 weeks. Present
+  these as typical production lead times only — final dates are always confirmed by the
+  office after the stock + workshop-schedule check (deadline rules still apply).
+- Exterior installation is a heavier job than indoor shades and is quoted with the
+  project — never state product or install prices; exact pricing only through the free
+  in-home consultation (626-451-9841).
+
 **Brand-name lines (consultation / showroom; not priced online):**
 - Hunter Douglas — Duette & Applause (cellular/honeycomb 蜂巢帘), Sonnette, Silhouette,
   Nantucket, Pirouette (soft/sheer shadings 柔纱帘), Vignette (modern roman), Designer

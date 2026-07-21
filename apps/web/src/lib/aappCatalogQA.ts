@@ -18,6 +18,20 @@ import { getAappLibrary } from '@/lib/aappLibrary'
 const LUMA_SAFE_MAX_WIDTH_IN = 118
 const LUMA_SAFE_MAX_HEIGHT_IN = 120
 
+// Per-variant safe ceilings for NON-Luma shade systems (2026-07-22): the
+// outdoor zip shade is a different product line with a much larger envelope
+// (AAPP catalog: 48–240"W × 36–156"H). Without this entry the generic Luma
+// clamp below would wrongly tell customers the outdoor shade maxes out at
+// 118×120 — cutting off its main selling point. Snapshot values may only
+// TIGHTEN these, never widen (same rule as Luma).
+const VARIANT_SAFE_MAX_IN: Record<string, { w: number; h: number }> = {
+  outdoor_zip_shade: { w: 240, h: 156 },
+}
+
+export function safeShadeSizeCeiling(variantKey: string): { w: number; h: number } {
+  return VARIANT_SAFE_MAX_IN[variantKey] || { w: LUMA_SAFE_MAX_WIDTH_IN, h: LUMA_SAFE_MAX_HEIGHT_IN }
+}
+
 // ── Price stripping ─────────────────────────────────────────────────────────
 const PRICE_KEY_RE =
   /price|cost|amount|fee|markup|mult|addper|net|msrp|sell|dollar|charge|surcharge|rate$/i
@@ -115,14 +129,19 @@ export async function getProductSpecs(area: SpecArea): Promise<any> {
       // height is exactly how the assistant told a customer "the system
       // confirms 180"" (P0 A10/H2, 2026-07-20). Anything at/over the ceiling
       // is reported as the safe value with a team-confirmation flag instead.
+      const safe = safeShadeSizeCeiling(k)
       const rawW = typeof v?.maxWidth === 'number' ? v.maxWidth : null
       const rawH = typeof v?.maxHeight === 'number' ? v.maxHeight : null
-      const cappedW = rawW == null ? LUMA_SAFE_MAX_WIDTH_IN : Math.min(rawW, LUMA_SAFE_MAX_WIDTH_IN)
-      const cappedH = rawH == null ? LUMA_SAFE_MAX_HEIGHT_IN : Math.min(rawH, LUMA_SAFE_MAX_HEIGHT_IN)
+      const cappedW = rawW == null ? safe.w : Math.min(rawW, safe.w)
+      const cappedH = rawH == null ? safe.h : Math.min(rawH, safe.h)
       out[k] = {
         maxWidthIn: cappedW,
         maxHeightIn: cappedH,
-        ...(rawW == null || rawH == null || rawW > LUMA_SAFE_MAX_WIDTH_IN || rawH > LUMA_SAFE_MAX_HEIGHT_IN
+        // Minimum sizes are customer-safe and matter for the outdoor zip
+        // shade (48"W × 36"H minimum) — pass them through when present.
+        ...(typeof v?.minWidth === 'number' ? { minWidthIn: v.minWidth } : {}),
+        ...(typeof v?.minHeight === 'number' ? { minHeightIn: v.minHeight } : {}),
+        ...(rawW == null || rawH == null || rawW > safe.w || rawH > safe.h
           ? { size_limit_note: 'Larger sizes may be possible as split/multiple panels — our team confirms the exact workable size.' }
           : {}),
         cassettes: Array.isArray(v?.cassettes) ? v.cassettes.map((c: any) => c?.label || c?.key).filter(Boolean) : [],
@@ -130,7 +149,7 @@ export async function getProductSpecs(area: SpecArea): Promise<any> {
         hasControlSide: !!v?.hasControlSide,
       }
     }
-    return { variants: out, note: 'Luma shade variants: size limits in inches, cassette styles, and available options. NEVER promise a size beyond these limits — larger windows are split into panels, confirmed by our team. Prices via quote_store_product only.' }
+    return { variants: out, note: 'Shade variants (indoor Luma + outdoor zip): size limits in inches, cassette styles, and available options. NEVER promise a size beyond these limits — larger indoor windows are split into panels, confirmed by our team. Prices via quote_store_product only (outdoor zip shade is quoted at the consultation).' }
   }
 
   if (area === 'motors') {

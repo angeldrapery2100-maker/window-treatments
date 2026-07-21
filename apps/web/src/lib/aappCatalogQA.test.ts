@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isConfigDollarKey, stripConfigDollars, matchLocalLumaFabric } from './aappCatalogQA'
+import { isConfigDollarKey, stripConfigDollars, matchLocalLumaFabric, safeShadeSizeCeiling } from './aappCatalogQA'
 
 describe('isConfigDollarKey', () => {
   it('keeps catalog identifiers the Sundance/JC pricer needs', () => {
@@ -61,5 +61,22 @@ describe('matchLocalLumaFabric', () => {
   it('returns null for names and unknown codes', async () => {
     expect(await matchLocalLumaFabric('Dorus')).toBe(null)
     expect(await matchLocalLumaFabric('ZZZ99-001')).toBe(null)
+  })
+})
+
+// 2026-07-22: outdoor zip shade (48–240"W × 36–156"H) must NOT be clamped to
+// the Luma indoor 118×120 ceiling — that clamp once telling customers the
+// outdoor shade maxes at 118" would cut off the product's main selling point.
+describe('safeShadeSizeCeiling', () => {
+  it('gives the outdoor zip shade its own 240×156 envelope', () => {
+    expect(safeShadeSizeCeiling('outdoor_zip_shade')).toEqual({ w: 240, h: 156 })
+  })
+  it('keeps every Luma indoor variant at 118×120', () => {
+    for (const k of ['roller_shade', 'dual_roller_shade', 'zebra_shade', 'sheer_shade', 'dual_sheer_shade', 'modern_roman_shade']) {
+      expect(safeShadeSizeCeiling(k)).toEqual({ w: 118, h: 120 })
+    }
+  })
+  it('defaults unknown variants to the conservative Luma ceiling', () => {
+    expect(safeShadeSizeCeiling('some_future_variant')).toEqual({ w: 118, h: 120 })
   })
 })
