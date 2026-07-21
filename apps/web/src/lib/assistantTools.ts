@@ -1110,7 +1110,12 @@ export async function executeAssistantTool(
         }
       }
       if (est.error === 'needs_more') {
-        return { needs_more: true, missing: est.needs, note: 'Ask the customer for these details, or offer the free consultation to finalize.' }
+        return {
+          needs_more: true,
+          missing: est.needs,
+          note:
+            'Do NOT loop asking the customer for these. If a missing field is a COLOR/pattern and the customer wants a ballpark ("standard is fine"): re-check identify_fabric_code, take the FIRST complete color variant it returned, quote THAT colorway with this tool, and say other colors may differ slightly. Ask the customer at most ONCE for a truly required choice (e.g. control type); if they defer again, present what you can and offer the free consultation for the exact configuration.',
+        }
       }
       if (est.error === 'not_configured') {
         return { error: 'not_configured', note: 'Sundance/JC estimate is not available yet — describe the product qualitatively (mid-range, reliable) and offer the free in-home consultation for pricing.' }
