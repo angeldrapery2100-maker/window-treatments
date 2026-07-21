@@ -328,7 +328,10 @@ export default function HandcraftedDraperyPage() {
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
             className="flex items-center gap-6">
-            <button className="bg-white px-10 py-4 text-black text-sm uppercase tracking-widest font-bold hover:bg-[#ef8200] hover:text-white transition-all duration-300 shadow-lg">
+            <button
+              onClick={() => window.dispatchEvent(new Event('ad:open-assistant'))}
+              className="bg-white px-10 py-4 text-black text-sm uppercase tracking-widest font-bold hover:bg-[#ef8200] hover:text-white transition-all duration-300 shadow-lg"
+            >
               Request Consultation
             </button>
             <div className="flex items-center gap-2 text-sm text-white/40">

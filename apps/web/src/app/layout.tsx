@@ -1,6 +1,5 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import ConsultationWidget from '@/components/ConsultationWidgetLoader'
 import StoreAssistant from '@/components/StoreAssistantLoader'
 import MotionProvider from '@/components/MotionProvider'
 
@@ -129,10 +128,11 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <MotionProvider>
           {children}
-          <ConsultationWidget />
-          {/* AI design assistant — site-wide. On marketing pages it stacks
-              above the consultation pill; on /store the pill hides itself
-              and the assistant keeps the bottom-right slot. */}
+          {/* AI design assistant — site-wide, sole floating entry point.
+              The standalone "Request Consultation" pill was removed 2026-07-22
+              (redundant next to the assistant, which collects contact info and
+              books consultations itself); the form component + /api/consultation
+              stay in the repo in case a page-level entry is ever wanted. */}
           <StoreAssistant />
         </MotionProvider>
       </body>

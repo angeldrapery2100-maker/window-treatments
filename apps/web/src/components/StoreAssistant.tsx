@@ -22,13 +22,13 @@ import { usePathname } from 'next/navigation'
 //   extractQuickReplies in the API route) rendered as tap-to-send chips under
 //   the LATEST assistant message only.
 //
-// Positioning: on /store pages the bottom-right slot is free (the site-wide
-// ConsultationWidget returns null there), so the launcher sits at bottom-5/6
-// as before (lifted to bottom-24 on mobile checkout so it never covers the
-// in-flow "Pay & Place Order" button). On marketing pages the Consultation
-// pill owns bottom-6 right-6 at z-[999], so the launcher stacks ABOVE it
-// (bottom-24) and the open chat panel does the same on desktop; the mobile
-// bottom sheet instead layers over the pill via z-[1000].
+// Positioning: the assistant is the site's only floating widget (the
+// standalone "Request Consultation" pill was removed 2026-07-22 — the
+// assistant collects contact info and books consultations itself), so the
+// launcher sits in the bottom corner everywhere: bottom-right on marketing
+// pages, bottom-LEFT on /store (the account + cart stack owns bottom-right
+// there), lifted to bottom-24 on mobile checkout / product pages so it never
+// covers "Pay & Place Order" or the sticky Add to Cart bar.
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -519,13 +519,12 @@ export default function StoreAssistant() {
   // bar on mobile (store redesign P2) — lift the launcher the same way so it
   // stacks above the bar instead of covering its Add to Cart button.
   const onProductPage = /^\/store\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(pathname || '')
-  // Marketing pages: the ConsultationWidget pill occupies bottom-6 right-6,
-  // so both the launcher and the desktop panel stack above it.
-  const btnOffset = !onStore
-    ? 'bottom-24'
-    : (onCheckout || onProductPage)
-      ? 'bottom-24 sm:bottom-6'
-      : 'bottom-5 sm:bottom-6'
+  // The bottom corner is the assistant's own slot everywhere (the standalone
+  // consultation pill is gone) — only mobile checkout / product sticky bars
+  // still push the launcher up.
+  const btnOffset = (onCheckout || onProductPage)
+    ? 'bottom-24 sm:bottom-6'
+    : 'bottom-5 sm:bottom-6'
   // Store pages keep the account + cart stack at the bottom-RIGHT corner
   // (ProductLayout floating buttons) — the assistant launcher moves to the
   // bottom-LEFT there so the two stacks never pile up on each other or cover
@@ -534,7 +533,7 @@ export default function StoreAssistant() {
   const panelSide = onStore ? 'sm:left-6' : 'sm:right-6'
   const panelPos = onStore
     ? 'z-50 sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
-    : 'z-[1000] sm:bottom-24 sm:max-h-[calc(100vh-8rem)]'
+    : 'z-[1000] sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
 
   const lastIdx = messages.length - 1
 
