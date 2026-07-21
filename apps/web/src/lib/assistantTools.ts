@@ -428,9 +428,19 @@ export async function listStoreProductsTool(input: any): Promise<unknown> {
       note: 'The store catalog could not be loaded just now — do NOT say we have no products. Point the customer to the product page for instant pricing (e.g. /products/luma-collection) and offer to try again.',
     }
   }
+  // W8 (2026-07-21): an EMPTY catalog is a real business state — the online
+  // store has not launched yet — NOT a system failure. The model used to
+  // frame it as "the catalog isn't loading", which reads as an outage.
+  if (rows.length === 0) {
+    return {
+      products: [],
+      note:
+        'The online store currently has NO products listed — the store has not launched yet. This is NOT an error, so never say the system "failed" or "couldn\'t load". Tell the customer this item can\'t be ordered online yet, and offer the product-page self-quote configurator (e.g. /products/luma-collection) or the free consultation instead.',
+    }
+  }
   return {
     products: rows.map(r => ({ product_id: r.id, name: r.name, type: r.type, category: r.category || undefined })),
-    ...(typeFilter && rows.length > 0 && rows.some(r => r.type !== typeFilter)
+    ...(typeFilter && rows.some(r => r.type !== typeFilter)
       ? { note_filter: `No products matched type '${typeFilter}' — showing the full catalog; pick the right product from it.` }
       : {}),
     note: 'Prices depend on size and options — use upsert_room_item (or the product page configurator) to get an exact price. Never estimate.',
@@ -973,8 +983,32 @@ export async function executeAssistantTool(
       return await getProductSpecs(area)
     }
     case 'identify_fabric_code': {
-      const { resolveFabricCode } = await import('@/lib/aappCatalogQA')
-      const r = await resolveFabricCode(String(input?.query || ''))
+      const { resolveFabricCode, matchLocalLumaFabric } = await import('@/lib/aappCatalogQA')
+      const rawQuery = String(input?.query || '')
+      const r = await resolveFabricCode(rawQuery)
+      // W8: when AAPP resolve misses (error OR zero matches), fall back to the
+      // site's own Luma fabric catalog — codes like EB12-005 / DB1-1 are real
+      // Luma families the site knows locally (T2-EB regression).
+      if (!r.ok || !r.matches || r.matches.length === 0) {
+        const local = await matchLocalLumaFabric(rawQuery)
+        if (local) {
+          return {
+            matches: [
+              {
+                catalog: 'Luma',
+                product: local.seriesLabel,
+                family: local.family,
+                ...(local.color ? { color: local.color, color_exists: local.colorExists } : {}),
+                note:
+                  'Identified from our own Luma fabric catalog. The online store lists only a CURATED subset of Luma fabrics — check list_store_products for a matching listing first: if found, price it with the store tools; if NOT listed (or the store has no products yet), say this fabric is available through the free consultation instead. Do NOT guess a price.' +
+                  (local.color && local.colorExists === false
+                    ? ` NOTE: color ${local.color} is not in the ${local.family} colorway list — confirm the color code with the customer.`
+                    : ''),
+              },
+            ],
+          }
+        }
+      }
       if (!r.ok) {
         return {
           error: r.error,

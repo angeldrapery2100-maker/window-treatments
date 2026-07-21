@@ -155,6 +155,49 @@ export async function getProductSpecs(area: SpecArea): Promise<any> {
   }
 }
 
+// ── Local Luma fabric-code fallback (W8, 2026-07-21) ─────────────────────────
+// The site ships its own authoritative Luma fabric catalog
+// (fabricCatalog.generated.ts). When AAPP resolve_product misses a code the
+// site knows (T2-EB: "EB12-005" — a real Luma sheer family+color — came back
+// unidentified), match it locally so Luma identification never depends on
+// AAPP coverage. Codes look like "EB12-005", "DB1-1", or a bare family "EB12";
+// legacy codes (e.g. TB4 → DB1) are honored.
+
+const LUMA_SERIES_LABEL: Record<string, string> = {
+  roller: 'Luma roller shade 卷帘',
+  zebra: 'Luma zebra shade 斑马帘',
+  roman: 'Luma modern roman shade 现代罗马帘',
+  sheer: 'Luma sheer shade 柔纱帘',
+}
+
+export interface LocalLumaMatch {
+  series: string
+  seriesLabel: string
+  family: string
+  color: string | null
+  colorExists: boolean | null
+}
+
+export async function matchLocalLumaFabric(query: string): Promise<LocalLumaMatch | null> {
+  const m = String(query || '').trim().toUpperCase().match(/^([A-Z]{1,4}\d{1,3})(?:[-\s]+0*(\d{1,3}))?$/)
+  if (!m) return null
+  const family = m[1]
+  const color = m[2] ? m[2].padStart(3, '0') : null
+  const { FABRIC_CATALOG } = await import('@/lib/fabricCatalog.generated')
+  for (const f of FABRIC_CATALOG) {
+    if (f.code.toUpperCase() === family || f.legacyCodes.some((c) => c.toUpperCase() === family)) {
+      return {
+        series: f.series,
+        seriesLabel: LUMA_SERIES_LABEL[f.series] || `Luma ${f.series} shade`,
+        family: f.code,
+        color,
+        colorExists: color ? f.colors.includes(color) : null,
+      }
+    }
+  }
+  return null
+}
+
 // ── Fabric code identification via AAPP resolve_product ─────────────────────
 const ACTION_URL = () =>
   process.env.AAPP_CHATGPT_ACTION_URL ||

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isConfigDollarKey, stripConfigDollars } from './aappCatalogQA'
+import { isConfigDollarKey, stripConfigDollars, matchLocalLumaFabric } from './aappCatalogQA'
 
 describe('isConfigDollarKey', () => {
   it('keeps catalog identifiers the Sundance/JC pricer needs', () => {
@@ -35,5 +35,31 @@ describe('stripConfigDollars', () => {
     expect(stripConfigDollars(null)).toBe(null)
     expect(stripConfigDollars('PG5')).toBe('PG5')
     expect(stripConfigDollars(7)).toBe(7)
+  })
+})
+
+// W8 (2026-07-21): local Luma fabric-code fallback — identification of codes
+// the site's own catalog knows must never depend on AAPP resolve coverage
+// (T2-EB regression: EB12-005 came back unidentified from AAPP).
+describe('matchLocalLumaFabric', () => {
+  it('identifies EB12-005 as a Luma sheer family + valid color', async () => {
+    const m = await matchLocalLumaFabric('EB12-005')
+    expect(m).toMatchObject({ series: 'sheer', family: 'EB12', color: '005', colorExists: true })
+  })
+  it('identifies DB1-1 as Luma zebra, normalizing the color to 001', async () => {
+    const m = await matchLocalLumaFabric('DB1-1')
+    expect(m).toMatchObject({ series: 'zebra', family: 'DB1', color: '001', colorExists: true })
+  })
+  it('honors legacy codes (TB4 → DB1 zebra)', async () => {
+    const m = await matchLocalLumaFabric('TB4')
+    expect(m).toMatchObject({ series: 'zebra', family: 'DB1', color: null })
+  })
+  it('flags a color not in the family list', async () => {
+    const m = await matchLocalLumaFabric('DB1-999')
+    expect(m).toMatchObject({ family: 'DB1', color: '999', colorExists: false })
+  })
+  it('returns null for names and unknown codes', async () => {
+    expect(await matchLocalLumaFabric('Dorus')).toBe(null)
+    expect(await matchLocalLumaFabric('ZZZ99-001')).toBe(null)
   })
 })
