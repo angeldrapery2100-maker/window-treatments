@@ -180,11 +180,11 @@ ${escalate}
 - NEVER compute recommended sizes or shutter prices yourself — these tools use the exact rules our workroom uses. For shades/roller/zebra measuring, keep using YOUR JOBS #1 guidance.
 - SAVING: whenever a customer gives you window measurements in chat (typed or via photo), offer to save them with save_measured_window so their sheet stays complete — confirm the numbers and the room name first.
 
-DEADLINE / RUSH PROJECTS — never promise a completion date yourself. Never OPEN with "可以做 / doable / we can make it" before the office check — your first sentence states what must be verified (stock + workshop + install schedule), then you help them move fast. Separate the THREE timelines (product made → shipped → installed) and don't collapse them: an online product "ships in ~2 weeks" is NOT the same as a local project being installed. Ask their move-in date and which rooms must be done first; prioritize in-stock or local-supplier fabric (out-of-area fabric — e.g. Carole, Alendel — typically adds ~1–2 weeks just to arrive). Say final dates are confirmed by the office after a stock + workshop-capacity check. If nothing can make the deadline, offer phased completion or a temporary privacy option — never a random substitute product to "fill in."
+DEADLINE / RUSH PROJECTS — never promise a completion date yourself. Separate the THREE timelines (product made → shipped → installed) and don't collapse them: an online product "ships in ~2 weeks" is NOT the same as a local project being installed. Ask their move-in date and which rooms must be done first; prioritize in-stock or local-supplier fabric (out-of-area fabric — e.g. Carole, Alendel — typically adds ~1–2 weeks just to arrive). Say final dates are confirmed by the office after a stock + workshop-capacity check. If nothing can make the deadline, offer phased completion or a temporary privacy option — never a random substitute product to "fill in."
 
 STYLE — talk like a warm, experienced shop assistant, not a manual:
 - SHORT by default: 1-3 sentences per reply. One idea at a time. Never dump everything you know about a topic in one message — share the one thing that answers their question, then offer more ("要不要我细说?" / "want the details?"). The FIRST reply of a conversation especially: a few short lines + one question, never a product-catalog dump.
-- If a customer asks WHAT you'd need to check or look up to answer properly, NAME the resource plainly ("our Luma pricing tool needs the exact size and control type" / "that detail lives in the Hunter Douglas spec sheet our designer carries") — do not answer by re-asking for measurements they already challenged you about.
+- If a customer asks WHAT you'd need to check or look up to answer properly, NAME the resource plainly ("our Luma pricing tool needs the exact size and control type" / "that detail lives in the Hunter Douglas spec sheet our designer carries") and END that reply with at most an offer ("want me to pull that up?"). Do NOT ask for measurements or a product choice in that same reply — they asked what YOU need, not for another form to fill.
 - One question at a time. Never ask for width, height, mount type, and fabric all in one message — walk them through it step by step, like a conversation.
 - Be human: acknowledge what they said before answering ("卧室遮光的话…" / "For a bedroom, ..."), use their name if they gave it, match their energy. It's fine to be a little playful; never robotic.
 - No walls of text, no markdown headers, no bullet lists unless the customer asks for a comparison. Plain conversational text.
@@ -313,8 +313,6 @@ interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
 }
-
-const CJK_RE = /[㐀-䶿一-鿿]/
 
 function bad(error: string, status = 400) {
   return NextResponse.json({ success: false, error }, { status })
@@ -572,46 +570,6 @@ export async function POST(request: Request) {
       return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
     }
 
-    // Full-reply language backstop (W9 2026-07-21): a conversation whose user
-    // messages contain ZERO Chinese must never get a Chinese reply (observed
-    // once right after New chat: pure-English question → full Chinese reply +
-    // Chinese buttons). Deterministic check + ONE corrective retry.
-    {
-      const userHasCjk = customerTexts.some((t) => CJK_RE.test(t))
-      const cjkChars = (reply.match(/[㐀-䶿一-鿿]/g) || []).length
-      if (!userHasCjk && cjkChars > 20 && cjkChars > reply.length * 0.2) {
-        console.warn('[assistant] language anomaly: English-only conversation got a Chinese reply — retrying once')
-        try {
-          const fixRes = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-            body: JSON.stringify({
-              model,
-              max_tokens: MAX_TOKENS,
-              system: [
-                ...system,
-                { type: 'text', text: '\n\nCRITICAL OVERRIDE: every user message in this conversation is in ENGLISH. Reply ONLY in English, including the [quick] options line.' },
-              ],
-              tools: ASSISTANT_TOOLS,
-              messages: apiMessages,
-            }),
-          })
-          if (fixRes.ok) {
-            const fixData = await fixRes.json()
-            const fixText = (Array.isArray(fixData?.content) ? fixData.content : [])
-              .filter((b: any) => b?.type === 'text' && typeof b.text === 'string')
-              .map((b: any) => b.text)
-              .join('')
-              .trim()
-            const fixCjk = (fixText.match(/[㐀-䶿一-鿿]/g) || []).length
-            if (fixText && fixCjk <= 20) reply = fixText
-          }
-        } catch (err) {
-          console.error('[assistant] language retry failed:', err)
-        }
-      }
-    }
-
     // Fabricated-order hard gate (P0 2026-07-20): if the reply names an order
     // number that neither the customer typed nor any tool returned, the model
     // invented it — replace the whole reply with a safe verification prompt.
@@ -638,6 +596,7 @@ export async function POST(request: Request) {
     // Quick-reply language gate (W6, H5/I4 bug): an English reply must not
     // carry Chinese tap buttons. Deterministic server check — better no
     // buttons than wrong-language ones.
+    const CJK_RE = /[㐀-䶿一-鿿]/
     const suggestions =
       !CJK_RE.test(rawReply) && rawSuggestions.some((s) => CJK_RE.test(s)) ? [] : rawSuggestions
     const cleanReply = stripInlineMarkdown(rawReply)
