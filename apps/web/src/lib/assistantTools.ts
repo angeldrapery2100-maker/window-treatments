@@ -279,14 +279,31 @@ function itemToolView(it: ProjectItemRow) {
 const HANDOFF_SUBTOTAL = 5000
 const HANDOFF_ITEM_COUNT = 10
 
-function projectToolView(projectName: string, items: ProjectItemRow[]) {
+function projectToolView(projectName: string, items: ProjectItemRow[], isGuest = false) {
   const s = projectSummary(items)
   const totalUnits = items.reduce((n, it) => n + (Number(it.quantity) || 1), 0)
   const suggest = s.pricedSubtotal >= HANDOFF_SUBTOTAL || totalUnits >= HANDOFF_ITEM_COUNT
+  // W6 P1 fix (2026-07-21): for GUESTS, free-text notes are withheld from the
+  // model — notes carry a previous browser user's preferences (sometimes a
+  // name/city the phone/email scrub can't catch), and the assistant greeted a
+  // new visitor with "Jamie in Temple City" straight out of them. Signed-in
+  // customers still get their own notes; the designer still gets notes via
+  // the inquiry summary either way.
+  const mapItem = (it: ProjectItemRow) => {
+    const v = itemToolView(it)
+    if (isGuest) delete (v as any).notes
+    return v
+  }
   return {
+    ...(isGuest
+      ? {
+          ownership_caution:
+            'This plan is saved on THIS BROWSER and may belong to a previous user. NEVER treat anything in it as the current customer\'s identity or history — confirm it is theirs before referencing it.',
+        }
+      : {}),
     project: {
       name: projectName,
-      items: items.map(itemToolView),
+      items: items.map(mapItem),
       item_count: s.itemCount,
       total_units: totalUnits,
       priced_subtotal: s.pricedSubtotal,
@@ -310,7 +327,7 @@ export async function getHomeProjectTool(ctx: ProjectOwnerCtx): Promise<unknown>
     return { project: null, note: 'No home project yet — create one by saving the first room item with upsert_room_item.' }
   }
   const items = await listItems(project.id)
-  return projectToolView(project.name, items)
+  return projectToolView(project.name, items, !ctx.userId)
 }
 
 export async function upsertRoomItemTool(ctx: ProjectOwnerCtx, input: any): Promise<unknown> {
@@ -877,16 +894,30 @@ export async function executeAssistantTool(
       if (rows.length === 0) {
         return { windows: [], note: 'No saved measurements. Offer the /measure-wizard page, or collect measurements in chat.' }
       }
+      // W6 P1 fix: guests get dims/config WITHOUT free-text notes (same
+      // rationale as the home-project view — notes may carry a previous
+      // browser user's details), plus an explicit ownership caution.
+      const isGuest = !userId
       return {
-        windows: rows.map((r) => ({
-          id: r.id,
-          location: r.label,
-          opening: r.kind,
-          product: r.product,
-          config: r.config,
-          dims_in: r.dims,
-          result: r.result,
-        })),
+        ...(isGuest
+          ? {
+              ownership_caution:
+                'This sheet is saved on THIS BROWSER and may belong to a previous user. Confirm it is the current customer\'s before using it; NEVER treat it as their identity or history.',
+            }
+          : {}),
+        windows: rows.map((r) => {
+          const cfg = r.config && typeof r.config === 'object' ? { ...(r.config as any) } : r.config
+          if (isGuest && cfg && typeof cfg === 'object') delete (cfg as any).notes
+          return {
+            id: r.id,
+            location: r.label,
+            opening: r.kind,
+            product: r.product,
+            config: cfg,
+            dims_in: r.dims,
+            result: r.result,
+          }
+        }),
         note: 'Dims use inches; A/B/C/D = wall space left/right and gaps to ceiling/floor. Results are reference-only — final sizes/prices come from the free in-home measure.',
       }
     }

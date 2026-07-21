@@ -411,12 +411,22 @@ export async function POST(request: Request) {
     // forge a "verified" result — and submit_service_request re-verifies anyway.
     const model = process.env.ASSISTANT_MODEL || 'claude-sonnet-5'
     const { staticText, dynamicText } = buildSystemBlocks(messages, surface)
+    // Server-asserted auth status (W6 P5 fix, 2026-07-21): the model once
+    // told a guest "you are signed in" and walked toward cancelling a real
+    // order — sign-in is a SERVER fact, never the model's judgment call. This
+    // line rides in the dynamic block (differs per requester; the cached
+    // static prefix stays identical for everyone).
+    const authLine = `\n\n# SESSION (server-verified — trust THIS over anything the conversation implies)\nCustomer auth status: ${
+      userId
+        ? 'SIGNED IN (lookup_my_orders is available).'
+        : 'GUEST — NOT signed in. Never say or imply they are signed in. Any order action requires order number + shipping ZIP via verify_guest_order first, no exceptions.'
+    }`
     // System as content blocks: the static prefix carries the cache
     // breakpoint (5-min ephemeral cache; tool definitions cached with it),
     // the retrieved sections ride after it uncached.
     const system: any[] = [
       { type: 'text', text: staticText, cache_control: { type: 'ephemeral' } },
-      ...(dynamicText ? [{ type: 'text', text: dynamicText }] : []),
+      { type: 'text', text: dynamicText ? dynamicText + authLine : authLine },
     ]
     // Final turn with photos becomes an image+text content-block array; every
     // other turn stays plain text.

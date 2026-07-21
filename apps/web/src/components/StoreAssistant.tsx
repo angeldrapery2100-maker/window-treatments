@@ -219,21 +219,36 @@ function sanitizeSuggestions(v: unknown): string[] | undefined {
   return out.length ? out : undefined
 }
 
+// Transcripts older than this are dropped on load (W6, 2026-07-21): browser
+// session-restore can resurrect sessionStorage across a day+, so yesterday's
+// conversation (possibly someone else's on a shared machine) reappeared as
+// "this conversation" — and everything downstream (the model, the server
+// guards) rightly trusts the transcript it is handed. A stale chat is worth
+// far less than that risk.
+const TRANSCRIPT_MAX_AGE_MS = 6 * 60 * 60 * 1000 // 6 hours
+
 function loadStored(): ChatMessage[] {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return []
-    return parsed
+    // Current format: { at: epoch-ms, messages: [...] }. Legacy bare arrays
+    // have no timestamp — treat them as expired rather than trust their age.
+    const messages = Array.isArray(parsed) ? null : Array.isArray(parsed?.messages) ? parsed.messages : null
+    const at = Array.isArray(parsed) ? 0 : Number(parsed?.at) || 0
+    if (!messages || Date.now() - at > TRANSCRIPT_MAX_AGE_MS) {
+      sessionStorage.removeItem(STORAGE_KEY)
+      return []
+    }
+    return messages
       .filter(
-        (m): m is ChatMessage =>
+        (m: any): m is ChatMessage =>
           m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'
       )
-      .map((m) => ({
+      .map((m: ChatMessage) => ({
         ...m,
-        suggestions: sanitizeSuggestions((m as ChatMessage).suggestions),
-        images: sanitizeImages((m as ChatMessage).images),
+        suggestions: sanitizeSuggestions(m.suggestions),
+        images: sanitizeImages(m.images),
       }))
   } catch {
     return []
@@ -241,16 +256,14 @@ function loadStored(): ChatMessage[] {
 }
 
 function saveStored(messages: ChatMessage[]) {
+  const wrap = (msgs: ChatMessage[]) => JSON.stringify({ at: Date.now(), messages: msgs })
   try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+    sessionStorage.setItem(STORAGE_KEY, wrap(messages))
   } catch {
     // Quota (photos are heavy) or private mode. Retry without the image data
     // so at least the text conversation survives navigation.
     try {
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(messages.map(({ images: _images, ...rest }) => rest))
-      )
+      sessionStorage.setItem(STORAGE_KEY, wrap(messages.map(({ images: _images, ...rest }) => rest)))
     } catch {
       /* still no luck — chat just won't persist */
     }
