@@ -49,6 +49,19 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     return { ok: false, error: 'need_contact' }
   }
 
+  // W6 (P0-5): reserved/test identities never reach the real lead system.
+  // 555-01xx is the NANP fictional range; example.com/test.com are reserved
+  // domains — black-box tests use exactly these, so blocking them here makes
+  // testing side-effect-free (no real leads, no real SMS sends) at EVERY
+  // caller of this choke point, not just the chat tool.
+  {
+    const { isReservedTestPhone, isReservedTestEmail } = await import('@/lib/contactClaimGuard')
+    if ((phone && isReservedTestPhone(phone)) || (email && isReservedTestEmail(email))) {
+      console.warn('[aappIntake] BLOCKED reserved/test identity:', phone || email)
+      return { ok: false, error: 'test_identity_blocked' }
+    }
+  }
+
   const body: Record<string, unknown> = {
     name,
     phone,

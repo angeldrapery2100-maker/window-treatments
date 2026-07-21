@@ -7,6 +7,7 @@ import { getCampaignFromRequest } from '@/lib/campaigns'
 import { extractQuickReplies, stripInlineMarkdown } from '@/lib/quickReplies'
 import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
 import { findUnverifiedOrderNumbers, orderClaimFallbackReply, fallbackLanguageFor } from '@/lib/orderClaimGuard'
+import { findUnverifiedContacts, contactClaimFallbackReply } from '@/lib/contactClaimGuard'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
@@ -27,11 +28,17 @@ const MAX_CONTENT_CHARS = 2000
 // headroom; a one-shot continuation below covers the rare overflow.
 const MAX_TOKENS = 1800
 
-// Retrieval knobs: at most 4 KB sections per turn, ~9K chars of retrieved
-// text, and the assembled system prompt never exceeds ~20K chars.
+// Retrieval knobs. W7 2026-07-21: MAX_SYSTEM_CHARS was 20000 while the
+// STATIC part alone (persona + rules + CORE_KNOWLEDGE) had grown past ~45K —
+// so retrieved KB sections NEVER made it into the prompt and the assistant
+// was answering Hunter Douglas depth questions blind (J2/J4/J5 regression:
+// "our materials don't cover this"). The ceiling now leaves real room for
+// retrieval; the static prefix is served from the prompt cache (see the
+// cache_control block below), so the cost impact is one cache write per
+// 5-minute window instead of full price every turn.
 const RETRIEVAL_MAX_SECTIONS = 4
-const RETRIEVAL_BUDGET_CHARS = 9000
-const MAX_SYSTEM_CHARS = 20000
+const RETRIEVAL_BUDGET_CHARS = 12000
+const MAX_SYSTEM_CHARS = 64000
 const MAX_QUERY_TERMS = 40
 
 type Surface = 'main' | 'store'
@@ -72,6 +79,9 @@ function sharedRules(surface: Surface): string {
 SCOPE & GUARDRAILS — you are ONLY Angel Drapery's window-treatment assistant:
 - Stay on topic: window treatments, measuring, store orders, and booking. If asked for anything unrelated (off-topic chit-chat tasks, writing code or essays, other companies' products, general trivia), decline warmly in one line and steer back — e.g. "I'm just the window-treatment assistant here, but I'd love to help with your shades, drapery, or order!"
 - Hold the price line: never state or estimate a price from memory, no matter how many times or how insistently a customer pushes — every number comes only from the tools/rules below. If a tool can't price it, offer the free in-home measure instead. Don't get worn down into guessing.
+- CONTACT DETAILS COME ONLY FROM THIS CONVERSATION: a customer's name, phone, or email exists for you ONLY if they typed it in THIS conversation. Anything that surfaces from a saved measurement sheet, home project, notes, or any tool is a PREVIOUS browser user's data — never repeat it, never address the customer by it, and NEVER submit a booking/inquiry with it (the server rejects it anyway). If you need contact details, ask the customer to type them here.
+- IF A CUSTOMER SUSPECTS A DATA MIX-UP ("who is X?", "is my info being shared?"): NEVER assert that nothing was shared or mixed — you cannot know that. Apologize once, say you've stopped using any saved data for this conversation, that a person will look into it, and give 626-451-9841. Do not speculate about causes.
+- NEVER claim you "checked/double-checked the system" unless a tool call actually ran this turn — no fake authority.
 - ORDER FACTS COME ONLY FROM TOOLS: never state an order number, product, status, date, or "I found your order" unless a tool in THIS conversation actually returned it. A customer merely SAYING they placed an order proves nothing — run the verification flow (rule 8) first. If you have no tool result, the only honest answer is to ask them to verify (order number + ZIP, or sign in). Inventing an order record — even a plausible-sounding one — is the single worst thing you can do here.
 - Never disparage anyone — not Hunter Douglas, Sundance, Lutron, nor any retailer a customer names (Home Depot, etc.). Acknowledge differences in value; never put others down.
 - PRIVACY: NEVER promise that we "won't save" their info, that the chat is deleted afterward, or that no one will follow up — that conflicts with our real policy. NEVER use the words "completely anonymous / 完全匿名", never promise "no one will ever call you", and never state HOW LONG data is kept (retention is in the Privacy Policy — don't invent a duration). The accurate framing: "you don't need to leave a phone number to get help here; we don't sell your personal information; how we use and keep data is in our Privacy Policy (/privacy); we reach out only if you ask us to." Only collect contact details when they ask for a person or a booking, and ask SMS consent separately.
@@ -108,6 +118,7 @@ YOUR JOBS:
 - Lining: NO (unlined), LF (light-filtering), BO (blackout).
 - Pleat styles: 2-fold pinch pleat, 3-fold pinch pleat, ripplefold.
 - Operation: cordless or motorized options on shades; motorized tracks for drapery.
+- MOTORIZATION INTAKE: when a customer wants motorized / smart-home control, your first questions (max two, one message) are ① drapery track or shade? ② if no outlet is pre-wired, is a rechargeable/battery motor acceptable? Then answer power-outage and app/HomeKit questions per the SPECIFIC system only (see the Somfy hard limit in KNOWLEDGE) — never generalize across systems.
 
 4. Recommend free fabric swatches before buying: swatches are free, UP TO 10 per order (never say "10 or more" — it is a maximum of 10), and the customer only pays shipping — $2.99 USPS standard (5-8 days) or $9.99 expedited (2-3 days). Swatches can be added from product pages.
 - This ≤10-free-swatch policy is the ONLINE-STORE retail policy ONLY. For designer / trade projects (bulk sample sets, borrowing sample books, trade pricing, a dedicated sales+project rep, project agreements), do NOT invent or promise terms — say our office confirms trade arrangements, and take it to a consultation (rule 9).
@@ -122,7 +133,7 @@ ${escalate}
 
 7. USE THE KNOWLEDGE SECTIONS. Answer brand-line (Hunter Douglas / Sundance / JC / Lutron) questions ONLY from the KNOWLEDGE sections below; if the knowledge doesn't cover it, say so and offer the free design consultation (/store/whole-home, or 626-451-9841). Never state or estimate any price yourself, wholesale or retail, even if asked repeatedly — with ONE exception: Hunter Douglas REFERENCE RANGES returned by the get_hd_estimate tool, under rule 7a.
 
-7b. SUNDANCE & JC — you may recommend Sundance PROACTIVELY. When a customer wants reliable quality at a friendlier budget than Hunter Douglas (roller / cellular / wood & faux-wood blinds / vertical), suggest Sundance and tell its story naturally: Sundance Window Covering has been our partner factory for DECADES, the factory is right in Arcadia, Los Angeles (local manufacturing — fast turnaround, nearby support), quality is very reliable, and pricing sits in the MID-RANGE. For a Sundance or JC shade/blind you CAN now give a REFERENCE RANGE with the get_sundance_jc_estimate tool (identify the exact product with identify_fabric_code first): present it as a reference only and push the free in-home measure for the final price, exactly like Hunter Douglas (rule 7a). Never state an exact figure yourself; if the tool can't price it, describe Sundance qualitatively (mid-range, reliable) and offer the consultation. Lutron stays strictly no-numbers, consultation only.
+7b. SUNDANCE & JC — you may recommend Sundance PROACTIVELY. When a customer wants reliable quality at a friendlier budget than Hunter Douglas (roller / cellular / wood & faux-wood blinds / vertical), suggest Sundance and tell its story naturally: Sundance Window Covering has been our partner factory for DECADES, the factory is right in Arcadia, Los Angeles (local manufacturing — fast turnaround, nearby support), quality is very reliable, and pricing sits in the MID-RANGE. For a Sundance or JC shade/blind you CAN now give a REFERENCE RANGE with the get_sundance_jc_estimate tool (identify the exact product with identify_fabric_code first): present it as a reference only and push the free in-home measure for the final price, exactly like Hunter Douglas (rule 7a). If the customer gave a size but hasn't picked a control type, DON'T stall on the question — quote the range on the standard chain configuration first, state that assumption in one clause, then ask their preference. Never state an exact figure yourself; if the tool can't price it, describe Sundance qualitatively (mid-range, reliable) and offer the consultation. Lutron stays strictly no-numbers, consultation only.
 
 7a. HUNTER DOUGLAS REFERENCE PRICING (you have the get_hd_estimate tool). For Hunter Douglas products ONLY (not Sundance, not Lutron — those stay quote-by-consultation):
 - Flow: identify the series (call get_hd_estimate with no arguments for the list if unsure) → help the customer measure (YOUR JOBS #1) → call get_hd_estimate with series + width/height in inches (+ fabric code / operating system when known) → present ONLY the returned range.
@@ -144,7 +155,8 @@ ${escalate}
 - NEVER promise WHEN the office will respond ("they'll confirm today", "you'll hear back within the hour") — say "as soon as possible"; response timing is not yours to commit.
 - Once you have at least a name and phone, call submit_website_inquiry EXACTLY ONCE. Do not call it again if they add details later.
 - When it returns a link, present it clearly as a booking button/link ("📅 Book your appointment") and, if it texted them, add that the link was also sent to their phone.
-- Offer three easy paths and let them pick: (1) visit the Temple City showroom (by appointment), (2) a free in-home measure/consultation with a designer (do NOT say it's free of any service fee, and never quote a fee amount), or (3) send photos for a preliminary quote. For a high-value/whole-home/designer project, offer these three paths — do NOT just hand out the phone number.
+- Offer three easy paths and let them pick: (1) visit the Temple City showroom (by appointment), (2) a free in-home measure/consultation with a designer, or (3) send photos for a preliminary quote by our designer. For a high-value/whole-home/designer project, offer these three paths — do NOT just hand out the phone number.
+- IN-HOME VISIT WORDING (use this ONE framing consistently, never contradict yourself between messages): "free design consultation / in-home measure — in some areas a service fee may apply, credited toward your order; the office confirms by address." Never call it unconditionally free in one message and fee-based in the next. And never hedge-promise scheduling or coverage ("should be fine", "usually possible for a big project") — availability and coverage are the office's call, full stop.
 - REPAIRS (even for products we did NOT sell or install) — do NOT send the customer away. First offer to assess: ask the product type + manual or motorized, the exact symptom (won't raise/lower, broken cord/chain, fabric damage, dead motor), request photos (the full shade, a close-up of the damage, and the label inside the headrail), and their project city — and say "even if we didn't install it, we can first check whether it's repairable." Only once they're willing, take their name + phone as a repair lead (intent="repair"). Point them to the manufacturer or another company ONLY after we've confirmed we can't handle it.
 - OUT-OF-AREA (outside LA / San Gabriel Valley, e.g. San Diego, Orange County): never flatly refuse, and never say "measure it when you're in LA" — their home is elsewhere. Collect photos, rough sizes, product direction, and the address remotely first; the office confirms per address and project size whether in-home measure/install reaches them (don't promise or refuse it yourself). If it's product-only shipping, remind them final sizes are the customer's / their own installer's responsibility.
 - BOOKING TIMING: a booking is a REQUEST our office confirms — never tell a customer to "call right now" when we're closed (hours: Mon–Fri 9am–5pm, Sat 10am–3pm, closed Sun; by appointment). Offer to submit their preferred day + time window, then take name + phone and ask SMS consent separately.
@@ -171,7 +183,8 @@ ${escalate}
 DEADLINE / RUSH PROJECTS — never promise a completion date yourself. Separate the THREE timelines (product made → shipped → installed) and don't collapse them: an online product "ships in ~2 weeks" is NOT the same as a local project being installed. Ask their move-in date and which rooms must be done first; prioritize in-stock or local-supplier fabric (out-of-area fabric — e.g. Carole, Alendel — typically adds ~1–2 weeks just to arrive). Say final dates are confirmed by the office after a stock + workshop-capacity check. If nothing can make the deadline, offer phased completion or a temporary privacy option — never a random substitute product to "fill in."
 
 STYLE — talk like a warm, experienced shop assistant, not a manual:
-- SHORT by default: 1-3 sentences per reply. One idea at a time. Never dump everything you know about a topic in one message — share the one thing that answers their question, then offer more ("要不要我细说?" / "want the details?").
+- SHORT by default: 1-3 sentences per reply. One idea at a time. Never dump everything you know about a topic in one message — share the one thing that answers their question, then offer more ("要不要我细说?" / "want the details?"). The FIRST reply of a conversation especially: a few short lines + one question, never a product-catalog dump.
+- If a customer asks WHAT you'd need to check or look up to answer properly, NAME the resource plainly ("our Luma pricing tool needs the exact size and control type" / "that detail lives in the Hunter Douglas spec sheet our designer carries") — do not answer by re-asking for measurements they already challenged you about.
 - One question at a time. Never ask for width, height, mount type, and fabric all in one message — walk them through it step by step, like a conversation.
 - Be human: acknowledge what they said before answering ("卧室遮光的话…" / "For a bedroom, ..."), use their name if they gave it, match their energy. It's fine to be a little playful; never robotic.
 - No walls of text, no markdown headers, no bullet lists unless the customer asks for a comparison. Plain conversational text.
@@ -270,10 +283,15 @@ function retrieveSections(query: string): { source: string; heading: string; tex
   return picked
 }
 
-// Assemble the per-request system prompt: persona/rules + always-on core
-// knowledge + retrieved KB sections. Sections that would push the prompt past
-// MAX_SYSTEM_CHARS are dropped whole (never truncated mid-section).
-function buildSystemPrompt(messages: ChatMessage[], surface: Surface): string {
+// Assemble the per-request system prompt in TWO blocks (W7 prompt caching):
+// - static: persona/rules + always-on core knowledge — identical for every
+//   request on a surface, marked with cache_control so Anthropic serves it
+//   from the prompt cache (tools defined before it are cached with it).
+// - dynamic: retrieved KB sections — varies per query, sits AFTER the cache
+//   breakpoint so it never invalidates the cached prefix.
+// Sections that would push the total past MAX_SYSTEM_CHARS are dropped whole
+// (never truncated mid-section).
+function buildSystemBlocks(messages: ChatMessage[], surface: Surface): { staticText: string; dynamicText: string } {
   const lastUser = messages[messages.length - 1]
   const prevAssistant =
     messages.length >= 2 && messages[messages.length - 2].role === 'assistant'
@@ -281,13 +299,14 @@ function buildSystemPrompt(messages: ChatMessage[], surface: Surface): string {
       : ''
   const query = prevAssistant ? `${lastUser.content}\n${prevAssistant}` : lastUser.content
 
-  let system = systemPromptFor(surface) + '\n\n# KNOWLEDGE\n' + CORE_KNOWLEDGE
+  const staticText = systemPromptFor(surface) + '\n\n# KNOWLEDGE\n' + CORE_KNOWLEDGE
+  let dynamicText = ''
   for (const s of retrieveSections(query)) {
     const block = `\n\n## [${s.source}] ${s.heading}\n${s.text}`
-    if (system.length + block.length > MAX_SYSTEM_CHARS) break
-    system += block
+    if (staticText.length + dynamicText.length + block.length > MAX_SYSTEM_CHARS) break
+    dynamicText += block
   }
-  return system
+  return { staticText, dynamicText }
 }
 
 interface ChatMessage {
@@ -391,7 +410,14 @@ export async function POST(request: Request) {
     // tool_use / tool_result blocks never leave the server, so a client can't
     // forge a "verified" result — and submit_service_request re-verifies anyway.
     const model = process.env.ASSISTANT_MODEL || 'claude-sonnet-5'
-    const system = buildSystemPrompt(messages, surface)
+    const { staticText, dynamicText } = buildSystemBlocks(messages, surface)
+    // System as content blocks: the static prefix carries the cache
+    // breakpoint (5-min ephemeral cache; tool definitions cached with it),
+    // the retrieved sections ride after it uncached.
+    const system: any[] = [
+      { type: 'text', text: staticText, cache_control: { type: 'ephemeral' } },
+      ...(dynamicText ? [{ type: 'text', text: dynamicText }] : []),
+    ]
     // Final turn with photos becomes an image+text content-block array; every
     // other turn stays plain text.
     const apiMessages: any[] = messages.map((m, i) => {
@@ -413,6 +439,14 @@ export async function POST(request: Request) {
     // request: what the customer typed + what tools actually returned. Used
     // by the fabricated-order guard below (P0 2026-07-20).
     const orderNumberSources: string[] = messages.filter(m => m.role === 'user').map(m => m.content)
+    // Contact provenance is STRICTER (W6): only what the customer typed this
+    // request, plus results of non-persisted-layer tools. Results from the
+    // browser-persisted layer (measurement sheet / home project) are excluded
+    // on purpose — legacy rows may still hold a previous visitor's phone, and
+    // echoing it must not legitimize submitting or repeating it (F6).
+    const customerTexts: string[] = messages.filter(m => m.role === 'user').map(m => m.content)
+    const contactSources: string[] = [...customerTexts]
+    const PERSISTED_LAYER_TOOLS = new Set(['get_home_project', 'list_measured_windows', 'save_measured_window', 'upsert_room_item'])
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -437,6 +471,14 @@ export async function POST(request: Request) {
       }
 
       const data = await res.json()
+      // Prompt-cache observability (W7): watch hit rates in the logs after
+      // deploy — creation ≈ one write per 5-min window, read ≈ every turn.
+      if (data?.usage) {
+        console.log(
+          `[assistant] usage in=${data.usage.input_tokens} out=${data.usage.output_tokens}` +
+          ` cache_read=${data.usage.cache_read_input_tokens ?? 0} cache_write=${data.usage.cache_creation_input_tokens ?? 0}`
+        )
+      }
       const content: any[] = Array.isArray(data?.content) ? data.content : []
 
       if (data?.stop_reason === 'tool_use') {
@@ -447,7 +489,7 @@ export async function POST(request: Request) {
           if (block?.type !== 'tool_use') continue
           let result: unknown
           try {
-            result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId)
+            result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId, customerTexts)
           } catch (err) {
             console.error(`[assistant] tool ${block?.name} failed:`, err)
             result = { error: 'tool_failed' }
@@ -465,6 +507,7 @@ export async function POST(request: Request) {
           }
           const resultJson = JSON.stringify(result)
           orderNumberSources.push(resultJson)
+          if (!PERSISTED_LAYER_TOOLS.has(block.name)) contactSources.push(resultJson)
           toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: resultJson })
         }
         apiMessages.push({ role: 'user', content: toolResults })
@@ -527,9 +570,25 @@ export async function POST(request: Request) {
       reply = orderClaimFallbackReply(fallbackLanguageFor(lastUserText))
     }
 
+    // Contact hard gate (W6 2026-07-21): a phone/email in the reply that the
+    // customer never typed this request (and no non-persisted tool returned)
+    // is someone else's data surfacing — replace the reply entirely.
+    const leakedContacts = findUnverifiedContacts(reply, contactSources)
+    if (leakedContacts.length > 0) {
+      console.error('[assistant] BLOCKED unverified contact detail(s) in reply:', leakedContacts.join(', '))
+      const lastUserText = messages[messages.length - 1]?.content ?? ''
+      reply = contactClaimFallbackReply(fallbackLanguageFor(lastUserText))
+    }
+
     // Split the tap-to-send quick replies off the visible text, then strip any
     // Markdown emphasis the model still emitted (widget renders plain text).
-    const { reply: rawReply, suggestions } = extractQuickReplies(reply)
+    const { reply: rawReply, suggestions: rawSuggestions } = extractQuickReplies(reply)
+    // Quick-reply language gate (W6, H5/I4 bug): an English reply must not
+    // carry Chinese tap buttons. Deterministic server check — better no
+    // buttons than wrong-language ones.
+    const CJK_RE = /[㐀-䶿一-鿿]/
+    const suggestions =
+      !CJK_RE.test(rawReply) && rawSuggestions.some((s) => CJK_RE.test(s)) ? [] : rawSuggestions
     const cleanReply = stripInlineMarkdown(rawReply)
     if (!cleanReply) {
       // Degenerate case: the model sent ONLY a [quick] line. Treat as failure.

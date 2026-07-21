@@ -608,15 +608,38 @@ export default function StoreAssistant() {
               </a>
             </div>
           </div>
-          <button
-            onClick={() => setOpen(false)}
-            aria-label="Close chat"
-            className="-mr-1 -mt-1 rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="-mr-1 -mt-1 flex items-center gap-0.5">
+            {/* New chat (W6): clears the visible transcript + sessionStorage
+                so the next person on a shared computer starts clean. Cart /
+                saved project are intentionally untouched. */}
+            <button
+              onClick={() => {
+                setMessages([])
+                try {
+                  sessionStorage.removeItem(STORAGE_KEY)
+                } catch {
+                  /* ignore */
+                }
+              }}
+              aria-label="Start a new chat"
+              title="New chat"
+              className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+              className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Messages */}

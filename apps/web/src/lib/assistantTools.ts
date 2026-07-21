@@ -328,7 +328,13 @@ export async function upsertRoomItemTool(ctx: ProjectOwnerCtx, input: any): Prom
       height: input?.height_in,
       options: input?.options && typeof input.options === 'object' ? input.options : null,
       quantity: input?.quantity,
-      notes: input?.notes,
+      // W6: PII never enters the browser-persisted layer — phones/emails in
+      // notes were how one visitor's contact details leaked to the next
+      // person on the same browser (F6, 2026-07-21).
+      notes:
+        typeof input?.notes === 'string' && input.notes
+          ? (await import('@/lib/contactClaimGuard')).scrubContactsFromText(input.notes)
+          : input?.notes,
     })
   } catch (e: any) {
     const msg = String(e?.message || '')
@@ -377,19 +383,39 @@ export async function removeRoomItemTool(ctx: ProjectOwnerCtx, input: any): Prom
 }
 
 export async function listStoreProductsTool(input: any): Promise<unknown> {
+  // W7 (H6): this used to swallow DB errors into an empty list, so the model
+  // said "the catalog isn't loading" with nothing in the logs, and a type
+  // filter that didn't match a product_type slug ALSO looked like an outage.
+  // Now: errors are logged + reported distinctly, and an empty filtered
+  // result falls back to the unfiltered catalog so the model can pick.
   const typeFilter = typeof input?.type === 'string' && input.type ? input.type : null
-  const rows = await query<any>(
-    `SELECT p.id, p.name, pt.slug AS type, sc.name AS category
-       FROM products p
-       JOIN product_types pt ON pt.id = p.product_type_id
-       LEFT JOIN store_categories sc ON sc.id = p.store_category_id
-      WHERE p.is_active = true ${typeFilter ? 'AND pt.slug = $1' : ''}
-      ORDER BY pt.slug, p.name
-      LIMIT 100`,
-    typeFilter ? [typeFilter] : []
-  ).catch(() => [])
+  const fetchRows = (filter: string | null) =>
+    query<any>(
+      `SELECT p.id, p.name, pt.slug AS type, sc.name AS category
+         FROM products p
+         JOIN product_types pt ON pt.id = p.product_type_id
+         LEFT JOIN store_categories sc ON sc.id = p.store_category_id
+        WHERE p.is_active = true ${filter ? 'AND pt.slug = $1' : ''}
+        ORDER BY pt.slug, p.name
+        LIMIT 100`,
+      filter ? [filter] : []
+    )
+  let rows: any[]
+  try {
+    rows = await fetchRows(typeFilter)
+    if (rows.length === 0 && typeFilter) rows = await fetchRows(null)
+  } catch (e) {
+    console.warn('[assistant] list_store_products DB error:', String(e).slice(0, 200))
+    return {
+      error: 'catalog_unavailable',
+      note: 'The store catalog could not be loaded just now — do NOT say we have no products. Point the customer to the product page for instant pricing (e.g. /products/luma-collection) and offer to try again.',
+    }
+  }
   return {
     products: rows.map(r => ({ product_id: r.id, name: r.name, type: r.type, category: r.category || undefined })),
+    ...(typeFilter && rows.length > 0 && rows.some(r => r.type !== typeFilter)
+      ? { note_filter: `No products matched type '${typeFilter}' — showing the full catalog; pick the right product from it.` }
+      : {}),
     note: 'Prices depend on size and options — use upsert_room_item (or the product page configurator) to get an exact price. Never estimate.',
   }
 }
@@ -767,7 +793,11 @@ export async function executeAssistantTool(
   input: any,
   userId: string | null,
   anonId: string | null = null,
-  campaignId: string | null = null
+  campaignId: string | null = null,
+  // Texts the CUSTOMER typed in this request — provenance source for the
+  // contact guard (W6): a phone/email may only be submitted to the lead
+  // system if it appears here. Saved sheets/projects/history don't count.
+  userTexts: string[] = []
 ): Promise<unknown> {
   const owner: ProjectOwnerCtx = { userId, anonId, campaignId }
   switch (name) {
@@ -867,17 +897,23 @@ export async function executeAssistantTool(
       const h = numOr(input?.height_in)
       if (!w || !h) return { error: 'need_dims', note: 'Width and height in inches are required.' }
       const product = ['drapery', 'shades', 'shutters'].includes(input?.product) ? input.product : 'drapery'
+      // W6: scrub phones/emails from persisted free-text (label + notes) —
+      // PII in the browser-persisted sheet is how contact details leaked
+      // across visitors sharing a browser (F6, 2026-07-21).
+      const { scrubContactsFromText } = await import('@/lib/contactClaimGuard')
       const row = await saveMeasuredWindow(
         { userId, anonId },
         {
           id: typeof input?.id === 'string' ? input.id : undefined,
-          label: String(input?.location || ''),
+          label: scrubContactsFromText(String(input?.location || '')),
           kind: input?.opening === 'sliding_door' ? 'sliding_door' : 'window',
           product,
           config: {
             ...(['deep', 'mid', 'shallow'].includes(input?.depth_choice) ? { depthChoice: input.depth_choice } : {}),
             ...(['inside', 'inside_z', 'outside'].includes(input?.mount) ? { mount: input.mount } : {}),
-            ...(typeof input?.notes === 'string' && input.notes ? { notes: String(input.notes).slice(0, 300) } : {}),
+            ...(typeof input?.notes === 'string' && input.notes
+              ? { notes: scrubContactsFromText(String(input.notes)).slice(0, 300) }
+              : {}),
             savedVia: 'chat',
           },
           dims: {
@@ -1106,6 +1142,42 @@ export async function executeAssistantTool(
         requestedChanges: input?.requested_changes ?? null,
       })
     case 'submit_website_inquiry': {
+      // ── W6 contact guard (2026-07-21) ──────────────────────────────────
+      // 1. Reserved test identities (555-01xx / example.com) never reach the
+      //    real lead system — black-box tests using them become side-effect
+      //    free (P0-5: fabricated "Taylor Nguyen / 323-555-0148" became a
+      //    real lead and triggered real SMS sends).
+      // 2. Provenance: the phone/email MUST appear in what the customer
+      //    typed in THIS conversation. Saved measurement sheets, project
+      //    notes, and "from earlier" memory are not valid sources (F6: the
+      //    assistant tried to book with a previous visitor's number).
+      {
+        const { isReservedTestPhone, isReservedTestEmail, phoneProvidedInSources, emailProvidedInSources } =
+          await import('@/lib/contactClaimGuard')
+        const phone = String(input?.phone ?? '').trim()
+        const email = String(input?.email ?? '').trim()
+        if ((phone && isReservedTestPhone(phone)) || (email && isReservedTestEmail(email))) {
+          console.warn('[assistant] BLOCKED reserved/test contact identity in inquiry:', phone || email)
+          return {
+            error: 'test_identity_blocked',
+            note: 'That phone/email is a reserved test pattern (555-01xx / example.com) and cannot be submitted. If the customer is real, ask them to double-check their contact details.',
+          }
+        }
+        if (phone && !phoneProvidedInSources(phone, userTexts)) {
+          console.warn('[assistant] BLOCKED inquiry phone not typed by customer this conversation')
+          return {
+            error: 'contact_not_from_customer',
+            note: 'That phone number was NOT typed by the customer in this conversation, so it cannot be submitted — saved sheets/projects or earlier sessions are not valid sources. Ask the customer to type their phone number here, then submit again.',
+          }
+        }
+        if (email && !emailProvidedInSources(email, userTexts)) {
+          console.warn('[assistant] BLOCKED inquiry email not typed by customer this conversation')
+          return {
+            error: 'contact_not_from_customer',
+            note: 'That email was NOT typed by the customer in this conversation — ask the customer to type it here, then submit again.',
+          }
+        }
+      }
       // P2 handoff enrichment: append the AI Sales Summary (project contents,
       // engagement score, campaign) to the message that lands in the AAPP
       // customer profile. Best-effort — an empty summary changes nothing.
