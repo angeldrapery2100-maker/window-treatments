@@ -272,7 +272,7 @@ export default function EditShowcaseProductPage({ params }: { params: Promise<{ 
                 </div>
                 <div>
                   <label className="block text-xs text-gray-500 mb-1.5">Sort Order</label>
-                  <input type="number" value={product.sort_order} onChange={e => setProduct(p => ({ ...p, sort_order: parseInt(e.target.value) || 0 }))}
+                  <input type="number" value={product.sort_order || ''} onChange={e => setProduct(p => ({ ...p, sort_order: parseInt(e.target.value) || 0 }))}
                     className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none" />
                 </div>
               </div>
