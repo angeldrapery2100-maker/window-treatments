@@ -7,7 +7,7 @@ import { getCampaignFromRequest } from '@/lib/campaigns'
 // Client-reported behavioral events for lead scoring (P2). Deliberately tiny:
 // a WHITELIST of event types the browser may report, no values trusted beyond
 // the type itself (identity + campaign come from cookies, never the body).
-const CLIENT_EVENT_TYPES = new Set(['project_added_to_cart'])
+const CLIENT_EVENT_TYPES = new Set(['project_added_to_cart', 'assistant_opened'])
 
 export async function POST(request: Request) {
   try {

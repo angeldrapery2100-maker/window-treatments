@@ -31,6 +31,8 @@ const STORE_NAV = [
   { href: '/admin/leads', label: 'Leads', icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a3 3 0 10-3-3' },
   // 推广活动：线下投放短链/二维码 + 归因漏斗（AI 销售系统 P3）
   { href: '/admin/campaigns', label: 'Campaigns', icon: 'M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3h-.686' },
+  // AI 客服使用与转化 + 对话记录查看
+  { href: '/admin/assistant', label: 'AI 客服', icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4v-4z' },
   // 面料库:Luma 系列面料总表(代码/图/名称/hardware颜色),AAPP library 同步底座
   { href: '/admin/fabrics', label: 'Fabrics', icon: 'M4 4h16v16H4V4zm4 0v16m8-16v16M4 8h16M4 16h16' },
 ]
@@ -49,7 +51,7 @@ const AREAS: Record<Area, { label: string; dashboard: string; nav: typeof WEBSIT
 // Map any admin path to its area. Defaults to "website" for shared/system
 // pages (e.g. Accounts) so the sidebar always has a sensible context.
 function areaForPath(pathname: string): Area {
-  const storePrefixes = ['/admin/store', '/admin/products', '/admin/orders', '/admin/packing', '/admin/shipments', '/admin/discount-codes', '/admin/support', '/admin/reviews', '/admin/leads', '/admin/campaigns', '/admin/fabrics']
+  const storePrefixes = ['/admin/store', '/admin/products', '/admin/orders', '/admin/packing', '/admin/shipments', '/admin/discount-codes', '/admin/support', '/admin/reviews', '/admin/leads', '/admin/campaigns', '/admin/fabrics', '/admin/assistant']
   if (storePrefixes.some(p => pathname === p || pathname.startsWith(p + '/'))) return 'store'
   return 'website'
 }

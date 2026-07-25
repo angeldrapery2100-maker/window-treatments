@@ -173,6 +173,56 @@ export default function ConsultationWidget() {
             </div>
           ) : (
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+              {/* AI Design Assistant recommendation — nudge visitors to try
+                  instant, self-serve help before (or instead of) leaving contact
+                  details. The button closes this form and pops open the chat via
+                  the global 'ad:open-assistant' event that StoreAssistant listens
+                  for. */}
+              <button
+                type="button"
+                onClick={() => {
+                  handleClose()
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new Event('ad:open-assistant'))
+                  }
+                }}
+                className="group w-full rounded-xl border border-gray-200 bg-gray-50 p-4 text-left transition-colors hover:border-gray-300 hover:bg-gray-100"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-xl leading-none">💬</span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900">
+                      Prefer instant answers? Ask our AI Design Assistant
+                    </p>
+                    <p className="mt-1 text-[12px] leading-relaxed text-gray-500">
+                      Measure your windows step by step · see the real price for your exact
+                      size · get product picks and book a visit — instantly, in any language.
+                    </p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-gray-900">
+                      Chat with the AI Assistant
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                      </svg>
+                      <span className="ml-1.5 text-[11px] font-normal text-gray-400">我们也说中文</span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+
+              {/* Divider with a soft "or leave your details" label */}
+              <div className="flex items-center gap-3 pt-1">
+                <span className="h-px flex-1 bg-gray-100" />
+                <span className="text-[11px] uppercase tracking-wide text-gray-400">or request a callback</span>
+                <span className="h-px flex-1 bg-gray-100" />
+              </div>
+
               {/* Name */}
               <div>
                 <label htmlFor="cw-name" className="block text-sm font-medium text-gray-700 mb-1">

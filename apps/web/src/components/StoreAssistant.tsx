@@ -22,13 +22,13 @@ import { usePathname } from 'next/navigation'
 //   extractQuickReplies in the API route) rendered as tap-to-send chips under
 //   the LATEST assistant message only.
 //
-// Positioning: the assistant is the site's only floating widget (the
-// standalone "Request Consultation" pill was removed 2026-07-22 — the
-// assistant collects contact info and books consultations itself), so the
-// launcher sits in the bottom corner everywhere: bottom-right on marketing
-// pages, bottom-LEFT on /store (the account + cart stack owns bottom-right
-// there), lifted to bottom-24 on mobile checkout / product pages so it never
-// covers "Pay & Place Order" or the sticky Add to Cart bar.
+// Positioning: on /store pages the bottom-right slot is free (the site-wide
+// ConsultationWidget returns null there), so the launcher sits at bottom-5/6
+// as before (lifted to bottom-24 on mobile checkout so it never covers the
+// in-flow "Pay & Place Order" button). On marketing pages the Consultation
+// pill owns bottom-6 right-6 at z-[999], so the launcher stacks ABOVE it
+// (bottom-24) and the open chat panel does the same on desktop; the mobile
+// bottom sheet instead layers over the pill via z-[1000].
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -65,14 +65,13 @@ const PHOTO_PLACEHOLDER = '[photo]'
 
 // Main marketing site: steer toward understanding the company and finding
 // the right product (funnels to a local in-home consultation).
-// Widget copy is ENGLISH-ONLY (Eddie 2026-07-19; language line switched to
-// English 2026-07-22 so non-Chinese speakers understand it too — the 中文
-// characters stay visible so Chinese customers still spot it at a glance).
-// The assistant replies in whatever language the customer uses.
-const LANGUAGE_LINE = 'Feel free to chat in any language — we also speak 中文.'
+// Widget copy is ENGLISH-ONLY (Eddie 2026-07-19) — the single Chinese line in
+// the greeting tells customers we also speak Chinese/other languages; the
+// assistant then replies in whatever language the customer uses.
 const WELCOME_MAIN: ChatMessage = {
   role: 'assistant',
-  content: `Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product. ${LANGUAGE_LINE}`,
+  content:
+    "Hi! I'm the Angel Drapery design assistant — ask me about our company, or tell me about your windows and I'll help you find the right product. 我们也说中文，其他语言也都可以。",
 }
 
 const QUICK_PROMPTS_MAIN = [
@@ -81,19 +80,17 @@ const QUICK_PROMPTS_MAIN = [
   'What brands do you carry?',
 ]
 
-// Online store: steer toward ordering, product details, and after-sales
-// (Eddie 2026-07-22: NO consultation-booking buttons here — booking belongs
-// to the marketing site; the store welcome is purely shop-task presets).
+// Online store: steer toward measuring, configuring, ordering, and after-sales.
 const WELCOME_STORE: ChatMessage = {
   role: 'assistant',
-  content: `Hi! I'm the Angel Drapery design assistant — ask me about our products, placing an order, or help with an existing order. ${LANGUAGE_LINE}`,
+  content:
+    "Hi! I'm the Angel Drapery design assistant — ask me about measuring your windows, choosing shades and drapery, or your order. 我们也说中文，其他语言也都可以。",
 }
 
 const QUICK_PROMPTS_STORE = [
-  'How do I place a custom order?',
-  'Help me choose the right product',
   'How do I measure my window?',
-  'Change, cancel, or track my order',
+  'Which shade is best for a bedroom?',
+  'I need to change or cancel my order',
 ]
 
 // Launcher/teaser chrome is ENGLISH-ONLY (Eddie 2026-07-19) — the conversation
@@ -101,11 +98,10 @@ const QUICK_PROMPTS_STORE = [
 const TEASER_MAIN = 'Not sure which window treatment fits? Ask me anything!'
 const TEASER_STORE = 'Measuring, choosing, or pricing? Ask me anything!'
 
-// Booking entries on the welcome screen — MARKETING PAGES ONLY (Eddie
-// 2026-07-22; originally always-visible per 2026-07-19): the showroom is
-// APPOINTMENT-ONLY, so the widget says so up front and offers both booking
-// paths as one-tap actions (each starts the assistant's consultation-booking
-// flow, rule 9). On /store the welcome shows only shop-task presets instead.
+// Always-visible booking entries on the welcome screen (Eddie 2026-07-19):
+// the showroom is APPOINTMENT-ONLY, so the widget says so up front and offers
+// both booking paths as one-tap actions (each starts the assistant's
+// consultation-booking flow, rule 9).
 const SHOWROOM_NOTE = 'Our Temple City showroom is by appointment only.'
 const BOOKING_ACTIONS: { label: string; prompt: string }[] = [
   {
@@ -223,36 +219,21 @@ function sanitizeSuggestions(v: unknown): string[] | undefined {
   return out.length ? out : undefined
 }
 
-// Transcripts older than this are dropped on load (W6, 2026-07-21): browser
-// session-restore can resurrect sessionStorage across a day+, so yesterday's
-// conversation (possibly someone else's on a shared machine) reappeared as
-// "this conversation" — and everything downstream (the model, the server
-// guards) rightly trusts the transcript it is handed. A stale chat is worth
-// far less than that risk.
-const TRANSCRIPT_MAX_AGE_MS = 6 * 60 * 60 * 1000 // 6 hours
-
 function loadStored(): ChatMessage[] {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
-    // Current format: { at: epoch-ms, messages: [...] }. Legacy bare arrays
-    // have no timestamp — treat them as expired rather than trust their age.
-    const messages = Array.isArray(parsed) ? null : Array.isArray(parsed?.messages) ? parsed.messages : null
-    const at = Array.isArray(parsed) ? 0 : Number(parsed?.at) || 0
-    if (!messages || Date.now() - at > TRANSCRIPT_MAX_AGE_MS) {
-      sessionStorage.removeItem(STORAGE_KEY)
-      return []
-    }
-    return messages
+    if (!Array.isArray(parsed)) return []
+    return parsed
       .filter(
-        (m: any): m is ChatMessage =>
+        (m): m is ChatMessage =>
           m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'
       )
-      .map((m: ChatMessage) => ({
+      .map((m) => ({
         ...m,
-        suggestions: sanitizeSuggestions(m.suggestions),
-        images: sanitizeImages(m.images),
+        suggestions: sanitizeSuggestions((m as ChatMessage).suggestions),
+        images: sanitizeImages((m as ChatMessage).images),
       }))
   } catch {
     return []
@@ -260,14 +241,16 @@ function loadStored(): ChatMessage[] {
 }
 
 function saveStored(messages: ChatMessage[]) {
-  const wrap = (msgs: ChatMessage[]) => JSON.stringify({ at: Date.now(), messages: msgs })
   try {
-    sessionStorage.setItem(STORAGE_KEY, wrap(messages))
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
   } catch {
     // Quota (photos are heavy) or private mode. Retry without the image data
     // so at least the text conversation survives navigation.
     try {
-      sessionStorage.setItem(STORAGE_KEY, wrap(messages.map(({ images: _images, ...rest }) => rest)))
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(messages.map(({ images: _images, ...rest }) => rest))
+      )
     } catch {
       /* still no luck — chat just won't persist */
     }
@@ -373,8 +356,22 @@ export default function StoreAssistant() {
     setOpenedOnce(true)
     setTeaserVisible(false)
     try {
+      // Report a one-per-session "opened" beacon for lead analytics — fires on
+      // the FIRST open only (before we set the flag), so we can measure how many
+      // visitors open the widget even if they never send a message. Best-effort,
+      // no PII (identity is attributed server-side from cookies); keepalive so it
+      // survives an immediate navigation.
+      const alreadyOpened = sessionStorage.getItem(OPENED_KEY)
       sessionStorage.setItem(OPENED_KEY, '1')
       sessionStorage.setItem(TEASER_KEY, '1')
+      if (!alreadyOpened) {
+        fetch('/api/store/lead-event', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ type: 'assistant_opened' }),
+          keepalive: true,
+        }).catch(() => {})
+      }
     } catch {
       /* ignore */
     }
@@ -523,12 +520,13 @@ export default function StoreAssistant() {
   // bar on mobile (store redesign P2) — lift the launcher the same way so it
   // stacks above the bar instead of covering its Add to Cart button.
   const onProductPage = /^\/store\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(pathname || '')
-  // The bottom corner is the assistant's own slot everywhere (the standalone
-  // consultation pill is gone) — only mobile checkout / product sticky bars
-  // still push the launcher up.
-  const btnOffset = (onCheckout || onProductPage)
-    ? 'bottom-24 sm:bottom-6'
-    : 'bottom-5 sm:bottom-6'
+  // Marketing pages: the ConsultationWidget pill occupies bottom-6 right-6,
+  // so both the launcher and the desktop panel stack above it.
+  const btnOffset = !onStore
+    ? 'bottom-24'
+    : (onCheckout || onProductPage)
+      ? 'bottom-24 sm:bottom-6'
+      : 'bottom-5 sm:bottom-6'
   // Store pages keep the account + cart stack at the bottom-RIGHT corner
   // (ProductLayout floating buttons) — the assistant launcher moves to the
   // bottom-LEFT there so the two stacks never pile up on each other or cover
@@ -537,7 +535,7 @@ export default function StoreAssistant() {
   const panelSide = onStore ? 'sm:left-6' : 'sm:right-6'
   const panelPos = onStore
     ? 'z-50 sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
-    : 'z-[1000] sm:bottom-6 sm:max-h-[calc(100vh-3rem)]'
+    : 'z-[1000] sm:bottom-24 sm:max-h-[calc(100vh-8rem)]'
 
   const lastIdx = messages.length - 1
 
@@ -624,38 +622,15 @@ export default function StoreAssistant() {
               </a>
             </div>
           </div>
-          <div className="-mr-1 -mt-1 flex items-center gap-0.5">
-            {/* New chat (W6): clears the visible transcript + sessionStorage
-                so the next person on a shared computer starts clean. Cart /
-                saved project are intentionally untouched. */}
-            <button
-              onClick={() => {
-                setMessages([])
-                try {
-                  sessionStorage.removeItem(STORAGE_KEY)
-                } catch {
-                  /* ignore */
-                }
-              }}
-              aria-label="Start a new chat"
-              title="New chat"
-              className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
-                <path d="M3 3v5h5" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close chat"
+            className="-mr-1 -mt-1 rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         {/* Messages */}
@@ -665,26 +640,20 @@ export default function StoreAssistant() {
               <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                 {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
-              {!onStore && (
-                <>
-                  <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {/* Primary actions (marketing pages only): both booking
-                        paths are one tap from open. The store welcome skips
-                        booking entirely — shop-task presets only. */}
-                    {BOOKING_ACTIONS.map((a) => (
-                      <button
-                        key={a.label}
-                        onClick={() => send(a.prompt)}
-                        disabled={sending}
-                        className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
-                      >
-                        {a.label}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
+              <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
+              <div className="flex flex-wrap gap-2">
+                {/* Primary actions: both booking paths are one tap from open */}
+                {BOOKING_ACTIONS.map((a) => (
+                  <button
+                    key={a.label}
+                    onClick={() => send(a.prompt)}
+                    disabled={sending}
+                    className="rounded-full bg-[#3d3d3d] px-4 py-2 text-[12px] font-medium text-white shadow-sm transition-colors hover:bg-gray-700 disabled:opacity-50"
+                  >
+                    {a.label}
+                  </button>
+                ))}
+              </div>
               <div className="flex flex-wrap gap-2 pt-0.5">
                 {(onStore ? QUICK_PROMPTS_STORE : QUICK_PROMPTS_MAIN).map((q) => (
                   <button key={q} onClick={() => send(q)} disabled={sending} className={chipClass}>
