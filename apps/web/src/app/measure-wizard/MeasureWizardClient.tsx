@@ -22,6 +22,10 @@ import { recommendDraperySize } from '@window-treatments/shared/measure'
 
 type Product = 'drapery' | 'shades' | 'shutters'
 type Kind = 'window' | 'sliding_door'
+export type WizardLanguage = 'en' | 'zh'
+
+const tr = (language: WizardLanguage, english: string, chinese: string) =>
+  language === 'zh' ? chinese : english
 
 const ACCENT = 'text-[#4DB6E8]'
 const label = 'block text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-2'
@@ -36,7 +40,15 @@ const pillBtn = (active: boolean, disabled = false) =>
         : 'border-gray-200 bg-white text-[#12141C] hover:border-gray-400'
   }`
 
-const ROOM_PRESETS = ['Living Room', 'Primary Bedroom', 'Bedroom', 'Kitchen', 'Dining Room', 'Office', 'Bathroom']
+const ROOM_PRESETS = [
+  ['Living Room', '客厅'],
+  ['Primary Bedroom', '主卧'],
+  ['Bedroom', '卧室'],
+  ['Kitchen', '厨房'],
+  ['Dining Room', '餐厅'],
+  ['Office', '办公室'],
+  ['Bathroom', '浴室'],
+] as const
 
 interface Draft {
   id?: string
@@ -54,12 +66,7 @@ interface Draft {
   hasTrim: boolean | null
   mount: '' | 'inside' | 'inside_z' | 'outside'
   material: 'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood_paint' | 'basswood_stain'
-  // shutter options (optional price movers)
   shStyle: string
-  shDivider: boolean
-  shKnob: boolean
-  shLock: boolean
-  shCustomFinish: '' | 'custom_paint' | 'custom_stain'
   shQty: string
   // dims (inches) — A=left, B=right, C=top, D=bottom
   w: string
@@ -83,10 +90,6 @@ const EMPTY_DRAFT: Draft = {
   mount: '',
   material: 'poly_vinyl',
   shStyle: 'standard',
-  shDivider: false,
-  shKnob: false,
-  shLock: false,
-  shCustomFinish: '',
   shQty: '1',
   w: '',
   h: '',
@@ -113,62 +116,62 @@ const num = (v: string): number | undefined => {
 }
 
 // ── Depth gating (choice-based) ─────────────────────────────────────────────
-function depthChoicesFor(product: Product): { v: 'deep' | 'mid' | 'shallow'; t: string }[] {
+function depthChoicesFor(product: Product, language: WizardLanguage = 'en'): { v: 'deep' | 'mid' | 'shallow'; t: string }[] {
   if (product === 'shades')
     return [
-      { v: 'deep', t: 'More than 1.5″' },
-      { v: 'shallow', t: 'Less than 1.5″' },
+      { v: 'deep', t: tr(language, 'More than 1.5″', '大于 1.5 英寸') },
+      { v: 'shallow', t: tr(language, 'Less than 1.5″', '小于 1.5 英寸') },
     ]
   return [
-    { v: 'deep', t: 'More than 2.5″' },
-    { v: 'mid', t: 'Between 2″ and 2.5″' },
-    { v: 'shallow', t: 'Less than 2″' },
+    { v: 'deep', t: tr(language, 'More than 2.5″', '大于 2.5 英寸') },
+    { v: 'mid', t: tr(language, 'Between 2″ and 2.5″', '2 至 2.5 英寸') },
+    { v: 'shallow', t: tr(language, 'Less than 2″', '小于 2 英寸') },
   ]
 }
 
-function depthLabelFor(product: Product, choice: string): string {
-  const found = depthChoicesFor(product).find((c) => c.v === choice)
+function depthLabelFor(product: Product, choice: string, language: WizardLanguage = 'en'): string {
+  const found = depthChoicesFor(product, language).find((c) => c.v === choice)
   return found ? found.t : ''
 }
 
-function mountOptionsFor(product: Product, choice: string): {
+function mountOptionsFor(product: Product, choice: string, language: WizardLanguage = 'en'): {
   options: { v: 'inside' | 'inside_z' | 'outside'; t: string; recommended?: boolean }[]
   note: string
 } {
-  if (!choice) return { options: [], note: 'Pick the frame depth first.' }
+  if (!choice) return { options: [], note: tr(language, 'Pick the frame depth first.', '请先选择窗框深度。') }
   if (product === 'shades') {
     if (choice === 'deep')
       return {
         options: [
-          { v: 'inside', t: 'Inside mount', recommended: true },
-          { v: 'outside', t: 'Outside mount' },
+          { v: 'inside', t: tr(language, 'Inside mount', '内嵌安装'), recommended: true },
+          { v: 'outside', t: tr(language, 'Outside mount', '外挂安装') },
         ],
-        note: 'Deep enough for a clean inside mount (recommended) — outside mount also works.',
+        note: tr(language, 'Deep enough for a clean inside mount (recommended) — outside mount also works.', '深度足够，建议内嵌安装；也可以选择外挂。'),
       }
     return {
-      options: [{ v: 'outside', t: 'Outside mount' }],
-      note: 'Under 1.5″ of depth, shades must be outside-mounted.',
+      options: [{ v: 'outside', t: tr(language, 'Outside mount', '外挂安装') }],
+      note: tr(language, 'Under 1.5″ of depth, shades must be outside-mounted.', '深度小于 1.5 英寸时，窗饰必须外挂安装。'),
     }
   }
   if (choice === 'deep')
     return {
       options: [
-        { v: 'inside', t: 'Inside mount — any frame style', recommended: true },
-        { v: 'outside', t: 'Outside mount' },
+        { v: 'inside', t: tr(language, 'Inside mount — any frame style', '内嵌安装 — 适用任何边框'), recommended: true },
+        { v: 'outside', t: tr(language, 'Outside mount', '外挂安装') },
       ],
-      note: 'Over 2.5″ of depth fits every inside-mount frame style.',
+      note: tr(language, 'Over 2.5″ of depth fits every inside-mount frame style.', '深度大于 2.5 英寸，可使用任何内嵌式边框。'),
     }
   if (choice === 'mid')
     return {
       options: [
-        { v: 'inside_z', t: 'Inside mount — Z-frame', recommended: true },
-        { v: 'outside', t: 'Outside mount' },
+        { v: 'inside_z', t: tr(language, 'Inside mount — Z-frame', '内嵌安装 — Z 型边框'), recommended: true },
+        { v: 'outside', t: tr(language, 'Outside mount', '外挂安装') },
       ],
-      note: 'Between 2″ and 2.5″ of depth, inside mount works with a Z-frame.',
+      note: tr(language, 'Between 2″ and 2.5″ of depth, inside mount works with a Z-frame.', '深度在 2 至 2.5 英寸之间时，可用 Z 型边框内嵌安装。'),
     }
   return {
-    options: [{ v: 'outside', t: 'Outside mount' }],
-    note: 'Under 2″ of depth, shutters must be outside-mounted.',
+    options: [{ v: 'outside', t: tr(language, 'Outside mount', '外挂安装') }],
+    note: tr(language, 'Under 2″ of depth, shutters must be outside-mounted.', '深度小于 2 英寸时，百叶窗必须外挂安装。'),
   }
 }
 
@@ -205,7 +208,7 @@ function DiagramFrame({ children, caption }: { children: React.ReactNode; captio
   )
 }
 
-function DraperyDiagram({ kind }: { kind: Kind }) {
+function DraperyDiagram({ kind, language }: { kind: Kind; language: WizardLanguage }) {
   const isDoor = kind === 'sliding_door'
   const winY = isDoor ? 50 : 55
   const winH = isDoor ? 130 : 90
@@ -213,8 +216,8 @@ function DraperyDiagram({ kind }: { kind: Kind }) {
     <DiagramFrame
       caption={
         isDoor
-          ? 'Sliding door: measure the door (W×H), the wall space beside it (A, B) and the gap to the ceiling (C). The door reaches the floor, so no D.'
-          : 'Window: measure the window (W×H), wall space beside it (A, B), gap to the ceiling (C) and to the floor (D).'
+          ? tr(language, 'Sliding door: measure the door (W×H), the wall space beside it (A, B) and the gap to the ceiling (C). The door reaches the floor, so no D.', '推拉门：测量门的宽高（W×H）、两侧墙面空间（A、B）和顶部到天花板的距离（C）。门直通地面，无需测量 D。')
+          : tr(language, 'Window: measure the window (W×H), wall space beside it (A, B), gap to the ceiling (C) and to the floor (D).', '窗户：测量窗户宽高（W×H）、两侧墙面空间（A、B）、窗顶到天花板（C）和窗底到地面（D）的距离。')
       }
     >
       {/* ceiling & floor */}
@@ -235,13 +238,13 @@ function DraperyDiagram({ kind }: { kind: Kind }) {
   )
 }
 
-function OperationDiagram({ op }: { op: 'split' | 'single_left' | 'single_right' }) {
+function OperationDiagram({ op, language }: { op: 'split' | 'single_left' | 'single_right'; language: WizardLanguage }) {
   const caption =
     op === 'split'
-      ? 'Center split: two panels meet in the middle and open outward to stack on both sides.'
+      ? tr(language, 'Center split: two panels meet in the middle and open outward to stack on both sides.', '对开：两片窗帘在中间合拢，打开时分别收到两侧。')
       : op === 'single_left'
-        ? 'One-way: a single panel that slides open and stacks on the LEFT side.'
-        : 'One-way: a single panel that slides open and stacks on the RIGHT side.'
+        ? tr(language, 'One-way: a single panel that slides open and stacks on the LEFT side.', '单开：一片窗帘打开后收到左侧。')
+        : tr(language, 'One-way: a single panel that slides open and stacks on the RIGHT side.', '单开：一片窗帘打开后收到右侧。')
   return (
     <DiagramFrame caption={caption}>
       {/* rod */}
@@ -280,13 +283,13 @@ function OperationDiagram({ op }: { op: 'split' | 'single_left' | 'single_right'
   )
 }
 
-function OpeningDiagram({ inside }: { inside: boolean }) {
+function OpeningDiagram({ inside, language }: { inside: boolean; language: WizardLanguage }) {
   return (
     <DiagramFrame
       caption={
         inside
-          ? 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.'
-          : 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.'
+          ? tr(language, 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.', '内嵌安装：在窗框中间大致测量一次内宽和内高即可。此处用于参考估算，上门时我们会精确复尺。')
+          : tr(language, 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.', '外挂安装：测量您希望遮盖的整个区域宽高。大致尺寸即可，上门时我们会确认精确覆盖范围。')
       }
     >
       <rect x="55" y="30" width="150" height="140" fill="#fff" stroke="#12141C" strokeWidth="6" />
@@ -306,9 +309,9 @@ function OpeningDiagram({ inside }: { inside: boolean }) {
   )
 }
 
-function TrimDiagram() {
+function TrimDiagram({ language }: { language: WizardLanguage }) {
   return (
-    <DiagramFrame caption="Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim is what matters now, not the opening.">
+    <DiagramFrame caption={tr(language, "Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim is what matters now, not the opening.", '浅窗框 + 木线条：测量木线条的外宽和外高。窗饰将安装在木线条上，因此此时要测量的是线条外尺寸，不是窗洞尺寸。')}>
       <rect x="45" y="22" width="170" height="156" fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />
       <rect x="70" y="47" width="120" height="106" fill="#fff" stroke="#12141C" strokeWidth="2" />
       <rect x="82" y="59" width="96" height="82" fill="#F7F5F2" stroke="#12141C" strokeWidth="1" />
@@ -318,23 +321,30 @@ function TrimDiagram() {
   )
 }
 
-function DepthDiagram() {
+function DepthDiagram({ language }: { language: WizardLanguage }) {
   return (
-    <DiagramFrame caption="Frame depth (side view): the flat depth from the front of the frame back to the glass. This is the ONE measurement worth doing carefully — it decides the mounting type.">
+    <DiagramFrame caption={tr(language, 'Frame depth (side view): the flat depth from the front of the frame back to the glass. This is the ONE measurement worth doing carefully — it decides the mounting type.', '窗框深度（侧视图）：从窗框最前端到玻璃的平整深度。这个尺寸请仔细测量，它决定可用的安装方式。')}>
       <line x1="30" y1="30" x2="30" y2="170" stroke="#12141C" strokeWidth="6" />
       <line x1="30" y1="30" x2="140" y2="30" stroke="#12141C" strokeWidth="6" />
       <line x1="140" y1="30" x2="140" y2="80" stroke="#12141C" strokeWidth="3" />
       <rect x="136" y="80" width="8" height="90" fill="#cfe8f7" stroke="#12141C" strokeWidth="1" />
       <text x="152" y="130" fontSize="10" fill="#6b7280">
-        glass
+        {tr(language, 'glass', '玻璃')}
       </text>
-      <Arrow x1={33} y1={45} x2={137} y2={45} labelText="depth" lx={68} ly={41} />
+      <Arrow x1={33} y1={45} x2={137} y2={45} labelText={tr(language, 'depth', '深度')} lx={68} ly={41} />
     </DiagramFrame>
   )
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
-export default function MeasureWizardClient() {
+export default function MeasureWizardClient({
+  language,
+  onLanguageChange,
+}: {
+  language: WizardLanguage
+  onLanguageChange: (language: WizardLanguage) => void
+}) {
+  const zh = language === 'zh'
   const [view, setView] = useState<'list' | 'edit'>('list')
   const [saved, setSaved] = useState<SavedWindow[]>([])
   const [loading, setLoading] = useState(true)
@@ -360,7 +370,7 @@ export default function MeasureWizardClient() {
   }, [refresh])
 
   const needsDepth = draft.product === 'shades' || draft.product === 'shutters'
-  const mountInfo = needsDepth && draft.product ? mountOptionsFor(draft.product as Product, draft.depthChoice) : null
+  const mountInfo = needsDepth && draft.product ? mountOptionsFor(draft.product as Product, draft.depthChoice, language) : null
   const askTrim = needsDepth && draft.product ? trimQuestionApplies(draft.product as Product, draft.depthChoice) : false
   const useTrimSize = askTrim && draft.hasTrim === true
   const mountReady = !needsDepth || (draft.mount !== '' && (!askTrim || draft.hasTrim !== null))
@@ -406,7 +416,7 @@ export default function MeasureWizardClient() {
   const [shutterLoading, setShutterLoading] = useState(false)
   useEffect(() => setShutterPrice(null), [
     draft.w, draft.h, draft.material, draft.mount,
-    draft.shStyle, draft.shDivider, draft.shKnob, draft.shLock, draft.shCustomFinish, draft.shQty,
+    draft.shStyle, draft.shQty,
   ])
 
   const quoteShutter = async () => {
@@ -422,10 +432,6 @@ export default function MeasureWizardClient() {
           material: draft.material.startsWith('basswood') ? 'basswood' : draft.material,
           color_type: draft.material === 'basswood_stain' ? 'stain' : 'paint',
           style: draft.shStyle,
-          divider_rail: draft.shDivider,
-          knob: draft.shKnob,
-          lock: draft.shLock,
-          custom_finish: draft.shCustomFinish || undefined,
           quantity: Math.min(Math.max(parseInt(draft.shQty) || 1, 1), 20),
           width_in: w,
           height_in: h,
@@ -463,10 +469,6 @@ export default function MeasureWizardClient() {
               ? {
                   material: draft.material,
                   shStyle: draft.shStyle,
-                  shDivider: draft.shDivider,
-                  shKnob: draft.shKnob,
-                  shLock: draft.shLock,
-                  shCustomFinish: draft.shCustomFinish,
                   shQty: Math.min(Math.max(parseInt(draft.shQty) || 1, 1), 20),
                 }
               : {}),
@@ -499,10 +501,10 @@ export default function MeasureWizardClient() {
         setDraft(EMPTY_DRAFT)
         setView('list')
       } else {
-        setSaveError(typeof json?.error === 'string' ? json.error : 'Could not save — please try again.')
+        setSaveError(zh ? '无法保存，请重试。' : (typeof json?.error === 'string' ? json.error : 'Could not save — please try again.'))
       }
     } catch {
-      setSaveError('Connection problem — please try again.')
+      setSaveError(tr(language, 'Connection problem — please try again.', '网络连接出现问题，请重试。'))
     } finally {
       setSaving(false)
     }
@@ -524,10 +526,6 @@ export default function MeasureWizardClient() {
       mount: c.mount || '',
       material: c.material || 'poly_vinyl',
       shStyle: c.shStyle || 'standard',
-      shDivider: !!c.shDivider,
-      shKnob: !!c.shKnob,
-      shLock: !!c.shLock,
-      shCustomFinish: ['custom_paint', 'custom_stain'].includes(c.shCustomFinish) ? c.shCustomFinish : '',
       shQty: c.shQty != null ? String(c.shQty) : '1',
       w: d.widthIn != null ? String(d.widthIn) : '',
       h: d.heightIn != null ? String(d.heightIn) : '',
@@ -538,7 +536,7 @@ export default function MeasureWizardClient() {
       wallH: d.wallHeightIn != null ? String(d.wallHeightIn) : '',
     })
     setShutterPrice(
-      wdw.product === 'shutters' && wdw.result?.price
+      wdw.product === 'shutters' && wdw.result?.price && !c.shDivider && !c.shKnob && !c.shLock && !c.shCustomFinish
         ? { price: wdw.result.price, install_fee: wdw.result.installFee, billed_width_in: wdw.result.billedWidthIn, billed_height_in: wdw.result.billedHeightIn, quantity: wdw.result.quantity ?? 1 }
         : null
     )
@@ -558,29 +556,35 @@ export default function MeasureWizardClient() {
   // system print dialog. No PDF library needed; works on every device.
   const exportPdf = () => {
     const mountLabel = (c: any) =>
-      c?.mount === 'outside' ? 'Outside mount' : c?.mount === 'inside_z' ? 'Inside (Z-frame)' : c?.mount === 'inside' ? 'Inside mount' : ''
+      c?.mount === 'outside'
+        ? tr(language, 'Outside mount', '外挂安装')
+        : c?.mount === 'inside_z'
+          ? tr(language, 'Inside (Z-frame)', '内嵌（Z 型边框）')
+          : c?.mount === 'inside'
+            ? tr(language, 'Inside mount', '内嵌安装')
+            : ''
     const dimsText = (d: any) => {
-      const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? ' (trim)' : ''}`]
+      const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? tr(language, ' (trim)', '（线条外尺寸）') : ''}`]
       if (d?.A_leftIn) parts.push(`A ${d.A_leftIn}″`)
       if (d?.B_rightIn) parts.push(`B ${d.B_rightIn}″`)
       if (d?.C_topIn) parts.push(`C ${d.C_topIn}″`)
       if (d?.D_bottomIn) parts.push(`D ${d.D_bottomIn}″`)
-      if (d?.wallHeightIn) parts.push(`ceiling ${d.wallHeightIn}″`)
+      if (d?.wallHeightIn) parts.push(`${tr(language, 'ceiling', '层高')} ${d.wallHeightIn}″`)
       return parts.join(' · ')
     }
     const rows = saved
       .map(
         (x) => `<tr>
           <td>${x.label}</td>
-          <td>${x.kind === 'sliding_door' ? 'Sliding door' : 'Window'}</td>
-          <td>${x.product === 'drapery' ? 'Custom drapery' : x.product === 'shades' ? 'Shades' : 'Shutters'}</td>
-          <td>${[x.config?.depthLabel ? `Depth ${x.config.depthLabel}` : '', mountLabel(x.config), x.config?.hasTrim ? 'has trim' : ''].filter(Boolean).join(' · ')}</td>
+          <td>${x.kind === 'sliding_door' ? tr(language, 'Sliding door', '推拉门') : tr(language, 'Window', '窗户')}</td>
+          <td>${x.product === 'drapery' ? tr(language, 'Custom drapery', '定制布帘') : x.product === 'shades' ? tr(language, 'Shades', '窗帘') : tr(language, 'Shutters', '百叶窗')}</td>
+          <td>${[x.config?.depthChoice ? `${tr(language, 'Depth', '深度')} ${depthLabelFor(x.product as Product, x.config.depthChoice, language)}` : '', mountLabel(x.config), x.config?.hasTrim ? tr(language, 'has trim', '有木线条') : ''].filter(Boolean).join(' · ')}</td>
           <td>${dimsText(x.dims)}</td>
           <td>${resultSummary(x)}</td>
         </tr>`
       )
       .join('')
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Angel Drapery — Measurement Sheet</title>
+    const html = `<!DOCTYPE html><html lang="${language === 'zh' ? 'zh-CN' : 'en'}"><head><meta charset="utf-8"><title>Angel Drapery — ${tr(language, 'Measurement Sheet', '窗户测量表')}</title>
       <style>body{font-family:-apple-system,Helvetica,Arial,sans-serif;color:#12141C;padding:32px}
       h1{font-size:22px;font-weight:600;margin-bottom:2px}
       .sub{color:#6b7280;font-size:12px;margin-bottom:20px}
@@ -588,12 +592,12 @@ export default function MeasureWizardClient() {
       th{text-align:left;text-transform:uppercase;letter-spacing:.08em;font-size:10px;color:#6b7280;border-bottom:2px solid #12141C;padding:6px 8px}
       td{border-bottom:1px solid #e5e7eb;padding:8px;vertical-align:top}
       .foot{margin-top:24px;color:#6b7280;font-size:11px;line-height:1.6}</style></head><body>
-      <h1>Angel Drapery — Measurement Sheet</h1>
-      <div class="sub">angel-drapery.com · 626-451-9841 · exported ${new Date().toLocaleDateString()}</div>
-      <table><thead><tr><th>Location</th><th>Opening</th><th>Treatment</th><th>Depth / Mount</th><th>Measurements</th><th>Reference result</th></tr></thead>
+      <h1>Angel Drapery — ${tr(language, 'Measurement Sheet', '窗户测量表')}</h1>
+      <div class="sub">angel-drapery.com · 626-451-9841 · ${tr(language, 'exported', '导出日期')} ${new Date().toLocaleDateString(language === 'zh' ? 'zh-CN' : 'en-US')}</div>
+      <table><thead><tr><th>${tr(language, 'Location', '位置')}</th><th>${tr(language, 'Opening', '窗口')}</th><th>${tr(language, 'Treatment', '窗饰')}</th><th>${tr(language, 'Depth / Mount', '深度 / 安装')}</th><th>${tr(language, 'Measurements', '测量尺寸')}</th><th>${tr(language, 'Reference result', '参考结果')}</th></tr></thead>
       <tbody>${rows}</tbody></table>
-      <div class="foot">A = wall space left · B = wall space right · C = top of opening → ceiling · D = bottom → floor. All sizes in inches.<br>
-      Reference sizes and prices only — final measurements and quote are confirmed at your free in-home measurement.</div>
+      <div class="foot">${tr(language, 'A = wall space left · B = wall space right · C = top of opening → ceiling · D = bottom → floor. All sizes in inches.', 'A = 左侧墙面空间 · B = 右侧墙面空间 · C = 窗口顶部 → 天花板 · D = 窗口底部 → 地面。所有尺寸均为英寸。')}<br>
+      ${tr(language, 'Reference sizes and prices only — final measurements and quote are confirmed at your free in-home measurement.', '以上仅为参考尺寸和价格，最终尺寸与报价以上门复尺后的正式确认为准。')}</div>
       </body></html>`
     const win = window.open('', '_blank')
     if (!win) return
@@ -605,28 +609,42 @@ export default function MeasureWizardClient() {
 
   const resultSummary = (wdw: SavedWindow): string => {
     const r = wdw.result || {}
-    if (r.type === 'drapery_recommendation' && r.recommendedWidthIn) return `Recommended ${r.recommendedWidthIn}″ × ${r.recommendedHeightIn}″`
-    if (r.type === 'shade_order_size' && r.orderWidthIn) return `Order size ${r.orderWidthIn}″ × ${r.orderHeightIn}″${r.mode === 'trim' ? ' (trim)' : ''}`
-    if (r.type === 'shutter_reference_price' && r.price) return `Reference $${Number(r.price).toLocaleString()}`
+    if (r.type === 'drapery_recommendation' && r.recommendedWidthIn) return `${tr(language, 'Recommended', '建议成品尺寸')} ${r.recommendedWidthIn}″ × ${r.recommendedHeightIn}″`
+    if (r.type === 'shade_order_size' && r.orderWidthIn) return `${tr(language, 'Order size', '下单尺寸')} ${r.orderWidthIn}″ × ${r.orderHeightIn}″${r.mode === 'trim' ? tr(language, ' (trim)', '（线条外尺寸）') : ''}`
+    if (r.type === 'shutter_reference_price' && r.price) return `${tr(language, 'Reference', '参考价')} $${Number(r.price).toLocaleString()}`
     return ''
   }
+
+  const changeLanguage = (next: WizardLanguage) => {
+    const preset = ROOM_PRESETS.find(([en, cn]) => draft.label === en || draft.label === cn)
+    if (preset) set('label', next === 'zh' ? preset[1] : preset[0])
+    onLanguageChange(next)
+  }
+
+  const languageToggle = (
+    <div className="flex w-fit rounded-full border border-gray-200 bg-gray-50 p-1 text-xs" aria-label="Language / 语言">
+      <button type="button" onClick={() => changeLanguage('en')} aria-pressed={!zh} className={`rounded-full px-3 py-1.5 ${!zh ? 'bg-[#12141C] text-white' : 'text-gray-500'}`}>English</button>
+      <button type="button" onClick={() => changeLanguage('zh')} aria-pressed={zh} className={`rounded-full px-3 py-1.5 ${zh ? 'bg-[#12141C] text-white' : 'text-gray-500'}`}>中文</button>
+    </div>
+  )
 
   // ═════════════════════════ LIST VIEW ═════════════════════════
   if (view === 'list') {
     return (
       <div className="mx-auto max-w-[880px] px-6 lg:px-0">
-        <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>Your measurement sheet</span>
+        <div className="mb-6 flex justify-end">{languageToggle}</div>
+        <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Your measurement sheet', '您的窗户测量表')}</span>
         <h2 className="mb-3 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">
-          Measure every window in your home.
+          {tr(language, 'Measure every window in your home.', '逐一测量家中的每扇窗户。')}
         </h2>
         <p className="mb-8 max-w-xl text-sm leading-relaxed text-gray-400">
-          Add each window as a card — it&apos;s saved automatically, and our AI design assistant can read your
-          sheet when you chat. Rough measurements are fine: everything is confirmed at the free in-home
-          measure before production.
+          {tr(language,
+            'Add each window as a card — it is saved automatically, and our AI design assistant can read your sheet when you chat. Rough measurements are fine: everything is confirmed at the in-home measure before production.',
+            '每扇窗户都会作为一张卡片自动保存，与 AI 设计助手聊天时，它可以读取您的测量表。此处填写大致尺寸即可，生产前会上门确认所有精确尺寸。')}
         </p>
 
         {loading ? (
-          <p className="text-sm text-gray-400">Loading your sheet…</p>
+          <p className="text-sm text-gray-400">{tr(language, 'Loading your sheet…', '正在加载测量表…')}</p>
         ) : (
           <div className="space-y-4">
             {saved.map((wdw) => (
@@ -635,22 +653,22 @@ export default function MeasureWizardClient() {
                   <p className="text-base font-semibold tracking-tight text-[#12141C]">
                     {wdw.label}
                     <span className="ml-2 text-[12px] font-normal text-gray-400">
-                      {wdw.kind === 'sliding_door' ? 'Sliding door' : 'Window'} ·{' '}
-                      {wdw.product === 'drapery' ? 'Custom drapery' : wdw.product === 'shades' ? 'Shades' : 'Shutters'}
+                      {wdw.kind === 'sliding_door' ? tr(language, 'Sliding door', '推拉门') : tr(language, 'Window', '窗户')} ·{' '}
+                      {wdw.product === 'drapery' ? tr(language, 'Custom drapery', '定制布帘') : wdw.product === 'shades' ? tr(language, 'Shades', '窗帘') : tr(language, 'Shutters', '百叶窗')}
                     </span>
                   </p>
                   <p className="mt-1 text-[13px] text-gray-500">
                     {wdw.dims?.widthIn}″ × {wdw.dims?.heightIn}″
-                    {wdw.config?.mount ? ` · ${wdw.config.mount === 'outside' ? 'outside mount' : wdw.config.mount === 'inside_z' ? 'inside (Z-frame)' : 'inside mount'}` : ''}
+                    {wdw.config?.mount ? ` · ${wdw.config.mount === 'outside' ? tr(language, 'outside mount', '外挂安装') : wdw.config.mount === 'inside_z' ? tr(language, 'inside (Z-frame)', '内嵌（Z 型边框）') : tr(language, 'inside mount', '内嵌安装')}` : ''}
                     {resultSummary(wdw) ? ` · ${resultSummary(wdw)}` : ''}
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => editCard(wdw)} className="rounded-full border border-gray-300 px-4 py-2 text-[13px] text-[#12141C] transition-colors hover:border-gray-500">
-                    Edit
+                    {tr(language, 'Edit', '编辑')}
                   </button>
                   <button onClick={() => void deleteCard(wdw.id)} className="rounded-full border border-red-200 px-4 py-2 text-[13px] text-red-600 transition-colors hover:border-red-400">
-                    Delete
+                    {tr(language, 'Delete', '删除')}
                   </button>
                 </div>
               </div>
@@ -664,31 +682,31 @@ export default function MeasureWizardClient() {
               }}
               className="w-full rounded-2xl border-2 border-dashed border-gray-300 bg-white p-6 text-sm font-medium text-[#12141C] transition-colors hover:border-gray-500"
             >
-              + Add a window
+              {tr(language, '+ Add a window', '+ 添加窗户')}
             </button>
           </div>
         )}
 
         {saved.length > 0 && (
           <div className="mt-10 rounded-3xl bg-[#F7F5F2] p-8 md:p-10">
-            <h3 className="mb-2 text-xl font-semibold tracking-tight text-[#12141C]">Your sheet is saved.</h3>
+            <h3 className="mb-2 text-xl font-semibold tracking-tight text-[#12141C]">{tr(language, 'Your sheet is saved.', '您的测量表已保存。')}</h3>
             <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-500">
-              Every window you added is stored automatically. Continue in the chat — our AI assistant reads
-              your sheet and can recommend products and reference pricing for each window — or export a PDF
-              copy for yourself.
+              {tr(language,
+                'Every window you added is stored automatically. Continue in the chat — our AI assistant reads your sheet and can recommend products and reference pricing for each window — or export a PDF copy for yourself.',
+                '您添加的每扇窗户都会自动保存。继续与 AI 助手聊天，它可以读取测量表，并为每扇窗户推荐产品和参考价格；您也可以导出 PDF 副本。')}
             </p>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => window.dispatchEvent(new Event('ad:open-assistant'))}
                 className="rounded-full bg-[#12141C] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
               >
-                Continue with our AI assistant →
+                {tr(language, 'Continue with our AI assistant →', '继续咨询 AI 助手 →')}
               </button>
               <button
                 onClick={exportPdf}
                 className="rounded-full border border-gray-300 px-6 py-3 text-sm font-medium text-[#12141C] transition-colors hover:border-gray-500"
               >
-                Export my sheet (PDF)
+                {tr(language, 'Export my sheet (PDF)', '导出测量表（PDF）')}
               </button>
             </div>
           </div>
@@ -701,47 +719,52 @@ export default function MeasureWizardClient() {
   const isDoor = draft.kind === 'sliding_door'
   return (
     <div className="mx-auto max-w-[880px] px-6 lg:px-0">
-      <button onClick={() => setView('list')} className="mb-8 text-sm text-gray-400 transition-colors hover:text-[#12141C]">
-        ← Back to my sheet
-      </button>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <button onClick={() => setView('list')} className="text-sm text-gray-400 transition-colors hover:text-[#12141C]">
+          {tr(language, '← Back to my sheet', '← 返回测量表')}
+        </button>
+        {languageToggle}
+      </div>
 
       {/* Step 1: location */}
-      <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>Step 1 · Location</span>
-      <h2 className="mb-5 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">Where is this window?</h2>
+      <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Step 1 · Location', '第 1 步 · 位置')}</span>
+      <h2 className="mb-5 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">{tr(language, 'Where is this window?', '这扇窗户在哪里？')}</h2>
       <div className="mb-4 flex flex-wrap gap-2">
-        {ROOM_PRESETS.map((r) => (
-          <button key={r} className={pillBtn(draft.label === r)} onClick={() => set('label', r)}>
-            {r}
+        {ROOM_PRESETS.map(([en, cn]) => {
+          const room = zh ? cn : en
+          return (
+          <button key={en} className={pillBtn(draft.label === en || draft.label === cn)} onClick={() => set('label', room)}>
+            {room}
           </button>
-        ))}
+        )})}
       </div>
       <div className="grid gap-5 md:grid-cols-2">
         <div>
-          <label className={label}>Location name *</label>
-          <input className={inputCls} value={draft.label} onChange={(e) => set('label', e.target.value)} placeholder="e.g. Living Room — left window" maxLength={80} />
+          <label className={label}>{tr(language, 'Location name *', '位置名称 *')}</label>
+          <input className={inputCls} value={draft.label} onChange={(e) => set('label', e.target.value)} placeholder={tr(language, 'e.g. Living Room — left window', '例如：客厅 — 左侧窗户')} maxLength={80} />
         </div>
         <div>
-          <span className={label}>Opening type</span>
+          <span className={label}>{tr(language, 'Opening type', '窗口类型')}</span>
           <div className="flex gap-2">
             <button className={pillBtn(draft.kind === 'window')} onClick={() => set('kind', 'window')}>
-              Window
+              {tr(language, 'Window', '窗户')}
             </button>
             <button className={pillBtn(draft.kind === 'sliding_door')} onClick={() => set('kind', 'sliding_door')}>
-              Sliding door
+              {tr(language, 'Sliding door', '推拉门')}
             </button>
           </div>
         </div>
       </div>
 
       {/* Step 2: product */}
-      <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>Step 2 · Treatment</span>
-      <h2 className="mb-5 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">What goes on it?</h2>
+      <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Step 2 · Treatment', '第 2 步 · 窗饰类型')}</span>
+      <h2 className="mb-5 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">{tr(language, 'What goes on it?', '您想安装哪种窗饰？')}</h2>
       <div className="flex flex-wrap gap-2">
         {(
           [
-            ['drapery', 'Custom drapery'],
-            ['shades', 'Roman · Roller · Zebra · Sheer'],
-            ['shutters', 'Plantation shutters'],
+            ['drapery', tr(language, 'Custom drapery', '定制布帘')],
+            ['shades', tr(language, 'Roman · Roller · Zebra · Sheer', '罗马帘 · 卷帘 · 斑马帘 · 柔纱帘')],
+            ['shutters', tr(language, 'Plantation shutters', '实木百叶窗')],
           ] as const
         ).map(([v, t]) => (
           <button key={v} className={pillBtn(draft.product === v)} onClick={() => set('product', v)}>
@@ -755,13 +778,13 @@ export default function MeasureWizardClient() {
       {draft.product === 'drapery' && (
         <div className="mt-8 grid items-start gap-6 md:grid-cols-2">
           <div>
-            <span className={label}>Opening direction</span>
+            <span className={label}>{tr(language, 'Opening direction', '开合方向')}</span>
             <div className="flex flex-wrap gap-2">
               {(
                 [
-                  ['split', 'Center split'],
-                  ['single_left', 'One-way — stacks left'],
-                  ['single_right', 'One-way — stacks right'],
+                  ['split', tr(language, 'Center split', '中间对开')],
+                  ['single_left', tr(language, 'One-way — stacks left', '单开 — 收向左侧')],
+                  ['single_right', tr(language, 'One-way — stacks right', '单开 — 收向右侧')],
                 ] as const
               ).map(([v, t]) => (
                 <button key={v} className={pillBtn(draft.operation === v)} onClick={() => set('operation', v)}>
@@ -770,84 +793,64 @@ export default function MeasureWizardClient() {
               ))}
             </div>
           </div>
-          <OperationDiagram op={draft.operation} />
+          <OperationDiagram op={draft.operation} language={language} />
         </div>
       )}
 
-      {/* Shutter material + options */}
+      {/* Shutter essentials only. Fine-grained add-ons are finalized during
+          the in-home measure and intentionally stay out of this wizard. */}
       {draft.product === 'shutters' && (
         <div className="mt-8 space-y-5">
           <div className="grid gap-5 md:grid-cols-2">
             <div>
-              <label className={label}>Material *</label>
+              <label className={label}>{tr(language, 'Material *', '材质 *')}</label>
               <select className={inputCls} value={draft.material} onChange={(e) => set('material', e.target.value as Draft['material'])}>
-                <option value="poly_vinyl">Poly-Vinyl (aluminum reinforced)</option>
-                <option value="hardwood">Hardwood</option>
-                <option value="paulownia">Grained Paulownia</option>
-                <option value="basswood_paint">Basswood — painted</option>
-                <option value="basswood_stain">Basswood — stained</option>
+                <option value="poly_vinyl">{tr(language, 'Poly-Vinyl (aluminum reinforced)', '聚乙烯（铝材加固）')}</option>
+                <option value="hardwood">{tr(language, 'Hardwood', '硬木')}</option>
+                <option value="paulownia">{tr(language, 'Grained Paulownia', '木纹泡桐木')}</option>
+                <option value="basswood_paint">{tr(language, 'Basswood — painted', '椴木 — 喷漆')}</option>
+                <option value="basswood_stain">{tr(language, 'Basswood — stained', '椴木 — 染色')}</option>
               </select>
             </div>
             <div>
-              <label className={label}>Window style</label>
+              <label className={label}>{tr(language, 'Window style', '窗型')}</label>
               <select className={inputCls} value={draft.shStyle} onChange={(e) => set('shStyle', e.target.value)}>
-                <option value="standard">Standard</option>
-                <option value="bay_window">Bay window</option>
-                <option value="corner_window">Corner window</option>
-                <option value="double_hung">Double hung</option>
-                <option value="bi_fold">Bi-fold</option>
-                <option value="by_pass_closed">By-pass</option>
-                <option value="skylight">Skylight</option>
-                <option value="specialty_shape">Specialty shape</option>
+                <option value="standard">{tr(language, 'Standard', '标准窗')}</option>
+                <option value="bay_window">{tr(language, 'Bay window', '飘窗')}</option>
+                <option value="corner_window">{tr(language, 'Corner window', '转角窗')}</option>
+                <option value="double_hung">{tr(language, 'Double hung', '双悬窗')}</option>
+                <option value="bi_fold">{tr(language, 'Bi-fold', '折叠式')}</option>
+                <option value="by_pass_closed">{tr(language, 'By-pass', '推拉式')}</option>
+                <option value="skylight">{tr(language, 'Skylight', '天窗')}</option>
+                <option value="specialty_shape">{tr(language, 'Specialty shape', '异形窗')}</option>
               </select>
             </div>
             <div>
-              <label className={label}>How many (same size)</label>
+              <label className={label}>{tr(language, 'How many (same size)', '数量（同尺寸）')}</label>
               <input className={inputCls} type="number" inputMode="numeric" min={1} max={20} value={draft.shQty} onChange={(e) => set('shQty', e.target.value)} />
             </div>
-            <div>
-              <label className={label}>Custom finish</label>
-              <select className={inputCls} value={draft.shCustomFinish} onChange={(e) => set('shCustomFinish', e.target.value as Draft['shCustomFinish'])}>
-                <option value="">None</option>
-                <option value="custom_paint">Custom paint color</option>
-                <option value="custom_stain">Custom stain color</option>
-              </select>
-            </div>
           </div>
-          <div>
-            <span className={label}>Add-ons (optional)</span>
-            <div className="flex flex-wrap gap-2">
-              <button type="button" className={pillBtn(draft.shDivider)} onClick={() => set('shDivider', !draft.shDivider)}>
-                Divider rail
-              </button>
-              <button type="button" className={pillBtn(draft.shKnob)} onClick={() => set('shKnob', !draft.shKnob)}>
-                Knob
-              </button>
-              <button type="button" className={pillBtn(draft.shLock)} onClick={() => set('shLock', !draft.shLock)}>
-                Lock
-              </button>
-            </div>
-            <p className="mt-2 text-[12px] leading-relaxed text-gray-400">
-              Other details (tilt style, buildout, specialty cut-outs) are finalized at your free in-home
-              measure — the price here is a reference.
-            </p>
-          </div>
+          <p className="text-[12px] leading-relaxed text-gray-400">
+            {tr(language,
+              'Divider rails, tilt style, colors and other construction details are finalized with the designer during the in-home measure. The price shown here is a reference.',
+              '分隔横梁、开合方式、颜色及其他结构细节，将由设计师在上门复尺时确认。此处显示的价格仅供参考。')}
+          </p>
         </div>
       )}
 
       {/* Step 3: depth + mount (shades/shutters) */}
       {needsDepth && draft.product && (
         <>
-          <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>Step 3 · Frame depth</span>
-          <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">How deep is the frame?</h2>
+          <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Step 3 · Frame depth', '第 3 步 · 窗框深度')}</span>
+          <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">{tr(language, 'How deep is the frame?', '窗框有多深？')}</h2>
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
-            Hold a tape at the glass and check the flat depth — this decides which mounting types are possible.
+            {tr(language, 'Hold a tape at the glass and check the flat depth — this decides which mounting types are possible.', '将卷尺顶在玻璃上，测量到窗框前端的平整深度。这会决定可用的安装方式。')}
           </p>
           <div className="grid items-start gap-6 md:grid-cols-2">
             <div>
-              <span className={label}>Frame depth *</span>
+              <span className={label}>{tr(language, 'Frame depth *', '窗框深度 *')}</span>
               <div className="flex flex-wrap gap-2">
-                {depthChoicesFor(draft.product as Product).map((c) => (
+                {depthChoicesFor(draft.product as Product, language).map((c) => (
                   <button key={c.v} className={pillBtn(draft.depthChoice === c.v)} onClick={() => set('depthChoice', c.v)}>
                     {c.t}
                   </button>
@@ -857,19 +860,18 @@ export default function MeasureWizardClient() {
 
               {askTrim && (
                 <div className="mt-5">
-                  <span className={label}>Is there wood trim / casing around the window?</span>
+                  <span className={label}>{tr(language, 'Is there wood trim / casing around the window?', '窗户四周有木线条或窗套吗？')}</span>
                   <div className="flex gap-2">
                     <button className={pillBtn(draft.hasTrim === true)} onClick={() => set('hasTrim', true)}>
-                      Yes — it has trim
+                      {tr(language, 'Yes — it has trim', '有 — 周围有木线条')}
                     </button>
                     <button className={pillBtn(draft.hasTrim === false)} onClick={() => set('hasTrim', false)}>
-                      No trim
+                      {tr(language, 'No trim', '没有木线条')}
                     </button>
                   </div>
                   {useTrimSize && (
                     <p className="mt-2 text-[13px] leading-relaxed text-gray-500">
-                      Measure the TRIM&apos;s outer width and height below — with a shallow frame the treatment
-                      mounts on the trim, so the trim size is what we work from now.
+                      {tr(language, "Measure the TRIM's outer width and height below — with a shallow frame the treatment mounts on the trim, so the trim size is what we work from now.", '请在下方测量木线条的外宽和外高。窗框较浅时，窗饰会安装在木线条上，因此后续以线条外尺寸为准。')}
                     </p>
                   )}
                 </div>
@@ -877,7 +879,7 @@ export default function MeasureWizardClient() {
 
               {mountInfo && mountInfo.options.length > 0 && (
                 <div className="mt-5">
-                  <span className={label}>Mounting type</span>
+                  <span className={label}>{tr(language, 'Mounting type', '安装方式')}</span>
                   <div className="flex flex-wrap gap-2">
                     {mountInfo.options.map((o) => (
                       <button key={o.v} className={pillBtn(draft.mount === o.v)} onClick={() => set('mount', o.v)}>
@@ -889,7 +891,7 @@ export default function MeasureWizardClient() {
                 </div>
               )}
             </div>
-            <DepthDiagram />
+            <DepthDiagram language={language} />
           </div>
         </>
       )}
@@ -898,65 +900,64 @@ export default function MeasureWizardClient() {
       {draft.product && (draft.product === 'drapery' || mountReady) && (
         <>
           <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>
-            Step {needsDepth ? 4 : 3} · Measure
+            {tr(language, `Step ${needsDepth ? 4 : 3} · Measure`, `第 ${needsDepth ? 4 : 3} 步 · 测量`)}
           </span>
           <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">
-            {useTrimSize ? 'Measure the trim.' : isDoor && draft.product === 'drapery' ? 'Measure the door.' : 'Measure the window.'}
+            {useTrimSize ? tr(language, 'Measure the trim.', '测量木线条外尺寸。') : isDoor && draft.product === 'drapery' ? tr(language, 'Measure the door.', '测量推拉门。') : tr(language, 'Measure the window.', '测量窗户。')}
           </h2>
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
-            Don&apos;t worry about being perfectly precise — these numbers give you reference sizes and prices.
-            Our designer re-measures everything at the free in-home visit before production.
+            {tr(language, "Don't worry about being perfectly precise — these numbers give you reference sizes and prices. Our designer re-measures everything at the in-home visit before production.", '不必担心此处的尺寸不够精确，这些数字用于提供参考尺寸和价格。生产前，设计师会上门重新精确测量。')}
           </p>
           <div className="grid items-start gap-6 md:grid-cols-2">
             <div className="grid gap-5">
               <div>
-                <label className={label}>{useTrimSize ? 'Trim outer width *' : 'Width (W) *'}</label>
-                <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.w} onChange={(e) => set('w', e.target.value)} placeholder="inches" />
+                <label className={label}>{useTrimSize ? tr(language, 'Trim outer width *', '木线条外宽 *') : tr(language, 'Width (W) *', '宽度（W）*')}</label>
+                <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.w} onChange={(e) => set('w', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
               </div>
               <div>
-                <label className={label}>{useTrimSize ? 'Trim outer height *' : 'Height (H) *'}</label>
-                <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.h} onChange={(e) => set('h', e.target.value)} placeholder="inches" />
+                <label className={label}>{useTrimSize ? tr(language, 'Trim outer height *', '木线条外高 *') : tr(language, 'Height (H) *', '高度（H）*')}</label>
+                <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.h} onChange={(e) => set('h', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
               </div>
               {draft.product === 'drapery' && (
                 <>
                   <div>
-                    <label className={label}>A — wall space left</label>
-                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.A} onChange={(e) => set('A', e.target.value)} placeholder="inches (optional)" />
+                    <label className={label}>{tr(language, 'A — wall space left', 'A — 左侧墙面空间')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.A} onChange={(e) => set('A', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
                   </div>
                   <div>
-                    <label className={label}>B — wall space right</label>
-                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.B} onChange={(e) => set('B', e.target.value)} placeholder="inches (optional)" />
+                    <label className={label}>{tr(language, 'B — wall space right', 'B — 右侧墙面空间')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.B} onChange={(e) => set('B', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
                   </div>
                   <div>
-                    <label className={label}>C — top of {isDoor ? 'door' : 'window'} → ceiling</label>
-                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.C} onChange={(e) => set('C', e.target.value)} placeholder="inches (optional)" />
+                    <label className={label}>C — {tr(language, `top of ${isDoor ? 'door' : 'window'} → ceiling`, `${isDoor ? '门' : '窗户'}顶部 → 天花板`)}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.C} onChange={(e) => set('C', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
                   </div>
                   {!isDoor && (
                     <div>
-                      <label className={label}>D — bottom of window → floor</label>
-                      <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.D} onChange={(e) => set('D', e.target.value)} placeholder="inches (optional)" />
+                      <label className={label}>{tr(language, 'D — bottom of window → floor', 'D — 窗户底部 → 地面')}</label>
+                      <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.D} onChange={(e) => set('D', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
                     </div>
                   )}
                   <div>
-                    <label className={label}>Floor-to-ceiling height</label>
-                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.wallH} onChange={(e) => set('wallH', e.target.value)} placeholder="inches (optional)" />
+                    <label className={label}>{tr(language, 'Floor-to-ceiling height', '地面到天花板的高度')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.wallH} onChange={(e) => set('wallH', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
                   </div>
                 </>
               )}
             </div>
             {draft.product === 'drapery' ? (
-              <DraperyDiagram kind={draft.kind} />
+              <DraperyDiagram kind={draft.kind} language={language} />
             ) : useTrimSize ? (
-              <TrimDiagram />
+              <TrimDiagram language={language} />
             ) : (
-              <OpeningDiagram inside={draft.mount === 'inside' || draft.mount === 'inside_z'} />
+              <OpeningDiagram inside={draft.mount === 'inside' || draft.mount === 'inside_z'} language={language} />
             )}
           </div>
 
           {/* Result */}
           <div className="mt-10 rounded-3xl bg-[#12141C] p-8 text-white md:p-10">
             <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>
-              {draft.product === 'shutters' ? 'Reference price' : draft.product === 'shades' ? 'Your order size' : 'Our recommendation'}
+              {draft.product === 'shutters' ? tr(language, 'Reference price', '参考价格') : draft.product === 'shades' ? tr(language, 'Your order size', '您的下单尺寸') : tr(language, 'Our recommendation', '我们的建议')}
             </span>
             {draft.product === 'drapery' &&
               (draperyRec?.recommendedFinishedWidthIn && draperyRec.recommendedFinishedHeightIn ? (
@@ -965,12 +966,11 @@ export default function MeasureWizardClient() {
                     {draperyRec.recommendedFinishedWidthIn}″ W × {draperyRec.recommendedFinishedHeightIn}″ H
                   </p>
                   <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
-                    Recommended finished size, using the same rules our designers use — width includes stacking
-                    room so the panels clear the glass when open.
+                    {tr(language, 'Recommended finished size, using the same rules our designers use — width includes stacking room so the panels clear the glass when open.', '建议成品尺寸使用与设计师相同的计算规则。宽度已包含窗帘打开后的收帘空间，避免遮挡玻璃。')}
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-white/50">Enter W and H to see the recommended size.</p>
+                <p className="text-sm text-white/50">{tr(language, 'Enter W and H to see the recommended size.', '输入 W 和 H 即可查看建议尺寸。')}</p>
               ))}
             {draft.product === 'shades' &&
               (shadeResult ? (
@@ -980,15 +980,15 @@ export default function MeasureWizardClient() {
                   </p>
                   <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
                     {shadeResult.mode === 'inside'
-                      ? 'Inside mount: order your opening size as measured — our workshop makes the factory deductions.'
+                      ? tr(language, 'Inside mount: order your opening size as measured — our workshop makes the factory deductions.', '内嵌安装：按您测量的窗洞尺寸下单，工厂会自动扣减必要的安装余量。')
                       : shadeResult.mode === 'trim'
-                        ? 'The shade covers the full trim, so we work from the trim size.'
-                        : 'Outside mount adds about +5″ width / +6″ height beyond the opening for light coverage.'}{' '}
-                    Single panels max out at 118″ wide.
+                        ? tr(language, 'The shade covers the full trim, so we work from the trim size.', '窗帘将覆盖整个木线条，因此以线条外尺寸为准。')
+                        : tr(language, 'Outside mount adds about +5″ width / +6″ height beyond the opening for light coverage.', '外挂安装会在窗洞尺寸上约增加 5 英寸宽度和 6 英寸高度，以改善遮光覆盖。')}{' '}
+                    {tr(language, 'Single panels max out at 118″ wide.', '单幅最大宽度为 118 英寸。')}
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-white/50">Pick a mounting type and enter W and H.</p>
+                <p className="text-sm text-white/50">{tr(language, 'Pick a mounting type and enter W and H.', '请选择安装方式，并输入 W 和 H。')}</p>
               ))}
             {draft.product === 'shutters' &&
               (shutterPrice ? (
@@ -996,14 +996,11 @@ export default function MeasureWizardClient() {
                   <p className="text-3xl font-light tracking-tight md:text-4xl">
                     ${shutterPrice.price.toLocaleString()}
                     {shutterPrice.quantity > 1 && (
-                      <span className="ml-2 text-base text-white/50">for {shutterPrice.quantity} shutters</span>
+                      <span className="ml-2 text-base text-white/50">{tr(language, `for ${shutterPrice.quantity} shutters`, `共 ${shutterPrice.quantity} 扇`)}</span>
                     )}
                   </p>
                   <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
-                    Based on {shutterPrice.billed_width_in}″ × {shutterPrice.billed_height_in}″ finished size
-                    {draft.shStyle !== 'standard' ? ` (${draft.shStyle.replace(/_/g, ' ')})` : ''}. Installation adds $
-                    {shutterPrice.install_fee.toLocaleString()}. Reference price only — the final quote comes from
-                    the free in-home measurement.
+                    {tr(language, `Based on ${shutterPrice.billed_width_in}″ × ${shutterPrice.billed_height_in}″ finished size${draft.shStyle !== 'standard' ? ` (${draft.shStyle.replace(/_/g, ' ')})` : ''}. Installation adds $${shutterPrice.install_fee.toLocaleString()}. Reference price only — the final quote comes from the in-home measurement.`, `按 ${shutterPrice.billed_width_in}″ × ${shutterPrice.billed_height_in}″ 成品尺寸计算。安装费另加 $${shutterPrice.install_fee.toLocaleString()}。此价格仅供参考，最终报价以上门复尺后的正式确认为准。`)}
                   </p>
                 </>
               ) : (
@@ -1012,7 +1009,7 @@ export default function MeasureWizardClient() {
                   disabled={shutterLoading || !num(draft.w) || !num(draft.h) || !mountReady}
                   className="rounded-full bg-white px-7 py-3 text-sm font-medium text-[#12141C] transition-opacity hover:opacity-90 disabled:opacity-40"
                 >
-                  {shutterLoading ? 'Calculating…' : 'Get reference price'}
+                  {shutterLoading ? tr(language, 'Calculating…', '正在计算…') : tr(language, 'Get reference price', '查看参考价格')}
                 </button>
               ))}
           </div>
@@ -1024,7 +1021,7 @@ export default function MeasureWizardClient() {
               disabled={!canSave || saving}
               className="rounded-full bg-[#12141C] px-8 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
             >
-              {saving ? 'Saving…' : draft.id ? 'Update this window' : 'Save to my sheet'}
+              {saving ? tr(language, 'Saving…', '正在保存…') : draft.id ? tr(language, 'Update this window', '更新这扇窗户') : tr(language, 'Save to my sheet', '保存到测量表')}
             </button>
             {saveError && <p className="text-sm text-red-600">{saveError}</p>}
           </div>
