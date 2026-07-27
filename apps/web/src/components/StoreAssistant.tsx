@@ -93,6 +93,15 @@ const QUICK_PROMPTS_STORE = [
   'I need to change or cancel my order',
 ]
 
+// Direct self-service path on the welcome screen. The measuring wizard walks
+// customers through each window with diagrams, saves their sheet, and hands
+// the measurements back to this assistant for product and pricing help.
+const MEASURE_WIZARD_ACTION = {
+  label: 'Measure windows & get a price',
+  helper: 'Step-by-step diagrams · saves every window',
+  href: '/measure-wizard',
+}
+
 // Launcher/teaser chrome is ENGLISH-ONLY (Eddie 2026-07-19) — the conversation
 // itself stays multilingual (the assistant replies in the customer's language).
 const TEASER_MAIN = 'Not sure which window treatment fits? Ask me anything!'
@@ -130,13 +139,16 @@ const PHONE_HREF = 'tel:+16264519841'
 // Turn plain assistant text into text + tappable links. Recognizes, in one
 // left-to-right pass: full http(s) URLs, site-relative paths the assistant is
 // allowed to send (/products…, /store…, /how-to-measure, /faq), and the shop
-// phone number. Everything else passes through untouched (whitespace-pre-wrap
-// on the bubble preserves newlines).
+// phone number. Keep /measure-wizard here so the assistant's proactive
+// measuring recommendation is always a real tappable link. Everything else
+// passes through untouched (whitespace-pre-wrap on the bubble preserves
+// newlines).
 const RICH_RE =
-  /(https?:\/\/[^\s)）\]】>，。；]+)|(\/(?:products|store|how-to-measure|faq)(?:\/[A-Za-z0-9\-_]+)*\/?)|(626-451-9841)/g
+  /(https?:\/\/[^\s)）\]】>，。；]+)|(\/(?:products|store|how-to-measure|measure-wizard|faq)(?:\/[A-Za-z0-9\-_]+)*\/?)|(626-451-9841)/g
 
 function renderRich(text: string): ReactNode[] {
   const nodes: ReactNode[] = []
+  const isChinese = /[\u3400-\u9fff]/.test(text)
   let last = 0
   let key = 0
   RICH_RE.lastIndex = 0
@@ -152,7 +164,22 @@ function renderRich(text: string): ReactNode[] {
     if (!tok) continue
     if (m.index > last) nodes.push(text.slice(last, m.index))
     const cls = 'font-medium underline underline-offset-2 decoration-gray-400 hover:decoration-gray-800 break-all'
-    if (m[3] !== undefined && tok === PHONE_DISPLAY) {
+    if (tok === MEASURE_WIZARD_ACTION.href) {
+      // A raw path inside a paragraph is too small and ambiguous on phones,
+      // especially when Chinese text wraps immediately before it. Render the
+      // wizard as its own 44px native link so the whole control is tappable.
+      nodes.push(
+        <a
+          key={key++}
+          href={MEASURE_WIZARD_ACTION.href}
+          aria-label={isChinese ? '打开测量报价向导' : 'Open measuring and pricing guide'}
+          className="my-2 flex min-h-11 w-full touch-manipulation items-center justify-between gap-3 rounded-xl bg-[#19698c] px-4 py-2.5 font-semibold text-white no-underline shadow-sm transition-colors hover:bg-[#155f80] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2687a8] focus-visible:ring-offset-2"
+        >
+          <span>{isChinese ? '📐 打开测量报价向导' : '📐 Open measuring & pricing guide'}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      )
+    } else if (m[3] !== undefined && tok === PHONE_DISPLAY) {
       nodes.push(
         <a key={key++} href={PHONE_HREF} className={cls}>
           {tok}
@@ -640,6 +667,17 @@ export default function StoreAssistant() {
               <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                 {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
+              <a
+                href={MEASURE_WIZARD_ACTION.href}
+                className="group flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-[#19698c] to-[#2687a8] px-4 py-3 text-left text-white shadow-sm transition hover:from-[#155f80] hover:to-[#217b9b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2687a8] focus-visible:ring-offset-2"
+              >
+                <span className="text-xl" aria-hidden="true">📐</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-semibold">{MEASURE_WIZARD_ACTION.label}</span>
+                  <span className="mt-0.5 block text-[11px] text-white/75">{MEASURE_WIZARD_ACTION.helper}</span>
+                </span>
+                <span className="text-base transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+              </a>
               <p className="pt-1 text-[11px] text-gray-500">{SHOWROOM_NOTE}</p>
               <div className="flex flex-wrap gap-2">
                 {/* Primary actions: both booking paths are one tap from open */}
