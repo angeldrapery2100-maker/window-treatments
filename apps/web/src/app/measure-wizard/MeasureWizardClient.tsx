@@ -1030,7 +1030,9 @@ export default function MeasureWizardClient({
       {/* Drapery: opening direction only (rod type & header style are collected
           by the designer later — the wizard keeps sensible defaults) */}
       {draft.product === 'drapery' && (
-        <div className="mt-8 grid items-start gap-6 md:grid-cols-2">
+        <div className="mt-8 max-w-md space-y-4">
+          {/* diagram ABOVE its controls (Eddie 2026-07-29) */}
+          <OperationDiagram op={draft.operation} language={language} />
           <div>
             <span className={label}>{tr(language, 'Opening direction', '开合方向')}</span>
             <div className="flex flex-wrap gap-2">
@@ -1047,7 +1049,6 @@ export default function MeasureWizardClient({
               ))}
             </div>
           </div>
-          <OperationDiagram op={draft.operation} language={language} />
         </div>
       )}
 
@@ -1100,7 +1101,9 @@ export default function MeasureWizardClient({
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
             {tr(language, 'Hold a tape at the glass and check the flat depth — this decides which mounting types are possible.', '将卷尺顶在玻璃上，测量到窗框前端的平整深度。这会决定可用的安装方式。')}
           </p>
-          <div className="grid items-start gap-6 md:grid-cols-2">
+          <div className="max-w-md space-y-5">
+            {/* diagram ABOVE its controls (Eddie 2026-07-29) */}
+            <DepthDiagram language={language} />
             <div>
               <span className={label}>{tr(language, 'Frame depth *', '窗框深度 *')}</span>
               <div className="flex flex-wrap gap-2">
@@ -1172,7 +1175,6 @@ export default function MeasureWizardClient({
                 </div>
               )}
             </div>
-            <DepthDiagram language={language} />
           </div>
         </>
       )}
@@ -1189,7 +1191,13 @@ export default function MeasureWizardClient({
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
             {tr(language, "Don't worry about being perfectly precise — these numbers give you reference sizes and prices. Our designer re-measures everything at the in-home visit before production.", '不必担心此处的尺寸不够精确，这些数字用于提供参考尺寸和价格。生产前，设计师会上门重新精确测量。')}
           </p>
-          <div className="grid items-start gap-6 md:grid-cols-2">
+          <div className="max-w-md space-y-5">
+            {/* diagram ABOVE the inputs it explains (Eddie 2026-07-29) */}
+            {draft.product === 'drapery' ? (
+              <DraperyDiagram kind={draft.kind} language={language} />
+            ) : (
+              <GuidanceDiagram mount={draft.mount} scene={draft.scene} trimSize={useTrimSize} language={language} />
+            )}
             <div className="grid gap-5">
               <div>
                 <label className={label}>{useTrimSize ? tr(language, 'Trim outer width *', '木线条外宽 *') : tr(language, 'Width (W) *', '宽度（W）*')}</label>
@@ -1226,11 +1234,6 @@ export default function MeasureWizardClient({
                 </>
               )}
             </div>
-            {draft.product === 'drapery' ? (
-              <DraperyDiagram kind={draft.kind} language={language} />
-            ) : (
-              <GuidanceDiagram mount={draft.mount} scene={draft.scene} trimSize={useTrimSize} language={language} />
-            )}
           </div>
 
           {/* Result */}
