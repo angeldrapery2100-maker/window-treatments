@@ -21,7 +21,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { recommendDraperySize } from '@window-treatments/shared/measure'
 
 type Product = 'drapery' | 'shades' | 'shutters'
-type Kind = 'window' | 'sliding_door'
+type Kind = 'window' | 'sliding_door' | 'french_door'
+
+// Bilingual label for the opening kind, used in the sheet list + PDF export.
+function kindLabelFor(kind: string, language: WizardLanguage): string {
+  if (kind === 'sliding_door') return tr(language, 'Sliding door', '推拉门')
+  if (kind === 'french_door') return tr(language, 'French door', '法式门 French')
+  return tr(language, 'Window', '窗户')
+}
 export type WizardLanguage = 'en' | 'zh'
 
 const tr = (language: WizardLanguage, english: string, chinese: string) =>
@@ -68,6 +75,9 @@ interface Draft {
   // v3 (Eddie 2026-07-29): which real-world window this looks like — drives
   // the tailored measuring diagram (sill / trim / arch variants).
   scene: Scene
+  // french door options (kind === 'french_door')
+  doorPanels: 'double' | 'single'
+  doorGlass: 'glass' | 'solid'
   trimW: string // casing width, default 2.5″
   frameW: string // window-frame band width, default 1.5″
   sillLen: string // stool length (optional)
@@ -99,6 +109,8 @@ const EMPTY_DRAFT: Draft = {
   hasTrim: null,
   mount: '',
   scene: '',
+  doorPanels: 'double',
+  doorGlass: 'glass',
   trimW: '2.5',
   frameW: '1.5',
   sillLen: '',
@@ -235,7 +247,7 @@ function DiagramFrame({ children, caption }: { children: React.ReactNode; captio
 }
 
 function DraperyDiagram({ kind, language }: { kind: Kind; language: WizardLanguage }) {
-  const isDoor = kind === 'sliding_door'
+  const isDoor = kind !== 'window'
   const winY = isDoor ? 50 : 55
   const winH = isDoor ? 130 : 90
   return (
@@ -327,6 +339,12 @@ const SCENES: { v: Exclude<Scene, ''>; en: string; zh: string }[] = [
   { v: 'arch_trim_sill', en: 'Arch + trim + sill', zh: '拱形 + 窗套 + 窗台' },
 ]
 
+// Doors only choose casing / no casing (sill & arch don't apply).
+const DOOR_SCENES: { v: Exclude<Scene, ''>; en: string; zh: string }[] = [
+  { v: 'plain', en: 'No casing', zh: '无门套' },
+  { v: 'trim', en: 'Door casing', zh: '有门套' },
+]
+
 const sceneHasTrim = (s: string) => s === 'trim' || s === 'trim_sill' || s === 'arch_trim' || s === 'arch_trim_sill'
 const sceneHasSill = (s: string) => s === 'sill' || s === 'trim_sill' || s === 'arch_trim_sill'
 const sceneIsArch = (s: string) => s === 'arch' || s === 'arch_trim' || s === 'arch_trim_sill'
@@ -347,6 +365,9 @@ const LN = '#12141C'
 // so the drawing code matches the approved static drafts line for line) ─────
 interface SceneGeom {
   scene: Exclude<Scene, ''>
+  kind?: string // 'window' (default) | 'sliding_door' | 'french_door'
+  doorPanels?: 'double' | 'single'
+  doorGlass?: 'glass' | 'solid'
   openWIn: number // opening (inner-frame) width, inches
   openHIn: number
   trimIn: number // casing board width
@@ -357,7 +378,126 @@ interface SceneGeom {
   singlePair: boolean // one W/H pair only (labels W/H, no 1/2 suffix)
 }
 
+// ── Door elevations (Eddie 2026-07-29): sliding door + French door ──────────
+// Same visual language as the windows: off-white casing (3-sided, ends at the
+// floor), pure-white frame/slabs, grey-blue glass, floor line under the door.
+function buildDoorMarkup(g: SceneGeom): string {
+  const VBW = 300
+  const VBH = 330
+  const sliding = g.kind === 'sliding_door'
+  const single = !sliding && g.doorPanels === 'single'
+  const glass = sliding || g.doorGlass !== 'solid'
+  const trim = sceneHasTrim(g.scene)
+  const T0 = trim ? Math.min(Math.max(g.trimIn || 2.5, 1), 8) : 0
+  const oW = Math.min(Math.max(g.openWIn || (sliding ? 72 : single ? 32 : 60), 18), 400)
+  const oH = Math.min(Math.max(g.openHIn || 80, 40), 400)
+  const totalWIn = oW + 2 * T0 + 8
+  const totalHIn = oH + T0 + 6
+  const S = Math.min(206 / totalWIn, 244 / totalHIn)
+  const T = trim ? Math.max(T0 * S, 6) : 0
+  const OW = oW * S
+  const OH = oH * S
+  const F = Math.min(Math.max(g.frameIn || 1.5, 0.5), 6) * S
+  const x1 = (VBW - OW) / 2
+  const yBot = VBH - 34 // floor
+  const y1 = yBot - OH
+  const parts: string[] = []
+
+  // frame (head + jambs; the floor is the bottom)
+  parts.push(`<path d="M${x1 - F} ${yBot} V${y1 - F} H${x1 + OW + F} V${yBot} H${x1 + OW} V${y1} H${x1} V${yBot} Z" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.8"/>`)
+
+  if (sliding) {
+    // two sliding panels; the RIGHT one runs in the front track
+    const pw = OW / 2 - F * 0.2
+    const stile = Math.max(3.5 * S, 7)
+    const drawPanel = (px: number, front: boolean) => {
+      parts.push(`<rect x="${px}" y="${y1 + (front ? 0 : F * 0.5)}" width="${pw}" height="${OH - (front ? 0 : F * 0.5)}" fill="${C_FRAME}" stroke="${LN}" stroke-width="${front ? 2 : 1.5}"/>`)
+      parts.push(`<rect x="${px + stile}" y="${y1 + stile + (front ? 0 : F * 0.5)}" width="${pw - 2 * stile}" height="${OH - 2 * stile - (front ? 0 : F * 0.5)}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.4"/>`)
+    }
+    drawPanel(x1, false)
+    drawPanel(x1 + OW - pw, true)
+    // handle on the front panel's leading stile
+    parts.push(`<rect x="${x1 + OW - pw + stile * 0.25}" y="${y1 + OH * 0.44}" width="3.5" height="${OH * 0.12}" rx="1.5" fill="${LN}"/>`)
+    // track
+    parts.push(`<line x1="${x1}" y1="${yBot - 2.5}" x2="${x1 + OW}" y2="${yBot - 2.5}" stroke="${LN}" stroke-width="1.2"/>`)
+  } else {
+    // french door slab(s)
+    const slabs = single ? 1 : 2
+    const gap = single ? 0 : 1.5
+    const sw = (OW - gap) / slabs
+    const stile = Math.max(4 * S, 9)
+    for (let i = 0; i < slabs; i += 1) {
+      const px = x1 + i * (sw + gap)
+      parts.push(`<rect x="${px}" y="${y1}" width="${sw}" height="${OH}" fill="${C_FRAME}" stroke="${LN}" stroke-width="2"/>`)
+      const gx = px + stile
+      const gy = y1 + stile
+      const gw = sw - 2 * stile
+      const gh = OH - 2 * stile
+      if (glass) {
+        parts.push(`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.4"/>`)
+        // lites: 2 cols × 4 rows
+        parts.push(`<line x1="${gx + gw / 2}" y1="${gy}" x2="${gx + gw / 2}" y2="${gy + gh}" stroke="${LN}" stroke-width="1"/>`)
+        for (let r = 1; r < 4; r += 1) {
+          parts.push(`<line x1="${gx}" y1="${gy + (gh * r) / 4}" x2="${gx + gw}" y2="${gy + (gh * r) / 4}" stroke="${LN}" stroke-width="1"/>`)
+        }
+      } else {
+        // solid door: two recessed panels
+        const ph1 = gh * 0.52
+        const ph2 = gh * 0.34
+        parts.push(`<rect x="${gx}" y="${gy}" width="${gw}" height="${ph1}" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.3"/>`)
+        parts.push(`<rect x="${gx + 3}" y="${gy + 3}" width="${gw - 6}" height="${ph1 - 6}" fill="${C_CASE}" stroke="${LN}" stroke-width="0.9"/>`)
+        parts.push(`<rect x="${gx}" y="${gy + gh - ph2}" width="${gw}" height="${ph2}" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.3"/>`)
+        parts.push(`<rect x="${gx + 3}" y="${gy + gh - ph2 + 3}" width="${gw - 6}" height="${ph2 - 6}" fill="${C_CASE}" stroke="${LN}" stroke-width="0.9"/>`)
+      }
+      // knob at the meeting stile (double) / latch side (single)
+      const kx = single ? px + sw - stile / 2 : i === 0 ? px + sw - stile / 2 : px + stile / 2
+      parts.push(`<circle cx="${kx}" cy="${y1 + OH * 0.52}" r="3" fill="${LN}"/>`)
+    }
+  }
+
+  // casing: 3-sided (head + legs), mitred head corners, ends at the floor
+  if (trim) {
+    const x0 = x1 - F - T
+    const y0 = y1 - F - T
+    const W = OW + 2 * F + 2 * T
+    const p = T / 3
+    const casing: string[] = []
+    casing.push(`<path d="M${x0} ${yBot} V${y0} H${x0 + W} V${yBot} H${x1 + OW + F} V${y1 - F} H${x1 - F} V${yBot} Z" fill="${C_CASE}" stroke="${LN}" stroke-width="2.2"/>`)
+    casing.push(`<path d="M${x0 + p} ${yBot} V${y0 + p} H${x0 + W - p} V${yBot}" fill="none" stroke="${LN}" stroke-width="1"/>`)
+    casing.push(`<line x1="${x0}" y1="${y0}" x2="${x1 - F}" y2="${y1 - F}" stroke="${LN}" stroke-width="1.1"/>`)
+    casing.push(`<line x1="${x0 + W}" y1="${y0}" x2="${x1 + OW + F}" y2="${y1 - F}" stroke="${LN}" stroke-width="1.1"/>`)
+    parts.unshift(...casing)
+  }
+
+  // floor line
+  const fx0 = x1 - F - T - 14
+  const fx1 = x1 + OW + F + T + 14
+  parts.push(`<line x1="${fx0}" y1="${yBot}" x2="${fx1}" y2="${yBot}" stroke="${LN}" stroke-width="2.4"/>`)
+
+  // measuring arrows
+  const AR = (x1a: number, y1a: number, x2a: number, y2a: number, lb: string, lx: number, ly: number) =>
+    `<g stroke="#4DB6E8" stroke-width="1.6" fill="#4DB6E8"><line x1="${x1a}" y1="${y1a}" x2="${x2a}" y2="${y2a}" marker-start="url(#ahd)" marker-end="url(#ahd)"/><text x="${lx}" y="${ly}" font-size="12" font-weight="700" stroke="none">${lb}</text></g>`
+  const innerLb = g.singlePair ? ['W', 'H'] : ['W1', 'H1']
+  const outerLb = g.singlePair ? ['W', 'H'] : ['W2', 'H2']
+  if (g.showInner) {
+    const iy = y1 + OH * 0.24
+    parts.push(AR(x1 + 2, iy, x1 + OW - 2, iy, innerLb[0], x1 + OW / 2 - 8, iy - 5))
+    const ix = x1 + OW * 0.24
+    parts.push(AR(ix, y1 + 2, ix, yBot - 2, innerLb[1], ix + 5, y1 + OH * 0.62))
+  }
+  if (g.showOuter) {
+    const xo = x1 - F - T
+    const yo = y1 - F - T
+    parts.push(AR(xo, yo - 12, x1 + OW + F + T, yo - 12, outerLb[0], x1 + OW / 2 - 8, yo - 17))
+    const xr = x1 + OW + F + T + 12
+    parts.push(AR(xr, yo, xr, yBot, outerLb[1], xr + 5, (yo + yBot) / 2))
+  }
+
+  return `<defs><marker id="ahd" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 z" fill="#4DB6E8"/></marker></defs>${parts.join('')}`
+}
+
 function buildSceneMarkup(g: SceneGeom): string {
+  if (g.kind === 'sliding_door' || g.kind === 'french_door') return buildDoorMarkup(g)
   const VBW = 300
   const VBH = 330
   const trim = sceneHasTrim(g.scene)
@@ -520,6 +660,34 @@ function SceneThumb({ scene }: { scene: Exclude<Scene, ''> }) {
   return <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden dangerouslySetInnerHTML={{ __html: parts.join('') }} />
 }
 
+// Door thumbnails for the door-casing picker (sliding vs french handled by kind).
+function DoorThumb({ scene, kind }: { scene: Exclude<Scene, ''>; kind: Kind }) {
+  const trim = sceneHasTrim(scene)
+  const parts: string[] = []
+  if (trim) parts.push(`<path d="M10 58 V8 H54 V58 H48 V14 H16 V58 Z" fill="${C_CASE}" stroke="${LN}" stroke-width="1.4"/>`)
+  const x0 = trim ? 16 : 12
+  const w = trim ? 32 : 40
+  parts.push(`<rect x="${x0}" y="${trim ? 14 : 10}" width="${w}" height="${58 - (trim ? 14 : 10)}" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.6"/>`)
+  const y0 = trim ? 14 : 10
+  const h = 58 - y0
+  if (kind === 'sliding_door') {
+    parts.push(`<rect x="${x0 + 3}" y="${y0 + 3}" width="${w / 2 - 4}" height="${h - 6}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1"/>`)
+    parts.push(`<rect x="${x0 + w / 2 + 1}" y="${y0 + 3}" width="${w / 2 - 4}" height="${h - 6}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.2"/>`)
+    parts.push(`<rect x="${x0 + w / 2 + 2.5}" y="${y0 + h * 0.45}" width="2" height="${h * 0.14}" fill="${LN}"/>`)
+  } else {
+    const sw = w / 2
+    for (let i = 0; i < 2; i += 1) {
+      const px = x0 + i * sw
+      parts.push(`<rect x="${px + 2}" y="${y0 + 3}" width="${sw - 4}" height="${h - 6}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1"/>`)
+      parts.push(`<line x1="${px + 2}" y1="${y0 + h / 2}" x2="${px + sw - 2}" y2="${y0 + h / 2}" stroke="${LN}" stroke-width="0.8"/>`)
+    }
+    parts.push(`<circle cx="${x0 + sw - 2}" cy="${y0 + h * 0.5}" r="1.6" fill="${LN}"/>`)
+    parts.push(`<circle cx="${x0 + sw + 2}" cy="${y0 + h * 0.5}" r="1.6" fill="${LN}"/>`)
+  }
+  parts.push(`<line x1="6" y1="58" x2="58" y2="58" stroke="${LN}" stroke-width="2"/>`)
+  return <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden dangerouslySetInnerHTML={{ __html: parts.join('') }} />
+}
+
 // The tailored measuring diagram, drawn at TRUE proportion from the typed
 // numbers. `trimSize` = the shallow-frame + trim rule (measure trim outer).
 function GuidanceDiagram({
@@ -528,21 +696,41 @@ function GuidanceDiagram({
   trimSize,
   language,
   dims,
+  kind = 'window',
+  doorPanels = 'double',
+  doorGlass = 'glass',
 }: {
   mount: '' | 'inside' | 'inside_z' | 'outside'
   scene: Scene
   trimSize: boolean
   language: WizardLanguage
   dims: { w: string; h: string; trimW: string; frameW: string; sillLen: string }
+  kind?: Kind
+  doorPanels?: 'double' | 'single'
+  doorGlass?: 'glass' | 'solid'
 }) {
   const inside = mount === 'inside' || mount === 'inside_z'
   const sc: Exclude<Scene, ''> = (scene || 'plain') as Exclude<Scene, ''>
   const trim = sceneHasTrim(sc)
   const arch = sceneIsArch(sc)
   const dualPairs = trim && !trimSize
+  const isDoor = kind !== 'window'
 
   let caption: string
-  if (trimSize) {
+  if (isDoor) {
+    const doorName = kind === 'sliding_door' ? tr(language, 'sliding door', '推拉门') : tr(language, 'French door', '法式门')
+    if (trimSize || (trim && !dualPairs)) {
+      caption = tr(language, `Measure the casing's outer width and height — the treatment mounts on the door casing.`, '测量门套的外宽和外高——窗饰将安装在门套上。')
+    } else if (dualPairs) {
+      caption = tr(language,
+        `With door casing, measure BOTH: W1×H1 = the door opening, W2×H2 = the outer edge of the casing (height down to the floor).`,
+        '有门套时两组都量：W1×H1 = 门洞（内框），W2×H2 = 门套外沿（高度量到地面）。图按您填的数字等比例重绘。')
+    } else if (inside) {
+      caption = tr(language, `Inside mount on a ${doorName}: measure the opening width and height inside the frame. Rough is fine — we re-measure at the free in-home visit.`, `内嵌安装 · ${doorName}：量门洞内的宽和高。大致尺寸即可，上门时我们会精确复尺。`)
+    } else {
+      caption = tr(language, `Outside mount on a ${doorName}: width edge to edge of the area to cover; height from where the treatment starts down to the floor.`, `外挂安装 · ${doorName}：宽度量需要遮盖的范围；高度从安装位置量到地面。`)
+    }
+  } else if (trimSize) {
     caption = tr(language,
       "Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim size is what we work from, not the opening.",
       '浅窗框 + 木线条：测量窗套的外宽和外高。窗饰将安装在窗套上，要量的是窗套外沿尺寸，不是窗洞。')
@@ -566,8 +754,11 @@ function GuidanceDiagram({
   }
   const markup = buildSceneMarkup({
     scene: sc,
-    openWIn: num0(dims.w) || 36,
-    openHIn: num0(dims.h) || 54,
+    kind,
+    doorPanels,
+    doorGlass,
+    openWIn: num0(dims.w) || (kind === 'sliding_door' ? 72 : kind === 'french_door' ? (doorPanels === 'single' ? 32 : 60) : 36),
+    openHIn: num0(dims.h) || (isDoor ? 80 : 54),
     trimIn: num0(dims.trimW) || 2.5,
     frameIn: num0(dims.frameW) || 1.5,
     sillLenIn: num0(dims.sillLen) || null,
@@ -700,7 +891,8 @@ export default function MeasureWizardClient({
   // v3: trim scene → measure BOTH the opening (W1/H1) and the trim outer
   // edge (W2/H2); scene extras = the trim/frame/sill dimension inputs.
   const dualPairs = needsDepth && sceneHasTrim(draft.scene) && !useTrimSize
-  const sceneExtras = needsDepth && draft.scene !== '' && draft.kind === 'window'
+  const sceneExtras = needsDepth && draft.scene !== ''
+  const isDoorKind = draft.kind !== 'window'
   const mountReady = !needsDepth || (draft.mount !== '' && (!askTrim || draft.hasTrim !== null))
 
   // Auto-clear an invalid mount when the depth choice changes.
@@ -709,6 +901,12 @@ export default function MeasureWizardClient({
     if (draft.mount && !mountInfo.options.some((o) => o.v === draft.mount)) set('mount', '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draft.depthChoice, draft.product])
+
+  // Doors only support plain / trim scenes — drop sill/arch picks on switch.
+  useEffect(() => {
+    if (draft.kind !== 'window' && draft.scene && draft.scene !== 'plain' && draft.scene !== 'trim') set('scene', '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft.kind])
 
   // ── Live result ──
   const draperyRec = useMemo(() => {
@@ -722,7 +920,7 @@ export default function MeasureWizardClient({
       clearLeftIn: num(draft.A),
       clearRightIn: num(draft.B),
       clearTopIn: num(draft.C),
-      clearBottomIn: draft.kind === 'sliding_door' ? undefined : num(draft.D),
+      clearBottomIn: draft.kind !== 'window' ? undefined : num(draft.D),
       wallHeightsIn: num(draft.wallH) ? [num(draft.wallH)!] : undefined,
       rodType: draft.rodType,
       operation: draft.operation,
@@ -794,6 +992,8 @@ export default function MeasureWizardClient({
             hasTrim: askTrim ? draft.hasTrim : false,
             mount: draft.mount,
             scene: draft.scene,
+            doorPanels: draft.kind === 'french_door' ? draft.doorPanels : null,
+            doorGlass: draft.kind === 'french_door' ? draft.doorGlass : null,
             trimWidthIn: sceneHasTrim(draft.scene) ? (num(draft.trimW) ?? 2.5) : null,
             frameWidthIn: draft.scene ? (num(draft.frameW) ?? null) : null,
             sillLengthIn: sceneHasSill(draft.scene) ? (num(draft.sillLen) ?? null) : null,
@@ -812,7 +1012,7 @@ export default function MeasureWizardClient({
       A_leftIn: num(draft.A) ?? null,
       B_rightIn: num(draft.B) ?? null,
       C_topIn: num(draft.C) ?? null,
-      D_bottomIn: draft.kind === 'sliding_door' ? null : (num(draft.D) ?? null),
+      D_bottomIn: draft.kind !== 'window' ? null : (num(draft.D) ?? null),
       wallHeightIn: num(draft.wallH) ?? null,
       // with trim: optional second pair measured at the trim's OUTER edge
       outerWidthIn: sceneHasTrim(draft.scene) && !useTrimSize ? (num(draft.oW) ?? null) : null,
@@ -861,6 +1061,8 @@ export default function MeasureWizardClient({
       hasTrim: typeof c.hasTrim === 'boolean' ? c.hasTrim : null,
       mount: c.mount || '',
       scene: (SCENE_KEYS as readonly string[]).includes(c.scene) ? c.scene : '',
+      doorPanels: c.doorPanels === 'single' ? 'single' : 'double',
+      doorGlass: c.doorGlass === 'solid' ? 'solid' : 'glass',
       trimW: c.trimWidthIn != null ? String(c.trimWidthIn) : '2.5',
       frameW: c.frameWidthIn != null ? String(c.frameWidthIn) : '1.5',
       sillLen: c.sillLengthIn != null ? String(c.sillLengthIn) : '',
@@ -920,7 +1122,7 @@ export default function MeasureWizardClient({
       .map(
         (x) => `<tr>
           <td>${x.label}</td>
-          <td>${x.kind === 'sliding_door' ? tr(language, 'Sliding door', '推拉门') : tr(language, 'Window', '窗户')}</td>
+          <td>${kindLabelFor(x.kind, language)}</td>
           <td>${x.product === 'drapery' ? tr(language, 'Custom drapery', '定制布帘') : x.product === 'shades' ? tr(language, 'Shades', '窗帘') : tr(language, 'Shutters', '百叶窗')}</td>
           <td>${[x.config?.depthChoice ? `${tr(language, 'Depth', '深度')} ${depthLabelFor(x.product as Product, x.config.depthChoice, language)}` : '', mountLabel(x.config), sceneLabel(x.config?.scene || '', language), x.config?.hasTrim ? tr(language, 'has trim', '有木线条') : ''].filter(Boolean).join(' · ')}</td>
           <td>${dimsText(x.dims)}</td>
@@ -1021,7 +1223,7 @@ export default function MeasureWizardClient({
                   <p className="text-base font-semibold tracking-tight text-[#12141C]">
                     {wdw.label}
                     <span className="ml-2 text-[12px] font-normal text-gray-400">
-                      {wdw.kind === 'sliding_door' ? tr(language, 'Sliding door', '推拉门') : tr(language, 'Window', '窗户')} ·{' '}
+                      {kindLabelFor(wdw.kind, language)} ·{' '}
                       {wdw.product === 'drapery' ? tr(language, 'Custom drapery', '定制布帘') : wdw.product === 'shades' ? tr(language, 'Shades', '窗帘') : tr(language, 'Shutters', '百叶窗')}
                     </span>
                   </p>
@@ -1145,7 +1347,7 @@ export default function MeasureWizardClient({
   }
 
   // ═════════════════════════ EDIT VIEW ═════════════════════════
-  const isDoor = draft.kind === 'sliding_door'
+  const isDoor = draft.kind !== 'window'
   return (
     <div className="mx-auto max-w-[880px] px-6 lg:px-0">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -1180,6 +1382,9 @@ export default function MeasureWizardClient({
             </button>
             <button className={pillBtn(draft.kind === 'sliding_door')} onClick={() => set('kind', 'sliding_door')}>
               {tr(language, 'Sliding door', '推拉门')}
+            </button>
+            <button className={pillBtn(draft.kind === 'french_door')} onClick={() => set('kind', 'french_door')}>
+              {tr(language, 'French door', '法式门 French')}
             </button>
           </div>
         </div>
@@ -1271,8 +1476,8 @@ export default function MeasureWizardClient({
       {/* Step 3: depth + mount (shades/shutters) */}
       {needsDepth && draft.product && (
         <>
-          <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Step 3 · Frame depth', '第 3 步 · 窗框深度')}</span>
-          <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">{tr(language, 'How deep is the frame?', '窗框有多深？')}</h2>
+          <span className={`${ACCENT} mb-3 mt-12 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Step 3 · Frame depth', isDoorKind ? '第 3 步 · 门框深度' : '第 3 步 · 窗框深度')}</span>
+          <h2 className="mb-2 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">{tr(language, 'How deep is the frame?', isDoorKind ? '门框有多深？' : '窗框有多深？')}</h2>
           <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-400">
             {tr(language, 'Hold a tape at the glass and check the flat depth — this decides which mounting types are possible.', '将卷尺顶在玻璃上，测量到窗框前端的平整深度。这会决定可用的安装方式。')}
           </p>
@@ -1280,7 +1485,7 @@ export default function MeasureWizardClient({
             {/* diagram ABOVE its controls (Eddie 2026-07-29) */}
             <DepthDiagram language={language} />
             <div>
-              <span className={label}>{tr(language, 'Frame depth *', '窗框深度 *')}</span>
+              <span className={label}>{tr(language, 'Frame depth *', isDoorKind ? '门框深度 *' : '窗框深度 *')}</span>
               <div className="flex flex-wrap gap-2">
                 {depthChoicesFor(draft.product as Product, language).map((c) => (
                   <button key={c.v} className={pillBtn(draft.depthChoice === c.v)} onClick={() => set('depthChoice', c.v)}>
@@ -1323,8 +1528,8 @@ export default function MeasureWizardClient({
                 </div>
               )}
 
-              {/* v3: pick the drawing that looks like this window → the
-                  measuring diagram in the next step adapts (sill/trim/arch). */}
+              {/* v3: pick the drawing that looks like this window/door → the
+                  measuring diagram in the next step adapts. */}
               {draft.mount !== '' && draft.kind === 'window' && (
                 <div className="mt-5">
                   <span className={label}>{tr(language, 'Which looks like your window?', '哪张图最像您的窗户？')}</span>
@@ -1348,6 +1553,58 @@ export default function MeasureWizardClient({
                     {tr(language, 'The measuring diagram in the next step adapts to your choice.', '下一步的测量指导图会按您的选择变化。')}
                   </p>
                 </div>
+              )}
+              {draft.mount !== '' && draft.kind !== 'window' && (
+                <>
+                  {draft.kind === 'french_door' && (
+                    <div className="mt-5 grid gap-4">
+                      <div>
+                        <span className={label}>{tr(language, 'Door style', '开门方式')}</span>
+                        <div className="flex flex-wrap gap-2">
+                          <button className={pillBtn(draft.doorPanels === 'double')} onClick={() => set('doorPanels', 'double')}>
+                            {tr(language, 'Double — two doors', '对开 — 两扇')}
+                          </button>
+                          <button className={pillBtn(draft.doorPanels === 'single')} onClick={() => set('doorPanels', 'single')}>
+                            {tr(language, 'Single door', '单开 — 一扇')}
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <span className={label}>{tr(language, 'Glass in the door?', '门上有玻璃吗？')}</span>
+                        <div className="flex flex-wrap gap-2">
+                          <button className={pillBtn(draft.doorGlass === 'glass')} onClick={() => set('doorGlass', 'glass')}>
+                            {tr(language, 'Yes — glass panes', '有玻璃')}
+                          </button>
+                          <button className={pillBtn(draft.doorGlass === 'solid')} onClick={() => set('doorGlass', 'solid')}>
+                            {tr(language, 'No — solid door', '无玻璃（实心门）')}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="mt-5">
+                    <span className={label}>{tr(language, 'Casing around the door?', '门四周有门套吗？')}</span>
+                    <div className="flex flex-wrap gap-2">
+                      {DOOR_SCENES.map((s) => (
+                        <button
+                          key={s.v}
+                          type="button"
+                          className={`flex flex-col items-center gap-1 rounded-2xl border px-3 py-2 text-[12px] transition-all ${
+                            draft.scene === s.v ? 'border-[#12141C] bg-[#F7F5F2] text-[#12141C]' : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
+                          }`}
+                          onClick={() => set('scene', s.v)}
+                          aria-pressed={draft.scene === s.v}
+                        >
+                          <DoorThumb scene={s.v} kind={draft.kind} />
+                          <span>{zh ? s.zh : s.en}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-[13px] leading-relaxed text-gray-500">
+                      {tr(language, 'The measuring diagram in the next step adapts to your choice.', '下一步的测量指导图会按您的选择变化。')}
+                    </p>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -1376,6 +1633,9 @@ export default function MeasureWizardClient({
                 scene={draft.scene}
                 trimSize={useTrimSize}
                 language={language}
+                kind={draft.kind}
+                doorPanels={draft.doorPanels}
+                doorGlass={draft.doorGlass}
                 dims={{ w: draft.w, h: draft.h, trimW: draft.trimW, frameW: draft.frameW, sillLen: draft.sillLen }}
               />
             )}
@@ -1416,12 +1676,12 @@ export default function MeasureWizardClient({
                 <div className="grid grid-cols-2 gap-4">
                   {sceneHasTrim(draft.scene) && (
                     <div>
-                      <label className={label}>{tr(language, 'Trim width', '窗套宽度')}</label>
+                      <label className={label}>{isDoorKind ? tr(language, 'Casing width', '门套宽度') : tr(language, 'Trim width', '窗套宽度')}</label>
                       <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.trimW} onChange={(e) => set('trimW', e.target.value)} placeholder="2.5" />
                     </div>
                   )}
                   <div>
-                    <label className={label}>{tr(language, 'Frame width', '窗框宽度')}</label>
+                    <label className={label}>{isDoorKind ? tr(language, 'Door-frame width', '门框宽度') : tr(language, 'Frame width', '窗框宽度')}</label>
                     <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.frameW} onChange={(e) => set('frameW', e.target.value)} placeholder="1.5" />
                   </div>
                   {sceneHasSill(draft.scene) && (

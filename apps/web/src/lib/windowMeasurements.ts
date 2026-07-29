@@ -51,7 +51,7 @@ export interface MeasuredWindowRow {
 }
 
 const PRODUCTS = ['drapery', 'shades', 'shutters']
-const KINDS = ['window', 'sliding_door']
+const KINDS = ['window', 'sliding_door', 'french_door']
 
 function ownerWhere(owner: MeasuredWindowOwner): { clause: string; args: any[] } {
   if (owner.userId && owner.anonId) {
