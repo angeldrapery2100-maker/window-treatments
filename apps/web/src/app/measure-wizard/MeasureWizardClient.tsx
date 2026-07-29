@@ -78,6 +78,8 @@ interface Draft {
   // french door options (kind === 'french_door')
   doorPanels: 'double' | 'single'
   doorGlass: 'glass' | 'solid'
+  glassW: string // glass size PER DOOR (french door with glass)
+  glassH: string
   trimW: string // casing width, default 2.5″
   frameW: string // window-frame band width, default 1.5″
   sillLen: string // stool length (optional)
@@ -111,6 +113,8 @@ const EMPTY_DRAFT: Draft = {
   scene: '',
   doorPanels: 'double',
   doorGlass: 'glass',
+  glassW: '',
+  glassH: '',
   trimW: '2.5',
   frameW: '1.5',
   sillLen: '',
@@ -368,6 +372,8 @@ interface SceneGeom {
   kind?: string // 'window' (default) | 'sliding_door' | 'french_door'
   doorPanels?: 'double' | 'single'
   doorGlass?: 'glass' | 'solid'
+  glassWIn?: number | null // glass size per door (french + glass)
+  glassHIn?: number | null
   openWIn: number // opening (inner-frame) width, inches
   openHIn: number
   trimIn: number // casing board width
@@ -402,6 +408,7 @@ function buildDoorMarkup(g: SceneGeom): string {
   const yBot = VBH - 34 // floor
   const y1 = yBot - OH
   const parts: string[] = []
+  let firstGlass: { gx: number; gy: number; gw: number; gh: number } | null = null
 
   // frame (head + jambs; the floor is the bottom)
   parts.push(`<path d="M${x1 - F} ${yBot} V${y1 - F} H${x1 + OW + F} V${yBot} H${x1 + OW} V${y1} H${x1} V${yBot} Z" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.8"/>`)
@@ -429,11 +436,22 @@ function buildDoorMarkup(g: SceneGeom): string {
     for (let i = 0; i < slabs; i += 1) {
       const px = x1 + i * (sw + gap)
       parts.push(`<rect x="${px}" y="${y1}" width="${sw}" height="${OH}" fill="${C_FRAME}" stroke="${LN}" stroke-width="2"/>`)
-      const gx = px + stile
-      const gy = y1 + stile
-      const gw = sw - 2 * stile
-      const gh = OH - 2 * stile
+      let gx = px + stile
+      let gy = y1 + stile
+      let gw = sw - 2 * stile
+      let gh = OH - 2 * stile
+      // typed glass size (per door) → glass drawn at true proportion,
+      // centred in the slab
+      if (glass && g.glassWIn && g.glassHIn) {
+        const tw = Math.min(Math.max(g.glassWIn * S, 10), sw - 8)
+        const th = Math.min(Math.max(g.glassHIn * S, 10), OH - 8)
+        gx = px + (sw - tw) / 2
+        gy = y1 + (OH - th) / 2
+        gw = tw
+        gh = th
+      }
       if (glass) {
+        if (i === 0) firstGlass = { gx, gy, gw, gh }
         parts.push(`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.4"/>`)
         // lites: 2 cols × 4 rows
         parts.push(`<line x1="${gx + gw / 2}" y1="${gy}" x2="${gx + gw / 2}" y2="${gy + gh}" stroke="${LN}" stroke-width="1"/>`)
@@ -491,6 +509,14 @@ function buildDoorMarkup(g: SceneGeom): string {
     parts.push(AR(xo, yo - 12, x1 + OW + F + T, yo - 12, outerLb[0], x1 + OW / 2 - 8, yo - 17))
     const xr = x1 + OW + F + T + 12
     parts.push(AR(xr, yo, xr, yBot, outerLb[1], xr + 5, (yo + yBot) / 2))
+  }
+  // french door with glass: GW/GH arrows on the first door's glass pane
+  if (firstGlass) {
+    const fg = firstGlass
+    const gyA = fg.gy + fg.gh * 0.82
+    parts.push(AR(fg.gx + 1, gyA, fg.gx + fg.gw - 1, gyA, 'GW', fg.gx + fg.gw / 2 - 10, gyA - 4))
+    const gxA = fg.gx + fg.gw * 0.72
+    parts.push(AR(gxA, fg.gy + 1, gxA, fg.gy + fg.gh - 1, 'GH', gxA + 4, fg.gy + fg.gh * 0.3))
   }
 
   return `<defs><marker id="ahd" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 z" fill="#4DB6E8"/></marker></defs>${parts.join('')}`
@@ -704,7 +730,7 @@ function GuidanceDiagram({
   scene: Scene
   trimSize: boolean
   language: WizardLanguage
-  dims: { w: string; h: string; trimW: string; frameW: string; sillLen: string }
+  dims: { w: string; h: string; trimW: string; frameW: string; sillLen: string; glassW?: string; glassH?: string }
   kind?: Kind
   doorPanels?: 'double' | 'single'
   doorGlass?: 'glass' | 'solid'
@@ -729,6 +755,9 @@ function GuidanceDiagram({
       caption = tr(language, `Inside mount on a ${doorName}: measure the opening width and height inside the frame. Rough is fine — we re-measure at the free in-home visit.`, `内嵌安装 · ${doorName}：量门洞内的宽和高。大致尺寸即可，上门时我们会精确复尺。`)
     } else {
       caption = tr(language, `Outside mount on a ${doorName}: width edge to edge of the area to cover; height from where the treatment starts down to the floor.`, `外挂安装 · ${doorName}：宽度量需要遮盖的范围；高度从安装位置量到地面。`)
+    }
+    if (kind === 'french_door' && doorGlass === 'glass') {
+      caption += ' ' + tr(language, 'GW×GH = the GLASS on one door — door treatments are usually sized to the glass, so please measure it too.', 'GW×GH = 每扇门上玻璃的宽高——门上的窗饰通常按玻璃尺寸配，请顺手量一下。')
     }
   } else if (trimSize) {
     caption = tr(language,
@@ -762,6 +791,8 @@ function GuidanceDiagram({
     trimIn: num0(dims.trimW) || 2.5,
     frameIn: num0(dims.frameW) || 1.5,
     sillLenIn: num0(dims.sillLen) || null,
+    glassWIn: kind === 'french_door' && doorGlass === 'glass' ? num0(dims.glassW || '') || null : null,
+    glassHIn: kind === 'french_door' && doorGlass === 'glass' ? num0(dims.glassH || '') || null : null,
     showInner: trimSize ? false : dualPairs ? true : true,
     showOuter: trimSize ? true : dualPairs ? true : false,
     singlePair: !dualPairs,
@@ -1017,6 +1048,9 @@ export default function MeasureWizardClient({
       // with trim: optional second pair measured at the trim's OUTER edge
       outerWidthIn: sceneHasTrim(draft.scene) && !useTrimSize ? (num(draft.oW) ?? null) : null,
       outerHeightIn: sceneHasTrim(draft.scene) && !useTrimSize ? (num(draft.oH) ?? null) : null,
+      // french door with glass: glass size per door
+      glassWidthIn: draft.kind === 'french_door' && draft.doorGlass === 'glass' ? (num(draft.glassW) ?? null) : null,
+      glassHeightIn: draft.kind === 'french_door' && draft.doorGlass === 'glass' ? (num(draft.glassH) ?? null) : null,
       measured: useTrimSize ? 'trim' : 'opening',
     }
     const result: Record<string, unknown> =
@@ -1063,6 +1097,8 @@ export default function MeasureWizardClient({
       scene: (SCENE_KEYS as readonly string[]).includes(c.scene) ? c.scene : '',
       doorPanels: c.doorPanels === 'single' ? 'single' : 'double',
       doorGlass: c.doorGlass === 'solid' ? 'solid' : 'glass',
+      glassW: d.glassWidthIn != null ? String(d.glassWidthIn) : '',
+      glassH: d.glassHeightIn != null ? String(d.glassHeightIn) : '',
       trimW: c.trimWidthIn != null ? String(c.trimWidthIn) : '2.5',
       frameW: c.frameWidthIn != null ? String(c.frameWidthIn) : '1.5',
       sillLen: c.sillLengthIn != null ? String(c.sillLengthIn) : '',
@@ -1111,6 +1147,7 @@ export default function MeasureWizardClient({
     const dimsText = (d: any) => {
       const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? tr(language, ' (trim)', '（窗套外沿）') : ''}`]
       if (d?.outerWidthIn && d?.outerHeightIn) parts.push(`${tr(language, 'trim outer', '窗套外沿')} ${d.outerWidthIn}″ × ${d.outerHeightIn}″`)
+      if (d?.glassWidthIn && d?.glassHeightIn) parts.push(`${tr(language, 'glass', '玻璃')} ${d.glassWidthIn}″ × ${d.glassHeightIn}″`)
       if (d?.A_leftIn) parts.push(`A ${d.A_leftIn}″`)
       if (d?.B_rightIn) parts.push(`B ${d.B_rightIn}″`)
       if (d?.C_topIn) parts.push(`C ${d.C_topIn}″`)
@@ -1636,7 +1673,7 @@ export default function MeasureWizardClient({
                 kind={draft.kind}
                 doorPanels={draft.doorPanels}
                 doorGlass={draft.doorGlass}
-                dims={{ w: draft.w, h: draft.h, trimW: draft.trimW, frameW: draft.frameW, sillLen: draft.sillLen }}
+                dims={{ w: draft.w, h: draft.h, trimW: draft.trimW, frameW: draft.frameW, sillLen: draft.sillLen, glassW: draft.glassW, glassH: draft.glassH }}
               />
             )}
             <div className="grid gap-5">
@@ -1660,6 +1697,18 @@ export default function MeasureWizardClient({
                 </label>
                 <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.h} onChange={(e) => set('h', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
               </div>
+              {draft.kind === 'french_door' && draft.doorGlass === 'glass' && (
+                <>
+                  <div>
+                    <label className={label}>{tr(language, 'GW — glass width (per door)', 'GW — 玻璃宽度（每扇）')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.glassW} onChange={(e) => set('glassW', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
+                  </div>
+                  <div>
+                    <label className={label}>{tr(language, 'GH — glass height (per door)', 'GH — 玻璃高度（每扇）')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.glassH} onChange={(e) => set('glassH', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
+                  </div>
+                </>
+              )}
               {dualPairs && (
                 <>
                   <div>
