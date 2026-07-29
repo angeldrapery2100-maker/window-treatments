@@ -65,6 +65,9 @@ interface Draft {
   depthChoice: '' | 'deep' | 'mid' | 'shallow'
   hasTrim: boolean | null
   mount: '' | 'inside' | 'inside_z' | 'outside'
+  // v3 (Eddie 2026-07-29): which real-world window this looks like — drives
+  // the tailored measuring diagram (sill / trim / arch variants).
+  scene: '' | 'plain' | 'sill' | 'trim' | 'trim_sill' | 'arch'
   material: 'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood_paint' | 'basswood_stain'
   shStyle: string
   shQty: string
@@ -88,6 +91,7 @@ const EMPTY_DRAFT: Draft = {
   depthChoice: '',
   hasTrim: null,
   mount: '',
+  scene: '',
   material: 'poly_vinyl',
   shStyle: 'standard',
   shQty: '1',
@@ -98,6 +102,15 @@ const EMPTY_DRAFT: Draft = {
   C: '',
   D: '',
   wallH: '',
+}
+
+// Present when the wizard was opened from a salesperson's AAPP 'measure'
+// link (?t=<token>) — carries the prefilled contact info + the name card.
+interface AappLinkInfo {
+  token: string
+  submitted: boolean
+  prefill: { name?: string; phone?: string; email?: string; address?: string }
+  salesperson: { name: string; phone: string; avatar: string; languages: string[] } | null
 }
 
 interface SavedWindow {
@@ -283,40 +296,132 @@ function OperationDiagram({ op, language }: { op: 'split' | 'single_left' | 'sin
   )
 }
 
-function OpeningDiagram({ inside, language }: { inside: boolean; language: WizardLanguage }) {
+// ── v3: window scenes (Eddie 2026-07-29) ────────────────────────────────────
+// After picking inside/outside mount the customer picks which drawing looks
+// like THEIR window (sill? wood trim? arched top?) and the measuring diagram
+// adapts — arrows land where that combination should actually be measured.
+type Scene = '' | 'plain' | 'sill' | 'trim' | 'trim_sill' | 'arch'
+
+const SCENES: { v: Exclude<Scene, ''>; en: string; zh: string }[] = [
+  { v: 'plain', en: 'Flat wall window', zh: '平墙窗' },
+  { v: 'sill', en: 'Has a window sill', zh: '有窗台' },
+  { v: 'trim', en: 'Wood trim / casing', zh: '有窗套木线条' },
+  { v: 'trim_sill', en: 'Trim + sill', zh: '窗套 + 窗台' },
+  { v: 'arch', en: 'Arched top', zh: '拱形窗' },
+]
+
+export function sceneLabel(scene: string, language: WizardLanguage): string {
+  const s = SCENES.find((x) => x.v === scene)
+  return s ? (language === 'zh' ? s.zh : s.en) : ''
+}
+
+// Small thumbnail used in the scene picker buttons.
+function SceneThumb({ scene }: { scene: Exclude<Scene, ''> }) {
+  const trim = scene === 'trim' || scene === 'trim_sill'
+  const sill = scene === 'sill' || scene === 'trim_sill'
   return (
-    <DiagramFrame
-      caption={
-        inside
-          ? tr(language, 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.', '内嵌安装：在窗框中间大致测量一次内宽和内高即可。此处用于参考估算，上门时我们会精确复尺。')
-          : tr(language, 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.', '外挂安装：测量您希望遮盖的整个区域宽高。大致尺寸即可，上门时我们会确认精确覆盖范围。')
-      }
-    >
-      <rect x="55" y="30" width="150" height="140" fill="#fff" stroke="#12141C" strokeWidth="6" />
-      <rect x="70" y="45" width="120" height="110" fill="#F7F5F2" stroke="#12141C" strokeWidth="1" />
-      {inside ? (
-        <>
-          <Arrow x1={72} y1={100} x2={188} y2={100} labelText="W" lx={126} ly={96} />
-          <Arrow x1={130} y1={47} x2={130} y2={153} labelText="H" lx={136} ly={80} />
-        </>
+    <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden>
+      {trim && <rect x="10" y="8" width="44" height="48" fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />}
+      {scene === 'arch' ? (
+        <path d="M18 56 V32 Q18 14 32 14 Q46 14 46 32 V56 Z" fill="#fff" stroke="#12141C" strokeWidth="2.5" />
       ) : (
-        <>
-          <Arrow x1={57} y1={20} x2={203} y2={20} labelText="W" lx={126} ly={16} />
-          <Arrow x1={218} y1={32} x2={218} y2={168} labelText="H" lx={224} ly={104} />
-        </>
+        <rect x="18" y="14" width="28" height="42" fill="#fff" stroke="#12141C" strokeWidth="2.5" />
       )}
-    </DiagramFrame>
+      {scene !== 'arch' && <line x1="32" y1="14" x2="32" y2="56" stroke="#12141C" strokeWidth="1" />}
+      {scene !== 'arch' && <line x1="18" y1="35" x2="46" y2="35" stroke="#12141C" strokeWidth="1" />}
+      {sill && <rect x="12" y="55" width="40" height="5" fill="#12141C" />}
+    </svg>
   )
 }
 
-function TrimDiagram({ language }: { language: WizardLanguage }) {
+// The tailored measuring diagram. `trimSize` = the shallow-frame + trim rule
+// (measure the TRIM's outer size) — it wins over everything else.
+function GuidanceDiagram({
+  mount,
+  scene,
+  trimSize,
+  language,
+}: {
+  mount: '' | 'inside' | 'inside_z' | 'outside'
+  scene: Scene
+  trimSize: boolean
+  language: WizardLanguage
+}) {
+  const inside = mount === 'inside' || mount === 'inside_z'
+  const sc: Exclude<Scene, ''> = (scene || 'plain') as Exclude<Scene, ''>
+  const hasTrim = trimSize || sc === 'trim' || sc === 'trim_sill'
+  const hasSill = sc === 'sill' || sc === 'trim_sill'
+  const isArch = sc === 'arch'
+
+  // Opening geometry (sill pushes the opening bottom up a little).
+  const ox = 70
+  const oy = 45
+  const ow = 120
+  const oh = hasSill ? 100 : 110
+  const sillY = oy + oh // top of the sill board
+
+  let caption: string
+  if (trimSize) {
+    caption = tr(language,
+      "Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim size is what we work from, not the opening.",
+      '浅窗框 + 木线条：测量木线条的外宽和外高。窗饰将安装在木线条上，要量的是线条外尺寸，不是窗洞。')
+  } else if (inside) {
+    caption = isArch
+      ? tr(language, 'Inside mount, arched window: measure the width at the WIDEST point and the height at the TALLEST point (to the top of the arch). Rough is fine — we re-measure at the free in-home visit.', '内嵌安装 · 拱形窗：宽度量最宽处，高度量到拱顶最高点。大致尺寸即可，上门时我们会精确复尺。')
+      : tr(language, 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.', '内嵌安装：在窗框中间大致测量一次内宽和内高即可。此处用于参考估算，上门时我们会精确复尺。')
+  } else if (hasTrim) {
+    caption = tr(language, "Outside mount over trim: measure the trim's outer width and height — the treatment usually covers the trim completely.", '外挂安装 · 有窗套：测量木线条的外宽和外高，窗饰通常会把窗套完整盖住。')
+  } else if (hasSill) {
+    caption = tr(language, 'Outside mount with a sill: width edge to edge of the area to cover; height from where the treatment starts down to the TOP of the sill (or below it, if you want fuller coverage — tell us in the location name).', '外挂安装 · 有窗台：宽度量需要遮盖的范围；高度从安装位置量到窗台上沿（想盖过窗台可量到窗台下方，请在位置名称里注明）。')
+  } else {
+    caption = tr(language, 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.', '外挂安装：测量您希望遮盖的整个区域宽高。大致尺寸即可，上门时我们会确认精确覆盖范围。')
+  }
+
   return (
-    <DiagramFrame caption={tr(language, "Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim is what matters now, not the opening.", '浅窗框 + 木线条：测量木线条的外宽和外高。窗饰将安装在木线条上，因此此时要测量的是线条外尺寸，不是窗洞尺寸。')}>
-      <rect x="45" y="22" width="170" height="156" fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />
-      <rect x="70" y="47" width="120" height="106" fill="#fff" stroke="#12141C" strokeWidth="2" />
-      <rect x="82" y="59" width="96" height="82" fill="#F7F5F2" stroke="#12141C" strokeWidth="1" />
-      <Arrow x1={47} y1={12} x2={213} y2={12} labelText="W (trim)" lx={105} ly={9} />
-      <Arrow x1={228} y1={24} x2={228} y2={176} labelText="H" lx={234} ly={104} />
+    <DiagramFrame caption={caption}>
+      {/* trim / frame */}
+      {hasTrim ? (
+        <rect x={ox - 16} y={oy - 16} width={ow + 32} height={oh + (hasSill ? 16 : 32)} fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />
+      ) : (
+        <rect x={ox - 8} y={oy - 8} width={ow + 16} height={oh + (hasSill ? 8 : 16)} fill="#fff" stroke="#12141C" strokeWidth={isArch ? 0 : 5} />
+      )}
+      {/* opening + glass */}
+      {isArch ? (
+        <>
+          <path
+            d={`M${ox} ${oy + oh} V${oy + 42} Q${ox} ${oy - 4} ${ox + ow / 2} ${oy - 4} Q${ox + ow} ${oy - 4} ${ox + ow} ${oy + 42} V${oy + oh} Z`}
+            fill="#F7F5F2" stroke="#12141C" strokeWidth="3"
+          />
+          <line x1={ox + ow / 2} y1={oy - 4} x2={ox + ow / 2} y2={oy + oh} stroke="#12141C" strokeWidth="1" />
+        </>
+      ) : (
+        <>
+          <rect x={ox} y={oy} width={ow} height={oh} fill="#F7F5F2" stroke="#12141C" strokeWidth="2" />
+          <line x1={ox + ow / 2} y1={oy} x2={ox + ow / 2} y2={oy + oh} stroke="#12141C" strokeWidth="1" />
+          <line x1={ox} y1={oy + oh / 2} x2={ox + ow} y2={oy + oh / 2} stroke="#12141C" strokeWidth="1" />
+        </>
+      )}
+      {/* sill board sticking out past the frame */}
+      {hasSill && <rect x={ox - (hasTrim ? 24 : 16)} y={sillY} width={ow + (hasTrim ? 48 : 32)} height={8} fill="#12141C" />}
+
+      {/* measuring arrows */}
+      {trimSize || (!inside && hasTrim) ? (
+        <>
+          <Arrow x1={ox - 16} y1={oy - 26} x2={ox + ow + 16} y2={oy - 26} labelText={tr(language, 'W (trim)', 'W（线条外）')} lx={ox + 18} ly={oy - 30} />
+          <Arrow x1={ox + ow + 26} y1={oy - 16} x2={ox + ow + 26} y2={hasSill ? sillY : oy + oh + 16} labelText="H" lx={ox + ow + 32} ly={oy + oh / 2} />
+        </>
+      ) : inside ? (
+        <>
+          <Arrow x1={ox + 2} y1={oy + oh / 2 + (isArch ? 14 : 0)} x2={ox + ow - 2} y2={oy + oh / 2 + (isArch ? 14 : 0)} labelText="W" lx={ox + ow / 2 - 4} ly={oy + oh / 2 + (isArch ? 10 : -4)} />
+          <Arrow x1={ox + ow / 2 + (isArch ? 0 : 18)} y1={isArch ? oy - 2 : oy + 2} x2={ox + ow / 2 + (isArch ? 0 : 18)} y2={oy + oh - 2} labelText="H" lx={ox + ow / 2 + (isArch ? 6 : 24)} ly={oy + oh / 2 - 14} />
+        </>
+      ) : (
+        <>
+          <Arrow x1={ox - 10} y1={oy - 20} x2={ox + ow + 10} y2={oy - 20} labelText="W" lx={ox + ow / 2 - 4} ly={oy - 24} />
+          <Arrow x1={ox + ow + 22} y1={oy - 10} x2={ox + ow + 22} y2={hasSill ? sillY : oy + oh + 12} labelText="H" lx={ox + ow + 28} ly={oy + oh / 2} />
+          {hasSill && <text x={ox + ow - 30} y={sillY + 20} fontSize="9" fill="#6b7280">{tr(language, 'sill', '窗台')}</text>}
+        </>
+      )}
     </DiagramFrame>
   )
 }
@@ -351,6 +456,68 @@ export default function MeasureWizardClient({
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT)
   const [saveError, setSaveError] = useState('')
   const [saving, setSaving] = useState(false)
+
+  // ── v3: salesperson 'measure' link (AAPP) ─────────────────────────────────
+  const [aapp, setAapp] = useState<AappLinkInfo | null>(null)
+  const [contact, setContact] = useState({ name: '', phone: '', email: '', address: '' })
+  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'done'>('idle')
+  const [submitError, setSubmitError] = useState('')
+  const [hasSubmitted, setHasSubmitted] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    let token = ''
+    try {
+      token = new URLSearchParams(window.location.search).get('t') || ''
+    } catch {
+      /* no URL access */
+    }
+    if (!token) return
+    fetch('/api/store/measure/link?t=' + encodeURIComponent(token))
+      .then((r) => r.json())
+      .then((json) => {
+        if (cancelled || !json?.success) return
+        const d = json.data || {}
+        setAapp({ token, submitted: d.submitted === true, prefill: d.prefill || {}, salesperson: d.salesperson || null })
+        setHasSubmitted(d.submitted === true)
+        setContact({
+          name: String(d.prefill?.name || ''),
+          phone: String(d.prefill?.phone || ''),
+          email: String(d.prefill?.email || ''),
+          address: String(d.prefill?.address || ''),
+        })
+      })
+      .catch(() => {
+        /* bad/expired token → plain anonymous wizard */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const submitToRep = async () => {
+    if (!aapp || !saved.length || submitState === 'sending') return
+    setSubmitState('sending')
+    setSubmitError('')
+    try {
+      const res = await fetch('/api/store/measure/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: aapp.token, contact, language }),
+      })
+      const json = await res.json().catch(() => null)
+      if (json?.success) {
+        setSubmitState('done')
+        setHasSubmitted(true)
+      } else {
+        setSubmitState('idle')
+        setSubmitError(zh ? '提交失败，请重试。' : typeof json?.error === 'string' ? json.error : 'Could not submit — please try again.')
+      }
+    } catch {
+      setSubmitState('idle')
+      setSubmitError(tr(language, 'Connection problem — please try again.', '网络连接出现问题，请重试。'))
+    }
+  }
 
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setDraft((d) => ({ ...d, [k]: v }))
 
@@ -465,6 +632,7 @@ export default function MeasureWizardClient({
             depthLabel: depthLabelFor(draft.product as Product, draft.depthChoice),
             hasTrim: askTrim ? draft.hasTrim : false,
             mount: draft.mount,
+            scene: draft.scene,
             ...(draft.product === 'shutters'
               ? {
                   material: draft.material,
@@ -524,6 +692,7 @@ export default function MeasureWizardClient({
       depthChoice: ['deep', 'mid', 'shallow'].includes(c.depthChoice) ? c.depthChoice : '',
       hasTrim: typeof c.hasTrim === 'boolean' ? c.hasTrim : null,
       mount: c.mount || '',
+      scene: ['plain', 'sill', 'trim', 'trim_sill', 'arch'].includes(c.scene) ? c.scene : '',
       material: c.material || 'poly_vinyl',
       shStyle: c.shStyle || 'standard',
       shQty: c.shQty != null ? String(c.shQty) : '1',
@@ -578,7 +747,7 @@ export default function MeasureWizardClient({
           <td>${x.label}</td>
           <td>${x.kind === 'sliding_door' ? tr(language, 'Sliding door', '推拉门') : tr(language, 'Window', '窗户')}</td>
           <td>${x.product === 'drapery' ? tr(language, 'Custom drapery', '定制布帘') : x.product === 'shades' ? tr(language, 'Shades', '窗帘') : tr(language, 'Shutters', '百叶窗')}</td>
-          <td>${[x.config?.depthChoice ? `${tr(language, 'Depth', '深度')} ${depthLabelFor(x.product as Product, x.config.depthChoice, language)}` : '', mountLabel(x.config), x.config?.hasTrim ? tr(language, 'has trim', '有木线条') : ''].filter(Boolean).join(' · ')}</td>
+          <td>${[x.config?.depthChoice ? `${tr(language, 'Depth', '深度')} ${depthLabelFor(x.product as Product, x.config.depthChoice, language)}` : '', mountLabel(x.config), sceneLabel(x.config?.scene || '', language), x.config?.hasTrim ? tr(language, 'has trim', '有木线条') : ''].filter(Boolean).join(' · ')}</td>
           <td>${dimsText(x.dims)}</td>
           <td>${resultSummary(x)}</td>
         </tr>`
@@ -633,6 +802,30 @@ export default function MeasureWizardClient({
     return (
       <div className="mx-auto max-w-[880px] px-6 lg:px-0">
         <div className="mb-6 flex justify-end">{languageToggle}</div>
+        {aapp?.salesperson?.name && (
+          <div className="mb-8 flex items-center gap-4 rounded-2xl border border-gray-200 bg-[#F7F5F2] p-5">
+            {aapp.salesperson.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={aapp.salesperson.avatar} alt="" className="h-14 w-14 flex-none rounded-full object-cover" />
+            ) : (
+              <div className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-[#12141C] text-lg font-semibold text-white">
+                {(aapp.salesperson.name || 'A').slice(0, 1)}
+              </div>
+            )}
+            <div className="min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                {tr(language, 'Your consultant · Angel Drapery', '您的专属顾问 · 洛杉矶天使窗帘')}
+              </p>
+              <p className="truncate text-base font-semibold text-[#12141C]">{aapp.salesperson.name}</p>
+              {aapp.salesperson.phone && (
+                <p className="text-[13px] text-gray-500">
+                  <a href={`tel:${aapp.salesperson.phone}`} className="underline underline-offset-2 hover:text-[#12141C]">{aapp.salesperson.phone}</a>
+                  <a href={`sms:${aapp.salesperson.phone}`} className="ml-3 underline underline-offset-2 hover:text-[#12141C]">{tr(language, 'Text me', '发短信')}</a>
+                </p>
+              )}
+            </div>
+          </div>
+        )}
         <span className={`${ACCENT} mb-3 block text-[11px] font-bold uppercase tracking-[0.3em]`}>{tr(language, 'Your measurement sheet', '您的窗户测量表')}</span>
         <h2 className="mb-3 text-2xl font-light tracking-tighter text-[#12141C] md:text-3xl">
           {tr(language, 'Measure every window in your home.', '逐一测量家中的每扇窗户。')}
@@ -709,6 +902,67 @@ export default function MeasureWizardClient({
                 {tr(language, 'Export my sheet (PDF)', '导出测量表（PDF）')}
               </button>
             </div>
+          </div>
+        )}
+
+        {/* v3: send the sheet to the salesperson who sent this link */}
+        {aapp && saved.length > 0 && (
+          <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-8 md:p-10">
+            <h3 className="mb-2 text-xl font-semibold tracking-tight text-[#12141C]">
+              {aapp.salesperson?.name
+                ? tr(language, `Send your sheet to ${aapp.salesperson.name}`, `把测量表发给 ${aapp.salesperson.name}`)
+                : tr(language, 'Send your sheet to us', '把测量表发给我们')}
+            </h3>
+            <p className="mb-6 max-w-xl text-sm leading-relaxed text-gray-500">
+              {tr(language,
+                'Check your contact info below and submit — your consultant gets the sheet instantly and will prepare a plan. Rough sizes are fine; everything is re-measured at the free in-home visit before production.',
+                '确认下方联系方式后提交，您的顾问会立刻收到这份测量表并为您准备方案。尺寸大致即可，生产前我们会免费上门精确复尺。')}
+            </p>
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label className={label}>{tr(language, 'Name *', '姓名 *')}</label>
+                <input className={inputCls} value={contact.name} maxLength={120} onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))} />
+              </div>
+              <div>
+                <label className={label}>{tr(language, 'Phone *', '电话 *')}</label>
+                <input className={inputCls} type="tel" value={contact.phone} maxLength={40} onChange={(e) => setContact((c) => ({ ...c, phone: e.target.value }))} />
+              </div>
+              <div>
+                <label className={label}>{tr(language, 'Email', '邮箱')}</label>
+                <input className={inputCls} type="email" value={contact.email} maxLength={120} onChange={(e) => setContact((c) => ({ ...c, email: e.target.value }))} />
+              </div>
+              <div>
+                <label className={label}>{tr(language, 'Address', '地址')}</label>
+                <input className={inputCls} value={contact.address} maxLength={240} onChange={(e) => setContact((c) => ({ ...c, address: e.target.value }))} />
+              </div>
+            </div>
+            {submitState === 'done' ? (
+              <div className="mt-6 rounded-2xl bg-[#ecfdf5] p-5 text-sm leading-relaxed text-[#065f46]">
+                {tr(language,
+                  '✅ Sent! Your consultant received your measurement sheet and will follow up shortly. You can keep editing windows and submit again anytime.',
+                  '✅ 已提交！您的顾问已收到测量表，会尽快与您联系。之后修改了窗户也可以随时再次提交更新。')}
+              </div>
+            ) : (
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => void submitToRep()}
+                  disabled={submitState === 'sending' || !contact.name.trim() || !contact.phone.trim()}
+                  className="rounded-full bg-[#12141C] px-8 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                >
+                  {submitState === 'sending'
+                    ? tr(language, 'Sending…', '正在提交…')
+                    : hasSubmitted
+                      ? tr(language, 'Submit updated sheet', '提交更新后的测量表')
+                      : tr(language, 'Submit my sheet →', '提交测量表 →')}
+                </button>
+                {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+              </div>
+            )}
+            <p className="mt-4 text-[12px] leading-relaxed text-gray-400">
+              {tr(language,
+                'Your sheet is saved as “customer self-measured” — reference only, never sent to production without our precise in-home re-measure.',
+                '这份表会以「客户自测」名义保存，仅供参考——未经我们上门精确复尺，绝不会直接用于生产。')}
+            </p>
           </div>
         )}
       </div>
@@ -890,6 +1144,33 @@ export default function MeasureWizardClient({
                   </div>
                 </div>
               )}
+
+              {/* v3: pick the drawing that looks like this window → the
+                  measuring diagram in the next step adapts (sill/trim/arch). */}
+              {draft.mount !== '' && draft.kind === 'window' && (
+                <div className="mt-5">
+                  <span className={label}>{tr(language, 'Which looks like your window?', '哪张图最像您的窗户？')}</span>
+                  <div className="flex flex-wrap gap-2">
+                    {SCENES.map((s) => (
+                      <button
+                        key={s.v}
+                        type="button"
+                        className={`flex flex-col items-center gap-1 rounded-2xl border px-3 py-2 text-[12px] transition-all ${
+                          draft.scene === s.v ? 'border-[#12141C] bg-[#F7F5F2] text-[#12141C]' : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
+                        }`}
+                        onClick={() => set('scene', s.v)}
+                        aria-pressed={draft.scene === s.v}
+                      >
+                        <SceneThumb scene={s.v} />
+                        <span>{zh ? s.zh : s.en}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-[13px] leading-relaxed text-gray-500">
+                    {tr(language, 'The measuring diagram in the next step adapts to your choice.', '下一步的测量指导图会按您的选择变化。')}
+                  </p>
+                </div>
+              )}
             </div>
             <DepthDiagram language={language} />
           </div>
@@ -947,10 +1228,8 @@ export default function MeasureWizardClient({
             </div>
             {draft.product === 'drapery' ? (
               <DraperyDiagram kind={draft.kind} language={language} />
-            ) : useTrimSize ? (
-              <TrimDiagram language={language} />
             ) : (
-              <OpeningDiagram inside={draft.mount === 'inside' || draft.mount === 'inside_z'} language={language} />
+              <GuidanceDiagram mount={draft.mount} scene={draft.scene} trimSize={useTrimSize} language={language} />
             )}
           </div>
 
