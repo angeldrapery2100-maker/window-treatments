@@ -281,12 +281,32 @@ function DraperyDiagram({ kind, language }: { kind: Kind; language: WizardLangua
 }
 
 function OperationDiagram({ op, language }: { op: 'split' | 'single_left' | 'single_right'; language: WizardLanguage }) {
+  // Drawn OPEN (Eddie 2026-07-29): the fabric visibly stacks on the side it
+  // opens to — with the window exposed behind — so stacks-left vs stacks-right
+  // look unmistakably different, not just a small arrow flip.
   const caption =
     op === 'split'
-      ? tr(language, 'Center split: two panels meet in the middle and open outward to stack on both sides.', '对开：两片窗帘在中间合拢，打开时分别收到两侧。')
+      ? tr(language, 'Center split: two panels open outward and stack on BOTH sides (shown open).', '对开：两片窗帘向两边打开，分别收到左右两侧（图为打开状态）。')
       : op === 'single_left'
-        ? tr(language, 'One-way: a single panel that slides open and stacks on the LEFT side.', '单开：一片窗帘打开后收到左侧。')
-        : tr(language, 'One-way: a single panel that slides open and stacks on the RIGHT side.', '单开：一片窗帘打开后收到右侧。')
+        ? tr(language, 'One-way: the whole panel slides and stacks on the LEFT side (shown open — fabric bunched at the left).', '单开 · 收向左侧：整片窗帘拉开后堆在左边（图为打开状态，布料堆在左侧）。')
+        : tr(language, 'One-way: the whole panel slides and stacks on the RIGHT side (shown open — fabric bunched at the right).', '单开 · 收向右侧：整片窗帘拉开后堆在右边（图为打开状态，布料堆在右侧）。')
+  // A stacked (bunched) panel: dense pleat lines packed together.
+  const Stack = ({ x, w = 40 }: { x: number; w?: number }) => (
+    <g>
+      <rect x={x} y={42} width={w} height={130} rx={4} fill="#cfe8f7" stroke="#12141C" strokeWidth={1.8} />
+      {[1, 2, 3, 4].map((i) => (
+        <line key={i} x1={x + (w * i) / 5} y1={44} x2={x + (w * i) / 5} y2={170} stroke="#12141C" strokeWidth={1} />
+      ))}
+    </g>
+  )
+  // The exposed window behind the opened curtain.
+  const Window = ({ x, w }: { x: number; w: number }) => (
+    <g>
+      <rect x={x} y={52} width={w} height={112} fill="#eef1f4" stroke="#12141C" strokeWidth={1.5} />
+      <line x1={x + w / 2} y1={52} x2={x + w / 2} y2={164} stroke="#12141C" strokeWidth={0.9} />
+      <line x1={x} y1={108} x2={x + w} y2={108} stroke="#12141C" strokeWidth={0.9} />
+    </g>
+  )
   return (
     <DiagramFrame caption={caption}>
       {/* rod */}
@@ -295,30 +315,31 @@ function OperationDiagram({ op, language }: { op: 'split' | 'single_left' | 'sin
       <circle cx="240" cy="35" r="5" fill="#12141C" />
       {op === 'split' ? (
         <>
-          <rect x="40" y="42" width="88" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
-          <rect x="132" y="42" width="88" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
-          <line x1="70" y1="42" x2="70" y2="172" stroke="#12141C" strokeWidth="0.75" />
-          <line x1="100" y1="42" x2="100" y2="172" stroke="#12141C" strokeWidth="0.75" />
-          <line x1="160" y1="42" x2="160" y2="172" stroke="#12141C" strokeWidth="0.75" />
-          <line x1="190" y1="42" x2="190" y2="172" stroke="#12141C" strokeWidth="0.75" />
-          <Arrow x1={122} y1={105} x2={52} y2={105} labelText="" lx={0} ly={0} />
-          <Arrow x1={138} y1={105} x2={208} y2={105} labelText="" lx={0} ly={0} />
+          <Window x={86} w={88} />
+          <Stack x={40} />
+          <Stack x={180} />
+          <g stroke="#4DB6E8" strokeWidth="2" fill="#4DB6E8">
+            <line x1={124} y1={105} x2={90} y2={105} markerEnd="url(#ah)" />
+            <line x1={136} y1={105} x2={170} y2={105} markerEnd="url(#ah)" />
+          </g>
         </>
       ) : op === 'single_left' ? (
         <>
-          <rect x="40" y="42" width="180" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
-          {[70, 100, 130, 160, 190].map((x) => (
-            <line key={x} x1={x} y1="42" x2={x} y2="172" stroke="#12141C" strokeWidth="0.75" />
-          ))}
-          <Arrow x1={200} y1={105} x2={60} y2={105} labelText="" lx={0} ly={0} />
+          <Window x={92} w={126} />
+          <Stack x={40} w={46} />
+          <g stroke="#4DB6E8" strokeWidth="2" fill="#4DB6E8">
+            <line x1={210} y1={105} x2={94} y2={105} markerEnd="url(#ah)" />
+            <text x={116} y={98} fontSize="11" fontWeight="700" stroke="none">{tr(language, 'stacks LEFT', '收向左侧')}</text>
+          </g>
         </>
       ) : (
         <>
-          <rect x="40" y="42" width="180" height="130" rx="4" fill="#cfe8f7" stroke="#12141C" strokeWidth="1.5" />
-          {[70, 100, 130, 160, 190].map((x) => (
-            <line key={x} x1={x} y1="42" x2={x} y2="172" stroke="#12141C" strokeWidth="0.75" />
-          ))}
-          <Arrow x1={60} y1={105} x2={200} y2={105} labelText="" lx={0} ly={0} />
+          <Window x={42} w={126} />
+          <Stack x={174} w={46} />
+          <g stroke="#4DB6E8" strokeWidth="2" fill="#4DB6E8">
+            <line x1={50} y1={105} x2={166} y2={105} markerEnd="url(#ah)" />
+            <text x={78} y={98} fontSize="11" fontWeight="700" stroke="none">{tr(language, 'stacks RIGHT', '收向右侧')}</text>
+          </g>
         </>
       )}
     </DiagramFrame>
