@@ -67,7 +67,14 @@ interface Draft {
   mount: '' | 'inside' | 'inside_z' | 'outside'
   // v3 (Eddie 2026-07-29): which real-world window this looks like — drives
   // the tailored measuring diagram (sill / trim / arch variants).
-  scene: '' | 'plain' | 'sill' | 'trim' | 'trim_sill' | 'arch'
+  scene: Scene
+  trimW: string // casing width, default 2.5″
+  frameW: string // window-frame band width, default 1.5″
+  sillLen: string // stool length (optional)
+  sillDepth: string // stool projection from the wall (optional)
+  // with trim: OUTER (trim outer edge) measurements, optional second pair
+  oW: string
+  oH: string
   material: 'poly_vinyl' | 'hardwood' | 'paulownia' | 'basswood_paint' | 'basswood_stain'
   shStyle: string
   shQty: string
@@ -92,6 +99,12 @@ const EMPTY_DRAFT: Draft = {
   hasTrim: null,
   mount: '',
   scene: '',
+  trimW: '2.5',
+  frameW: '1.5',
+  sillLen: '',
+  sillDepth: '',
+  oW: '',
+  oH: '',
   material: 'poly_vinyl',
   shStyle: 'standard',
   shQty: '1',
@@ -296,133 +309,277 @@ function OperationDiagram({ op, language }: { op: 'split' | 'single_left' | 'sin
   )
 }
 
-// ── v3: window scenes (Eddie 2026-07-29) ────────────────────────────────────
+// ── v3: window scenes (Eddie 2026-07-29, drawing style approved 方案A·v3) ───
 // After picking inside/outside mount the customer picks which drawing looks
-// like THEIR window (sill? wood trim? arched top?) and the measuring diagram
-// adapts — arrows land where that combination should actually be measured.
-type Scene = '' | 'plain' | 'sill' | 'trim' | 'trim_sill' | 'arch'
+// like THEIR window; the measuring diagram redraws AT TRUE PROPORTION from
+// the numbers they type (opening W×H, trim width, frame width, sill length).
+type Scene = '' | 'plain' | 'sill' | 'trim' | 'trim_sill' | 'arch' | 'arch_trim' | 'arch_trim_sill'
+
+const SCENE_KEYS = ['plain', 'sill', 'trim', 'trim_sill', 'arch', 'arch_trim', 'arch_trim_sill'] as const
 
 const SCENES: { v: Exclude<Scene, ''>; en: string; zh: string }[] = [
   { v: 'plain', en: 'Flat wall window', zh: '平墙窗' },
   { v: 'sill', en: 'Has a window sill', zh: '有窗台' },
-  { v: 'trim', en: 'Wood trim / casing', zh: '有窗套木线条' },
+  { v: 'trim', en: 'Wood trim / casing', zh: '有窗套' },
   { v: 'trim_sill', en: 'Trim + sill', zh: '窗套 + 窗台' },
   { v: 'arch', en: 'Arched top', zh: '拱形窗' },
+  { v: 'arch_trim', en: 'Arch + trim', zh: '拱形 + 窗套' },
+  { v: 'arch_trim_sill', en: 'Arch + trim + sill', zh: '拱形 + 窗套 + 窗台' },
 ]
+
+const sceneHasTrim = (s: string) => s === 'trim' || s === 'trim_sill' || s === 'arch_trim' || s === 'arch_trim_sill'
+const sceneHasSill = (s: string) => s === 'sill' || s === 'trim_sill' || s === 'arch_trim_sill'
+const sceneIsArch = (s: string) => s === 'arch' || s === 'arch_trim' || s === 'arch_trim_sill'
 
 export function sceneLabel(scene: string, language: WizardLanguage): string {
   const s = SCENES.find((x) => x.v === scene)
   return s ? (language === 'zh' ? s.zh : s.en) : ''
 }
 
-// Small thumbnail used in the scene picker buttons.
-function SceneThumb({ scene }: { scene: Exclude<Scene, ''> }) {
-  const trim = scene === 'trim' || scene === 'trim_sill'
-  const sill = scene === 'sill' || scene === 'trim_sill'
-  return (
-    <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden>
-      {trim && <rect x="10" y="8" width="44" height="48" fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />}
-      {scene === 'arch' ? (
-        <path d="M18 56 V32 Q18 14 32 14 Q46 14 46 32 V56 Z" fill="#fff" stroke="#12141C" strokeWidth="2.5" />
-      ) : (
-        <rect x="18" y="14" width="28" height="42" fill="#fff" stroke="#12141C" strokeWidth="2.5" />
-      )}
-      {scene !== 'arch' && <line x1="32" y1="14" x2="32" y2="56" stroke="#12141C" strokeWidth="1" />}
-      {scene !== 'arch' && <line x1="18" y1="35" x2="46" y2="35" stroke="#12141C" strokeWidth="1" />}
-      {sill && <rect x="12" y="55" width="40" height="5" fill="#12141C" />}
-    </svg>
-  )
+// Shared palette (approved): casing warm off-white, frame pure white,
+// glass cool grey — three clearly separated layers.
+const C_CASE = '#f2efe8'
+const C_FRAME = '#ffffff'
+const C_GLASS = '#eef1f4'
+const LN = '#12141C'
+
+// ── SVG markup generator (string-based; injected via dangerouslySetInnerHTML
+// so the drawing code matches the approved static drafts line for line) ─────
+interface SceneGeom {
+  scene: Exclude<Scene, ''>
+  openWIn: number // opening (inner-frame) width, inches
+  openHIn: number
+  trimIn: number // casing board width
+  frameIn: number // window-frame band width (opening edge → glass)
+  sillLenIn: number | null // stool length; null → auto (casing + 1″ each side)
+  showInner: boolean // draw inner W1/H1 arrows
+  showOuter: boolean // draw outer W2/H2 arrows (trim outer)
+  singlePair: boolean // one W/H pair only (labels W/H, no 1/2 suffix)
 }
 
-// The tailored measuring diagram. `trimSize` = the shallow-frame + trim rule
-// (measure the TRIM's outer size) — it wins over everything else.
+function buildSceneMarkup(g: SceneGeom): string {
+  const VBW = 300
+  const VBH = 330
+  const trim = sceneHasTrim(g.scene)
+  const sill = sceneHasSill(g.scene)
+  const arch = sceneIsArch(g.scene)
+  const T0 = trim ? Math.min(Math.max(g.trimIn || 2.5, 1), 8) : 0
+  const oW = Math.min(Math.max(g.openWIn || 36, 12), 400)
+  const oH = Math.min(Math.max(g.openHIn || 54, 12), 400)
+  const sillLen = sill ? Math.max(g.sillLenIn || oW + 2 * T0 + 2, oW + 2 * T0) : 0
+  // fit: leave room for arrows on all sides
+  const totalWIn = Math.max(oW + 2 * T0, sillLen)
+  const totalHIn = oH + T0 + (sill ? 4 : T0)
+  const S = Math.min(196 / totalWIn, 236 / totalHIn)
+  // true proportion, but never let the casing band collapse below visibility
+  const T = trim ? Math.max(T0 * S, 6) : 0
+  const OW = oW * S
+  const OH = oH * S
+  const F = Math.min(Math.max(g.frameIn || 1.5, 0.5), 6) * S
+  const x1 = (VBW - OW) / 2
+  const y1 = (VBH - 36 - (OH + T + (sill ? 26 : T))) / 2 + T + 26
+  const R = OW / 2 // arch radius (half-round top)
+  const cy = y1 + R // springline for arch
+  const yBot = y1 + OH
+  const parts: string[] = []
+
+  // — window frame + glass —
+  if (arch) {
+    parts.push(`<path d="M${x1} ${yBot} V${cy} A${R} ${R} 0 0 1 ${x1 + OW} ${cy} V${yBot} Z" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.8"/>`)
+    const r = R - F
+    parts.push(`<path d="M${x1 + F} ${yBot - F} V${cy} A${r} ${r} 0 0 1 ${x1 + OW - F} ${cy} V${yBot - F} Z" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.6"/>`)
+    parts.push(`<line x1="${x1 + F}" y1="${cy}" x2="${x1 + OW - F}" y2="${cy}" stroke="${LN}" stroke-width="1.6"/>`)
+    for (const a of [-45, 0, 45]) {
+      const rad = (a * Math.PI) / 180
+      parts.push(`<line x1="${x1 + R}" y1="${cy}" x2="${x1 + R + r * Math.sin(rad)}" y2="${cy - r * Math.cos(rad)}" stroke="${LN}" stroke-width="1"/>`)
+    }
+    parts.push(`<line x1="${x1 + R}" y1="${cy}" x2="${x1 + R}" y2="${yBot - F}" stroke="${LN}" stroke-width="1.1"/>`)
+  } else {
+    parts.push(`<rect x="${x1}" y="${y1}" width="${OW}" height="${OH}" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.8"/>`)
+    const sx = x1 + F
+    const sy = y1 + F
+    const sw = OW - 2 * F
+    const sh = OH - 2 * F
+    const mid = sy + sh / 2
+    parts.push(`<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1.8"/>`)
+    parts.push(`<rect x="${sx}" y="${mid - 3}" width="${sw}" height="6" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.3"/>`)
+    parts.push(`<line x1="${sx + sw / 2}" y1="${sy}" x2="${sx + sw / 2}" y2="${mid - 3}" stroke="${LN}" stroke-width="1.1"/>`)
+    parts.push(`<line x1="${sx + sw / 2}" y1="${mid + 3}" x2="${sx + sw / 2}" y2="${sy + sh}" stroke="${LN}" stroke-width="1.1"/>`)
+  }
+
+  // — casing (drawn behind: prepend) —
+  if (trim) {
+    const x0 = x1 - T
+    const p = T / 3
+    const casing: string[] = []
+    if (arch) {
+      const Ro = R + T
+      const outer =
+        `M${x0} ${yBot + (sill ? 0 : 0)} V${cy} A${Ro} ${Ro} 0 0 1 ${x1 + OW + T} ${cy} V${yBot}` +
+        ` H${x1 + OW} V${cy} A${R} ${R} 0 0 0 ${x1} ${cy} V${yBot} Z`
+      casing.push(`<path d="${outer}" fill="${C_CASE}" stroke="${LN}" stroke-width="2.2"/>`)
+      if (!sill) {
+        casing.push(`<rect x="${x0}" y="${yBot}" width="${OW + 2 * T}" height="${T}" fill="${C_CASE}" stroke="${LN}" stroke-width="2"/>`)
+        casing.push(`<line x1="${x0}" y1="${yBot + T}" x2="${x1}" y2="${yBot}" stroke="${LN}" stroke-width="1.1"/>`)
+        casing.push(`<line x1="${x1 + OW + T}" y1="${yBot + T}" x2="${x1 + OW}" y2="${yBot}" stroke="${LN}" stroke-width="1.1"/>`)
+      }
+      casing.push(`<line x1="${x0}" y1="${cy}" x2="${x1}" y2="${cy}" stroke="${LN}" stroke-width="1.1"/>`)
+      casing.push(`<line x1="${x1 + OW}" y1="${cy}" x2="${x1 + OW + T}" y2="${cy}" stroke="${LN}" stroke-width="1.1"/>`)
+      const Rp = R + T - p
+      casing.push(`<path d="M${x0 + p} ${yBot} V${cy} A${Rp} ${Rp} 0 0 1 ${x1 + OW + T - p} ${cy} V${yBot}" fill="none" stroke="${LN}" stroke-width="1"/>`)
+    } else {
+      const y0 = y1 - T
+      const W = OW + 2 * T
+      if (!sill) {
+        const H = OH + 2 * T
+        casing.push(`<rect x="${x0}" y="${y0}" width="${W}" height="${H}" fill="${C_CASE}" stroke="${LN}" stroke-width="2.2"/>`)
+        casing.push(`<rect x="${x0 + p}" y="${y0 + p}" width="${W - 2 * p}" height="${H - 2 * p}" fill="none" stroke="${LN}" stroke-width="1"/>`)
+        casing.push(`<line x1="${x0}" y1="${y0 + H}" x2="${x1}" y2="${yBot}" stroke="${LN}" stroke-width="1.1"/>`)
+        casing.push(`<line x1="${x0 + W}" y1="${y0 + H}" x2="${x1 + OW}" y2="${yBot}" stroke="${LN}" stroke-width="1.1"/>`)
+      } else {
+        casing.push(`<path d="M${x0} ${yBot} V${y0} H${x0 + W} V${yBot} H${x1 + OW} V${y1} H${x1} V${yBot} Z" fill="${C_CASE}" stroke="${LN}" stroke-width="2.2"/>`)
+        casing.push(`<path d="M${x0 + p} ${yBot} V${y0 + p} H${x0 + W - p} V${yBot}" fill="none" stroke="${LN}" stroke-width="1"/>`)
+      }
+      casing.push(`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${LN}" stroke-width="1.1"/>`)
+      casing.push(`<line x1="${x0 + W}" y1="${y0}" x2="${x1 + OW}" y2="${y1}" stroke="${LN}" stroke-width="1.1"/>`)
+    }
+    parts.unshift(...casing)
+  }
+
+  // — sill (stool + apron) —
+  if (sill) {
+    const stoolW = sillLen * S
+    const sx = x1 + OW / 2 - stoolW / 2
+    parts.push(`<rect x="${sx}" y="${yBot}" width="${stoolW}" height="6" fill="${C_CASE}" stroke="${LN}" stroke-width="2"/>`)
+    const apW = OW + T * 0.8
+    parts.push(`<rect x="${x1 - T * 0.4}" y="${yBot + 6}" width="${apW}" height="10" fill="${C_CASE}" stroke="${LN}" stroke-width="1.6"/>`)
+  }
+
+  // — measuring arrows —
+  const AR = (x1a: number, y1a: number, x2a: number, y2a: number, lb: string, lx: number, ly: number) =>
+    `<g stroke="#4DB6E8" stroke-width="1.6" fill="#4DB6E8"><line x1="${x1a}" y1="${y1a}" x2="${x2a}" y2="${y2a}" marker-start="url(#ahd)" marker-end="url(#ahd)"/><text x="${lx}" y="${ly}" font-size="12" font-weight="700" stroke="none">${lb}</text></g>`
+  const innerLb = g.singlePair ? ['W', 'H'] : ['W1', 'H1']
+  const outerLb = g.singlePair ? ['W', 'H'] : ['W2', 'H2']
+  if (g.showInner) {
+    // W arrow rides the upper sash (clear of the meeting rail); H arrow sits
+    // off-center so it doesn't overlap the centre muntin.
+    const iy = arch ? cy + (yBot - cy) * 0.45 : y1 + OH * 0.3
+    parts.push(AR(x1 + 2, iy, x1 + OW - 2, iy, innerLb[0], x1 + OW / 2 - 8, iy - 5))
+    const ix = arch ? x1 + R : x1 + OW * 0.3
+    parts.push(AR(ix, arch ? y1 - 2 : y1 + 2, ix, yBot - 2, innerLb[1], ix + 5, arch ? y1 + 26 : y1 + OH * 0.62))
+  }
+  if (g.showOuter) {
+    const xo = x1 - T
+    const yoTop = arch ? y1 - T : y1 - T
+    parts.push(AR(xo, yoTop - 12, x1 + OW + T, yoTop - 12, outerLb[0], x1 + OW / 2 - 8, yoTop - 17))
+    const xr = x1 + OW + T + 12
+    const yb2 = sill ? yBot : yBot + T
+    parts.push(AR(xr, yoTop, xr, yb2, outerLb[1], xr + 5, (yoTop + yb2) / 2))
+  }
+
+  return `<defs><marker id="ahd" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 z" fill="#4DB6E8"/></marker></defs>${parts.join('')}`
+}
+
+// Small thumbnails for the scene picker (same visual language, simplified).
+function SceneThumb({ scene }: { scene: Exclude<Scene, ''> }) {
+  const trim = sceneHasTrim(scene)
+  const sill = sceneHasSill(scene)
+  const arch = sceneIsArch(scene)
+  const parts: string[] = []
+  if (trim) {
+    if (arch) {
+      parts.push(`<path d="M12 52 V28 A20 20 0 0 1 52 28 V52 H46 V28 A14 14 0 0 0 18 28 V52 Z" fill="${C_CASE}" stroke="${LN}" stroke-width="1.4"/>`)
+      if (!sill) parts.push(`<rect x="12" y="52" width="40" height="6" fill="${C_CASE}" stroke="${LN}" stroke-width="1.2"/>`)
+    } else {
+      parts.push(`<rect x="10" y="6" width="44" height="${sill ? 46 : 52}" fill="${C_CASE}" stroke="${LN}" stroke-width="1.6"/>`)
+    }
+  }
+  if (arch) {
+    parts.push(`<path d="M18 52 V28 A14 14 0 0 1 46 28 V52 Z" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.6"/>`)
+    parts.push(`<path d="M21 49 V28 A11 11 0 0 1 43 28 V49 Z" fill="${C_GLASS}" stroke="${LN}" stroke-width="1"/>`)
+    parts.push(`<line x1="21" y1="28" x2="43" y2="28" stroke="${LN}" stroke-width="1"/>`)
+    parts.push(`<line x1="32" y1="28" x2="32" y2="49" stroke="${LN}" stroke-width="0.8"/>`)
+  } else {
+    const y0 = trim ? 12 : 8
+    const h = (sill ? 46 : 52) - (trim ? 10 : 4)
+    parts.push(`<rect x="17" y="${y0}" width="30" height="${h}" fill="${C_FRAME}" stroke="${LN}" stroke-width="1.6"/>`)
+    parts.push(`<rect x="21" y="${y0 + 4}" width="22" height="${h - 8}" fill="${C_GLASS}" stroke="${LN}" stroke-width="1"/>`)
+    parts.push(`<line x1="21" y1="${y0 + h / 2}" x2="43" y2="${y0 + h / 2}" stroke="${LN}" stroke-width="1"/>`)
+    parts.push(`<line x1="32" y1="${y0 + 4}" x2="32" y2="${y0 + h - 4}" stroke="${LN}" stroke-width="0.8"/>`)
+    if (trim && !sill) {
+      parts.push(`<line x1="10" y1="6" x2="17" y2="12" stroke="${LN}" stroke-width="0.9"/>`)
+      parts.push(`<line x1="54" y1="6" x2="47" y2="12" stroke="${LN}" stroke-width="0.9"/>`)
+      parts.push(`<line x1="10" y1="58" x2="17" y2="50" stroke="${LN}" stroke-width="0.9"/>`)
+      parts.push(`<line x1="54" y1="58" x2="47" y2="50" stroke="${LN}" stroke-width="0.9"/>`)
+    }
+  }
+  if (sill) {
+    parts.push(`<rect x="8" y="52" width="48" height="5" fill="${C_CASE}" stroke="${LN}" stroke-width="1.2"/>`)
+    parts.push(`<rect x="16" y="57" width="32" height="4" fill="${C_CASE}" stroke="${LN}" stroke-width="1"/>`)
+  }
+  return <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden dangerouslySetInnerHTML={{ __html: parts.join('') }} />
+}
+
+// The tailored measuring diagram, drawn at TRUE proportion from the typed
+// numbers. `trimSize` = the shallow-frame + trim rule (measure trim outer).
 function GuidanceDiagram({
   mount,
   scene,
   trimSize,
   language,
+  dims,
 }: {
   mount: '' | 'inside' | 'inside_z' | 'outside'
   scene: Scene
   trimSize: boolean
   language: WizardLanguage
+  dims: { w: string; h: string; trimW: string; frameW: string; sillLen: string }
 }) {
   const inside = mount === 'inside' || mount === 'inside_z'
   const sc: Exclude<Scene, ''> = (scene || 'plain') as Exclude<Scene, ''>
-  const hasTrim = trimSize || sc === 'trim' || sc === 'trim_sill'
-  const hasSill = sc === 'sill' || sc === 'trim_sill'
-  const isArch = sc === 'arch'
-
-  // Opening geometry (sill pushes the opening bottom up a little).
-  const ox = 70
-  const oy = 45
-  const ow = 120
-  const oh = hasSill ? 100 : 110
-  const sillY = oy + oh // top of the sill board
+  const trim = sceneHasTrim(sc)
+  const arch = sceneIsArch(sc)
+  const dualPairs = trim && !trimSize
 
   let caption: string
   if (trimSize) {
     caption = tr(language,
       "Shallow frame + wood trim: measure the TRIM's outer width and height — the treatment mounts on the trim, so the trim size is what we work from, not the opening.",
-      '浅窗框 + 木线条：测量木线条的外宽和外高。窗饰将安装在木线条上，要量的是线条外尺寸，不是窗洞。')
+      '浅窗框 + 木线条：测量窗套的外宽和外高。窗饰将安装在窗套上，要量的是窗套外沿尺寸，不是窗洞。')
+  } else if (dualPairs) {
+    caption = tr(language,
+      'With trim, measure BOTH: W1×H1 = the opening (inner frame), W2×H2 = the outer edge of the trim. The diagram redraws to your numbers.',
+      '有窗套时两组都量：W1×H1 = 窗洞（内框），W2×H2 = 窗套外沿。图会按您填的数字等比例重绘。')
   } else if (inside) {
-    caption = isArch
-      ? tr(language, 'Inside mount, arched window: measure the width at the WIDEST point and the height at the TALLEST point (to the top of the arch). Rough is fine — we re-measure at the free in-home visit.', '内嵌安装 · 拱形窗：宽度量最宽处，高度量到拱顶最高点。大致尺寸即可，上门时我们会精确复尺。')
+    caption = arch
+      ? tr(language, 'Inside mount, arched window: width at the WIDEST point, height at the TALLEST point (to the top of the arch). Rough is fine — we re-measure at the free in-home visit.', '内嵌安装 · 拱形窗：宽度量最宽处，高度量到拱顶最高点。大致尺寸即可，上门时我们会精确复尺。')
       : tr(language, 'Inside mount: measure the opening width and height once, roughly in the middle — rough is fine for this estimate; we re-measure precisely at your free in-home visit.', '内嵌安装：在窗框中间大致测量一次内宽和内高即可。此处用于参考估算，上门时我们会精确复尺。')
-  } else if (hasTrim) {
-    caption = tr(language, "Outside mount over trim: measure the trim's outer width and height — the treatment usually covers the trim completely.", '外挂安装 · 有窗套：测量木线条的外宽和外高，窗饰通常会把窗套完整盖住。')
-  } else if (hasSill) {
-    caption = tr(language, 'Outside mount with a sill: width edge to edge of the area to cover; height from where the treatment starts down to the TOP of the sill (or below it, if you want fuller coverage — tell us in the location name).', '外挂安装 · 有窗台：宽度量需要遮盖的范围；高度从安装位置量到窗台上沿（想盖过窗台可量到窗台下方，请在位置名称里注明）。')
+  } else if (sceneHasSill(sc)) {
+    caption = tr(language, 'Outside mount with a sill: width edge to edge of the area to cover; height from where the treatment starts down to the TOP of the sill (or below — tell us in the location name).', '外挂安装 · 有窗台：宽度量需要遮盖的范围；高度从安装位置量到窗台上沿（想盖过窗台可量到窗台下方，请在位置名称里注明）。')
   } else {
     caption = tr(language, 'Outside mount: measure the area you want covered, edge to edge — rough is fine, we confirm exact coverage at the free in-home measure.', '外挂安装：测量您希望遮盖的整个区域宽高。大致尺寸即可，上门时我们会确认精确覆盖范围。')
   }
 
+  const num0 = (v: string): number => {
+    const n = parseFloat(v)
+    return Number.isFinite(n) && n > 0 ? n : 0
+  }
+  const markup = buildSceneMarkup({
+    scene: sc,
+    openWIn: num0(dims.w) || 36,
+    openHIn: num0(dims.h) || 54,
+    trimIn: num0(dims.trimW) || 2.5,
+    frameIn: num0(dims.frameW) || 1.5,
+    sillLenIn: num0(dims.sillLen) || null,
+    showInner: trimSize ? false : dualPairs ? true : true,
+    showOuter: trimSize ? true : dualPairs ? true : false,
+    singlePair: !dualPairs,
+  })
   return (
-    <DiagramFrame caption={caption}>
-      {/* trim / frame */}
-      {hasTrim ? (
-        <rect x={ox - 16} y={oy - 16} width={ow + 32} height={oh + (hasSill ? 16 : 32)} fill="#e8e2d8" stroke="#12141C" strokeWidth="2" />
-      ) : (
-        <rect x={ox - 8} y={oy - 8} width={ow + 16} height={oh + (hasSill ? 8 : 16)} fill="#fff" stroke="#12141C" strokeWidth={isArch ? 0 : 5} />
-      )}
-      {/* opening + glass */}
-      {isArch ? (
-        <>
-          <path
-            d={`M${ox} ${oy + oh} V${oy + 42} Q${ox} ${oy - 4} ${ox + ow / 2} ${oy - 4} Q${ox + ow} ${oy - 4} ${ox + ow} ${oy + 42} V${oy + oh} Z`}
-            fill="#F7F5F2" stroke="#12141C" strokeWidth="3"
-          />
-          <line x1={ox + ow / 2} y1={oy - 4} x2={ox + ow / 2} y2={oy + oh} stroke="#12141C" strokeWidth="1" />
-        </>
-      ) : (
-        <>
-          <rect x={ox} y={oy} width={ow} height={oh} fill="#F7F5F2" stroke="#12141C" strokeWidth="2" />
-          <line x1={ox + ow / 2} y1={oy} x2={ox + ow / 2} y2={oy + oh} stroke="#12141C" strokeWidth="1" />
-          <line x1={ox} y1={oy + oh / 2} x2={ox + ow} y2={oy + oh / 2} stroke="#12141C" strokeWidth="1" />
-        </>
-      )}
-      {/* sill board sticking out past the frame */}
-      {hasSill && <rect x={ox - (hasTrim ? 24 : 16)} y={sillY} width={ow + (hasTrim ? 48 : 32)} height={8} fill="#12141C" />}
-
-      {/* measuring arrows */}
-      {trimSize || (!inside && hasTrim) ? (
-        <>
-          <Arrow x1={ox - 16} y1={oy - 26} x2={ox + ow + 16} y2={oy - 26} labelText={tr(language, 'W (trim)', 'W（线条外）')} lx={ox + 18} ly={oy - 30} />
-          <Arrow x1={ox + ow + 26} y1={oy - 16} x2={ox + ow + 26} y2={hasSill ? sillY : oy + oh + 16} labelText="H" lx={ox + ow + 32} ly={oy + oh / 2} />
-        </>
-      ) : inside ? (
-        <>
-          <Arrow x1={ox + 2} y1={oy + oh / 2 + (isArch ? 14 : 0)} x2={ox + ow - 2} y2={oy + oh / 2 + (isArch ? 14 : 0)} labelText="W" lx={ox + ow / 2 - 4} ly={oy + oh / 2 + (isArch ? 10 : -4)} />
-          <Arrow x1={ox + ow / 2 + (isArch ? 0 : 18)} y1={isArch ? oy - 2 : oy + 2} x2={ox + ow / 2 + (isArch ? 0 : 18)} y2={oy + oh - 2} labelText="H" lx={ox + ow / 2 + (isArch ? 6 : 24)} ly={oy + oh / 2 - 14} />
-        </>
-      ) : (
-        <>
-          <Arrow x1={ox - 10} y1={oy - 20} x2={ox + ow + 10} y2={oy - 20} labelText="W" lx={ox + ow / 2 - 4} ly={oy - 24} />
-          <Arrow x1={ox + ow + 22} y1={oy - 10} x2={ox + ow + 22} y2={hasSill ? sillY : oy + oh + 12} labelText="H" lx={ox + ow + 28} ly={oy + oh / 2} />
-          {hasSill && <text x={ox + ow - 30} y={sillY + 20} fontSize="9" fill="#6b7280">{tr(language, 'sill', '窗台')}</text>}
-        </>
-      )}
-    </DiagramFrame>
+    <div className="rounded-2xl bg-[#F7F5F2] p-4">
+      <svg viewBox="0 0 300 330" className="h-auto w-full" role="img" aria-label={caption} dangerouslySetInnerHTML={{ __html: markup }} />
+      <p className="mt-2 text-[12px] leading-relaxed text-gray-500">{caption}</p>
+    </div>
   )
 }
 
@@ -540,6 +697,10 @@ export default function MeasureWizardClient({
   const mountInfo = needsDepth && draft.product ? mountOptionsFor(draft.product as Product, draft.depthChoice, language) : null
   const askTrim = needsDepth && draft.product ? trimQuestionApplies(draft.product as Product, draft.depthChoice) : false
   const useTrimSize = askTrim && draft.hasTrim === true
+  // v3: trim scene → measure BOTH the opening (W1/H1) and the trim outer
+  // edge (W2/H2); scene extras = the trim/frame/sill dimension inputs.
+  const dualPairs = needsDepth && sceneHasTrim(draft.scene) && !useTrimSize
+  const sceneExtras = needsDepth && draft.scene !== '' && draft.kind === 'window'
   const mountReady = !needsDepth || (draft.mount !== '' && (!askTrim || draft.hasTrim !== null))
 
   // Auto-clear an invalid mount when the depth choice changes.
@@ -633,6 +794,10 @@ export default function MeasureWizardClient({
             hasTrim: askTrim ? draft.hasTrim : false,
             mount: draft.mount,
             scene: draft.scene,
+            trimWidthIn: sceneHasTrim(draft.scene) ? (num(draft.trimW) ?? 2.5) : null,
+            frameWidthIn: draft.scene ? (num(draft.frameW) ?? null) : null,
+            sillLengthIn: sceneHasSill(draft.scene) ? (num(draft.sillLen) ?? null) : null,
+            sillDepthIn: sceneHasSill(draft.scene) ? (num(draft.sillDepth) ?? null) : null,
             ...(draft.product === 'shutters'
               ? {
                   material: draft.material,
@@ -649,6 +814,9 @@ export default function MeasureWizardClient({
       C_topIn: num(draft.C) ?? null,
       D_bottomIn: draft.kind === 'sliding_door' ? null : (num(draft.D) ?? null),
       wallHeightIn: num(draft.wallH) ?? null,
+      // with trim: optional second pair measured at the trim's OUTER edge
+      outerWidthIn: sceneHasTrim(draft.scene) && !useTrimSize ? (num(draft.oW) ?? null) : null,
+      outerHeightIn: sceneHasTrim(draft.scene) && !useTrimSize ? (num(draft.oH) ?? null) : null,
       measured: useTrimSize ? 'trim' : 'opening',
     }
     const result: Record<string, unknown> =
@@ -692,7 +860,13 @@ export default function MeasureWizardClient({
       depthChoice: ['deep', 'mid', 'shallow'].includes(c.depthChoice) ? c.depthChoice : '',
       hasTrim: typeof c.hasTrim === 'boolean' ? c.hasTrim : null,
       mount: c.mount || '',
-      scene: ['plain', 'sill', 'trim', 'trim_sill', 'arch'].includes(c.scene) ? c.scene : '',
+      scene: (SCENE_KEYS as readonly string[]).includes(c.scene) ? c.scene : '',
+      trimW: c.trimWidthIn != null ? String(c.trimWidthIn) : '2.5',
+      frameW: c.frameWidthIn != null ? String(c.frameWidthIn) : '1.5',
+      sillLen: c.sillLengthIn != null ? String(c.sillLengthIn) : '',
+      sillDepth: c.sillDepthIn != null ? String(c.sillDepthIn) : '',
+      oW: d.outerWidthIn != null ? String(d.outerWidthIn) : '',
+      oH: d.outerHeightIn != null ? String(d.outerHeightIn) : '',
       material: c.material || 'poly_vinyl',
       shStyle: c.shStyle || 'standard',
       shQty: c.shQty != null ? String(c.shQty) : '1',
@@ -733,7 +907,8 @@ export default function MeasureWizardClient({
             ? tr(language, 'Inside mount', '内嵌安装')
             : ''
     const dimsText = (d: any) => {
-      const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? tr(language, ' (trim)', '（线条外尺寸）') : ''}`]
+      const parts = [`${d?.widthIn ?? '?'}″ × ${d?.heightIn ?? '?'}″${d?.measured === 'trim' ? tr(language, ' (trim)', '（窗套外沿）') : ''}`]
+      if (d?.outerWidthIn && d?.outerHeightIn) parts.push(`${tr(language, 'trim outer', '窗套外沿')} ${d.outerWidthIn}″ × ${d.outerHeightIn}″`)
       if (d?.A_leftIn) parts.push(`A ${d.A_leftIn}″`)
       if (d?.B_rightIn) parts.push(`B ${d.B_rightIn}″`)
       if (d?.C_topIn) parts.push(`C ${d.C_topIn}″`)
@@ -1196,17 +1371,73 @@ export default function MeasureWizardClient({
             {draft.product === 'drapery' ? (
               <DraperyDiagram kind={draft.kind} language={language} />
             ) : (
-              <GuidanceDiagram mount={draft.mount} scene={draft.scene} trimSize={useTrimSize} language={language} />
+              <GuidanceDiagram
+                mount={draft.mount}
+                scene={draft.scene}
+                trimSize={useTrimSize}
+                language={language}
+                dims={{ w: draft.w, h: draft.h, trimW: draft.trimW, frameW: draft.frameW, sillLen: draft.sillLen }}
+              />
             )}
             <div className="grid gap-5">
               <div>
-                <label className={label}>{useTrimSize ? tr(language, 'Trim outer width *', '木线条外宽 *') : tr(language, 'Width (W) *', '宽度（W）*')}</label>
+                <label className={label}>
+                  {useTrimSize
+                    ? tr(language, 'Trim outer width *', '窗套外宽 *')
+                    : dualPairs
+                      ? tr(language, 'W1 — opening (inner frame) width *', 'W1 — 窗洞（内框）宽 *')
+                      : tr(language, 'Width (W) *', '宽度（W）*')}
+                </label>
                 <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.w} onChange={(e) => set('w', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
               </div>
               <div>
-                <label className={label}>{useTrimSize ? tr(language, 'Trim outer height *', '木线条外高 *') : tr(language, 'Height (H) *', '高度（H）*')}</label>
+                <label className={label}>
+                  {useTrimSize
+                    ? tr(language, 'Trim outer height *', '窗套外高 *')
+                    : dualPairs
+                      ? tr(language, 'H1 — opening (inner frame) height *', 'H1 — 窗洞（内框）高 *')
+                      : tr(language, 'Height (H) *', '高度（H）*')}
+                </label>
                 <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.h} onChange={(e) => set('h', e.target.value)} placeholder={tr(language, 'inches', '英寸')} />
               </div>
+              {dualPairs && (
+                <>
+                  <div>
+                    <label className={label}>{tr(language, 'W2 — trim outer width', 'W2 — 窗套外沿宽')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.oW} onChange={(e) => set('oW', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
+                  </div>
+                  <div>
+                    <label className={label}>{tr(language, 'H2 — trim outer height', 'H2 — 窗套外沿高')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.125} value={draft.oH} onChange={(e) => set('oH', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
+                  </div>
+                </>
+              )}
+              {sceneExtras && (
+                <div className="grid grid-cols-2 gap-4">
+                  {sceneHasTrim(draft.scene) && (
+                    <div>
+                      <label className={label}>{tr(language, 'Trim width', '窗套宽度')}</label>
+                      <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.trimW} onChange={(e) => set('trimW', e.target.value)} placeholder="2.5" />
+                    </div>
+                  )}
+                  <div>
+                    <label className={label}>{tr(language, 'Frame width', '窗框宽度')}</label>
+                    <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.frameW} onChange={(e) => set('frameW', e.target.value)} placeholder="1.5" />
+                  </div>
+                  {sceneHasSill(draft.scene) && (
+                    <>
+                      <div>
+                        <label className={label}>{tr(language, 'Sill length', '窗台长度')}</label>
+                        <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.sillLen} onChange={(e) => set('sillLen', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
+                      </div>
+                      <div>
+                        <label className={label}>{tr(language, 'Sill projection', '窗台凸出墙面厚度')}</label>
+                        <input className={inputCls} type="number" inputMode="decimal" min={0} step={0.25} value={draft.sillDepth} onChange={(e) => set('sillDepth', e.target.value)} placeholder={tr(language, 'inches (optional)', '英寸（选填）')} />
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
               {draft.product === 'drapery' && (
                 <>
                   <div>
