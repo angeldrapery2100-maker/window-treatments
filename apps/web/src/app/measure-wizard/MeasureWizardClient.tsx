@@ -444,8 +444,8 @@ function buildDoorMarkup(g: SceneGeom): string {
     }
     drawPanel(x1, false)
     drawPanel(x1 + OW - pw, true)
-    // handle on the front panel's leading stile
-    parts.push(`<rect x="${x1 + OW - pw + stile * 0.25}" y="${y1 + OH * 0.44}" width="3.5" height="${OH * 0.12}" rx="1.5" fill="${LN}"/>`)
+    // handle on the right jamb edge of the sliding panel (matches the app drawings)
+    parts.push(`<rect x="${x1 + OW - stile * 0.25 - 3.5}" y="${y1 + OH * 0.44}" width="3.5" height="${OH * 0.12}" rx="1.5" fill="${LN}"/>`)
     // track
     parts.push(`<line x1="${x1}" y1="${yBot - 2.5}" x2="${x1 + OW}" y2="${yBot - 2.5}" stroke="${LN}" stroke-width="1.2"/>`)
   } else {
