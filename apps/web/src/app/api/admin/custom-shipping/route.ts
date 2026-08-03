@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic'
 
 const SHIPPO_API = 'https://api.goshippo.com'
 const SHIPPO_TOKEN = process.env.SHIPPO_API_KEY || ''
+const GOOGLE_PLACES_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || ''
 
 const FROM = {
   name: 'Angel Drapery',
@@ -131,28 +132,29 @@ function rateResponse(rates: any[]) {
     }))
 }
 
-function addressSuggestionKey(s: any): string {
-  return [
-    s.name, s.company, s.street1, s.street2, s.city, s.state, s.zip, s.country, s.phone, s.email,
-  ].map(v => String(v || '').trim().toLowerCase()).join('|')
+function componentValue(components: any[], type: string, field: 'longText' | 'shortText' = 'longText') {
+  const component = components.find((c: any) => Array.isArray(c.types) && c.types.includes(type))
+  return component?.[field] || component?.longText || component?.shortText || ''
 }
 
-function normalizeSuggestion(input: any, source: 'order' | 'custom') {
-  const addr = input.shipping_address || {}
+function googleAddressFromComponents(components: any[]) {
+  const streetNumber = componentValue(components, 'street_number')
+  const route = componentValue(components, 'route')
+  const subpremise = componentValue(components, 'subpremise')
   return {
-    source,
-    sourceLabel: source === 'order' ? (input.order_number || 'Order') : 'Custom label',
-    lastUsedAt: input.created_at ? new Date(input.created_at).toISOString() : '',
-    name: input.customer_name || input.recipient_name || '',
-    company: input.recipient_company || '',
-    street1: addr.street || input.street1 || '',
-    street2: addr.street2 || input.street2 || '',
-    city: addr.city || input.city || '',
-    state: addr.state || input.state || '',
-    zip: addr.zip || input.zip || '',
-    country: addr.country || input.country || 'US',
-    phone: input.customer_phone || input.phone || '',
-    email: input.customer_email || input.email || '',
+    name: '',
+    company: '',
+    street1: [streetNumber, route].filter(Boolean).join(' '),
+    street2: subpremise ? `#${subpremise}` : '',
+    city: componentValue(components, 'locality')
+      || componentValue(components, 'postal_town')
+      || componentValue(components, 'sublocality')
+      || componentValue(components, 'administrative_area_level_3'),
+    state: componentValue(components, 'administrative_area_level_1', 'shortText'),
+    zip: componentValue(components, 'postal_code'),
+    country: componentValue(components, 'country', 'shortText') || 'US',
+    phone: '',
+    email: '',
   }
 }
 
@@ -166,59 +168,81 @@ export async function POST(request: Request) {
     const body = await request.json()
     const action = body?.action
 
-    if (action === 'address_suggest') {
-      const term = cleanText(body?.query, 128)
-      if (term.length < 2) return NextResponse.json({ success: true, data: { suggestions: [] } })
+    if (action === 'address_autocomplete') {
+      const input = cleanText(body?.query, 160)
+      if (input.length < 3) return NextResponse.json({ success: true, data: { suggestions: [] } })
+      if (!GOOGLE_PLACES_KEY) {
+        return NextResponse.json({ success: false, error: 'Google Places API key is not configured.' }, { status: 400 })
+      }
 
-      const like = `%${term}%`
-      const orderRows = await query<any>(
-        `SELECT order_number, customer_name, customer_email, customer_phone, shipping_address, created_at
-         FROM orders
-         WHERE customer_name ILIKE $1
-            OR customer_email ILIKE $1
-            OR customer_phone ILIKE $1
-            OR shipping_address->>'street' ILIKE $1
-            OR shipping_address->>'city' ILIKE $1
-            OR shipping_address->>'zip' ILIKE $1
-         ORDER BY created_at DESC
-         LIMIT 12`,
-        [like]
-      ).catch((e: any) => {
-        if (e instanceof Error && e.message.includes('does not exist')) return []
-        throw e
+      const google = await fetch('https://places.googleapis.com/v1/places:autocomplete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': GOOGLE_PLACES_KEY,
+          'X-Goog-FieldMask': 'suggestions.placePrediction.place,suggestions.placePrediction.placeId,suggestions.placePrediction.text.text',
+        },
+        body: JSON.stringify({
+          input,
+          sessionToken: cleanText(body?.sessionToken, 128) || undefined,
+          includedRegionCodes: ['us'],
+          locationBias: {
+            circle: {
+              center: { latitude: 34.1072, longitude: -118.0578 },
+              radius: 80000,
+            },
+          },
+        }),
       })
+      const data = await google.json()
+      if (!google.ok) {
+        return NextResponse.json({ success: false, error: data?.error?.message || 'Could not autocomplete address.' }, { status: 400 })
+      }
 
-      const customRows = await query<any>(
-        `SELECT recipient_name, recipient_company, street1, street2, city, state, zip, country, phone, email, created_at
-         FROM admin_custom_shipments
-         WHERE recipient_name ILIKE $1
-            OR recipient_company ILIKE $1
-            OR email ILIKE $1
-            OR phone ILIKE $1
-            OR street1 ILIKE $1
-            OR city ILIKE $1
-            OR zip ILIKE $1
-         ORDER BY created_at DESC
-         LIMIT 12`,
-        [like]
-      ).catch((e: any) => {
-        if (e instanceof Error && e.message.includes('does not exist')) return []
-        throw e
-      })
-
-      const seen = new Set<string>()
-      const suggestions = [...orderRows.map((r: any) => normalizeSuggestion(r, 'order')), ...customRows.map((r: any) => normalizeSuggestion(r, 'custom'))]
-        .filter((s: any) => s.name && s.street1 && s.city && s.state && s.zip)
-        .filter((s: any) => {
-          const key = addressSuggestionKey(s)
-          if (seen.has(key)) return false
-          seen.add(key)
-          return true
-        })
-        .sort((a: any, b: any) => new Date(b.lastUsedAt || 0).getTime() - new Date(a.lastUsedAt || 0).getTime())
-        .slice(0, 8)
+      const suggestions = (data?.suggestions || [])
+        .map((s: any) => s.placePrediction)
+        .filter(Boolean)
+        .map((p: any) => ({
+          place: p.place || (p.placeId ? `places/${p.placeId}` : ''),
+          placeId: p.placeId || '',
+          description: p.text?.text || '',
+        }))
+        .filter((p: any) => p.place && p.description)
+        .slice(0, 6)
 
       return NextResponse.json({ success: true, data: { suggestions } })
+    }
+
+    if (action === 'address_place_details') {
+      const place = cleanText(body?.place, 256)
+      if (!place.startsWith('places/')) return NextResponse.json({ success: false, error: 'place is required.' }, { status: 400 })
+      if (!GOOGLE_PLACES_KEY) {
+        return NextResponse.json({ success: false, error: 'Google Places API key is not configured.' }, { status: 400 })
+      }
+
+      const sessionToken = cleanText(body?.sessionToken, 128)
+      const placePath = place.split('/').map(part => encodeURIComponent(part)).join('/')
+      const detailsUrl = new URL(`https://places.googleapis.com/v1/${placePath}`)
+      if (sessionToken) detailsUrl.searchParams.set('sessionToken', sessionToken)
+      const details = await fetch(detailsUrl, {
+        headers: {
+          'X-Goog-Api-Key': GOOGLE_PLACES_KEY,
+          'X-Goog-FieldMask': 'addressComponents,formattedAddress,displayName',
+        },
+      })
+      const data = await details.json()
+      if (!details.ok) {
+        return NextResponse.json({ success: false, error: data?.error?.message || 'Could not load address details.' }, { status: 400 })
+      }
+
+      const address = googleAddressFromComponents(data?.addressComponents || [])
+      return NextResponse.json({
+        success: true,
+        data: {
+          formattedAddress: data?.formattedAddress || '',
+          address,
+        },
+      })
     }
 
     if (action === 'validate_address') {

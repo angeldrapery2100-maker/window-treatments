@@ -35,10 +35,10 @@ type Rate = {
   carrierImage?: string
 }
 
-type AddressSuggestion = Address & {
-  source: 'order' | 'custom'
-  sourceLabel: string
-  lastUsedAt: string
+type AddressSuggestion = {
+  place: string
+  placeId: string
+  description: string
 }
 
 type PackageOption = {
@@ -116,8 +116,13 @@ export default function CreateCustomShipmentPage() {
   const [message, setMessage] = useState('')
   const [validatedAddress, setValidatedAddress] = useState<Address | null>(null)
   const [addressQuery, setAddressQuery] = useState('')
+  const [addressSessionToken] = useState(() => {
+    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) return crypto.randomUUID()
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  })
   const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([])
   const [suggesting, setSuggesting] = useState(false)
+  const [loadingPlace, setLoadingPlace] = useState(false)
   const [purchased, setPurchased] = useState<{ trackingNumber: string; trackingUrl: string; labelUrl: string } | null>(null)
 
   const selectedPackage = PACKAGE_OPTIONS.find(p => p.id === packageId) || PACKAGE_OPTIONS[0]
@@ -126,12 +131,12 @@ export default function CreateCustomShipmentPage() {
   const setAddressField = (key: keyof Address, value: string) => {
     setAddress(prev => ({ ...prev, [key]: value }))
     setValidatedAddress(null)
-    if (['name', 'street1', 'city', 'zip', 'phone', 'email'].includes(key)) setAddressQuery(value)
+    if (key === 'street1') setAddressQuery(value)
   }
 
   useEffect(() => {
     const q = addressQuery.trim()
-    if (q.length < 2) {
+    if (q.length < 3) {
       setAddressSuggestions([])
       setSuggesting(false)
       return
@@ -142,10 +147,15 @@ export default function CreateCustomShipmentPage() {
         const res = await fetch('/api/admin/custom-shipping', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'address_suggest', query: q }),
+          body: JSON.stringify({ action: 'address_autocomplete', query: q, sessionToken: addressSessionToken }),
         })
         const data = await res.json()
-        setAddressSuggestions(data.success ? (data.data.suggestions || []) : [])
+        if (data.success) {
+          setAddressSuggestions(data.data.suggestions || [])
+        } else {
+          setAddressSuggestions([])
+          setMessage(data.error || 'Address autocomplete is not available.')
+        }
       } catch {
         setAddressSuggestions([])
       } finally {
@@ -155,23 +165,39 @@ export default function CreateCustomShipmentPage() {
     return () => window.clearTimeout(timer)
   }, [addressQuery])
 
-  const applyAddressSuggestion = (suggestion: AddressSuggestion) => {
-    setAddress({
-      name: suggestion.name,
-      company: suggestion.company,
-      street1: suggestion.street1,
-      street2: suggestion.street2,
-      city: suggestion.city,
-      state: suggestion.state,
-      zip: suggestion.zip,
-      country: suggestion.country || 'US',
-      phone: suggestion.phone,
-      email: suggestion.email,
-    })
-    setAddressSuggestions([])
-    setAddressQuery('')
-    setValidatedAddress(null)
-    setMessage('Address filled from history.')
+  const applyAddressSuggestion = async (suggestion: AddressSuggestion) => {
+    setLoadingPlace(true)
+    setMessage('')
+    try {
+      const res = await fetch('/api/admin/custom-shipping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'address_place_details', place: suggestion.place, sessionToken: addressSessionToken }),
+      })
+      const data = await res.json()
+      if (!data.success) {
+        setMessage(data.error || 'Could not load address details.')
+        return
+      }
+      const picked = data.data.address || {}
+      setAddress(prev => ({
+        ...prev,
+        street1: picked.street1 || prev.street1,
+        street2: picked.street2 || prev.street2,
+        city: picked.city || prev.city,
+        state: picked.state || prev.state,
+        zip: picked.zip || prev.zip,
+        country: picked.country || prev.country || 'US',
+      }))
+      setAddressSuggestions([])
+      setAddressQuery('')
+      setValidatedAddress(null)
+      setMessage('Address selected. Add name, phone, and email if needed.')
+    } catch {
+      setMessage('Could not load address details.')
+    } finally {
+      setLoadingPlace(false)
+    }
   }
 
   const setParcelField = (key: keyof Parcel, value: string) => {
@@ -320,26 +346,25 @@ export default function CreateCustomShipmentPage() {
                 {validating ? 'Checking...' : 'Validate Address'}
               </button>
             </div>
-            {(suggesting || addressSuggestions.length > 0) && (
+            {(suggesting || loadingPlace || addressSuggestions.length > 0) && (
               <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase text-gray-500">Address matches</p>
+                  <p className="text-xs font-semibold uppercase text-gray-500">Address suggestions</p>
                   {suggesting && <p className="text-xs text-gray-400">Searching...</p>}
+                  {loadingPlace && <p className="text-xs text-gray-400">Filling address...</p>}
                 </div>
                 {addressSuggestions.length > 0 && (
                   <div className="mt-2 grid gap-2">
                     {addressSuggestions.map((suggestion, i) => (
-                      <button key={`${suggestion.source}-${suggestion.sourceLabel}-${i}`} type="button"
+                      <button key={`${suggestion.place}-${i}`} type="button"
                         onClick={() => applyAddressSuggestion(suggestion)}
                         className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-left hover:border-gray-900 hover:bg-white">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-gray-900">{suggestion.name}</p>
-                            <p className="mt-0.5 truncate text-xs text-gray-500">{compactAddress(suggestion)}</p>
-                            <p className="mt-0.5 truncate text-xs text-gray-400">{[suggestion.phone, suggestion.email].filter(Boolean).join(' · ')}</p>
+                            <p className="truncate text-sm font-semibold text-gray-900">{suggestion.description}</p>
                           </div>
                           <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
-                            {suggestion.sourceLabel}
+                            Google
                           </span>
                         </div>
                       </button>
