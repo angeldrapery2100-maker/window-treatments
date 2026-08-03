@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 type Address = {
@@ -33,6 +33,12 @@ type Rate = {
   currency: string
   estimatedDays: number | string
   carrierImage?: string
+}
+
+type AddressSuggestion = Address & {
+  source: 'order' | 'custom'
+  sourceLabel: string
+  lastUsedAt: string
 }
 
 type PackageOption = {
@@ -109,6 +115,9 @@ export default function CreateCustomShipmentPage() {
   const [buying, setBuying] = useState(false)
   const [message, setMessage] = useState('')
   const [validatedAddress, setValidatedAddress] = useState<Address | null>(null)
+  const [addressQuery, setAddressQuery] = useState('')
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([])
+  const [suggesting, setSuggesting] = useState(false)
   const [purchased, setPurchased] = useState<{ trackingNumber: string; trackingUrl: string; labelUrl: string } | null>(null)
 
   const selectedPackage = PACKAGE_OPTIONS.find(p => p.id === packageId) || PACKAGE_OPTIONS[0]
@@ -117,7 +126,54 @@ export default function CreateCustomShipmentPage() {
   const setAddressField = (key: keyof Address, value: string) => {
     setAddress(prev => ({ ...prev, [key]: value }))
     setValidatedAddress(null)
+    if (['name', 'street1', 'city', 'zip', 'phone', 'email'].includes(key)) setAddressQuery(value)
   }
+
+  useEffect(() => {
+    const q = addressQuery.trim()
+    if (q.length < 2) {
+      setAddressSuggestions([])
+      setSuggesting(false)
+      return
+    }
+    const timer = window.setTimeout(async () => {
+      setSuggesting(true)
+      try {
+        const res = await fetch('/api/admin/custom-shipping', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'address_suggest', query: q }),
+        })
+        const data = await res.json()
+        setAddressSuggestions(data.success ? (data.data.suggestions || []) : [])
+      } catch {
+        setAddressSuggestions([])
+      } finally {
+        setSuggesting(false)
+      }
+    }, 250)
+    return () => window.clearTimeout(timer)
+  }, [addressQuery])
+
+  const applyAddressSuggestion = (suggestion: AddressSuggestion) => {
+    setAddress({
+      name: suggestion.name,
+      company: suggestion.company,
+      street1: suggestion.street1,
+      street2: suggestion.street2,
+      city: suggestion.city,
+      state: suggestion.state,
+      zip: suggestion.zip,
+      country: suggestion.country || 'US',
+      phone: suggestion.phone,
+      email: suggestion.email,
+    })
+    setAddressSuggestions([])
+    setAddressQuery('')
+    setValidatedAddress(null)
+    setMessage('Address filled from history.')
+  }
+
   const setParcelField = (key: keyof Parcel, value: string) => {
     setParcel(prev => ({ ...prev, [key]: value }))
     if (key !== 'weight' && key !== 'massUnit') setPackageId('custom')
@@ -259,11 +315,39 @@ export default function CreateCustomShipmentPage() {
           <section className="bg-white rounded-lg border border-gray-200 p-5">
             <div className="flex items-center justify-between gap-3 mb-4">
               <h2 className="font-semibold text-gray-900">Recipient</h2>
-              <button onClick={validateAddress} disabled={validating}
+              <button type="button" onClick={validateAddress} disabled={validating}
                 className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50">
                 {validating ? 'Checking...' : 'Validate Address'}
               </button>
             </div>
+            {(suggesting || addressSuggestions.length > 0) && (
+              <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase text-gray-500">Address matches</p>
+                  {suggesting && <p className="text-xs text-gray-400">Searching...</p>}
+                </div>
+                {addressSuggestions.length > 0 && (
+                  <div className="mt-2 grid gap-2">
+                    {addressSuggestions.map((suggestion, i) => (
+                      <button key={`${suggestion.source}-${suggestion.sourceLabel}-${i}`} type="button"
+                        onClick={() => applyAddressSuggestion(suggestion)}
+                        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-left hover:border-gray-900 hover:bg-white">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-gray-900">{suggestion.name}</p>
+                            <p className="mt-0.5 truncate text-xs text-gray-500">{compactAddress(suggestion)}</p>
+                            <p className="mt-0.5 truncate text-xs text-gray-400">{[suggestion.phone, suggestion.email].filter(Boolean).join(' · ')}</p>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+                            {suggestion.sourceLabel}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="grid sm:grid-cols-2 gap-4">
               <label className="text-sm text-gray-600">Name
                 <input value={address.name} onChange={e => setAddressField('name', e.target.value)} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:ring-2 focus:ring-gray-900 focus:border-transparent" />

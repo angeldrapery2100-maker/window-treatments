@@ -131,6 +131,31 @@ function rateResponse(rates: any[]) {
     }))
 }
 
+function addressSuggestionKey(s: any): string {
+  return [
+    s.name, s.company, s.street1, s.street2, s.city, s.state, s.zip, s.country, s.phone, s.email,
+  ].map(v => String(v || '').trim().toLowerCase()).join('|')
+}
+
+function normalizeSuggestion(input: any, source: 'order' | 'custom') {
+  const addr = input.shipping_address || {}
+  return {
+    source,
+    sourceLabel: source === 'order' ? (input.order_number || 'Order') : 'Custom label',
+    lastUsedAt: input.created_at ? new Date(input.created_at).toISOString() : '',
+    name: input.customer_name || input.recipient_name || '',
+    company: input.recipient_company || '',
+    street1: addr.street || input.street1 || '',
+    street2: addr.street2 || input.street2 || '',
+    city: addr.city || input.city || '',
+    state: addr.state || input.state || '',
+    zip: addr.zip || input.zip || '',
+    country: addr.country || input.country || 'US',
+    phone: input.customer_phone || input.phone || '',
+    email: input.customer_email || input.email || '',
+  }
+}
+
 export async function POST(request: Request) {
   let adminUser: any
   try { adminUser = requireAdmin(request) } catch {
@@ -140,6 +165,61 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const action = body?.action
+
+    if (action === 'address_suggest') {
+      const term = cleanText(body?.query, 128)
+      if (term.length < 2) return NextResponse.json({ success: true, data: { suggestions: [] } })
+
+      const like = `%${term}%`
+      const orderRows = await query<any>(
+        `SELECT order_number, customer_name, customer_email, customer_phone, shipping_address, created_at
+         FROM orders
+         WHERE customer_name ILIKE $1
+            OR customer_email ILIKE $1
+            OR customer_phone ILIKE $1
+            OR shipping_address->>'street' ILIKE $1
+            OR shipping_address->>'city' ILIKE $1
+            OR shipping_address->>'zip' ILIKE $1
+         ORDER BY created_at DESC
+         LIMIT 12`,
+        [like]
+      ).catch((e: any) => {
+        if (e instanceof Error && e.message.includes('does not exist')) return []
+        throw e
+      })
+
+      const customRows = await query<any>(
+        `SELECT recipient_name, recipient_company, street1, street2, city, state, zip, country, phone, email, created_at
+         FROM admin_custom_shipments
+         WHERE recipient_name ILIKE $1
+            OR recipient_company ILIKE $1
+            OR email ILIKE $1
+            OR phone ILIKE $1
+            OR street1 ILIKE $1
+            OR city ILIKE $1
+            OR zip ILIKE $1
+         ORDER BY created_at DESC
+         LIMIT 12`,
+        [like]
+      ).catch((e: any) => {
+        if (e instanceof Error && e.message.includes('does not exist')) return []
+        throw e
+      })
+
+      const seen = new Set<string>()
+      const suggestions = [...orderRows.map((r: any) => normalizeSuggestion(r, 'order')), ...customRows.map((r: any) => normalizeSuggestion(r, 'custom'))]
+        .filter((s: any) => s.name && s.street1 && s.city && s.state && s.zip)
+        .filter((s: any) => {
+          const key = addressSuggestionKey(s)
+          if (seen.has(key)) return false
+          seen.add(key)
+          return true
+        })
+        .sort((a: any, b: any) => new Date(b.lastUsedAt || 0).getTime() - new Date(a.lastUsedAt || 0).getTime())
+        .slice(0, 8)
+
+      return NextResponse.json({ success: true, data: { suggestions } })
+    }
 
     if (action === 'validate_address') {
       const address = cleanAddress(body?.address)
