@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       throw e
     })
 
-    const shipments = rows.map((r: any) => {
+    const orderShipments = rows.map((r: any) => {
       const addr = r.shipping_address || {}
       const orderItems: any[] = Array.isArray(r.items) ? r.items : []
       const indices: number[] = Array.isArray(r.item_indices) ? r.item_indices : []
@@ -77,6 +77,7 @@ export async function GET(request: Request) {
 
       return {
         id: r.id,
+        source: 'order',
         orderId: r.order_id,
         orderNumber: r.order_number || '',
         status: mapStatus(r.status),
@@ -106,6 +107,7 @@ export async function GET(request: Request) {
         parcelWidth: r.parcel_width != null ? Number(r.parcel_width) : 0,
         parcelHeight: r.parcel_height != null ? Number(r.parcel_height) : 0,
         parcelWeight: r.parcel_weight != null ? Number(r.parcel_weight) : 0,
+        parcelWeightUnit: 'lb',
         // Only the total label cost is persisted; retail/service breakdown isn't.
         retailRate: 0,
         shippingRate: totalCost,
@@ -114,6 +116,61 @@ export async function GET(request: Request) {
         items,
       }
     })
+
+    const customRows = await query<any>(
+      `SELECT *
+       FROM admin_custom_shipments
+       ORDER BY created_at DESC`
+    ).catch((e: any) => {
+      if (e instanceof Error && e.message.includes('does not exist')) return []
+      throw e
+    })
+
+    const customShipments = customRows.map((r: any) => {
+      const totalCost = r.label_cost != null ? Number(r.label_cost) : 0
+      return {
+        id: r.id,
+        source: 'custom',
+        orderId: null,
+        orderNumber: 'Custom Label',
+        status: mapStatus(r.status),
+        createdAt: r.created_at ? new Date(r.created_at).toISOString() : '',
+        carrier: r.carrier || '',
+        service: r.service || '',
+        trackingNumber: r.tracking_number || '',
+        trackingUrl: r.tracking_url || '',
+        labelUrl: r.label_url || '',
+        fromName: FROM.name,
+        fromCompany: FROM.company,
+        fromStreet: FROM.street,
+        fromCity: FROM.city,
+        fromState: FROM.state,
+        fromZip: FROM.zip,
+        fromCountry: FROM.country,
+        toName: r.recipient_name || '',
+        toStreet: [r.street1, r.street2].filter(Boolean).join(', '),
+        toCity: r.city || '',
+        toState: r.state || '',
+        toZip: r.zip || '',
+        toCountry: r.country || 'US',
+        toPhone: r.phone || '',
+        toEmail: r.email || '',
+        parcelLength: r.parcel_length != null ? Number(r.parcel_length) : 0,
+        parcelWidth: r.parcel_width != null ? Number(r.parcel_width) : 0,
+        parcelHeight: r.parcel_height != null ? Number(r.parcel_height) : 0,
+        parcelWeight: r.parcel_weight != null ? Number(r.parcel_weight) : 0,
+        parcelWeightUnit: r.parcel_weight_unit || 'lb',
+        retailRate: 0,
+        shippingRate: totalCost,
+        serviceRate: 0,
+        totalCost,
+        items: [{ name: r.contents || r.carrier_template || r.package_preset || 'Custom shipment', qty: 1 }],
+      }
+    })
+
+    const shipments = [...orderShipments, ...customShipments].sort((a: any, b: any) =>
+      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    )
 
     const total = shipments
       .filter((s: any) => s.status !== 'voided')

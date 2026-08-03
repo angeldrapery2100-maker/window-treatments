@@ -10,6 +10,8 @@ export type AuditAction =
   | 'order.refunded'
   | 'order.partial_refund'
   | 'shipping.label_voided'
+  | 'shipping.custom_label_purchased'
+  | 'shipping.custom_label_voided'
   | 'product.created'
   | 'product.updated'
   | 'product.status_changed'

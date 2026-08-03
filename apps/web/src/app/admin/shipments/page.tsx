@@ -6,12 +6,12 @@ import Link from 'next/link'
 // ─── Mock Data ───
 interface ShipmentItem { name: string; qty: number; width?: number; height?: number; options?: string }
 interface Shipment {
-  id: string; orderId: string; orderNumber: string; status: 'completed' | 'voided' | 'in_transit' | 'delivered'
+  id: string; source?: 'order' | 'custom'; orderId: string | null; orderNumber: string; status: 'completed' | 'voided' | 'in_transit' | 'delivered'
   createdAt: string; carrier: string; service: string
   trackingNumber: string; trackingUrl: string; labelUrl: string
   fromName: string; fromCompany: string; fromStreet: string; fromCity: string; fromState: string; fromZip: string; fromCountry: string
   toName: string; toStreet: string; toCity: string; toState: string; toZip: string; toCountry: string; toPhone: string; toEmail: string
-  parcelLength: number; parcelWidth: number; parcelHeight: number; parcelWeight: number
+  parcelLength: number; parcelWidth: number; parcelHeight: number; parcelWeight: number; parcelWeightUnit?: string
   retailRate: number; shippingRate: number; serviceRate: number; totalCost: number
   items: ShipmentItem[]
 }
@@ -102,7 +102,7 @@ function PackingSlip({ shipment, onClose }: { shipment: Shipment; onClose: () =>
           </table>
           <div className="flex justify-between items-end">
             <div className="text-xs text-gray-400">
-              <p>Parcel: {shipment.parcelLength}" × {shipment.parcelWidth}" × {shipment.parcelHeight}" · {shipment.parcelWeight} lb</p>
+              <p>Parcel: {shipment.parcelLength ? `${shipment.parcelLength}" × ${shipment.parcelWidth}" × ${shipment.parcelHeight}" · ` : ''}{shipment.parcelWeight} {shipment.parcelWeightUnit || 'lb'}</p>
             </div>
             <div className="text-right text-xs text-gray-400">
               <p>Angel Drapery · {shipment.orderNumber}</p>
@@ -158,8 +158,8 @@ function LabelPreview({ shipment, onClose }: { shipment: Shipment; onClose: () =
               <p className="text-[10px] font-mono mt-1 text-gray-500">{shipment.trackingNumber}</p>
             </div>
             <div className="flex justify-between text-[10px] text-gray-400">
-              <span>Weight: {shipment.parcelWeight} lb</span>
-              <span>{shipment.parcelLength}" × {shipment.parcelWidth}" × {shipment.parcelHeight}"</span>
+              <span>Weight: {shipment.parcelWeight} {shipment.parcelWeightUnit || 'lb'}</span>
+              <span>{shipment.parcelLength ? `${shipment.parcelLength}" × ${shipment.parcelWidth}" × ${shipment.parcelHeight}"` : 'Carrier package'}</span>
             </div>
           </div>
           {shipment.status === 'voided' && (
@@ -227,8 +227,8 @@ function ShipmentDetail({ shipment, onClose, onVoid, onPrintLabel, onPrintSlip }
           <div>
             <p className="text-[10px] uppercase text-gray-400 font-medium mb-2">Parcel</p>
             <div className="bg-gray-50 rounded-lg p-4 flex gap-6 text-sm">
-              <span className="text-gray-500">Dimensions: <strong className="text-gray-900">{shipment.parcelLength}" × {shipment.parcelWidth}" × {shipment.parcelHeight}"</strong></span>
-              <span className="text-gray-500">Weight: <strong className="text-gray-900">{shipment.parcelWeight} lb</strong></span>
+              <span className="text-gray-500">Dimensions: <strong className="text-gray-900">{shipment.parcelLength ? `${shipment.parcelLength}" × ${shipment.parcelWidth}" × ${shipment.parcelHeight}"` : 'Carrier package'}</strong></span>
+              <span className="text-gray-500">Weight: <strong className="text-gray-900">{shipment.parcelWeight} {shipment.parcelWeightUnit || 'lb'}</strong></span>
             </div>
           </div>
 
@@ -250,7 +250,10 @@ function ShipmentDetail({ shipment, onClose, onVoid, onPrintLabel, onPrintSlip }
           <div>
             <p className="text-[10px] uppercase text-gray-400 font-medium mb-2">Order</p>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm"><span className="text-gray-500">Order #:</span> <span className="font-mono font-medium">{shipment.orderNumber}</span></p>
+              <p className="text-sm">
+                <span className="text-gray-500">{shipment.source === 'custom' ? 'Source:' : 'Order #:'}</span>{' '}
+                <span className="font-mono font-medium">{shipment.source === 'custom' ? 'Custom Label' : shipment.orderNumber}</span>
+              </p>
               <p className="text-sm mt-1"><span className="text-gray-500">Created:</span> {formatDate(shipment.createdAt)}</p>
             </div>
           </div>
@@ -373,7 +376,8 @@ export default function ShipmentsPage() {
       case 'void':
         if (confirm(`Void label ${shipment.trackingNumber}?\nThis cancels the label and requests a carrier refund (USPS refunds can take up to ~14 days to approve).`)) {
           try {
-            const res = await fetch('/api/admin/shipping', {
+            const endpoint = shipment.source === 'custom' ? '/api/admin/custom-shipping' : '/api/admin/shipping'
+            const res = await fetch(endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ action: 'void_label', shipmentId: shipment.id }),
@@ -416,10 +420,12 @@ export default function ShipmentsPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Shipments</h1>
-              <p className="text-sm text-gray-500 mt-1">Labels purchased from your orders' Pack &amp; Ship</p>
+              <p className="text-sm text-gray-500 mt-1">Purchased order labels and custom labels.</p>
             </div>
             <div className="flex gap-3 items-center">
               {message && <span className="text-sm px-3 py-1 rounded bg-gray-100 text-gray-700">{message}</span>}
+              <Link href="/admin/shipments/create" className="px-4 py-2 text-sm bg-[#3d3d3d] text-white rounded-lg hover:bg-gray-700">Create Custom Label</Link>
+              <Link href="/admin/packing" className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Packing</Link>
               <Link href="/admin" className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">← Back to Admin</Link>
             </div>
           </div>
@@ -490,7 +496,14 @@ export default function ShipmentsPage() {
               {loading ? (
                 <tr><td colSpan={8} className="py-20 text-center text-gray-400">Loading shipments…</td></tr>
               ) : shipments.length === 0 ? (
-                <tr><td colSpan={8} className="py-20 text-center text-gray-400">No shipments yet — labels you buy from an order's Pack &amp; Ship will appear here.</td></tr>
+                <tr>
+                  <td colSpan={8} className="py-20 text-center">
+                    <p className="text-gray-400">No shipments yet — order labels and custom labels will appear here.</p>
+                    <Link href="/admin/shipments/create" className="inline-flex mt-4 px-4 py-2 text-sm bg-[#3d3d3d] text-white rounded-lg hover:bg-gray-700">
+                      Create Custom Label
+                    </Link>
+                  </td>
+                </tr>
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={8} className="py-20 text-center text-gray-400">No matching shipments</td></tr>
               ) : filtered.map(s => {
@@ -505,7 +518,7 @@ export default function ShipmentsPage() {
                           <p className="text-xs text-gray-500">{s.service}</p>
                           <button onClick={() => setSelectedShipment(s)} className="text-xs font-mono text-gray-900 underline underline-offset-2 hover:text-black mt-0.5">{s.trackingNumber}</button>
                           <p className="text-[10px] text-gray-400 mt-0.5">{formatDate(s.createdAt)}</p>
-                          <p className="text-[10px] text-gray-400 font-mono">{s.orderNumber}</p>
+                          <p className="text-[10px] text-gray-400 font-mono">{s.source === 'custom' ? 'Custom Label' : s.orderNumber}</p>
                         </div>
                       </div>
                     </td>
