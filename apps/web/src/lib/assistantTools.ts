@@ -28,6 +28,15 @@ import {
 import { getLeadScoreForOwner } from '@/lib/leadScoring'
 import { hdEstimate } from '@/lib/hdPricing'
 
+// ── One price disclosure, everywhere ────────────────────────────────────────
+// Eddie 2026-08-10: EVERY customer-facing number — Luma, Hunter Douglas,
+// Sundance/JC, shutters, store items — is a REFERENCE price. It excludes
+// installation and sales tax, we never state an installation-fee figure, and
+// the real price comes from the salesperson. This replaces the old split
+// where store/Luma prices were presented as exact, unhedged figures.
+const REFERENCE_PRICE_DISCLOSURE =
+  'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers.'
+
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
 let _resend: Resend | null = null
@@ -435,7 +444,7 @@ export async function listStoreProductsTool(input: any): Promise<unknown> {
     return {
       products: [],
       note:
-        'The online store currently has NO products listed — the store has not launched yet. This is NOT an error, so never say the system "failed" or "couldn\'t load". Tell the customer this item can\'t be ordered online yet, and offer the product-page self-quote configurator (e.g. /products/luma-collection) or the free consultation instead.',
+        'The online store has no products listed for direct CHECKOUT yet. This is NOT an error and it says NOTHING about pricing — never say the system "failed", and never tell a customer we cannot quote. PRICING IS UNAFFECTED: Luma (zebra/roller/sheer/modern roman) → quote_luma_estimate; Hunter Douglas → get_hd_estimate; Sundance/JC → get_sundance_jc_estimate; shutters → quote_shutter_estimate. Only ONLINE ORDERING is unavailable — quote the reference price first, then take them to the free measure or the /products/luma-collection configurator.',
     }
   }
   return {
@@ -730,9 +739,83 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'quote_luma_estimate',
+    description:
+      "Get a REFERENCE PRICE for a LUMA-series shade — our own house line: zebra shades, roller shades, sheer shades and modern roman shades. Priced by AAPP, the same engine our salespeople quote from. USE THIS FOR EVERY LUMA PRICE QUESTION — do NOT use quote_store_product / list_store_products for Luma, and NEVER tell a customer we can't price a Luma shade. All you strictly need is variant + width + height: if the customer hasn't picked a fabric yet, leave fabric_code out and the tool samples representative fabrics in that category and returns a low–high span. If they name a colorway (e.g. 'DB1-001'), pass it as fabric_code for a single reference figure — run identify_fabric_code first if you're unsure of the code. Anything the tool had to assume comes back in `assumed`; state those assumptions in one short clause. ALWAYS present the number as a reference price that excludes installation and tax, with the final price confirmed by our salesperson — never state an installation-fee figure.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        variant: { type: 'string', description: "'zebra_shade' | 'roller_shade' | 'sheer_shade' | 'modern_roman_shade'." },
+        width_in: { type: 'number', description: 'Window width in inches.' },
+        height_in: { type: 'number', description: 'Window height in inches.' },
+        fabric_code: { type: 'string', description: "Optional exact colorway, e.g. 'DB1-001'. Omit when the customer hasn't chosen a fabric — the tool then returns a range." },
+        category: { type: 'string', description: "Optional fabric category to sample when fabric_code is omitted: zebra → 'room_darkening' | 'light_filtering' | 'embroidered'; roller → 'blackout' | 'light_filtering' | 'screen'; sheer → 'light_filtering' | 'blackout'; roman → 'blackout' | 'light_filtering'. Omit to sample the whole series." },
+        option: { type: 'string', description: "Control type: 'chain' (standard, assumed if omitted) | 'cordless' | 'motorized'." },
+        control_side: { type: 'string', description: "'left' | 'right' — only for chain/motorized." },
+        cassette: { type: 'string', description: 'Optional cassette/headrail style key when the customer named one.' },
+        motor_key: { type: 'string', description: 'Optional motor key — only when option is motorized and the customer picked a motor.' },
+      },
+      required: ['variant', 'width_in', 'height_in'],
+    },
+  },
+  {
+    name: 'quote_drapery_estimate',
+    description:
+      "Get a REFERENCE PRICE for HANDCRAFTED DRAPERY (our own workroom) — priced by AAPP, the same engine our salespeople quote from. Pass the FINISHED panel size, not the raw window size: run recommend_drapery_size first and use what it returns. ASK-THEN-RANGE: if a price-moving choice is missing the tool returns ONE question in `ask` — put exactly that question to the customer (use askZh / askEn to match their language), then call again with their answer. Never ask two of these at once. When the customer doesn't know their fabric, pass fabric_tier='unknown' and the tool prices the same window across our real fabric book and returns a span. NEVER invent a drapery price and never say we can't price drapery.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        finished_width_in: { type: 'number', description: 'FINISHED panel width in inches, from recommend_drapery_size.' },
+        finished_height_in: { type: 'number', description: 'FINISHED height in inches, from recommend_drapery_size.' },
+        style_key: { type: 'string', description: "Heading: '2fold_pinch' | '2fold_tailored' | '3fold_pinch' | '3fold_tailored' | ripplefold 'us_60'/'us_80'/'us_100'/'us_120'/'cn_6cm'/'cn_7cm'." },
+        lining: { type: 'string', description: "'NO' (unlined) | 'LF' (light-filtering) | 'BO' (blackout)." },
+        fabric_tier: { type: 'string', description: "'entry' | 'mid' | 'high', or 'unknown' when the customer has no fabric in mind (returns a span)." },
+        fabric_price_per_yard: { type: 'number', description: 'Only when the customer named a fabric and you know its $/yard.' },
+        composition: { type: 'string', description: "'fabric_only' (assumed) | 'fabric_plus_sheer' | 'sheer_only'. Pass fabric_plus_sheer only if they asked for a sheer layer too." },
+        operation: { type: 'string', description: "'split' (centre-open, assumed) | 'single_left' | 'single_right'." },
+      },
+      required: ['finished_width_in', 'finished_height_in'],
+    },
+  },
+  {
+    name: 'quote_somfy_track_estimate',
+    description:
+      "Get a REFERENCE PRICE for a SOMFY MOTORIZED DRAPERY TRACK — the motorised track itself (motor + track + any accessories), not the fabric. Use this whenever a customer asks what motorising their drapery costs, including motorising curtains they already own. Pass the track length in inches (usually the finished drapery width; for a bare rod replacement, the rod length). If the track type is missing the tool returns ONE question in `ask` — ask it and call again. The MOTOR is never asked: the customer can't know which motor, so the tool prices the span across the motors we stock and returns a range. Pass double_layer=true for a drape + sheer double track.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        width_in: { type: 'number', description: 'Track length in inches.' },
+        track_type: { type: 'string', description: "'pinch_pleat' | 'ripplefold' — ask the customer, do not assume." },
+        open_type: { type: 'string', description: "'split' (centre-open, assumed) | 'one_way'." },
+        fullness: { type: 'string', description: "Ripplefold only: '80' | '100' (assumed) | '120'." },
+        motor_id: { type: 'string', description: 'Only when a specific motor was already chosen — otherwise omit and get the range.' },
+        double_layer: { type: 'boolean', description: 'true for a drape + sheer double track (prices the track twice).' },
+      },
+      required: ['width_in'],
+    },
+  },
+  {
+    name: 'quote_roman_estimate',
+    description:
+      "Get a REFERENCE PRICE for a HANDCRAFTED ROMAN SHADE (our own workroom) — priced by AAPP. Pass the RAW measured window size; the engine adds the mount coverage itself. Same ask-then-range contract as quote_drapery_estimate: a missing choice comes back as ONE question in `ask` — ask exactly that, then call again. fabric_tier='unknown' returns a span across our real fabric book. Do NOT use this for Luma modern roman shades (that is quote_luma_estimate).",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        width_in: { type: 'number', description: 'Measured window width in inches.' },
+        height_in: { type: 'number', description: 'Measured window height in inches.' },
+        mount: { type: 'string', description: "'inner' (inside mount, assumed) | 'outer'." },
+        style_key: { type: 'string', description: "'flat' | 'slouch' | 'soft' | 'front_fold' | 'reverse_fold' | 'hobbled'." },
+        lining: { type: 'string', description: "'NO' | 'LF' | 'BO'." },
+        fabric_tier: { type: 'string', description: "'entry' | 'mid' | 'high' | 'unknown'." },
+        fabric_price_per_yard: { type: 'number', description: 'Only when the customer named a fabric and you know its $/yard.' },
+      },
+      required: ['width_in', 'height_in'],
+    },
+  },
+  {
     name: 'get_sundance_jc_estimate',
     description:
-      "Get a Sundance or JC REFERENCE PRICE RANGE for a shade/blind. Use for Sundance (roller / faux-wood or wood horizontal blind / vertical blind / cellular) and JC (horizontal faux-wood or wood blind / woven woods) — NOT Hunter Douglas (use get_hd_estimate), NOT Cambridge shutter (use quote_shutter_estimate), NOT Luma store products (use quote_store_product). First identify the exact product with identify_fabric_code, then call this with the variant, the fabric/config it returned, and width/height in inches. Present ONLY the returned range as a REFERENCE: say the final price comes from our designer after the free in-home measure, every time, then offer to book. If it returns needs_more, ask the customer for the listed missing details (or offer the consultation); if it can't price, offer the consultation. Never state an exact figure or any wholesale/net price.",
+      "Get a Sundance or JC REFERENCE PRICE RANGE for a shade/blind. Use for Sundance (roller / faux-wood or wood horizontal blind / vertical blind / cellular) and JC (horizontal faux-wood or wood blind / woven woods) — NOT Hunter Douglas (use get_hd_estimate), NOT Cambridge shutter (use quote_shutter_estimate), NOT Luma (use quote_luma_estimate). First identify the exact product with identify_fabric_code, then call this with the variant, the fabric/config it returned, and width/height in inches. Present ONLY the returned range as a REFERENCE: say the final price comes from our designer after the free in-home measure, every time, then offer to book. If it returns needs_more, ask the customer for the listed missing details (or offer the consultation); if it can't price, offer the consultation. Never state an exact figure or any wholesale/net price.",
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -845,10 +928,12 @@ export async function executeAssistantTool(
         })
         return {
           unit_price: priced.unitPrice,
-          // EXACT store price — never hedge it with 大约/around (it IS the
-          // price for that size; the old wording here contradicted the
-          // prompt's exact-price rule and made the model hedge).
-          say_it_as: `$${priced.unitPrice.toLocaleString()} per shade for that exact size and configuration — state it plainly (no "around"/"大约"); the product page configurator shows the same live price.`,
+          // 2026-08-10: was "state it plainly, no 大约/around". Reversed —
+          // every customer-facing number is now a reference price (see
+          // REFERENCE_PRICE_DISCLOSURE). The configurator still shows the
+          // same figure live, so the two surfaces agree.
+          say_it_as: `$${priced.unitPrice.toLocaleString()} per window for that size and configuration; the product page configurator shows the same live figure.`,
+          must_say: REFERENCE_PRICE_DISCLOSURE,
         }
       } catch (e: any) {
         return {
@@ -895,7 +980,7 @@ export async function executeAssistantTool(
         range_high: est.rangeHigh,
         ...(est.fabricDependent ? { fabric_note: 'Range spans this series\' fabric tiers — it narrows once the customer picks a fabric collection at the consultation.' } : {}),
         warnings: est.warnings?.length ? est.warnings : undefined,
-        must_say: 'Reference range only (list-price基准, per shade, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.',
+        must_say: REFERENCE_PRICE_DISCLOSURE,
       }
     }
     case 'list_measured_windows': {
@@ -1144,13 +1229,205 @@ export async function executeAssistantTool(
       })
       return {
         price: r.subtotal,
-        install_fee: r.installAmount,
         area_sqft: r.areaSqFt,
         billed_size: `${widthIn}" × ${heightIn}"${finished || isFrench ? '' : ' (window size + standard frame allowance)'}`,
         upgrades: r.lines.map((l) => l.label),
         quantity: r.qty,
-        must_say:
-          'Present as a REFERENCE price (加装费 install listed separately). The final price is confirmed by our designer after the FREE in-home measurement — say that every time, then offer to book the consultation.',
+        // Eddie 2026-08-10: install fee is NOT shown to customers any more —
+        // r.installAmount is deliberately dropped here so the model can never
+        // quote it. Product price only; install + tax are named, not numbered.
+        must_say: REFERENCE_PRICE_DISCLOSURE,
+      }
+    }
+    case 'quote_luma_estimate': {
+      const { lumaEstimate, lumaCategories, LUMA_VARIANT_SERIES } = await import('@/lib/lumaPricing')
+      const variant = String(input?.variant || '')
+      const est = await lumaEstimate({
+        variant,
+        widthIn: Number(input?.width_in),
+        heightIn: Number(input?.height_in),
+        fabricCode: typeof input?.fabric_code === 'string' && input.fabric_code ? input.fabric_code : undefined,
+        category: typeof input?.category === 'string' && input.category ? input.category : undefined,
+        option: typeof input?.option === 'string' && input.option ? input.option : undefined,
+        controlSide: typeof input?.control_side === 'string' && input.control_side ? input.control_side : undefined,
+        cassette: typeof input?.cassette === 'string' && input.cassette ? input.cassette : undefined,
+        motorKey: typeof input?.motor_key === 'string' && input.motor_key ? input.motor_key : undefined,
+      })
+      if (est.ok) {
+        logLeadEvent({
+          userId, anonId, type: 'luma_estimate',
+          value: est.price ?? est.rangeLow ?? null,
+          meta: { variant, w: input?.width_in, h: input?.height_in, fabric: est.fabricCode, sampled: est.sampledFabrics?.length },
+          campaignId,
+        })
+        const assumed = est.assumed && Object.keys(est.assumed).length ? est.assumed : undefined
+        return {
+          product: 'Luma',
+          variant: est.variant,
+          ...(est.price != null
+            ? { reference_price: `$${est.price.toLocaleString()}`, price: est.price, fabric_code: est.fabricCode }
+            : {
+                reference_range: `$${est.rangeLow!.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+                range_low: est.rangeLow,
+                range_high: est.rangeHigh,
+                range_reason:
+                  'Span across representative fabrics in this category — Luma is priced per fabric, so the exact figure lands once the customer picks a colorway. Say that in one clause; offer free swatches.',
+              }),
+          ...(assumed ? { assumed_config: assumed, assumed_note: 'State these assumptions in ONE short clause (e.g. "按标准链条控制估的"), then ask their preference — do not list them as a form.' } : {}),
+          must_say: REFERENCE_PRICE_DISCLOSURE,
+        }
+      }
+      if (est.error === 'unknown_category') {
+        return {
+          error: 'unknown_category',
+          valid_categories: est.needs ?? lumaCategories(LUMA_VARIANT_SERIES[variant] || ''),
+          note: 'Ask the customer which light-control category they want (one short question), then call again.',
+        }
+      }
+      if (est.error === 'needs_more') {
+        return {
+          needs_more: true,
+          missing: est.needs,
+          note: 'Ask the customer at most ONE of these (the most meaningful — usually control type), then call again. If they defer, offer the free in-home measure instead of looping.',
+        }
+      }
+      if (est.error === 'not_configured') {
+        return { error: 'not_configured', note: 'Luma pricing is temporarily unavailable — point the customer to the configurator on /products/luma-collection and offer the free consultation. Do NOT guess a number and do NOT say the store has not launched.' }
+      }
+      return {
+        error: est.error,
+        note: 'Could not price this Luma configuration — say that exact configuration needs our team to confirm, point to the configurator on /products/luma-collection, and offer the free measure. NEVER say we have no pricing tool and NEVER say the online store has not launched.',
+      }
+    }
+    case 'quote_drapery_estimate':
+    case 'quote_roman_estimate': {
+      const { draperyEstimate, romanEstimate } = await import('@/lib/draperyPricing')
+      const isDrapery = name === 'quote_drapery_estimate'
+      const est = isDrapery
+        ? await draperyEstimate({
+            finishedWidthIn: Number(input?.finished_width_in),
+            finishedHeightIn: Number(input?.finished_height_in),
+            styleKey: typeof input?.style_key === 'string' ? input.style_key : undefined,
+            lining: typeof input?.lining === 'string' ? input.lining : undefined,
+            fabricTier: typeof input?.fabric_tier === 'string' ? input.fabric_tier : undefined,
+            fabricPricePerYard: input?.fabric_price_per_yard != null ? Number(input.fabric_price_per_yard) : undefined,
+            composition: typeof input?.composition === 'string' ? input.composition : undefined,
+            operation: typeof input?.operation === 'string' ? input.operation : undefined,
+          })
+        : await romanEstimate({
+            widthIn: Number(input?.width_in),
+            heightIn: Number(input?.height_in),
+            mount: typeof input?.mount === 'string' ? input.mount : undefined,
+            styleKey: typeof input?.style_key === 'string' ? input.style_key : undefined,
+            lining: typeof input?.lining === 'string' ? input.lining : undefined,
+            fabricTier: typeof input?.fabric_tier === 'string' ? input.fabric_tier : undefined,
+            fabricPricePerYard: input?.fabric_price_per_yard != null ? Number(input.fabric_price_per_yard) : undefined,
+          })
+
+      // Ask-first: exactly one question goes back, never a form.
+      if (est.ask) {
+        return {
+          ask_customer: est.ask.field,
+          question_en: est.ask.askEn,
+          question_zh: est.ask.askZh,
+          options: est.ask.options,
+          note: 'Ask ONLY this one question, in the customer\'s language, in your own warm phrasing — then call the tool again with their answer. Do NOT ask the other configuration questions yet, and do NOT quote a number this turn. If the customer says they don\'t know or don\'t mind, pass fabric_tier="unknown" (fabric) or pick the most common option (structure) and say so.',
+        }
+      }
+      if (est.ok) {
+        logLeadEvent({
+          userId, anonId, type: isDrapery ? 'drapery_estimate' : 'roman_estimate',
+          value: est.price ?? est.rangeLow ?? null,
+          meta: { style: input?.style_key, lining: input?.lining, tier: input?.fabric_tier },
+          campaignId,
+        })
+        return {
+          product: est.product,
+          ...(est.price != null
+            ? { reference_price: `$${est.price.toLocaleString()}`, price: est.price }
+            : {
+                reference_range: `$${est.rangeLow!.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+                range_low: est.rangeLow,
+                range_high: est.rangeHigh,
+              }),
+          priced_at: est.pricedAt,
+          ...(est.assumed ? { assumed_config: est.assumed, assumed_note: 'State these in ONE short clause, then move on — do not list them as a form.' } : {}),
+          per_panel_note: isDrapery
+            ? 'This is the price for the finished treatment at the size you were given — say "for that finished size", not "per panel", unless the customer asked per panel.'
+            : undefined,
+          must_say: REFERENCE_PRICE_DISCLOSURE,
+        }
+      }
+      if (est.error === 'missing_finished_size' || est.error === 'missing_size') {
+        return {
+          error: est.error,
+          note: isDrapery
+            ? 'Drapery needs the FINISHED size. Call recommend_drapery_size first (it needs the window width/height and rod type), then call this with what it returns.'
+            : 'Ask the customer for the window width and height in inches first.',
+        }
+      }
+      if (est.error === 'not_configured') {
+        return { error: 'not_configured', note: 'Pricing is temporarily unavailable — offer the free in-home measure. Do NOT guess a number.' }
+      }
+      return {
+        error: est.error,
+        note: 'Could not price that configuration — say that exact combination needs our workroom to confirm and offer the free in-home measure. NEVER guess a number and NEVER say we have no pricing for drapery.',
+      }
+    }
+    case 'quote_somfy_track_estimate': {
+      const { somfyEstimate } = await import('@/lib/somfyPricing')
+      const est = await somfyEstimate({
+        widthIn: Number(input?.width_in),
+        trackType: typeof input?.track_type === 'string' ? input.track_type : undefined,
+        openType: typeof input?.open_type === 'string' ? input.open_type : undefined,
+        fullness: typeof input?.fullness === 'string' ? input.fullness : undefined,
+        motorId: typeof input?.motor_id === 'string' ? input.motor_id : undefined,
+        doubleLayer: input?.double_layer === true,
+      })
+      if (est.ask) {
+        return {
+          ask_customer: est.ask.field,
+          question_en: est.ask.askEn,
+          question_zh: est.ask.askZh,
+          options: est.ask.options,
+          note: 'Ask ONLY this, in the customer\'s language and your own warm phrasing, then call again. Do not quote a number this turn.',
+        }
+      }
+      if (est.ok) {
+        logLeadEvent({
+          userId, anonId, type: 'somfy_estimate',
+          value: est.price ?? est.rangeLow ?? null,
+          meta: { w: input?.width_in, track: input?.track_type, motors: est.motorsPriced },
+          campaignId,
+        })
+        return {
+          product: 'Somfy motorized drapery track',
+          ...(est.price != null
+            ? { reference_price: `$${est.price.toLocaleString()}`, price: est.price }
+            : {
+                reference_range: `$${est.rangeLow!.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+                range_low: est.rangeLow,
+                range_high: est.rangeHigh,
+                range_reason: 'Span across the motors we stock — the exact figure lands once a motor is chosen. Say that in one clause; do not read the motor list out to the customer.',
+              }),
+          // Explicit so a clipped span never reads as "we priced everything".
+          ...(est.clipped
+            ? { coverage_note: `Priced ${est.motorsPriced} of ${est.motorsAvailable} motors — the span may widen slightly with the rest; say the designer confirms the exact motor.` }
+            : {}),
+          hardware_only_note: 'This is the TRACK + MOTOR only — it does NOT include the drapery fabric. If they also want the drapery, price that separately with quote_drapery_estimate and say the two are separate lines.',
+          ...(est.assumed ? { assumed_config: est.assumed, assumed_note: 'State these in ONE short clause.' } : {}),
+          must_say: REFERENCE_PRICE_DISCLOSURE,
+        }
+      }
+      if (est.error === 'missing_width') {
+        return { error: 'missing_width', note: 'Ask how wide the window / how long the track needs to be, in inches.' }
+      }
+      if (est.error === 'no_motors' || est.error === 'not_configured') {
+        return { error: est.error, note: 'Motorised-track pricing is unavailable right now — offer the free in-home measure, where the designer specs the motor. Do NOT guess a number.' }
+      }
+      return {
+        error: est.error,
+        note: 'Could not price that track — say that configuration needs our designer to spec and offer the free measure. Never guess a number.',
       }
     }
     case 'get_sundance_jc_estimate': {
@@ -1171,7 +1448,7 @@ export async function executeAssistantTool(
           reference_range: `$${est.rangeLow.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
           range_low: est.rangeLow,
           range_high: est.rangeHigh,
-          must_say: `Reference range only (per shade/blind, excludes measure/install). Final price comes from our designer after the FREE in-home measurement — offer to book it now.`,
+          must_say: REFERENCE_PRICE_DISCLOSURE,
         }
       }
       if (est.error === 'needs_more') {

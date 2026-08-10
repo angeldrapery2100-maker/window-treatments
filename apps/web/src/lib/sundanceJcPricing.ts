@@ -16,8 +16,18 @@ const ACTION_URL = () =>
   process.env.AAPP_CHATGPT_ACTION_URL ||
   'https://us-central1-angel-drapery.cloudfunctions.net/chatgptAction'
 
-// Variants this tool will price (Sundance + JC families). Cambridge shutter and
-// Luma have their own dedicated tools; drapery/roman are the store's own engine.
+// Variants this tool will price (Sundance + JC families).
+//
+// Luma lives in lib/lumaPricing.ts (quote_luma_estimate) — it needs
+// fabric-sampling and self-configuring retries this generic path doesn't do.
+// Cambridge shutter has quote_shutter_estimate (local AAPP-parity engine).
+//
+// NOTE for whoever extends this next: AAPP's `_aiCatalogPriceEstimate` has NO
+// variant whitelist of its own — it forwards straight to _aiPriceCatalogItem,
+// which also prices `drapery`, `handcrafted_roman_shade`, `drapery_hardware`,
+// `somfy_motorized_track`, `drapery_valance` and `upholstered_cornice`. Those
+// are reachable with ZERO AAPP changes; they are left out here only because
+// their configs can't be safely defaulted from a chat turn yet.
 const ALLOWED_VARIANTS = new Set([
   'sundance_roller_shade',
   'sundance_fauxwood_blind',
