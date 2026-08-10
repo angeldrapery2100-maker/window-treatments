@@ -231,9 +231,6 @@ export default function RollerCollectionClient() {
         </div>
       </section>
 
-      {/* ── INSTANT ESTIMATOR ── */}
-      <PriceEstimator defaultProduct="roller" />
-
       {/* ── FABRIC TYPES ──────────────────────────────────────────── */}
       <section className="w-full bg-[#F7F5F2] py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -434,6 +431,9 @@ export default function RollerCollectionClient() {
           </div>
         </div>
       </section>
+
+      {/* ── INSTANT ESTIMATOR ── */}
+      <PriceEstimator defaultProduct="roller" />
 
       {/* ── SWATCHES ──────────────────────────────────────────────── */}
       <section className="w-full bg-[#F7F5F2] py-20 md:py-28">

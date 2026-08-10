@@ -265,9 +265,6 @@ export default function LumaCollectionClient() {
         </div>
       </section>
 
-      {/* ══ INSTANT ESTIMATOR ══ */}
-      <PriceEstimator defaultProduct="zebra" />
-
       {/* ══ HOW IT WORKS — LIGHT CONTROL ══ */}
       <section className="w-full bg-[#F7F6F3] py-24">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-16">
@@ -519,6 +516,9 @@ export default function LumaCollectionClient() {
           </div>
         </div>
       </section>
+
+      {/* ══ INSTANT ESTIMATOR ══ */}
+      <PriceEstimator defaultProduct="zebra" />
 
       {/* ══ FABRIC SWATCHES ══ */}
       <section className="w-full bg-[#F7F6F3] py-24 md:py-32">

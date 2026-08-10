@@ -11,21 +11,26 @@ const fadeUp = {
 
 // ── Config ────────────────────────────────────────────────────
 const ESTIMATOR_CONFIG = {
+  // Fabric $/sqm is deliberately NOT hardcoded. Sell-price bands come live
+  // from /api/store/luma-bands (fabric_library.price_per_sqm, written by the
+  // AAPP sync as factory net x fabricMarkup) so they can never drift from a
+  // real quote. Only keys/labels live here; with no live band the estimator
+  // shows no price rather than a guessed one.
   fabrics: {
     zebra:  [
-      { key: 'rd', label: 'Room Darkening',  minPrice: 108, maxPrice: 150 },
-      { key: 'lf', label: 'Light Filtering', minPrice: 80,  maxPrice: 108 },
+      { key: 'rd', label: 'Room Darkening'  },
+      { key: 'lf', label: 'Light Filtering' },
     ],
     roller: [
-      { key: 'lf',       label: 'Light Filtering', minPrice: 68, maxPrice: 90  },
-      { key: 'blackout', label: 'Blackout',         minPrice: 80, maxPrice: 106 },
-      { key: 'screen',   label: 'Screen Shade',     minPrice: 70, maxPrice: 106 },
+      { key: 'lf',       label: 'Light Filtering' },
+      { key: 'blackout', label: 'Blackout'        },
+      { key: 'screen',   label: 'Screen Shade'    },
     ],
     sheer: [
-      { key: 'lf', label: 'Light Filtering', minPrice: 90,  maxPrice: 140 },
-      { key: 'rd', label: 'Room Darkening',  minPrice: 105, maxPrice: 120 },
+      { key: 'lf', label: 'Light Filtering' },
+      { key: 'rd', label: 'Room Darkening'  },
     ],
-  } as Record<string, { key: string; label: string; minPrice: number; maxPrice: number }[]>,
+  } as Record<string, { key: string; label: string }[]>,
   // v808: cassette $/m band per series (roller open/round/square 30-55;
   // zebra & sheer round/square 14-16). Billed at ≥1.2 m, ×1.2 past 95.7".
   cassetteBand: {
@@ -82,23 +87,33 @@ export default function PriceEstimator({ defaultProduct = 'zebra' }: PriceEstima
   const [estControl, setEstControl] = useState(ESTIMATOR_CONFIG.controlKeys[product][0])
 
   // Live sell-price bands from the fabric library (follows AAPP pricing via
-  // sync); the hardcoded numbers above stay as offline fallback.
+  // sync). Until they arrive — or if the endpoint fails — no price is shown.
   const [liveBands, setLiveBands] = useState<Record<string, Record<string, { min: number; max: number }>> | null>(null)
+  const [bandsState, setBandsState] = useState<'loading' | 'ready' | 'unavailable'>('loading')
   useEffect(() => {
+    let cancelled = false
     fetch('/api/store/luma-bands')
       .then(r => r.json())
-      .then(j => { if (j?.success && j.data?.bands) setLiveBands(j.data.bands) })
-      .catch(() => {})
+      .then(j => {
+        if (cancelled) return
+        if (j?.success && j.data?.bands) { setLiveBands(j.data.bands); setBandsState('ready') }
+        else setBandsState('unavailable')
+      })
+      .catch(() => { if (!cancelled) setBandsState('unavailable') })
+    return () => { cancelled = true }
   }, [])
 
   const fabricOpts   = ESTIMATOR_CONFIG.fabrics[product].map(f => {
     const live = liveBands?.[product]?.[f.key]
-    return live ? { ...f, minPrice: live.min, maxPrice: live.max } : f
+    return { ...f, minPrice: live?.min ?? null, maxPrice: live?.max ?? null }
   })
   const selectedFab  = fabricOpts.find(f => f.key === estFabric) ?? fabricOpts[0]
   const controlOpts  = ESTIMATOR_CONFIG.allControls.filter(c => ESTIMATOR_CONFIG.controlKeys[product].includes(c.key))
   const selectedCtrl = controlOpts.find(c => c.key === estControl) ?? controlOpts[0]
-  const estimate     = calcEstimate(product, +estWidth, +estHeight, selectedFab.minPrice, selectedFab.maxPrice, selectedCtrl.key, selectedCtrl.addOn)
+  const hasBand      = selectedFab.minPrice != null && selectedFab.maxPrice != null
+  const estimate     = hasBand
+    ? calcEstimate(product, +estWidth, +estHeight, selectedFab.minPrice as number, selectedFab.maxPrice as number, selectedCtrl.key, selectedCtrl.addOn)
+    : null
 
   return (
     <section className="w-full bg-white py-14 md:py-18 border-t border-gray-100">
@@ -135,10 +150,10 @@ export default function PriceEstimator({ defaultProduct = 'zebra' }: PriceEstima
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">
-                    Width &nbsp;<span className="text-gray-300">12 – 96"</span>
+                    Width &nbsp;<span className="text-gray-300">12 – 118"</span>
                   </label>
                   <input
-                    type="number" min="12" max="96" placeholder="e.g. 36"
+                    type="number" min="12" max="118" placeholder="e.g. 36"
                     value={estWidth} onChange={e => setEstWidth(e.target.value)}
                     className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-[#12141C] focus:border-[#12141C] focus:ring-1 focus:ring-[#12141C] outline-none transition-all text-sm"
                   />
@@ -188,7 +203,34 @@ export default function PriceEstimator({ defaultProduct = 'zebra' }: PriceEstima
           {/* ── Right: result card ── */}
           <div className="bg-[#F7F6F3] rounded-xl p-6 md:p-8 sticky top-8">
             <AnimatePresence mode="wait">
-              {!estimate ? (
+              {bandsState === 'loading' ? (
+                <motion.div
+                  key="loading"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="flex flex-col items-center justify-center text-center py-8 space-y-3"
+                >
+                  <div className="w-10 h-10 rounded-full border-2 border-gray-200 border-t-[#12141C] animate-spin mb-1" />
+                  <p className="text-gray-400 text-sm">Loading current pricing…</p>
+                </motion.div>
+              ) : !hasBand ? (
+                <motion.div
+                  key="nobands"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="text-center py-4"
+                >
+                  <p className="text-sm text-[#12141C] mb-2">Live pricing is unavailable right now.</p>
+                  <p className="text-[11px] text-gray-400 leading-relaxed mb-5">
+                    We only quote from current pricing, so we&apos;d rather show nothing than a stale number.
+                    Send us your window size and we&apos;ll come back with an exact quote.
+                  </p>
+                  <Link
+                    href="/contact"
+                    className="block w-full text-center py-3 bg-[#12141C] text-white text-sm font-medium tracking-widest uppercase rounded-sm hover:bg-black transition-colors"
+                  >
+                    Get an Exact Quote →
+                  </Link>
+                </motion.div>
+              ) : !estimate ? (
                 <motion.div
                   key="empty"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

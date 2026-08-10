@@ -140,9 +140,6 @@ export default function SheerCollectionClient() {
         </div>
       </section>
 
-      {/* ── INSTANT ESTIMATOR ── */}
-      <PriceEstimator defaultProduct="sheer" />
-
       {/* ── FABRIC SERIES ─────────────────────────────────────────── */}
       <section className="w-full bg-[#F7F5F2] py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -415,6 +412,9 @@ export default function SheerCollectionClient() {
           </div>
         </div>
       </section>
+
+      {/* ── INSTANT ESTIMATOR ── */}
+      <PriceEstimator defaultProduct="sheer" />
 
       {/* ── SWATCHES ──────────────────────────────────────────────── */}
       <section className="w-full bg-[#F7F5F2] py-20 md:py-28">
