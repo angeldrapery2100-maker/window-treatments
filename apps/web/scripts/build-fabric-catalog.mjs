@@ -191,6 +191,10 @@ function familyFromRgb(rgb) {
   const { L, C, h } = toLch(rgb)
   const t = rules.colorThresholds
 
+  // 0. Dark enough that the hue is a rumour. A navy at L=11 reads black to
+  //    everyone, and calling it Blue put it in the wrong filter.
+  if (L <= t.veryDarkMaxL) return 'Black'
+
   // 1. Dead neutral — no hue worth reading at all.
   if (C < t.greyMaxChroma) return L >= t.whiteMinL ? 'White' : (L >= t.blackMaxL ? 'Grey' : 'Black')
 
@@ -201,12 +205,24 @@ function familyFromRgb(rgb) {
   //    slices of the same hues as orange and yellow, so they split on
   //    lightness and chroma rather than hue. Half this library lives here:
   //    the median swatch photo has a chroma of about 7.
-  if (h >= t.warmHueLow && h < t.warmHueHigh) {
+  // The corridor reaches further round the wheel for near-neutrals than for
+  // colours: an ivory can sit at hue 102 and is still an ivory, while anything
+  // with real chroma out there is sage.
+  const warmHigh = C < t.warmNeutralChromaMax ? t.warmNeutralHueHigh : t.warmHueHigh
+  if (h >= t.warmHueLow && h < warmHigh) {
     if (C >= t.warmSaturated) {
       if (L < t.brownMaxL) return 'Brown'
       return h < t.orangeHueHigh ? 'Orange' : 'Yellow'
     }
-    if (L >= t.whiteMinL && C < t.creamMaxChroma) return 'White'
+    // Sage and olive live at the top of the corridor. They need real colour
+    // AND real depth — a cream satin whose fold shadow lands at the same hue
+    // is not a green fabric.
+    if (h >= t.sageHueLow && C >= t.sageMinChroma && L <= t.sageMaxL) return 'Green'
+    // White is a much narrower door here than elsewhere: a warm-tinted
+    // near-white at chroma 6 is an ivory, and filing it under White hides it
+    // from everyone shopping for cream. Only a brighter swatch earns a little
+    // more chroma before it stops being white.
+    if (L >= t.whiteMinL && C < (L >= t.warmWhiteBrightL ? t.warmWhiteBrightChroma : t.warmWhiteMaxChroma)) return 'White'
     if (L >= t.creamMinL) return C < t.creamMaxChroma ? 'Cream' : 'Beige'
     if (L >= t.midNeutralMinL) return C < t.taupeMaxChroma ? 'Taupe' : 'Beige'
     if (L >= t.brownMaxL) return C < t.taupeMaxChroma ? 'Taupe' : 'Brown'
@@ -269,8 +285,11 @@ function patternType(row, metric) {
   // unless the photo says otherwise.
   if (repMax >= t.motifRepeatIn) return rules.patternFallback
   if (!metric) return repMax > 0 ? 'Texture' : 'Solid'
-  if (metric.sd <= t.solidMaxSd) return 'Solid'
-  if (metric.sd <= t.textureMaxSd) return 'Texture'
+  // EDGE, not overall variance. A plain satin photographed with a fold has a
+  // huge standard deviation and no detail; a print has detail. Scoring by eye,
+  // sd called teal satin "Print" and pale mint "Texture" — edge gets both right.
+  if (metric.edge <= t.solidMaxEdge) return 'Solid'
+  if (metric.edge <= t.textureMaxEdge) return 'Texture'
   return rules.patternFallback
 }
 

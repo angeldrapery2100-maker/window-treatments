@@ -8,5 +8,14 @@
     "Example:",
     "  \"carole::a-day-off::indigo\": { \"colorFamily\": \"Blue\", \"patternType\": \"Floral\", \"style\": \"Classic\" }"
   ],
-  "fabrics": {}
+  "fabrics": {
+    "alendel::palermo::mojito": {
+      "colorFamily": "Multi",
+      "_why": "Rainbow awning stripe. The 96px crop the metrics run on blurs the stripes into one muted green, so no photo rule can see it — this is what the overrides file is for."
+    },
+    "carole::hobbs::ginger": {
+      "colorFamily": "Orange",
+      "_why": "Pale apricot solid. Numerically identical (L84 C15 h74) to a tan motif printed on a cream ground, which must stay Beige — no photo rule can separate the two, so this one is set by hand."
+    }
+  }
 }
