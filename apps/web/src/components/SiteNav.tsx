@@ -9,6 +9,7 @@ const ALL_NAV_ITEMS = [
   { name: 'About',        href: '/about' },
   { name: 'Our Projects', href: '/gallery' },
   { name: 'Products',     href: '/products' },
+  { name: 'Design',       href: '/design' },
   { name: 'Online Store', href: '/store' },
   { name: 'Contact',      href: '/contact' },
   // Traditional-Chinese locale entry point — kept last and unobtrusive.

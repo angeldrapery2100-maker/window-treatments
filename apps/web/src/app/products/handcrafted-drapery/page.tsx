@@ -9,6 +9,7 @@ import ImageLightbox, { type LightboxImage } from '@/components/ImageLightbox'
 import { DEFAULT_VIDEOS, type ProjectVideo } from '@/lib/gallery-videos-data'
 import { COPYRIGHT } from '@/lib/site'
 import SiteFooter from '@/components/SiteFooter'
+import FabricLibraryTeaser from '@/components/FabricLibraryTeaser'
 
 const IMG = '/drapery/handcrafted-drapery'
 
@@ -327,10 +328,18 @@ export default function HandcraftedDraperyPage() {
             Experience the fine texture and precision of our bespoke drapery. Over 3,000 fabrics. 40 years of local expertise.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-            className="flex items-center gap-6">
+            className="flex flex-wrap items-center gap-4 md:gap-6">
+            {/* Primary door into /design (Eddie 2026-08-11: the HD page CTA,
+                every fabric card, and the top nav are the three ways in). */}
+            <Link
+              href="/design"
+              className="bg-white px-10 py-4 text-black text-sm uppercase tracking-widest font-bold hover:bg-[#ef8200] hover:text-white transition-all duration-300 shadow-lg"
+            >
+              Design Your Drapery
+            </Link>
             <button
               onClick={() => window.dispatchEvent(new Event('ad:open-assistant'))}
-              className="bg-white px-10 py-4 text-black text-sm uppercase tracking-widest font-bold hover:bg-[#ef8200] hover:text-white transition-all duration-300 shadow-lg"
+              className="border border-white/50 px-8 py-4 text-white text-sm uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all duration-300"
             >
               Request Consultation
             </button>
@@ -586,6 +595,13 @@ export default function HandcraftedDraperyPage() {
               className="w-full aspect-[3/2] shadow-lg" onOpen={() => openLightbox(fabricImages, 1)} />
           </Reveal>
         </div>
+      </TactileBg>
+
+      {/* ═══════════ 6b. Fabric Library preview ═══════════ */}
+      <TactileBg className="bg-[#FAF9F7]">
+        <Reveal>
+          <FabricLibraryTeaser />
+        </Reveal>
       </TactileBg>
 
       {/* ═══════════ 7. Behind the Scenes ═══════════ */}
