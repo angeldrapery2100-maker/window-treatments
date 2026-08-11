@@ -1,0 +1,12 @@
+{
+  "_doc": [
+    "Hand corrections. Keys are fabric ids (brand::pattern::colour, the same id",
+    "the site uses in /fabrics/<id> and /design?fabric=<id>). Every field is",
+    "optional; whatever you set here wins over the rule table and survives a",
+    "rebuild. Delete an entry to hand it back to the rules.",
+    "",
+    "Example:",
+    "  \"carole::a-day-off::indigo\": { \"colorFamily\": \"Blue\", \"patternType\": \"Floral\", \"style\": \"Classic\" }"
+  ],
+  "fabrics": {}
+}

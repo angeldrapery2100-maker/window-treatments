@@ -1,0 +1,675 @@
+{
+  "_doc": [
+    "Rule table for build-fabric-catalog.mjs. Edited by hand; the build script",
+    "never writes to this file. Anything you want to correct for ONE fabric goes",
+    "in fabric-taxonomy.overrides.json instead (overrides win over every rule).",
+    "Matching is case-insensitive, on whole words unless the token contains a space."
+  ],
+  "materialClasses": [
+    {
+      "class": "Velvet",
+      "match": [
+        "velvet",
+        "velour",
+        "chenille"
+      ],
+      "from": [
+        "material",
+        "patternName",
+        "book"
+      ]
+    },
+    {
+      "class": "Silk",
+      "match": [
+        "silk",
+        "dupioni",
+        "shantung"
+      ],
+      "from": [
+        "material",
+        "patternName",
+        "book"
+      ]
+    },
+    {
+      "class": "Wool",
+      "match": [
+        "wool",
+        "merino"
+      ],
+      "from": [
+        "material"
+      ]
+    },
+    {
+      "class": "Linen",
+      "minShare": {
+        "LINEN": 45
+      }
+    },
+    {
+      "class": "Cotton",
+      "minShare": {
+        "COTTON": 45
+      }
+    },
+    {
+      "class": "Polyester",
+      "minShare": {
+        "POLYESTER": 70,
+        "RECYCLED POLYESTER": 70
+      }
+    },
+    {
+      "class": "Viscose",
+      "minShare": {
+        "VISCOSE": 45,
+        "RAYON": 45
+      }
+    },
+    {
+      "class": "Performance",
+      "match": [
+        "olefin",
+        "polypropylene",
+        "acrylic",
+        "solution dyed"
+      ],
+      "from": [
+        "material"
+      ]
+    }
+  ],
+  "materialFallback": "Blend",
+  "colorFamilies": {
+    "White": [
+      "white",
+      "snow",
+      "chalk",
+      "alabaster",
+      "porcelain",
+      "optic",
+      "blanc",
+      "milk",
+      "coconut",
+      "arctic",
+      "frost",
+      "swan"
+    ],
+    "Cream": [
+      "cream",
+      "ivory",
+      "eggshell",
+      "vanilla",
+      "bone",
+      "parchment",
+      "ecru",
+      "pearl",
+      "champagne",
+      "oyster",
+      "buttermilk",
+      "meringue",
+      "antique white",
+      "winter white",
+      "natural",
+      "flax",
+      "oatmeal",
+      "wheat",
+      "linen",
+      "raffia",
+      "straw",
+      "hemp",
+      "birch",
+      "canvas"
+    ],
+    "Beige": [
+      "beige",
+      "sand",
+      "almond",
+      "biscuit",
+      "buff",
+      "camel",
+      "khaki",
+      "latte",
+      "nude",
+      "sandstone",
+      "tan",
+      "toast",
+      "honey",
+      "desert",
+      "dune",
+      "barley",
+      "putty",
+      "burlap",
+      "jute"
+    ],
+    "Taupe": [
+      "taupe",
+      "greige",
+      "mushroom",
+      "driftwood",
+      "clay",
+      "stone",
+      "pebble",
+      "fawn",
+      "truffle",
+      "portobello",
+      "sable",
+      "smoke grey",
+      "moonrock"
+    ],
+    "Brown": [
+      "brown",
+      "chocolate",
+      "espresso",
+      "coffee",
+      "mocha",
+      "walnut",
+      "chestnut",
+      "cocoa",
+      "tobacco",
+      "bark",
+      "cognac",
+      "caramel",
+      "teak",
+      "cedar",
+      "rust",
+      "sienna",
+      "umber",
+      "leather",
+      "saddle",
+      "bronze",
+      "copper",
+      "amber"
+    ],
+    "Grey": [
+      "grey",
+      "gray",
+      "silver",
+      "dove",
+      "fog",
+      "mist",
+      "ash",
+      "pewter",
+      "sterling",
+      "cement",
+      "concrete",
+      "steel",
+      "platinum",
+      "nickel",
+      "zinc",
+      "marble",
+      "cloud",
+      "shadow",
+      "smoke",
+      "haze",
+      "flint",
+      "storm",
+      "gull",
+      "heather"
+    ],
+    "Black": [
+      "black",
+      "charcoal",
+      "graphite",
+      "onyx",
+      "jet",
+      "raven",
+      "carbon",
+      "ebony",
+      "coal",
+      "noir",
+      "licorice",
+      "tuxedo",
+      "anthracite",
+      "gunmetal",
+      "slate",
+      "midnight",
+      "obsidian",
+      "caviar"
+    ],
+    "Blue": [
+      "blue",
+      "navy",
+      "indigo",
+      "denim",
+      "sky",
+      "cobalt",
+      "azure",
+      "sapphire",
+      "chambray",
+      "cornflower",
+      "periwinkle",
+      "delft",
+      "ink",
+      "marine",
+      "nautical",
+      "harbor",
+      "harbour",
+      "glacier",
+      "ice",
+      "wedgwood",
+      "bluebell",
+      "cadet",
+      "admiral"
+    ],
+    "Teal": [
+      "teal",
+      "aqua",
+      "turquoise",
+      "spa",
+      "seafoam",
+      "lagoon",
+      "ocean",
+      "peacock",
+      "aquamarine",
+      "surf",
+      "caribbean",
+      "mineral",
+      "capri",
+      "pool",
+      "jade"
+    ],
+    "Green": [
+      "green",
+      "sage",
+      "olive",
+      "moss",
+      "fern",
+      "forest",
+      "emerald",
+      "mint",
+      "celery",
+      "pistachio",
+      "basil",
+      "juniper",
+      "eucalyptus",
+      "leaf",
+      "kelp",
+      "avocado",
+      "willow",
+      "aloe",
+      "hunter",
+      "grass",
+      "palm",
+      "cactus",
+      "lime",
+      "loden"
+    ],
+    "Yellow": [
+      "yellow",
+      "gold",
+      "golden",
+      "mustard",
+      "lemon",
+      "citron",
+      "buttercup",
+      "saffron",
+      "ochre",
+      "maize",
+      "canary",
+      "sunflower",
+      "goldenrod",
+      "dijon",
+      "topaz",
+      "brass"
+    ],
+    "Orange": [
+      "orange",
+      "terracotta",
+      "apricot",
+      "coral",
+      "papaya",
+      "tangerine",
+      "persimmon",
+      "pumpkin",
+      "paprika",
+      "marmalade",
+      "clementine",
+      "spice",
+      "cinnamon",
+      "ginger",
+      "peach",
+      "melon",
+      "mango"
+    ],
+    "Red": [
+      "red",
+      "crimson",
+      "scarlet",
+      "cherry",
+      "brick",
+      "burgundy",
+      "wine",
+      "merlot",
+      "garnet",
+      "ruby",
+      "cardinal",
+      "poppy",
+      "chili",
+      "claret",
+      "cranberry",
+      "pomegranate",
+      "tomato",
+      "lacquer",
+      "sangria"
+    ],
+    "Pink": [
+      "pink",
+      "blush",
+      "rose",
+      "petal",
+      "fuchsia",
+      "magenta",
+      "raspberry",
+      "salmon",
+      "shell",
+      "ballet",
+      "dusty rose",
+      "quartz",
+      "peony",
+      "flamingo",
+      "bubblegum",
+      "berry",
+      "orchid pink"
+    ],
+    "Purple": [
+      "purple",
+      "plum",
+      "lilac",
+      "lavender",
+      "violet",
+      "aubergine",
+      "eggplant",
+      "mauve",
+      "amethyst",
+      "iris",
+      "grape",
+      "wisteria",
+      "thistle",
+      "heliotrope",
+      "orchid"
+    ],
+    "Multi": [
+      "multi",
+      "multicolor",
+      "multicolour",
+      "rainbow",
+      "confetti",
+      "harlequin",
+      "kaleidoscope",
+      "carnival",
+      "spectrum",
+      "prism",
+      "jewel"
+    ]
+  },
+  "_colorNote": "The swatch photo decides the family shown; these name tokens supply a SECOND searchable family when the two disagree (mill colour names are poetry — 'Meadow' is sage, 'Persimmon' is a grey medallion). Longest token wins. See familyFromRgb() in build-fabric-catalog.mjs for the photo side.",
+  "patternTypes": [
+    {
+      "type": "Stripe",
+      "match": [
+        "stripe",
+        "striae",
+        "pinstripe",
+        "ticking",
+        "chevron",
+        "herringbone",
+        "ombre",
+        "ombré",
+        "banded",
+        "rib",
+        "corduroy"
+      ]
+    },
+    {
+      "type": "Plaid",
+      "match": [
+        "plaid",
+        "check",
+        "checked",
+        "gingham",
+        "tartan",
+        "buffalo",
+        "windowpane",
+        "houndstooth",
+        "madras"
+      ]
+    },
+    {
+      "type": "Floral",
+      "match": [
+        "floral",
+        "flower",
+        "botanical",
+        "bloom",
+        "blossom",
+        "rose",
+        "peony",
+        "poppy",
+        "garden",
+        "vine",
+        "leaf",
+        "foliage",
+        "fern",
+        "palm",
+        "tropical",
+        "orchard",
+        "meadow",
+        "bouquet",
+        "chintz",
+        "toile"
+      ]
+    },
+    {
+      "type": "Damask",
+      "match": [
+        "damask",
+        "medallion",
+        "brocade",
+        "jacquard",
+        "paisley",
+        "scroll",
+        "filigree",
+        "arabesque",
+        "ikat",
+        "suzani"
+      ]
+    },
+    {
+      "type": "Geometric",
+      "match": [
+        "geo",
+        "geometric",
+        "diamond",
+        "lattice",
+        "fret",
+        "greek key",
+        "hexagon",
+        "circle",
+        "dot",
+        "spot",
+        "grid",
+        "chain",
+        "maze",
+        "mosaic",
+        "tile",
+        "trellis",
+        "quatrefoil",
+        "starburst",
+        "chevron"
+      ]
+    },
+    {
+      "type": "Embroidery",
+      "match": [
+        "embroider",
+        "embr",
+        "crewel",
+        "applique",
+        "appliqué",
+        "cutwork",
+        "eyelet"
+      ]
+    },
+    {
+      "type": "Texture",
+      "match": [
+        "texture",
+        "boucle",
+        "bouclé",
+        "slub",
+        "weave",
+        "woven",
+        "basketweave",
+        "linen look",
+        "crinkle",
+        "matelasse",
+        "matelassé",
+        "nubby",
+        "tweed",
+        "canvas",
+        "burlap"
+      ]
+    },
+    {
+      "type": "Solid",
+      "match": [
+        "solid",
+        "plain"
+      ]
+    }
+  ],
+  "_patternNote": "Checked against patternName, then book, then additionalNotes. Unmatched rows fall back to the repeat field + the swatch photo's texture metrics: no repeat and a flat photo => Solid, no repeat but visible structure => Texture, a repeat with no keyword => Print.",
+  "patternFallback": "Print",
+  "styles": [
+    {
+      "style": "Luxury",
+      "match": [
+        "luxury",
+        "luxe",
+        "couture",
+        "opulent",
+        "gala",
+        "estate",
+        "manor",
+        "chateau",
+        "château",
+        "palace",
+        "regency",
+        "imperial",
+        "velvet",
+        "damask",
+        "brocade",
+        "silk"
+      ]
+    },
+    {
+      "style": "Classic",
+      "match": [
+        "classic",
+        "traditional",
+        "heritage",
+        "english",
+        "tuscan",
+        "colonial",
+        "victorian",
+        "toile",
+        "chintz",
+        "paisley",
+        "medallion"
+      ]
+    },
+    {
+      "style": "Casual",
+      "match": [
+        "casual",
+        "everyday",
+        "hangout",
+        "cozy",
+        "cottage",
+        "coastal",
+        "beach",
+        "farmhouse",
+        "rustic",
+        "outdoor",
+        "play",
+        "kids",
+        "boho",
+        "denim"
+      ]
+    },
+    {
+      "style": "Modern",
+      "match": [
+        "modern",
+        "contemporary",
+        "minimal",
+        "urban",
+        "metro",
+        "graphic",
+        "geo",
+        "geometric",
+        "abstract",
+        "simplicity",
+        "clarity",
+        "essentials",
+        "movement"
+      ]
+    }
+  ],
+  "_styleNote": "First rule that matches wins, so the list is ordered most-specific first. Matched against patternName + book only — never the fibre content, which mislabels a third of the library off one word. Rows that match nothing are left blank on purpose: an unlabelled style filters out cleanly, a wrong one misleads.",
+  "priceBands": {
+    "_doc": "Quartile cut over every fabric that has a price, recomputed on each run and printed in the build log.",
+    "labels": [
+      "$",
+      "$$",
+      "$$$",
+      "$$$$"
+    ]
+  },
+  "sheerBooks": [
+    "sheer",
+    "voile",
+    "transparency",
+    "organza",
+    "gauze",
+    "batiste"
+  ],
+  "_sheerNote": "yarnFabric from the source catalogs is the primary signal; these tokens only promote a row to sheer when the source left it as 布.",
+  "textureThresholds": {
+    "_doc": "Swatch-photo fallback for rows with no pattern keyword. sd = mean per-channel standard deviation of the centre crop (metrics.json).",
+    "solidMaxSd": 4.5,
+    "textureMaxSd": 14,
+    "motifRepeatIn": 2.5
+  },
+  "multiColor": {
+    "_doc": "Multi needs at least minDistinctHues chromatic families among the significant clusters AND those clusters must be perceptually far apart (deltaE), otherwise a pale tone-on-tone print quantises into three neighbouring 'families' and reads as multicoloured.",
+    "minClusterShare": 0.12,
+    "minDistinctHues": 3,
+    "minDeltaE": 26
+  },
+  "colorThresholds": {
+    "_doc": "CIELCh cuts used by familyFromRgb(). L 0-100 lightness, C chroma (0 = grey), h CIELab hue in degrees (red ~40, yellow ~100, green ~135, teal ~190, blue ~270, magenta ~340).",
+    "greyMaxChroma": 1.5,
+    "tintedGreyMaxChroma": 7,
+    "whiteMinL": 88,
+    "blackMaxL": 26,
+    "warmHueLow": 50,
+    "warmHueHigh": 100,
+    "warmSaturated": 30,
+    "orangeHueHigh": 72,
+    "creamMinL": 77,
+    "creamMaxChroma": 11,
+    "midNeutralMinL": 55,
+    "taupeMaxChroma": 11,
+    "brownMaxL": 36,
+    "pinkMinL": 68,
+    "greenHueLow": 100,
+    "tealHueLow": 168,
+    "blueHueLow": 232,
+    "purpleHueLow": 312,
+    "pinkHueLow": 345
+  }
+}

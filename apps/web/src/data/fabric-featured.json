@@ -1,0 +1,13 @@
+{
+  "_doc": "Fabrics /design offers a visitor who has not favourited anything yet. Seeded once by build-fabric-catalog.mjs and never overwritten — edit the ids freely. Order is the order shown.",
+  "ids": [
+    "carole::beginners-luck::flint",
+    "alendel::soria::grey",
+    "alendel::tweed::cliff",
+    "carole::daily-basis::cloud",
+    "alendel::soho::sailor",
+    "alendel::switch::leaf",
+    "carole::cartwright::sand",
+    "alendel::mystery::sparrow"
+  ]
+}
