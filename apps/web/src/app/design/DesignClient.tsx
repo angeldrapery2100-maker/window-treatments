@@ -39,6 +39,16 @@ interface DetailResponse extends FabricCard {
   widthIn: number | null; repeatVIn: number | null; repeatHIn: number | null; largeUrl: string | null
 }
 
+/** A window the visitor already measured in /measure-wizard. Only drapery
+ *  windows with a recommendation are useful here — a shutter card has no
+ *  finished drapery size to offer. */
+interface MeasuredWindow {
+  id: string
+  label: string
+  product: string
+  result?: { type?: string; recommendedWidthIn?: number; recommendedHeightIn?: number }
+}
+
 interface EstimateLine { ok: boolean; price?: number; rangeLow?: number; rangeHigh?: number; unavailable?: string; pricedAt?: string }
 interface EstimateResult {
   fabric: { id: string; name: string; color: string; brand: string; priceStatus: string }
@@ -61,6 +71,9 @@ export interface State {
   lining: string
   hardware: HardwareType
   mount: MountType
+  /** The measured window this design is for, when it came from one. */
+  windowId: string
+  label: string
   /** The exact rod or track AAPP prices, plus its finish and ends. */
   profileKey: string
   colorKey: string
@@ -71,7 +84,7 @@ const DEFAULTS: State = {
   composition: 'fabric_only', fabricId: '', sheerFabricId: '',
   width: '', height: '', heading: '3fold_pinch', split: true,
   lining: 'LF', hardware: 'wood_pole', mount: 'wall',
-  profileKey: '', colorKey: '', finialKey: '',
+  windowId: '', label: '', profileKey: '', colorKey: '', finialKey: '',
 }
 
 export function stateFromSearch(search: string, fallbackFabric: string): State {
@@ -103,6 +116,8 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
     lining: LININGS.some((l) => l.key === p.get('lining')) ? p.get('lining')! : DEFAULTS.lining,
     hardware,
     mount,
+    windowId: p.get('win') || '',
+    label: p.get('label') || '',
     profileKey: picked?.profile.key || '',
     colorKey: picked?.colorKey || '',
     finialKey: picked?.finialKey || '',
@@ -121,6 +136,8 @@ export function searchFromState(s: State): string {
   p.set('lining', s.lining)
   p.set('hw', s.hardware)
   p.set('mount', s.mount)
+  if (s.windowId) p.set('win', s.windowId)
+  if (s.label) p.set('label', s.label)
   if (s.profileKey) p.set('prof', s.profileKey)
   if (s.colorKey) p.set('col', s.colorKey)
   if (s.finialKey) p.set('fin', s.finialKey)
@@ -139,6 +156,9 @@ export default function DesignClient(
   const [estimate, setEstimate] = useState<EstimateResult | null>(null)
   const [estimating, setEstimating] = useState(false)
   const [estimateError, setEstimateError] = useState<string | null>(null)
+  const [windows, setWindows] = useState<MeasuredWindow[]>([])
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+  const [savedId, setSavedId] = useState<string | null>(null)
 
   /* Whole page state lives in the query string, so a half-finished design
      survives a refresh and can be sent to someone else. */
@@ -158,6 +178,22 @@ export default function DesignClient(
   useEffect(() => {
     setFavorites(readFavorites())
     return subscribeFavorites(setFavorites)
+  }, [])
+
+  // The measurement sheet the visitor filled in on /measure-wizard. Same
+  // identity (ad_anon cookie), so it is simply there.
+  useEffect(() => {
+    let alive = true
+    fetch('/api/store/measure/windows')
+      .then((r) => r.json())
+      .then((j) => {
+        if (!alive || !j?.success) return
+        setWindows((j.data.windows as MeasuredWindow[]).filter(
+          (w) => w.product === 'drapery' && Number(w.result?.recommendedWidthIn) > 0
+        ))
+      })
+      .catch(() => {})
+    return () => { alive = false }
   }, [])
 
   // The shortlist, resolved to real fabrics in one request.
@@ -229,6 +265,7 @@ export default function DesignClient(
     })
     setEstimate(null)
     setEstimateError(null)
+    setSaveState('idle')
   }, [])
 
   const widthNum = Number(state.width), heightNum = Number(state.height)
@@ -330,6 +367,18 @@ export default function DesignClient(
   // Why the CURRENT pairing is unavailable, if it is — the width can turn a
   // legal choice illegal after the fact, and we would rather say so than
   // silently swap the customer's hardware while they type.
+  const pickWindow = useCallback((w: MeasuredWindow) => {
+    const width = w.result?.recommendedWidthIn, height = w.result?.recommendedHeightIn
+    setState((cur) => ({
+      ...cur,
+      windowId: w.id,
+      label: w.label,
+      ...(width ? { width: String(Math.round(width * 4) / 4) } : {}),
+      ...(height ? { height: String(Math.round(height * 4) / 4) } : {}),
+    }))
+    setEstimate(null); setEstimateError(null); setSaveState('idle')
+  }, [])
+
   const fabricsChosen = !!state.fabricId
     && (state.composition !== 'fabric_plus_sheer' || !!state.sheerFabricId)
 
@@ -337,6 +386,44 @@ export default function DesignClient(
   const selectedProfile = profileChoices.find((p) => p.key === state.profileKey) || profileChoices[0] || null
   const colorChoices = colorsFor(selectedProfile)
   const finialChoices = finialsFor(selectedProfile)
+
+  const saveDesign = useCallback(async () => {
+    setSaveState('saving')
+    try {
+      const res = await fetch('/api/store/design/saved', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: savedId,
+          label: state.label || selectedCard?.name || 'Untitled window',
+          windowId: state.windowId || null,
+          config: state,
+          // Names, not ids — a consultant reading this months later should not
+          // have to look anything up.
+          summary: {
+            composition: COMPOSITIONS.find((c) => c.key === state.composition)?.label,
+            fabric: selectedCard ? `${selectedCard.name} — ${selectedCard.color} (${selectedCard.brand})` : null,
+            sheer: selectedSheerCard ? `${selectedSheerCard.name} — ${selectedSheerCard.color} (${selectedSheerCard.brand})` : null,
+            size: sizeOk ? `${widthNum}" x ${heightNum}"` : null,
+            heading: headingLabel(state.heading),
+            panels: state.split ? 'Centre-open pair' : 'One-way draw',
+            lining: LININGS.find((l) => l.key === state.lining)?.label,
+            hardware: selectedProfile?.label || null,
+            finish: state.colorKey || null,
+            finial: finialChoices.find((f) => f.key === state.finialKey)?.label || null,
+            mount: state.mount,
+            link: typeof window !== 'undefined' ? window.location.href : null,
+          },
+          estimate,
+        }),
+      })
+      const j = await res.json()
+      if (j?.success) { setSavedId(j.data.design.id); setSaveState('saved') }
+      else setSaveState('error')
+    } catch {
+      setSaveState('error')
+    }
+  }, [savedId, state, selectedCard, selectedSheerCard, sizeOk, widthNum, heightNum, estimate, selectedProfile, finialChoices])
 
   const hardwareProblem = combinationProblem(state.heading, state.hardware, {
     split: state.split,
@@ -411,7 +498,48 @@ export default function DesignClient(
 
           {/* Step 1 — Size. Eddie's order: size, then style, then how it
               draws, then lining, then hardware. Each answer narrows the next. */}
-          <Block title="1 · Finished size">
+          <Block
+            title="1 · Finished size"
+            aside={<Link href="/measure-wizard" className="text-xs underline underline-offset-4 text-gray-500 hover:text-black">Measuring guide</Link>}
+          >
+            {windows.length > 0 && (
+              <div className="mb-4">
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Your measured windows</p>
+                <div className="flex flex-wrap gap-2">
+                  {windows.map((w) => (
+                    <button
+                      key={w.id}
+                      onClick={() => pickWindow(w)}
+                      aria-pressed={state.windowId === w.id}
+                      className={`rounded-full border px-3 py-1.5 text-sm ${
+                        state.windowId === w.id ? 'bg-[#12141C] text-white border-[#12141C]' : 'border-gray-300 text-gray-700 hover:border-gray-500'
+                      }`}
+                    >
+                      {w.label}
+                      <span className={`ml-1.5 text-[11px] ${state.windowId === w.id ? 'text-white/60' : 'text-gray-400'}`}>
+                        {Math.round(w.result!.recommendedWidthIn!)}&quot;×{Math.round(Number(w.result?.recommendedHeightIn) || 0)}&quot;
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  Picking one fills in the finished size we worked out for it — you can still change it.
+                </p>
+              </div>
+            )}
+
+            <div className="mb-3">
+              <label htmlFor="design-label" className="block text-xs text-gray-500">Which window is this? (for your saved designs)</label>
+              <input
+                id="design-label"
+                type="text"
+                value={state.label}
+                onChange={(e) => set('label', e.target.value.slice(0, 60))}
+                placeholder="Living room"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-3">
               <NumberField label="Width (in)" value={state.width} onChange={(v) => set('width', v)} min={SIZE.minW} max={SIZE.maxW} />
               <NumberField label="Height (in)" value={state.height} onChange={(v) => set('height', v)} min={SIZE.minH} max={SIZE.maxH} />
@@ -575,6 +703,26 @@ export default function DesignClient(
             {sizeOk && hardwareProblem && <p className="mt-2 text-xs text-gray-500">Pick hardware that suits this design first.</p>}
             {estimateError && <p className="mt-3 text-sm text-[#B3451F]">{estimateError}</p>}
             {estimate && <EstimatePanel result={estimate} />}
+
+            {estimate && (
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={saveDesign}
+                  disabled={saveState === 'saving'}
+                  className="rounded-full border border-[#12141C] px-5 py-2.5 text-sm font-medium text-[#12141C] hover:bg-[#12141C] hover:text-white transition-colors disabled:opacity-50"
+                >
+                  {saveState === 'saving' ? 'Saving…' : savedId ? 'Update saved design' : 'Save this design'}
+                </button>
+                {saveState === 'saved' && (
+                  <Link href="/design/saved" className="text-sm underline underline-offset-4 text-gray-600 hover:text-black">
+                    Saved — see all your windows →
+                  </Link>
+                )}
+                {saveState === 'error' && (
+                  <span className="text-sm text-[#B3451F]">We couldn&apos;t save that — please try again.</span>
+                )}
+              </div>
+            )}
           </Block>
 
           <Link

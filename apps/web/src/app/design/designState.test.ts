@@ -8,7 +8,7 @@ import { designProfiles } from '@/lib/designHardware'
 describe('design state <-> query string', () => {
   it('round-trips a complete design', () => {
     const s: State = {
-      composition: 'fabric_only', sheerFabricId: '',
+      composition: 'fabric_only', sheerFabricId: '', windowId: '', label: '',
       fabricId: 'carole::a-day-off::indigo', width: '96', height: '84',
       heading: '2fold_tailored', split: false, lining: 'BO', hardware: 'h_rail', mount: 'wall',
       profileKey: 'h_rail_single_1_1_8_wall', colorKey: 'Satin Gold', finialKey: 'crystal_finial',
@@ -18,7 +18,7 @@ describe('design state <-> query string', () => {
 
   it('round-trips a ripplefold on a track', () => {
     const s: State = {
-      composition: 'fabric_only', sheerFabricId: '',
+      composition: 'fabric_only', sheerFabricId: '', windowId: '', label: '',
       fabricId: 'x::y::z', width: '140', height: '96',
       heading: 'us_100', split: true, lining: 'LF', hardware: 'alu_track', mount: 'ceiling',
       profileKey: 'aluminum_ceiling_track_single', colorKey: 'Black', finialKey: '',
@@ -71,7 +71,7 @@ describe('design state <-> query string', () => {
 
   it('round-trips a drape with a sheer behind it, on a double rod', () => {
     const s: State = {
-      composition: 'fabric_plus_sheer', fabricId: 'a::b::c', sheerFabricId: 'd::e::f',
+      composition: 'fabric_plus_sheer', fabricId: 'a::b::c', sheerFabricId: 'd::e::f', windowId: '', label: '',
       width: '110', height: '96', heading: '3fold_pinch', split: true, lining: 'NO',
       hardware: 'h_rail', mount: 'wall',
       profileKey: 'h_rail_double_1_3_8_1_1_8_wall', colorKey: 'Old Gold', finialKey: 'ball_finial',
@@ -92,6 +92,15 @@ describe('design state <-> query string', () => {
     expect(stateFromSearch('?comp=fabric_only&sheer=a::b::c', '').sheerFabricId).toBe('')
     expect(stateFromSearch('?comp=sheer_only&sheer=a::b::c', '').sheerFabricId).toBe('')
     expect(stateFromSearch('?comp=fabric_plus_sheer&sheer=a::b::c', '').sheerFabricId).toBe('a::b::c')
+  })
+
+  it('carries the measured window it was built for', () => {
+    // The consultant needs to know which window a design is for; losing it in
+    // a shared link would strand the design.
+    const s = stateFromSearch('?win=11111111-2222-3333-4444-555555555555&label=Living%20room', '')
+    expect(s.windowId).toBe('11111111-2222-3333-4444-555555555555')
+    expect(s.label).toBe('Living room')
+    expect(searchFromState(s)).toContain('win=11111111')
   })
 
   it('ignores an unknown composition', () => {

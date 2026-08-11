@@ -26,6 +26,9 @@ export const LEAD_SCORE_WEIGHTS: Record<string, ScoreWeight> = {
   sundance_jc_estimate:  { points: 15, cap: 30 },
   measure_wizard:        { points: 8,  cap: 24 },
   project_added_to_cart: { points: 20, cap: 40 },
+  // Saving a made-to-measure design is as strong a signal as a cart add: the
+  // visitor has chosen fabric, size, heading and hardware for a real window.
+  design_saved:          { points: 20, cap: 40 },
   inquiry_submitted:     { points: 35, cap: 35 },
 }
 
@@ -101,6 +104,7 @@ const SIGNAL_LABEL: Record<string, string> = {
   sundance_jc_estimate: 'Sundance/JC 询价',
   store_estimate: '商店询价',
   measure_wizard: '量窗',
+  design_saved: '存设计',
   assistant_chat: 'AI 对话',
   campaign_visit: '活动访问',
   project_viewed: '看方案',

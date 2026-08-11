@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
 import DesignClient from './DesignClient'
@@ -37,9 +38,17 @@ export default function DesignPage() {
           <span className="text-[#4DB6E8] text-[11px] font-bold tracking-[0.3em] uppercase block mb-3">
             Handcrafted Drapery
           </span>
-          <h1 className="text-4xl md:text-5xl font-light tracking-tighter text-white leading-[1.08]">
-            Design Your Drapery
-          </h1>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h1 className="text-4xl md:text-5xl font-light tracking-tighter text-white leading-[1.08]">
+              Design Your Drapery
+            </h1>
+            <Link
+              href="/design/saved"
+              className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+            >
+              My project →
+            </Link>
+          </div>
         </div>
       </section>
 

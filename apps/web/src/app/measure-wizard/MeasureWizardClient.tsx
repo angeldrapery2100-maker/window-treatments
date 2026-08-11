@@ -1312,6 +1312,19 @@ export default function MeasureWizardClient({
             >
               {tr(language, '+ Add a window', '+ 添加窗户')}
             </button>
+
+            {/* Measured drapery windows can go straight into the designer,
+                which fills the finished size in from the recommendation. */}
+            {saved.some((w) => w.product === 'drapery') && (
+              <a
+                href="/design"
+                className="mt-4 block rounded-2xl bg-[#12141C] p-5 text-center text-sm font-medium text-white transition-colors hover:bg-black"
+              >
+                {tr(language,
+                  'Design drapery for these windows →',
+                  '用这些窗户去做窗帘设计 →')}
+              </a>
+            )}
           </div>
         )}
 
