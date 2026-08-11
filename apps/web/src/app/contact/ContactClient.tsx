@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
@@ -32,7 +32,16 @@ export default function ContactClient({ contact, footer }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
   const [verifyReady, setVerifyReady] = useState(false)
+  // /design and /fabrics hand a visitor over here with their design already
+  // written out — read from the URL rather than props so no page becomes a
+  // client-rendered bailout, and cap it so the box can't be stuffed.
+  const [prefill, setPrefill] = useState('')
   const antiBotRef = useRef<AntiBotHandle>(null)
+
+  useEffect(() => {
+    const msg = new URLSearchParams(window.location.search).get('message')
+    if (msg) setPrefill(msg.slice(0, 2000))
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -280,6 +289,7 @@ export default function ContactClient({ contact, footer }: Props) {
               />
               <textarea
                 name="message" rows={4} placeholder="Tell us about your window treatment project..." aria-label="Project details"
+                key={prefill ? 'prefilled' : 'blank'} defaultValue={prefill}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition-all resize-none"
               />
 

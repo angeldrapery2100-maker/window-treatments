@@ -106,3 +106,32 @@ describe('generated catalog integrity', () => {
     expect(new Set(keys).size).toBe(keys.length)
   })
 })
+
+describe('family narrowing (used by /design, where the customer names the hardware)', () => {
+  it('keeps wood poles apart from metal rods', () => {
+    const wood = matchProfiles({ lengthIn: 120, kind: 'pole', family: 'wood_pole' })
+    expect(wood.length).toBeGreaterThan(0)
+    expect(wood.every((p) => p.family === 'wood_pole')).toBe(true)
+  })
+
+  it('treats the ceiling variant as the same product', () => {
+    // `h_rail` and `ceiling_h_rail` are one thing to a customer choosing
+    // "H-rail" and then "ceiling mount".
+    const rails = matchProfiles({ lengthIn: 120, kind: 'track', family: 'h_rail', motorized: false })
+    const families = new Set(rails.map((p) => p.family))
+    expect(families).toContain('h_rail')
+    expect(families).toContain('ceiling_h_rail')
+    expect([...families].some((f) => f.includes('aluminum'))).toBe(false)
+  })
+
+  it('does not let an aluminium track answer to h_rail', () => {
+    const track = matchProfiles({ lengthIn: 120, kind: 'track', family: 'aluminum_track', motorized: false })
+    expect(track.length).toBeGreaterThan(0)
+    expect(track.every((p) => p.family.includes('aluminum'))).toBe(true)
+  })
+
+  it('changes nothing when no family is given', () => {
+    const all = matchProfiles({ lengthIn: 120, kind: 'track', motorized: false })
+    expect(all.length).toBeGreaterThan(3)
+  })
+})

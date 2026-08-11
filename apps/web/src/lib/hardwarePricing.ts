@@ -36,6 +36,12 @@ export interface HardwareEstimateParams {
   layer?: string
   /** Optional narrowing; spanned when absent. */
   mount?: string
+  /** Optional narrowing to one catalogue family (`wood_pole`, `h_rail`,
+   *  `aluminum_track`, …). The chat flow leaves this off and spans every
+   *  family that matches "pole" or "track"; /design sets it, because there the
+   *  customer has already picked wood pole vs track vs H-rail by name.
+   *  Ceiling variants are separate families, so a prefix match is used. */
+  family?: string
 }
 
 export interface HardwareEstimate {
@@ -53,12 +59,21 @@ export interface HardwareEstimate {
   error?: string
 }
 
+/** A catalogue family and its ceiling twin are the same product to a customer:
+ *  `h_rail` covers `ceiling_h_rail`, `aluminum_track` covers
+ *  `aluminum_ceiling_track`. (Motorised variants are excluded by the
+ *  `motorized` filter, not by this one.) */
+function familyMatches(profileFamily: string, wanted: string): boolean {
+  return profileFamily.replace('_ceiling', '').replace('ceiling_', '') === wanted.replace('_ceiling', '').replace('ceiling_', '')
+}
+
 export function matchProfiles(params: HardwareEstimateParams): HardwareProfileRow[] {
   return HARDWARE_PROFILES.filter((p) => {
     if (params.kind && p.kind !== params.kind) return false
     if (params.layer && p.layer !== params.layer) return false
     if (params.mount && p.mount !== params.mount) return false
     if (params.motorized != null && p.motorized !== params.motorized) return false
+    if (params.family && !familyMatches(p.family, params.family)) return false
     return true
   })
 }

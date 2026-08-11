@@ -13,7 +13,8 @@
     "./pricing": "./src/pricing/index.ts",
     "./pricing/aapp": "./src/pricing/aapp/index.ts",
     "./pricing/engines": "./src/pricing/engines/index.ts",
-    "./pricing/explainers": "./src/pricing/explainers/index.ts"
+    "./pricing/explainers": "./src/pricing/explainers/index.ts",
+    "./design": "./src/design/index.ts"
   },
   "devDependencies": {
     "vitest": "^2.1.9"
