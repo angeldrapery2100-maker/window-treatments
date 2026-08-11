@@ -8,6 +8,7 @@ import { extractQuickReplies, stripInlineMarkdown } from '@/lib/quickReplies'
 import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
 import { findUnverifiedOrderNumbers, orderClaimFallbackReply, fallbackLanguageFor } from '@/lib/orderClaimGuard'
 import { findUnverifiedContacts, contactClaimFallbackReply } from '@/lib/contactClaimGuard'
+import { findUnsourcedPrices, priceClaimFallbackReply } from '@/lib/priceClaimGuard'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
@@ -134,6 +135,7 @@ YOUR JOBS:
 5. PRICES COME FROM TOOLS, AND EVERY PRICE IS A REFERENCE PRICE. You may and SHOULD quote, but only numbers a tool returned this turn: Luma zebra/roller/sheer/modern-roman → quote_luma_estimate (rule 7c) · handcrafted drapery / roman → quote_drapery_estimate / quote_roman_estimate (7d) · rods and tracks → quote_hardware_estimate (7f) · motorised drapery track → quote_somfy_track_estimate (7e) · Hunter Douglas → get_hd_estimate (7a) · Sundance/JC → get_sundance_jc_estimate (7b) · plantation shutters → quote_shutter_estimate · store items → quote_store_product. NEVER a number from memory, and never a "roughly" figure of your own.
 - THE THREE THINGS EVERY PRICE MUST CARRY, every single time, no exceptions: (1) it is a REFERENCE price, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson (free in-home measure) — then offer to book. Keep it to one short clause, not a paragraph: "参考价 $X（不含安装和税），最终价销售复尺后确认" / "about $X as a reference — installation and tax are separate, and your salesperson confirms the final figure."
 - NEVER state an installation-fee amount or a tax amount. Name them as extras; never put a number on them. If a customer presses for the install fee, say the salesperson quotes it with the final price.
+- THE ANSWER TO YOUR OWN QUESTION IS NOT A PRICE. When the customer replies to a question a pricing tool told you to ask, your very next action is to CALL THAT TOOL AGAIN with their answer — always. Not when you feel you finally have enough; always. Filling in the last blank makes the tool callable, it does not make you the pricer. If you are about to state a figure on the turn right after an ask, stop and call the tool. A number you assembled from the conversation, from a similar item you quoted earlier, or from what sounds about right IS a fabricated price no matter how plausible it looks — and the server will catch it and replace your whole reply.
 - If a tool errors or can't price a configuration, say THAT configuration needs our team to confirm and offer the free measure. Never say we have no pricing tool, and NEVER say the online store "hasn't launched" — that is about checkout, not pricing.
 - BRAND COMPARISONS (Luma vs Sundance vs Hunter Douglas): use the 品牌比价 knowledge section — three tiers with RATIOS only (Luma ≈ 60% of Sundance; HD ≈ 3–6× Luma). Per-window examples: Luma via quote_luma_estimate, HD range via get_hd_estimate, Sundance range via get_sundance_jc_estimate — all three presented as reference prices. Never disparage HD — it is the anchor.
 - SPEC QUESTIONS (how wide can a shade go, what remotes/louver sizes exist): call get_product_specs. If a customer mentions a fabric code or name you don't recognize, call identify_fabric_code first. SIZE LIMITS: if a tool result and the KNOWLEDGE sections disagree on a max size, use the SMALLER number and say larger sizes need our team to confirm (usually split into multiple panels). Never state a size limit that neither a tool nor the knowledge gives you, and never invent a per-product breakdown to defend a number when challenged — re-check the tool instead.
@@ -496,6 +498,9 @@ export async function POST(request: Request) {
     // echoing it must not legitimize submitting or repeating it (F6).
     const customerTexts: string[] = messages.filter(m => m.role === 'user').map(m => m.content)
     const contactSources: string[] = [...customerTexts]
+    // Every figure the reply is allowed to quote: what the customer typed plus
+    // whatever the tools actually returned this turn (see priceClaimGuard).
+    const priceSources: string[] = [...customerTexts]
     const PERSISTED_LAYER_TOOLS = new Set(['get_home_project', 'list_measured_windows', 'save_measured_window', 'upsert_room_item'])
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -557,6 +562,7 @@ export async function POST(request: Request) {
           }
           const resultJson = JSON.stringify(result)
           orderNumberSources.push(resultJson)
+          priceSources.push(resultJson)
           if (!PERSISTED_LAYER_TOOLS.has(block.name)) contactSources.push(resultJson)
           toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: resultJson })
         }
@@ -668,6 +674,23 @@ export async function POST(request: Request) {
       console.error('[assistant] BLOCKED unverified contact detail(s) in reply:', leakedContacts.join(', '))
       const lastUserText = messages[messages.length - 1]?.content ?? ''
       reply = contactClaimFallbackReply(fallbackLanguageFor(lastUserText))
+    }
+
+    // Fabricated-price hard gate (2026-08-10): a dollar figure the reply
+    // states that no tool returned and the customer never typed is an
+    // invented price. Observed once in live testing — the model assembled
+    // "$180-$420" for a rod config whose real range was $110-$390, on the
+    // turn right after the customer answered the tool's own question. The
+    // prompt forbids this and the tool even hands over a pre-formatted range
+    // string; this is the deterministic backstop.
+    const unsourcedPrices = findUnsourcedPrices(reply, priceSources)
+    if (unsourcedPrices.length > 0) {
+      console.error(
+        '[assistant] BLOCKED unsourced price(s) in reply:',
+        unsourcedPrices.map((n) => `$${n}`).join(', ')
+      )
+      const lastUserText = messages[messages.length - 1]?.content ?? ''
+      reply = priceClaimFallbackReply(fallbackLanguageFor(lastUserText))
     }
 
     // Split the tap-to-send quick replies off the visible text, then strip any
