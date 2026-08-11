@@ -54,3 +54,7 @@ apps/web/public-optimized/
 .vercel
 .env*
 Hunter Douglas Pictures PDF/
+
+# editor/backup scratch files — never commit these
+*.bak
+*.bak-*

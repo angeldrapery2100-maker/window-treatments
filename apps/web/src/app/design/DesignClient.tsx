@@ -373,6 +373,19 @@ export default function DesignClient() {
   const selectedCard = mainList.find((f) => f.id === state.fabricId) || asCard(detail)
   const selectedSheerCard = sheerList.find((f) => f.id === state.sheerFabricId) || asCard(sheerDetail)
 
+  const fabricsChosen = !!state.fabricId
+    && (state.composition !== 'fabric_plus_sheer' || !!state.sheerFabricId)
+
+  const profileChoices = designProfiles(state.hardware, state.mount, state.composition)
+  const selectedProfile = profileChoices.find((p) => p.key === state.profileKey) || profileChoices[0] || null
+  const colorChoices = colorsFor(selectedProfile)
+  const finialChoices = finialsFor(selectedProfile)
+
+  // Everything the consultation message and the save payload read has to be
+  // declared BEFORE them: useMemo and useCallback factories run during the
+  // first render, so a reference to a const declared further down is a
+  // temporal-dead-zone crash — one that only shows up when the component is
+  // server-rendered, which is exactly where it bit us.
   const consultationHref = useMemo(() => {
     const bits = [
       `Layers: ${COMPOSITIONS.find((c) => c.key === state.composition)?.label}`,
@@ -404,14 +417,6 @@ export default function DesignClient() {
     }))
     setEstimate(null); setEstimateError(null); setSaveState('idle')
   }, [])
-
-  const fabricsChosen = !!state.fabricId
-    && (state.composition !== 'fabric_plus_sheer' || !!state.sheerFabricId)
-
-  const profileChoices = designProfiles(state.hardware, state.mount, state.composition)
-  const selectedProfile = profileChoices.find((p) => p.key === state.profileKey) || profileChoices[0] || null
-  const colorChoices = colorsFor(selectedProfile)
-  const finialChoices = finialsFor(selectedProfile)
 
   const saveDesign = useCallback(async () => {
     setSaveState('saving')
