@@ -778,6 +778,22 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: 'quote_hardware_estimate',
+    description:
+      "Get a REFERENCE PRICE for DRAPERY HARDWARE — decorative rods/poles, aluminium tracks, H-rails, and motorised tracks — priced by AAPP. Use it when a customer asks what a rod or track costs, including replacing hardware for curtains they already own. Pass the length in inches (usually the finished drapery width). Missing choices come back ONE at a time in `ask`: rod-vs-track, then manual-vs-motorised (skipped for rods, which are always manual), then single-vs-double layer. Never ask about, or mention, a specific profile/SKU — the tool prices every matching profile and returns a span. For a full Somfy motorised TRACK SYSTEM with a named motor, quote_somfy_track_estimate is the better tool; use this one for the rod/track hardware itself.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        length_in: { type: 'number', description: 'Rod/track length in inches.' },
+        kind: { type: 'string', description: "'pole' (visible decorative rod) | 'track' (low-profile track or H-rail)." },
+        motorized: { type: 'boolean', description: 'true = motorised. Ignored for poles.' },
+        layer: { type: 'string', description: "'single' | 'double' (double carries a drape plus a sheer)." },
+        mount: { type: 'string', description: "Optional: 'wall' | 'ceiling'. Omit to span both." },
+      },
+      required: ['length_in'],
+    },
+  },
+  {
     name: 'quote_somfy_track_estimate',
     description:
       "Get a REFERENCE PRICE for a SOMFY MOTORIZED DRAPERY TRACK — the motorised track itself (motor + track + any accessories), not the fabric. Use this whenever a customer asks what motorising their drapery costs, including motorising curtains they already own. Pass the track length in inches (usually the finished drapery width; for a bare rod replacement, the rod length). If the track type is missing the tool returns ONE question in `ask` — ask it and call again. The MOTOR is never asked: the customer can't know which motor, so the tool prices the span across the motors we stock and returns a range. Pass double_layer=true for a drape + sheer double track.",
@@ -1373,6 +1389,70 @@ export async function executeAssistantTool(
         error: est.error,
         note: 'Could not price that configuration — say that exact combination needs our workroom to confirm and offer the free in-home measure. NEVER guess a number and NEVER say we have no pricing for drapery.',
       }
+    }
+    case 'quote_hardware_estimate': {
+      const { hardwareEstimate } = await import('@/lib/hardwarePricing')
+      const est = await hardwareEstimate({
+        lengthIn: Number(input?.length_in),
+        kind: typeof input?.kind === 'string' ? input.kind : undefined,
+        motorized: typeof input?.motorized === 'boolean' ? input.motorized : undefined,
+        layer: typeof input?.layer === 'string' ? input.layer : undefined,
+        mount: typeof input?.mount === 'string' ? input.mount : undefined,
+      })
+      if (est.ask) {
+        return {
+          ask_customer: est.ask.field,
+          question_en: est.ask.askEn,
+          question_zh: est.ask.askZh,
+          options: est.ask.options,
+          note: 'Ask ONLY this one, in the customer\'s language and your own words, then call again. Do not quote a number this turn, and never mention profile keys or SKUs.',
+        }
+      }
+      if (est.ok) {
+        logLeadEvent({
+          userId, anonId, type: 'hardware_estimate',
+          value: est.price ?? est.rangeLow ?? null,
+          meta: { len: input?.length_in, kind: input?.kind, layer: input?.layer, motorized: input?.motorized },
+          campaignId,
+        })
+        return {
+          product: 'Drapery hardware',
+          ...(est.price != null
+            ? { reference_price: `$${est.price.toLocaleString()}`, price: est.price }
+            : {
+                reference_range: `$${est.rangeLow!.toLocaleString()} – $${est.rangeHigh!.toLocaleString()}`,
+                range_low: est.rangeLow,
+                range_high: est.rangeHigh,
+                range_reason: 'Span across the rod/track styles that fit what they described — the figure lands once a designer picks the exact one. One clause; never list the styles.',
+              }),
+          hardware_only_note: 'This is the ROD/TRACK ONLY — no drapery fabric. If they want the drapery too, price it with quote_drapery_estimate and say the two are separate lines.',
+          // A span built from SOME of the matching styles must never read as
+          // if it covered them all. Two ways that happens: we clipped the
+          // fan-out, or the library has no price for some styles yet (the
+          // motorised H-rails were all unpriced as of 2026-08-10).
+          ...(est.clipped || (est.unpriced?.length ?? 0) > 0
+            ? {
+                coverage_note:
+                  `Priced ${est.profilesPriced} of ${est.profilesMatched} matching styles` +
+                  ((est.unpriced?.length ?? 0) > 0
+                    ? ' — some styles are not priced in our system yet, so this span is PARTIAL. Tell the customer it covers the styles you could check and that the designer confirms the rest; do not present it as the full range.'
+                    : ' — the span may widen slightly; the designer confirms.'),
+              }
+            : {}),
+          ...(est.assumed ? { assumed_config: est.assumed, assumed_note: 'State these in ONE short clause.' } : {}),
+          must_say: REFERENCE_PRICE_DISCLOSURE,
+        }
+      }
+      if (est.error === 'missing_length') {
+        return { error: 'missing_length', note: 'Ask how long the rod/track needs to be in inches (for a new drapery, run recommend_drapery_size first and use the finished width).' }
+      }
+      if (est.error === 'no_price' || est.error === 'no_matching_profile') {
+        return {
+          error: est.error,
+          note: 'We do not have a quotable price for that combination yet — say that style needs our designer to confirm and offer the free in-home measure. NEVER guess a number, and never say we do not sell hardware.',
+        }
+      }
+      return { error: est.error, note: 'Could not price that hardware — offer the free in-home measure. Never guess a number.' }
     }
     case 'quote_somfy_track_estimate': {
       const { somfyEstimate } = await import('@/lib/somfyPricing')
