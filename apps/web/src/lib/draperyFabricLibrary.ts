@@ -79,9 +79,17 @@ export function getFabric(id: string): Fabric | null {
   return byId.get(id) || null
 }
 
-/** The fabrics /design offers before a visitor has favourited anything. */
+const resolve = (ids: string[]): Fabric[] => ids.map(getFabric).filter((f): f is Fabric => !!f)
+
+/** Drapery fabrics /design offers before a visitor has favourited anything. */
 export function featuredFabrics(): Fabric[] {
-  return (featured.ids as string[]).map(getFabric).filter((f): f is Fabric => !!f)
+  return resolve(featured.ids as string[])
+}
+
+/** Sheers for the second layer, same idea. Kept apart from the drapery list
+ *  because the two slots are never interchangeable. */
+export function featuredSheers(): Fabric[] {
+  return resolve(((featured as { sheerIds?: string[] }).sheerIds) || [])
 }
 
 // ── image URLs ──────────────────────────────────────────────────────────────

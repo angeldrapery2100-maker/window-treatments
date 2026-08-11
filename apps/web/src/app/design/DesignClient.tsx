@@ -5,7 +5,8 @@ import Link from 'next/link'
 import {
   HARDWARE_TYPES, HEADING_STYLES, PLEATED_HEADINGS, RIPPLE_HEADINGS,
   combinationProblem, hardwareFor, headingLabel, mountsFor,
-  type DesignParams, type HardwareType, type HeadingStyle, type MountType,
+  type Composition, type DesignParams, type FabricRef,
+  type HardwareType, type HeadingStyle, type MountType,
 } from '@window-treatments/shared/design'
 import { readFavorites, subscribeFavorites } from '@/lib/fabricFavorites'
 import { colorsFor, designProfiles, finialsFor, resolveHardwareSelection } from '@/lib/designHardware'
@@ -17,6 +18,12 @@ import { ESTIMATE_DISCLAIMER_SHORT } from '@/lib/estimateCopy'
 const PLACEHOLDER = '/drapery/handcrafted-drapery/03_fa469c_76c9f3f34ab14a39adde503c7cdd222ef002.jpg'
 
 const SIZE = { minW: 20, maxW: 300, minH: 20, maxH: 144 }
+const COMPOSITIONS: Array<{ key: Composition; label: string; hint: string }> = [
+  { key: 'fabric_only', label: 'Drapery only', hint: 'One layer of fabric' },
+  { key: 'fabric_plus_sheer', label: 'Drapery + sheer', hint: 'A sheer behind, on a double rod' },
+  { key: 'sheer_only', label: 'Sheer only', hint: 'A single soft layer' },
+]
+
 const LININGS: Array<{ key: string; label: string; hint: string }> = [
   { key: 'NO', label: 'Unlined', hint: 'Softest drape, most light' },
   { key: 'LF', label: 'Light-filtering', hint: 'Our usual choice' },
@@ -43,7 +50,10 @@ interface EstimateResult {
 }
 
 export interface State {
+  composition: Composition
   fabricId: string
+  /** The layer behind, only used when composition is fabric_plus_sheer. */
+  sheerFabricId: string
   width: string
   height: string
   heading: HeadingStyle
@@ -58,7 +68,8 @@ export interface State {
 }
 
 const DEFAULTS: State = {
-  fabricId: '', width: '', height: '', heading: '3fold_pinch', split: true,
+  composition: 'fabric_only', fabricId: '', sheerFabricId: '',
+  width: '', height: '', heading: '3fold_pinch', split: true,
   lining: 'LF', hardware: 'wood_pole', mount: 'wall',
   profileKey: '', colorKey: '', finialKey: '',
 }
@@ -76,10 +87,14 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
     hardware = hardwareFor(heading, { split, finishedWidthIn: width })[0] || hardwareFor(heading)[0]
   }
   const mount = mountsFor(hardware).includes(p.get('mount') as MountType) ? (p.get('mount') as MountType) : mountsFor(hardware)[0]
+  const composition = COMPOSITIONS.some((c) => c.key === p.get('comp'))
+    ? (p.get('comp') as Composition) : 'fabric_only'
   const picked = resolveHardwareSelection(hardware, mount, {
-    profileKey: p.get('prof'), colorKey: p.get('col'), finialKey: p.get('fin'),
+    profileKey: p.get('prof'), colorKey: p.get('col'), finialKey: p.get('fin'), composition,
   })
   return {
+    composition,
+    sheerFabricId: composition === 'fabric_plus_sheer' ? (p.get('sheer') || '') : '',
     fabricId: p.get('fabric') || fallbackFabric,
     width: p.get('w') || '',
     height: p.get('h') || '',
@@ -96,7 +111,9 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
 
 export function searchFromState(s: State): string {
   const p = new URLSearchParams()
+  if (s.composition !== 'fabric_only') p.set('comp', s.composition)
   if (s.fabricId) p.set('fabric', s.fabricId)
+  if (s.composition === 'fabric_plus_sheer' && s.sheerFabricId) p.set('sheer', s.sheerFabricId)
   if (s.width) p.set('w', s.width)
   if (s.height) p.set('h', s.height)
   p.set('heading', s.heading)
@@ -110,12 +127,15 @@ export function searchFromState(s: State): string {
   return `?${p.toString()}`
 }
 
-export default function DesignClient({ defaultFabrics }: { defaultFabrics: FabricCard[] }) {
+export default function DesignClient(
+  { defaultFabrics, defaultSheers }: { defaultFabrics: FabricCard[]; defaultSheers: FabricCard[] }
+) {
   const [state, setState] = useState<State>(() => ({ ...DEFAULTS, fabricId: defaultFabrics[0]?.id || '' }))
   const [ready, setReady] = useState(false)
   const [favorites, setFavorites] = useState<string[]>([])
   const [savedCards, setSavedCards] = useState<FabricCard[]>([])
   const [detail, setDetail] = useState<DetailResponse | null>(null)
+  const [sheerDetail, setSheerDetail] = useState<DetailResponse | null>(null)
   const [estimate, setEstimate] = useState<EstimateResult | null>(null)
   const [estimating, setEstimating] = useState(false)
   const [estimateError, setEstimateError] = useState<string | null>(null)
@@ -151,8 +171,8 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
     return () => { alive = false }
   }, [favorites])
 
-  // Full detail for whichever fabric is selected — the 3D contract needs its
-  // width and repeat, and the panel shows its name.
+  // Full detail for each slot — the 3D contract needs width and repeat per
+  // layer, and the estimate needs each fabric's own $/yard.
   useEffect(() => {
     if (!state.fabricId) { setDetail(null); return }
     let alive = true
@@ -162,6 +182,16 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
       .catch(() => { if (alive) setDetail(null) })
     return () => { alive = false }
   }, [state.fabricId])
+
+  useEffect(() => {
+    if (!state.sheerFabricId) { setSheerDetail(null); return }
+    let alive = true
+    fetch(`/api/fabrics/${encodeURIComponent(state.sheerFabricId)}`)
+      .then((r) => r.json())
+      .then((j) => { if (alive) setSheerDetail(j?.success ? (j.data as DetailResponse) : null) })
+      .catch(() => { if (alive) setSheerDetail(null) })
+    return () => { alive = false }
+  }, [state.sheerFabricId])
 
   const set = useCallback(<K extends keyof State>(key: K, value: State[K]) => {
     setState((cur) => {
@@ -183,9 +213,13 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
       if (!mountsFor(next.hardware).includes(next.mount)) next.mount = mountsFor(next.hardware)[0]
       // A profile belongs to one family and mount, so changing either one
       // invalidates the rod, its finish and its ends together.
-      if (key === 'heading' || key === 'split' || key === 'hardware' || key === 'mount') {
+      // Leaving the two-layer design drops the sheer with it, so a stale id
+      // can never ride along into a quote for a single layer.
+      if (key === 'composition' && next.composition !== 'fabric_plus_sheer') next.sheerFabricId = ''
+      if (key === 'heading' || key === 'split' || key === 'hardware' || key === 'mount' || key === 'composition') {
         const re = resolveHardwareSelection(next.hardware, next.mount, {
           profileKey: next.profileKey, colorKey: next.colorKey, finialKey: next.finialKey,
+          composition: next.composition,
         })
         next.profileKey = re?.profile.key || ''
         next.colorKey = re?.colorKey || ''
@@ -208,20 +242,23 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
      exactly as §5 specifies, so the viewport swap is a one-line change. */
   const designParams: DesignParams | null = useMemo(() => {
     if (!detail || !sizeOk) return null
+    const ref = (d: DetailResponse): FabricRef => ({
+      id: d.id,
+      textureUrl: d.largeUrl || '',
+      fabricWidthIn: d.widthIn || 54,
+      ...(d.repeatVIn ? { repeatVIn: d.repeatVIn } : {}),
+      ...(d.repeatHIn ? { repeatHIn: d.repeatHIn } : {}),
+      sheer: d.sheer,
+    })
     return {
-      fabric: {
-        id: detail.id,
-        textureUrl: detail.largeUrl || '',
-        fabricWidthIn: detail.widthIn || 54,
-        ...(detail.repeatVIn ? { repeatVIn: detail.repeatVIn } : {}),
-        ...(detail.repeatHIn ? { repeatHIn: detail.repeatHIn } : {}),
-        sheer: detail.sheer,
-      },
+      composition: state.composition,
+      fabric: ref(detail),
+      ...(state.composition === 'fabric_plus_sheer' && sheerDetail ? { sheer: ref(sheerDetail) } : {}),
       window: { finishedWidthIn: widthNum, finishedHeightIn: heightNum },
       style: { heading: state.heading, split: state.split },
       hardware: { type: state.hardware, mount: state.mount },
     }
-  }, [detail, sizeOk, widthNum, heightNum, state.heading, state.split, state.hardware, state.mount])
+  }, [detail, sheerDetail, sizeOk, widthNum, heightNum, state.composition, state.heading, state.split, state.hardware, state.mount])
 
   const runEstimate = useCallback(async () => {
     if (!sizeOk || !state.fabricId) return
@@ -231,7 +268,9 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          composition: state.composition,
           fabricId: state.fabricId,
+          sheerFabricId: state.sheerFabricId,
           finishedWidthIn: widthNum,
           finishedHeightIn: heightNum,
           heading: state.heading,
@@ -254,13 +293,29 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
     }
   }, [sizeOk, state, widthNum, heightNum])
 
-  const shortlist = savedCards.length ? savedCards : defaultFabrics
-  const selectedCard = shortlist.find((f) => f.id === state.fabricId)
-    || (detail ? { id: detail.id, name: detail.name, color: detail.color, brand: detail.brand, thumbUrl: detail.thumbUrl, sheer: detail.sheer, priceStatus: detail.priceStatus } : null)
+  // Two shortlists, never mixed: a sheer cannot go in the drapery slot and a
+  // drapery fabric cannot go behind one. Favourites win over the seeded
+  // defaults, per slot — someone who has favourited drapery but no sheer still
+  // gets sheers to choose from.
+  const asCard = (d: DetailResponse | null): FabricCard | null => d && {
+    id: d.id, name: d.name, color: d.color, brand: d.brand,
+    thumbUrl: d.thumbUrl, sheer: d.sheer, priceStatus: d.priceStatus,
+  }
+  const savedDrapery = savedCards.filter((f) => !f.sheer)
+  const savedSheers = savedCards.filter((f) => f.sheer)
+  const draperyList = savedDrapery.length ? savedDrapery : defaultFabrics
+  const sheerList = savedSheers.length ? savedSheers : defaultSheers
+  // For `sheer_only` the one slot IS the sheer.
+  const mainList = state.composition === 'sheer_only' ? sheerList : draperyList
+  const selectedCard = mainList.find((f) => f.id === state.fabricId) || asCard(detail)
+  const selectedSheerCard = sheerList.find((f) => f.id === state.sheerFabricId) || asCard(sheerDetail)
 
   const consultationHref = useMemo(() => {
     const bits = [
-      selectedCard ? `Fabric: ${selectedCard.name} — ${selectedCard.color} (${selectedCard.brand})` : null,
+      `Layers: ${COMPOSITIONS.find((c) => c.key === state.composition)?.label}`,
+      selectedCard ? `${state.composition === 'sheer_only' ? 'Sheer' : 'Fabric'}: ${selectedCard.name} — ${selectedCard.color} (${selectedCard.brand})` : null,
+      selectedSheerCard && state.composition === 'fabric_plus_sheer'
+        ? `Sheer: ${selectedSheerCard.name} — ${selectedSheerCard.color} (${selectedSheerCard.brand})` : null,
       sizeOk ? `Finished size: ${widthNum}" wide x ${heightNum}" high` : null,
       `Heading: ${headingLabel(state.heading)}`,
       `Panels: ${state.split ? 'centre-open pair' : 'one-way draw'}`,
@@ -275,7 +330,10 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
   // Why the CURRENT pairing is unavailable, if it is — the width can turn a
   // legal choice illegal after the fact, and we would rather say so than
   // silently swap the customer's hardware while they type.
-  const profileChoices = designProfiles(state.hardware, state.mount)
+  const fabricsChosen = !!state.fabricId
+    && (state.composition !== 'fabric_plus_sheer' || !!state.sheerFabricId)
+
+  const profileChoices = designProfiles(state.hardware, state.mount, state.composition)
   const selectedProfile = profileChoices.find((p) => p.key === state.profileKey) || profileChoices[0] || null
   const colorChoices = colorsFor(selectedProfile)
   const finialChoices = finialsFor(selectedProfile)
@@ -287,8 +345,10 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
 
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 md:py-14">
-      <div className="grid gap-8 lg:grid-cols-[7fr_5fr] xl:grid-cols-[7fr_4fr]">
-        {/* ── viewport ─────────────────────────────────────────────────── */}
+      {/* 1:1. The viewport carries the fabric choice underneath it, which is
+          what keeps the two columns close to the same height (Eddie). */}
+      <div className="grid gap-8 lg:grid-cols-2">
+        {/* ── viewport + fabric ────────────────────────────────────────── */}
         <div>
           <div id="scene-root" className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#12141C]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -301,64 +361,53 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
             </div>
           </div>
 
-          <DesignSummary state={state} card={selectedCard} sizeOk={sizeOk} width={widthNum} height={heightNum} />
+          <DesignSummary state={state} card={selectedCard} sheerCard={selectedSheerCard} sizeOk={sizeOk} width={widthNum} height={heightNum} />
+
+          {/* Layers first: it decides which shortlists are even relevant. */}
+          <div className="mt-6">
+            <Block title="Layers">
+              <Choice
+                options={COMPOSITIONS.map((c) => ({ key: c.key, label: c.label, hint: c.hint }))}
+                value={state.composition}
+                onChange={(v) => set('composition', v as Composition)}
+              />
+            </Block>
+          </div>
+
+          <div className="mt-6 space-y-6">
+            <FabricSlot
+              title={state.composition === 'sheer_only' ? 'Sheer' : 'Drapery fabric'}
+              fabrics={mainList}
+              usingFavorites={state.composition === 'sheer_only' ? savedSheers.length > 0 : savedDrapery.length > 0}
+              selectedId={state.fabricId}
+              selected={selectedCard}
+              onSelect={(id) => set('fabricId', id)}
+              browseHref={state.composition === 'sheer_only' ? '/fabrics?type=sheer' : '/fabrics?type=drapery'}
+            />
+            {state.composition === 'fabric_plus_sheer' && (
+              <FabricSlot
+                title="Sheer behind"
+                fabrics={sheerList}
+                usingFavorites={savedSheers.length > 0}
+                selectedId={state.sheerFabricId}
+                selected={selectedSheerCard}
+                onSelect={(id) => set('sheerFabricId', id)}
+                browseHref="/fabrics?type=sheer"
+              />
+            )}
+          </div>
+
           {designParams && (
-            <p className="mt-3 text-[11px] text-gray-400">
+            <p className="mt-4 text-[11px] text-gray-400">
               Fabric width {designParams.fabric.fabricWidthIn}&quot;
               {designParams.fabric.repeatVIn ? ` · ${designParams.fabric.repeatVIn}" vertical repeat` : ''}
-              {designParams.fabric.sheer ? ' · sheer' : ''}
+              {designParams.sheer ? ` · sheer ${designParams.sheer.fabricWidthIn}" wide` : ''}
             </p>
           )}
         </div>
 
         {/* ── parameter panel ──────────────────────────────────────────── */}
         <div className="space-y-8">
-          {/* 1. Fabric */}
-          <Block
-            title="Fabric"
-            aside={
-              <Link href="/fabrics" className="text-xs underline underline-offset-4 text-gray-500 hover:text-black">
-                {savedCards.length ? `My Fabrics (${savedCards.length})` : 'Browse all fabrics'}
-              </Link>
-            }
-          >
-            {!savedCards.length && (
-              <p className="mb-3 text-xs text-gray-500">
-                A few of our most-used fabrics to start with — or{' '}
-                <Link href="/fabrics" className="underline underline-offset-4">pick your own from the library</Link>.
-              </p>
-            )}
-            <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
-              {shortlist.map((f) => (
-                <button
-                  key={f.id}
-                  onClick={() => set('fabricId', f.id)}
-                  aria-pressed={f.id === state.fabricId}
-                  className={`shrink-0 w-[84px] text-left ${f.id === state.fabricId ? '' : 'opacity-70 hover:opacity-100'}`}
-                >
-                  <span
-                    className={`block aspect-square w-full overflow-hidden rounded-lg bg-gray-100 ring-2 ${
-                      f.id === state.fabricId ? 'ring-[#12141C]' : 'ring-transparent'
-                    }`}
-                  >
-                    {f.thumbUrl && (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img src={f.thumbUrl} alt={`${f.name} in ${f.color}`} loading="lazy" className="h-full w-full object-cover" />
-                    )}
-                  </span>
-                  <span className="mt-1 block truncate text-[11px] text-gray-600">{f.name}</span>
-                </button>
-              ))}
-            </div>
-            {selectedCard && (
-              <p className="mt-2 text-sm text-gray-700">
-                <span className="font-medium">{selectedCard.name}</span> · {selectedCard.color} · {selectedCard.brand}
-                {selectedCard.priceStatus === 'ask_in_store' && (
-                  <span className="ml-2 rounded-full bg-[#F7F6F3] px-2 py-0.5 text-[11px] text-gray-500">Price on consultation</span>
-                )}
-              </p>
-            )}
-          </Block>
 
           {/* Step 1 — Size. Eddie's order: size, then style, then how it
               draws, then lining, then hardware. Each answer narrows the next. */}
@@ -516,12 +565,13 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
           <Block title="Reference estimate">
             <button
               onClick={runEstimate}
-              disabled={!sizeOk || !state.fabricId || !!hardwareProblem || estimating}
+              disabled={!sizeOk || !state.fabricId || !fabricsChosen || !!hardwareProblem || estimating}
               className="w-full rounded-full bg-[#12141C] py-3 text-sm font-medium text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-300"
             >
               {estimating ? 'Working it out…' : 'See a reference estimate'}
             </button>
             {!sizeOk && <p className="mt-2 text-xs text-gray-500">Enter a finished width and height first.</p>}
+            {sizeOk && !fabricsChosen && <p className="mt-2 text-xs text-gray-500">Pick a sheer for the second layer, above the viewport.</p>}
             {sizeOk && hardwareProblem && <p className="mt-2 text-xs text-gray-500">Pick hardware that suits this design first.</p>}
             {estimateError && <p className="mt-3 text-sm text-[#B3451F]">{estimateError}</p>}
             {estimate && <EstimatePanel result={estimate} />}
@@ -603,17 +653,89 @@ function Choice({ options, value, onChange }: {
   )
 }
 
-function DesignSummary({ state, card, sizeOk, width, height }: {
-  state: State; card: FabricCard | null; sizeOk: boolean; width: number; height: number
+function DesignSummary({ state, card, sheerCard, sizeOk, width, height }: {
+  state: State; card: FabricCard | null; sheerCard: FabricCard | null
+  sizeOk: boolean; width: number; height: number
 }) {
   const heading = headingLabel(state.heading)
   const hardware = HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label
   return (
     <p className="mt-4 text-sm text-gray-600">
       {card ? `${card.name} · ${card.color}` : 'Pick a fabric'}
+      {state.composition === 'fabric_plus_sheer' && sheerCard ? ` + ${sheerCard.name} · ${sheerCard.color}` : ''}
       {sizeOk ? ` · ${width}" × ${height}"` : ''}
       {` · ${heading} · ${hardware}, ${state.mount} mount`}
     </p>
+  )
+}
+
+/**
+ * One shortlist of swatches for one layer. Kept as its own component because
+ * a drape-plus-sheer design has two of them and they must never share state —
+ * putting a sheer in the drapery slot would quote a curtain nobody ordered.
+ */
+function FabricSlot({ title, fabrics, usingFavorites, selectedId, selected, onSelect, browseHref }: {
+  title: string
+  fabrics: FabricCard[]
+  usingFavorites: boolean
+  selectedId: string
+  selected: FabricCard | null
+  onSelect: (id: string) => void
+  browseHref: string
+}) {
+  return (
+    <Block
+      title={title}
+      aside={
+        <Link href={browseHref} className="text-xs underline underline-offset-4 text-gray-500 hover:text-black">
+          {usingFavorites ? `My Fabrics (${fabrics.length})` : 'Browse the library'}
+        </Link>
+      }
+    >
+      {!usingFavorites && (
+        <p className="mb-3 text-xs text-gray-500">
+          A few of ours to start with — or{' '}
+          <Link href={browseHref} className="underline underline-offset-4">pick your own</Link>.
+        </p>
+      )}
+      {fabrics.length === 0 ? (
+        <p className="text-sm text-gray-500">
+          Nothing saved yet.{' '}
+          <Link href={browseHref} className="underline underline-offset-4">Choose one from the library →</Link>
+        </p>
+      ) : (
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+          {fabrics.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => onSelect(f.id)}
+              aria-pressed={f.id === selectedId}
+              className={`shrink-0 w-[84px] text-left ${f.id === selectedId ? '' : 'opacity-70 hover:opacity-100'}`}
+            >
+              <span
+                className={`block aspect-square w-full overflow-hidden rounded-lg bg-gray-100 ring-2 ${
+                  f.id === selectedId ? 'ring-[#12141C]' : 'ring-transparent'
+                }`}
+              >
+                {f.thumbUrl && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={f.thumbUrl} alt={`${f.name} in ${f.color}`} loading="lazy" className="h-full w-full object-cover" />
+                )}
+              </span>
+              <span className="mt-1 block truncate text-[11px] text-gray-600">{f.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      {selected && (
+        <p className="mt-2 text-sm text-gray-700">
+          <span className="font-medium">{selected.name}</span> · {selected.color} · {selected.brand}
+          {selected.priceStatus === 'ask_in_store' && (
+            <span className="ml-2 rounded-full bg-[#F7F6F3] px-2 py-0.5 text-[11px] text-gray-500">Price on consultation</span>
+          )}
+        </p>
+      )}
+    </Block>
   )
 }
 

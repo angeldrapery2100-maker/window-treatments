@@ -1,13 +1,21 @@
 {
-  "_doc": "Fabrics /design offers a visitor who has not favourited anything yet. Seeded once by build-fabric-catalog.mjs and never overwritten — edit the ids freely. Order is the order shown.",
+  "_doc": "Fabrics /design offers a visitor who has not favourited anything yet — `ids` are drapery fabrics, `sheerIds` are sheers for the second layer. Seeded once by build-fabric-catalog.mjs and never overwritten: edit freely. Order is the order shown.",
   "ids": [
-    "carole::beginners-luck::flint",
-    "alendel::soria::grey",
-    "alendel::tweed::cliff",
-    "carole::daily-basis::cloud",
-    "alendel::soho::sailor",
-    "alendel::switch::leaf",
-    "carole::cartwright::sand",
-    "alendel::mystery::sparrow"
+    "carole::antechamber::dove",
+    "alendel::shalimar::clear-water",
+    "alendel::truth::cremini",
+    "carole::build-upon::snow",
+    "alendel::style::azure",
+    "alendel::toronto::aloe",
+    "carole::duty-calls::driftwood",
+    "alendel::oakland::midnight"
+  ],
+  "sheerIds": [
+    "alendel::affleck::navajo-white",
+    "alendel::cassandra::ivory",
+    "alendel::adara::white",
+    "alendel::connery::chrome",
+    "alendel::clement::sand",
+    "alendel::empire-voile-118::navy"
   ]
 }

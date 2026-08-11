@@ -115,7 +115,15 @@ export interface DraperyEstimateParams {
   styleKey?: string
   lining?: string
   fabricTier?: string
+  /** $/yard for the MAIN layer. For `sheer_only`, pass the sheer's price here
+   *  too — the main layer is disabled, so this only has to get past the
+   *  "which fabric?" gate. */
   fabricPricePerYard?: number
+  /** $/yard for the SHEER layer, when it differs from the main one. Without
+   *  it the sheer is priced at the main fabric's rate, which is what the chat
+   *  flow wants (it never names two fabrics) and what /design must not do:
+   *  a $95 velvet behind a $30 voile would be quoted as two velvets. */
+  sheerPricePerYard?: number
   /** Assumed 'fabric_only' unless the customer asked for a sheer layer. */
   composition?: string
   /** Assumed 'split' (centre-open). */
@@ -168,6 +176,10 @@ export async function draperyEstimate(params: DraperyEstimateParams): Promise<Ca
   const operation = params.operation || 'split'
   if (!params.operation) assumed.operation = 'centre-open pair'
 
+  const sheerEnabled = composition === 'fabric_plus_sheer' || composition === 'sheer_only'
+  const explicitSheer = Number(params.sheerPricePerYard)
+  const hasExplicitSheer = Number.isFinite(explicitSheer) && explicitSheer > 0
+
   const prices = await Promise.all(
     fabric.prices.map((pricePerYard) =>
       callAappAction({
@@ -184,6 +196,9 @@ export async function draperyEstimate(params: DraperyEstimateParams): Promise<Ca
           styleFamily: family,
           styleKey,
           operation,
+          // AAPP prices the two layers independently off their own
+          // layers.<x>.pricePerYard, so a real drape-plus-sheer pair is two
+          // different rates — not one rate applied twice.
           layers: {
             main: {
               enabled: composition !== 'sheer_only',
@@ -192,9 +207,12 @@ export async function draperyEstimate(params: DraperyEstimateParams): Promise<Ca
               liningType: lining,
             },
             sheer: {
-              enabled: composition === 'fabric_plus_sheer' || composition === 'sheer_only',
-              ...(composition === 'fabric_plus_sheer' || composition === 'sheer_only'
-                ? { pricePerYard, widthNormalizedIn: DRAPERY_FABRIC_WIDTH_IN }
+              enabled: sheerEnabled,
+              ...(sheerEnabled
+                ? {
+                    pricePerYard: hasExplicitSheer ? explicitSheer : pricePerYard,
+                    widthNormalizedIn: DRAPERY_FABRIC_WIDTH_IN,
+                  }
                 : {}),
             },
           },

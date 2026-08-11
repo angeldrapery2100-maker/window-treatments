@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
 import DesignClient from './DesignClient'
-import { featuredFabrics, fabricImageUrl } from '@/lib/draperyFabricLibrary'
+import { featuredFabrics, featuredSheers, fabricImageUrl } from '@/lib/draperyFabricLibrary'
 
 export const revalidate = 3600
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function DesignPage() {
   // A visitor who lands here cold still has something to start from — the
   // shortlist is never a precondition (Eddie, 2026-08-11).
-  const defaults = featuredFabrics().map((f) => ({
+  const card = (f: ReturnType<typeof featuredFabrics>[number]) => ({
     id: f.id,
     name: f.name,
     color: f.color,
@@ -25,7 +25,9 @@ export default function DesignPage() {
     thumbUrl: fabricImageUrl(f.img, 'thumb'),
     sheer: f.sheer,
     priceStatus: f.priceStatus,
-  }))
+  })
+  const defaults = featuredFabrics().map(card)
+  const defaultSheers = featuredSheers().map(card)
 
   return (
     <main className="min-h-screen bg-white">
@@ -42,7 +44,7 @@ export default function DesignPage() {
       </section>
 
       <Suspense fallback={<div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-16 text-sm text-gray-500">Loading the designer…</div>}>
-        <DesignClient defaultFabrics={defaults} />
+        <DesignClient defaultFabrics={defaults} defaultSheers={defaultSheers} />
       </Suspense>
 
       <SiteFooter dark />

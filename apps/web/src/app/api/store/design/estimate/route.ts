@@ -34,6 +34,8 @@ const HEADING_KEYS = new Set<string>(HEADING_STYLES.map((h) => h.key))
 const HARDWARE_TYPE_KEYS = new Set<string>(['wood_pole', 'alu_track', 'h_rail'])
 
 const LININGS = ['NO', 'LF', 'BO']
+const COMPOSITIONS = ['fabric_only', 'sheer_only', 'fabric_plus_sheer'] as const
+type Composition = (typeof COMPOSITIONS)[number]
 const SIZE = { minW: 20, maxW: 300, minH: 20, maxH: 144 }
 
 // One estimate is two AAPP round-trips; this keeps a loose tab open from
@@ -82,8 +84,26 @@ export async function POST(req: Request) {
     const problem = combinationProblem(heading, hardware, { split, finishedWidthIn: widthIn })
     if (problem) return errorResponse(problem, 400)
 
+    const composition: Composition = COMPOSITIONS.includes(body.composition) ? body.composition : 'fabric_only'
+
+    // The two slots are separate fabrics at separate rates. For `sheer_only`
+    // there is one fabric and it is a sheer; the engine still wants a main
+    // price to get past its "which fabric?" gate, so the sheer's price does
+    // double duty there and the main layer is disabled.
     const fabric = getFabric(String(body.fabricId || ''))
     if (!fabric) return errorResponse('Fabric not found.', 404)
+    const sheerFabric = composition === 'fabric_plus_sheer'
+      ? getFabric(String(body.sheerFabricId || ''))
+      : null
+    if (composition === 'fabric_plus_sheer' && !sheerFabric) {
+      return errorResponse('Pick a sheer as well, or switch to a single layer.', 400)
+    }
+    if (composition === 'sheer_only' && !fabric.sheer) {
+      return errorResponse('That fabric is not a sheer.', 400)
+    }
+    if (sheerFabric && !sheerFabric.sheer) {
+      return errorResponse('The second layer has to be a sheer.', 400)
+    }
 
     const notes: string[] = []
     const assumed: Record<string, string> = {}
@@ -100,7 +120,8 @@ export async function POST(req: Request) {
         styleKey: heading,
         lining,
         fabricPricePerYard: fabric.pricePerYard,
-        composition: 'fabric_only',
+        ...(sheerFabric?.pricePerYard != null ? { sheerPricePerYard: sheerFabric.pricePerYard } : {}),
+        composition,
         operation: split ? 'split' : 'single_left',
       })
       drapery = est.ok
@@ -117,6 +138,7 @@ export async function POST(req: Request) {
       profileKey: typeof body.profileKey === 'string' ? body.profileKey : null,
       colorKey: typeof body.colorKey === 'string' ? body.colorKey : null,
       finialKey: typeof body.finialKey === 'string' ? body.finialKey : null,
+      composition,
     })
     if (!picked) return errorResponse('We do not stock that hardware in this mount.', 400)
 
@@ -139,7 +161,9 @@ export async function POST(req: Request) {
         notes.push('No finial chosen — the ends are priced when your consultant specifies them.')
       }
     }
-    assumed.hardwareLayer = 'single rod or track (no separate sheer layer)'
+    assumed.hardwareLayer = composition === 'fabric_plus_sheer'
+      ? 'a double rod or track, to carry the drape and the sheer'
+      : 'a single rod or track'
     assumed.hardwareLength = `rod billed at the finished drapery width (${widthIn}")`
 
     // ── total ──────────────────────────────────────────────────────────────
@@ -163,6 +187,7 @@ export async function POST(req: Request) {
           finialKey: picked.finialKey,
           mount,
         },
+        composition,
         fabric: {
           id: fabric.id,
           name: fabric.name,
@@ -170,6 +195,17 @@ export async function POST(req: Request) {
           brand: fabric.brand,
           priceStatus: fabric.priceStatus,
         },
+        ...(sheerFabric
+          ? {
+              sheerFabric: {
+                id: sheerFabric.id,
+                name: sheerFabric.name,
+                color: sheerFabric.color,
+                brand: sheerFabric.brand,
+                priceStatus: sheerFabric.priceStatus,
+              },
+            }
+          : {}),
         drapery,
         hardware: hardwareOut,
         total,

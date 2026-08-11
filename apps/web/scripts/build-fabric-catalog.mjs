@@ -450,7 +450,7 @@ function writeFeaturedIfMissing(all) {
     const cur = readJsonIf(dest)
     if (cur && Array.isArray(cur.ids) && cur.ids.length) {
       const known = new Set(all.map((f) => f.id))
-      const gone = cur.ids.filter((id) => !known.has(id))
+      const gone = [...cur.ids, ...(cur.sheerIds || [])].filter((id) => !known.has(id))
       if (gone.length) console.log(`  ! fabric-featured.json lists ${gone.length} id(s) that no longer exist: ${gone.join(', ')}`)
       return
     }
@@ -458,10 +458,12 @@ function writeFeaturedIfMissing(all) {
   // Pick: quotable, has a photo, has a width, plain enough to read as a
   // starting point, mid-priced, and spread across colour families so the
   // opening row of /design isn't eight beiges.
-  const pool = all.filter((f) =>
-    f.priceStatus === 'ready' && f.img && f.widthIn &&
-    (f.patternType === 'Solid' || f.patternType === 'Texture') &&
-    (f.priceBand === '$$' || f.priceBand === '$$$'))
+  const quotable = (f) => f.priceStatus === 'ready' && f.img && f.widthIn &&
+    (f.patternType === 'Solid' || f.patternType === 'Texture')
+  const pool = all.filter((f) => quotable(f) && !f.sheer && (f.priceBand === '$$' || f.priceBand === '$$$'))
+  // Sheers are a much smaller, cheaper population, so they get their own pool
+  // rather than being filtered out of the drapery one by accident.
+  const sheerPool = all.filter((f) => quotable(f) && f.sheer)
   const want = ['Cream', 'Grey', 'Taupe', 'White', 'Blue', 'Green', 'Beige', 'Black']
   const ids = [], usedPattern = new Set()
   for (const fam of want) {
@@ -476,11 +478,21 @@ function writeFeaturedIfMissing(all) {
     if (ids.length >= 8) break
     if (!usedPattern.has(f.brand + f.name)) { ids.push(f.id); usedPattern.add(f.brand + f.name) }
   }
+  const sheerIds = [], usedSheer = new Set()
+  for (const fam of ['White', 'Cream', 'Grey', 'Taupe', 'Beige', 'Blue']) {
+    const pick = sheerPool.filter((f) => f.colorFamily === fam && !usedSheer.has(f.brand + f.name))[0]
+    if (pick) { sheerIds.push(pick.id); usedSheer.add(pick.brand + pick.name) }
+  }
+  for (const f of sheerPool) {
+    if (sheerIds.length >= 6) break
+    if (!usedSheer.has(f.brand + f.name)) { sheerIds.push(f.id); usedSheer.add(f.brand + f.name) }
+  }
   fs.writeFileSync(dest, JSON.stringify({
-    _doc: 'Fabrics /design offers a visitor who has not favourited anything yet. Seeded once by build-fabric-catalog.mjs and never overwritten — edit the ids freely. Order is the order shown.',
+    _doc: 'Fabrics /design offers a visitor who has not favourited anything yet — `ids` are drapery fabrics, `sheerIds` are sheers for the second layer. Seeded once by build-fabric-catalog.mjs and never overwritten: edit freely. Order is the order shown.',
     ids,
+    sheerIds,
   }, null, 2) + '\n')
-  console.log(`  seeded fabric-featured.json with ${ids.length} default fabrics`)
+  console.log(`  seeded fabric-featured.json with ${ids.length} default fabrics and ${sheerIds.length} sheers`)
 }
 
 const rgbHex = (rgb) => '#' + rgb.map((v) => Math.max(0, Math.min(255, v | 0)).toString(16).padStart(2, '0')).join('')

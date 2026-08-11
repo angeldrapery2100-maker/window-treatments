@@ -10,7 +10,7 @@
  * one price lives in this repo.
  */
 import { HARDWARE_PROFILES, type HardwareChoice, type HardwareProfileRow } from '@/lib/draperyHardwareCatalog.generated'
-import type { HardwareType, MountType } from '@window-treatments/shared/design'
+import type { Composition, HardwareType, MountType } from '@window-treatments/shared/design'
 
 /**
  * Eddie's three customer-facing choices, mapped onto AAPP families.
@@ -25,23 +25,32 @@ const FAMILY_BY_MOUNT: Record<HardwareType, Partial<Record<MountType, string>>> 
   h_rail: { wall: 'h_rail' },
 }
 
-/** Single-layer only: /design has no sheer layer, so a double rod would be
- *  quoting hardware for a curtain the customer isn't buying. */
-export function designProfiles(hardware: HardwareType, mount: MountType): HardwareProfileRow[] {
+/** A drape with a sheer behind it hangs on a DOUBLE rod — quoting a single one
+ *  would price hardware that cannot carry the design. */
+export function layerFor(composition: Composition): 'single' | 'double' {
+  return composition === 'fabric_plus_sheer' ? 'double' : 'single'
+}
+
+export function designProfiles(
+  hardware: HardwareType,
+  mount: MountType,
+  composition: Composition = 'fabric_only'
+): HardwareProfileRow[] {
   const family = FAMILY_BY_MOUNT[hardware]?.[mount]
   if (!family) return []
-  return HARDWARE_PROFILES.filter((p) => p.family === family && p.layer === 'single' && !p.motorized)
+  const layer = layerFor(composition)
+  return HARDWARE_PROFILES.filter((p) => p.family === family && p.layer === layer && !p.motorized)
 }
 
-export function designProfile(hardware: HardwareType, mount: MountType, profileKey?: string | null): HardwareProfileRow | null {
-  const list = designProfiles(hardware, mount)
+export function designProfile(
+  hardware: HardwareType,
+  mount: MountType,
+  profileKey?: string | null,
+  composition: Composition = 'fabric_only'
+): HardwareProfileRow | null {
+  const list = designProfiles(hardware, mount, composition)
   if (!list.length) return null
   return list.find((p) => p.key === profileKey) || list[0]
-}
-
-/** True when the customer has a real decision to make rather than one option. */
-export function hasProfileChoice(hardware: HardwareType, mount: MountType): boolean {
-  return designProfiles(hardware, mount).length > 1
 }
 
 export function colorsFor(profile: HardwareProfileRow | null): HardwareChoice[] {
@@ -57,9 +66,9 @@ export function finialsFor(profile: HardwareProfileRow | null): HardwareChoice[]
 export function resolveHardwareSelection(
   hardware: HardwareType,
   mount: MountType,
-  picks: { profileKey?: string | null; colorKey?: string | null; finialKey?: string | null }
+  picks: { profileKey?: string | null; colorKey?: string | null; finialKey?: string | null; composition?: Composition }
 ): { profile: HardwareProfileRow; colorKey: string | null; finialKey: string | null } | null {
-  const profile = designProfile(hardware, mount, picks.profileKey)
+  const profile = designProfile(hardware, mount, picks.profileKey, picks.composition || 'fabric_only')
   if (!profile) return null
   const colors = colorsFor(profile)
   const finials = finialsFor(profile)

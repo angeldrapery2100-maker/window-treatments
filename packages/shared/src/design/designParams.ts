@@ -23,21 +23,38 @@ export type HeadingStyle = PleatedHeading | RippleHeading
 
 export type HeadingFamily = 'pleated' | 'ripple'
 
+/**
+ * How many layers hang at this window. AAPP's own field name and values —
+ * `_priceHandcraftedDrapery` prices `layers.main` and `layers.sheer` off their
+ * own $/yard, so a drape with a sheer behind it is two fabrics at two rates.
+ */
+export type Composition = 'fabric_only' | 'sheer_only' | 'fabric_plus_sheer'
+
 export type HardwareType = 'wood_pole' | 'alu_track' | 'h_rail'
 export type MountType = 'wall' | 'ceiling'
 
 /** true = a centre-open pair, false = one panel drawing to one side. */
 export type OpenDirection = 'split' | 'one_way'
 
+export interface FabricRef {
+  id: string
+  textureUrl: string
+  fabricWidthIn: number
+  repeatVIn?: number
+  repeatHIn?: number
+  sheer: boolean
+}
+
 export type DesignParams = {
-  fabric: {
-    id: string
-    textureUrl: string
-    fabricWidthIn: number
-    repeatVIn?: number
-    repeatHIn?: number
-    sheer: boolean
-  }
+  /**
+   * The layer the room sees. For `sheer_only` this IS the sheer — read
+   * `composition` rather than inferring the arrangement from `fabric.sheer`.
+   */
+  fabric: FabricRef
+  /** The layer behind, present only when composition is `fabric_plus_sheer`. */
+  sheer?: FabricRef
+  /** Optional for backward compatibility; absent means `fabric_only`. */
+  composition?: Composition
   window: {
     finishedWidthIn: number
     finishedHeightIn: number
