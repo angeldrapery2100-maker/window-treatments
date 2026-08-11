@@ -127,6 +127,17 @@ export async function POST(req: Request) {
       : { ok: false, unavailable: hwEst.error || (hwEst.ask ? 'needs_choice' : 'estimate_failed') }
     if (!hwEst.ok) notes.push('Hardware for this combination is quoted by a consultant.')
     assumed.hardwareLayer = 'single rod or track (no separate sheer layer)'
+    if (hwEst.ok) {
+      // AAPP prices finials, brackets and installation as separate lines
+      // (_priceDraperyHardware: finialAmt / accessoryAmt / installAmount, and
+      // listPrice is the subtotal that EXCLUDES install). The website sends
+      // none of them, so this figure is the rod or track itself and nothing
+      // else — say so, or it reads as a quote that came in low.
+      notes.push('Hardware here is the rod or track itself. Finials, brackets and installation are added when your consultant specifies them.')
+      if (hwEst.rangeLow != null && hwEst.rangeHigh != null && hwEst.rangeLow !== hwEst.rangeHigh) {
+        notes.push('The range covers every diameter we stock in this style — your consultant picks the one that suits the window.')
+      }
+    }
 
     // ── total ──────────────────────────────────────────────────────────────
     const span = (o: Record<string, unknown>): [number, number] | null => {
