@@ -8,9 +8,26 @@
  * `mount(el, params)` with no reshaping.
  */
 
-export type HeadingStyle = 'pinch2' | 'pinch3' | 'wave' | 'grommet'
+/**
+ * Heading styles, using the website's spelling of AAPP's style keys — the
+ * pricing engine accepts both vocabularies (functions/index.js maps
+ * `2fold_pinch` → `pinch_2`), and this is the one `draperyPricing.ts` already
+ * validates against, so nothing in the quoting chain has to change.
+ *
+ * These ten ARE the range (Eddie 2026-08-11). Grommet, rod pocket and the rest
+ * are not made — do not put anything here that the workroom won't sew.
+ */
+export type PleatedHeading = '2fold_pinch' | '3fold_pinch' | '2fold_tailored' | '3fold_tailored'
+export type RippleHeading = 'cn_6cm' | 'cn_7cm' | 'us_60' | 'us_80' | 'us_100' | 'us_120'
+export type HeadingStyle = PleatedHeading | RippleHeading
+
+export type HeadingFamily = 'pleated' | 'ripple'
+
 export type HardwareType = 'wood_pole' | 'alu_track' | 'h_rail'
 export type MountType = 'wall' | 'ceiling'
+
+/** true = a centre-open pair, false = one panel drawing to one side. */
+export type OpenDirection = 'split' | 'one_way'
 
 export type DesignParams = {
   fabric: {
@@ -27,7 +44,7 @@ export type DesignParams = {
   }
   style: {
     heading: HeadingStyle
-    /** true = a centre-open pair, false = one panel drawing to one side. */
+    /** true = centre-open pair. */
     split: boolean
     fullness?: number
   }

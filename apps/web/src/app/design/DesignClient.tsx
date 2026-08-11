@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import {
-  HARDWARE_TYPES, HEADING_STYLES, hardwareFor, isCombinationLegal, mountsFor,
+  HARDWARE_TYPES, HEADING_STYLES, PLEATED_HEADINGS, RIPPLE_HEADINGS,
+  combinationProblem, hardwareFor, headingLabel, mountsFor,
   type DesignParams, type HardwareType, type HeadingStyle, type MountType,
 } from '@window-treatments/shared/design'
 import { readFavorites, subscribeFavorites } from '@/lib/fabricFavorites'
@@ -52,22 +53,29 @@ export interface State {
 }
 
 const DEFAULTS: State = {
-  fabricId: '', width: '', height: '', heading: 'pinch3', split: true,
+  fabricId: '', width: '', height: '', heading: '3fold_pinch', split: true,
   lining: 'LF', hardware: 'wood_pole', mount: 'wall',
 }
 
 export function stateFromSearch(search: string, fallbackFabric: string): State {
   const p = new URLSearchParams(search)
   const heading = HEADING_STYLES.find((h) => h.key === p.get('heading'))?.key || DEFAULTS.heading
+  const split = p.get('split') !== '0'
+  const width = Number(p.get('w')) || undefined
   let hardware = HARDWARE_TYPES.find((h) => h.key === p.get('hw'))?.key || DEFAULTS.hardware
-  if (!isCombinationLegal(heading, hardware)) hardware = hardwareFor(heading)[0]
+  // A link can carry a pairing the picker would never have allowed — someone
+  // edited the URL, or the rules changed since they saved it. Repair rather
+  // than show an error page.
+  if (combinationProblem(heading, hardware, { split, finishedWidthIn: width })) {
+    hardware = hardwareFor(heading, { split, finishedWidthIn: width })[0] || hardwareFor(heading)[0]
+  }
   const mount = mountsFor(hardware).includes(p.get('mount') as MountType) ? (p.get('mount') as MountType) : mountsFor(hardware)[0]
   return {
     fabricId: p.get('fabric') || fallbackFabric,
     width: p.get('w') || '',
     height: p.get('h') || '',
     heading,
-    split: p.get('split') !== '0',
+    split,
     lining: LININGS.some((l) => l.key === p.get('lining')) ? p.get('lining')! : DEFAULTS.lining,
     hardware,
     mount,
@@ -144,9 +152,18 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
     setState((cur) => {
       const next = { ...cur, [key]: value }
       // An illegal pairing must be impossible to reach, not merely rejected
-      // later: changing the heading drags the hardware (and its mount) along.
-      if (key === 'heading' && !isCombinationLegal(next.heading, next.hardware)) {
-        next.hardware = hardwareFor(next.heading)[0]
+      // later: switching to a ripplefold, or to a one-way draw on a wide
+      // window, drags the hardware (and its mount) along with it.
+      //
+      // Width is deliberately NOT repaired this way — yanking the hardware out
+      // from under someone mid-keystroke, while "9" is on its way to "96", is
+      // worse than greying the option and saying why.
+      if (key === 'heading' || key === 'split') {
+        const w = Number(next.width) || undefined
+        if (combinationProblem(next.heading, next.hardware, { split: next.split, finishedWidthIn: w })) {
+          next.hardware = hardwareFor(next.heading, { split: next.split, finishedWidthIn: w })[0]
+            || hardwareFor(next.heading)[0]
+        }
       }
       if (!mountsFor(next.hardware).includes(next.mount)) next.mount = mountsFor(next.hardware)[0]
       return next
@@ -217,7 +234,7 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
     const bits = [
       selectedCard ? `Fabric: ${selectedCard.name} — ${selectedCard.color} (${selectedCard.brand})` : null,
       sizeOk ? `Finished size: ${widthNum}" wide x ${heightNum}" high` : null,
-      `Heading: ${HEADING_STYLES.find((h) => h.key === state.heading)?.label}`,
+      `Heading: ${headingLabel(state.heading)}`,
       `Panels: ${state.split ? 'centre-open pair' : 'one-way draw'}`,
       `Lining: ${LININGS.find((l) => l.key === state.lining)?.label}`,
       `Hardware: ${HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} (${state.mount} mount)`,
@@ -227,7 +244,13 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
     return `/contact?message=${encodeURIComponent(msg)}`
   }, [selectedCard, sizeOk, widthNum, heightNum, state, estimate])
 
-  const legalHardware = hardwareFor(state.heading)
+  // Why the CURRENT pairing is unavailable, if it is — the width can turn a
+  // legal choice illegal after the fact, and we would rather say so than
+  // silently swap the customer's hardware while they type.
+  const hardwareProblem = combinationProblem(state.heading, state.hardware, {
+    split: state.split,
+    finishedWidthIn: widthNum || undefined,
+  })
 
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 md:py-14">
@@ -304,11 +327,12 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
             )}
           </Block>
 
-          {/* 2. Size */}
-          <Block title="Finished size">
+          {/* Step 1 — Size. Eddie's order: size, then style, then how it
+              draws, then lining, then hardware. Each answer narrows the next. */}
+          <Block title="1 · Finished size">
             <div className="grid grid-cols-2 gap-3">
-              <NumberField label={`Width (in)`} value={state.width} onChange={(v) => set('width', v)} min={SIZE.minW} max={SIZE.maxW} />
-              <NumberField label={`Height (in)`} value={state.height} onChange={(v) => set('height', v)} min={SIZE.minH} max={SIZE.maxH} />
+              <NumberField label="Width (in)" value={state.width} onChange={(v) => set('width', v)} min={SIZE.minW} max={SIZE.maxW} />
+              <NumberField label="Height (in)" value={state.height} onChange={(v) => set('height', v)} min={SIZE.minH} max={SIZE.maxH} />
             </div>
             <p className="mt-2 text-xs text-gray-500">
               The finished drapery size, not the window. Not sure?{' '}
@@ -323,50 +347,58 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
             )}
           </Block>
 
-          {/* 3. Style */}
-          <Block title="Style">
+          {/* Step 2 — Heading. Ten styles, grouped the way the workroom
+              thinks about them. */}
+          <Block title="2 · Heading style">
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Pleated</p>
             <Choice
-              options={HEADING_STYLES.map((h) => ({ key: h.key, label: h.label, hint: h.hint }))}
+              options={PLEATED_HEADINGS.map((h) => ({ key: h.key, label: h.label, hint: h.hint }))}
               value={state.heading}
               onChange={(v) => set('heading', v as HeadingStyle)}
             />
-            <div className="mt-4 flex gap-2">
-              {([[true, 'Centre-open pair'], [false, 'One-way draw']] as const).map(([v, label]) => (
-                <button
-                  key={label}
-                  onClick={() => set('split', v)}
-                  aria-pressed={state.split === v}
-                  className={`rounded-full border px-3 py-1.5 text-sm ${
-                    state.split === v ? 'bg-[#12141C] text-white border-[#12141C]' : 'border-gray-300 text-gray-700 hover:border-gray-500'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <div className="mt-4">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">Lining</p>
-              <Choice
-                options={LININGS.map((l) => ({ key: l.key, label: l.label, hint: l.hint }))}
-                value={state.lining}
-                onChange={(v) => set('lining', v)}
-              />
-            </div>
+            <p className="mt-4 mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Ripplefold</p>
+            <Choice
+              options={RIPPLE_HEADINGS.map((h) => ({ key: h.key, label: h.label, hint: h.hint }))}
+              value={state.heading}
+              onChange={(v) => set('heading', v as HeadingStyle)}
+            />
           </Block>
 
-          {/* 4. Hardware */}
-          <Block title="Hardware">
+          {/* Step 3 — How it draws. This changes how wide a wood pole can go,
+              so it has to be answered before the hardware. */}
+          <Block title="3 · How it opens">
             <Choice
-              options={HARDWARE_TYPES.map((h) => ({
-                key: h.key,
-                label: h.label,
-                disabled: !legalHardware.includes(h.key),
-                hint: legalHardware.includes(h.key) ? undefined : 'Not available with this heading',
-              }))}
+              options={[
+                { key: 'split', label: 'Centre-open pair', hint: 'Two panels, meeting in the middle' },
+                { key: 'one_way', label: 'One-way draw', hint: 'A single panel stacking to one side' },
+              ]}
+              value={state.split ? 'split' : 'one_way'}
+              onChange={(v) => set('split', v === 'split')}
+            />
+          </Block>
+
+          {/* Step 4 — Lining. */}
+          <Block title="4 · Lining">
+            <Choice
+              options={LININGS.map((l) => ({ key: l.key, label: l.label, hint: l.hint }))}
+              value={state.lining}
+              onChange={(v) => set('lining', v)}
+            />
+          </Block>
+
+          {/* Step 5 — Hardware. What's left after the heading, the draw and
+              the width have had their say. */}
+          <Block title="5 · Hardware">
+            <Choice
+              options={HARDWARE_TYPES.map((h) => {
+                const why = combinationProblem(state.heading, h.key, { split: state.split, finishedWidthIn: widthNum || undefined })
+                return { key: h.key, label: h.label, disabled: !!why, hint: why || undefined }
+              })}
               value={state.hardware}
               onChange={(v) => set('hardware', v as HardwareType)}
             />
-            {mountsFor(state.hardware).length > 1 && (
+            {hardwareProblem && <p className="mt-2 text-xs text-[#B3451F]">{hardwareProblem}</p>}
+            {mountsFor(state.hardware).length > 1 ? (
               <div className="mt-3 flex gap-2">
                 {mountsFor(state.hardware).map((m) => (
                   <button
@@ -381,19 +413,25 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
                   </button>
                 ))}
               </div>
+            ) : (
+              <p className="mt-3 text-xs text-gray-500">
+                {HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} mounts to the wall.
+              </p>
             )}
           </Block>
+
 
           {/* 5. Estimate */}
           <Block title="Reference estimate">
             <button
               onClick={runEstimate}
-              disabled={!sizeOk || !state.fabricId || estimating}
+              disabled={!sizeOk || !state.fabricId || !!hardwareProblem || estimating}
               className="w-full rounded-full bg-[#12141C] py-3 text-sm font-medium text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-300"
             >
               {estimating ? 'Working it out…' : 'See a reference estimate'}
             </button>
             {!sizeOk && <p className="mt-2 text-xs text-gray-500">Enter a finished width and height first.</p>}
+            {sizeOk && hardwareProblem && <p className="mt-2 text-xs text-gray-500">Pick hardware that suits this design first.</p>}
             {estimateError && <p className="mt-3 text-sm text-[#B3451F]">{estimateError}</p>}
             {estimate && <EstimatePanel result={estimate} />}
           </Block>
@@ -477,7 +515,7 @@ function Choice({ options, value, onChange }: {
 function DesignSummary({ state, card, sizeOk, width, height }: {
   state: State; card: FabricCard | null; sizeOk: boolean; width: number; height: number
 }) {
-  const heading = HEADING_STYLES.find((h) => h.key === state.heading)?.label
+  const heading = headingLabel(state.heading)
   const hardware = HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label
   return (
     <p className="mt-4 text-sm text-gray-600">

@@ -1,28 +1,51 @@
 import { describe, it, expect } from 'vitest'
 import { searchFromState, stateFromSearch, type State } from './DesignClient'
-import { isCombinationLegal } from '@window-treatments/shared/design'
+import { combinationProblem } from '@window-treatments/shared/design'
 
-// 验收 2: "非法组合(如 grommet+track)在 UI 上选不出来" — including via a
-// hand-edited or stale link, which is the one route that bypasses the picker.
+// A link is the one route into /design that bypasses the picker entirely, so
+// it is where an unbuildable design would slip through if anywhere.
 describe('design state <-> query string', () => {
   it('round-trips a complete design', () => {
     const s: State = {
       fabricId: 'carole::a-day-off::indigo', width: '96', height: '84',
-      heading: 'pinch2', split: false, lining: 'BO', hardware: 'h_rail', mount: 'ceiling',
+      heading: '2fold_tailored', split: false, lining: 'BO', hardware: 'h_rail', mount: 'wall',
     }
     expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
   })
 
-  it('repairs an illegal heading/hardware pair from a stale link', () => {
-    const s = stateFromSearch('?heading=grommet&hw=alu_track', '')
-    expect(s.heading).toBe('grommet')
+  it('round-trips a ripplefold on a track', () => {
+    const s: State = {
+      fabricId: 'x::y::z', width: '140', height: '96',
+      heading: 'us_100', split: true, lining: 'LF', hardware: 'alu_track', mount: 'ceiling',
+    }
+    expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
+  })
+
+  it('moves a ripplefold off a wood pole', () => {
+    const s = stateFromSearch('?heading=cn_6cm&hw=wood_pole', '')
+    expect(s.heading).toBe('cn_6cm')
+    expect(s.hardware).not.toBe('wood_pole')
+    expect(combinationProblem(s.heading, s.hardware, { split: s.split })).toBeNull()
+  })
+
+  it('moves a too-wide one-way draw off a wood pole', () => {
+    // 120" one-way is past the pole's 96" limit; 90" is not.
+    const wide = stateFromSearch('?heading=2fold_pinch&hw=wood_pole&split=0&w=120', '')
+    expect(wide.hardware).not.toBe('wood_pole')
+    const ok = stateFromSearch('?heading=2fold_pinch&hw=wood_pole&split=0&w=90', '')
+    expect(ok.hardware).toBe('wood_pole')
+  })
+
+  it('keeps a wide pair on a wood pole, because a pair may go to 192"', () => {
+    const s = stateFromSearch('?heading=3fold_pinch&hw=wood_pole&w=180', '')
     expect(s.hardware).toBe('wood_pole')
-    expect(isCombinationLegal(s.heading, s.hardware)).toBe(true)
   })
 
   it('repairs a mount the chosen hardware does not offer', () => {
-    // Wood poles are wall-mounted only.
-    expect(stateFromSearch('?heading=pinch3&hw=wood_pole&mount=ceiling', '').mount).toBe('wall')
+    // Only the aluminium track offers a choice; a pole and an H-rail are wall.
+    expect(stateFromSearch('?heading=3fold_pinch&hw=wood_pole&mount=ceiling', '').mount).toBe('wall')
+    expect(stateFromSearch('?heading=us_100&hw=h_rail&mount=ceiling', '').mount).toBe('wall')
+    expect(stateFromSearch('?heading=us_100&hw=alu_track&mount=ceiling', '').mount).toBe('ceiling')
   })
 
   it('falls back to the seeded fabric when the link has none', () => {
@@ -35,9 +58,20 @@ describe('design state <-> query string', () => {
   })
 
   it('ignores an unknown heading, lining or hardware', () => {
-    const s = stateFromSearch('?heading=zzz&lining=zzz&hw=zzz', '')
-    expect(s.heading).toBe('pinch3')
+    const s = stateFromSearch('?heading=grommet&lining=zzz&hw=zzz', '')
+    expect(s.heading).toBe('3fold_pinch')
     expect(s.lining).toBe('LF')
-    expect(isCombinationLegal(s.heading, s.hardware)).toBe(true)
+    expect(combinationProblem(s.heading, s.hardware, { split: s.split })).toBeNull()
+  })
+
+  it('never hands back a state the picker would refuse', () => {
+    for (const q of [
+      '?heading=us_120&hw=wood_pole&split=0&w=200',
+      '?heading=2fold_tailored&hw=wood_pole&split=0&w=300',
+      '?heading=cn_7cm&hw=wood_pole&w=40',
+    ]) {
+      const s = stateFromSearch(q, '')
+      expect(combinationProblem(s.heading, s.hardware, { split: s.split, finishedWidthIn: Number(s.width) || undefined })).toBeNull()
+    }
   })
 })

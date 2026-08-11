@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
-import { isCombinationLegal, mountsFor, type HardwareType, type HeadingStyle } from '@window-treatments/shared/design'
+import {
+  HEADING_STYLES, combinationProblem, headingLabel, mountsFor,
+  type HardwareType, type HeadingStyle,
+} from '@window-treatments/shared/design'
 import { draperyEstimate } from '@/lib/draperyPricing'
 import { hardwareEstimate } from '@/lib/hardwarePricing'
 import { getFabric } from '@/lib/draperyFabricLibrary'
@@ -20,14 +23,12 @@ import { errorResponse } from '@/lib/apiError'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-/** AAPP's drapery style vocabulary. Ripplefold has six fullness variants;
- *  100% is the one we quote, and we say so in `assumed`. */
-const STYLE_KEY: Partial<Record<HeadingStyle, string>> = {
-  pinch2: '2fold_pinch',
-  pinch3: '3fold_pinch',
-  wave: 'us_100',
-  // grommet: AAPP's drapery engine has no grommet style — see NOT_PRICED below.
-}
+/**
+ * The heading keys ARE AAPP's style keys (the website spelling of them), so
+ * there is no translation table to drift: whatever the customer picks is what
+ * the pricing engine is asked about.
+ */
+const HEADING_KEYS = new Set<string>(HEADING_STYLES.map((h) => h.key))
 
 const HARDWARE_FAMILY: Record<HardwareType, { kind: 'pole' | 'track'; family: string }> = {
   wood_pole: { kind: 'pole', family: 'wood_pole' },
@@ -62,11 +63,8 @@ export async function POST(req: Request) {
 
     const heading = String(body.heading || '') as HeadingStyle
     const hardware = String(body.hardware || '') as HardwareType
-    if (!(heading in STYLE_KEY) && heading !== 'grommet') return errorResponse('Unknown heading style.', 400)
+    if (!HEADING_KEYS.has(heading)) return errorResponse('Unknown heading style.', 400)
     if (!(hardware in HARDWARE_FAMILY)) return errorResponse('Unknown hardware type.', 400)
-    if (!isCombinationLegal(heading, hardware)) {
-      return errorResponse('That heading cannot hang on that hardware.', 400)
-    }
 
     const mount = mountsFor(hardware).includes(body.mount) ? body.mount : mountsFor(hardware)[0]
     const lining = LININGS.includes(String(body.lining)) ? String(body.lining) : 'LF'
@@ -81,6 +79,12 @@ export async function POST(req: Request) {
       )
     }
 
+    // The width and the draw direction are part of what makes a pairing legal
+    // — a wood pole that is fine at 90" is not fine at 200" — so this check
+    // has to happen after the size is known, not before it.
+    const problem = combinationProblem(heading, hardware, { split, finishedWidthIn: widthIn })
+    if (problem) return errorResponse(problem, 400)
+
     const fabric = getFabric(String(body.fabricId || ''))
     if (!fabric) return errorResponse('Fabric not found.', 404)
 
@@ -89,21 +93,14 @@ export async function POST(req: Request) {
 
     // ── drapery ────────────────────────────────────────────────────────────
     let drapery: Record<string, unknown>
-    const styleKey = STYLE_KEY[heading]
-    if (!styleKey) {
-      // Grommet drapery is not in AAPP's drapery style list, so there is no
-      // honest number to show. Never approximate it from a pleated style.
-      drapery = { ok: false, unavailable: 'heading_not_priced' }
-      notes.push('Grommet drapery is quoted by a consultant — it is not in our instant-estimate range yet.')
-    } else if (fabric.pricePerYard == null) {
+    if (fabric.pricePerYard == null) {
       drapery = { ok: false, unavailable: 'fabric_price_on_consultation' }
       notes.push('We have not published a yardage price for this fabric yet, so the make-up is quoted by a consultant.')
     } else {
-      if (heading === 'wave') assumed.fullness = 'priced at 100% ripplefold fullness'
       const est = await draperyEstimate({
         finishedWidthIn: widthIn,
         finishedHeightIn: heightIn,
-        styleKey,
+        styleKey: heading,
         lining,
         fabricPricePerYard: fabric.pricePerYard,
         composition: 'fabric_only',
@@ -144,6 +141,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       data: {
+        heading: { key: heading, label: headingLabel(heading) },
         fabric: {
           id: fabric.id,
           name: fabric.name,
