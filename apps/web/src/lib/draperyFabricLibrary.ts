@@ -11,6 +11,7 @@
  */
 import raw from '@/data/fabrics.generated.json'
 import featured from '@/data/fabric-featured.json'
+import { CDN_BASE } from '@/lib/cdn'
 
 export type PriceStatus = 'ready' | 'ask_in_store'
 export type PriceBand = '$' | '$$' | '$$$' | '$$$$'
@@ -79,7 +80,12 @@ export function getFabric(id: string): Fabric | null {
   return byId.get(id) || null
 }
 
-const resolve = (ids: string[]): Fabric[] => ids.map(getFabric).filter((f): f is Fabric => !!f)
+// A function declaration, not a const arrow: everything else exported from
+// this module is hoisted, and one un-hoisted binding in a module this heavily
+// bundled is a temporal-dead-zone waiting to happen.
+function resolve(ids: string[]): Fabric[] {
+  return ids.map(getFabric).filter((f): f is Fabric => !!f)
+}
 
 /** Drapery fabrics /design offers before a visitor has favourited anything. */
 export function featuredFabrics(): Fabric[] {
@@ -93,7 +99,6 @@ export function featuredSheers(): Fabric[] {
 }
 
 // ── image URLs ──────────────────────────────────────────────────────────────
-import { CDN_BASE } from '@/lib/cdn'
 
 /** Two sizes only: `thumb` (~400px, grid) and `large` (~1600px, detail).
  *  The `fabric-swatches/` prefix deliberately differs from the /fabrics route:

@@ -4,7 +4,6 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
 import DesignClient from './DesignClient'
-import { featuredFabrics, featuredSheers, fabricImageUrl } from '@/lib/draperyFabricLibrary'
 
 export const revalidate = 3600
 
@@ -15,21 +14,17 @@ export const metadata: Metadata = {
   alternates: { canonical: '/design' },
 }
 
+/**
+ * A shell, deliberately.
+ *
+ * This page used to import the fabric library so it could hand the seeded
+ * default swatches down as props — pulling a 6 MB JSON into the route's
+ * server bundle to render fourteen thumbnails, and doing it during prerender.
+ * The client already fetches its favourites; it fetches the defaults from
+ * /api/fabrics/featured the same way, which is cached hard at the edge and
+ * shared with the Handcrafted Drapery teaser.
+ */
 export default function DesignPage() {
-  // A visitor who lands here cold still has something to start from — the
-  // shortlist is never a precondition (Eddie, 2026-08-11).
-  const card = (f: ReturnType<typeof featuredFabrics>[number]) => ({
-    id: f.id,
-    name: f.name,
-    color: f.color,
-    brand: f.brand,
-    thumbUrl: fabricImageUrl(f.img, 'thumb'),
-    sheer: f.sheer,
-    priceStatus: f.priceStatus,
-  })
-  const defaults = featuredFabrics().map(card)
-  const defaultSheers = featuredSheers().map(card)
-
   return (
     <main className="min-h-screen bg-white">
       <section className="relative w-full bg-[#12141C]">
@@ -53,7 +48,7 @@ export default function DesignPage() {
       </section>
 
       <Suspense fallback={<div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-16 text-sm text-gray-500">Loading the designer…</div>}>
-        <DesignClient defaultFabrics={defaults} defaultSheers={defaultSheers} />
+        <DesignClient />
       </Suspense>
 
       <SiteFooter dark />

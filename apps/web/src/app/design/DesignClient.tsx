@@ -144,10 +144,13 @@ export function searchFromState(s: State): string {
   return `?${p.toString()}`
 }
 
-export default function DesignClient(
-  { defaultFabrics, defaultSheers }: { defaultFabrics: FabricCard[]; defaultSheers: FabricCard[] }
-) {
-  const [state, setState] = useState<State>(() => ({ ...DEFAULTS, fabricId: defaultFabrics[0]?.id || '' }))
+export default function DesignClient() {
+  // The seeded defaults come from the same cached endpoint the Handcrafted
+  // Drapery teaser uses, rather than as props — which keeps the 6 MB fabric
+  // library out of this route's server bundle entirely.
+  const [defaultFabrics, setDefaultFabrics] = useState<FabricCard[]>([])
+  const [defaultSheers, setDefaultSheers] = useState<FabricCard[]>([])
+  const [state, setState] = useState<State>(DEFAULTS)
   const [ready, setReady] = useState(false)
   const [favorites, setFavorites] = useState<string[]>([])
   const [savedCards, setSavedCards] = useState<FabricCard[]>([])
@@ -163,12 +166,22 @@ export default function DesignClient(
   /* Whole page state lives in the query string, so a half-finished design
      survives a refresh and can be sent to someone else. */
   useEffect(() => {
-    setState(stateFromSearch(window.location.search, defaultFabrics[0]?.id || ''))
+    setState(stateFromSearch(window.location.search, ''))
     setReady(true)
-    const onPop = () => setState(stateFromSearch(window.location.search, defaultFabrics[0]?.id || ''))
+    const onPop = () => setState(stateFromSearch(window.location.search, ''))
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
-  }, [defaultFabrics])
+  }, [])
+
+  // Once the defaults land, adopt one — but only if the link didn't already
+  // name a fabric, which it does whenever someone arrives from the library.
+  useEffect(() => {
+    setState((cur) => {
+      if (cur.fabricId) return cur
+      const pool = cur.composition === 'sheer_only' ? defaultSheers : defaultFabrics
+      return pool.length ? { ...cur, fabricId: pool[0].id } : cur
+    })
+  }, [defaultFabrics, defaultSheers])
 
   useEffect(() => {
     if (!ready) return
@@ -178,6 +191,19 @@ export default function DesignClient(
   useEffect(() => {
     setFavorites(readFavorites())
     return subscribeFavorites(setFavorites)
+  }, [])
+
+  useEffect(() => {
+    let alive = true
+    fetch('/api/fabrics/featured')
+      .then((r) => r.json())
+      .then((j) => {
+        if (!alive || !j?.success) return
+        setDefaultFabrics((j.data as FabricCard[]) || [])
+        setDefaultSheers((j.sheers as FabricCard[]) || [])
+      })
+      .catch(() => {})
+    return () => { alive = false }
   }, [])
 
   // The measurement sheet the visitor filled in on /measure-wizard. Same
