@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { searchFromState, stateFromSearch, type State } from './DesignClient'
-import { combinationProblem } from '@window-treatments/shared/design'
+import { combinationProblem, isSplit } from '@window-treatments/shared/design'
 import { designProfiles } from '@/lib/designHardware'
 
 // A link is the one route into /design that bypasses the picker entirely, so
@@ -10,7 +10,7 @@ describe('design state <-> query string', () => {
     const s: State = {
       composition: 'fabric_only', sheerFabricId: '', windowId: '', label: '',
       fabricId: 'carole::a-day-off::indigo', width: '96', height: '84',
-      heading: '2fold_tailored', split: false, lining: 'BO', hardware: 'h_rail', mount: 'wall',
+      heading: '2fold_tailored', open: 'one_way_right', lining: 'BO', hardware: 'h_rail', mount: 'wall',
       profileKey: 'h_rail_single_1_1_8_wall', colorKey: 'Satin Gold', finialKey: 'crystal_finial',
     }
     expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
@@ -20,7 +20,7 @@ describe('design state <-> query string', () => {
     const s: State = {
       composition: 'fabric_only', sheerFabricId: '', windowId: '', label: '',
       fabricId: 'x::y::z', width: '140', height: '96',
-      heading: 'us_100', split: true, lining: 'LF', hardware: 'alu_track', mount: 'ceiling',
+      heading: 'us_100', open: 'split', lining: 'LF', hardware: 'alu_track', mount: 'ceiling',
       profileKey: 'aluminum_ceiling_track_single', colorKey: 'Black', finialKey: '',
     }
     expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
@@ -30,7 +30,7 @@ describe('design state <-> query string', () => {
     const s = stateFromSearch('?heading=cn_6cm&hw=wood_pole', '')
     expect(s.heading).toBe('cn_6cm')
     expect(s.hardware).not.toBe('wood_pole')
-    expect(combinationProblem(s.heading, s.hardware, { split: s.split })).toBeNull()
+    expect(combinationProblem(s.heading, s.hardware, { split: isSplit(s.open) })).toBeNull()
   })
 
   it('moves a too-wide one-way draw off a wood pole', () => {
@@ -58,21 +58,39 @@ describe('design state <-> query string', () => {
   })
 
   it('defaults to a centre-open pair and only opts out explicitly', () => {
-    expect(stateFromSearch('', '').split).toBe(true)
-    expect(stateFromSearch('?split=0', '').split).toBe(false)
+    expect(stateFromSearch('', '').open).toBe('split')
+    expect(stateFromSearch('?open=left', '').open).toBe('one_way_left')
+    expect(stateFromSearch('?open=right', '').open).toBe('one_way_right')
+    expect(stateFromSearch('?open=sideways', '').open).toBe('split')
+  })
+
+  it('lands an old ?split=0 link on a one-way draw rather than back on a pair', () => {
+    // Links shared before the left/right choice existed said only "not a pair".
+    // Sending them back to a pair would silently undo the one thing they said.
+    expect(stateFromSearch('?split=0', '').open).toBe('one_way_left')
+    expect(stateFromSearch('?split=0&open=right', '').open).toBe('one_way_right')
+  })
+
+  it('has no lining to remember for a sheer on its own', () => {
+    // The pricing engine disables the main layer for sheer_only, so a lining
+    // would be a question whose answer could never reach the number.
+    const s = stateFromSearch('?comp=sheer_only&lining=BO', '')
+    expect(s.lining).toBe('NO')
+    expect(searchFromState(s)).not.toContain('lining=')
+    expect(stateFromSearch('?comp=fabric_only&lining=BO', '').lining).toBe('BO')
   })
 
   it('ignores an unknown heading, lining or hardware', () => {
     const s = stateFromSearch('?heading=grommet&lining=zzz&hw=zzz', '')
     expect(s.heading).toBe('3fold_pinch')
     expect(s.lining).toBe('LF')
-    expect(combinationProblem(s.heading, s.hardware, { split: s.split })).toBeNull()
+    expect(combinationProblem(s.heading, s.hardware, { split: isSplit(s.open) })).toBeNull()
   })
 
   it('round-trips a drape with a sheer behind it, on a double rod', () => {
     const s: State = {
       composition: 'fabric_plus_sheer', fabricId: 'a::b::c', sheerFabricId: 'd::e::f', windowId: '', label: '',
-      width: '110', height: '96', heading: '3fold_pinch', split: true, lining: 'NO',
+      width: '110', height: '96', heading: '3fold_pinch', open: 'split', lining: 'NO',
       hardware: 'h_rail', mount: 'wall',
       profileKey: 'h_rail_double_1_3_8_1_1_8_wall', colorKey: 'Old Gold', finialKey: 'ball_finial',
     }
@@ -143,7 +161,7 @@ describe('design state <-> query string', () => {
       '?heading=cn_7cm&hw=wood_pole&w=40',
     ]) {
       const s = stateFromSearch(q, '')
-      expect(combinationProblem(s.heading, s.hardware, { split: s.split, finishedWidthIn: Number(s.width) || undefined })).toBeNull()
+      expect(combinationProblem(s.heading, s.hardware, { split: isSplit(s.open), finishedWidthIn: Number(s.width) || undefined })).toBeNull()
     }
   })
 })

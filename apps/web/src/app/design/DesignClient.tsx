@@ -4,9 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import {
   HARDWARE_TYPES, HEADING_STYLES, PLEATED_HEADINGS, RIPPLE_HEADINGS,
-  combinationProblem, hardwareFor, headingLabel, mountsFor,
+  combinationProblem, draperyOperation, hardwareFor, headingLabel, isSplit,
+  mountsFor, openDirectionLabel,
   type Composition, type DesignParams, type FabricRef,
-  type HardwareType, type HeadingStyle, type MountType,
+  type HardwareType, type HeadingStyle, type MountType, type OpenDirection,
 } from '@window-treatments/shared/design'
 import { readFavorites, subscribeFavorites } from '@/lib/fabricFavorites'
 import { colorsFor, designProfiles, finialsFor, resolveHardwareSelection } from '@/lib/designHardware'
@@ -29,6 +30,33 @@ const LININGS: Array<{ key: string; label: string; hint: string }> = [
   { key: 'LF', label: 'Light-filtering', hint: 'Our usual choice' },
   { key: 'BO', label: 'Blackout', hint: 'Bedrooms and media rooms' },
 ]
+
+/** A sheer hangs on its own — there is nothing to line it with, and the
+ *  pricing engine disables the main layer for `sheer_only` anyway, so the
+ *  question would have had no effect on the number either. */
+function liningApplies(composition: Composition): boolean {
+  return composition !== 'sheer_only'
+}
+
+const OPEN_DIRECTIONS: Array<{ key: OpenDirection; label: string; hint: string }> = [
+  { key: 'split', label: 'Centre-open pair', hint: 'Two panels, meeting in the middle' },
+  { key: 'one_way_left', label: 'One-way, stacks left', hint: 'One panel, drawing to the left' },
+  { key: 'one_way_right', label: 'One-way, stacks right', hint: 'One panel, drawing to the right' },
+]
+
+/** URL spelling — short, and stable enough to paste into an email. */
+const OPEN_PARAM: Record<OpenDirection, string> = {
+  split: 'split', one_way_left: 'left', one_way_right: 'right',
+}
+function openFromParam(v: string | null, legacySplitOff: boolean): OpenDirection {
+  if (v === 'left') return 'one_way_left'
+  if (v === 'right') return 'one_way_right'
+  if (v === 'split') return 'split'
+  // Links shared before the third option existed said `split=0` for a one-way
+  // draw and never named a side. Land them on the left rather than dropping
+  // them back to a pair, which is the choice they explicitly did not make.
+  return legacySplitOff ? 'one_way_left' : 'split'
+}
 
 interface FabricCard {
   id: string; name: string; color: string; brand: string
@@ -67,7 +95,8 @@ export interface State {
   width: string
   height: string
   heading: HeadingStyle
-  split: boolean
+  open: OpenDirection
+  /** Ignored when composition is `sheer_only` — see `liningApplies`. */
   lining: string
   hardware: HardwareType
   mount: MountType
@@ -82,7 +111,7 @@ export interface State {
 
 const DEFAULTS: State = {
   composition: 'fabric_only', fabricId: '', sheerFabricId: '',
-  width: '', height: '', heading: '3fold_pinch', split: true,
+  width: '', height: '', heading: '3fold_pinch', open: 'split',
   lining: 'LF', hardware: 'wood_pole', mount: 'wall',
   windowId: '', label: '', profileKey: '', colorKey: '', finialKey: '',
 }
@@ -90,7 +119,8 @@ const DEFAULTS: State = {
 export function stateFromSearch(search: string, fallbackFabric: string): State {
   const p = new URLSearchParams(search)
   const heading = HEADING_STYLES.find((h) => h.key === p.get('heading'))?.key || DEFAULTS.heading
-  const split = p.get('split') !== '0'
+  const open = openFromParam(p.get('open'), p.get('split') === '0')
+  const split = isSplit(open)
   const width = Number(p.get('w')) || undefined
   let hardware = HARDWARE_TYPES.find((h) => h.key === p.get('hw'))?.key || DEFAULTS.hardware
   // A link can carry a pairing the picker would never have allowed — someone
@@ -112,8 +142,10 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
     width: p.get('w') || '',
     height: p.get('h') || '',
     heading,
-    split,
-    lining: LININGS.some((l) => l.key === p.get('lining')) ? p.get('lining')! : DEFAULTS.lining,
+    open,
+    lining: !liningApplies(composition)
+      ? 'NO'
+      : LININGS.some((l) => l.key === p.get('lining')) ? p.get('lining')! : DEFAULTS.lining,
     hardware,
     mount,
     windowId: p.get('win') || '',
@@ -132,8 +164,8 @@ export function searchFromState(s: State): string {
   if (s.width) p.set('w', s.width)
   if (s.height) p.set('h', s.height)
   p.set('heading', s.heading)
-  if (!s.split) p.set('split', '0')
-  p.set('lining', s.lining)
+  if (s.open !== 'split') p.set('open', OPEN_PARAM[s.open])
+  if (liningApplies(s.composition)) p.set('lining', s.lining)
   p.set('hw', s.hardware)
   p.set('mount', s.mount)
   if (s.windowId) p.set('win', s.windowId)
@@ -265,20 +297,25 @@ export default function DesignClient() {
       // Width is deliberately NOT repaired this way — yanking the hardware out
       // from under someone mid-keystroke, while "9" is on its way to "96", is
       // worse than greying the option and saying why.
-      if (key === 'heading' || key === 'split') {
+      if (key === 'heading' || key === 'open') {
         const w = Number(next.width) || undefined
-        if (combinationProblem(next.heading, next.hardware, { split: next.split, finishedWidthIn: w })) {
-          next.hardware = hardwareFor(next.heading, { split: next.split, finishedWidthIn: w })[0]
+        const split = isSplit(next.open)
+        if (combinationProblem(next.heading, next.hardware, { split, finishedWidthIn: w })) {
+          next.hardware = hardwareFor(next.heading, { split, finishedWidthIn: w })[0]
             || hardwareFor(next.heading)[0]
         }
       }
       if (!mountsFor(next.hardware).includes(next.mount)) next.mount = mountsFor(next.hardware)[0]
+      // Switching to a sheer on its own retires the lining question, so the
+      // answer retires with it — otherwise a stale "Blackout" would ride along
+      // into the consultation message for a design that has no lining.
+      if (key === 'composition' && !liningApplies(next.composition)) next.lining = 'NO'
       // A profile belongs to one family and mount, so changing either one
       // invalidates the rod, its finish and its ends together.
       // Leaving the two-layer design drops the sheer with it, so a stale id
       // can never ride along into a quote for a single layer.
       if (key === 'composition' && next.composition !== 'fabric_plus_sheer') next.sheerFabricId = ''
-      if (key === 'heading' || key === 'split' || key === 'hardware' || key === 'mount' || key === 'composition') {
+      if (key === 'heading' || key === 'open' || key === 'hardware' || key === 'mount' || key === 'composition') {
         const re = resolveHardwareSelection(next.hardware, next.mount, {
           profileKey: next.profileKey, colorKey: next.colorKey, finialKey: next.finialKey,
           composition: next.composition,
@@ -318,10 +355,10 @@ export default function DesignClient() {
       fabric: ref(detail),
       ...(state.composition === 'fabric_plus_sheer' && sheerDetail ? { sheer: ref(sheerDetail) } : {}),
       window: { finishedWidthIn: widthNum, finishedHeightIn: heightNum },
-      style: { heading: state.heading, split: state.split },
+      style: { heading: state.heading, open: state.open },
       hardware: { type: state.hardware, mount: state.mount },
     }
-  }, [detail, sheerDetail, sizeOk, widthNum, heightNum, state.composition, state.heading, state.split, state.hardware, state.mount])
+  }, [detail, sheerDetail, sizeOk, widthNum, heightNum, state.composition, state.heading, state.open, state.hardware, state.mount])
 
   const runEstimate = useCallback(async () => {
     if (!sizeOk || !state.fabricId) return
@@ -337,8 +374,8 @@ export default function DesignClient() {
           finishedWidthIn: widthNum,
           finishedHeightIn: heightNum,
           heading: state.heading,
-          split: state.split,
-          lining: state.lining,
+          operation: draperyOperation(state.open),
+          lining: liningApplies(state.composition) ? state.lining : 'NO',
           hardware: state.hardware,
           mount: state.mount,
           profileKey: state.profileKey,
@@ -394,8 +431,8 @@ export default function DesignClient() {
         ? `Sheer: ${selectedSheerCard.name} — ${selectedSheerCard.color} (${selectedSheerCard.brand})` : null,
       sizeOk ? `Finished size: ${widthNum}" wide x ${heightNum}" high` : null,
       `Heading: ${headingLabel(state.heading)}`,
-      `Panels: ${state.split ? 'centre-open pair' : 'one-way draw'}`,
-      `Lining: ${LININGS.find((l) => l.key === state.lining)?.label}`,
+      `Panels: ${openDirectionLabel(state.open)}`,
+      liningApplies(state.composition) ? `Lining: ${LININGS.find((l) => l.key === state.lining)?.label}` : null,
       `Hardware: ${selectedProfile?.label || HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} (${state.mount} mount${state.colorKey ? `, ${state.colorKey}` : ''}${state.finialKey ? `, ${finialsFor(selectedProfile).find((f) => f.key === state.finialKey)?.label || state.finialKey}` : ''})`,
       estimate?.total ? `Reference estimate seen on the site: $${estimate.total.low}–$${estimate.total.high}` : null,
     ].filter(Boolean)
@@ -437,8 +474,10 @@ export default function DesignClient() {
             sheer: selectedSheerCard ? `${selectedSheerCard.name} — ${selectedSheerCard.color} (${selectedSheerCard.brand})` : null,
             size: sizeOk ? `${widthNum}" x ${heightNum}"` : null,
             heading: headingLabel(state.heading),
-            panels: state.split ? 'Centre-open pair' : 'One-way draw',
-            lining: LININGS.find((l) => l.key === state.lining)?.label,
+            panels: openDirectionLabel(state.open),
+            lining: liningApplies(state.composition)
+              ? LININGS.find((l) => l.key === state.lining)?.label
+              : null,
             hardware: selectedProfile?.label || null,
             finish: state.colorKey || null,
             finial: finialChoices.find((f) => f.key === state.finialKey)?.label || null,
@@ -457,9 +496,15 @@ export default function DesignClient() {
   }, [savedId, state, selectedCard, selectedSheerCard, sizeOk, widthNum, heightNum, estimate, selectedProfile, finialChoices])
 
   const hardwareProblem = combinationProblem(state.heading, state.hardware, {
-    split: state.split,
+    split: isSplit(state.open),
     finishedWidthIn: widthNum || undefined,
   })
+
+  // The lining step disappears for a lone sheer, so the steps after it move up
+  // a number. Numbering them by hand would drift the first time the order
+  // changes again.
+  const showLining = liningApplies(state.composition)
+  const step = (n: number) => (showLining || n < 4 ? n : n - 1)
 
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 md:py-14">
@@ -606,33 +651,38 @@ export default function DesignClient() {
           </Block>
 
           {/* Step 3 — How it draws. This changes how wide a wood pole can go,
-              so it has to be answered before the hardware. */}
-          <Block title="3 · How it opens">
+              so it has to be answered before the hardware. Three answers: a
+              one-way draw has a side, and the workroom needs to know it. */}
+          <Block title={`${step(3)} · How it opens`}>
             <Choice
-              options={[
-                { key: 'split', label: 'Centre-open pair', hint: 'Two panels, meeting in the middle' },
-                { key: 'one_way', label: 'One-way draw', hint: 'A single panel stacking to one side' },
-              ]}
-              value={state.split ? 'split' : 'one_way'}
-              onChange={(v) => set('split', v === 'split')}
+              options={OPEN_DIRECTIONS.map((d) => ({ key: d.key, label: d.label, hint: d.hint }))}
+              value={state.open}
+              onChange={(v) => set('open', v as OpenDirection)}
             />
+            <p className="mt-2 text-xs text-gray-500">
+              Left and right are as you see the window from inside the room, and name the
+              side the drapery stacks on when it is open.
+            </p>
           </Block>
 
-          {/* Step 4 — Lining. */}
-          <Block title="4 · Lining">
-            <Choice
-              options={LININGS.map((l) => ({ key: l.key, label: l.label, hint: l.hint }))}
-              value={state.lining}
-              onChange={(v) => set('lining', v)}
-            />
-          </Block>
+          {/* Step 4 — Lining. A lone sheer has none, so the step is not asked
+              rather than asked and ignored. */}
+          {showLining && (
+            <Block title={`${step(4)} · Lining`}>
+              <Choice
+                options={LININGS.map((l) => ({ key: l.key, label: l.label, hint: l.hint }))}
+                value={state.lining}
+                onChange={(v) => set('lining', v)}
+              />
+            </Block>
+          )}
 
           {/* Step 5 — Hardware. What's left after the heading, the draw and
               the width have had their say. */}
-          <Block title="5 · Hardware">
+          <Block title={`${step(5)} · Hardware`}>
             <Choice
               options={HARDWARE_TYPES.map((h) => {
-                const why = combinationProblem(state.heading, h.key, { split: state.split, finishedWidthIn: widthNum || undefined })
+                const why = combinationProblem(state.heading, h.key, { split: isSplit(state.open), finishedWidthIn: widthNum || undefined })
                 return { key: h.key, label: h.label, disabled: !!why, hint: why || undefined }
               })}
               value={state.hardware}

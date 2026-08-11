@@ -33,8 +33,39 @@ export type Composition = 'fabric_only' | 'sheer_only' | 'fabric_plus_sheer'
 export type HardwareType = 'wood_pole' | 'alu_track' | 'h_rail'
 export type MountType = 'wall' | 'ceiling'
 
-/** true = a centre-open pair, false = one panel drawing to one side. */
-export type OpenDirection = 'split' | 'one_way'
+/**
+ * How the panels part. Three answers, not two (Eddie 2026-08-11): a one-way
+ * draw has a side, and the workroom needs to know which one — the leading edge
+ * is finished differently and the stack lands on the wall the customer picked.
+ *
+ * `one_way_left` / `one_way_right` name the side the fabric STACKS on when the
+ * drapery is open, read facing the window from inside the room. The two price
+ * identically (one panel either way); they differ in make-up and in the render.
+ */
+export type OpenDirection = 'split' | 'one_way_left' | 'one_way_right'
+
+/** A centre-open pair is two panels; either one-way draw is one. */
+export function isSplit(open: OpenDirection): boolean {
+  return open === 'split'
+}
+
+/**
+ * AAPP's own `operation` vocabulary (`DraperyOperation` in the pricing
+ * package). `_priceHandcraftedDrapery` only branches on `=== "split"`, so the
+ * two singles cost the same — the side is carried through for the workroom
+ * ticket, not for the maths.
+ */
+export function draperyOperation(open: OpenDirection): 'split' | 'single_left' | 'single_right' {
+  if (open === 'one_way_left') return 'single_left'
+  if (open === 'one_way_right') return 'single_right'
+  return 'split'
+}
+
+export function openDirectionLabel(open: OpenDirection): string {
+  if (open === 'one_way_left') return 'One-way draw, stacks left'
+  if (open === 'one_way_right') return 'One-way draw, stacks right'
+  return 'Centre-open pair'
+}
 
 export interface FabricRef {
   id: string
@@ -61,8 +92,13 @@ export type DesignParams = {
   }
   style: {
     heading: HeadingStyle
-    /** true = centre-open pair. */
-    split: boolean
+    /**
+     * Replaced the old `split: boolean` on 2026-08-11, when the third option
+     * (which side a one-way draw stacks on) went in. Nothing had shipped
+     * against the boolean yet, so this is a rename rather than a migration —
+     * the 3D line reads `open` and gets the side for free.
+     */
+    open: OpenDirection
     fullness?: number
   }
   hardware: {

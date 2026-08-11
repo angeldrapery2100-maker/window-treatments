@@ -34,6 +34,9 @@ const HEADING_KEYS = new Set<string>(HEADING_STYLES.map((h) => h.key))
 const HARDWARE_TYPE_KEYS = new Set<string>(['wood_pole', 'alu_track', 'h_rail'])
 
 const LININGS = ['NO', 'LF', 'BO']
+/** AAPP's `DraperyOperation`. The engine only branches on `split`, so the two
+ *  singles price alike — the side rides along for the workroom ticket. */
+const OPERATIONS = ['split', 'single_left', 'single_right'] as const
 const COMPOSITIONS = ['fabric_only', 'sheer_only', 'fabric_plus_sheer'] as const
 type Composition = (typeof COMPOSITIONS)[number]
 const SIZE = { minW: 20, maxW: 300, minH: 20, maxH: 144 }
@@ -67,7 +70,12 @@ export async function POST(req: Request) {
 
     const mount = mountsFor(hardware).includes(body.mount) ? body.mount : mountsFor(hardware)[0]
     const lining = LININGS.includes(String(body.lining)) ? String(body.lining) : 'LF'
-    const split = body.split !== false
+    // `split` is the old two-way flag; links and clients minted before the
+    // left/right choice existed still send it, so it stays as the fallback.
+    const operation = (OPERATIONS as ReadonlyArray<string>).includes(String(body.operation))
+      ? (String(body.operation) as (typeof OPERATIONS)[number])
+      : body.split === false ? 'single_left' : 'split'
+    const split = operation === 'split'
 
     const widthIn = Number(body.finishedWidthIn)
     const heightIn = Number(body.finishedHeightIn)
@@ -118,11 +126,14 @@ export async function POST(req: Request) {
         finishedWidthIn: widthIn,
         finishedHeightIn: heightIn,
         styleKey: heading,
-        lining,
+        // A lone sheer has no lining to choose, and the engine disables the
+        // main layer for `sheer_only` anyway — pinning it to NO keeps the
+        // request honest instead of relying on that to swallow it.
+        lining: composition === 'sheer_only' ? 'NO' : lining,
         fabricPricePerYard: fabric.pricePerYard,
         ...(sheerFabric?.pricePerYard != null ? { sheerPricePerYard: sheerFabric.pricePerYard } : {}),
         composition,
-        operation: split ? 'split' : 'single_left',
+        operation,
       })
       drapery = est.ok
         ? { ok: true, price: est.price, rangeLow: est.rangeLow, rangeHigh: est.rangeHigh, pricedAt: est.pricedAt }
