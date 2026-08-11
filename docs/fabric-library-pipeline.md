@@ -120,3 +120,42 @@ when the CDN variable is unset locally.
 `NEXT_PUBLIC_SHOW_FABRIC_PRICES=true` turns on the per-yard figure. It is off
 by default, and off only hides that number — estimates work either way, and
 the $/$$/$$$ filter always ships.
+
+
+---
+
+# Drapery hardware — the profile table
+
+`apps/web/src/lib/draperyHardwareCatalog.generated.ts` is the taxonomy /design
+picks from: every rod and track, its finishes, and the finials it allows.
+
+```bash
+# In the AAPP browser console:
+#   copy(JSON.stringify(state.library.draperyHardwareCatalog))
+# Paste into a file, then:
+node apps/web/scripts/build-hardware-catalog.mjs ../outputs/aapp-exports/draperyHardwareCatalog.json
+```
+
+Colour and finial resolution mirror the engine's own order (`_dhcGetColors`,
+`_dhcFinialsForProfile`): the product-level palette beats the subtype's, which
+beats the profile's named palette; finials come from the family and are then
+filtered by the subtype's `allowedFinialKeys`. **No prices cross over** — every
+figure still comes from AAPP at request time.
+
+/design sells three of AAPP's ten families (wood pole, aluminium track wall +
+ceiling, H-rail), single-layer and non-motorised only. `lib/designHardware.ts`
+holds that mapping.
+
+## Why a hardware figure can differ from the sales app
+
+`_priceDraperyHardware` builds its number from `basePriceAtMinWidth +
+(billedFeet − minBillableWidthIn/12) × addPricePerFoot`, then adds finials and
+accessories, and returns installation as a **separate** line —
+`catalog_price_estimate` reports `listPrice` as the subtotal that *excludes*
+install. So the website's hardware line is the rod plus its finials, and
+nothing else. Installation is always quoted by the consultant.
+
+The rod is billed at the **finished drapery width** (Eddie, 2026-08-11). AAPP's
+own client suggests `window outerW + left clearance + right clearance` instead;
+the two usually round to the same whole foot, and /design does not collect the
+window measurements the other formula needs.

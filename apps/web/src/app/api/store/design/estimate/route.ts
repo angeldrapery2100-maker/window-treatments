@@ -4,7 +4,8 @@ import {
   type HardwareType, type HeadingStyle,
 } from '@window-treatments/shared/design'
 import { draperyEstimate } from '@/lib/draperyPricing'
-import { hardwareEstimate } from '@/lib/hardwarePricing'
+import { hardwareProfileEstimate } from '@/lib/hardwarePricing'
+import { resolveHardwareSelection } from '@/lib/designHardware'
 import { getFabric } from '@/lib/draperyFabricLibrary'
 import { errorResponse } from '@/lib/apiError'
 
@@ -30,11 +31,7 @@ export const dynamic = 'force-dynamic'
  */
 const HEADING_KEYS = new Set<string>(HEADING_STYLES.map((h) => h.key))
 
-const HARDWARE_FAMILY: Record<HardwareType, { kind: 'pole' | 'track'; family: string }> = {
-  wood_pole: { kind: 'pole', family: 'wood_pole' },
-  alu_track: { kind: 'track', family: 'aluminum_track' },
-  h_rail: { kind: 'track', family: 'h_rail' },
-}
+const HARDWARE_TYPE_KEYS = new Set<string>(['wood_pole', 'alu_track', 'h_rail'])
 
 const LININGS = ['NO', 'LF', 'BO']
 const SIZE = { minW: 20, maxW: 300, minH: 20, maxH: 144 }
@@ -64,7 +61,7 @@ export async function POST(req: Request) {
     const heading = String(body.heading || '') as HeadingStyle
     const hardware = String(body.hardware || '') as HardwareType
     if (!HEADING_KEYS.has(heading)) return errorResponse('Unknown heading style.', 400)
-    if (!(hardware in HARDWARE_FAMILY)) return errorResponse('Unknown hardware type.', 400)
+    if (!HARDWARE_TYPE_KEYS.has(hardware)) return errorResponse('Unknown hardware type.', 400)
 
     const mount = mountsFor(hardware).includes(body.mount) ? body.mount : mountsFor(hardware)[0]
     const lining = LININGS.includes(String(body.lining)) ? String(body.lining) : 'LF'
@@ -113,31 +110,37 @@ export async function POST(req: Request) {
     }
 
     // ── hardware ───────────────────────────────────────────────────────────
-    const hw = HARDWARE_FAMILY[hardware]
-    const hwEst = await hardwareEstimate({
+    // One named profile, with the customer's colour and finial — not a span
+    // across every diameter we stock. This is what makes the figure match the
+    // one the sales app would print.
+    const picked = resolveHardwareSelection(hardware, mount, {
+      profileKey: typeof body.profileKey === 'string' ? body.profileKey : null,
+      colorKey: typeof body.colorKey === 'string' ? body.colorKey : null,
+      finialKey: typeof body.finialKey === 'string' ? body.finialKey : null,
+    })
+    if (!picked) return errorResponse('We do not stock that hardware in this mount.', 400)
+
+    const hwEst = await hardwareProfileEstimate({
       lengthIn: widthIn,
-      kind: hw.kind,
-      family: hw.family,
-      layer: 'single',
-      mount,
-      motorized: false,
+      profileKey: picked.profile.key,
+      colorKey: picked.colorKey,
+      finialKey: picked.finialKey,
     })
     const hardwareOut = hwEst.ok
-      ? { ok: true, price: hwEst.price, rangeLow: hwEst.rangeLow, rangeHigh: hwEst.rangeHigh }
-      : { ok: false, unavailable: hwEst.error || (hwEst.ask ? 'needs_choice' : 'estimate_failed') }
+      ? { ok: true, price: hwEst.price }
+      : { ok: false, unavailable: hwEst.error || 'estimate_failed' }
     if (!hwEst.ok) notes.push('Hardware for this combination is quoted by a consultant.')
-    assumed.hardwareLayer = 'single rod or track (no separate sheer layer)'
-    if (hwEst.ok) {
-      // AAPP prices finials, brackets and installation as separate lines
-      // (_priceDraperyHardware: finialAmt / accessoryAmt / installAmount, and
-      // listPrice is the subtotal that EXCLUDES install). The website sends
-      // none of them, so this figure is the rod or track itself and nothing
-      // else — say so, or it reads as a quote that came in low.
-      notes.push('Hardware here is the rod or track itself. Finials, brackets and installation are added when your consultant specifies them.')
-      if (hwEst.rangeLow != null && hwEst.rangeHigh != null && hwEst.rangeLow !== hwEst.rangeHigh) {
-        notes.push('The range covers every diameter we stock in this style — your consultant picks the one that suits the window.')
+    else {
+      // AAPP bills installation on its own line (_priceDraperyHardware returns
+      // installAmount separately and listPrice is the subtotal that excludes
+      // it), so this figure covers the hardware and nothing else.
+      notes.push('Hardware installation is quoted separately by your consultant.')
+      if (picked.profile.canHaveFinial && !picked.finialKey) {
+        notes.push('No finial chosen — the ends are priced when your consultant specifies them.')
       }
     }
+    assumed.hardwareLayer = 'single rod or track (no separate sheer layer)'
+    assumed.hardwareLength = `rod billed at the finished drapery width (${widthIn}")`
 
     // ── total ──────────────────────────────────────────────────────────────
     const span = (o: Record<string, unknown>): [number, number] | null => {
@@ -153,6 +156,13 @@ export async function POST(req: Request) {
       success: true,
       data: {
         heading: { key: heading, label: headingLabel(heading) },
+        hardware_spec: {
+          profileKey: picked.profile.key,
+          label: picked.profile.label,
+          colorKey: picked.colorKey,
+          finialKey: picked.finialKey,
+          mount,
+        },
         fabric: {
           id: fabric.id,
           name: fabric.name,

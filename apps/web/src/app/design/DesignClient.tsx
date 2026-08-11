@@ -8,6 +8,7 @@ import {
   type DesignParams, type HardwareType, type HeadingStyle, type MountType,
 } from '@window-treatments/shared/design'
 import { readFavorites, subscribeFavorites } from '@/lib/fabricFavorites'
+import { colorsFor, designProfiles, finialsFor, resolveHardwareSelection } from '@/lib/designHardware'
 import { ESTIMATE_DISCLAIMER_SHORT } from '@/lib/estimateCopy'
 
 /* The 3D viewport ships from the other line (《OPUS 任务书 — 3D 设计器》).
@@ -50,11 +51,16 @@ export interface State {
   lining: string
   hardware: HardwareType
   mount: MountType
+  /** The exact rod or track AAPP prices, plus its finish and ends. */
+  profileKey: string
+  colorKey: string
+  finialKey: string
 }
 
 const DEFAULTS: State = {
   fabricId: '', width: '', height: '', heading: '3fold_pinch', split: true,
   lining: 'LF', hardware: 'wood_pole', mount: 'wall',
+  profileKey: '', colorKey: '', finialKey: '',
 }
 
 export function stateFromSearch(search: string, fallbackFabric: string): State {
@@ -70,6 +76,9 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
     hardware = hardwareFor(heading, { split, finishedWidthIn: width })[0] || hardwareFor(heading)[0]
   }
   const mount = mountsFor(hardware).includes(p.get('mount') as MountType) ? (p.get('mount') as MountType) : mountsFor(hardware)[0]
+  const picked = resolveHardwareSelection(hardware, mount, {
+    profileKey: p.get('prof'), colorKey: p.get('col'), finialKey: p.get('fin'),
+  })
   return {
     fabricId: p.get('fabric') || fallbackFabric,
     width: p.get('w') || '',
@@ -79,6 +88,9 @@ export function stateFromSearch(search: string, fallbackFabric: string): State {
     lining: LININGS.some((l) => l.key === p.get('lining')) ? p.get('lining')! : DEFAULTS.lining,
     hardware,
     mount,
+    profileKey: picked?.profile.key || '',
+    colorKey: picked?.colorKey || '',
+    finialKey: picked?.finialKey || '',
   }
 }
 
@@ -92,6 +104,9 @@ export function searchFromState(s: State): string {
   p.set('lining', s.lining)
   p.set('hw', s.hardware)
   p.set('mount', s.mount)
+  if (s.profileKey) p.set('prof', s.profileKey)
+  if (s.colorKey) p.set('col', s.colorKey)
+  if (s.finialKey) p.set('fin', s.finialKey)
   return `?${p.toString()}`
 }
 
@@ -166,6 +181,16 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
         }
       }
       if (!mountsFor(next.hardware).includes(next.mount)) next.mount = mountsFor(next.hardware)[0]
+      // A profile belongs to one family and mount, so changing either one
+      // invalidates the rod, its finish and its ends together.
+      if (key === 'heading' || key === 'split' || key === 'hardware' || key === 'mount') {
+        const re = resolveHardwareSelection(next.hardware, next.mount, {
+          profileKey: next.profileKey, colorKey: next.colorKey, finialKey: next.finialKey,
+        })
+        next.profileKey = re?.profile.key || ''
+        next.colorKey = re?.colorKey || ''
+        next.finialKey = re?.finialKey || ''
+      }
       return next
     })
     setEstimate(null)
@@ -214,6 +239,9 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
           lining: state.lining,
           hardware: state.hardware,
           mount: state.mount,
+          profileKey: state.profileKey,
+          colorKey: state.colorKey,
+          finialKey: state.finialKey,
         }),
       })
       const j = await res.json()
@@ -237,7 +265,7 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
       `Heading: ${headingLabel(state.heading)}`,
       `Panels: ${state.split ? 'centre-open pair' : 'one-way draw'}`,
       `Lining: ${LININGS.find((l) => l.key === state.lining)?.label}`,
-      `Hardware: ${HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} (${state.mount} mount)`,
+      `Hardware: ${selectedProfile?.label || HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} (${state.mount} mount${state.colorKey ? `, ${state.colorKey}` : ''}${state.finialKey ? `, ${finialsFor(selectedProfile).find((f) => f.key === state.finialKey)?.label || state.finialKey}` : ''})`,
       estimate?.total ? `Reference estimate seen on the site: $${estimate.total.low}–$${estimate.total.high}` : null,
     ].filter(Boolean)
     const msg = `I designed this on your site and would like a quote.\n\n${bits.join('\n')}\n\nDesign link: ${typeof window !== 'undefined' ? window.location.href : ''}`
@@ -247,6 +275,11 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
   // Why the CURRENT pairing is unavailable, if it is — the width can turn a
   // legal choice illegal after the fact, and we would rather say so than
   // silently swap the customer's hardware while they type.
+  const profileChoices = designProfiles(state.hardware, state.mount)
+  const selectedProfile = profileChoices.find((p) => p.key === state.profileKey) || profileChoices[0] || null
+  const colorChoices = colorsFor(selectedProfile)
+  const finialChoices = finialsFor(selectedProfile)
+
   const hardwareProblem = combinationProblem(state.heading, state.hardware, {
     split: state.split,
     finishedWidthIn: widthNum || undefined,
@@ -417,6 +450,64 @@ export default function DesignClient({ defaultFabrics }: { defaultFabrics: Fabri
               <p className="mt-3 text-xs text-gray-500">
                 {HARDWARE_TYPES.find((h) => h.key === state.hardware)?.label} mounts to the wall.
               </p>
+            )}
+
+            {/* The exact rod. A 2" wood pole and a 1 3/8" one are different
+                prices, so this is a real question, not a detail. */}
+            {profileChoices.length > 1 && (
+              <div className="mt-4">
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Profile</p>
+                <Choice
+                  options={profileChoices.map((p) => ({ key: p.key, label: p.label }))}
+                  value={selectedProfile?.key || ''}
+                  onChange={(v) => set('profileKey', v)}
+                />
+              </div>
+            )}
+
+            {colorChoices.length > 1 && (
+              <div className="mt-4">
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Finish</p>
+                <div className="flex flex-wrap gap-2">
+                  {colorChoices.map((c) => (
+                    <button
+                      key={c.key}
+                      onClick={() => set('colorKey', c.key)}
+                      aria-pressed={state.colorKey === c.key}
+                      className={`rounded-full border px-3 py-1.5 text-sm ${
+                        state.colorKey === c.key ? 'bg-[#12141C] text-white border-[#12141C]' : 'border-gray-300 text-gray-700 hover:border-gray-500'
+                      }`}
+                    >
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {finialChoices.length > 0 && (
+              <div className="mt-4">
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">Finial</p>
+                <div className="flex flex-wrap gap-2">
+                  {finialChoices.map((f) => (
+                    <button
+                      key={f.key}
+                      onClick={() => set('finialKey', state.finialKey === f.key ? '' : f.key)}
+                      aria-pressed={state.finialKey === f.key}
+                      className={`rounded-full border px-3 py-1.5 text-sm ${
+                        state.finialKey === f.key ? 'bg-[#12141C] text-white border-[#12141C]' : 'border-gray-300 text-gray-700 hover:border-gray-500'
+                      }`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {!state.finialKey && (
+                  <p className="mt-2 text-xs text-gray-500">
+                    Pick an end and the estimate includes it — otherwise your consultant prices the ends with you.
+                  </p>
+                )}
+              </div>
             )}
           </Block>
 

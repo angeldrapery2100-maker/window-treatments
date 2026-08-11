@@ -88,11 +88,58 @@ async function priceProfile(lengthIn: number, p: HardwareProfileRow) {
       hardware: {
         profileKey: p.key,
         familyKey: p.family,
-        // Required by the engine's guard, ignored by its maths.
-        ...(p.color ? { colorKey: p.color } : {}),
+        // Required by the engine's guard, ignored by its maths — so the
+        // first colour in the palette is a gate-filler, not a choice.
+        ...(p.colors[0] ? { colorKey: p.colors[0].key } : {}),
       },
     },
   })
+}
+
+/**
+ * Price ONE named profile, with the customer's colour and finial.
+ *
+ * The spanning `hardwareEstimate` below exists for the chat, where nobody has
+ * named a rod. On /design they have: they picked the diameter, the finish and
+ * the end, so we ask AAPP about exactly that and get back exactly what the
+ * sales app would quote — finials included, which is the single biggest reason
+ * the two numbers used to disagree.
+ *
+ * AAPP charges each end separately and its own client sets both ends to the
+ * same finial (`hw.rightFinialKey = hw.leftFinialKey`), so we do too.
+ */
+export async function hardwareProfileEstimate(params: {
+  lengthIn: number
+  profileKey: string
+  colorKey?: string | null
+  finialKey?: string | null
+}): Promise<HardwareEstimate> {
+  if (!(params.lengthIn > 0)) return { ok: false, error: 'missing_length' }
+  const profile = HARDWARE_PROFILES.find((p) => p.key === params.profileKey)
+  if (!profile) return { ok: false, error: 'missing_profile' }
+  if (!aappConfigured()) return { ok: false, error: 'not_configured' }
+
+  const res = await callAappAction({
+    action: 'catalog_price_estimate',
+    productVariant: 'drapery_hardware',
+    widthIn: params.lengthIn,
+    productConfig: {
+      lengthIn: params.lengthIn,
+      hardware: {
+        profileKey: profile.key,
+        familyKey: profile.family,
+        ...(params.colorKey ? { colorKey: params.colorKey } : {}),
+        ...(params.finialKey ? { leftFinialKey: params.finialKey, rightFinialKey: params.finialKey } : {}),
+      },
+    },
+  })
+  const json = res?.data as { ok?: boolean; listPrice?: number; error?: string } | null
+  if (!json || json.ok !== true) {
+    return { ok: false, error: String(json?.error || (res ? `upstream_${res.status}` : 'network')) }
+  }
+  const value = Number(json.listPrice)
+  if (!Number.isFinite(value) || value <= 0) return { ok: false, error: 'no_price' }
+  return { ok: true, price: Math.round(value), profilesPriced: 1, profilesMatched: 1 }
 }
 
 export async function hardwareEstimate(params: HardwareEstimateParams): Promise<HardwareEstimate> {

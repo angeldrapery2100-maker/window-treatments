@@ -96,12 +96,15 @@ for (const [key, prof] of Object.entries(cat.profiles)) {
     // isTrackType is FALSE for every H-rail, so it cannot be used to tell a
     // pole from a track. Family is the only reliable signal.
     kind: POLE_FAMILIES.some((f) => family.replace('motorized_', '').startsWith(f)) ? 'pole' : 'track',
-    mount: /ceiling/.test(family) || /ceiling/.test(key) ? 'ceiling' : 'wall',
-    layer: /double/.test(key) ? 'double' : 'single',
-    motorized: !!prof.isMotorized || /motorized/.test(family),
-    label: String(prof.label || prof.name || key),
+    // Every one of these is stated on the profile — read them, don't infer
+    // them from the key, which is how the hand-made version drifted.
+    mount: prof.mountType === 'ceiling_mount' ? 'ceiling' : 'wall',
+    layer: prof.layerMode === 'double' ? 'double' : 'single',
+    motorized: !!prof.isMotorized,
+    canHaveFinial: !!prof.canHaveFinial,
+    label: String(prof.displayName || prof.label || prof.name || key),
     colors,
-    finials: finialsFor(key, family),
+    finials: prof.canHaveFinial ? finialsFor(key, family) : [],
   })
 }
 rows.sort((a, b) => a.family.localeCompare(b.family) || a.key.localeCompare(b.key))
@@ -109,7 +112,8 @@ rows.sort((a, b) => a.family.localeCompare(b.family) || a.key.localeCompare(b.ke
 const j = (v) => JSON.stringify(v)
 const body = rows.map((r) => `  {
     key: ${j(r.key)}, family: ${j(r.family)}, kind: ${j(r.kind)}, mount: ${j(r.mount)},
-    layer: ${j(r.layer)}, motorized: ${r.motorized}, label: ${j(r.label)},
+    layer: ${j(r.layer)}, motorized: ${r.motorized}, canHaveFinial: ${r.canHaveFinial},
+    label: ${j(r.label)},
     colors: ${j(r.colors)},
     finials: ${j(r.finials)},
   },`).join('\n')
@@ -148,7 +152,9 @@ export interface HardwareProfileRow {
   mount: 'wall' | 'ceiling'
   layer: 'single' | 'double'
   motorized: boolean
-  /** Internal label — for logs and designer notes, never read to a customer. */
+  /** Poles and H-rails take finials; tracks do not. */
+  canHaveFinial: boolean
+  /** AAPP's own displayName — safe to show a customer. */
   label: string
   /** Every colour AAPP will accept for this profile. Price-neutral. */
   colors: HardwareChoice[]

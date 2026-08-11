@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { searchFromState, stateFromSearch, type State } from './DesignClient'
 import { combinationProblem } from '@window-treatments/shared/design'
+import { designProfiles } from '@/lib/designHardware'
 
 // A link is the one route into /design that bypasses the picker entirely, so
 // it is where an unbuildable design would slip through if anywhere.
@@ -9,6 +10,7 @@ describe('design state <-> query string', () => {
     const s: State = {
       fabricId: 'carole::a-day-off::indigo', width: '96', height: '84',
       heading: '2fold_tailored', split: false, lining: 'BO', hardware: 'h_rail', mount: 'wall',
+      profileKey: 'h_rail_single_1_1_8_wall', colorKey: 'Satin Gold', finialKey: 'crystal_finial',
     }
     expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
   })
@@ -17,6 +19,7 @@ describe('design state <-> query string', () => {
     const s: State = {
       fabricId: 'x::y::z', width: '140', height: '96',
       heading: 'us_100', split: true, lining: 'LF', hardware: 'alu_track', mount: 'ceiling',
+      profileKey: 'aluminum_ceiling_track_single', colorKey: 'Black', finialKey: '',
     }
     expect(stateFromSearch(searchFromState(s), '')).toEqual(s)
   })
@@ -62,6 +65,33 @@ describe('design state <-> query string', () => {
     expect(s.heading).toBe('3fold_pinch')
     expect(s.lining).toBe('LF')
     expect(combinationProblem(s.heading, s.hardware, { split: s.split })).toBeNull()
+  })
+
+  it('always lands on a rod AAPP will accept, with a colour', () => {
+    // AAPP answers `missing_color` for a profile whose palette went unanswered,
+    // so an empty colour is a silently unpriceable design.
+    for (const q of ['', '?hw=wood_pole', '?hw=alu_track&mount=ceiling', '?hw=h_rail', '?hw=alu_track&prof=nonsense&col=Chartreuse']) {
+      const s = stateFromSearch(q, '')
+      const allowed = designProfiles(s.hardware, s.mount)
+      expect(allowed.map((p) => p.key), q).toContain(s.profileKey)
+      expect(s.colorKey, q).toBeTruthy()
+    }
+  })
+
+  it('drops a finial the chosen rod does not offer, and never invents one', () => {
+    // A finial IS a price input, so a wrong one would move the number.
+    const track = stateFromSearch('?hw=alu_track&fin=ball_finial', '')
+    expect(track.finialKey).toBe('')
+    const pole = stateFromSearch('?hw=wood_pole&fin=ball_finial', '')
+    expect(pole.finialKey).toBe('ball_finial')
+    const bogus = stateFromSearch('?hw=wood_pole&fin=not_a_finial', '')
+    expect(bogus.finialKey).toBe('')
+  })
+
+  it('swaps the rod when the mount moves it to another AAPP family', () => {
+    // Ceiling aluminium track is a different family, not a flag on the wall one.
+    expect(stateFromSearch('?hw=alu_track&mount=wall', '').profileKey).toBe('aluminum_track_single_wall')
+    expect(stateFromSearch('?hw=alu_track&mount=ceiling', '').profileKey).toBe('aluminum_ceiling_track_single')
   })
 
   it('never hands back a state the picker would refuse', () => {

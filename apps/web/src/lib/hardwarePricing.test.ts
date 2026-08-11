@@ -95,10 +95,19 @@ describe('generated catalog integrity', () => {
   })
 
   it('gives every profile a colour to satisfy the engine gate', () => {
-    // A null colour means AAPP would answer missing_color and that profile
+    // An empty palette means AAPP would answer missing_color and that profile
     // would silently drop out of every span.
-    const missing = HARDWARE_PROFILES.filter((p) => !p.color)
+    const missing = HARDWARE_PROFILES.filter((p) => !p.colors.length)
     expect(missing.map((p) => p.key)).toEqual([])
+  })
+
+  it('offers finials on poles and H-rails, and none on plain tracks', () => {
+    for (const p of HARDWARE_PROFILES) {
+      if (p.canHaveFinial) expect(p.finials.length, p.key).toBeGreaterThan(0)
+      else expect(p.finials, p.key).toEqual([])
+    }
+    expect(HARDWARE_PROFILES.find((p) => p.key === 'aluminum_track_single_wall')!.canHaveFinial).toBe(false)
+    expect(HARDWARE_PROFILES.find((p) => p.key === 'wood_pole_single_2in_wall')!.canHaveFinial).toBe(true)
   })
 
   it('has unique keys', () => {
