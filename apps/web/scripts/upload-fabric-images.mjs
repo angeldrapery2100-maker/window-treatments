@@ -41,11 +41,30 @@ const force = argv.has('--force')
 /** Substring filter on the object key — for trying 90 files before 21,700. */
 const only = (process.argv.slice(2).find((a) => a.startsWith('--only=')) || '').slice(7)
 
+// `vercel env pull` writes the literal string [SENSITIVE] for variables marked
+// sensitive in the dashboard — they cannot be pulled at all. Catch that here,
+// or the run turns into 21,000 identical auth failures.
+const PLACEHOLDER = /^\[?(SENSITIVE|REDACTED|ENCRYPTED|your[-_ ])/i
 for (const v of ['CLOUDFLARE_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET_NAME']) {
-  if (!process.env[v] && !dryRun) {
-    console.error(`Missing ${v}. Run \`vercel env pull\` in apps/web, then:\n  set -a && . apps/web/.env.production.local && set +a`)
+  const value = process.env[v] || ''
+  if (dryRun) continue
+  if (!value) {
+    console.error(`${v} is not set.\n  set -a && . apps/web/.env.production.local && set +a`)
     process.exit(1)
   }
+  if (PLACEHOLDER.test(value)) {
+    console.error(
+      `${v} is "${value}" — a placeholder, not a key.\n` +
+      `Vercel marks this variable Sensitive, so \`vercel env pull\` cannot read it back.\n` +
+      `Mint a fresh token instead: Cloudflare dashboard -> R2 -> Manage API tokens ->\n` +
+      `Create API token -> Object Read & Write -> bucket ${process.env.R2_BUCKET_NAME || 'angel2100'},\n` +
+      `then paste both values into apps/web/.env.production.local.`
+    )
+    process.exit(1)
+  }
+}
+if (!dryRun && !/^[a-f0-9]{20,}$/i.test(process.env.R2_ACCESS_KEY_ID)) {
+  console.warn(`! R2_ACCESS_KEY_ID does not look like an R2 key (expected 32 hex characters). Continuing anyway.`)
 }
 
 const bucket = process.env.R2_BUCKET_NAME
