@@ -82,3 +82,36 @@ describe('extractMoney', () => {
     expect(extractMoney('a reference price, excludes install and tax')).toEqual([])
   })
 })
+
+describe('prices the assistant already quoted stay quotable', () => {
+  // Live false positive (2026-08-10): the customer asked for a total and the
+  // guard replaced the reply, because the figures being restated came from
+  // tool calls on EARLIER turns — not in this turn's sources. Conversation
+  // history (both roles) is now a source; each reply passed this same gate
+  // when it was produced.
+  const history = [
+    'Price for a Luma zebra shade, 36 wide by 58 high?',
+    'That 36"×58" zebra shade comes to about $150–$192 as a reference price.',
+    'I need a rod for a different window too, 96 inches wide.',
+    'For a 96" single-layer decorative rod, it\'s about $110–$320 as a reference price.',
+  ]
+
+  it('lets the assistant restate a figure from an earlier turn', () => {
+    const reply = 'As I mentioned, the zebra shade is about $150–$192 for that size.'
+    expect(findUnsourcedPrices(reply, history)).toEqual([])
+  })
+
+  it('lets it list the separate lines back without summing them', () => {
+    const reply =
+      'So far: the zebra shade $150–$192, and the rod $110–$320 — each a reference figure on its own. Your designer puts the full quote together at the free measure.'
+    expect(findUnsourcedPrices(reply, history)).toEqual([])
+  })
+
+  it('STILL blocks an actual invented total', () => {
+    // 150+110 = 260 and 192+320 = 512 — neither was ever quoted or returned.
+    const reply = 'Your total comes to roughly $260–$512.'
+    const bad = findUnsourcedPrices(reply, history)
+    expect(bad).toContain(260)
+    expect(bad).toContain(512)
+  })
+})

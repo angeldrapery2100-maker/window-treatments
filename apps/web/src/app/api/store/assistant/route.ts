@@ -499,9 +499,20 @@ export async function POST(request: Request) {
     // echoing it must not legitimize submitting or repeating it (F6).
     const customerTexts: string[] = messages.filter(m => m.role === 'user').map(m => m.content)
     const contactSources: string[] = [...customerTexts]
-    // Every figure the reply is allowed to quote: what the customer typed plus
-    // whatever the tools actually returned this turn (see priceClaimGuard).
-    const priceSources: string[] = [...customerTexts]
+    // Every figure the reply is allowed to quote (see priceClaimGuard):
+    //  · anything the customer typed,
+    //  · anything a tool returns THIS turn (pushed in the loop below),
+    //  · anything the assistant already said EARLIER in this conversation.
+    // That last one is not a loophole — every reply passes this same gate
+    // before it is ever returned, so a figure in history has already been
+    // traced to a tool. Without it the guard fires on "as I mentioned, the
+    // zebra was about $150", because the tool call that produced $150
+    // happened on a previous turn and isn't in this turn's sources. That
+    // false positive was hit in live testing the moment a customer asked for
+    // a total. (History arrives from the client, which could in principle
+    // forge it — but a forged history can already say anything; this guard
+    // exists to stop the MODEL inventing prices, not the client.)
+    const priceSources: string[] = messages.map((m) => m.content)
     const PERSISTED_LAYER_TOOLS = new Set(['get_home_project', 'list_measured_windows', 'save_measured_window', 'upsert_room_item'])
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
