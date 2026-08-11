@@ -6,6 +6,7 @@
  *   node apps/web/scripts/upload-fabric-images.mjs --dry-run  # just count
  *   node apps/web/scripts/upload-fabric-images.mjs --verify   # ask R2 rather than trusting the local manifest
  *   node apps/web/scripts/upload-fabric-images.mjs --force    # re-upload everything
+ *   node apps/web/scripts/upload-fabric-images.mjs --only=Kaslen   # smoke test one supplier
  *
  * Source:  $FABRIC_WEBP_DIR (default ../outputs/fabric_webp), produced by
  *          outputs/fabric_webp/make_webp.py — thumb/ and large/ WebP pairs.
@@ -37,6 +38,8 @@ const argv = new Set(process.argv.slice(2))
 const dryRun = argv.has('--dry-run')
 const verify = argv.has('--verify')
 const force = argv.has('--force')
+/** Substring filter on the object key — for trying 90 files before 21,700. */
+const only = (process.argv.slice(2).find((a) => a.startsWith('--only=')) || '').slice(7)
 
 for (const v of ['CLOUDFLARE_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET_NAME']) {
   if (!process.env[v] && !dryRun) {
@@ -86,10 +89,12 @@ async function main() {
   )
 
   const manifest = readManifest()
-  const pending = files.filter((f) => manifest[f.key] !== f.size)
+  const pending = files
+    .filter((f) => !only || f.key.includes(only))
+    .filter((f) => manifest[f.key] !== f.size)
   const bytes = pending.reduce((n, f) => n + f.size, 0)
 
-  console.log(`${files.length} objects on disk · ${pending.length} to upload · ${(bytes / 1e9).toFixed(2)} GB`)
+  console.log(`${files.length} objects on disk · ${pending.length} to upload · ${(bytes / 1e9).toFixed(2)} GB${only ? ` (filtered by "${only}")` : ''}`)
   console.log(`target: r2://${bucket || '<unset>'}/${PREFIX}/…`)
   if (dryRun) return
   if (!pending.length) { console.log('Nothing to do.'); return }

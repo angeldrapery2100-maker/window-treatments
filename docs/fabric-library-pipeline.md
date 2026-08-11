@@ -83,13 +83,21 @@ the row previewed on the Handcrafted Drapery page) is seeded once and then
 ## 3. Upload to R2
 
 ```bash
-cd apps/web && vercel env pull            # gets the R2 keys
 set -a && . apps/web/.env.production.local && set +a
 node apps/web/scripts/upload-fabric-images.mjs --dry-run
+node apps/web/scripts/upload-fabric-images.mjs --only=Kaslen_Linen   # 180-file smoke test
 node apps/web/scripts/upload-fabric-images.mjs
 ```
 
-~21,700 objects, ~1.9 GB, uploaded 24 at a time. Successful keys are recorded
+`.env.production.local` already carries `CLOUDFLARE_ACCOUNT_ID` and
+`R2_BUCKET_NAME`; as of 2026-08-11 the two key values in it were **blank**, so
+`vercel env pull` (or a fresh Object Read & Write token from the Cloudflare R2
+dashboard) is the first step. The script refuses to start without them rather
+than failing 21,000 times.
+
+~21,700 objects, ~1.9 GB, uploaded 24 at a time. `--only=<substring>` filters
+by object key — worth spending a minute on one supplier and eyeballing a URL
+before committing to the full run. Successful keys are recorded
 in `outputs/fabric_webp/.uploaded.json`, so an interrupted run resumes and a
 later run only sends what's new. `--verify` checks R2 itself instead of the
 local manifest; `--force` re-sends everything.
