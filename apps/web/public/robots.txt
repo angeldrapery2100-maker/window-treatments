@@ -8,6 +8,12 @@ Allow: /
 # X-Robots-Tag: noindex so the JSON isn't indexed as its own document.
 Allow: /api/site-settings
 
+# Same reasoning for the fabric library: /fabrics renders its grid from
+# /api/fabrics on hydration, so blocking that endpoint leaves Googlebot
+# looking at an empty page. The individual /fabrics/<id> pages are
+# server-rendered and need no exception.
+Allow: /api/fabrics
+
 Disallow: /admin
 Disallow: /api
 Disallow: /store/cart
