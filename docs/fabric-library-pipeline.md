@@ -159,3 +159,26 @@ The rod is billed at the **finished drapery width** (Eddie, 2026-08-11). AAPP's
 own client suggests `window outerW + left clearance + right clearance` instead;
 the two usually round to the same whole foot, and /design does not collect the
 window measurements the other formula needs.
+
+
+---
+
+# Checking a build without being able to run one
+
+`next build` cannot run in the Cowork sandbox (no SWC binary for linux/arm64),
+so the gate is a ladder, not a single command:
+
+```bash
+cd apps/web && ../../node_modules/.bin/tsc --noEmit   # types
+npx vitest run                                        # behaviour
+node scripts/check-bundle.mjs                         # imports + syntax
+```
+
+`tsc` resolves `@/` through tsconfig paths, silently de-dupes ambiguous
+`export *`, and never opens a JSON import — so a module that type-checks can
+still fail to bundle, and that failure only shows up on Vercel.
+`check-bundle.mjs` runs esbuild over every entry point with the same aliases
+and catches exactly that class of thing.
+
+It does NOT render React, so a component that throws during prerender still
+gets through. A Vercel preview is still the last rung.

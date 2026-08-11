@@ -127,5 +127,3 @@ export function hardwareFor(
 ): ReadonlyArray<HardwareType> {
   return HARDWARE_TYPES.filter((h) => isCombinationLegal(heading, h.key, opts)).map((h) => h.key)
 }
-
-export type { PleatedHeading, RippleHeading }
