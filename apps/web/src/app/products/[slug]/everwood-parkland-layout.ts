@@ -337,7 +337,7 @@ export const everwoodParklandLayout: ProductLayout = {
         { image: 'page058_img01_1430x2410.jpeg', colorName: 'SEA SALT', specs: ['989 (2")'] },
         { image: 'page058_img02_1430x2410.jpeg', colorName: 'PLATINUM WASH', specs: ['991 (2")'] },
         { image: 'page059_img01_1430x2410.jpeg', colorName: 'VINTAGE GRAY', specs: ['994 (2")'] },
-        { image: 'page059_img02_1430x2410.jpeg', colorName: 'WET PAVEMENT', specs: ['932 (2")'] },
+        { image: 'page059_img02_1430x2410.jpeg', colorName: 'WET PAVEMENT', specs: ['993 (2")'] },
         { image: 'page060_img01_1430x2410.jpeg', colorName: 'CARAMEL', specs: ['987 (2")'] },
         { image: 'page060_img02_1430x2410.jpeg', colorName: 'AVALANCHE', specs: ['959 (2")'] },
         { image: 'page061_img01_1430x2410.jpeg', colorName: 'PICKET FENCE', specs: ['960 (2")'] },
