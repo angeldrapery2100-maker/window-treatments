@@ -226,7 +226,7 @@ export const modernPreciousMetalsLayout: ProductLayout = {
       { image: 'page026_img11_99x99.jpeg', label: '560 Metallic Cream Textured' },
       { image: 'page026_img12_98x98.jpeg', label: '591 White Tiara Textured' },
       { image: 'page026_img13_99x99.jpeg', label: '852 Gardenia Textured' },
-      { image: 'page026_img14_99x99.jpeg', label: '861 Platinum Gray Textured' },
+      { image: 'page026_img14_99x99.jpeg', label: '851 Platinum Gray Textured' },
       { image: 'page026_img15_306x306.jpeg', label: '901 Riding Boot Textured' },
       { image: 'page026_img16_306x306.jpeg', label: '993 Antique White Textured' },
       /* Row 3 */

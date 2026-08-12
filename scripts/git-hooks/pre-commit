@@ -1,0 +1,5 @@
+#!/bin/sh
+# Install with:  cp scripts/git-hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# Blocks the "copied a colour row and forgot to change the number" mistake
+# before it reaches a product page. See scripts/check-color-codes.js.
+node scripts/check-color-codes.js || exit 1
