@@ -438,6 +438,24 @@ export const usBandedLayout: ProductLayout = {
         { image: 'page083_img01_631x1089.jpeg', colorName: 'PURE BLACK', specs: ['Light Dimming', 'ZOE-901'] },
       ],
     },
+    {
+      name: 'Coastal — GEO',
+      swatches: [
+        { image: 'page084_img01_1290x1089.jpeg', colorName: 'VILLA WHITE', specs: ['GEO', 'CSTL-101'] },
+      ],
+    },
+    {
+      name: 'Cypress — GEO',
+      swatches: [
+        { image: 'page085_img01_1290x1089.jpeg', colorName: 'ALPINE WHITE', specs: ['GEO', 'CYPR-101'] },
+      ],
+    },
+    {
+      name: 'Evoke — GEO',
+      swatches: [
+        { image: 'page086_img01_1290x1089.jpeg', colorName: 'GLOW', specs: ['GEO', 'EVK-101'] },
+      ],
+    },
   ],
 
   cellSize: null,
