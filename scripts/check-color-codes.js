@@ -40,6 +40,18 @@ const HD_ROOTS = [
 // blocks DO track the spec's "…Textured" series, so they stay in scope.
 const SKIP_CROSSCHECK_BLOCK = /decorative tape|tape color/i;
 
+// Open questions the sources cannot settle. Each entry waives ONE line and
+// must say why, so the waiver list stays auditable instead of becoming a
+// dumping ground. Clear an entry once the physical colour card is checked.
+const KNOWN_UNRESOLVED = {
+  // skyline_panels' book says "— 310 Nickel"; designer_screen ("• Nickel 316")
+  // and designer_banded ("— Nickel 316") both say 316, and roller-skyline has
+  // no book of its own so it borrows this shared Fashion Hardware palette.
+  // 2 first-hand sources against 1 — too thin to rewrite the page on.
+  // TODO(Eddie): check the physical hardware card, then fix the loser.
+  'roller-skyline-layout.ts:344': 'hardware Nickel 316 vs skyline_panels 310 — awaiting physical card',
+};
+
 const SPEC_SCOPE = {
   'everwood-parkland-layout.ts': ['everwood', 'parkland_blinds'],
   'modern-precious-metals-layout.ts': ['modern_precious_metals'],
@@ -87,19 +99,39 @@ function loadSpecFor(dirs) {
   if (specCache.has(cacheKey)) return specCache.get(cacheKey);
   const index = new Map();
   let found = 0;
+  // HD's books write the same fact four different ways depending on the page:
+  //   "Wet Pavement - 993"   fabric tables
+  //   "— 048 Black" / "• 689 Ash"   hardware bullet lists (number first)
+  //   "— Nickel 316"                hardware bullet lists (name first)
+  //   "White Diamond (126)"         luminette's parenthesised style
+  // Only the first was recognised until 2026-08-12, which left 103 entries
+  // looking unverifiable when their book actually did state them.
+  const PATTERNS = [
+    /^\s*[-—•\t ]*([A-Za-z][^\n(-]*?)\s*-\s*(\d{3,4})\s*$/gm,
+    /^\s*[-—•]\s*(\d{3,4})\s+([A-Za-z][^\n]*?)\s*$/gm,
+    /^\s*[-—•]\s*([A-Za-z][^\n]*?)\s+(\d{3,4})\s*$/gm,
+    /^\s*([A-Za-z][^\n(]*?)\s*\((\d{3,4})\)\s*$/gm,
+  ];
+  const NUMBER_FIRST = new Set([1]);
   for (const dir of dirs) {
     const spec = path.join(specRoot, dir, 'ALL_SPEC.txt');
     if (!fs.existsSync(spec)) continue;
     found++;
-    const re = /^([A-Za-z][^\n-]*?)\s*-\s*(\d{3,4})\s*$/gm;
     const text = fs.readFileSync(spec, 'utf8');
-    let m;
-    while ((m = re.exec(text))) {
-      for (const key of aliases(norm(m[1]))) {
-        if (!index.has(key)) index.set(key, new Set());
-        index.get(key).add(m[2]);
+    PATTERNS.forEach((re, pi) => {
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(text))) {
+        const rawName = NUMBER_FIRST.has(pi) ? m[2] : m[1];
+        const code = NUMBER_FIRST.has(pi) ? m[1] : m[2];
+        const key0 = norm(rawName);
+        if (!key0 || key0.length < 3) continue;
+        for (const key of aliases(key0)) {
+          if (!index.has(key)) index.set(key, new Set());
+          index.get(key).add(code);
+        }
       }
-    }
+    });
   }
   const result = found ? index : null;
   specCache.set(cacheKey, result);
@@ -153,6 +185,11 @@ for (const file of files) {
       if (known) {
         checkedAgainstSpec++;
         if (!known.has(e.code)) {
+          const waiver = KNOWN_UNRESOLVED[file + ':' + e.line];
+          if (waiver) {
+            console.log(`[check-color-codes] waived ${file}:${e.line} — ${waiver}`);
+            continue;
+          }
           mismatchCount++;
           console.error(`[check-color-codes] MISMATCH ${file}:${e.line} — "${e.name}" says ${e.code}, spec sheet says ${[...known].sort().join('/')}`);
         }
