@@ -1,0 +1,240 @@
+file	line	block	name	code	why
+alustra-arch-layout.ts	161	Hardware Color Guide	Black	048	C_色卡里查无此名
+alustra-arch-layout.ts	162	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+alustra-arch-layout.ts	163	Hardware Color Guide	Gold	235	C_色卡里查无此名
+alustra-arch-layout.ts	164	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+alustra-arch-layout.ts	165	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+alustra-arch-layout.ts	166	Hardware Color Guide	Duchess Grey	651	C_色卡里查无此名
+alustra-arch-layout.ts	167	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+alustra-arch-layout.ts	168	Hardware Color Guide	Desert Tan	859	C_色卡里查无此名
+alustra-arch-layout.ts	169	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+alustra-arch-layout.ts	170	Hardware Color Guide	Desert Gold	903	C_色卡里查无此名
+alustra-woven-layout.ts	307	Hardware Color Guide	Black	048	C_色卡里查无此名
+alustra-woven-layout.ts	308	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+alustra-woven-layout.ts	309	Hardware Color Guide	Gold	235	C_色卡里查无此名
+alustra-woven-layout.ts	310	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+alustra-woven-layout.ts	311	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+alustra-woven-layout.ts	312	Hardware Color Guide	Duchess Grey	651	C_色卡里查无此名
+alustra-woven-layout.ts	313	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+applause-layout.ts	271	Hardware Color Guide	Black	048	C_色卡里查无此名
+applause-layout.ts	272	Hardware Color Guide	Whispering Heather	135	C_色卡里查无此名
+applause-layout.ts	273	Hardware Color Guide	Dove Gray	180	C_色卡里查无此名
+applause-layout.ts	274	Hardware Color Guide	Paprika	202	C_色卡里查无此名
+applause-layout.ts	275	Hardware Color Guide	Fawn	205	C_色卡里查无此名
+applause-layout.ts	276	Hardware Color Guide	Peppercorn	218	C_色卡里查无此名
+applause-layout.ts	277	Hardware Color Guide	Aspen Snow	221	C_色卡里查无此名
+applause-layout.ts	278	Hardware Color Guide	Silverado	276	C_色卡里查无此名
+applause-layout.ts	279	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+applause-layout.ts	280	Hardware Color Guide	Pumpkin	323	C_色卡里查无此名
+applause-layout.ts	281	Hardware Color Guide	Stone	324	C_色卡里查无此名
+applause-layout.ts	282	Hardware Color Guide	Honey Maple	466	C_色卡里查无此名
+applause-layout.ts	283	Hardware Color Guide	Woven Basket	556	C_色卡里查无此名
+applause-layout.ts	284	Hardware Color Guide	Gray Cloud	575	C_色卡里查无此名
+applause-layout.ts	285	Hardware Color Guide	Mediterranean Breeze	578	C_色卡里查无此名
+applause-layout.ts	286	Hardware Color Guide	Midnight Oil	580	C_色卡里查无此名
+applause-layout.ts	287	Hardware Color Guide	Falcon Gray	609	C_色卡里查无此名
+applause-layout.ts	288	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+applause-layout.ts	289	Hardware Color Guide	Beijing Gray	669	C_色卡里查无此名
+applause-layout.ts	290	Hardware Color Guide	Pearl Gray	683	C_色卡里查无此名
+applause-layout.ts	291	Hardware Color Guide	Blue Sky	685	C_色卡里查无此名
+applause-layout.ts	292	Hardware Color Guide	Ash	689	C_色卡里查无此名
+applause-layout.ts	293	Hardware Color Guide	Shimmering Ocean	758	C_色卡里查无此名
+applause-layout.ts	294	Hardware Color Guide	Aspen White	785	C_色卡里查无此名
+applause-layout.ts	295	Hardware Color Guide	Mushroom	810	C_色卡里查无此名
+applause-layout.ts	296	Hardware Color Guide	Dark Blonde	841	C_色卡里查无此名
+applause-layout.ts	297	Hardware Color Guide	Mocha	849	C_色卡里查无此名
+applause-layout.ts	298	Hardware Color Guide	Gardenia White	862	C_色卡里查无此名
+applause-layout.ts	299	Hardware Color Guide	Frosted Ice	878	C_色卡里查无此名
+applause-layout.ts	300	Hardware Color Guide	Honey Bisque	882	C_色卡里查无此名
+aria-layout.ts	164	Hardware Color Guide	Almost White	066	C_色卡里查无此名
+aria-layout.ts	165	Hardware Color Guide	Dove Gray	180	C_色卡里查无此名
+aria-layout.ts	166	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+aria-layout.ts	167	Hardware Color Guide	Khaki	375	C_色卡里查无此名
+aria-layout.ts	168	Hardware Color Guide	Gray Cloud	575	C_色卡里查无此名
+aria-layout.ts	169	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+aria-layout.ts	170	Hardware Color Guide	Beijing Gray	669	C_色卡里查无此名
+aria-layout.ts	171	Hardware Color Guide	Platinum Gray	981	C_色卡里查无此名
+everwood-parkland-layout.ts	231	Hardware Color Guide	Brushed Nickel	237	C_色卡里查无此名
+everwood-parkland-layout.ts	232	Hardware Color Guide	Venetian	242	C_色卡里查无此名
+everwood-parkland-layout.ts	272	Decorative Tapes	Black	048	B_装饰带区块
+everwood-parkland-layout.ts	273	Decorative Tapes	Bronze	064	B_装饰带区块
+everwood-parkland-layout.ts	274	Decorative Tapes	Camel	082	B_装饰带区块
+everwood-parkland-layout.ts	275	Decorative Tapes	Smokey Beige	143	B_装饰带区块
+everwood-parkland-layout.ts	276	Decorative Tapes	Maritime White	165	B_装饰带区块
+everwood-parkland-layout.ts	277	Decorative Tapes	Bordeaux	293	B_装饰带区块
+everwood-parkland-layout.ts	278	Decorative Tapes	Taupe	302	B_装饰带区块
+everwood-parkland-layout.ts	279	Decorative Tapes	Chestnut	336	B_装饰带区块
+everwood-parkland-layout.ts	280	Decorative Tapes	Sable	378	B_装饰带区块
+everwood-parkland-layout.ts	281	Decorative Tapes	White	450	B_装饰带区块
+everwood-parkland-layout.ts	282	Decorative Tapes	Ivory	614	B_装饰带区块
+everwood-parkland-layout.ts	283	Decorative Tapes	Indigo	685	B_装饰带区块
+everwood-parkland-layout.ts	284	Decorative Tapes	Pier	700	B_装饰带区块
+everwood-parkland-layout.ts	285	Decorative Tapes	Almond	830	B_装饰带区块
+everwood-parkland-layout.ts	286	Decorative Tapes	City Loft	850	B_装饰带区块
+everwood-parkland-layout.ts	287	Decorative Tapes	Merino Sweater	861	B_装饰带区块
+everwood-parkland-layout.ts	288	Decorative Tapes	Aged Gray	867	B_装饰带区块
+everwood-parkland-layout.ts	289	Decorative Tapes	Antique White	973	B_装饰带区块
+heritance-newstyle-layout.ts	241	Fabrics	SNOW	7000	C_色卡里查无此名
+heritance-newstyle-layout.ts	243	Fabrics	ARCTIC WHITE	7002	C_色卡里查无此名
+heritance-newstyle-layout.ts	245	Fabrics	WEDDING VEIL	7005	C_色卡里查无此名
+heritance-newstyle-layout.ts	247	Fabrics	RAINY DAY	7010	C_色卡里查无此名
+heritance-newstyle-layout.ts	249	Fabrics	PICKET FENCE	7046	C_色卡里查无此名
+heritance-newstyle-layout.ts	251	Fabrics	SAND CASTLE	7061	C_色卡里查无此名
+heritance-newstyle-layout.ts	253	Fabrics	SUGAR PINE	7073	C_色卡里查无此名
+heritance-newstyle-layout.ts	255	Fabrics	OBSIDIAN	7081	C_色卡里查无此名
+heritance-newstyle-layout.ts	257	Fabrics	WINDSOR WALNUT	8002	C_色卡里查无此名
+heritance-newstyle-layout.ts	259	Fabrics	PECAN	8006	C_色卡里查无此名
+heritance-newstyle-layout.ts	261	Fabrics	DRIFTWOOD	8017	C_色卡里查无此名
+heritance-newstyle-layout.ts	263	Fabrics	DARK OAK	8024	C_色卡里查无此名
+heritance-newstyle-layout.ts	265	Fabrics	SALT AND PEPPER	8044	C_色卡里查无此名
+heritance-newstyle-layout.ts	267	Fabrics	ESPRESSO	8071	C_色卡里查无此名
+heritance-newstyle-layout.ts	269	Fabrics	TRUE WHITE	6650	C_色卡里查无此名
+heritance-newstyle-layout.ts	271	Fabrics	WHITE LACE	6651	C_色卡里查无此名
+heritance-newstyle-layout.ts	273	Fabrics	TRANQUIL MIST	6657	C_色卡里查无此名
+heritance-newstyle-layout.ts	275	Fabrics	ZENITH	6683	C_色卡里查无此名
+luminette-layout.ts	175	Hardware Color Guide	White Diamond	126	C_色卡里查无此名
+luminette-layout.ts	176	Hardware Color Guide	Mushroom Sparkle	437	C_色卡里查无此名
+luminette-layout.ts	177	Hardware Color Guide	Bronze	528	C_色卡里查无此名
+luminette-layout.ts	178	Hardware Color Guide	Silver	530	C_色卡里查无此名
+luminette-layout.ts	179	Hardware Color Guide	Champagne	534	C_色卡里查无此名
+luminette-layout.ts	180	Hardware Color Guide	Graphite	580	C_色卡里查无此名
+modern-precious-metals-layout.ts	226	Hardware Color Guide	Metallic Cream Textured	560	C_色卡里查无此名
+modern-precious-metals-layout.ts	252	Decorative Tapes	Black	048	B_装饰带区块
+modern-precious-metals-layout.ts	253	Decorative Tapes	Bronze	064	B_装饰带区块
+modern-precious-metals-layout.ts	254	Decorative Tapes	Camel	082	B_装饰带区块
+modern-precious-metals-layout.ts	255	Decorative Tapes	Smokey Beige	143	B_装饰带区块
+modern-precious-metals-layout.ts	256	Decorative Tapes	Maritime White	165	B_装饰带区块
+modern-precious-metals-layout.ts	257	Decorative Tapes	Bordeaux	293	B_装饰带区块
+modern-precious-metals-layout.ts	258	Decorative Tapes	Taupe	302	B_装饰带区块
+modern-precious-metals-layout.ts	259	Decorative Tapes	Chestnut	336	B_装饰带区块
+modern-precious-metals-layout.ts	261	Decorative Tapes	Sable	378	B_装饰带区块
+modern-precious-metals-layout.ts	262	Decorative Tapes	White	450	B_装饰带区块
+modern-precious-metals-layout.ts	263	Decorative Tapes	Ivory	614	B_装饰带区块
+modern-precious-metals-layout.ts	264	Decorative Tapes	Indigo	685	B_装饰带区块
+modern-precious-metals-layout.ts	265	Decorative Tapes	Pier	700	B_装饰带区块
+modern-precious-metals-layout.ts	266	Decorative Tapes	Almond	830	B_装饰带区块
+modern-precious-metals-layout.ts	267	Decorative Tapes	City Loft	850	B_装饰带区块
+modern-precious-metals-layout.ts	268	Decorative Tapes	Merino Sweater	861	B_装饰带区块
+modern-precious-metals-layout.ts	270	Decorative Tapes	Aged Gray	867	B_装饰带区块
+modern-precious-metals-layout.ts	271	Decorative Tapes	Antique White	973	B_装饰带区块
+nantucket-layout.ts	165	Hardware Color Guide	Feather Fantasy	133	C_色卡里查无此名
+nantucket-layout.ts	166	Hardware Color Guide	Dove Gray	180	C_色卡里查无此名
+nantucket-layout.ts	167	Hardware Color Guide	Silverado	276	C_色卡里查无此名
+nantucket-layout.ts	168	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+nantucket-layout.ts	169	Hardware Color Guide	Summer Linen	329	C_色卡里查无此名
+nantucket-layout.ts	170	Hardware Color Guide	Slate	370	C_色卡里查无此名
+nantucket-layout.ts	171	Hardware Color Guide	Gray Flannel	405	C_色卡里查无此名
+nantucket-layout.ts	172	Hardware Color Guide	Squirrel Gray	426	C_色卡里查无此名
+nantucket-layout.ts	173	Hardware Color Guide	Skyline	450	C_色卡里查无此名
+nantucket-layout.ts	174	Hardware Color Guide	Ripe Pear	550	C_色卡里查无此名
+nantucket-layout.ts	175	Hardware Color Guide	Worn Leather	551	C_色卡里查无此名
+nantucket-layout.ts	176	Hardware Color Guide	Falcon Gray	609	C_色卡里查无此名
+nantucket-layout.ts	177	Hardware Color Guide	Duchess Gray	651	C_色卡里查无此名
+nantucket-layout.ts	178	Hardware Color Guide	Golden Straw	656	C_色卡里查无此名
+nantucket-layout.ts	179	Hardware Color Guide	Tan Tango	658	C_色卡里查无此名
+nantucket-layout.ts	180	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+nantucket-layout.ts	181	Hardware Color Guide	Beijing Gray	669	C_色卡里查无此名
+nantucket-layout.ts	182	Hardware Color Guide	Ash	689	C_色卡里查无此名
+nantucket-layout.ts	183	Hardware Color Guide	Aspen White	785	C_色卡里查无此名
+nantucket-layout.ts	184	Hardware Color Guide	Gardenia White	862	C_色卡里查无此名
+nantucket-layout.ts	185	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+nantucket-layout.ts	186	Hardware Color Guide	Flex White	885	C_色卡里查无此名
+palm-beach-layout.ts	212	Fabrics	BRIGHT WHITE	5136	C_色卡里查无此名
+palm-beach-layout.ts	214	Fabrics	WHITE SILK	5151	C_色卡里查无此名
+provenance-layout.ts	169	Decorative Edge Banding	Snow	102	C_色卡里查无此名
+provenance-layout.ts	170	Decorative Edge Banding	Eggshell	351	C_色卡里查无此名
+provenance-layout.ts	171	Decorative Edge Banding	Taupe	355	C_色卡里查无此名
+provenance-layout.ts	172	Decorative Edge Banding	Biscotti	367	C_色卡里查无此名
+provenance-layout.ts	173	Decorative Edge Banding	Chiffon	408	C_色卡里查无此名
+provenance-layout.ts	174	Decorative Edge Banding	Tawny	461	C_色卡里查无此名
+provenance-layout.ts	175	Decorative Edge Banding	Steel	816	C_色卡里查无此名
+provenance-layout.ts	176	Decorative Edge Banding	Charcoal	901	C_色卡里查无此名
+provenance-layout.ts	238	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+provenance-layout.ts	239	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+provenance-layout.ts	240	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+provenance-layout.ts	241	Hardware Color Guide	Ash	689	C_色卡里查无此名
+provenance-layout.ts	242	Hardware Color Guide	Silver Maple	765	C_色卡里查无此名
+provenance-layout.ts	243	Hardware Color Guide	Desert Tan	859	C_色卡里查无此名
+provenance-layout.ts	244	Hardware Color Guide	Desert Gold	903	C_色卡里查无此名
+roller-skyline-layout.ts	342	Hardware Color Guide	Black	048	C_色卡里查无此名
+roller-skyline-layout.ts	343	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+roller-skyline-layout.ts	344	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+roller-skyline-layout.ts	345	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+roller-skyline-layout.ts	346	Hardware Color Guide	Duchess Grey	651	C_色卡里查无此名
+roller-skyline-layout.ts	347	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+roller-skyline-layout.ts	348	Hardware Color Guide	Desert Tan	859	C_色卡里查无此名
+roller-skyline-layout.ts	349	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+roller-skyline-layout.ts	350	Hardware Color Guide	Desert Gold	903	C_色卡里查无此名
+roller-skyline-layout.ts	573	Semi-Opaque	Semi-Opaque PALM-101	124	C_色卡里查无此名
+roller-skyline-layout.ts	663	Opaque	Opaque BRUN-206	173	C_色卡里查无此名
+screen-skyline-layout.ts	120	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+screen-skyline-layout.ts	121	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+screen-skyline-layout.ts	122	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+screen-skyline-layout.ts	123	Hardware Color Guide	Desert Tan	859	C_色卡里查无此名
+screen-skyline-layout.ts	124	Hardware Color Guide	Desert Gold	903	C_色卡里查无此名
+screen-skyline-layout.ts	125	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+screen-skyline-layout.ts	126	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+screen-skyline-layout.ts	127	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+screen-skyline-layout.ts	128	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+screen-skyline-layout.ts	129	Hardware Color Guide	Black	048	C_色卡里查无此名
+silhouette-layout.ts	231	Hardware Color Guide	Black	048	C_色卡里查无此名
+silhouette-layout.ts	232	Hardware Color Guide	Feather Fantasy	133	C_色卡里查无此名
+silhouette-layout.ts	233	Hardware Color Guide	Dove Gray	180	C_色卡里查无此名
+silhouette-layout.ts	234	Hardware Color Guide	Silverado	276	C_色卡里查无此名
+silhouette-layout.ts	235	Hardware Color Guide	Earthen Beige	319	C_色卡里查无此名
+silhouette-layout.ts	236	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+silhouette-layout.ts	237	Hardware Color Guide	Summer Linen	329	C_色卡里查无此名
+silhouette-layout.ts	238	Hardware Color Guide	Slate	370	C_色卡里查无此名
+silhouette-layout.ts	239	Hardware Color Guide	Silver Sand	401	C_色卡里查无此名
+silhouette-layout.ts	240	Hardware Color Guide	Gray Flannel	405	C_色卡里查无此名
+silhouette-layout.ts	241	Hardware Color Guide	Squirrel Gray	426	C_色卡里查无此名
+silhouette-layout.ts	242	Hardware Color Guide	Skyline	450	C_色卡里查无此名
+silhouette-layout.ts	243	Hardware Color Guide	Winter Pear	478	C_色卡里查无此名
+silhouette-layout.ts	244	Hardware Color Guide	Ripe Pear	550	C_色卡里查无此名
+silhouette-layout.ts	245	Hardware Color Guide	Worn Leather	551	C_色卡里查无此名
+silhouette-layout.ts	246	Hardware Color Guide	Gray Cloud	575	C_色卡里查无此名
+silhouette-layout.ts	247	Hardware Color Guide	Falcon Gray	609	C_色卡里查无此名
+silhouette-layout.ts	248	Hardware Color Guide	Duchess Gray	651	C_色卡里查无此名
+silhouette-layout.ts	249	Hardware Color Guide	Maiden Blush	652	C_色卡里查无此名
+silhouette-layout.ts	250	Hardware Color Guide	Golden Straw	656	C_色卡里查无此名
+silhouette-layout.ts	251	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+silhouette-layout.ts	252	Hardware Color Guide	Beijing Gray	669	C_色卡里查无此名
+silhouette-layout.ts	253	Hardware Color Guide	Ash	689	C_色卡里查无此名
+silhouette-layout.ts	254	Hardware Color Guide	Aspen White	785	C_色卡里查无此名
+silhouette-layout.ts	255	Hardware Color Guide	Mushroom	810	C_色卡里查无此名
+silhouette-layout.ts	256	Hardware Color Guide	Mocha	849	C_色卡里查无此名
+silhouette-layout.ts	257	Hardware Color Guide	Gardenia White	862	C_色卡里查无此名
+silhouette-layout.ts	258	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+silhouette-layout.ts	259	Hardware Color Guide	Flex White	885	C_色卡里查无此名
+silhouette-layout.ts	260	Hardware Color Guide	Heatherwood	897	C_色卡里查无此名
+sonnette-layout.ts	272	Hardware Colors	Camel	082	C_色卡里查无此名
+sonnette-layout.ts	273	Hardware Colors	Dove Gray	180	C_色卡里查无此名
+sonnette-layout.ts	274	Hardware Colors	Paprika	202	C_色卡里查无此名
+sonnette-layout.ts	275	Hardware Colors	Coconut Husk	220	C_色卡里查无此名
+sonnette-layout.ts	276	Hardware Colors	Clove	226	C_色卡里查无此名
+sonnette-layout.ts	277	Hardware Colors	Vine	241	C_色卡里查无此名
+sonnette-layout.ts	278	Hardware Colors	Stone	324	C_色卡里查无此名
+sonnette-layout.ts	279	Hardware Colors	Rose Water	372	C_色卡里查无此名
+sonnette-layout.ts	280	Hardware Colors	Sycamore	373	C_色卡里查无此名
+sonnette-layout.ts	281	Hardware Colors	Off Linen	374	C_色卡里查无此名
+sonnette-layout.ts	282	Hardware Colors	Khaki	375	C_色卡里查无此名
+sonnette-layout.ts	283	Hardware Colors	Mouse Gray	376	C_色卡里查无此名
+sonnette-layout.ts	284	Hardware Colors	Wine	479	C_色卡里查无此名
+sonnette-layout.ts	285	Hardware Colors	Noisette	486	C_色卡里查无此名
+sonnette-layout.ts	286	Hardware Colors	Twilight	496	C_色卡里查无此名
+sonnette-layout.ts	287	Hardware Colors	Glaze	502	C_色卡里查无此名
+sonnette-layout.ts	288	Hardware Colors	Worn Leather	551	C_色卡里查无此名
+sonnette-layout.ts	289	Hardware Colors	Gray Cloud	575	C_色卡里查无此名
+sonnette-layout.ts	290	Hardware Colors	Duchess Gray	651	C_色卡里查无此名
+sonnette-layout.ts	291	Hardware Colors	White Tiara	661	C_色卡里查无此名
+sonnette-layout.ts	292	Hardware Colors	Gardenia	862	C_色卡里查无此名
+sonnette-layout.ts	293	Hardware Colors	Frosted Ice	878	C_色卡里查无此名
+us-banded-layout.ts	215	Hardware Color Guide	Black	048	C_色卡里查无此名
+us-banded-layout.ts	216	Hardware Color Guide	Bronze	064	C_色卡里查无此名
+us-banded-layout.ts	217	Hardware Color Guide	Nickel	316	C_色卡里查无此名
+us-banded-layout.ts	218	Hardware Color Guide	Rich Cream	320	C_色卡里查无此名
+us-banded-layout.ts	219	Hardware Color Guide	Duchess Grey	651	C_色卡里查无此名
+us-banded-layout.ts	220	Hardware Color Guide	White Tiara	661	C_色卡里查无此名
+us-banded-layout.ts	221	Hardware Color Guide	Desert Tan	859	C_色卡里查无此名
+us-banded-layout.ts	222	Hardware Color Guide	Pearl Gray	879	C_色卡里查无此名
+us-banded-layout.ts	223	Hardware Color Guide	Desert Gold	903	C_色卡里查无此名
