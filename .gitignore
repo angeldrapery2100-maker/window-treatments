@@ -58,3 +58,12 @@ Hunter Douglas Pictures PDF/
 # editor/backup scratch files — never commit these
 *.bak
 *.bak-*
+
+# Scratch bin: this mounted volume forbids unlink, so throwaway files get moved
+# into _to_delete/ instead of removed. Delete the folder from macOS Finder.
+_to_delete/
+_to_delete_*/
+_to_delete_manifest.json
+
+# Bundled debug dumps written next to the app (multi-MB, never source)
+apps/web/.probe-*.mjs
