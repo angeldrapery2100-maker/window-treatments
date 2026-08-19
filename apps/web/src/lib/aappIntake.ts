@@ -32,6 +32,7 @@ export interface InquiryInput {
 export interface InquiryResult {
   ok: boolean
   link?: string
+  leadId?: string
   smsSent?: boolean
   error?: string
 }
@@ -103,6 +104,7 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     return {
       ok: data?.ok === true,
       link: typeof data?.link === 'string' ? data.link : undefined,
+      leadId: typeof data?.leadId === 'string' ? data.leadId : undefined,
       smsSent: data?.smsSent === true,
       error: data?.ok === true ? undefined : (data?.error || 'inquiry_failed'),
     }

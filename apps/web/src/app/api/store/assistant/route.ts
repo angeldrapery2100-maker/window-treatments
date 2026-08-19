@@ -488,6 +488,7 @@ export async function POST(request: Request) {
 
     let reply = ''
     let bookingLink = ''  // set when submit_website_inquiry returns a booking link
+    let inquiryConversion: { name: string; phone: string; leadId?: string } | null = null
     // Everything an order number could legitimately be quoted from in THIS
     // request: what the customer typed + what tools actually returned. Used
     // by the fabricated-order guard below (P0 2026-07-20).
@@ -571,6 +572,13 @@ export async function POST(request: Request) {
           if (block.name === 'submit_website_inquiry') {
             const link = (result as any)?.link
             if (typeof link === 'string' && /^https?:\/\//.test(link)) bookingLink = link
+            if ((result as any)?.ok === true) {
+              inquiryConversion = {
+                name: String(block.input?.name || '').trim(),
+                phone: String(block.input?.phone || '').trim(),
+                ...(typeof (result as any)?.leadId === 'string' ? { leadId: (result as any).leadId } : {}),
+              }
+            }
           }
           const resultJson = JSON.stringify(result)
           orderNumberSources.push(resultJson)
@@ -737,6 +745,7 @@ export async function POST(request: Request) {
         reply: cleanReply,
         ...(suggestions.length ? { suggestions } : {}),
         ...(bookingLink ? { bookingLink } : {}),
+        ...(inquiryConversion ? { conversion: inquiryConversion } : {}),
       },
     })
     if (!cookieAnonId) {

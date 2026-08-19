@@ -43,12 +43,17 @@ interface ChatMessage {
   // thumbnails; only ever POSTed for the LATEST turn (history turns send a
   // "[photo]" placeholder instead — see send()).
   images?: string[]
+  at?: string
 }
 
 const STORAGE_KEY = 'store_assistant_chat'
 const TEASER_KEY = 'store_assistant_teaser_done'
 const OPENED_KEY = 'store_assistant_opened'
+const SESSION_ID_KEY = 'store_assistant_session_id'
+const WEB_CHAT_LOG_PATH = '/api/store/web-chat-log'
+const WEB_CHAT_LOG_DEBOUNCE_MS = 3000
 const MAX_MESSAGES = 30
+const MAX_ARCHIVE_MESSAGES = 200
 const MAX_CONTENT_CHARS = 2000
 const TEASER_DELAY_MS = 4000
 
@@ -284,6 +289,21 @@ function saveStored(messages: ChatMessage[]) {
   }
 }
 
+function getOrCreateSessionId(): string {
+  try {
+    const existing = sessionStorage.getItem(SESSION_ID_KEY)
+    if (existing && /^[A-Za-z0-9_-]{8,64}$/.test(existing)) return existing
+    const random = typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`
+    const sessionId = `ws_${random}`
+    sessionStorage.setItem(SESSION_ID_KEY, sessionId)
+    return sessionId
+  } catch {
+    return `ws_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`
+  }
+}
+
 // Small brand avatar used in the header and next to assistant bubbles.
 function AssistantAvatar({ size = 30 }: { size?: number }) {
   return (
@@ -315,9 +335,15 @@ export default function StoreAssistant() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const sessionIdRef = useRef('')
+  const messagesRef = useRef<ChatMessage[]>([])
+  const archiveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const endedSentRef = useRef(false)
+  const conversionRef = useRef<{ name?: string; phone?: string; leadId?: string } | null>(null)
 
   // Hydrate persisted conversation once on mount (client only).
   useEffect(() => {
+    sessionIdRef.current = getOrCreateSessionId()
     setMessages(loadStored())
     try {
       if (sessionStorage.getItem(OPENED_KEY)) setOpenedOnce(true)
@@ -352,6 +378,59 @@ export default function StoreAssistant() {
       }
     })()
   }, [])
+
+  useEffect(() => {
+    messagesRef.current = messages
+  }, [messages])
+
+  const postArchive = useCallback((archiveMessages: ChatMessage[], ended = false) => {
+    if (!sessionIdRef.current || archiveMessages.length === 0) return
+    const conversion = conversionRef.current
+    const payload = {
+      sessionId: sessionIdRef.current,
+      messages: archiveMessages.map((message) => ({
+        role: message.role === 'user' ? 'user' : 'bot',
+        text: message.content,
+        ...(message.at ? { at: message.at } : {}),
+      })),
+      page: location.pathname,
+      lang: navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en',
+      ...(conversion || {}),
+      ...(conversion ? { converted: true } : {}),
+      ...(ended ? { ended: true } : {}),
+    }
+    void fetch(WEB_CHAT_LOG_PATH, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-ad-webchat': '1' },
+      body: JSON.stringify(payload),
+      keepalive: ended,
+    }).catch(() => {})
+  }, [])
+
+  const scheduleArchive = useCallback((archiveMessages: ChatMessage[]) => {
+    if (archiveTimerRef.current) clearTimeout(archiveTimerRef.current)
+    archiveTimerRef.current = setTimeout(() => postArchive(archiveMessages), WEB_CHAT_LOG_DEBOUNCE_MS)
+  }, [postArchive])
+
+  useEffect(() => {
+    const sendEnded = () => {
+      if (endedSentRef.current) return
+      endedSentRef.current = true
+      if (archiveTimerRef.current) clearTimeout(archiveTimerRef.current)
+      postArchive(messagesRef.current, true)
+    }
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') sendEnded()
+      else endedSentRef.current = false
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('pagehide', sendEnded)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('pagehide', sendEnded)
+      if (archiveTimerRef.current) clearTimeout(archiveTimerRef.current)
+    }
+  }, [postArchive])
 
   // One-time attention teaser: pops a few seconds after load, once per
   // session, and never once the chat has been opened or used.
@@ -433,12 +512,13 @@ export default function StoreAssistant() {
       if ((!content && imgs.length === 0) || sending) return
       setErrorMsg('')
 
-      // Cap history client-side: keep the most recent turns under the server limit.
+      // Preserve the full archive (up to webChatLog's limit), while only sending
+      // the most recent MAX_MESSAGES to the assistant model below.
       const base = baseHistory ?? messages
       const next = [
         ...base,
-        { role: 'user' as const, content, ...(imgs.length ? { images: imgs } : {}) },
-      ].slice(-(MAX_MESSAGES - 1))
+        { role: 'user' as const, content, at: new Date().toISOString(), ...(imgs.length ? { images: imgs } : {}) },
+      ].slice(-(MAX_ARCHIVE_MESSAGES - 1))
       setMessages(next)
       saveStored(next)
       setInput('')
@@ -455,8 +535,8 @@ export default function StoreAssistant() {
           // — the API expects bare {role, content} plus optional last-turn
           // images.
           body: JSON.stringify({
-            messages: next.map(({ role, content: c, images: im }, idx) =>
-              idx === next.length - 1 && im?.length
+            messages: next.slice(-MAX_MESSAGES).map(({ role, content: c, images: im }, idx, modelMessages) =>
+              idx === modelMessages.length - 1 && im?.length
                 ? { role, content: c, images: im }
                 : { role, content: c || PHOTO_PLACEHOLDER }
             ),
@@ -473,18 +553,32 @@ export default function StoreAssistant() {
             {
               role: 'assistant' as const,
               content: String(json.data.reply),
+              at: new Date().toISOString(),
               ...(link ? { bookingLink: link } : {}),
               ...(suggestions ? { suggestions } : {}),
             },
           ]
           setMessages(withReply)
           saveStored(withReply)
+          const conversion = json.data.conversion
+          if (conversion && typeof conversion === 'object') {
+            conversionRef.current = {
+              ...(typeof conversion.name === 'string' ? { name: conversion.name } : {}),
+              ...(typeof conversion.phone === 'string' ? { phone: conversion.phone } : {}),
+              ...(typeof conversion.leadId === 'string' ? { leadId: conversion.leadId } : {}),
+            }
+            if (archiveTimerRef.current) clearTimeout(archiveTimerRef.current)
+            postArchive(withReply)
+          } else {
+            scheduleArchive(withReply)
+          }
         } else if (json?.error === 'assistant_unavailable') {
           // Backend not configured / key missing — keep the widget, offer the
           // human path. Recovers automatically once the server has its key.
-          const withNotice = [...next, { role: 'assistant' as const, content: UNAVAILABLE_MSG }]
+          const withNotice = [...next, { role: 'assistant' as const, content: UNAVAILABLE_MSG, at: new Date().toISOString() }]
           setMessages(withNotice)
           saveStored(withNotice)
+          scheduleArchive(withNotice)
         } else {
           setErrorMsg(
             typeof json?.error === 'string' && json.error
@@ -498,7 +592,7 @@ export default function StoreAssistant() {
         setSending(false)
       }
     },
-    [messages, sending, surface]
+    [messages, postArchive, scheduleArchive, sending, surface]
   )
 
   // Compress and queue photos picked from the file input.
