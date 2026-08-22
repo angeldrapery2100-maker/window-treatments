@@ -134,8 +134,19 @@ const nextConfig: NextConfig = {
       // Report-only CSP — observe before enforcing (see comment above).
       { key: 'Content-Security-Policy-Report-Only', value: cspReportOnly },
     ]
+    // Referral pages (推广系统 P1): personal, per-token URLs. They must never
+    // be cached by a CDN or a shared proxy (a rewards page shows one person's
+    // code and progress) and never indexed — the page metadata already says
+    // noindex, this header covers the cases a crawler reads headers only.
+    const privateReferralHeaders = [
+      { key: 'Cache-Control', value: 'no-store, max-age=0, must-revalidate' },
+      { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+    ]
     return [
       { source: '/:path*', headers: securityHeaders },
+      { source: '/r/:token*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+      { source: '/rewards/:token*', headers: privateReferralHeaders },
+      { source: '/partner/:token*', headers: privateReferralHeaders },
     ]
   },
   webpack: (config, { isServer }) => {
