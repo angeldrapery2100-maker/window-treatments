@@ -11,8 +11,16 @@
 // only what the AAPP portal endpoint returns for that token, and neither page
 // is indexable.
 //
-// The five endpoints live in AAPP (P0). Until they are deployed, set
-// AAPP_REFERRAL_MOCK=1 to serve `referral.mock.ts` fixtures locally.
+// The endpoints live in AAPP (P0, deployed 2026-08-22): referralLookup /
+// referralVisit / referralPortal / referralPortalPrefs /
+// referralPartnerW9Upload. Until they are reachable, set AAPP_REFERRAL_MOCK=1
+// to serve `referral.mock.ts` fixtures locally.
+//
+// ⚠ WIRE SHAPES ARE NOT THIS FILE'S TYPES. AAPP speaks the P0 §0 contract
+// (`{ok, public:{...}}`, `code`, `tier`, `nextTier.needed`, `tiers[].pct`,
+// flat `referredLeads`/`signed`); `toPublic` / `toPortal` translate. Change a
+// name on either side and the page silently renders zeros — keep the `??`
+// fallbacks so neither side can break the other alone.
 
 export const REFERRAL_COOKIE = 'ad_ref'
 /** 90 days — same consideration window as the campaign cookie. */
@@ -154,7 +162,10 @@ function toPublic(data: any): ReferralPublic | null {
   return {
     referrerType: type,
     displayName: String(data?.displayName ?? '').trim().slice(0, 80) || 'A friend',
-    discountPct: Number.isFinite(pct) && pct > 0 ? Math.round(pct) : null,
+    // 不要四舍五入:AAPP 的等级折扣是 4.8 / 6.8 / 7.8 / 8.8 / 10。取整会让落地页
+    // 写着 "5% off" 而优惠码实际只有 4.8% —— 报的数字和给的数字不一样,而且
+    // /rewards 用的是未取整的值,两个页面还会互相打脸。只去掉多余的 .0。
+    discountPct: Number.isFinite(pct) && pct > 0 ? Number(pct.toFixed(1)) : null,
     tierLabel: data?.tierLabel ? String(data.tierLabel).slice(0, 40) : undefined,
     tierLabelCn: data?.tierLabelCn ? String(data.tierLabelCn).slice(0, 40) : undefined,
     referralCode: data?.referralCode ? String(data.referralCode).slice(0, 40) : null,
@@ -188,7 +199,11 @@ export async function lookupReferral(token: string): Promise<ReferralPublic | nu
     })
     if (res.ok) {
       const data = (await res.json().catch(() => null)) as any
-      if (data?.ok !== false) value = toPublic(data?.referral ?? data)
+      // 契约 §0.2:referralLookup → { ok:true, public:<referralPublic doc> }。
+      // 只读 data.referral 会取到 undefined,退化成读整个信封,而信封上没有
+      // referrerType —— 结果 lookupReferral 永远返回 null,ad_ref cookie 永远
+      // 种不下去,整条归因链是死的。data.referral / 裸对象保留为兼容分支。
+      if (data?.ok !== false) value = toPublic(data?.public ?? data?.referral ?? data)
     } else {
       console.warn(`[referral] lookup ${res.status}`)
     }
@@ -229,16 +244,33 @@ function toPortal(token: string, data: any): PortalView | null {
     const n = Number(v)
     return Number.isFinite(n) ? n : undefined
   }
+  // AAPP 发的是 { tier, label, labelCn, min, pct };本地类型用的是
+  // { key, label, labelCn, min, discountPct }。两种都认。
   const tier = (t: any): PortalTier | null => {
     if (!t || typeof t !== 'object') return null
     return {
-      key: String(t.key ?? '').slice(0, 32),
+      key: String(t.key ?? t.tier ?? '').slice(0, 32),
       label: String(t.label ?? '').slice(0, 40),
       labelCn: t.labelCn ? String(t.labelCn).slice(0, 40) : undefined,
       min: num(t.min) ?? 0,
-      discountPct: num(t.discountPct) ?? 0,
+      discountPct: num(t.discountPct) ?? num(t.pct) ?? 0,
       color: typeof t.color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(t.color) ? t.color : undefined,
     }
+  }
+  const ladder: PortalTier[] = Array.isArray(data?.tiers)
+    ? (data.tiers.map(tier).filter(Boolean) as PortalTier[])
+    : []
+  const qualified = num(data?.qualifiedReferrals) ?? 0
+  /* ★ nextTier 的 min 是「绝对门槛」—— RewardsClient 拿它显示 "1 / 3" 并算进度条。
+     AAPP 发的 nextTier 里没有 min,只有 needed(还差几单),直接映射会显示成
+     "1 / 2" 且进度条算错。绝对值优先从 tiers[] 里按 key 查(那里的 min 就是
+     绝对门槛),查不到再用 needed + 已完成数还原。 */
+  const nextRaw = data?.nextTier
+  let next = tier(nextRaw)
+  if (next && !(num(nextRaw?.min) != null)) {
+    const fromLadder = ladder.find((t) => t.key === next!.key)
+    const needed = num(nextRaw?.needed)
+    next = { ...next, min: fromLadder ? fromLadder.min : (needed != null ? qualified + needed : 0) }
   }
   const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://angel-drapery.com').replace(/\/$/, '')
   return {
@@ -246,7 +278,12 @@ function toPortal(token: string, data: any): PortalView | null {
     type,
     displayName: String(data?.displayName ?? '').trim().slice(0, 80) || 'there',
     lang: data?.lang === 'zh' ? 'zh' : 'en',
-    referralCode: data?.referralCode ? String(data.referralCode).slice(0, 40) : null,
+    // AAPP 的字段名是 code(契约 §3.3),不是 referralCode —— 奖励页那张
+    // 大字优惠码卡片会整块不显示。(toPublic 那边读 referralCode 是对的:
+    // referralPublic 文档的字段名就叫 referralCode,见契约 §0.1。)
+    referralCode: (data?.code ?? data?.referralCode)
+      ? String(data.code ?? data.referralCode).slice(0, 40)
+      : null,
     shareUrl:
       typeof data?.shareUrl === 'string' && data.shareUrl.startsWith('http')
         ? data.shareUrl
@@ -254,16 +291,21 @@ function toPortal(token: string, data: any): PortalView | null {
     discountPct: num(data?.discountPct) ?? null,
     freeVisitCredits: num(data?.freeVisitCredits),
     qualifiedReferrals: num(data?.qualifiedReferrals),
-    tierKey: data?.tierKey ? String(data.tierKey).slice(0, 32) : undefined,
+    // AAPP 发 tier,不是 tierKey。对不上会让当前等级高亮和进度条颜色全灭。
+    tierKey: (data?.tier ?? data?.tierKey) ? String(data.tier ?? data.tierKey).slice(0, 32) : undefined,
     tierLabel: data?.tierLabel ? String(data.tierLabel).slice(0, 40) : undefined,
     tierLabelCn: data?.tierLabelCn ? String(data.tierLabelCn).slice(0, 40) : undefined,
-    nextTier: tier(data?.nextTier),
-    tiers: Array.isArray(data?.tiers) ? (data.tiers.map(tier).filter(Boolean) as PortalTier[]) : [],
+    nextTier: next,
+    tiers: ladder,
     smsOptIn: data?.smsOptIn === true,
     smsOptedOut: data?.smsOptedOut === true,
+    // 合作方页的两个数字:AAPP 把 referredLeads / signed 摊平在顶层(契约 §3.3),
+    // 没有 stats 这一层。只读 data.stats 会让两个数字恒为 0。
     stats: data?.stats
       ? { referredLeads: num(data.stats.referredLeads) ?? 0, signed: num(data.stats.signed) ?? 0 }
-      : undefined,
+      : (data?.referredLeads != null || data?.signed != null)
+        ? { referredLeads: num(data.referredLeads) ?? 0, signed: num(data.signed) ?? 0 }
+        : undefined,
     w9: data?.w9 ? { uploaded: data.w9.uploaded === true, verified: data.w9.verified === true } : undefined,
     active: data?.active !== false,
   }
@@ -338,10 +380,12 @@ export async function uploadPartnerW9(
   if (!fileBase64 || (fileBase64.length * 3) / 4 > W9_MAX_BYTES) return { ok: false, error: 'too_large' }
   if (MOCK()) return { ok: true }
   try {
-    const res = await fetch(`${BASE()}/partnerW9Upload`, {
+    // 端点名和字段名都按 AAPP 实际部署的来(任务书 §1.5):
+    // referralPartnerW9Upload,body 是 { token, fileBase64, mime }。
+    const res = await fetch(`${BASE()}/referralPartnerW9Upload`, {
       method: 'POST',
       headers: authHeaders({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ token, file: fileBase64, mime }),
+      body: JSON.stringify({ token, fileBase64, mime }),
       signal: AbortSignal.timeout(30_000),
     })
     const data = (await res.json().catch(() => null)) as any

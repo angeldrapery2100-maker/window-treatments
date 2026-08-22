@@ -1,80 +1,35 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import {
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""apps/web/src/lib/referral.test.ts — 锁死 AAPP P0 的**线格式**。
+
+这一组用的是 AAPP 真实返回的 payload(契约 §0.2 / §3.3 的原文示例),不是
+本仓库内部的 PortalView 形状。之所以要单独锁:P0 和 P1 是两个仓库并行开发的,
+字段名一改,页面不会报错,只会安静地渲染成 0 / 空白 —— mock 测试永远发现不了,
+因为 mock 走的是内部形状,根本不过 toPublic / toPortal 这两个翻译层。
+用法: python3 add-wire-tests.py --src <repo> --out <repo> [--dry]
+"""
+import argparse, io, os, sys
+
+REL = os.path.join('apps', 'web', 'src', 'lib', 'referral.test.ts')
+
+IMP_OLD = """import {
+  getReferralFromRequest, isValidReferralToken, TOKEN_RE,
+  fetchReferralPortal, _clearReferralCache,
+} from './referral'"""
+IMP_NEW = """import {
   getReferralFromRequest, isValidReferralToken, TOKEN_RE,
   fetchReferralPortal, lookupReferral, uploadPartnerW9, _clearReferralCache,
-} from './referral'
-import { MOCK_CUSTOMER_TOKEN, MOCK_AGENT_TOKEN, MOCK_CAMPAIGN_TOKEN } from './referral.mock'
+} from './referral'"""
 
-const req = (cookie: string) => new Request('https://angel-drapery.com/', { headers: { cookie } })
+TAIL_OLD = """  it('never calls the backend with a malformed token', async () => {
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    expect(await fetchReferralPortal('nope')).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+})"""
 
-describe('isValidReferralToken', () => {
-  it('accepts URL-safe tokens of 16–32 chars', () => {
-    expect(isValidReferralToken('abcdefghijklmnop')).toBe(true)
-    expect(isValidReferralToken('A-b_c0123456789012345678901234')).toBe(true)
-  })
-  it('rejects short, long and non-URL-safe tokens', () => {
-    expect(isValidReferralToken('short')).toBe(false)
-    expect(isValidReferralToken('x'.repeat(33))).toBe(false)
-    expect(isValidReferralToken('has spaces here!')).toBe(false)
-    expect(isValidReferralToken('semi;colon;token;')).toBe(false)
-    expect(isValidReferralToken(null)).toBe(false)
-  })
-  it('accepts every mock fixture token (they must be usable end to end)', () => {
-    for (const t of [MOCK_CUSTOMER_TOKEN, MOCK_AGENT_TOKEN, MOCK_CAMPAIGN_TOKEN]) {
-      expect(TOKEN_RE.test(t)).toBe(true)
-    }
-  })
-})
-
-describe('getReferralFromRequest', () => {
-  it('reads a valid ad_ref cookie', () => {
-    expect(getReferralFromRequest(req(`ad_ref=${MOCK_CUSTOMER_TOKEN}`))).toBe(MOCK_CUSTOMER_TOKEN)
-  })
-  it('returns null when there is no cookie at all', () => {
-    expect(getReferralFromRequest(new Request('https://angel-drapery.com/'))).toBeNull()
-  })
-  it('rejects a malformed value instead of passing it through', () => {
-    expect(getReferralFromRequest(req('ad_ref=nope'))).toBeNull()
-    expect(getReferralFromRequest(req('ad_ref=' + 'x'.repeat(40)))).toBeNull()
-    // An injected value must not become a token just because it starts well.
-    expect(getReferralFromRequest(req('ad_ref=abcdefghijklmnop$evil'))).toBeNull()
-    expect(getReferralFromRequest(req('ad_ref='))).toBeNull()
-  })
-  it('coexists with ad_campaign and ad_anon in any order', () => {
-    const cookie = `ad_anon=abc123; ad_campaign=fall-eddm; ad_ref=${MOCK_AGENT_TOKEN}`
-    expect(getReferralFromRequest(req(cookie))).toBe(MOCK_AGENT_TOKEN)
-    const reversed = `ad_ref=${MOCK_AGENT_TOKEN}; ad_campaign=fall-eddm`
-    expect(getReferralFromRequest(req(reversed))).toBe(MOCK_AGENT_TOKEN)
-  })
-  it('does not match a cookie whose name merely ends in ad_ref', () => {
-    expect(getReferralFromRequest(req(`not_ad_ref=${MOCK_CUSTOMER_TOKEN}`))).toBeNull()
-  })
-})
-
-describe('fetchReferralPortal', () => {
-  afterEach(() => {
-    vi.unstubAllGlobals()
-    _clearReferralCache()
-  })
-
-  const stub = (payload: Record<string, unknown>) =>
-    vi.stubGlobal('fetch', async () => ({ ok: true, json: async () => payload }) as any)
-
-  it('returns null for a deactivated referrer — a forwarded portal link must go dead', async () => {
-    stub({ ok: true, type: 'customer', displayName: 'Jenny L.', active: false })
-    expect(await fetchReferralPortal(MOCK_CUSTOMER_TOKEN)).toBeNull()
-  })
-
-  it('returns the portal for an active referrer', async () => {
-    stub({ ok: true, type: 'customer', displayName: 'Jenny L.', discountPct: 5, active: true })
-    const portal = await fetchReferralPortal(MOCK_CUSTOMER_TOKEN)
-    expect(portal?.type).toBe('customer')
-    expect(portal?.discountPct).toBe(5)
-    // shareUrl is synthesised when the backend omits it.
-    expect(portal?.shareUrl).toContain(`/r/${MOCK_CUSTOMER_TOKEN}`)
-  })
-
-  it('never calls the backend with a malformed token', async () => {
+TAIL_NEW = """  it('never calls the backend with a malformed token', async () => {
     const fetchSpy = vi.fn()
     vi.stubGlobal('fetch', fetchSpy)
     expect(await fetchReferralPortal('nope')).toBeNull()
@@ -243,4 +198,25 @@ describe('AAPP wire format', () => {
     stub({ ok: false, error: 'not_found' })
     expect(await lookupReferral(MOCK_CUSTOMER_TOKEN)).toBeNull()
   })
-})
+})"""
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--src', required=True); ap.add_argument('--out', required=True)
+    ap.add_argument('--dry', action='store_true')
+    a = ap.parse_args()
+    p = os.path.join(a.src, REL)
+    s = io.open(p, encoding='utf-8').read()
+    if 'AAPP wire format' in s:
+        print('add-wire-tests: already applied'); return 0
+    for nm, old in (('import', IMP_OLD), ('tail', TAIL_OLD)):
+        n = s.count(old)
+        if n != 1:
+            print('add-wire-tests: ABORT anchor %s count=%d (want 1)' % (nm, n), file=sys.stderr); return 2
+    s = s.replace(IMP_OLD, IMP_NEW).replace(TAIL_OLD, TAIL_NEW)
+    if a.dry:
+        print('add-wire-tests: dry ok'); return 0
+    io.open(os.path.join(a.out, REL), 'w', encoding='utf-8').write(s)
+    print('add-wire-tests: wrote %s' % REL); return 0
+
+sys.exit(main())
