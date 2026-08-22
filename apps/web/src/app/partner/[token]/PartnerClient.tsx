@@ -48,14 +48,20 @@ export default function PartnerClient({ portal, qr }: Props) {
   }
 
   const onPickFile = async (file: File | null) => {
+    // Always clear the input first: a browser fires no change event when the
+    // same file is picked twice, so a rejected file could never be retried
+    // (and the Upload button would look dead).
+    const resetInput = () => { if (fileRef.current) fileRef.current.value = '' }
     if (!file) return
     setW9Error('')
     if (!W9_MIME.includes(file.type)) {
       setW9Error(tr(language, 'PDF, JPG or PNG only', '只支持 PDF、JPG 或 PNG'))
+      resetInput()
       return
     }
     if (file.size > W9_MAX_BYTES) {
       setW9Error(tr(language, 'That file is over 8MB', '文件超过 8MB'))
+      resetInput()
       return
     }
     setW9State('uploading')
@@ -87,7 +93,7 @@ export default function PartnerClient({ portal, qr }: Props) {
       setW9State('idle')
       setW9Error(tr(language, "Upload didn't go through — please try again", '上传没成功，请再试一次'))
     } finally {
-      if (fileRef.current) fileRef.current.value = ''
+      resetInput()
     }
   }
 

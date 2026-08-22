@@ -63,6 +63,7 @@ export default async function ReferralPage({ params }: { params: Promise<{ token
       referrerType={ref.referrerType}
       displayName={ref.displayName}
       discountPct={ref.discountPct}
+      isPartner={PARTNER_TYPES.includes(ref.referrerType)}
     />
   )
 }

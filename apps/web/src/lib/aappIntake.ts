@@ -59,6 +59,13 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     return { ok: false, error: 'need_contact' }
   }
 
+  // Dev/preview only: a black-box referral test uses a reserved 555-01xx
+  // number, which the guard below blocks before AAPP ever sees the payload —
+  // so this is the only place a tester can confirm the token was carried.
+  if (process.env.NODE_ENV !== 'production' && input.referral?.token) {
+    console.debug('[aapp-intake] referral on inquiry:', input.referral.token, input.referral.page || '')
+  }
+
   // W6 (P0-5): reserved/test identities never reach the real lead system.
   // 555-01xx is the NANP fictional range; example.com/test.com are reserved
   // domains — black-box tests use exactly these, so blocking them here makes

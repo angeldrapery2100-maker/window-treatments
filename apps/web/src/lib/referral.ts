@@ -221,6 +221,10 @@ export async function recordReferralVisit(token: string, page: string, ua: strin
 function toPortal(token: string, data: any): PortalView | null {
   const type = normalizeType(data?.type ?? data?.referrerType)
   if (!type) return null
+  // A revoked referrer loses the portal too, not just the landing page: the
+  // /rewards and /partner links are permanent and get forwarded around, so
+  // "inactive" has to mean the dashboard stops rendering as well.
+  if (data?.active === false) return null
   const num = (v: unknown): number | undefined => {
     const n = Number(v)
     return Number.isFinite(n) ? n : undefined

@@ -373,6 +373,9 @@ export default function StoreAssistant() {
   const [errorMsg, setErrorMsg] = useState('')
   const [hydrated, setHydrated] = useState(false)
   const [refCtx, setRefCtx] = useState<RefContext | null>(null)
+  // Set once a referral greeting has been shown, so the server-history
+  // hydration below cannot race in afterwards and overwrite it.
+  const greetedRef = useRef(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -409,7 +412,7 @@ export default function StoreAssistant() {
               ...(typeof m.bookingLink === 'string' ? { bookingLink: m.bookingLink } : {}),
               suggestions: sanitizeSuggestions(m.suggestions),
             }))
-          if (cleaned.length > 0) {
+          if (cleaned.length > 0 && !greetedRef.current) {
             setMessages(cleaned)
             saveStored(cleaned)
           }
@@ -541,6 +544,7 @@ export default function StoreAssistant() {
         if (messagesRef.current.length === 0) {
           const greeting = referralGreeting(detail.ref)
           if (greeting) {
+            greetedRef.current = true
             const next = [{ role: 'assistant' as const, content: greeting, at: new Date().toISOString() }]
             setMessages(next)
             saveStored(next)

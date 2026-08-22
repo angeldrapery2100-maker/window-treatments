@@ -11,14 +11,16 @@ interface Props {
   referrerType: ReferrerType
   displayName: string
   discountPct: number | null
+  /** Computed on the server from PARTNER_TYPES — kept as a prop so the client
+   *  bundle does not have to pull in lib/referral just for a list of strings,
+   *  and so the two never drift apart. */
+  isPartner: boolean
 }
-
-const PARTNERISH: ReferrerType[] = ['agent', 'designer', 'contractor']
 
 const BOOK_PREFILL_EN = "I'd like to book a free in-home measure"
 const BOOK_PREFILL_ZH = '我想预约免费上门量窗'
 
-export default function ReferralLanding({ token, referrerType, displayName, discountPct }: Props) {
+export default function ReferralLanding({ token, referrerType, displayName, discountPct, isPartner }: Props) {
   const [language, setLanguage] = useUiLanguage('en')
   const claimed = useRef(false)
   const [ready, setReady] = useState(false)
@@ -137,7 +139,7 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
                 )}
           </p>
         )}
-        {PARTNERISH.includes(referrerType) && (
+        {isPartner && (
           <p className="mt-5 inline-block rounded-full bg-[#4DB6E8]/10 px-5 py-2 text-[14px] text-[#12141C]">
             {tr(
               language,

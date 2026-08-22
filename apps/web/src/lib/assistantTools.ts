@@ -1287,9 +1287,11 @@ async function runAssistantTool(
         // amount is returned — it is a real cost, so it is NOT scaled by the
         // customer estimate factor (which only touches reference prices).
         ...(AI_SHOW_INSTALL_ESTIMATE ? { install_estimate: r.installAmount } : {}),
-        // Eddie 2026-08-10: install fee is NOT shown to customers any more —
-        // r.installAmount is deliberately dropped here so the model can never
-        // quote it. Product price only; install + tax are named, not numbered.
+        // Eddie 2026-08-10: the install fee is NOT shown to customers by
+        // default — r.installAmount is dropped so the model cannot quote it,
+        // and install + tax are named as extras without numbers. The one way
+        // back in is AI_SHOW_INSTALL_ESTIMATE=1 (see install_estimate above),
+        // which also swaps the disclosure for a version that permits it.
         must_say: REFERENCE_PRICE_DISCLOSURE,
       }
     }

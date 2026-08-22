@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { getReferralFromRequest, isValidReferralToken, TOKEN_RE } from './referral'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import {
+  getReferralFromRequest, isValidReferralToken, TOKEN_RE,
+  fetchReferralPortal, _clearReferralCache,
+} from './referral'
 import { MOCK_CUSTOMER_TOKEN, MOCK_AGENT_TOKEN, MOCK_CAMPAIGN_TOKEN } from './referral.mock'
 
 const req = (cookie: string) => new Request('https://angel-drapery.com/', { headers: { cookie } })
@@ -45,5 +48,36 @@ describe('getReferralFromRequest', () => {
   })
   it('does not match a cookie whose name merely ends in ad_ref', () => {
     expect(getReferralFromRequest(req(`not_ad_ref=${MOCK_CUSTOMER_TOKEN}`))).toBeNull()
+  })
+})
+
+describe('fetchReferralPortal', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    _clearReferralCache()
+  })
+
+  const stub = (payload: Record<string, unknown>) =>
+    vi.stubGlobal('fetch', async () => ({ ok: true, json: async () => payload }) as any)
+
+  it('returns null for a deactivated referrer — a forwarded portal link must go dead', async () => {
+    stub({ ok: true, type: 'customer', displayName: 'Jenny L.', active: false })
+    expect(await fetchReferralPortal(MOCK_CUSTOMER_TOKEN)).toBeNull()
+  })
+
+  it('returns the portal for an active referrer', async () => {
+    stub({ ok: true, type: 'customer', displayName: 'Jenny L.', discountPct: 5, active: true })
+    const portal = await fetchReferralPortal(MOCK_CUSTOMER_TOKEN)
+    expect(portal?.type).toBe('customer')
+    expect(portal?.discountPct).toBe(5)
+    // shareUrl is synthesised when the backend omits it.
+    expect(portal?.shareUrl).toContain(`/r/${MOCK_CUSTOMER_TOKEN}`)
+  })
+
+  it('never calls the backend with a malformed token', async () => {
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    expect(await fetchReferralPortal('nope')).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
   })
 })
