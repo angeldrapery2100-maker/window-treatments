@@ -184,8 +184,11 @@ export async function lookupReferral(token: string): Promise<ReferralPublic | nu
   if (cached) return cached.value
 
   if (MOCK()) {
-    const { MOCK_LOOKUP } = await import('@/lib/referral.mock')
-    const value = MOCK_LOOKUP[token] ?? null
+    // ★ 故意让 mock 也走 toPublic —— 翻译层是最容易和 AAPP 漂开的地方,
+    //   绕过它的 mock 等于没测(见 referral.mock.ts 文件头)。
+    const { MOCK_LOOKUP_WIRE } = await import('@/lib/referral.mock')
+    const wire = MOCK_LOOKUP_WIRE[token] as any
+    const value = wire ? toPublic(wire?.public ?? wire) : null
     cacheSet(token, value)
     return value
   }
@@ -316,8 +319,10 @@ function toPortal(token: string, data: any): PortalView | null {
 export async function fetchReferralPortal(token: string): Promise<PortalView | null> {
   if (!isValidReferralToken(token)) return null
   if (MOCK()) {
-    const { MOCK_PORTAL } = await import('@/lib/referral.mock')
-    return MOCK_PORTAL[token] ?? null
+    const { MOCK_PORTAL_WIRE } = await import('@/lib/referral.mock')
+    const wire = MOCK_PORTAL_WIRE[token] as any
+    if (!wire || wire.ok === false) return null
+    return toPortal(token, wire.portal ?? wire)
   }
   try {
     const res = await fetch(`${BASE()}/referralPortal?t=${encodeURIComponent(token)}`, {

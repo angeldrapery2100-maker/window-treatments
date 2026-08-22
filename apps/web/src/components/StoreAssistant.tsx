@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
+import { tr, useUiLanguage } from '@/lib/uiLanguage'
 
 // Site-wide floating AI shopping assistant. Talks to /api/store/assistant
 // (Anthropic-backed). Conversation lives in sessionStorage so it survives
@@ -362,6 +363,9 @@ function referralGreeting(ref: RefContext): string {
 
 export default function StoreAssistant() {
   const pathname = usePathname()
+  /* 补修 B4:悬浮球的语言跟落地页共用 ad_lang 这个键。只读不写 —— 切换语言的
+     控件在页面上,不在球上。SSR 默认 en,挂载后才读 localStorage(hydration 安全)。 */
+  const [uiLang] = useUiLanguage('en')
   const [open, setOpen] = useState(false)
   const [openedOnce, setOpenedOnce] = useState(false)
   const [teaserVisible, setTeaserVisible] = useState(false)
@@ -739,12 +743,9 @@ export default function StoreAssistant() {
       <div className={`fixed ${btnOffset} ${btnSide} z-50 flex flex-col gap-2 ${onStore ? 'items-start' : 'items-end'}`}>
         {teaserVisible && !open && (
           <div className="relative max-w-[240px] animate-[fadeSlideIn_.35s_ease-out] rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 pr-7 text-[12px] leading-relaxed text-gray-700 shadow-xl">
-            <button
-              type="button"
-              onClick={openChat}
-              className="text-left"
-              aria-label="Open design assistant chat"
-            >
+            {/* 气泡里那句话本身就是这个按钮的名字。再挂一个内容完全不同的
+                aria-label 会把它盖掉(WCAG 2.5.3),语音控制念不出来。 */}
+            <button type="button" onClick={openChat} className="text-left">
               {onStore ? TEASER_STORE : TEASER_MAIN}
             </button>
             <button
@@ -762,7 +763,9 @@ export default function StoreAssistant() {
 
         <button
           onClick={openChat}
-          aria-label="Open design assistant chat"
+          /* 可访问名必须**包含**可见文字(2.5.3)。以前可见的是 "Ask AI"、
+             aria-label 却是 "Open design assistant chat",两者毫无交集。 */
+          aria-label={tr(uiLang, 'Ask AI — open design assistant chat', 'AI 助手 — 打开设计助手对话')}
           className={`group relative flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2f2f2f] to-[#4a4a4a] py-3 pl-4 pr-5 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:brightness-110 ${
             open ? 'pointer-events-none scale-0 opacity-0' : 'scale-100 opacity-100'
           }`}
@@ -777,7 +780,9 @@ export default function StoreAssistant() {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
           </svg>
-          <span className="text-[13px] font-medium tracking-wide">Ask AI</span>
+          {/* 补修 B4:悬浮球跟着落地页的语言走(同一个 ad_lang 键)。
+              整站中文用户看到一颗英文球,像是别人家的控件。 */}
+          <span className="text-[13px] font-medium tracking-wide">{tr(uiLang, 'Ask AI', 'AI 助手')}</span>
         </button>
       </div>
 
@@ -789,6 +794,12 @@ export default function StoreAssistant() {
         role="dialog"
         aria-label="Design Assistant chat"
         aria-hidden={!open}
+        /* ★ 关着的时候面板还留在 DOM 里做退场动画,里面的输入框和按钮照样能
+           Tab 进去 —— aria-hidden=true 的容器里有可聚焦元素,是键盘用户会
+           凭空掉进一个看不见的表单,也是 Lighthouse 直接判红的一条。
+           inert 把整棵子树移出 tab 顺序和无障碍树,视觉与动画一点不动
+           (React 19 原生支持)。 */
+        inert={!open}
       >
         {/* Header */}
         <div className="flex items-start justify-between bg-gradient-to-r from-[#262626] to-[#454545] px-4 py-3 text-white">

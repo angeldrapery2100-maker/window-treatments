@@ -104,16 +104,19 @@ export default function PartnerClient({ portal, qr }: Props) {
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#12141C]">
       <header className="flex items-center justify-between px-5 py-5 md:px-10">
-        <Link href="/" aria-label="Angel Drapery — home">
+        {/* 可见文字就是可访问名(WCAG 2.5.3 Label in Name):
+            再加一个内容不同的 aria-label 会把它整个盖掉,语音控制说
+            "click Angel Drapery" 就点不动了。 */}
+        <Link href="/">
           <span className="text-[12px] md:text-base font-light tracking-[0.2em]">ANGEL DRAPERY, INC</span>
         </Link>
-        <div className="flex items-center gap-1 text-[12px]">
+        <div className="flex items-center gap-2 text-[12px]">
           {(['en', 'zh'] as UiLanguage[]).map((l) => (
             <button
               key={l}
               type="button"
               onClick={() => setLanguage(l)}
-              className={`rounded-full px-3 py-1 transition-colors ${
+              className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full px-4 transition-colors ${
                 language === l ? 'bg-[#12141C] text-white' : 'text-gray-500 hover:text-[#12141C]'
               }`}
             >
@@ -147,7 +150,7 @@ export default function PartnerClient({ portal, qr }: Props) {
                 alt={tr(language, 'QR code for your partner link', '你的合作方链接二维码')}
                 className="w-64 max-w-full rounded-2xl border border-gray-200 bg-white p-4"
               />
-              <p className="mt-2 text-[12px] text-gray-400">
+              <p className="mt-2 text-[12px] text-gray-500">
                 {tr(
                   language,
                   'Press and hold to save — put it on a card, a flyer, or send it in a text.',
@@ -159,7 +162,7 @@ export default function PartnerClient({ portal, qr }: Props) {
 
           {portal.referralCode && (
             <div className="mt-6 text-center">
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
                 {tr(language, 'Or just tell them this code', '或者直接口头告诉客户')}
               </div>
               <div className="mt-2 select-all font-mono text-[26px] tracking-[0.12em]">{portal.referralCode}</div>
@@ -203,7 +206,7 @@ export default function PartnerClient({ portal, qr }: Props) {
 
         {/* ── Activity. Counts only — commission figures live in AAPP. ─── */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
             {tr(language, 'Your referrals', '你的推荐')}
           </h2>
           <div className="mt-4 flex items-baseline gap-6">
@@ -216,7 +219,7 @@ export default function PartnerClient({ portal, qr }: Props) {
               <div className="text-[12px] text-gray-500">{tr(language, 'signed', '已成交')}</div>
             </div>
           </div>
-          <p className="mt-4 text-[12px] text-gray-400">
+          <p className="mt-4 text-[12px] text-gray-500">
             {tr(
               language,
               'Questions about a specific project or your commission? Call us — we keep those details off the web.',
@@ -227,7 +230,7 @@ export default function PartnerClient({ portal, qr }: Props) {
 
         {/* ── W-9 ──────────────────────────────────────────────────────── */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
             {tr(language, 'Tax form (W-9)', '税表 W-9')}
           </h2>
 

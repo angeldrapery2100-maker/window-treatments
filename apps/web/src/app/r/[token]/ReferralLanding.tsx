@@ -97,16 +97,19 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
     <div className="min-h-screen bg-white text-[#12141C]">
       {/* ── Header: brand + language toggle ──────────────────────────────── */}
       <header className="flex items-center justify-between px-5 py-5 md:px-10 md:py-7">
-        <Link href="/" aria-label="Angel Drapery — home">
+        {/* 可见文字就是可访问名(WCAG 2.5.3 Label in Name):
+            再加一个内容不同的 aria-label 会把它整个盖掉,语音控制说
+            "click Angel Drapery" 就点不动了。 */}
+        <Link href="/">
           <span className="text-[12px] md:text-base font-light tracking-[0.2em]">ANGEL DRAPERY, INC</span>
         </Link>
-        <div className="flex items-center gap-1 text-[12px]">
+        <div className="flex items-center gap-2 text-[12px]">
           {(['en', 'zh'] as UiLanguage[]).map((l) => (
             <button
               key={l}
               type="button"
               onClick={() => setLanguage(l)}
-              className={`rounded-full px-3 py-1 transition-colors ${
+              className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full px-4 transition-colors ${
                 language === l ? 'bg-[#12141C] text-white' : 'text-gray-500 hover:text-[#12141C]'
               }`}
             >
@@ -116,6 +119,9 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
         </div>
       </header>
 
+      {/* 主地标 —— 屏幕阅读器靠它「跳到正文」。/rewards 和 /partner 早就有了,
+          只有这一页漏了。 */}
+      <main>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-5 pb-4 pt-6 text-center md:pt-12">
         <h1 className="text-[26px] font-light leading-tight tracking-tight md:text-[40px]">
@@ -168,9 +174,16 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
             <h2 className="mt-4 text-[17px] font-medium">{s.title}</h2>
             <p className="mt-2 text-[14px] leading-relaxed text-gray-600">{s.body}</p>
             {s.links && (
-              <div className="mt-4 flex flex-col gap-1">
+              <div className="mt-4 flex flex-col gap-2">
                 {s.links.map((l) => (
-                  <Link key={l.href} href={l.href} className="text-[13px] text-[#4DB6E8] hover:underline">
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    /* 品牌蓝 #4DB6E8 在白底只有 2.29:1,当正文链接色不合格。
+                       #17698F 是同色系压暗版,6.08:1。背景/填充仍然用品牌蓝。
+                       行高与间距一起提到 44px 触控目标。 */
+                    className="flex min-h-[44px] items-center text-[13px] text-[#17698F] hover:underline"
+                  >
                     {l.label} →
                   </Link>
                 ))}
@@ -213,7 +226,8 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
           <button
             type="button"
             disabled
-            className="w-full max-w-sm cursor-not-allowed rounded-full border border-gray-200 px-5 py-2.5 text-[14px] text-gray-300"
+            /* gray-300 只有 1.47:1,谁都看不清。禁用态不代表可以不可读。 */
+            className="w-full max-w-sm cursor-not-allowed rounded-full border border-gray-300 px-5 py-2.5 text-[14px] text-gray-500 opacity-80"
           >
             {tr(language, 'Open in ChatGPT — coming soon', '在 ChatGPT 里打开 — 即将上线')}
           </button>
@@ -225,6 +239,8 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
           {tr(language, 'Browse products', '浏览产品')} →
         </Link>
       </section>
+
+      </main>
 
       {/* ── NAP footer ───────────────────────────────────────────────────── */}
       <footer className="border-t border-gray-100 px-5 py-8 text-center text-[12px] leading-relaxed text-gray-500">

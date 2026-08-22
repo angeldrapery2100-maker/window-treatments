@@ -2,8 +2,12 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import {
   getReferralFromRequest, isValidReferralToken, TOKEN_RE,
   fetchReferralPortal, lookupReferral, uploadPartnerW9, _clearReferralCache,
+  REFERRAL_COOKIE, REFERRAL_COOKIE_MAX_AGE,
 } from './referral'
 import { MOCK_CUSTOMER_TOKEN, MOCK_AGENT_TOKEN, MOCK_CAMPAIGN_TOKEN } from './referral.mock'
+import fixtures from './referral-wire-fixtures.json'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 const req = (cookie: string) => new Request('https://angel-drapery.com/', { headers: { cookie } })
 
@@ -90,6 +94,76 @@ describe('fetchReferralPortal', () => {
 // 测试也发现不了,因为 mock 走内部形状,根本不过 toPublic / toPortal 翻译层。
 // 这一组就是那道缺失的防线 —— 改动任何一边都必须让它继续绿。
 // ───────────────────────────────────────────────────────────────────────────
+describe('middleware 与 lib 的常量同步', () => {
+  // middleware 跑在 edge runtime,不能 import lib/referral(那里有动态
+  // import('@/lib/referral.mock'),会被打进 edge bundle),所以这两个常量是
+  // 抄过去的。抄过去的东西没人盯着就会漂,而漂了的后果是 cookie 名对不上、
+  // 或者正则放行了脏 token —— 页面照常渲染,归因静默失效,没有任何报错。
+  const mw = readFileSync(join(__dirname, '..', 'middleware.ts'), 'utf8')
+
+  it('★ cookie 名一致', () => {
+    expect(REFERRAL_COOKIE).toBe('ad_ref')
+    expect(mw).toContain("const REFERRAL_COOKIE = 'ad_ref'")
+  })
+
+  it('★ token 正则一致', () => {
+    expect(mw).toContain('const REFERRAL_TOKEN_RE = ' + String(TOKEN_RE))
+  })
+
+  it('cookie 有效期一致(90 天)', () => {
+    expect(REFERRAL_COOKIE_MAX_AGE).toBe(60 * 60 * 24 * 90)
+    expect(mw).toContain('const REFERRAL_COOKIE_MAX_AGE = 60 * 60 * 24 * 90')
+  })
+
+  it('★ matcher 覆盖 /r/:token —— 不在 matcher 里 middleware 根本不会跑', () => {
+    expect(mw).toContain("'/r/:token'")
+  })
+
+  it('★ /r 分支在 JWT_SECRET 拒绝分支之前 return', () => {
+    // 顺序反了的话,没配 JWT_SECRET 的环境会把落地页也一起 500 掉 ——
+    // 而落地页跟登录八竿子打不着。
+    const iBranch = mw.indexOf("pathname.startsWith('/r/')")
+    const iJwt = mw.indexOf('const JWT_SECRET = getJwtSecret()', mw.indexOf('export async function middleware'))
+    expect(iBranch).toBeGreaterThan(0)
+    expect(iJwt).toBeGreaterThan(0)
+    expect(iBranch).toBeLessThan(iJwt)
+  })
+
+  it('cookie 是 httpOnly —— 前端 JS 读不到,也就伪造不了', () => {
+    expect(mw).toContain('httpOnly: true')
+  })
+})
+
+describe('mock 路径也走翻译层', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    _clearReferralCache()
+  })
+
+  it('★ AAPP_REFERRAL_MOCK=1 时输出与线上同形状', async () => {
+    // mock 以前存的是内部形状,等于绕开 toPublic / toPortal —— 那正是
+    // 2026-08-22 五处字段名对不上的藏身之处。现在 mock 存线格式,必须过翻译层。
+    vi.stubEnv('AAPP_REFERRAL_MOCK', '1')
+    const p = await fetchReferralPortal(MOCK_CUSTOMER_TOKEN)
+    expect(p?.referralCode).toBe('ANG-LIL-4823')
+    expect(p?.tierKey).toBe('silver')
+    expect(p?.nextTier?.min).toBe(3)
+    expect(p?.tiers?.map((t) => t.discountPct)).toEqual([4.8, 6.8, 7.8, 8.8, 10])
+  })
+
+  it('mock 的 lookup 同样过 toPublic', async () => {
+    vi.stubEnv('AAPP_REFERRAL_MOCK', '1')
+    const pub = await lookupReferral(MOCK_CUSTOMER_TOKEN)
+    expect(pub?.displayName).toBe('Lily')
+    expect(pub?.discountPct).toBe(6.8)
+  })
+
+  it('mock 里的活动卡片没有奖励页', async () => {
+    vi.stubEnv('AAPP_REFERRAL_MOCK', '1')
+    expect(await fetchReferralPortal(MOCK_CAMPAIGN_TOKEN)).toBeNull()
+  })
+})
+
 describe('AAPP wire format', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
@@ -99,60 +173,25 @@ describe('AAPP wire format', () => {
   const stub = (payload: Record<string, unknown>) =>
     vi.stubGlobal('fetch', async () => ({ ok: true, json: async () => payload }) as any)
 
-  // referralLookup → { ok, public: <referralPublic doc> }
-  const LOOKUP_WIRE = {
-    ok: true,
-    public: {
-      referrerType: 'customer',
-      displayName: 'Lily',
-      discountPct: 6.8,
-      tierLabel: 'VIP Silver',
-      tierLabelCn: 'VIP 银卡',
-      referralCode: 'ANG-LIL-4823',
-      active: true,
-      _updatedAt: '2026-08-22T00:00:00.000Z',
-    },
-  }
+  /* ★ 这些 payload **不是手写的** —— 直接读 AAPP 生成的 fixture。
+     手写 payload 会和线上慢慢漂开而没人发现;fixture 由 AAPP 那边的
+     referral-core 真实代码生成并接进它的 npm test,契约一变那边先红,同步过来
+     这边跟着红。这就是 2026-08-22 缺的那道防线。同步方式见 fixture 的 _note。 */
+  const LOOKUP_WIRE = fixtures.lookup.customer as any
+  const PORTAL_CUSTOMER_WIRE = fixtures.portal.customer as any
+  const PORTAL_PARTNER_WIRE = fixtures.portal.agent as any
 
-  // referralPortal(customer)— 顶层平铺,键名是 code / tier / nextTier.needed /
-  // tiers[].pct,和本仓库的 referralCode / tierKey / min / discountPct 都不同名。
-  const PORTAL_CUSTOMER_WIRE = {
-    ok: true,
-    type: 'customer',
-    displayName: 'Lily',
-    code: 'ANG-LIL-4823',
-    shareUrl: `https://angel-drapery.com/r/${MOCK_CUSTOMER_TOKEN}`,
-    tier: 'silver',
-    tierLabel: 'VIP Silver',
-    tierLabelCn: 'VIP 银卡',
-    discountPct: 6.8,
-    qualifiedReferrals: 1,
-    freeVisitCredits: 1,
-    nextTier: { tier: 'gold', label: 'VIP Gold', labelCn: 'VIP 金卡', discountPct: 7.8, needed: 2 },
-    tiers: [
-      { tier: 'member',   label: 'Member',       labelCn: '会员',     min: 0,  pct: 4.8 },
-      { tier: 'silver',   label: 'VIP Silver',   labelCn: 'VIP 银卡', min: 1,  pct: 6.8 },
-      { tier: 'gold',     label: 'VIP Gold',     labelCn: 'VIP 金卡', min: 3,  pct: 7.8 },
-      { tier: 'platinum', label: 'VIP Platinum', labelCn: 'VIP 铂金', min: 6,  pct: 8.8 },
-      { tier: 'diamond',  label: 'VIP Diamond',  labelCn: 'VIP 钻石', min: 10, pct: 10 },
-    ],
-    smsOptIn: false,
-    smsOptedOut: false,
-    lang: 'en',
-  }
+  it('★ fixture 的等级阶梯就是 AAPP 的 LOY_TIERS(4.8 / 6.8 / 7.8 / 8.8 / 10)', () => {
+    // 以前 mock 里写的是 3/5/8/10/12,凭空捏的 —— 没有任何一个测试见过真阶梯。
+    expect(PORTAL_CUSTOMER_WIRE.tiers.map((t: any) => t.pct)).toEqual([4.8, 6.8, 7.8, 8.8, 10])
+    expect(PORTAL_CUSTOMER_WIRE.tiers.map((t: any) => t.min)).toEqual([0, 1, 3, 6, 10])
+    expect(PORTAL_CUSTOMER_WIRE.tiers.map((t: any) => t.tier))
+      .toEqual(['member', 'silver', 'gold', 'platinum', 'diamond'])
+  })
 
-  // referralPortal(partner)— referredLeads / signed 摊平在顶层,没有 stats 这层。
-  const PORTAL_PARTNER_WIRE = {
-    ok: true,
-    type: 'agent',
-    displayName: 'Linda Chen',
-    code: 'AP-LIN-2210',
-    shareUrl: `https://angel-drapery.com/r/${MOCK_AGENT_TOKEN}`,
-    referredLeads: 4,
-    signed: 1,
-    w9: { uploaded: true, verified: false },
-    lang: 'en',
-  }
+  it('fixture 的 customer 折扣是券实值 6.8,不是取整值', () => {
+    expect(LOOKUP_WIRE.public.discountPct).toBe(6.8)
+  })
 
   it('★ lookup reads the {ok, public:{…}} envelope — the whole attribution chain hangs on it', async () => {
     // 读错信封 → lookupReferral 返回 null → /api/referral/claim 404 →

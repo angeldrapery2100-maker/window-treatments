@@ -105,16 +105,19 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#12141C]">
       <header className="flex items-center justify-between px-5 py-5 md:px-10">
-        <Link href="/" aria-label="Angel Drapery — home">
+        {/* 可见文字就是可访问名(WCAG 2.5.3 Label in Name):
+            再加一个内容不同的 aria-label 会把它整个盖掉,语音控制说
+            "click Angel Drapery" 就点不动了。 */}
+        <Link href="/">
           <span className="text-[12px] md:text-base font-light tracking-[0.2em]">ANGEL DRAPERY, INC</span>
         </Link>
-        <div className="flex items-center gap-1 text-[12px]">
+        <div className="flex items-center gap-2 text-[12px]">
           {(['en', 'zh'] as UiLanguage[]).map((l) => (
             <button
               key={l}
               type="button"
               onClick={() => setLanguage(l)}
-              className={`rounded-full px-3 py-1 transition-colors ${
+              className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full px-4 transition-colors ${
                 language === l ? 'bg-[#12141C] text-white' : 'text-gray-500 hover:text-[#12141C]'
               }`}
             >
@@ -143,7 +146,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
         {/* ── 2. Personal code ─────────────────────────────────────────── */}
         {portal.referralCode && (
           <section className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 text-center">
-            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
               {tr(language, 'Your code', '你的专属码')}
             </div>
             <div className="mt-3 select-all font-mono text-[28px] tracking-[0.12em] md:text-[34px]">
@@ -161,7 +164,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
 
         {/* ── 3. Current benefits ──────────────────────────────────────── */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
             {tr(language, 'What you get today', '当前权益')}
           </h2>
           <p className="mt-3 text-[16px]">
@@ -181,7 +184,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
         {/* ── 4. Progress to the next level ────────────────────────────── */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
           <div className="flex items-baseline justify-between">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
               {tr(language, 'Your progress', '升级进度')}
             </h2>
             <span className="text-[13px] text-gray-500">
@@ -208,7 +211,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
         {/* ── 5. The ladder ────────────────────────────────────────────── */}
         {tiers.length > 0 && (
           <section className="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            <h2 className="px-6 pt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+            <h2 className="px-6 pt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
               {tr(language, 'Levels', '等级阶梯')}
             </h2>
             <table className="mt-4 w-full text-[14px]">
@@ -233,7 +236,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
                 })}
               </tbody>
             </table>
-            <p className="px-6 pb-6 pt-3 text-[12px] text-gray-400">
+            <p className="px-6 pb-6 pt-3 text-[12px] text-gray-500">
               {tr(
                 language,
                 'A referral counts once your friend completes their project.',
@@ -245,7 +248,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
 
         {/* ── 6. Share ─────────────────────────────────────────────────── */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
             {tr(language, 'Share with friends', '分享给朋友')}
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-gray-600">
@@ -297,7 +300,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
                 alt={tr(language, 'QR code for your referral link', '你的推荐链接二维码')}
                 className="w-48 rounded-xl border border-gray-200 bg-white p-3"
               />
-              <p className="mt-2 text-[12px] text-gray-400">
+              <p className="mt-2 text-[12px] text-gray-500">
                 {tr(language, 'Press and hold to save, then send it in WeChat.', '长按保存，发到微信给朋友。')}
               </p>
             </div>
@@ -310,7 +313,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
              into a rewards page is exactly where that line gets crossed. */}
         {reviewUrl && (
           <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
               {tr(language, 'One small favour', '一个小请求')}
             </h2>
             <p className="mt-3 text-[14px] leading-relaxed text-gray-600">
@@ -355,18 +358,23 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
               aria-label={tr(language, 'Notify me about my rewards', '奖励有变化时通知我')}
               disabled={portal.smsOptedOut || smsBusy}
               onClick={() => toggleSms(!smsOptIn)}
-              className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${
-                portal.smsOptedOut ? 'cursor-not-allowed bg-gray-200' : smsOptIn ? 'bg-[#4DB6E8]' : 'bg-gray-300'
-              }`}
+              /* 轨道看着还是 28px 高,但按钮本身撑到 44px —— 触控目标够了,
+                 视觉一点没变(2.5.8 Target Size)。 */
+              className="relative flex h-11 w-12 shrink-0 items-center justify-center"
             >
               <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${
+                className={`block h-7 w-12 rounded-full transition-colors ${
+                  portal.smsOptedOut ? 'cursor-not-allowed bg-gray-200' : smsOptIn ? 'bg-[#4DB6E8]' : 'bg-gray-300'
+                }`}
+              />
+              <span
+                className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white transition-all ${
                   smsOptIn ? 'left-6' : 'left-1'
                 }`}
               />
             </button>
           </div>
-          <p className="mt-4 text-[11px] leading-relaxed text-gray-400">
+          <p className="mt-4 text-[11px] leading-relaxed text-gray-500">
             {tr(
               language,
               'Reward updates only. Msg & data rates may apply. Reply STOP to opt out.',

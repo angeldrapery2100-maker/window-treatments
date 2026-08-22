@@ -10,7 +10,13 @@ import {
   isValidReferralToken, lookupReferral, recordReferralVisit,
 } from '@/lib/referral'
 
-// Seed the referral attribution cookie for /r/<token>.
+// /r/<token> 的**次**路径:埋点 + 给推荐人的仪表盘计一次访问。
+//
+// ★ 补修 B1:cookie 的主路径已经搬到 middleware.ts 了。原因是这个路由按 IP
+//   限流,而微信群 / 公司 NAT / 展会 Wi-Fi 都是共享出口 IP —— 一条链接在群里
+//   转开,前几十个人之后的访客就全部拿不到 cookie,归因静默失效。
+//   这里保留是为了 referralVisit 统计和 logLeadEvent,cookie 顺手再种一次
+//   (幂等,值一样),但它不再是唯一来源,被限流也不影响归因。
 //
 // WHY A ROUTE HANDLER: the landing page must live at /r/<token> so the shared
 // link carries its own Open Graph card (WeChat, iMessage and Facebook scrape
@@ -23,8 +29,16 @@ import {
 export async function POST(request: Request) {
   try {
     const ip = getClientIp(request)
-    const limit = await rateLimit('referral_claim', ip, { max: 30, windowSeconds: 600 })
-    if (!limit.allowed) return NextResponse.json({ success: false }, { status: 429 })
+    let body0: any = null
+    try { body0 = await request.clone().json() } catch { body0 = null }
+    const token0 = String(body0?.token ?? '')
+    /* 限流口径改成「每 token 每 IP 每 10 分钟 1 次」,和 AAPP 端 referralVisit
+       的 _rateLimitAllow('refVisit', token+'|'+ip, 1, 600000) 完全一致 ——
+       两边各记各的,口径不同就会对不上账。
+       ★ 不再按纯 IP 限流:共享出口 IP 下那会把整群人挡在门外。
+       被限流不是错误,是「这次不用重复计数」——返回 200,页面什么都不用做。 */
+    const limit = await rateLimit('referral_claim', token0 + '|' + ip, { max: 1, windowSeconds: 600 })
+    if (!limit.allowed) return NextResponse.json({ success: true, deduped: true })
 
     let body: any
     try { body = await request.json() } catch { body = null }

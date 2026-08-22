@@ -1,0 +1,159 @@
+{
+  "_generatedBy": "AAPP scripts/referral-wire-fixtures.js",
+  "_contract": "OPUS 任务书 推广系统 P0 §0.2 / §3.3",
+  "_note": "改契约 → 先在 AAPP 跑 node scripts/referral-wire-fixtures.js --write,再把本文件复制到 window-treatments 的 apps/web/src/lib/referral-wire-fixtures.json,两个仓库的测试都绿了再一起部署。手改这个文件没有意义 —— AAPP 那边的 npm test 会把它改回去。",
+  "tokens": {
+    "customer": "CUSTtokenCUSTtoken0001",
+    "agent": "AGNTtokenAGNTtoken0002",
+    "campaign": "CMPNtokenCMPNtoken0003"
+  },
+  "lookup": {
+    "customer": {
+      "ok": true,
+      "public": {
+        "referrerType": "customer",
+        "displayName": "Lily",
+        "discountPct": 6.8,
+        "tierLabel": "VIP Silver",
+        "tierLabelCn": "VIP 银卡",
+        "referralCode": "ANG-LIL-4823",
+        "active": true,
+        "_updatedAt": "2026-08-22T00:00:00.000Z"
+      }
+    },
+    "agent": {
+      "ok": true,
+      "public": {
+        "referrerType": "agent",
+        "displayName": "Linda Chen",
+        "discountPct": null,
+        "tierLabel": null,
+        "tierLabelCn": null,
+        "referralCode": "AP-LIN-2210",
+        "active": true,
+        "_updatedAt": "2026-08-22T00:00:00.000Z"
+      }
+    },
+    "campaign": {
+      "ok": true,
+      "public": {
+        "referrerType": "campaign",
+        "displayName": "Angel Drapery",
+        "discountPct": null,
+        "tierLabel": null,
+        "tierLabelCn": null,
+        "referralCode": null,
+        "active": true,
+        "_updatedAt": "2026-08-22T00:00:00.000Z"
+      }
+    },
+    "notFound": {
+      "ok": false,
+      "error": "not_found"
+    }
+  },
+  "portal": {
+    "customer": {
+      "ok": true,
+      "type": "customer",
+      "displayName": "Lily",
+      "code": "ANG-LIL-4823",
+      "shareUrl": "https://angel-drapery.com/r/CUSTtokenCUSTtoken0001",
+      "tier": "silver",
+      "tierLabel": "VIP Silver",
+      "tierLabelCn": "VIP 银卡",
+      "discountPct": 6.8,
+      "qualifiedReferrals": 1,
+      "freeVisitCredits": 1,
+      "nextTier": {
+        "tier": "gold",
+        "label": "VIP Gold",
+        "labelCn": "VIP 金卡",
+        "discountPct": 7.8,
+        "needed": 2
+      },
+      "tiers": [
+        {
+          "tier": "member",
+          "label": "Member",
+          "labelCn": "会员",
+          "min": 0,
+          "pct": 4.8
+        },
+        {
+          "tier": "silver",
+          "label": "VIP Silver",
+          "labelCn": "VIP 银卡",
+          "min": 1,
+          "pct": 6.8
+        },
+        {
+          "tier": "gold",
+          "label": "VIP Gold",
+          "labelCn": "VIP 金卡",
+          "min": 3,
+          "pct": 7.8
+        },
+        {
+          "tier": "platinum",
+          "label": "VIP Platinum",
+          "labelCn": "VIP 铂金",
+          "min": 6,
+          "pct": 8.8
+        },
+        {
+          "tier": "diamond",
+          "label": "VIP Diamond",
+          "labelCn": "VIP 钻石",
+          "min": 10,
+          "pct": 10
+        }
+      ],
+      "smsOptIn": false,
+      "smsOptedOut": false,
+      "lang": "en"
+    },
+    "agent": {
+      "ok": true,
+      "type": "agent",
+      "displayName": "Linda Chen",
+      "code": "AP-LIN-2210",
+      "shareUrl": "https://angel-drapery.com/r/AGNTtokenAGNTtoken0002",
+      "referredLeads": 4,
+      "signed": 1,
+      "w9": {
+        "uploaded": true,
+        "verified": false
+      },
+      "lang": "en"
+    },
+    "campaign": {
+      "ok": false,
+      "error": "no_portal"
+    }
+  },
+  "inquiryResponse": {
+    "applied": {
+      "ok": true,
+      "link": "https://angel-drapery.com/s/abc",
+      "smsSent": true,
+      "appointmentId": null,
+      "referral": {
+        "applied": true,
+        "type": "customer",
+        "label": "⭐ Referred by Lily / 老客户 Lily 推荐"
+      }
+    },
+    "notApplied": {
+      "ok": true,
+      "link": "https://angel-drapery.com/s/abc",
+      "smsSent": false,
+      "appointmentId": null,
+      "referral": {
+        "applied": false,
+        "type": null,
+        "label": null
+      }
+    }
+  }
+}
