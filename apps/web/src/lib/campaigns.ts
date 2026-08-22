@@ -35,6 +35,11 @@ export async function ensureCampaignsTable(): Promise<void> {
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamptz DEFAULT now()
   )`)
+  // 推广系统 P1 §1.8: a campaign can also carry a referral token, so a
+  // printed flyer attributes into the referral platform (partner/company
+  // credit, AAPP-side reporting) as well as the website's own funnel.
+  // Created in AAPP, pasted in on the admin campaigns page.
+  await query(`ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS referral_token varchar(64)`)
   _ensured = true
 }
 
@@ -46,6 +51,8 @@ export interface CampaignRow {
   notes: string | null
   is_active: boolean
   created_at: string
+  /** Referral platform token (推广系统 P1). Null until an admin pastes one. */
+  referral_token: string | null
 }
 
 export async function getCampaignBySlug(slug: string): Promise<CampaignRow | null> {
@@ -55,7 +62,19 @@ export async function getCampaignBySlug(slug: string): Promise<CampaignRow | nul
   return queryOne<CampaignRow>(`SELECT * FROM campaigns WHERE slug = $1`, [clean])
 }
 
-export async function createCampaign(input: { slug: string; name: string; targetUrl?: string; notes?: string }): Promise<CampaignRow> {
+/** Referral tokens are opaque and URL-safe — same shape lib/referral.ts
+ *  enforces. Anything else is stored as null rather than half-accepted. */
+export function normalizeReferralToken(v: unknown): string | null {
+  const s = String(v ?? '').trim()
+  return /^[A-Za-z0-9_-]{16,32}$/.test(s) ? s : null
+}
+
+export async function setCampaignReferralToken(id: string, token: unknown): Promise<void> {
+  await ensureCampaignsTable()
+  await query(`UPDATE campaigns SET referral_token = $2 WHERE id = $1`, [id, normalizeReferralToken(token)])
+}
+
+export async function createCampaign(input: { slug: string; name: string; targetUrl?: string; notes?: string; referralToken?: unknown }): Promise<CampaignRow> {
   await ensureCampaignsTable()
   const slug = normalizeCampaignSlug(input.slug)
   if (!slug) throw new Error('invalid_slug')
@@ -66,8 +85,12 @@ export async function createCampaign(input: { slug: string; name: string; target
   let target = String(input.targetUrl || '/store').trim()
   if (!target.startsWith('/') || target.startsWith('//')) target = '/store'
   const row = await queryOne<CampaignRow>(
-    `INSERT INTO campaigns (slug, name, target_url, notes) VALUES ($1,$2,$3,$4) RETURNING *`,
-    [slug, name, target.slice(0, 500), input.notes ? String(input.notes).slice(0, 2000) : null]
+    `INSERT INTO campaigns (slug, name, target_url, notes, referral_token) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+    [
+      slug, name, target.slice(0, 500),
+      input.notes ? String(input.notes).slice(0, 2000) : null,
+      normalizeReferralToken(input.referralToken),
+    ]
   )
   if (!row) throw new Error('campaign_create_failed')
   return row
@@ -90,6 +113,8 @@ export interface CampaignFunnelRow extends CampaignRow {
   project_items: number
   cart_adds: number
   inquiries: number
+  /** Landing-page hits on this campaign's referral token (推广系统 P1). */
+  referral_visits: number
 }
 
 /** Campaign list + attributed funnel counts from lead_events. */
@@ -102,7 +127,15 @@ export async function listCampaignsWithFunnel(): Promise<CampaignFunnelRow[]> {
       COALESCE(e.chats, 0)            AS chats,
       COALESCE(e.project_items, 0)    AS project_items,
       COALESCE(e.cart_adds, 0)        AS cart_adds,
-      COALESCE(e.inquiries, 0)        AS inquiries
+      COALESCE(e.inquiries, 0)        AS inquiries,
+      -- Referral visits are attributed by TOKEN, not by campaign_id: the same
+      -- token may also be handed out by hand, so it cannot ride the join above.
+      COALESCE((
+        SELECT COUNT(*) FROM lead_events le
+         WHERE c.referral_token IS NOT NULL
+           AND le.type = 'referral_visit'
+           AND le.meta->>'token' = c.referral_token
+      ), 0)                           AS referral_visits
     FROM campaigns c
     LEFT JOIN (
       SELECT campaign_id,
@@ -126,5 +159,6 @@ export async function listCampaignsWithFunnel(): Promise<CampaignFunnelRow[]> {
     project_items: Number(r.project_items) || 0,
     cart_adds: Number(r.cart_adds) || 0,
     inquiries: Number(r.inquiries) || 0,
+    referral_visits: Number(r.referral_visits) || 0,
   }))
 }

@@ -27,6 +27,7 @@ import {
 } from '@/lib/homeProjects'
 import { getLeadScoreForOwner } from '@/lib/leadScoring'
 import { hdEstimate } from '@/lib/hdPricing'
+import { applyCustomerEstimateFactor, AI_SHOW_INSTALL_ESTIMATE } from '@/lib/customerEstimateFactor'
 
 // ── One price disclosure, everywhere ────────────────────────────────────────
 // Eddie 2026-08-10: EVERY customer-facing number — Luma, Hunter Douglas,
@@ -34,8 +35,13 @@ import { hdEstimate } from '@/lib/hdPricing'
 // installation and sales tax, we never state an installation-fee figure, and
 // the real price comes from the salesperson. This replaces the old split
 // where store/Luma prices were presented as exact, unhedged figures.
-const REFERENCE_PRICE_DISCLOSURE =
-  'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers.'
+// P1 §1.7: reference figures the assistant shows are lifted 5% (see
+// customerEstimateFactor.ts), so the disclosure now PRE-ANNOUNCES the
+// pleasant surprise — the measured quote usually comes in a little under the
+// number the customer was given in chat.
+const REFERENCE_PRICE_DISCLOSURE = AI_SHOW_INSTALL_ESTIMATE
+  ? 'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) sales tax is extra, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. An installation figure may be given ONLY when the tool returned install_estimate, and only as an approximate amount. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
+  : 'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
 
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
@@ -913,12 +919,34 @@ export const ASSISTANT_TOOLS = [
 ]
 
 /**
+ * Run one assistant tool and return the CUSTOMER-FACING result.
+ *
+ * The reference-price factor (P1 §1.7) is applied here, once, at the exit —
+ * after every case has already logged its lead event with the TRUE engine
+ * price, and without touching any case internals or any pricing engine.
+ */
+export async function executeAssistantTool(
+  name: string,
+  input: any,
+  userId: string | null,
+  anonId: string | null = null,
+  campaignId: string | null = null,
+  userTexts: string[] = [],
+  refToken: string | null = null
+): Promise<unknown> {
+  return applyCustomerEstimateFactor(
+    name,
+    await runAssistantTool(name, input, userId, anonId, campaignId, userTexts, refToken)
+  )
+}
+
+/**
  * Execute a tool call by name. `userId` is the signed-in user's id (or null
  * for guests) taken from the request session, and `anonId` is the guest's
  * ad_anon cookie id — BOTH come from the request, NOT from anything the
  * model said.
  */
-export async function executeAssistantTool(
+async function runAssistantTool(
   name: string,
   input: any,
   userId: string | null,
@@ -1255,6 +1283,10 @@ export async function executeAssistantTool(
         billed_size: `${widthIn}" × ${heightIn}"${finished || isFrench ? '' : ' (window size + standard frame allowance)'}`,
         upgrades: r.lines.map((l) => l.label),
         quantity: r.qty,
+        // Off by default. When AI_SHOW_INSTALL_ESTIMATE=1 the true install
+        // amount is returned — it is a real cost, so it is NOT scaled by the
+        // customer estimate factor (which only touches reference prices).
+        ...(AI_SHOW_INSTALL_ESTIMATE ? { install_estimate: r.installAmount } : {}),
         // Eddie 2026-08-10: install fee is NOT shown to customers any more —
         // r.installAmount is deliberately dropped here so the model can never
         // quote it. Product price only; install + tax are named, not numbered.

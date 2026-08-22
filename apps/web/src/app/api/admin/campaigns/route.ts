@@ -2,13 +2,15 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import {
   listCampaignsWithFunnel, createCampaign, setCampaignActive, deleteCampaign,
-  normalizeCampaignSlug,
+  normalizeCampaignSlug, setCampaignReferralToken,
 } from '@/lib/campaigns'
 
 // Admin campaigns API (P3).
 //   GET    → campaigns + attributed funnel counts
-//   POST   → create { name, slug?, target_url?, notes? } (slug auto-derived from name)
-//   PATCH  → { id, is_active } enable/disable
+//   POST   → create { name, slug?, target_url?, notes?, referral_token? }
+//            (slug auto-derived from name)
+//   PATCH  → { id, is_active? } enable/disable · { id, referral_token? } set
+//            the referral platform token (创建于 AAPP，此处粘贴)
 //   DELETE → { id }
 
 function bad(error: string, status = 400) {
@@ -46,6 +48,7 @@ export async function POST(request: Request) {
         slug, name,
         targetUrl: body?.target_url,
         notes: body?.notes,
+        referralToken: body?.referral_token,
       })
       return NextResponse.json({ success: true, data: { campaign } })
     } catch (e: any) {
@@ -67,7 +70,14 @@ export async function PATCH(request: Request) {
     try { body = await request.json() } catch { return bad('Invalid request body.') }
     const id = String(body?.id ?? '')
     if (!/^[0-9a-f-]{36}$/i.test(id)) return bad('id is required.')
-    await setCampaignActive(id, body?.is_active !== false)
+    // Both fields are optional and independent — a PATCH that only carries a
+    // referral token must not silently re-enable a disabled campaign.
+    if (Object.prototype.hasOwnProperty.call(body, 'is_active')) {
+      await setCampaignActive(id, body.is_active !== false)
+    }
+    if (Object.prototype.hasOwnProperty.call(body, 'referral_token')) {
+      await setCampaignReferralToken(id, body.referral_token)
+    }
     return NextResponse.json({ success: true })
   } catch (e: any) {
     if (String(e?.message).includes('Admin') || String(e?.message).includes('authenticated')) return bad('Not authorized', 401)

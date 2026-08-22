@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import {
-  CAMPAIGN_COOKIE, CAMPAIGN_COOKIE_MAX_AGE, getCampaignBySlug,
+  CAMPAIGN_COOKIE, CAMPAIGN_COOKIE_MAX_AGE, getCampaignBySlug, normalizeReferralToken,
 } from '@/lib/campaigns'
+import { REFERRAL_COOKIE, REFERRAL_COOKIE_MAX_AGE } from '@/lib/referral'
 import {
   ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent,
 } from '@/lib/homeProjects'
@@ -20,10 +21,15 @@ export async function GET(
 
   let target = '/store'
   let validSlug: string | null = null
+  let refToken: string | null = null
   try {
     const campaign = await getCampaignBySlug(slug)
     if (campaign && campaign.is_active) {
       validSlug = campaign.slug
+      // P1 §1.8: a flyer can carry a referral token as well. Both cookies are
+      // set — ad_campaign keeps the website funnel, ad_ref carries the credit
+      // into the referral platform. Neither replaces the other.
+      refToken = normalizeReferralToken(campaign.referral_token)
       // createCampaign only stores same-site relative paths, but re-check here.
       if (campaign.target_url.startsWith('/') && !campaign.target_url.startsWith('//')) {
         target = campaign.target_url
@@ -37,7 +43,11 @@ export async function GET(
   const anonId = cookieAnonId ?? newAnonId()
 
   if (validSlug) {
-    logLeadEvent({ anonId, type: 'campaign_visit', campaignId: validSlug, meta: { ua: (request.headers.get('user-agent') || '').slice(0, 200) } })
+    const ua = (request.headers.get('user-agent') || '').slice(0, 200)
+    logLeadEvent({ anonId, type: 'campaign_visit', campaignId: validSlug, meta: { ua } })
+    if (refToken) {
+      logLeadEvent({ anonId, type: 'referral_visit', campaignId: validSlug, meta: { token: refToken, type: 'campaign', ua } })
+    }
   }
 
   const res = NextResponse.redirect(new URL(target, url.origin), 302)
@@ -47,6 +57,15 @@ export async function GET(
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       maxAge: CAMPAIGN_COOKIE_MAX_AGE,
+      path: '/',
+    })
+  }
+  if (refToken) {
+    res.cookies.set(REFERRAL_COOKIE, refToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: REFERRAL_COOKIE_MAX_AGE,
       path: '/',
     })
   }

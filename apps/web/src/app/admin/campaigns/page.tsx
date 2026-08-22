@@ -14,12 +14,14 @@ interface Campaign {
   notes: string | null
   is_active: boolean
   created_at: string
+  referral_token: string | null
   visits: number
   unique_visitors: number
   chats: number
   project_items: number
   cart_adds: number
   inquiries: number
+  referral_visits: number
 }
 
 export default function CampaignsPage() {
@@ -35,6 +37,7 @@ export default function CampaignsPage() {
   const [slug, setSlug] = useState('')
   const [targetUrl, setTargetUrl] = useState('/store')
   const [notes, setNotes] = useState('')
+  const [referralToken, setReferralToken] = useState('')
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState('')
 
@@ -69,11 +72,12 @@ export default function CampaignsPage() {
           ...(slug.trim() ? { slug: slug.trim() } : {}),
           target_url: targetUrl.trim() || '/store',
           ...(notes.trim() ? { notes: notes.trim() } : {}),
+          ...(referralToken.trim() ? { referral_token: referralToken.trim() } : {}),
         }),
       })
       const json = await res.json()
       if (json?.success) {
-        setName(''); setSlug(''); setTargetUrl('/store'); setNotes('')
+        setName(''); setSlug(''); setTargetUrl('/store'); setNotes(''); setReferralToken('')
         await load()
       } else {
         setCreateError(json?.error || '创建失败')
@@ -107,6 +111,22 @@ export default function CampaignsPage() {
       const json = await res.json()
       if (json?.success) setCampaigns(prev => prev.filter(x => x.id !== c.id))
     } catch { /* keep list */ }
+  }
+
+  // Referral token is edited in place: paste it in, blur (or press Enter) to
+  // save. An empty box clears the token, which stops /c/<slug> from setting
+  // the ad_ref cookie.
+  const saveToken = async (c: Campaign, value: string) => {
+    const next = value.trim()
+    if (next === (c.referral_token || '')) return
+    setCampaigns(prev => prev.map(x => (x.id === c.id ? { ...x, referral_token: next || null } : x)))
+    try {
+      await fetch('/api/admin/campaigns', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: c.id, referral_token: next }),
+      })
+    } catch { void load() }
   }
 
   const shortUrl = (c: Campaign) => `${origin}/c/${c.slug}`
@@ -164,6 +184,14 @@ export default function CampaignsPage() {
             />
           </label>
           <label className="block">
+            <span className="text-[12px] text-gray-500">Referral token（在 AAPP 建好活动推荐链接后粘贴，可留空）</span>
+            <input
+              value={referralToken} onChange={e => setReferralToken(e.target.value.trim())} maxLength={32}
+              placeholder="16–32 位，字母数字与 - _"
+              className="mt-1 w-full rounded border border-gray-300 px-3 py-2 font-mono text-[13px] focus:border-gray-800 focus:outline-none"
+            />
+          </label>
+          <label className="block">
             <span className="text-[12px] text-gray-500">备注</span>
             <input
               value={notes} onChange={e => setNotes(e.target.value)} maxLength={2000}
@@ -203,6 +231,8 @@ export default function CampaignsPage() {
                 <th className="px-3 py-3 text-right font-medium">方案条目</th>
                 <th className="px-3 py-3 text-right font-medium">加购</th>
                 <th className="px-3 py-3 text-right font-medium">留资</th>
+                <th className="px-4 py-3 font-medium">Referral token</th>
+                <th className="px-3 py-3 text-right font-medium">推荐访问</th>
                 <th className="px-4 py-3 font-medium">状态</th>
                 <th className="px-4 py-3" />
               </tr>
@@ -231,6 +261,17 @@ export default function CampaignsPage() {
                   <td className="px-3 py-3 text-right tabular-nums">{c.project_items}</td>
                   <td className="px-3 py-3 text-right tabular-nums">{c.cart_adds}</td>
                   <td className="px-3 py-3 text-right tabular-nums font-medium">{c.inquiries}</td>
+                  <td className="px-4 py-3">
+                    <input
+                      defaultValue={c.referral_token || ''}
+                      onBlur={e => void saveToken(c, e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
+                      maxLength={32}
+                      placeholder="—"
+                      className="w-36 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] focus:border-gray-800 focus:outline-none"
+                    />
+                  </td>
+                  <td className="px-3 py-3 text-right tabular-nums">{c.referral_visits}</td>
                   <td className="px-4 py-3">
                     <button
                       onClick={() => void toggleActive(c)}
