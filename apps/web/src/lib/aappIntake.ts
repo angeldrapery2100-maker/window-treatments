@@ -100,6 +100,10 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     }
   }
 
+  // A text was PROMISED to the customer only when they consented and gave a
+  // number — that is the denominator for delivery, not every submission.
+  const smsPromised = body.smsConsent === true && !!phone
+
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   // Optional shared secret: set AAPP_WEBINTAKE_SECRET in Vercel AND the matching
   // Firestore aiConfig/webIntake.secret to enforce it. Absent → not sent.
@@ -124,6 +128,19 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     // so log the failure reason explicitly — otherwise it's invisible.
     if (data?.ok !== true) {
       console.error('[aapp-intake] websiteInquiry rejected:', JSON.stringify(data).slice(0, 200))
+    }
+    // Booking-link SMS observability (2026-08-22). The phone channel's weekly
+    // review found 3 of 4 links silently failing on Twilio auth/config, and
+    // the website rides the SAME backend — but nothing here ever looked at
+    // `smsSent`, so a website-side failure would have been invisible. One
+    // warn at the choke point covers every caller: chat, consultation form,
+    // and anything added later. Grep '[aapp-intake] booking link SMS' in the
+    // Vercel logs for the website half of link_attempted / link_delivered.
+    if (data?.ok === true && smsPromised && data?.smsSent !== true) {
+      console.warn(
+        '[aapp-intake] booking link SMS NOT delivered (smsSent!=true) — source:',
+        body.source, '· leadId:', data?.leadId || 'n/a'
+      )
     }
     return {
       ok: data?.ok === true,

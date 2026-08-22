@@ -1662,16 +1662,36 @@ async function runAssistantTool(
         source: 'website_chat',
         ...(owner.refToken ? { referral: { token: owner.refToken, page: 'assistant' } } : {}),
       })
+      // Was a text message promised, and did it actually go out? The weekly
+      // AI review (2026-08-17) asked for link_attempted / link_delivered as
+      // reportable fields; these are the website half of that pair.
+      const linkAttempted = input?.sms_consent === true && !!String(input?.phone ?? '').trim()
+      const linkDelivered = inquiry.smsSent === true
       if (inquiry.ok) {
         logLeadEvent({
           userId, anonId, type: 'inquiry_submitted',
           meta: {
             via: 'assistant',
             intent: input?.intent === 'repair' ? 'repair' : 'triage',
+            link_attempted: linkAttempted,
+            link_delivered: linkDelivered,
             ...(owner.refToken ? { ref: owner.refToken } : {}),
           },
           campaignId,
         })
+      }
+      // A promised text that did not send is exactly how the phone channel
+      // lost three customers this week: the assistant said "sent", nothing
+      // arrived, and the customer had no next step. On the website there IS a
+      // next step — the booking link renders as a button in this very chat —
+      // so say that instead of claiming a text that never left.
+      if (inquiry.ok && linkAttempted && !linkDelivered) {
+        return {
+          ...inquiry,
+          sms_delivered: false,
+          must_say:
+            'The text message did NOT go out. Do NOT say you texted them, and do NOT say the link is on its way to their phone. Give them the booking link right here and ask them to tap it now (or save it); add that our office will also follow up. Never promise a text that did not send.',
+        }
       }
       return inquiry
     }
