@@ -6,6 +6,7 @@ import { rateLimit, getClientIp } from '@/lib/rateLimit'
 import { verifyTurnstile } from '@/lib/turnstile'
 import { scoreSpam } from '@/lib/spamCheck'
 import { submitWebsiteInquiry } from '@/lib/aappIntake'
+import { getReferralFromRequest } from '@/lib/referral'
 
 let _resend: Resend | null = null
 function getResend() { return _resend ??= new Resend(process.env.RESEND_API_KEY) }
@@ -130,6 +131,8 @@ export async function POST(request: Request) {
     // salesperson, generates a booking link, and texts it when the customer
     // consented). Best-effort and time-bounded — a failure here must never fail
     // the form submission; the DB row + email above already captured the lead.
+    // Referral attribution (推广系统 P1) — cookie only, same rule as the chat.
+    const refToken = getReferralFromRequest(request)
     let bookingLink = ''
     try {
       const inquiry = await submitWebsiteInquiry({
@@ -141,6 +144,7 @@ export async function POST(request: Request) {
         intent: 'triage',
         smsConsent,
         source: 'website_form',
+        ...(refToken ? { referral: { token: refToken, page: 'consultation_form' } } : {}),
       })
       if (inquiry.ok && inquiry.link) bookingLink = inquiry.link
     } catch { /* non-fatal */ }

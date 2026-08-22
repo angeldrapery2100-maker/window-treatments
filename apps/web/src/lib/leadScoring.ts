@@ -18,6 +18,10 @@ export interface ScoreWeight {
 
 export const LEAD_SCORE_WEIGHTS: Record<string, ScoreWeight> = {
   campaign_visit:        { points: 5,  cap: 10 },
+  // A referral link is a warmer touch than a flyer: someone the visitor
+  // trusts handed it to them. Capped at two visits so re-opening the link
+  // from a chat thread doesn't inflate the score.
+  referral_visit:        { points: 8,  cap: 16 },
   assistant_chat:        { points: 2,  cap: 20 },
   project_viewed:        { points: 3,  cap: 12 },
   project_item_added:    { points: 12, cap: 60 },
@@ -107,6 +111,7 @@ const SIGNAL_LABEL: Record<string, string> = {
   design_saved: '存设计',
   assistant_chat: 'AI 对话',
   campaign_visit: '活动访问',
+  referral_visit: '推荐链接访问',
   project_viewed: '看方案',
 }
 

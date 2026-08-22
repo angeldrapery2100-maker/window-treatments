@@ -4,6 +4,7 @@ import { getUserFromRequest } from '@/lib/auth'
 import { ASSISTANT_TOOLS, executeAssistantTool } from '@/lib/assistantTools'
 import { ANON_COOKIE, ANON_COOKIE_MAX_AGE, getAnonIdFromRequest, newAnonId, logLeadEvent } from '@/lib/homeProjects'
 import { getCampaignFromRequest } from '@/lib/campaigns'
+import { getReferralFromRequest } from '@/lib/referral'
 import { extractQuickReplies, stripInlineMarkdown } from '@/lib/quickReplies'
 import { loadChatHistory, saveChatHistory } from '@/lib/assistantHistory'
 import { findUnverifiedOrderNumbers, orderClaimFallbackReply, fallbackLanguageFor } from '@/lib/orderClaimGuard'
@@ -442,10 +443,14 @@ export async function POST(request: Request) {
     const cookieAnonId = getAnonIdFromRequest(request)
     const anonId = cookieAnonId ?? newAnonId()
     const campaignId = getCampaignFromRequest(request)
+    // Referral attribution (推广系统 P1) — read from the httpOnly ad_ref
+    // cookie ONLY. The client echoes a `ref` field in the body for its own
+    // logging; it is deliberately ignored here, exactly like campaign ids.
+    const refToken = getReferralFromRequest(request)
 
     // Behavioral signal for lead scoring (P2) — one event per chat turn,
     // best-effort, never blocks the reply.
-    logLeadEvent({ userId, anonId, type: 'assistant_chat', meta: { surface: body?.surface === 'main' ? 'main' : 'store' }, campaignId })
+    logLeadEvent({ userId, anonId, type: 'assistant_chat', meta: { surface: body?.surface === 'main' ? 'main' : 'store', ...(refToken ? { ref: refToken } : {}) }, campaignId })
 
     // ── Anthropic Messages API with a SERVER-SIDE tool-use loop ──────────────
     // The client only ever sends/receives plain text turns. The multi-turn
@@ -557,7 +562,7 @@ export async function POST(request: Request) {
           if (block?.type !== 'tool_use') continue
           let result: unknown
           try {
-            result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId, customerTexts)
+            result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId, customerTexts, refToken)
           } catch (err) {
             console.error(`[assistant] tool ${block?.name} failed:`, err)
             result = { error: 'tool_failed' }

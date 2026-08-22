@@ -251,6 +251,9 @@ interface ProjectOwnerCtx {
   anonId: string | null
   /** ad_campaign cookie slug (request-derived) — attribution for lead events. */
   campaignId?: string | null
+  /** ad_ref cookie token (request-derived, 推广系统 P1). Cookie ONLY — the
+   *  model never supplies it, and neither does the browser body. */
+  refToken?: string | null
 }
 
 async function resolveProjectOwner(ctx: ProjectOwnerCtx): Promise<ProjectOwnerCtx> {
@@ -540,6 +543,7 @@ export async function buildAiSalesSummary(ctx: ProjectOwnerCtx): Promise<string>
       )
     }
     if (ctx.campaignId) lines.push(`Campaign: ${ctx.campaignId}`)
+    if (ctx.refToken) lines.push(`Referral: ${ctx.refToken}`)
     // Nothing worth sending? Return empty so the message stays untouched.
     return lines.length > 2 ? lines.join('\n').slice(0, 2500) : ''
   } catch {
@@ -923,9 +927,11 @@ export async function executeAssistantTool(
   // Texts the CUSTOMER typed in this request — provenance source for the
   // contact guard (W6): a phone/email may only be submitted to the lead
   // system if it appears here. Saved sheets/projects/history don't count.
-  userTexts: string[] = []
+  userTexts: string[] = [],
+  // ad_ref cookie token — referral attribution (推广系统 P1).
+  refToken: string | null = null
 ): Promise<unknown> {
-  const owner: ProjectOwnerCtx = { userId, anonId, campaignId }
+  const owner: ProjectOwnerCtx = { userId, anonId, campaignId, refToken }
   switch (name) {
     case 'quote_store_product': {
       // Same authority as checkout: computeServerUnitPrice — never estimated.
@@ -1620,11 +1626,16 @@ export async function executeAssistantTool(
         intent: input?.intent === 'repair' ? 'repair' : 'triage',
         smsConsent: input?.sms_consent === true,
         source: 'website_chat',
+        ...(owner.refToken ? { referral: { token: owner.refToken, page: 'assistant' } } : {}),
       })
       if (inquiry.ok) {
         logLeadEvent({
           userId, anonId, type: 'inquiry_submitted',
-          meta: { via: 'assistant', intent: input?.intent === 'repair' ? 'repair' : 'triage' },
+          meta: {
+            via: 'assistant',
+            intent: input?.intent === 'repair' ? 'repair' : 'triage',
+            ...(owner.refToken ? { ref: owner.refToken } : {}),
+          },
           campaignId,
         })
       }

@@ -14,6 +14,8 @@ const WEBSITE_INQUIRY_URL =
   process.env.AAPP_WEBINTAKE_URL ||
   'https://us-central1-angel-drapery.cloudfunctions.net/websiteInquiry'
 
+import { TOKEN_RE } from '@/lib/referral'
+
 export type InquiryIntent = 'triage' | 'repair'
 
 export interface InquiryInput {
@@ -27,6 +29,10 @@ export interface InquiryInput {
   smsConsent?: boolean
   // 'website_chat' for the AI assistant, 'website_form' for the consultation form.
   source?: string
+  /** Referral attribution (推广系统 P1). The token comes from the httpOnly
+   *  ad_ref cookie ONLY — never from anything the model or the browser body
+   *  claims — and AAPP resolves it to the referrer + any partner pricing. */
+  referral?: { token: string; page?: string }
 }
 
 export interface InquiryResult {
@@ -35,6 +41,9 @@ export interface InquiryResult {
   leadId?: string
   smsSent?: boolean
   error?: string
+  /** Echoed by AAPP when the referral token resolved: whether it was applied
+   *  and to whom (a label safe to show the customer, e.g. "Jenny L."). */
+  referral?: { applied: boolean; type?: string; label?: string }
 }
 
 /**
@@ -75,6 +84,14 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     source: input.source || 'website_chat',
     website: '', // honeypot — always empty from a legitimate server call
   }
+  // Only a well-formed token travels; a malformed one is dropped silently so
+  // a junk cookie can never make the whole lead submission fail.
+  if (input.referral && TOKEN_RE.test(input.referral.token)) {
+    body.referral = {
+      token: input.referral.token,
+      page: String(input.referral.page || '').slice(0, 120),
+    }
+  }
 
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   // Optional shared secret: set AAPP_WEBINTAKE_SECRET in Vercel AND the matching
@@ -106,6 +123,13 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
       link: typeof data?.link === 'string' ? data.link : undefined,
       leadId: typeof data?.leadId === 'string' ? data.leadId : undefined,
       smsSent: data?.smsSent === true,
+      referral: data?.referral && typeof data.referral === 'object'
+        ? {
+            applied: data.referral.applied === true,
+            type: typeof data.referral.type === 'string' ? data.referral.type : undefined,
+            label: typeof data.referral.label === 'string' ? data.referral.label : undefined,
+          }
+        : undefined,
       error: data?.ok === true ? undefined : (data?.error || 'inquiry_failed'),
     }
   } catch (e: any) {

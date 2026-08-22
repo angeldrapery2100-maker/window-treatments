@@ -46,6 +46,19 @@ interface ChatMessage {
   at?: string
 }
 
+// Referral context handed in by a /r/<token> landing page through the
+// `ad:open-assistant` event. Purely cosmetic on the client: it personalises
+// the opening line. Attribution itself is server-side and cookie-only — the
+// token is echoed in the request body for logging, and the API deliberately
+// does NOT trust it (see /api/store/assistant).
+interface RefContext {
+  token: string
+  type?: string
+  displayName?: string
+  discountPct?: number | null
+  language?: 'en' | 'zh'
+}
+
 const STORAGE_KEY = 'store_assistant_chat'
 const TEASER_KEY = 'store_assistant_teaser_done'
 const OPENED_KEY = 'store_assistant_opened'
@@ -320,6 +333,33 @@ function AssistantAvatar({ size = 30 }: { size?: number }) {
   )
 }
 
+// Local opening line for a referred visitor. Rendered client-side only — it
+// is NOT sent to the model and never counts as an assistant turn the model
+// has to honour; the first real reply still comes from the API.
+function referralGreeting(ref: RefContext): string {
+  let zh = ref.language === 'zh'
+  if (!ref.language) {
+    try { zh = navigator.language.toLowerCase().startsWith('zh') } catch { zh = false }
+  }
+  const who = (ref.displayName || '').trim()
+  const pct = typeof ref.discountPct === 'number' && ref.discountPct > 0 ? ref.discountPct : null
+  const tail = zh
+    ? '跟我说说你的窗户（大概宽高、哪个房间就行），我马上给你一个参考价。'
+    : "Tell me about your windows — rough width and height, and which room — and I'll give you a quick estimate."
+
+  if (ref.type === 'customer' && who) {
+    const head = zh
+      ? (pct ? `你好！${who} 把这个链接发给你——朋友首单可享 ${pct}% 优惠。` : `你好！${who} 把这个链接发给你。`)
+      : (pct ? `Hi! ${who} sent you here — friends get ${pct}% off.` : `Hi! ${who} sent you here.`)
+    return `${head} ${tail}`
+  }
+  if (who && (ref.type === 'agent' || ref.type === 'designer' || ref.type === 'contractor')) {
+    const head = zh ? `你好！你是 ${who} 推荐过来的。` : `Hi! You were referred by ${who}.`
+    return `${head} ${tail}`
+  }
+  return zh ? `你好！${tail}` : `Hi! ${tail}`
+}
+
 export default function StoreAssistant() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
@@ -332,6 +372,7 @@ export default function StoreAssistant() {
   const [sending, setSending] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [hydrated, setHydrated] = useState(false)
+  const [refCtx, setRefCtx] = useState<RefContext | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -483,10 +524,32 @@ export default function StoreAssistant() {
     }
   }, [])
 
-  // Other pages (e.g. /measure-wizard's "ask our AI assistant" button) can pop
-  // the chat open by dispatching this window event.
+  // Other pages (e.g. /measure-wizard's "ask our AI assistant" button, and the
+  // /r/<token> referral landing) can pop the chat open by dispatching this
+  // window event. `detail.ref` personalises the greeting; `detail.prefill`
+  // drops a starter sentence into the input box (the visitor still presses
+  // send — we never speak for them).
   useEffect(() => {
-    const onOpen = () => openChat()
+    const onOpen = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { ref?: RefContext; prefill?: string } | undefined
+      if (detail?.ref?.token) {
+        setRefCtx(detail.ref)
+        // A referred visitor lands in an empty chat: greet them by their
+        // friend's name LOCALLY (no API call, no tokens burned) so the panel
+        // is never an empty box. If they already have a conversation going,
+        // leave it alone.
+        if (messagesRef.current.length === 0) {
+          const greeting = referralGreeting(detail.ref)
+          if (greeting) {
+            const next = [{ role: 'assistant' as const, content: greeting, at: new Date().toISOString() }]
+            setMessages(next)
+            saveStored(next)
+          }
+        }
+      }
+      if (detail?.prefill) setInput(detail.prefill.slice(0, MAX_CONTENT_CHARS))
+      openChat()
+    }
     window.addEventListener('ad:open-assistant', onOpen)
     return () => window.removeEventListener('ad:open-assistant', onOpen)
   }, [openChat])
@@ -541,6 +604,9 @@ export default function StoreAssistant() {
                 : { role, content: c || PHOTO_PLACEHOLDER }
             ),
             surface,
+            // Echoed for server-side logging only — the API reads attribution
+            // from the httpOnly ad_ref cookie and ignores this field.
+            ...(refCtx?.token ? { ref: { token: refCtx.token } } : {}),
           }),
         })
         const json = await res.json().catch(() => null)
@@ -592,7 +658,7 @@ export default function StoreAssistant() {
         setSending(false)
       }
     },
-    [messages, postArchive, scheduleArchive, sending, surface]
+    [messages, postArchive, refCtx, scheduleArchive, sending, surface]
   )
 
   // Compress and queue photos picked from the file input.
