@@ -388,3 +388,57 @@ describe('ensureCampaignReferralToken (P2 §4.2)', () => {
     expect(isValidReferralToken(a.token)).toBe(true)
   })
 })
+
+// ── P3 §B-1 客户面报价口径:两个仓库的对表 ──────────────────────────────────
+describe('报价口径跨仓库一致(P3 §B-1)', () => {
+  const policy = (fixtures as any).policy
+
+  it('fixture 带 policy 段', () => {
+    expect(policy).toBeTruthy()
+  })
+
+  it('★ AI_ESTIMATE_FACTOR === AAPP 的 factor', async () => {
+    // 这两个数分别住在 customerEstimateFactor.ts 和 AAPP public-policy.js。
+    // 只改一边:网站助手说 $1050、客户 GPT 说 $1100,同一扇窗两个价,
+    // 而两个仓库的测试都会是绿的 —— P1 的归因就是这么死的。
+    const { AI_ESTIMATE_FACTOR } = await import('./customerEstimateFactor')
+    expect(AI_ESTIMATE_FACTOR).toBe(policy.factor)
+  })
+
+  it('★ 三句必说的话逐字一致(两个分支都比)', () => {
+    // 从源码文本里切,不 import —— assistantTools 会拖进 db / resend 整张图,
+    // 为了比两个字符串不值得引入那么多失败方式。
+    const src = readFileSync(join(__dirname, 'assistantTools.ts'), 'utf8')
+    const pick = (name: string) => {
+      const m = src.match(new RegExp(`export const ${name} =\\s*\\n?\\s*'((?:[^'\\\\]|\\\\.)*)'`))
+      return m ? m[1] : null
+    }
+    const withInstall = pick('REFERENCE_PRICE_DISCLOSURE_WITH_INSTALL')
+    const noInstall = pick('REFERENCE_PRICE_DISCLOSURE_NO_INSTALL')
+    expect(noInstall).not.toBeNull()
+    expect(withInstall).not.toBeNull()
+    expect(noInstall).toBe(policy.disclosure.withoutInstall)
+    expect(withInstall).toBe(policy.disclosure.withInstall)
+  })
+
+  it('生效的那一条仍然由 AI_SHOW_INSTALL_ESTIMATE 选(纯抽取,行为没变)', () => {
+    const src = readFileSync(join(__dirname, 'assistantTools.ts'), 'utf8')
+    expect(src).toMatch(
+      /const REFERENCE_PRICE_DISCLOSURE = AI_SHOW_INSTALL_ESTIMATE\s*\n\s*\? REFERENCE_PRICE_DISCLOSURE_WITH_INSTALL\s*\n\s*: REFERENCE_PRICE_DISCLOSURE_NO_INSTALL/
+    )
+  })
+
+  it('参考价落在区间上沿(正式报价往下惊喜,不是往上加价)', () => {
+    expect(policy.rangeHigh).toBe(policy.factor)
+    expect(policy.rangeLow).toBeLessThan(policy.factor)
+  })
+
+  it('口径本身没被悄悄放宽', () => {
+    expect(policy.includesTax).toBe(false)
+    expect(policy.includesInstall).toBe(false)
+  })
+
+  it('★ 默认文案里那句「永不说安装费数字」还在', () => {
+    expect(policy.disclosure.withoutInstall).toContain('NEVER state an installation-fee amount')
+  })
+})

@@ -7,6 +7,17 @@
     "agent": "AGNTtokenAGNTtoken0002",
     "campaign": "CMPNtokenCMPNtoken0003"
   },
+  "policy": {
+    "factor": 1.05,
+    "rangeLow": 0.98,
+    "rangeHigh": 1.05,
+    "includesTax": false,
+    "includesInstall": false,
+    "disclosure": {
+      "withInstall": "REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) sales tax is extra, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. An installation figure may be given ONLY when the tool returned install_estimate, and only as an approximate amount. The final quote after the in-home measure is usually a little lower than this reference — you may say so.",
+      "withoutInstall": "REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers. The final quote after the in-home measure is usually a little lower than this reference — you may say so."
+    }
+  },
   "lookup": {
     "customer": {
       "ok": true,

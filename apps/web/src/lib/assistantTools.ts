@@ -39,9 +39,19 @@ import { applyCustomerEstimateFactor, AI_SHOW_INSTALL_ESTIMATE } from '@/lib/cus
 // customerEstimateFactor.ts), so the disclosure now PRE-ANNOUNCES the
 // pleasant surprise — the measured quote usually comes in a little under the
 // number the customer was given in chat.
+// P3 §B-1: the two literals are exported so referral.test.ts can compare BOTH
+// against the cross-repo fixture without stubbing the env. AAPP's customer GPT
+// (publicQuoteAction → reference_estimate) must say the exact same sentence —
+// one rule, two codebases, and nothing but this assertion notices when they
+// drift. Pure extraction: REFERENCE_PRICE_DISCLOSURE's value is unchanged.
+export const REFERENCE_PRICE_DISCLOSURE_WITH_INSTALL =
+  'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) sales tax is extra, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. An installation figure may be given ONLY when the tool returned install_estimate, and only as an approximate amount. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
+export const REFERENCE_PRICE_DISCLOSURE_NO_INSTALL =
+  'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
+
 const REFERENCE_PRICE_DISCLOSURE = AI_SHOW_INSTALL_ESTIMATE
-  ? 'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) sales tax is extra, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. An installation figure may be given ONLY when the tool returned install_estimate, and only as an approximate amount. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
-  : 'REFERENCE price only, per window. Say all three every time: (1) it is a reference, (2) it does NOT include installation or sales tax, (3) the final price is confirmed by our salesperson after the free in-home measure — then offer to book. NEVER state an installation-fee amount or a tax amount; name them as extras without numbers. The final quote after the in-home measure is usually a little lower than this reference — you may say so.'
+  ? REFERENCE_PRICE_DISCLOSURE_WITH_INSTALL
+  : REFERENCE_PRICE_DISCLOSURE_NO_INSTALL
 
 const ORDER_NUMBER_RE = /^AD[0-9]{6}-[A-Z0-9]{4}$/
 
