@@ -31,6 +31,9 @@ export default function CampaignsPage() {
   const [origin, setOrigin] = useState('')
   const [copiedId, setCopiedId] = useState('')
   const [qrFor, setQrFor] = useState<Campaign | null>(null)
+  // P2 §4.2 —— 「Generate」按钮:哪一行正在生成 / 哪一行报了什么错。
+  const [genId, setGenId] = useState('')
+  const [genError, setGenError] = useState<{ id: string; msg: string } | null>(null)
 
   // Create form
   const [name, setName] = useState('')
@@ -127,6 +130,30 @@ export default function CampaignsPage() {
         body: JSON.stringify({ id: c.id, referral_token: next }),
       })
     } catch { void load() }
+  }
+
+  /* P2 §4.2 —— 一键去 AAPP 建 campaign 推广链接并回填。
+     以前得手抄 22 位 token:抄错了 /c/<slug> 照常跳转、照常记访问,
+     只是不种 ad_ref —— 归因静静地丢掉,没有任何地方会报错。
+     后端用库里那条记录自己的 slug,不认前端传的值。 */
+  const generateToken = async (c: Campaign) => {
+    if (genId) return
+    setGenId(c.id)
+    setGenError(null)
+    try {
+      const res = await fetch(`/api/admin/campaigns/${c.id}/referral-token`, { method: 'POST' })
+      const json = await res.json().catch(() => null)
+      if (json?.success && json?.data?.referral_token) {
+        const t = String(json.data.referral_token)
+        setCampaigns(prev => prev.map(x => (x.id === c.id ? { ...x, referral_token: t } : x)))
+      } else {
+        setGenError({ id: c.id, msg: String(json?.error || '生成失败，请稍后再试或手填 token。') })
+      }
+    } catch {
+      setGenError({ id: c.id, msg: '生成失败：连不上服务器。' })
+    } finally {
+      setGenId('')
+    }
   }
 
   const shortUrl = (c: Campaign) => `${origin}/c/${c.slug}`
@@ -262,14 +289,30 @@ export default function CampaignsPage() {
                   <td className="px-3 py-3 text-right tabular-nums">{c.cart_adds}</td>
                   <td className="px-3 py-3 text-right tabular-nums font-medium">{c.inquiries}</td>
                   <td className="px-4 py-3">
-                    <input
-                      defaultValue={c.referral_token || ''}
-                      onBlur={e => void saveToken(c, e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
-                      maxLength={32}
-                      placeholder="—"
-                      className="w-36 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] focus:border-gray-800 focus:outline-none"
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        key={c.referral_token || 'empty'}
+                        defaultValue={c.referral_token || ''}
+                        onBlur={e => void saveToken(c, e.target.value)}
+                        onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
+                        maxLength={32}
+                        placeholder="—"
+                        aria-label={`Referral token · ${c.name}`}
+                        className="w-36 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] focus:border-gray-800 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => void generateToken(c)}
+                        disabled={genId === c.id}
+                        aria-label={`Generate referral token · ${c.name}`}
+                        className="shrink-0 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-500 hover:border-gray-800 hover:text-gray-900 disabled:opacity-40"
+                      >
+                        {genId === c.id ? '生成中…' : 'Generate'}
+                      </button>
+                    </div>
+                    {genError?.id === c.id && (
+                      <p role="alert" className="mt-1 max-w-[220px] text-[11px] text-red-600">{genError.msg}</p>
+                    )}
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">{c.referral_visits}</td>
                   <td className="px-4 py-3">

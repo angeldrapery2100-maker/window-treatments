@@ -3,6 +3,7 @@ import {
   getReferralFromRequest, isValidReferralToken, TOKEN_RE,
   fetchReferralPortal, lookupReferral, uploadPartnerW9, _clearReferralCache,
   REFERRAL_COOKIE, REFERRAL_COOKIE_MAX_AGE,
+  CAMPAIGN_SLUG_RE, ensureCampaignReferralToken,
 } from './referral'
 import { MOCK_CUSTOMER_TOKEN, MOCK_AGENT_TOKEN, MOCK_CAMPAIGN_TOKEN } from './referral.mock'
 import fixtures from './referral-wire-fixtures.json'
@@ -281,5 +282,109 @@ describe('AAPP wire format', () => {
     _clearReferralCache()
     stub({ ok: false, error: 'not_found' })
     expect(await lookupReferral(MOCK_CUSTOMER_TOKEN)).toBeNull()
+  })
+})
+
+// ── P2 §4.2 一键建 campaign 推广链接 ────────────────────────────────────────
+describe('ensureCampaignReferralToken (P2 §4.2)', () => {
+  afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs() })
+
+  const withSecret = () => { vi.stubEnv('AAPP_WEBINTAKE_SECRET', 's3cret'); vi.stubEnv('AAPP_REFERRAL_MOCK', '') }
+
+  it('★ slug 规则与 campaigns.ts 一字不差', () => {
+    // 同一条规则抄了三份(这里 / campaigns.ts / AAPP referral-core.js)。
+    // 不一致时两边的测试都会是绿的,而人会看到「网站建得出、AAPP 建不出」。
+    const src = readFileSync(join(__dirname, 'campaigns.ts'), 'utf8')
+    const m = src.match(/export const SLUG_RE = (\/\^\[a-z0-9\][^\/]*\/)/)
+    expect(m).not.toBeNull()
+    expect(m![1]).toBe(String(CAMPAIGN_SLUG_RE))
+  })
+
+  it('rejects a bad slug without touching the network', async () => {
+    withSecret()
+    let called = 0
+    vi.stubGlobal('fetch', async () => { called++; return { ok: true, json: async () => ({ ok: true }) } as any })
+    for (const bad of ['Aug Postcard', '-aug', 'a', '', 'aug/postcard', 'x'.repeat(80)]) {
+      expect((await ensureCampaignReferralToken(bad)).error).toBe('bad_slug')
+    }
+    expect(called).toBe(0)
+  })
+
+  it('★ refuses to call AAPP when the shared secret is missing', async () => {
+    // websiteInquiry 在 secret 缺失时是放行的(公开表单不能因为忘配就全挂),
+    // 这个端点相反 —— 它能凭空造出一条归因通道,配不上就别发。
+    vi.stubEnv('AAPP_WEBINTAKE_SECRET', '')
+    vi.stubEnv('AAPP_REFERRAL_MOCK', '')
+    let called = 0
+    vi.stubGlobal('fetch', async () => { called++; return { ok: true, json: async () => ({ ok: true }) } as any })
+    expect((await ensureCampaignReferralToken('aug-postcard')).error).toBe('not_configured')
+    expect(called).toBe(0)
+  })
+
+  it('posts slug + name to referralCampaignEnsure with x-ad-key', async () => {
+    withSecret()
+    let url = '', body: any = null, headers: any = null
+    vi.stubGlobal('fetch', async (u: string, init: any) => {
+      url = String(u); body = JSON.parse(init.body); headers = init.headers
+      return { ok: true, json: async () => ({ ok: true, token: 'CAMPtoken0123456789ab', url: 'https://angel-drapery.com/r/CAMPtoken0123456789ab', reused: false }) } as any
+    })
+    const r = await ensureCampaignReferralToken('aug-postcard', 'Aug Postcard')
+    expect(url).toContain('/referralCampaignEnsure')
+    expect(body).toEqual({ slug: 'aug-postcard', name: 'Aug Postcard' })
+    expect(headers['x-ad-key']).toBe('s3cret')
+    expect(r).toMatchObject({ ok: true, token: 'CAMPtoken0123456789ab', reused: false })
+  })
+
+  it('lowercases the slug it sends (the CF compares lowercase)', async () => {
+    withSecret()
+    let body: any = null
+    vi.stubGlobal('fetch', async (_u: string, init: any) => {
+      body = JSON.parse(init.body)
+      return { ok: true, json: async () => ({ ok: true, token: 'CAMPtoken0123456789ab' }) } as any
+    })
+    await ensureCampaignReferralToken('AUG-Postcard')
+    expect(body.slug).toBe('aug-postcard')
+  })
+
+  it('falls back to the slug when no name is given', async () => {
+    withSecret()
+    let body: any = null
+    vi.stubGlobal('fetch', async (_u: string, init: any) => {
+      body = JSON.parse(init.body)
+      return { ok: true, json: async () => ({ ok: true, token: 'CAMPtoken0123456789ab' }) } as any
+    })
+    await ensureCampaignReferralToken('aug-postcard')
+    expect(body.name).toBe('aug-postcard')
+  })
+
+  it('surfaces the AAPP error instead of inventing a token', async () => {
+    withSecret()
+    vi.stubGlobal('fetch', async () => ({ ok: false, json: async () => ({ ok: false, error: 'bad key' }) } as any))
+    expect(await ensureCampaignReferralToken('aug-postcard')).toEqual({ ok: false, error: 'bad key' })
+  })
+
+  it('★ a malformed token from AAPP is rejected, not stored', async () => {
+    // 存进 campaigns.referral_token 的东西不信任何上游 —— 形状不对的 token
+    // 会让 /c/<slug> 每次都种一个种不进去的 cookie,归因悄悄全丢。
+    withSecret()
+    vi.stubGlobal('fetch', async () => ({ ok: true, json: async () => ({ ok: true, token: 'short' }) } as any))
+    expect(await ensureCampaignReferralToken('aug-postcard')).toEqual({ ok: false, error: 'bad_token' })
+  })
+
+  it('network failure is an error, never a silent success', async () => {
+    withSecret()
+    vi.stubGlobal('fetch', async () => { throw new Error('boom') })
+    const r = await ensureCampaignReferralToken('aug-postcard')
+    expect(r.ok).toBe(false)
+    expect(r.token).toBeUndefined()
+  })
+
+  it('mock mode is idempotent (the UI must not flip the token on every click)', async () => {
+    vi.stubEnv('AAPP_REFERRAL_MOCK', '1')
+    const a = await ensureCampaignReferralToken('aug-postcard')
+    const b = await ensureCampaignReferralToken('aug-postcard')
+    expect(a.ok).toBe(true)
+    expect(a.token).toBe(b.token)
+    expect(isValidReferralToken(a.token)).toBe(true)
   })
 })

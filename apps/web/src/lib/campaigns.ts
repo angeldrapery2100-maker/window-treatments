@@ -10,7 +10,9 @@ export const CAMPAIGN_COOKIE = 'ad_campaign'
 /** 90 days — a typical mailer consideration window. */
 export const CAMPAIGN_COOKIE_MAX_AGE = 60 * 60 * 24 * 90
 
-const SLUG_RE = /^[a-z0-9][a-z0-9_-]{1,63}$/
+/** ⚠ 与 lib/referral.ts 的 CAMPAIGN_SLUG_RE、AAPP referral-core.js 的
+ *  CAMPAIGN_SLUG_RE 必须一字不差 —— referral.test.ts 里有一条守卫比对字面量。 */
+export const SLUG_RE = /^[a-z0-9][a-z0-9_-]{1,63}$/
 
 export function normalizeCampaignSlug(v: unknown): string | null {
   const s = String(v ?? '').trim().toLowerCase()
@@ -67,6 +69,12 @@ export async function getCampaignBySlug(slug: string): Promise<CampaignRow | nul
 export function normalizeReferralToken(v: unknown): string | null {
   const s = String(v ?? '').trim()
   return /^[A-Za-z0-9_-]{16,32}$/.test(s) ? s : null
+}
+
+export async function getCampaignById(id: string): Promise<CampaignRow | null> {
+  await ensureCampaignsTable()
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null
+  return queryOne<CampaignRow>(`SELECT * FROM campaigns WHERE id = $1`, [id])
 }
 
 export async function setCampaignReferralToken(id: string, token: unknown): Promise<void> {

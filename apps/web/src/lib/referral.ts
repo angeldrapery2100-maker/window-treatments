@@ -29,6 +29,11 @@ export const REFERRAL_COOKIE_MAX_AGE = 60 * 60 * 24 * 90
 /** Opaque referral token: URL-safe, 16–32 chars. */
 export const TOKEN_RE = /^[A-Za-z0-9_-]{16,32}$/
 
+/** Campaign slug — must stay byte-identical to `campaigns.ts` SLUG_RE and to
+ *  AAPP's `referral-core.js` CAMPAIGN_SLUG_RE. A test compares the literals:
+ *  three copies of one rule is how P1's attribution died with all suites green. */
+export const CAMPAIGN_SLUG_RE = /^[a-z0-9][a-z0-9_-]{1,63}$/
+
 export type ReferrerType = 'customer' | 'agent' | 'designer' | 'contractor' | 'company' | 'campaign'
 
 /** Partner-ish referrer types get partner pricing, never a visible percentage. */
@@ -398,6 +403,56 @@ export async function uploadPartnerW9(
       return { ok: false, error: String(data?.error || `http_${res.status}`) }
     }
     return { ok: true }
+  } catch (e: any) {
+    return { ok: false, error: e?.name === 'TimeoutError' ? 'timeout' : 'request_failed' }
+  }
+}
+
+// ── campaign 链接一键生成(P2 §4.2)────────────────────────────────────────
+// admin 在 campaigns 页点 Generate → 这里去 AAPP 建一条 campaign 类推广链接,
+// 回填 campaigns.referral_token。手填仍然保留(AAPP 那边先建好、这里粘贴)。
+//
+// ⚠ slug 规则三处必须一致:AAPP referral-core.js CAMPAIGN_SLUG_RE、
+//   AAPP app-referral-partners.js 的 UI 校验、本仓库 campaigns.ts SLUG_RE。
+//   不一致 = 这边建得出、那边建不出,而两边的测试都会是绿的。
+//
+// 鉴权比 websiteInquiry 严:那个端点 secret 未配置时放行(公开表单不能因为
+// 忘配 secret 就全挂),这个不行 —— 它能凭空造出一条归因通道。secret 缺失时
+// AAPP 直接 503,这里也提前拦一次,省一次白跑的网络请求。
+export interface EnsureCampaignResult {
+  ok: boolean
+  token?: string
+  url?: string
+  reused?: boolean
+  error?: string
+}
+
+export async function ensureCampaignReferralToken(
+  slug: string,
+  name?: string
+): Promise<EnsureCampaignResult> {
+  const clean = String(slug ?? '').trim().toLowerCase()
+  if (!CAMPAIGN_SLUG_RE.test(clean)) return { ok: false, error: 'bad_slug' }
+  if (MOCK()) {
+    // 固定 token —— mock 下重复调用要幂等,否则 UI 每点一次都换一个值。
+    const t = `mockcamp${clean.replace(/[^a-z0-9]/g, '')}0000000000000000`.slice(0, 22)
+    return { ok: true, token: t, url: `https://angel-drapery.com/r/${t}`, reused: false }
+  }
+  if (!process.env.AAPP_WEBINTAKE_SECRET) return { ok: false, error: 'not_configured' }
+  try {
+    const res = await fetch(`${BASE()}/referralCampaignEnsure`, {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ slug: clean, name: String(name || clean).slice(0, 120) }),
+      signal: AbortSignal.timeout(15_000),
+    })
+    const data = (await res.json().catch(() => null)) as any
+    if (!res.ok || !data || data.ok !== true) {
+      return { ok: false, error: String(data?.error || `http_${res.status}`) }
+    }
+    // AAPP 已经校验过 token 形状,这里再验一次 —— 存进 DB 的东西不信任何上游。
+    if (!isValidReferralToken(data.token)) return { ok: false, error: 'bad_token' }
+    return { ok: true, token: String(data.token), url: String(data.url || ''), reused: data.reused === true }
   } catch (e: any) {
     return { ok: false, error: e?.name === 'TimeoutError' ? 'timeout' : 'request_failed' }
   }
