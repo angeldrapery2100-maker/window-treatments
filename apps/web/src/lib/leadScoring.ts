@@ -33,6 +33,10 @@ export const LEAD_SCORE_WEIGHTS: Record<string, ScoreWeight> = {
   // Saving a made-to-measure design is as strong a signal as a cart add: the
   // visitor has chosen fabric, size, heading and hardware for a real window.
   design_saved:          { points: 20, cap: 40 },
+  // 点「在 ChatGPT 里打开」= 愿意离开我们的站去跟顾问聊,比在页面上多点两下
+  // 强得多,但比量窗助手弱 —— 那边已经在报尺寸了。封顶两次:同一个人来回开
+  // 链接不该刷分。
+  gpt_open:              { points: 8,  cap: 16 },
   inquiry_submitted:     { points: 35, cap: 35 },
 }
 
