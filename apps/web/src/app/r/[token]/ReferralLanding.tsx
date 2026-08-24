@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { tr, useUiLanguage, type UiLanguage } from '@/lib/uiLanguage'
 import { PRIMARY_PHONE, BUSINESS_ADDRESS, BUSINESS_HOURS, COPYRIGHT } from '@/lib/site'
 import type { ReferrerType } from '@/lib/referral'
-import { customerGptUrl, logGptOpen } from '@/lib/customerGpt'
+import OpenInChatGpt from '@/components/OpenInChatGpt'
 
 interface Props {
   token: string
@@ -58,8 +58,6 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
     else setTimeout(fire, 350)
   }
 
-  /* P3 §B-6:链接真源在 lib/customerGpt.ts,ref 跟着过去,GPT 那边才认得出推荐人。 */
-  const gptUrl = customerGptUrl(token)
 
   const steps = [
     {
@@ -215,26 +213,7 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
 
       {/* ── Secondary entry points ───────────────────────────────────────── */}
       <section className="mx-auto flex max-w-4xl flex-col items-center gap-3 px-5 pb-14">
-        {gptUrl ? (
-          <a
-            href={gptUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={logGptOpen}
-            className="w-full max-w-sm rounded-full border border-gray-300 px-5 py-2.5 text-center text-[14px] transition-colors hover:border-[#12141C]"
-          >
-            {tr(language, 'Open in ChatGPT', '在 ChatGPT 里打开')}
-          </a>
-        ) : (
-          <button
-            type="button"
-            disabled
-            /* gray-300 只有 1.47:1,谁都看不清。禁用态不代表可以不可读。 */
-            className="w-full max-w-sm cursor-not-allowed rounded-full border border-gray-300 px-5 py-2.5 text-[14px] text-gray-500 opacity-80"
-          >
-            {tr(language, 'Open in ChatGPT — coming soon', '在 ChatGPT 里打开 — 即将上线')}
-          </button>
-        )}
+        <OpenInChatGpt token={token} language={language} variant="secondary" className="w-full max-w-sm" />
         <Link
           href="/products"
           className="w-full max-w-sm rounded-full px-5 py-2.5 text-center text-[14px] text-gray-600 hover:text-[#12141C]"

@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { tr, useUiLanguage, type UiLanguage } from '@/lib/uiLanguage'
 import { PRIMARY_PHONE, BUSINESS_ADDRESS, BUSINESS_HOURS, COPYRIGHT } from '@/lib/site'
 import type { PortalView, PortalTier } from '@/lib/referral'
-import { customerGptUrl, logGptOpen } from '@/lib/customerGpt'
+import { customerGptUrl } from '@/lib/customerGpt'
+import OpenInChatGpt from '@/components/OpenInChatGpt'
 
 interface Props {
   portal: PortalView
@@ -311,7 +312,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
         {/* ── 6b. 在 ChatGPT 里打开(P3 §B-6)────────────────────────────
              推荐人自己也是客户:她朋友要问什么,她多半也想问。链接带上她的
              token,朋友从 ChatGPT 进来的线索照样算她的。 */}
-        {customerGptUrl(portal.token) && (
+        {customerGptUrl() && (
           <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
               {tr(language, 'Ask anytime', '随时问')}
@@ -323,15 +324,7 @@ export default function RewardsClient({ portal, qr, reviewUrl }: Props) {
                 '我们的 AI 顾问在 ChatGPT 里也有一个 —— 量尺、选面料、拿参考价，随时都能问。'
               )}
             </p>
-            <a
-              href={customerGptUrl(portal.token)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={logGptOpen}
-              className="mt-4 inline-block rounded-full border border-[#12141C] px-6 py-2.5 text-[14px] transition-colors hover:bg-[#12141C] hover:text-white"
-            >
-              {tr(language, 'Open in ChatGPT', '在 ChatGPT 里打开')}
-            </a>
+            <OpenInChatGpt token={portal.token} language={language} className="mt-4" />
           </section>
         )}
 
