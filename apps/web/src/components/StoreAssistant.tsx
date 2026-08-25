@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
 import { tr, useUiLanguage } from '@/lib/uiLanguage'
+import { safeEstimateViewUrl } from '@/lib/estimateDisplay'
 
 // Site-wide floating AI shopping assistant. Talks to /api/store/assistant
 // (Anthropic-backed). Conversation lives in sessionStorage so it survives
@@ -37,6 +38,9 @@ interface ChatMessage {
   // Set on an assistant turn when the backend registered a lead and returned an
   // appointment link — rendered as a "Book now" button under the message.
   bookingLink?: string
+  // P6 §1: set when save_estimate returned a view page for this estimate.
+  estimateUrl?: string
+  estimateNo?: string
   // Tap-to-send quick replies for this assistant turn (server-generated).
   // Only rendered on the latest assistant message.
   suggestions?: string[]
@@ -621,6 +625,10 @@ export default function StoreAssistant() {
 
         if (json?.success && json.data?.reply) {
           const link = typeof json.data.bookingLink === 'string' ? json.data.bookingLink : undefined
+          /* ★ 客户端再过一遍白名单。服务端已经筛过,但这一段直接进 href ——
+             两头都筛的成本是一个函数调用,漏一次的成本是一个开放跳转。 */
+          const estUrl = safeEstimateViewUrl(json.data.estimateUrl)
+          const estNo = typeof json.data.estimateNo === 'string' ? json.data.estimateNo : ''
           const suggestions = sanitizeSuggestions(json.data.suggestions)
           const withReply = [
             ...next,
@@ -629,6 +637,7 @@ export default function StoreAssistant() {
               content: String(json.data.reply),
               at: new Date().toISOString(),
               ...(link ? { bookingLink: link } : {}),
+              ...(estUrl ? { estimateUrl: estUrl, estimateNo: estNo } : {}),
               ...(suggestions ? { suggestions } : {}),
             },
           ]
@@ -904,6 +913,22 @@ export default function StoreAssistant() {
                 <div className="whitespace-pre-wrap rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
                   {renderRich(m.content)}
                 </div>
+                {!!safeEstimateViewUrl(m.estimateUrl) && (
+                  <a
+                    href={safeEstimateViewUrl(m.estimateUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2.5 rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] text-gray-800 shadow-sm transition-colors hover:border-gray-400"
+                  >
+                    <span className="text-[16px]">📄</span>
+                    <span className="min-w-0">
+                      <span className="block font-medium">View your estimate / 查看你的报价单</span>
+                      {!!m.estimateNo && (
+                        <span className="block font-mono text-[11px] tracking-wide text-gray-500">{m.estimateNo}</span>
+                      )}
+                    </span>
+                  </a>
+                )}
                 {m.bookingLink && (
                   <a
                     href={m.bookingLink}

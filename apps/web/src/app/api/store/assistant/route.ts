@@ -493,6 +493,10 @@ export async function POST(request: Request) {
 
     let reply = ''
     let bookingLink = ''  // set when submit_website_inquiry returns a booking link
+    /* P6 §1:save_estimate 成功后把查看页链接交给前端渲染成一张卡。
+       ★ 只放行我们自己域名下的那一种形状 —— 它最终会进 href。 */
+    let estimateUrl = ''
+    let estimateNo = ''
     let inquiryConversion: { name: string; phone: string; leadId?: string } | null = null
     // Everything an order number could legitimately be quoted from in THIS
     // request: what the customer typed + what tools actually returned. Used
@@ -572,6 +576,14 @@ export async function POST(request: Request) {
           // invisible — log them so real-world failure rates can be measured.
           if (result && typeof result === 'object' && (result as any).error) {
             console.warn(`[assistant] tool ${block.name} soft error:`, String((result as any).error).slice(0, 200))
+          }
+          if (block.name === 'save_estimate') {
+            const { safeEstimateViewUrl } = await import('@/lib/estimateDisplay')
+            const u = safeEstimateViewUrl((result as any)?.view_url)
+            if (u) {
+              estimateUrl = u
+              estimateNo = String((result as any)?.estimate_no || '').trim().slice(0, 20)
+            }
           }
           // Capture a booking link so the client can render a proper button.
           if (block.name === 'submit_website_inquiry') {
@@ -740,7 +752,7 @@ export async function POST(request: Request) {
     if (userId) {
       void saveChatHistory({ userId, anonId: null }, [
         ...messages,
-        { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(suggestions.length ? { suggestions } : {}) },
+        { role: 'assistant', content: cleanReply, ...(bookingLink ? { bookingLink } : {}), ...(estimateUrl ? { estimateUrl, estimateNo } : {}), ...(suggestions.length ? { suggestions } : {}) },
       ])
     }
 
@@ -750,6 +762,7 @@ export async function POST(request: Request) {
         reply: cleanReply,
         ...(suggestions.length ? { suggestions } : {}),
         ...(bookingLink ? { bookingLink } : {}),
+        ...(estimateUrl ? { estimateUrl, estimateNo } : {}),
         ...(inquiryConversion ? { conversion: inquiryConversion } : {}),
       },
     })

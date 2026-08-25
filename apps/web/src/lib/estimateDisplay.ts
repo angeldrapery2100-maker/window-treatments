@@ -27,3 +27,15 @@ export function configSummary(config: unknown, max = 4): string[] {
   }
   return out
 }
+
+/* ── 客户报价单查看页的白名单(P6 §1)────────────────────────────
+   `save_estimate` 的**网站** key 响应里带 view_url,聊天里要渲染成一张可点的卡。
+   它最终会进 href,所以只认我们自己域名下那一种形状。
+   ★ 和 AAPP 档案页里那条判据是同一个(app-customers.js _cdEstSafeViewUrl)——
+     两处都要改的时候别只改一处。 */
+const ESTIMATE_VIEW_URL_RE = /^https:\/\/angel-drapery\.com\/estimate\/[A-Za-z0-9_-]{22}$/
+
+export function safeEstimateViewUrl(u: unknown): string {
+  const s = String(u == null ? '' : u).trim()
+  return ESTIMATE_VIEW_URL_RE.test(s) ? s : ''
+}
