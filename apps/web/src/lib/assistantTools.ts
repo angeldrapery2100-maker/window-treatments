@@ -666,6 +666,10 @@ export const ASSISTANT_TOOLS = [
             required: ['id', 'family', 'variant'],
           },
         },
+        use_saved_windows: {
+          type: 'boolean',
+          description: "Pull the customer's saved measurement sheet (the same windows list_measured_windows returns) straight from the server instead of retyping them. Prefer this whenever they have saved windows — the server has the exact numbers. Windows you pass in windows[] are still kept; a saved window with the same id wins. IMPORTANT: when items reference a saved window, use the id list_measured_windows gave you. For a guest (not signed in) the sheet lives on this browser and may belong to a previous visitor — confirm with the customer that it is theirs BEFORE setting this to true.",
+        },
         estimate_no: { type: 'string', description: 'Only when updating an estimate the customer already has.' },
         access_code: { type: 'string', description: 'The 6-digit code, required together with estimate_no.' },
         lang: { type: 'string', enum: ['en', 'zh'] },
@@ -1692,6 +1696,38 @@ async function runAssistantTool(
       if (!sessionId) {
         return { error: 'no_session', note: 'Cannot save an estimate for this visitor. Offer to text or email the quote instead.' }
       }
+      /* P4-3b:窗户尺寸优先从服务端的量窗记录取,不靠模型复述。
+         ★ 模型传进来的**不丢掉** —— 客户可能在聊天里报了一扇没存过的窗;
+           但 id 撞车时以存下来的那份为准:那是真量出来的数,复述的不是。 */
+      let windows: unknown[] = Array.isArray(input?.windows) ? input.windows : []
+      let savedNote: string | undefined
+      let ownershipCaution: string | undefined
+      let skippedWindows: Array<{ label: string; reason: string }> = []
+      if (input?.use_saved_windows === true) {
+        const [{ listMeasuredWindows }, { measuredWindowsToEstimate }] = await Promise.all([
+          import('@/lib/windowMeasurements'),
+          import('@/lib/measuredWindowsExport'),
+        ])
+        const rows = await listMeasuredWindows({ userId, anonId })
+        const ex = measuredWindowsToEstimate(rows)
+        skippedWindows = ex.skipped
+        const savedIds = new Set(ex.windows.map((w) => w.id))
+        /* ★ 「存下来的优先」是**这一行 filter** 在保证的,不是 concat 的顺序。
+           拿掉 filter、指望后面的覆盖前面的,结果正好相反(下游按 id 建表时
+           后来的会盖掉先来的)—— 别把这行改成排序问题。 */
+        const fromModel = windows.filter((w: any) => !savedIds.has(String(w?.id ?? '')))
+        windows = ex.windows.concat(fromModel as any[])
+        savedNote = `${ex.windows.length} window(s) came from the saved measurement sheet.`
+        if (!userId) {
+          /* W6/F6 的同一条教训:游客的量窗表是存在**这个浏览器**上的,
+             上一个访客的窗户可能还在里面。这里不拦(模型被要求先跟客户确认),
+             但一定要把话说回去,别让它以为服务端替它核实过身份。 */
+          ownershipCaution =
+            'These saved windows live on THIS BROWSER and may belong to a previous visitor. '
+            + 'If you have not already confirmed with the customer that they are theirs, say so and offer to remove any that are not.'
+        }
+      }
+
       const r = await saveEstimate({
         sessionId,
         lang: input?.lang === 'zh' ? 'zh' : input?.lang === 'en' ? 'en' : undefined,
@@ -1699,7 +1735,7 @@ async function runAssistantTool(
         accessCode: input?.access_code,
         refToken: owner.refToken || undefined,
         channel: campaignId ? 'referral_page_ai' : 'website_ai',
-        windows: Array.isArray(input?.windows) ? input.windows : [],
+        windows,
         items: Array.isArray(input?.items) ? input.items : [],
       })
       if (!r.ok) {
@@ -1713,6 +1749,12 @@ async function runAssistantTool(
         access_code: r.accessCode,
         view_url: r.viewUrl,
         totals: r.totals,
+        ...(savedNote ? { saved_windows: savedNote } : {}),
+        ...(skippedWindows.length
+          /* 少一扇窗 = 客户收到的报价就是错的。不能静默。 */
+          ? { windows_skipped: skippedWindows.map((s) => s.label + ' (no width/height saved)') }
+          : {}),
+        ...(ownershipCaution ? { ownership_caution: ownershipCaution } : {}),
         must_say:
           'Read BOTH the estimate number and the 6-digit code to the customer, and tell them the pair lets them continue on any device or in ChatGPT. The prices on it are reference prices, not final.',
       }
