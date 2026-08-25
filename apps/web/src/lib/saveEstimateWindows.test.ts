@@ -102,3 +102,35 @@ describe('save_estimate 的窗户来源', () => {
     expect(r.access_code).toBe('481502')
   })
 })
+
+describe('E2E-F1:尺寸口径 —— 客户说 96×84,送出去就得是 96×84', () => {
+  /* 2026-08-25 线上实测:客户说 96×84 外装,存进去的是 101×90。
+     根因是知识文件里那句「外装通常加 5 英寸宽、6 英寸高」,模型把它当成了
+     「存之前先自己加上去」。服务端判断不了「被加过余量」,能做的是:
+       ① 工具边界上立铁律;② 把存下来的数念回去让客户自己看见。 */
+
+  it('★★ 工具收到 96×84 就原样送出去,不做任何加工', async () => {
+    await save({ windows: [{ id: 'w1', label: '客厅', width_in: 96, height_in: 84, mount: 'outside' }] })
+    expect(sent[0].windows[0].width_in).toBe(96)
+    expect(sent[0].windows[0].height_in).toBe(84)
+    expect(JSON.stringify(sent[0].windows)).not.toContain('101')
+    expect(JSON.stringify(sent[0].windows)).not.toContain('90')
+  })
+
+  it('★ 存完把尺寸念回去,客户当场能发现被改过数', async () => {
+    const r = await save({ windows: [{ id: 'w1', label: '客厅', width_in: 96, height_in: 84 }] })
+    expect(r.saved_windows).toEqual([{ label: '客厅', width_in: 96, height_in: 84 }])
+    expect(r.must_say).toContain('saved_windows')
+  })
+
+  it('★ 工具描述里立了铁律(模型只看得到这段字)', async () => {
+    const { ASSISTANT_TOOLS } = await import('./assistantTools')
+    const tools = ASSISTANT_TOOLS as any[]
+    const save_ = tools.find((t) => t.name === 'save_estimate')
+    const meas = tools.find((t) => t.name === 'save_measured_window')
+    expect(save_.input_schema.properties.windows.description)
+      .toMatch(/NEVER add mounting, overlap or fullness allowances/)
+    expect(save_.input_schema.properties.windows.description).toMatch(/96 x 84/)
+    expect(meas.description).toMatch(/NEVER add mounting, overlap or fullness allowances/)
+  })
+})

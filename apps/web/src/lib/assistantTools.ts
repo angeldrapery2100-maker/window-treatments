@@ -635,7 +635,7 @@ export const ASSISTANT_TOOLS = [
       properties: {
         windows: {
           type: 'array',
-          description: 'One entry per window. Use the exact numbers the customer gave or that list_measured_windows returned — never estimate a dimension.',
+          description: 'One entry per window. Use EXACTLY the numbers the customer stated (or that list_measured_windows returned). NEVER add mounting, overlap or fullness allowances yourself — the pricing engine adds them from mount. If they say 96 x 84 outside mount, send 96 and 84.',
           items: {
             type: 'object',
             properties: {
@@ -730,7 +730,7 @@ export const ASSISTANT_TOOLS = [
   {
     name: 'save_measured_window',
     description:
-      "Save (or update, by passing id) a window on the customer's measurement sheet — the same sheet as the /measure-wizard page. Use this when the customer gives you measurements in chat OR sends a PHOTO of a measurement note/sketch: extract the numbers, CONFIRM them back to the customer first ('客厅窗 60×84,对吗?'), then save. Always collect a location name. Inches only. After saving, tell them it's on their sheet and they can see/edit it at /measure-wizard.",
+      "Save (or update, by passing id) a window on the customer's measurement sheet — the same sheet as the /measure-wizard page. Use this when the customer gives you measurements in chat OR sends a PHOTO of a measurement note/sketch: extract the numbers, CONFIRM them back to the customer first ('客厅窗 60×84,对吗?'), then save. Always collect a location name. Inches only. Store EXACTLY the numbers the customer stated — NEVER add mounting, overlap or fullness allowances yourself; allowances are applied later from the mount type. After saving, tell them it's on their sheet and they can see/edit it at /measure-wizard.",
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -1744,11 +1744,21 @@ async function runAssistantTool(
           note: 'The estimate was NOT saved. Do not read out an estimate number — you do not have one. Offer to continue in chat or book the free measure.',
         }
       }
+      /* E2E-F1(2026-08-25 线上实测):客户说 96×84,存进去的是 101×90 ——
+         模型照着量尺指导里的外装余量自己加了 5/6。服务端判断不了「被加过余量」,
+         但可以把存下来的数念回去,客户当场就能发现。 */
+      const savedWindows = (Array.isArray(windows) ? windows : []).slice(0, 20).map((w: any) => ({
+        label: String((w && (w.label || w.location)) || ''),
+        width_in: Number(w && (w.width_in ?? w.widthIn)),
+        height_in: Number(w && (w.height_in ?? w.heightIn)),
+      })).filter((w) => w.width_in > 0 && w.height_in > 0)
+
       return {
         estimate_no: r.estimateNo,
         access_code: r.accessCode,
         view_url: r.viewUrl,
         totals: r.totals,
+        saved_windows: savedWindows,
         ...(savedNote ? { saved_windows: savedNote } : {}),
         ...(skippedWindows.length
           /* 少一扇窗 = 客户收到的报价就是错的。不能静默。 */
@@ -1756,7 +1766,7 @@ async function runAssistantTool(
           : {}),
         ...(ownershipCaution ? { ownership_caution: ownershipCaution } : {}),
         must_say:
-          'Read BOTH the estimate number and the 6-digit code to the customer, and tell them the pair lets them continue on any device or in ChatGPT. The prices on it are reference prices, not final.',
+          'Read BOTH the estimate number and the 6-digit code to the customer, and tell them the pair lets them continue on any device or in ChatGPT. Also read back each window size in saved_windows exactly as stored ("saved as 96 by 84") so they can catch a wrong number now. The prices on it are reference prices, not final.',
       }
     }
 
