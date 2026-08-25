@@ -75,3 +75,23 @@ describe('submitWebsiteInquiry referral attribution', () => {
     expect(r.referral).toEqual({ applied: true, type: 'customer', label: 'Jenny L.' })
   })
 })
+
+describe('estimateNo 透传(P4-3)', () => {
+  afterEach(() => { vi.unstubAllGlobals() })
+
+  it('形状对的单号带出去', async () => {
+    const calls = stubIntake()
+    await submitWebsiteInquiry({ name: 'A B', phone: '626-282-1234', estimateNo: 'ae-2608-6aej' })
+    expect(calls[0].estimateNo).toBe('AE-2608-6AEJ')
+  })
+
+  it('★ 形状不对的单号直接不带 —— 一个手滑的字符串不该让整次建档失败', async () => {
+    for (const bad of ['AE-2608-0AEJ', 'AE-26-6AEJ', 'oops', '']) {
+      vi.unstubAllGlobals()
+      const calls = stubIntake()
+      const r = await submitWebsiteInquiry({ name: 'A B', phone: '626-282-1234', estimateNo: bad })
+      expect(calls[0].estimateNo).toBeUndefined()
+      expect(r.ok).toBe(true)          // 建档照常成功
+    }
+  })
+})

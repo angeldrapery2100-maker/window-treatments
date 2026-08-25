@@ -13,16 +13,21 @@ import { customerGptUrl, referralOpeningLine, copyText, logGptOpen } from '@/lib
  * 框里,长按就能拷。**绝不因为复制失败就不给开链接**。
  */
 export default function OpenInChatGpt({
-  token, language, className = '', variant = 'primary',
+  token, language, className = '', variant = 'primary', lineOverride, hint,
 }: {
   token: string
   language: UiLanguage
   className?: string
   /** 落地页上主 CTA 是「预约免费量窗」,这个按钮别抢戏 —— 用 secondary。 */
   variant?: 'primary' | 'secondary'
+  /** 换一句开场口令(报价单页面用的是「我有一张报价单 AE-…」)。
+   *  给了它就不再用推荐口令 —— 两句话都塞进去只会让客户不知道该发哪句。 */
+  lineOverride?: string
+  /** 换掉底下那句解释。默认那句讲的是推荐归因,换了场景就不对了。 */
+  hint?: string
 }) {
   const url = customerGptUrl()
-  const line = referralOpeningLine(token, language === 'zh' ? 'zh' : 'en')
+  const line = lineOverride ?? referralOpeningLine(token, language === 'zh' ? 'zh' : 'en')
   const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle')
   if (!url) return null
 
@@ -64,7 +69,7 @@ export default function OpenInChatGpt({
             {line}
           </p>
           <p className="mt-2 text-[12px] text-gray-500">
-            {tr(language,
+            {hint ?? tr(language,
                 'It tells the advisor who referred you, so your friend still gets credit.',
                 '它是用来告诉顾问是谁推荐你来的，朋友的推荐才算数。')}
           </p>
@@ -73,7 +78,7 @@ export default function OpenInChatGpt({
 
       {line && state === 'idle' && (
         <p className="mt-2 text-[12px] text-gray-500">
-          {tr(language,
+          {hint ?? tr(language,
               'We will copy a short opening line for you — paste it in ChatGPT so your referral counts.',
               '点击后会复制一句开场口令 —— 在 ChatGPT 里粘贴发送，推荐才算数。')}
         </p>

@@ -33,6 +33,9 @@ export interface InquiryInput {
    *  ad_ref cookie ONLY — never from anything the model or the browser body
    *  claims — and AAPP resolves it to the referrer + any partner pricing. */
   referral?: { token: string; page?: string }
+  /** 统一 AI 报价单的单号(P4)。AAPP 收到就把那张单挂到新建的档案上 ——
+   *  挂失败不影响建档,线索是钱,报价单只是附加信息。 */
+  estimateNo?: string
 }
 
 export interface InquiryResult {
@@ -90,6 +93,11 @@ export async function submitWebsiteInquiry(input: InquiryInput): Promise<Inquiry
     smsConsent: input.smsConsent === true,
     source: input.source || 'website_chat',
     website: '', // honeypot — always empty from a legitimate server call
+  }
+  // 形状不对的单号直接不带 —— 一个手滑的字符串不该让整次建档失败。
+  const estimateNo = String(input.estimateNo || '').trim().toUpperCase()
+  if (/^AE-\d{4}-[23456789ABCDEFGHJKMNPQRSTVWXYZ]{4}$/.test(estimateNo)) {
+    body.estimateNo = estimateNo
   }
   // Only a well-formed token travels; a malformed one is dropped silently so
   // a junk cookie can never make the whole lead submission fail.

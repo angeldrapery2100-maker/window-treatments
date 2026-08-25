@@ -42,6 +42,24 @@ export function referralOpeningLine(token: string, language: 'en' | 'zh' = 'en')
     : `ref=${token} — Hi, I came from a referral link.`
 }
 
+/** AE-YYMM-XXXX。给「在 ChatGPT 里继续」用 —— 和 REF_SAFE 一样,形状不对就不拼。 */
+const ESTIMATE_NO_RE = /^AE-\d{4}-[23456789ABCDEFGHJKMNPQRSTVWXYZ]{4}$/
+
+/**
+ * 拿着报价单去 ChatGPT 接着聊的开场口令。
+ *
+ * ★ 刻意**不含 6 位取件码**。查看链接可能被转发(客户发给家人、发进群),
+ *   链接看得到单子是有意的;但能不能拿它去改单、去建档,得由手里有码的人
+ *   决定。GPT 会自己问码 —— 那一步就是这条边界。
+ */
+export function estimateOpeningLine(estimateNo: string, language: 'en' | 'zh' = 'en'): string {
+  const no = String(estimateNo || '').trim().toUpperCase()
+  if (!ESTIMATE_NO_RE.test(no)) return ''
+  return language === 'zh'
+    ? `我有一张报价单 ${no}，想接着聊。`
+    : `I have estimate ${no} and would like to continue.`
+}
+
 /** 尽力复制。返回是否真的写进了剪贴板 —— 失败时页面要把口令显示出来让人手动复制。 */
 export async function copyText(text: string): Promise<boolean> {
   if (!text) return false

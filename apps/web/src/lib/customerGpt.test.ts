@@ -1,7 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import {
-  CUSTOMER_GPT_URL, customerGptUrl, referralOpeningLine, isSafeRefToken,
-} from './customerGpt'
+  CUSTOMER_GPT_URL, customerGptUrl, referralOpeningLine, isSafeRefToken, estimateOpeningLine } from './customerGpt'
 
 const ENV = process.env.NEXT_PUBLIC_CUSTOMER_GPT_URL
 afterEach(() => {
@@ -59,5 +58,26 @@ describe('referralOpeningLine — 归因真正靠的那句话', () => {
 
   it('口令里没有密钥,只有 token', () => {
     expect(/key|secret|bearer/i.test(referralOpeningLine(T, 'en'))).toBe(false)
+  })
+})
+
+describe('estimateOpeningLine —— 拿报价单去 ChatGPT 接着聊(P4-4)', () => {
+  it('★ 口令里绝不含 6 位取件码 —— 查看链接会被转发,改单的权限得留给手里有码的人', () => {
+    const line = estimateOpeningLine('AE-2608-6AEJ', 'zh')
+    expect(line).toContain('AE-2608-6AEJ')
+    expect(line).not.toMatch(/\d{6}/)
+  })
+
+  it('单号形状不对就不拼(0/O/1/I 不在 Crockford 里)', () => {
+    for (const bad of ['AE-2608-0AEJ', 'AE-2608-OAEJ', 'AE-2608-1AEJ', 'AE-2608-IAEJ',
+                       'AE-26-6AEJ', 'nonsense', '']) {
+      expect(estimateOpeningLine(bad)).toBe('')
+    }
+  })
+
+  it('小写也认,双语各有一句', () => {
+    expect(estimateOpeningLine('ae-2608-6aej', 'en')).toContain('AE-2608-6AEJ')
+    expect(estimateOpeningLine('AE-2608-6AEJ', 'zh')).toContain('报价单')
+    expect(estimateOpeningLine('AE-2608-6AEJ', 'en')).toContain('estimate')
   })
 })

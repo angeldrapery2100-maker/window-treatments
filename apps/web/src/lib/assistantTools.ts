@@ -621,8 +621,69 @@ export const ASSISTANT_TOOLS = [
         product_type: { type: 'string', description: 'Optional product interest, e.g. "Motorized Shades".' },
         intent: { type: 'string', enum: ['triage', 'repair'], description: '"triage" for a new sales/consultation lead (default), "repair" for a repair request.' },
         sms_consent: { type: 'boolean', description: 'True ONLY if the customer explicitly agreed to receive a text message.' },
+        estimate_no: { type: 'string', description: 'The AE-YYMM-XXXX estimate you saved for this customer, if any — it attaches the windows and products to their profile so the designer arrives already knowing the project.' },
       },
       required: ['name'],
+    },
+  },
+  {
+    name: 'save_estimate',
+    description:
+      "Save the customer's measured windows and chosen products as a reusable AI estimate (AE-YYMM-XXXX). Use it AFTER you have priced at least one product, when the customer wants to think it over, continue later, or continue somewhere else. The SERVER prices every line itself from family/variant/config — never send a price, it will be rejected. Returns an estimate number AND a 6-digit access code: read BOTH to the customer and tell them the pair works on any device and in ChatGPT. To update an estimate the customer already has, pass estimate_no + access_code; windows and items REPLACE what was there, so send the complete list, not just the new one.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        windows: {
+          type: 'array',
+          description: 'One entry per window. Use the exact numbers the customer gave or that list_measured_windows returned — never estimate a dimension.',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', description: 'Stable id, e.g. "w1".' },
+              label: { type: 'string', description: 'What the customer calls it, e.g. "Living room".' },
+              room: { type: 'string' },
+              width_in: { type: 'number' },
+              height_in: { type: 'number' },
+              mount: { type: 'string', enum: ['inside', 'outside'] },
+              notes: { type: 'string' },
+            },
+            required: ['id', 'label', 'width_in', 'height_in'],
+          },
+        },
+        items: {
+          type: 'array',
+          description: 'One entry per product choice. Use the SAME family/variant/config you already priced. Do NOT include any price field.',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              window_id: { type: 'string', description: 'Which window this covers.' },
+              family: { type: 'string', description: '"catalog" for Luma/store products, "hd" for Hunter Douglas.' },
+              variant: { type: 'string', description: 'e.g. "roller_shade".' },
+              qty: { type: 'integer' },
+              config: { type: 'object', description: 'The options you priced, e.g. { fabric_full_code, cassette, option }.' },
+            },
+            required: ['id', 'family', 'variant'],
+          },
+        },
+        estimate_no: { type: 'string', description: 'Only when updating an estimate the customer already has.' },
+        access_code: { type: 'string', description: 'The 6-digit code, required together with estimate_no.' },
+        lang: { type: 'string', enum: ['en', 'zh'] },
+      },
+      required: [],
+    },
+  },
+  {
+    name: 'load_estimate',
+    description:
+      "Load an estimate the customer already has, by number + 6-digit code. Use it when they say they have an estimate number, or want to pick up where they left off. Ask for BOTH; a wrong code and an unknown number return the same answer on purpose, so just ask them to re-read both rather than guessing which one was wrong.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        estimate_no: { type: 'string', description: 'AE-YYMM-XXXX.' },
+        access_code: { type: 'string', description: 'The 6 digits they were given.' },
+      },
+      required: ['estimate_no', 'access_code'],
     },
   },
   {
@@ -1618,6 +1679,64 @@ async function runAssistantTool(
         message: input?.message,
         requestedChanges: input?.requested_changes ?? null,
       })
+    /* ── 统一 AI 报价单(P4-3)────────────────────────────────────────
+       ★ windows / items 由模型给,但**价一律由后端重算** —— 前端传任何价格
+         字段都会被 stripPriceFields 摘掉、后端再见到也会整单拒。所以模型
+         编不出一个价来;它最多编错一个配置,那和 quote_luma_estimate 今天的
+         风险是同一个,不是新增的。
+       ★ sessionId 用 anonId/userId,不用模型说的任何东西 —— AAPP 按它算
+         每天 20 张的额度,让模型自己填等于把额度交给它。 */
+    case 'save_estimate': {
+      const { saveEstimate } = await import('@/lib/aappEstimate')
+      const sessionId = String(anonId || userId || '').trim()
+      if (!sessionId) {
+        return { error: 'no_session', note: 'Cannot save an estimate for this visitor. Offer to text or email the quote instead.' }
+      }
+      const r = await saveEstimate({
+        sessionId,
+        lang: input?.lang === 'zh' ? 'zh' : input?.lang === 'en' ? 'en' : undefined,
+        estimateNo: input?.estimate_no,
+        accessCode: input?.access_code,
+        refToken: owner.refToken || undefined,
+        channel: campaignId ? 'referral_page_ai' : 'website_ai',
+        windows: Array.isArray(input?.windows) ? input.windows : [],
+        items: Array.isArray(input?.items) ? input.items : [],
+      })
+      if (!r.ok) {
+        return {
+          error: r.error || 'save_failed',
+          note: 'The estimate was NOT saved. Do not read out an estimate number — you do not have one. Offer to continue in chat or book the free measure.',
+        }
+      }
+      return {
+        estimate_no: r.estimateNo,
+        access_code: r.accessCode,
+        view_url: r.viewUrl,
+        totals: r.totals,
+        must_say:
+          'Read BOTH the estimate number and the 6-digit code to the customer, and tell them the pair lets them continue on any device or in ChatGPT. The prices on it are reference prices, not final.',
+      }
+    }
+
+    case 'load_estimate': {
+      const { loadEstimate } = await import('@/lib/aappEstimate')
+      const r = await loadEstimate(String(input?.estimate_no || ''), String(input?.access_code || ''))
+      if (!r.ok) {
+        /* ★ 对模型也只说一句话。让它知道「是码错了还是单号错了」,它就会替
+           攻击者把话说出来。 */
+        return {
+          error: r.error === 'expired' ? 'expired' : 'not_found',
+          note: r.error === 'expired'
+            ? 'That estimate has expired (they are kept 90 days). Offer to build a new one.'
+            : 'No estimate matches. Do NOT say which part was wrong — ask the customer to re-read both the number and the 6 digits.',
+        }
+      }
+      return {
+        estimate: r.estimate,
+        note: 'Prices here are REFERENCE prices (no installation, no tax). To change the estimate, call save_estimate with the same estimate_no + access_code and the COMPLETE windows/items list.',
+      }
+    }
+
     case 'submit_website_inquiry': {
       // ── W6 contact guard (2026-07-21) ──────────────────────────────────
       // 1. Reserved test identities (555-01xx / example.com) never reach the
@@ -1670,6 +1789,9 @@ async function runAssistantTool(
         intent: input?.intent === 'repair' ? 'repair' : 'triage',
         smsConsent: input?.sms_consent === true,
         source: 'website_chat',
+        // P4-3:带上单号 → AAPP 把窗户表和条目挂进客户档案,销售一打开就看到
+        // 整个项目,不用再问一遍尺寸。挂失败不影响建档。
+        estimateNo: String(input?.estimate_no ?? '').trim() || undefined,
         ...(owner.refToken ? { referral: { token: owner.refToken, page: 'assistant' } } : {}),
       })
       // Was a text message promised, and did it actually go out? The weekly
