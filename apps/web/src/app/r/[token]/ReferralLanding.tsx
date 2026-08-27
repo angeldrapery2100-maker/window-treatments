@@ -162,6 +162,27 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
             '定制窗帘、卷帘、百叶——1984 年起在洛杉矶自家工厂制作。'
           )}
         </p>
+
+        {/* BROWSE_PRODUCTS_ENTRY —— 整改 #24-1 (Eddie 2026-08-26)。
+            以前「浏览产品」是整页**最后**一个 section 里的一个灰色文字链接,
+            客户进来先看到的是三张「量窗 / 问 AI / 上门」卡片,想先看看你们
+            到底卖什么的人得一路划到底。
+            现在紧跟在公司介绍下面,主路径变成:
+              公司介绍 → 浏览产品 → 量窗 → 问 AI → 免费上门量窗。
+            ★ 用描边而不是实心:页面唯一的实心深色按钮留给「问 AI 顾问」——
+              那才是真正出线索的那一步,别让这个入口把它盖过去。 */}
+        <Link
+          href="/products"
+          className="mx-auto mt-7 flex min-h-[48px] w-full max-w-sm items-center justify-center gap-2
+                     rounded-full border-2 border-[#12141C] px-6 text-[15px] font-medium
+                     transition-colors hover:bg-[#12141C] hover:text-white"
+        >
+          {tr(language, 'Browse products', '浏览产品')}
+          <span aria-hidden="true">→</span>
+        </Link>
+        <p className="mt-2 text-[12.5px] text-gray-500">
+          {tr(language, 'See what we make before you measure', '先看看我们做什么，再动手量窗')}
+        </p>
       </section>
 
       {/* ── Three steps ──────────────────────────────────────────────────── */}
@@ -212,14 +233,10 @@ export default function ReferralLanding({ token, referrerType, displayName, disc
       </section>
 
       {/* ── Secondary entry points ───────────────────────────────────────── */}
+      {/* #24-1:原来这里还有第二个「浏览产品」灰色文字链接。同一个入口出现
+          两次,上面那个就不像主路径了 —— 删掉,只留 ChatGPT 那一个。 */}
       <section className="mx-auto flex max-w-4xl flex-col items-center gap-3 px-5 pb-14">
         <OpenInChatGpt token={token} language={language} variant="secondary" className="w-full max-w-sm" />
-        <Link
-          href="/products"
-          className="w-full max-w-sm rounded-full px-5 py-2.5 text-center text-[14px] text-gray-600 hover:text-[#12141C]"
-        >
-          {tr(language, 'Browse products', '浏览产品')} →
-        </Link>
       </section>
 
       </main>

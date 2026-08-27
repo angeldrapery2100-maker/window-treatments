@@ -11,6 +11,15 @@ import { findUnverifiedOrderNumbers, orderClaimFallbackReply, fallbackLanguageFo
 import { findUnverifiedContacts, contactClaimFallbackReply } from '@/lib/contactClaimGuard'
 import { findUnsourcedPrices, priceClaimFallbackReply } from '@/lib/priceClaimGuard'
 import { validateChatImages, type ParsedChatImage } from '@/lib/chatImages'
+import {
+  classifyUpstreamFailure,
+  classifyThrownFailure,
+  assistantFailMessage,
+  assistantFailHttpStatus,
+  isPricingTool,
+  QUOTE_TOOL_ERROR,
+  type AssistantFailCode,
+} from '@/lib/assistantFailure'
 import { CORE_KNOWLEDGE, KB_SECTIONS } from './knowledge.generated'
 
 // AI shopping assistant for the store — proxies chat turns to the Anthropic
@@ -362,6 +371,24 @@ function bad(error: string, status = 400) {
   return NextResponse.json({ success: false, error }, { status })
 }
 
+/* #24-3:所有「助手挂了」的出口都从这里走。
+   ★ 以前四个出口共用同一句话、日志里也只有一句 console.error,截图上
+     完全看不出坏在哪一层。现在每个出口带码:日志能按码统计,payload 里
+     带一份,客户看到的那句话末尾也附一个参考码。
+   ctx 里只放**排查用的元信息**(状态码、第几轮、工具名、长度),
+   绝不放对话内容、客户姓名电话或 API key。 */
+const UPSTREAM_TIMEOUT_MS = 25000
+
+function failAssistant(code: AssistantFailCode, ctx: Record<string, unknown> = {}) {
+  let meta = ''
+  try { meta = JSON.stringify(ctx).slice(0, 600) } catch { meta = '{}' }
+  console.error(`[assistant] FAIL ${code} ${meta}`)
+  return NextResponse.json(
+    { success: false, error: assistantFailMessage(code), code },
+    { status: assistantFailHttpStatus(code) }
+  )
+}
+
 export async function POST(request: Request) {
   try {
     // Graceful degradation: no key configured → the widget hides itself.
@@ -525,26 +552,42 @@ export async function POST(request: Request) {
     const priceSources: string[] = messages.map((m) => m.content)
     const PERSISTED_LAYER_TOOLS = new Set(['get_home_project', 'list_measured_windows', 'save_measured_window', 'upsert_room_item'])
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: MAX_TOKENS,
-          system,
-          tools: ASSISTANT_TOOLS,
-          messages: apiMessages,
-        }),
-      })
+      /* #24-3:以前这个 fetch 没有任何超时。上游一挂起,就一路挂到平台
+         把函数掐掉 —— 客户端拿到的是一个裸的网络错误,我们这边连一行日志
+         都没有。现在自己关闸,挂起变成一个干净的 AI_TIMEOUT。 */
+      const ctrl = new AbortController()
+      const timer = setTimeout(() => ctrl.abort(), UPSTREAM_TIMEOUT_MS)
+      let res: Response
+      try {
+        res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+          },
+          body: JSON.stringify({
+            model,
+            max_tokens: MAX_TOKENS,
+            system,
+            tools: ASSISTANT_TOOLS,
+            messages: apiMessages,
+          }),
+          signal: ctrl.signal,
+        })
+      } finally {
+        clearTimeout(timer)
+      }
 
       if (!res.ok) {
         const detail = await res.text().catch(() => '')
-        console.error(`[assistant] Anthropic API error ${res.status}:`, detail.slice(0, 500))
-        return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+        const code = classifyUpstreamFailure(res.status, detail)
+        return failAssistant(code, {
+          upstreamStatus: res.status,
+          iter,
+          turns: apiMessages.length,
+          detail: detail.slice(0, 200),
+        })
       }
 
       const data = await res.json()
@@ -568,14 +611,18 @@ export async function POST(request: Request) {
           try {
             result = await executeAssistantTool(block.name, block.input, userId, anonId, campaignId, customerTexts, refToken)
           } catch (err) {
-            console.error(`[assistant] tool ${block?.name} failed:`, err)
+            const tag = isPricingTool(block?.name) ? QUOTE_TOOL_ERROR : 'TOOL_THREW'
+            console.error(`[assistant] ${tag} tool=${block?.name} threw:`, err)
             result = { error: 'tool_failed' }
           }
           // Soft failures (tool returned {error}) never surfaced in logs
           // before, which is why "pricing tool having a hiccup" moments were
           // invisible — log them so real-world failure rates can be measured.
           if (result && typeof result === 'object' && (result as any).error) {
-            console.warn(`[assistant] tool ${block.name} soft error:`, String((result as any).error).slice(0, 200))
+            /* #24-3:定价/报价工具坏了,客户拿到的是错的价或压根没有价 ——
+               和「随便哪个工具打了个嗝」不是一回事,单独一个码好统计。 */
+            const tag = isPricingTool(block.name) ? QUOTE_TOOL_ERROR : 'TOOL_SOFT_ERROR'
+            console.warn(`[assistant] ${tag} tool=${block.name}:`, String((result as any).error).slice(0, 200))
           }
           if (block.name === 'save_estimate') {
             const { safeEstimateViewUrl } = await import('@/lib/estimateDisplay')
@@ -649,8 +696,9 @@ export async function POST(request: Request) {
     }
 
     if (!reply) {
-      console.error('[assistant] No final reply after tool loop')
-      return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+      /* 走完 5 轮工具来回还没拿到最终答复 —— 和「上游报错」是两回事,
+         多半是工具一直失败、模型一直重试。 */
+      return failAssistant('TOOL_LOOP_EXHAUSTED', { turns: messages.length })
     }
 
     // Full-reply language backstop (W9 2026-07-21): a conversation whose user
@@ -741,8 +789,7 @@ export async function POST(request: Request) {
     const cleanReply = stripInlineMarkdown(rawReply)
     if (!cleanReply) {
       // Degenerate case: the model sent ONLY a [quick] line. Treat as failure.
-      console.error('[assistant] Reply was empty after quick-reply extraction')
-      return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 502)
+      return failAssistant('INVALID_RESPONSE', { reason: 'empty_after_quick_reply_extraction', rawLen: reply.length })
     }
 
     // Conversation persistence (P1-6): SIGNED-IN customers only. Guest
@@ -777,8 +824,11 @@ export async function POST(request: Request) {
     }
     return response
   } catch (e) {
-    console.error('[assistant] Unexpected error:', e)
-    return bad('The assistant is having trouble right now. Please try again, or call us at 626-451-9841.', 500)
+    /* ★ abort 要认出来:超时闸就是靠 AbortController 关的,把它算成
+       FUNCTION_ERROR 会把「上游太慢」误报成「我们的代码有 bug」。 */
+    const code = classifyThrownFailure(e)
+    console.error(`[assistant] unexpected (${code}):`, e)
+    return failAssistant(code, { thrown: String((e as { name?: unknown })?.name || 'Error') })
   }
 }
 

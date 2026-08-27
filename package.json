@@ -10,7 +10,9 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "check:colors": "node scripts/check-color-codes.js"
+    "check:colors": "node scripts/check-color-codes.js",
+    "check:assistant": "node --experimental-strip-types scripts/check-assistant-failure-codes.js",
+    "check:partner": "node scripts/check-partner-pages.js"
   },
   "devDependencies": {
     "@types/pg": "^8.16.0",
