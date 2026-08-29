@@ -43,6 +43,7 @@ export default function SiteFooter({ dark, youtube, etsy, tiktok, instagram, cop
             <Link href="/contact" className="hover:underline">Contact</Link>
             <Link href="/how-to-measure" className="hover:underline">How to Measure</Link>
             <Link href="/faq" className="hover:underline">FAQ</Link>
+            <Link href="/warranty" className="hover:underline">Warranty</Link>
             <Link href="/service-areas" className="hover:underline">Service Areas</Link>
             <Link href="/store/track" className="hover:underline">Track Order</Link>
             <Link href="/privacy" className="hover:underline">Privacy</Link>

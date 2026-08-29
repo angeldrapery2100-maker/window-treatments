@@ -968,7 +968,7 @@ AI 应立即转给团队或登记回电：
 - 超宽、超高、特殊形状、bay window、corner window、skylight。
 - French door shutter、door cut out、handle/lock clearance。
 - Motorized + smart home integration。
-- 客户问 warranty 是否免费维修。
+- 客户问 warranty 具体理赔结果、或要求判断某个损坏算不算保修范围(保修年限与政策条文可以直接回答,见业务事实单源;但"这个损坏我们赔不赔"必须转人工)。
 - 客户投诉售后问题。
 - 客户要求紧急安装日期。
 - 客户说已有报价但价格不一致。

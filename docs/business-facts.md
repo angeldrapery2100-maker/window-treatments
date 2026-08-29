@@ -28,7 +28,12 @@
 ## 产品与品牌
 - 自有工坊定制布帘(招牌):pinch pleat、ripple fold、纱帘、遮光、亚麻等。
 - Roman shades(手工罗马帘);Luma Collection:roller / zebra / sheer shades(电动、无绳、链条)。
-- Luma 保修:roller shade 5 年;斑马帘(zebra)及其他 Luma 产品通常 3 年 —— 以具体产品资料为准。
+- Luma 保修(以此为准,不要再说"以产品资料为准"):roller / sheer / dual roller / dual sheer = 5 年;zebra / modern roman = 3 年。覆盖制造与材料缺陷,保修期内免费维修或换新。
+- 安装保修 3 年(仅限我们安装的订单),三年内安装相关问题免费上门返修,人为因素除外。5 年保修产品在第 4-5 年产品仍在保(配件/换新免费),但上门费与工时费另收 —— 这一点要主动讲清楚,不要藏。
+- 线上发货、非我们安装的订单:同享产品保修,但只走寄递(寄配件或寄回维修,保修期内往返运费我方承担),不含上门服务。
+- 保修期后半价换新:同一扇窗、同一尺寸,可用任意 Luma 产品按"换新当时现行标价"5 折换新;限原始购买人并需购买凭证;每扇窗限一次;不与其他折扣叠加;不含安装费、运费与销售税;以该产品线仍在售为前提。
+- 不保范围:人为损坏/误用、清洁不当、客户自装或非我方拆装造成的损坏、正常磨损与日晒渐进褪色、擅自改装或第三方维修、移装到其他窗户。
+- 完整政策页:angel-drapery.com/warranty —— 客户问细则时给这个链接。
 - Hunter Douglas:Silhouette、Nantucket、Applause、Vignette、Designer Roller/Screen、Skyline、Aria、Alustra、Palm Beach shutters 等。
 - Plantation shutters、woven wood;电动/智能:Hunter Douglas PowerView、Somfy、Lutron(Palladiom、Triathlon),兼容 Matter、Apple HomeKit、Google Home、Home Assistant。
 - 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。

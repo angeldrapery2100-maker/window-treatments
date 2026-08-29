@@ -6,6 +6,7 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import PriceEstimator from '@/components/PriceEstimator'
+import LumaWarranty, { LumaAssuranceBar } from '@/components/LumaWarranty'
 
 const BASE = '/luma-collection'
 const SW = `${BASE}/swatches`
@@ -208,6 +209,8 @@ export default function LumaCollectionClient() {
           <span className="text-gray-700 uppercase">Luma Collection</span>
         </nav>
       </div>
+
+      <LumaAssuranceBar years={3} />
 
       {/* ══ INTRO — WHAT IS A ZEBRA SHADE ══ */}
       <section className="w-full py-24 md:py-32">
@@ -696,6 +699,8 @@ export default function LumaCollectionClient() {
           </div>
         </div>
       </section>
+
+      <LumaWarranty years={3} tone="sand" />
 
       {/* ══ CTA ══ */}
       <section className="w-full bg-[#3d3d3d] text-white py-24">

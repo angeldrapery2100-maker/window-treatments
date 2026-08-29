@@ -6,6 +6,7 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { m as motion, AnimatePresence } from 'framer-motion'
 import PriceEstimator from '@/components/PriceEstimator'
+import LumaWarranty, { LumaAssuranceBar } from '@/components/LumaWarranty'
 
 const BASE = '/sheer-collection'
 const SW   = `${BASE}/swatches`
@@ -104,6 +105,8 @@ export default function SheerCollectionClient() {
           </div>
         </div>
       </section>
+
+      <LumaAssuranceBar years={5} />
 
       {/* ── INTRO ─────────────────────────────────────────────────── */}
       <section className="w-full bg-white py-20 md:py-28">
@@ -502,8 +505,10 @@ export default function SheerCollectionClient() {
         </div>
       </section>
 
+      <LumaWarranty years={5} tone="white" />
+
       {/* ── CTA ───────────────────────────────────────────────────── */}
-      <section className="w-full bg-white py-24 md:py-32">
+      <section className="w-full bg-white py-24 md:py-32 border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeUp}>
             <span className="text-[#4DB6E8] text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">Get Started</span>

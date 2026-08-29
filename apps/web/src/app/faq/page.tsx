@@ -109,7 +109,15 @@ const categories = [
     faqs: [
       {
         q: 'What warranty comes with my installation?',
-        a: 'Our installation workmanship is covered by a three-year warranty — if anything we installed needs attention, we come back and fix it at no charge. Motors and hardware also carry their manufacturer warranties (Hunter Douglas, Somfy, Lutron), and we handle the manufacturer warranty process on your behalf if anything comes up.',
+        a: 'Our installation workmanship is covered by a three-year warranty — if anything we installed needs attention, we come back and fix it at no charge. Our own Luma shades also carry a product warranty of their own: five years on roller, sheer, dual roller and dual sheer shades, and three years on zebra and modern roman shades. Motors and hardware from other brands carry their manufacturer warranties (Hunter Douglas, Somfy, Lutron), and we handle that process on your behalf. Full details are on our warranty page.',
+      },
+      {
+        q: 'My Luma shade is out of warranty — do I have to pay full price to replace it?',
+        a: 'No. Once the product warranty ends, the same window can be re-shaded with any Luma product at 50% off the current list price — same window, same size, original purchaser, one replacement per window. The half-price covers the shade itself; installation, shipping and sales tax are separate.',
+      },
+      {
+        q: 'I ordered online and installed it myself — is it still covered?',
+        a: 'Yes, the product warranty is the same. Because we didn\'t install it, service is handled by shipping rather than a service visit: we send replacement parts, or arrange for the shade to come back to our workroom for repair, and we cover shipping both ways within the warranty period. On-site service isn\'t included outside our installation service area.',
       },
       {
         q: 'What if I measured wrong and the piece doesn\'t fit?',

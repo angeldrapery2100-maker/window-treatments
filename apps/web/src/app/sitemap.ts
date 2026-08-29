@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'smart-shades',
     'how-to-measure',
     'faq',
+    'warranty',
     'service-areas',
     'service-areas/temple-city',
     'service-areas/arcadia',

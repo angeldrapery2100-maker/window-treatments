@@ -322,6 +322,10 @@ export default function ShadeProduct({ productId }: { productId: string }) {
                       {addedMsg ? '✓ Added to Cart' : 'Add to Cart'}
                     </button>
                     <TrustStrip />
+                    <p className="mt-3 text-center text-[11px] text-gray-400 leading-relaxed">
+                      Covered by our product warranty · Half-price replacement after it ends ·{' '}
+                      <Link href="/warranty" className="underline underline-offset-2 hover:text-gray-600">Details</Link>
+                    </p>
                     <CopyConfigLink productId={productId} config={{ width, height, heightFraction, quantity, options: selectedOptions }} />
                     <SwatchCard productId={productId} productName={productName} mainImageUrl={mainImages[0]?.url || null} options={options} selectedOptions={selectedOptions} />
                     <p className="mt-3 text-center text-xs text-gray-500">
