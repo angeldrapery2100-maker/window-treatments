@@ -53,9 +53,12 @@ export async function generateMetadata({
 export default async function ReferralPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const ref = isValidReferralToken(token) ? await lookupReferral(token) : null
-  // A mistyped, revoked or expired link lands on the homepage rather than a
-  // 404 — a printed QR code should never dead-end a customer.
-  if (!ref) redirect('/')
+  if (!ref) {
+    // 死链接(被撤销 / 真源被删 / 打错)。仍然落主页而不是 404 —— 印出去的二维码
+    // 不能把客户带进死胡同 —— 但必须留下痕迹,否则「链接跳主页」只能靠客户投诉发现。
+    console.warn(`[referral] dead link, redirecting home: ${token}`)
+    redirect('/?ref=expired')
+  }
 
   return (
     <ReferralLanding
