@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import {
   getReferralFromRequest, isValidReferralToken, TOKEN_RE,
-  fetchReferralPortal, lookupReferral, uploadPartnerW9, _clearReferralCache,
+  fetchReferralPortal, lookupReferral, lookupReferralDetailed, uploadPartnerW9, _clearReferralCache,
   REFERRAL_COOKIE, REFERRAL_COOKIE_MAX_AGE,
   CAMPAIGN_SLUG_RE, ensureCampaignReferralToken,
 } from './referral'
@@ -282,6 +282,43 @@ describe('AAPP wire format', () => {
     _clearReferralCache()
     stub({ ok: false, error: 'not_found' })
     expect(await lookupReferral(MOCK_CUSTOMER_TOKEN)).toBeNull()
+  })
+})
+
+// ── 整改 #31:云函数冷启动超时 ≠ 链接失效 ──────────────────────────────────
+describe('lookupReferralDetailed — transient vs definitive (整改 #31)', () => {
+  afterEach(() => { vi.unstubAllGlobals(); _clearReferralCache() })
+
+  it('★ timeout/network failure → transient:true, retried once, and NOT cached', async () => {
+    let calls = 0
+    vi.stubGlobal('fetch', async () => { calls++; throw new Error('TimeoutError') })
+    const r1 = await lookupReferralDetailed(MOCK_AGENT_TOKEN)
+    expect(r1).toEqual({ ref: null, transient: true })
+    expect(calls).toBe(2)                       // 一次重试
+    // 第二次调用必须再打后端(失败没进缓存),而且这次后端恢复了就要拿到推荐人
+    vi.stubGlobal('fetch', async () => ({ ok: true, status: 200, json: async () => ({ ok: true, public: { referrerType: 'agent', displayName: 'Jes', active: true } }) }) as any)
+    const r2 = await lookupReferralDetailed(MOCK_AGENT_TOKEN)
+    expect(r2.transient).toBe(false)
+    expect(r2.ref?.displayName).toBe('Jes')
+  })
+
+  it('5xx → transient:true; 4xx → no retry', async () => {
+    let calls = 0
+    vi.stubGlobal('fetch', async () => { calls++; return { ok: false, status: 503, json: async () => null } as any })
+    expect((await lookupReferralDetailed(MOCK_AGENT_TOKEN)).transient).toBe(true)
+    expect(calls).toBe(2)
+    _clearReferralCache(); calls = 0
+    vi.stubGlobal('fetch', async () => { calls++; return { ok: false, status: 404, json: async () => null } as any })
+    expect((await lookupReferralDetailed(MOCK_AGENT_TOKEN)).transient).toBe(true)
+    expect(calls).toBe(1)
+  })
+
+  it('definitive not_found → transient:false and cached', async () => {
+    let calls = 0
+    vi.stubGlobal('fetch', async () => { calls++; return { ok: true, status: 200, json: async () => ({ ok: false, error: 'not_found' }) } as any })
+    expect(await lookupReferralDetailed(MOCK_AGENT_TOKEN)).toEqual({ ref: null, transient: false })
+    expect(await lookupReferralDetailed(MOCK_AGENT_TOKEN)).toEqual({ ref: null, transient: false })
+    expect(calls).toBe(1)
   })
 })
 

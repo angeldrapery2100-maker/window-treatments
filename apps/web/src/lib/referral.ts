@@ -183,10 +183,35 @@ function toPublic(data: any): ReferralPublic | null {
  * expired or disabled token returns null (the landing page then redirects
  * home rather than showing an error).
  */
-export async function lookupReferral(token: string): Promise<ReferralPublic | null> {
-  if (!isValidReferralToken(token)) return null
+export type ReferralLookup = {
+  ref: ReferralPublic | null
+  /** true = AAPP 没有给出明确答案(超时 / 网络 / 5xx)。此时 ref 为 null 但
+   *  **不代表链接失效** —— 落地页不能因此把客户踢回主页。 */
+  transient: boolean
+}
+
+// 整改 #31 真因(2026-09-02 实测):referralLookup 云函数冷启动 4.4~5.6s
+// (Cloud Run 启动探针日志),而这里原来的超时是 5s —— 冷启动那一下必超时,
+// 返回 null 还被缓存 60s,接下来一分钟内所有访客全部被 redirect('/'),
+// 归因看起来就像「链接坏了」。链接本身好好的(referralLinks/referralPublic
+// 都 active:true)。所以:超时放宽 + 失败重试一次 + 失败绝不进缓存 + 把
+// 「不知道」和「确实没有」分开告诉调用方。
+const LOOKUP_TIMEOUT_MS = 10_000
+
+async function fetchLookupOnce(token: string): Promise<{ ok: boolean; status: number; data: any }> {
+  const res = await fetch(`${BASE()}/referralLookup?t=${encodeURIComponent(token)}`, {
+    headers: authHeaders(),
+    cache: 'no-store',
+    signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS),
+  })
+  const data = res.ok ? await res.json().catch(() => null) : null
+  return { ok: !!res.ok, status: Number(res.status) || 0, data }
+}
+
+export async function lookupReferralDetailed(token: string): Promise<ReferralLookup> {
+  if (!isValidReferralToken(token)) return { ref: null, transient: false }
   const cached = cacheGet(token)
-  if (cached) return cached.value
+  if (cached) return { ref: cached.value, transient: false }
 
   if (MOCK()) {
     // ★ 故意让 mock 也走 toPublic —— 翻译层是最容易和 AAPP 漂开的地方,
@@ -195,31 +220,35 @@ export async function lookupReferral(token: string): Promise<ReferralPublic | nu
     const wire = MOCK_LOOKUP_WIRE[token] as any
     const value = wire ? toPublic(wire?.public ?? wire) : null
     cacheSet(token, value)
-    return value
+    return { ref: value, transient: false }
   }
 
-  let value: ReferralPublic | null = null
-  try {
-    const res = await fetch(`${BASE()}/referralLookup?t=${encodeURIComponent(token)}`, {
-      headers: authHeaders(),
-      cache: 'no-store',
-      signal: AbortSignal.timeout(5_000),
-    })
-    if (res.ok) {
-      const data = (await res.json().catch(() => null)) as any
-      // 契约 §0.2:referralLookup → { ok:true, public:<referralPublic doc> }。
-      // 只读 data.referral 会取到 undefined,退化成读整个信封,而信封上没有
-      // referrerType —— 结果 lookupReferral 永远返回 null,ad_ref cookie 永远
-      // 种不下去,整条归因链是死的。data.referral / 裸对象保留为兼容分支。
-      if (data?.ok !== false) value = toPublic(data?.public ?? data?.referral ?? data)
-    } else {
-      console.warn(`[referral] lookup ${res.status}`)
+  let last: any = null
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const r = await fetchLookupOnce(token)
+      if (r.ok) {
+        const data = r.data
+        // 契约 §0.2:referralLookup → { ok:true, public:<referralPublic doc> }。
+        // 只读 data.referral 会取到 undefined,退化成读整个信封,而信封上没有
+        // referrerType —— 结果 lookupReferral 永远返回 null,ad_ref cookie 永远
+        // 种不下去,整条归因链是死的。data.referral / 裸对象保留为兼容分支。
+        const value = data?.ok !== false ? toPublic(data?.public ?? data?.referral ?? data) : null
+        cacheSet(token, value)                       // 只有明确答案才进缓存
+        return { ref: value, transient: false }
+      }
+      last = `status ${r.status}`
+      if (r.status >= 400 && r.status < 500) break   // 4xx 不会因为重试变好
+    } catch (e: any) {
+      last = e?.message || e
     }
-  } catch (e: any) {
-    console.warn('[referral] lookup failed:', e?.message || e)
   }
-  cacheSet(token, value)
-  return value
+  console.warn('[referral] lookup unavailable (not cached):', last)
+  return { ref: null, transient: true }
+}
+
+export async function lookupReferral(token: string): Promise<ReferralPublic | null> {
+  return (await lookupReferralDetailed(token)).ref
 }
 
 /**

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { isValidReferralToken, lookupReferral, PARTNER_TYPES } from '@/lib/referral'
+import { isValidReferralToken, lookupReferral, lookupReferralDetailed, PARTNER_TYPES } from '@/lib/referral'
 import ReferralLanding from './ReferralLanding'
 
 // Referral landing page (推广系统 P1 §1.2).
@@ -52,7 +52,26 @@ export async function generateMetadata({
 
 export default async function ReferralPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
-  const ref = isValidReferralToken(token) ? await lookupReferral(token) : null
+  const { ref, transient } = isValidReferralToken(token)
+    ? await lookupReferralDetailed(token)
+    : { ref: null, transient: false }
+
+  if (!ref && transient) {
+    // 整改 #31:AAPP 没答上来(冷启动 / 网络抖动)≠ 链接失效。middleware 已经把
+    // ad_ref cookie 种下去了,归因不丢;这里照常渲染落地页,只是不显示推荐人
+    // 那一行。绝不能 redirect('/') —— 那正是「Safari 打开推荐链接跳主页」。
+    console.warn(`[referral] backend unavailable, rendering generic landing: ${token}`)
+    return (
+      <ReferralLanding
+        token={token}
+        referrerType="company"
+        displayName="Angel Drapery"
+        discountPct={null}
+        isPartner={false}
+      />
+    )
+  }
+
   if (!ref) {
     // 死链接(被撤销 / 真源被删 / 打错)。仍然落主页而不是 404 —— 印出去的二维码
     // 不能把客户带进死胡同 —— 但必须留下痕迹,否则「链接跳主页」只能靠客户投诉发现。
