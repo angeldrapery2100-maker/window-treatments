@@ -1,8 +1,17 @@
 import type { NextConfig } from "next";
+import path from "node:path"
 
 const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL?.replace(/\/$/, '') || ''
 
 const nextConfig: NextConfig = {
+  // The workspace also has a package-lock.json one level up from here
+  // (window-treatments/) as well as one further up still (an unrelated
+  // sibling project under Projects/). Next.js's own multi-lockfile heuristic
+  // guesses the OUTER one as the tracing root, which makes output file
+  // tracing walk that entire unrelated sibling tree — pin it explicitly to
+  // this monorepo's real root instead (2026-09-02, found while verifying the
+  // referral-landing product-wall build).
+  outputFileTracingRoot: path.join(__dirname, '..', '..'),
   experimental: {
     serverActions: {
       bodySizeLimit: '200mb',
@@ -36,6 +45,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'pub-9090ea94bda94d6daf755d6ce4b62812.r2.dev',
+        pathname: '/**',
+      },
+      {
+        // Lutron Triathlon roller shade product photo — hotlinked from
+        // Lutron's own CDN for the referral-landing product wall and the
+        // Triathlon product page (2026-09-02).
+        protocol: 'https',
+        hostname: 'assets.lutron.com',
         pathname: '/**',
       },
     ],

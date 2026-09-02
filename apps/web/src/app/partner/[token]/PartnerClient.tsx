@@ -6,16 +6,23 @@ import { tr, useUiLanguage, type UiLanguage } from '@/lib/uiLanguage'
 import { PRIMARY_PHONE, BUSINESS_ADDRESS, BUSINESS_HOURS, COPYRIGHT } from '@/lib/site'
 import { type PortalView } from '@/lib/referral'
 
+type Collection = 'generic' | 'value' | 'designer'
+
 interface Props {
   portal: PortalView
-  /** PNG data URL of the partner's share link (server-rendered). */
-  qr: string
+  /** PNG data URLs of the three linked-collection variants (server-rendered). */
+  qrs: { generic: string; value: string; designer: string }
+  /** The three URLs behind them, same keys as qrs. */
+  links: { generic: string; value: string; designer: string }
 }
 
-export default function PartnerClient({ portal, qr }: Props) {
+export default function PartnerClient({ portal, qrs, links }: Props) {
   const [language, setLanguage] = useUiLanguage(portal.lang === 'zh' ? 'zh' : 'en')
   const [toast, setToast] = useState('')
   const [canShare, setCanShare] = useState(false)
+  // ★ 默认 generic,不是 value——合作方名片/宣传单上印的 QR 已经是不带参数
+  // 的通用链接,选择器的默认状态必须跟印刷物保持一致,否则默认态和实物对不上。
+  const [collection, setCollection] = useState<Collection>('generic')
 
   useEffect(() => {
     setCanShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function')
@@ -26,6 +33,9 @@ export default function PartnerClient({ portal, qr }: Props) {
     const t = setTimeout(() => setToast(''), 2600)
     return () => clearTimeout(t)
   }, [toast])
+
+  const shareUrl = links[collection]
+  const qr = qrs[collection]
 
   const copy = async (text: string, done: string) => {
     try {
@@ -38,12 +48,29 @@ export default function PartnerClient({ portal, qr }: Props) {
 
   const webShare = async () => {
     try {
-      await navigator.share({ title: 'Angel Drapery', url: portal.shareUrl })
+      await navigator.share({ title: 'Angel Drapery', url: shareUrl })
     } catch {
       /* dismissed */
     }
   }
 
+  const COLLECTIONS: { key: Collection; label: string; sub: string }[] = [
+    {
+      key: 'generic',
+      label: tr(language, 'Everything', '通用'),
+      sub: tr(language, 'Customer sees everyday favorites (default)', '客户看到高性价比系列(默认)'),
+    },
+    {
+      key: 'value',
+      label: tr(language, 'Everyday', '高性价比'),
+      sub: tr(language, 'Luma + local partner lines + handcrafted', 'Luma + 本地合作款 + 自制窗帘'),
+    },
+    {
+      key: 'designer',
+      label: tr(language, 'Designer', '设计师系列'),
+      sub: tr(language, 'Hunter Douglas + Lutron + handcrafted', 'Hunter Douglas + Lutron + 自制窗帘'),
+    },
+  ]
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#12141C]">
@@ -80,10 +107,38 @@ export default function PartnerClient({ portal, qr }: Props) {
           </p>
         </section>
 
+        {/* ── 系列三选(2026-09-02) ──────────────────────────────────────
+            通用/高性价比/设计师三条链接背后是同一个 referralCode,只是落地页
+            默认展示的产品卡片墙不同。切换只换下面已经生成好的链接文字/二维
+            码/复制/短信内容,不重新请求任何东西。 */}
+        <section className="mt-8" role="radiogroup" aria-label={tr(language, 'Which product collection to send', '发给客户看哪套系列')}>
+          <div className="grid grid-cols-3 gap-2">
+            {COLLECTIONS.map((c) => (
+              <button
+                key={c.key}
+                type="button"
+                role="radio"
+                aria-checked={collection === c.key}
+                onClick={() => setCollection(c.key)}
+                className={`flex min-h-[44px] flex-col items-center justify-center rounded-xl px-2 py-2 text-center transition-colors ${
+                  collection === c.key
+                    ? 'bg-[#12141C] text-white'
+                    : 'border border-gray-200 bg-white text-[#12141C] hover:border-[#12141C]'
+                }`}
+              >
+                <span className="text-[13px] font-medium">{c.label}</span>
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 px-1 text-center text-[12px] text-gray-500">
+            {COLLECTIONS.find((c) => c.key === collection)?.sub}
+          </p>
+        </section>
+
         {/* ── Link + QR + spoken code ──────────────────────────────────── */}
-        <section className="mt-8 rounded-2xl border border-gray-200 bg-white p-6">
+        <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-6">
           <div className="break-all rounded-xl bg-gray-50 px-4 py-3 text-center text-[13px] text-gray-600">
-            {portal.shareUrl}
+            {shareUrl}
           </div>
 
           {qr && (
@@ -116,7 +171,7 @@ export default function PartnerClient({ portal, qr }: Props) {
           <div className="mt-6 grid gap-2 sm:grid-cols-2">
             <button
               type="button"
-              onClick={() => copy(portal.shareUrl, tr(language, 'Link copied', '链接已复制'))}
+              onClick={() => copy(shareUrl, tr(language, 'Link copied', '链接已复制'))}
               className="rounded-full bg-[#12141C] px-5 py-2.5 text-[14px] text-white transition-opacity hover:opacity-90"
             >
               {tr(language, 'Copy link', '复制链接')}
@@ -131,7 +186,7 @@ export default function PartnerClient({ portal, qr }: Props) {
               </button>
             )}
             <a
-              href={`sms:?&body=${encodeURIComponent(portal.shareUrl)}`}
+              href={`sms:?&body=${encodeURIComponent(shareUrl)}`}
               className="rounded-full border border-gray-300 px-5 py-2.5 text-center text-[14px] transition-colors hover:border-[#12141C]"
             >
               {tr(language, 'Text it', '发短信')}
