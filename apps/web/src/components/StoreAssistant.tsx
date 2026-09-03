@@ -566,6 +566,18 @@ export default function StoreAssistant() {
     return () => window.removeEventListener('ad:open-assistant', onOpen)
   }, [openChat])
 
+  // /r/<token> 落地页一挂载就广播推荐人上下文(不弹窗)。只记下来,让悬浮球
+  // 打开时的欢迎屏也带推荐人名字(Eddie 2026-09-03:「悬浮球开场白没说是谁推荐的」)。
+  // 不往 messages 里塞东西——欢迎屏的量窗/预约按钮要保留。
+  useEffect(() => {
+    const onCtx = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { ref?: RefContext } | undefined
+      if (detail?.ref?.token) setRefCtx(detail.ref)
+    }
+    window.addEventListener('ad:referral-context', onCtx)
+    return () => window.removeEventListener('ad:referral-context', onCtx)
+  }, [])
+
   // Auto-scroll to bottom whenever the transcript grows or the panel opens.
   useEffect(() => {
     if (!open) return
@@ -849,7 +861,7 @@ export default function StoreAssistant() {
           {showWelcome && hydrated && (
             <>
               <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-3.5 py-2.5 text-[13px] leading-relaxed text-gray-800 shadow-sm">
-                {(onStore ? WELCOME_STORE : WELCOME_MAIN).content}
+                {refCtx && !onStore ? referralGreeting(refCtx) : (onStore ? WELCOME_STORE : WELCOME_MAIN).content}
               </div>
               <a
                 href={MEASURE_WIZARD_ACTION.href}

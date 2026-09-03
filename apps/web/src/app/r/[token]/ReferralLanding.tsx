@@ -60,6 +60,18 @@ export default function ReferralLanding({
       .finally(() => setReady(true))
   }, [token, collection])
 
+  // 悬浮球也要认得推荐人(Eddie 2026-09-03):以前只有点「问 AI 顾问」按钮才把
+  // 推荐人上下文交给助手;客户直接点右下角悬浮球,开场白就是通用的那句,看不出
+  // 是谁推荐的。这里一挂载(以及切语言时)就把上下文广播出去,助手只记不弹窗,
+  // 之后无论从哪个入口打开,欢迎语都带推荐人。归因本身不靠这个——靠 ad_ref cookie。
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent('ad:referral-context', {
+        detail: { ref: { token, type: referrerType, displayName, discountPct, language } },
+      })
+    )
+  }, [token, referrerType, displayName, discountPct, language])
+
   const openAssistant = (prefill?: string) => {
     const fire = () =>
       window.dispatchEvent(
