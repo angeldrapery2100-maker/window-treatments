@@ -77,5 +77,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[sitemap] could not query showcase_products:', e)
   }
 
+  // 4) DB-driven showcase products with a slug (SEO-friendly URL) — covers
+  // Partner Lines (Sundance/JC) and any other slug-addressable product.
+  // General on purpose: whatever gets a slug in the DB is picked up here,
+  // not hardcoded to today's four Partner Lines slugs.
+  try {
+    const { rows } = await pool.query(
+      `SELECT slug FROM showcase_products WHERE status = 'active' AND slug IS NOT NULL AND slug != '' ORDER BY sort_order`
+    )
+    for (const row of rows) {
+      entries.push({
+        url: `${BASE}/products/${row.slug}`,
+        lastModified: now,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      })
+    }
+  } catch (e) {
+    console.error('[sitemap] could not query showcase_products by slug:', e)
+  }
+
   return entries
 }

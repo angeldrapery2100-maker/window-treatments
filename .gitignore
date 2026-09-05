@@ -67,3 +67,5 @@ _to_delete_manifest.json
 
 # Bundled debug dumps written next to the app (multi-MB, never source)
 apps/web/.probe-*.mjs
+scripts/.aapp-probe-output.json
+scripts/.aapp-sensitivity-output.json

@@ -11,6 +11,8 @@ import { CDN_BASE } from '@/lib/cdn'
 import { buildProductJsonLd, buildBreadcrumbJsonLd } from '@/lib/productJsonLd'
 import pool from '@/lib/db'
 import { COPYRIGHT } from '@/lib/site'
+import PartnerFacts from '@/components/PartnerFacts'
+import { getPartnerLine } from '@/lib/partnerLines'
 
 // Renders one or more JSON-LD <script> blocks (server component).
 function JsonLd({ blocks }: { blocks: any[] }) {
@@ -42,6 +44,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: product.name || slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
       description: product.tagline || `Explore ${product.name} window treatments by Hunter Douglas at Angel Drapery.`,
       alternates: { canonical },
+    }
+  }
+  // Non-numeric slug: try the DB catalog (covers Partner Lines + any other
+  // slug-addressable showcase product).
+  if (!/^\d+$/.test(slug)) {
+    const dbProduct = await getDbProductBySlug(slug)
+    if (dbProduct) {
+      return {
+        title: dbProduct.name || slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+        description: dbProduct.description || dbProduct.tagline || `Explore ${dbProduct.name} window treatments at Angel Drapery.`,
+        alternates: { canonical },
+      }
     }
   }
   const name = slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
@@ -132,6 +146,26 @@ async function getRelatedDbProducts(currentId: string) {
   } catch (e) { return [] }
 }
 
+// Non-numeric slug lookup (Partner Lines and any other slug-addressable
+// showcase product). Same shape/error-handling as getDbProduct.
+async function getDbProductBySlug(slug: string) {
+  try {
+    const product = (await pool.query(
+      "SELECT * FROM showcase_products WHERE slug = $1 AND status = 'active'", [slug]
+    )).rows[0]
+    if (!product) return null
+    const images = (await pool.query(
+      'SELECT * FROM showcase_product_images WHERE product_id = $1 ORDER BY sort_order', [product.id]
+    )).rows
+    const sections = (await pool.query(
+      'SELECT * FROM showcase_product_sections WHERE product_id = $1 ORDER BY sort_order', [product.id]
+    )).rows
+    return { ...product, features: product.features || [], images, sections }
+  } catch (e) {
+    return null
+  }
+}
+
 /* ─── Shared footer helper ─── */
 async function getFooter() {
   const globalData = await getPageContent('global')
@@ -193,6 +227,34 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <>
           <JsonLd blocks={jsonLd} />
           <ProductDetailClient product={dbProduct} related={related} footer={footer} />
+        </>
+      )
+    }
+  }
+
+  /* 3) Non-numeric slug: DB catalog lookup by slug (Partner Lines, etc.) */
+  if (!/^\d+$/.test(slug)) {
+    const dbProduct = await getDbProductBySlug(slug)
+    if (dbProduct) {
+      const related = await getRelatedDbProducts(String(dbProduct.id))
+      const partnerLine = getPartnerLine(slug)
+      const jsonLd = [
+        buildProductJsonLd({
+          name: dbProduct.name,
+          description: dbProduct.description || dbProduct.tagline,
+          image: toAbsoluteImage(dbProduct.cover_image),
+          slug,
+          // Partner Lines carry their own manufacturer's brand in JSON-LD —
+          // they are not an Angel Drapery-made product.
+          brand: partnerLine ? partnerLine.brand : 'Angel Drapery',
+        }),
+        buildBreadcrumbJsonLd(dbProduct.name, slug),
+      ]
+      return (
+        <>
+          <JsonLd blocks={jsonLd} />
+          <ProductDetailClient product={dbProduct} related={related} footer={footer} />
+          {partnerLine && <PartnerFacts line={partnerLine} />}
         </>
       )
     }

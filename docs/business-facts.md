@@ -39,6 +39,11 @@
 - 合作品牌:Hunter Douglas、Lutron、Somfy、Sundance、Norman、Kirsch、Rowley、ALTA、Forest、Kaslen、Carole、Alendel。
 - 面料供应商产地:主力是洛杉矶本地供应商与自有库存面料;外地面料主要是 Carole(美国德州)和 Alendel(加拿大)——从下单到到料一般约 1-2 周,整体制作周期更长。**Carole 是美国供应商,不要说成进口/海外/东岸**。客户要加急时,优先本地供应商或现有库存面料。
 - Sundance Window Covering:与我们合作已有几十年的工厂,厂址就在洛杉矶 Arcadia(本地制造,交期与售后都近);质量非常可靠,价位属于中等 —— 想要可靠品质、预算又不到 Hunter Douglas 级别时,Sundance 是我们主动推荐的选择(具体价格仍以免费上门测量后的正式报价为准)。
+- Sundance 保修(对最终购买人本人):制造缺陷覆盖 "reasonable lifetime of the project";手动 clutch 10 年(含正常磨损)、电动/组件/配件 5 年、拉绳 7 年、蜂巢与 Verticell 5 年、BasicVue 与 Stock Vertical 最多 1 年。厂家明文不保:运费、测量与安装人工、正常磨损、日晒褪色、安装/清洁不当、天灾与化学品。服务电话 Sundance (626) 618-7000, 5507 N. Peck Rd., Arcadia, CA 91006。红线:厂家条款写明零售商无权以任何方式修改该保修 —— 只能准确转述,不得改写扩大。
+- JC Window Fashions 保修:材料/机构/工艺缺陷,覆盖原始购买人持有期间;油漆色牢度 8 年、integrated tilt 10 年。厂家明文不保:正常磨损、水/潮/日晒/风、化学品、渐进褪色、测量安装清洁不当、运费与上门费与拆装费与测量费、商业用途、美国境外。🔴 红线:JC 的保修只对零售商(我们),不对最终消费者 —— 任何 AI 与页面都不得说"JC 给你终身保修",必须说由 Angel Drapery 承接并代为向厂家索赔。
+- 产地与交期:Sundance roller shade / wood blind 在 Arcadia 本地制造,交期 3-4 周;JC 的 woven wood shade 与 Cambridge shutter 为进口件,交期 5-8 周(对外统一说 5-8 周)。🔴 不得对这四款做统一的"美国制造/洛杉矶制造"宣称。
+- 两家厂家都不保上门费、人工费与测量费 —— 这部分由我们 3 年安装保修覆盖。这是 Partner Lines 的核心卖点,与 Luma 的口径同构。
+- 🔴 四款 partner 产品的页面与话术一律不得出现抗晒/不褪色/抗UV 的暗示(两家都明文排除日晒褪色)。
 
 ## 线上渠道
 - 官网 angel-drapery.com:展示全线产品(含 Hunter Douglas / Lutron)。

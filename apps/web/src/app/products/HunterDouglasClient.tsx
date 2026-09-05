@@ -8,6 +8,7 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import { m as motion } from 'framer-motion'
 import SiteFooter from '@/components/SiteFooter'
+import { PARTNER_LINES } from '@/lib/partnerLines'
 
 interface Product {
   id: string
@@ -75,12 +76,30 @@ const HD_SLUGS = new Set([
   'screen-skyline','silhouette','sonnette','us-banded','verticals','vignette',
 ])
 
+// Partner Lines card order for the /products band — fixed display order,
+// independent of DB sort_order, per task spec.
+const PARTNER_LINE_SLUGS = [
+  'jc-woven-wood-shade',
+  'jc-cambridge-shutter',
+  'sundance-roller-shade',
+  'sundance-wood-blind',
+]
+
 export default function HunterDouglasClient({ products, showcaseProducts = [], useDbCatalog = false, hero, footer }: Props) {
   const [activeFilter, setActiveFilter] = useState<string>('all')
 
   // When DB catalog is active, filter to only Hunter Douglas products for the HD grid.
   // Other products (Handcrafted, Lutron, Luma) are shown in their own hardcoded sections.
   const hdProducts = useDbCatalog ? products.filter(p => HD_SLUGS.has(p.slug)) : products
+
+  // Partner Lines band: only render cards for slugs that actually exist in
+  // the DB catalog yet (Eddie enters them via /admin/showcase-products).
+  // Missing ones are simply skipped — no placeholder, no error.
+  const partnerProducts = useDbCatalog
+    ? PARTNER_LINE_SLUGS
+        .map(slug => products.find(p => p.slug === slug))
+        .filter((p): p is Product => Boolean(p))
+    : []
 
   // Product categories for filtering.
   // When DB catalog is active: use the `category` field from DB.
@@ -408,6 +427,74 @@ export default function HunterDouglasClient({ products, showcaseProducts = [], u
           </motion.div>
         </div>
       </section>
+
+      {/* ═══════════════════════ PARTNER LINES ═══════════════════════ */}
+      {partnerProducts.length > 0 && (
+        <section className="w-full bg-white py-24 md:py-32 border-t border-gray-100">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
+              variants={fadeInUp}
+              className="mb-16"
+            >
+              <span className="text-gray-400 text-[11px] font-bold tracking-[0.3em] uppercase block mb-4">Trusted Suppliers</span>
+              <h3 className="text-4xl md:text-5xl font-light tracking-tighter text-[#12141C] mb-4">Partner Lines</h3>
+              <p className="text-gray-400 text-sm max-w-2xl">
+                Four categories, from two suppliers we&apos;ve worked with for decades. Manufacturer warranty on every one — and one number to call when something needs attention.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }}
+              variants={staggerContainer}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {partnerProducts.map((product) => {
+                const line = PARTNER_LINES[product.slug]
+                const productHref = product.href || `/products/${product.slug}`
+                const imgSrc = product.cover_image
+                  ? `${CDN_BASE}${product.cover_image.startsWith('/') ? '' : '/'}${product.cover_image}`
+                  : null
+                return (
+                  <motion.div key={product.slug} variants={cardReveal}>
+                    <Link
+                      href={productHref}
+                      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100"
+                    >
+                      <div className="aspect-[4/3] overflow-hidden bg-[#f0ede8] relative">
+                        {imgSrc ? (
+                          <Image
+                            src={imgSrc}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-100">
+                            <span className="text-gray-400 text-sm">{product.name}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <h4 className="text-sm font-semibold text-[#12141C] group-hover:text-gray-500 transition-colors mb-1.5 tracking-tight">
+                          {product.name}
+                        </h4>
+                        {line && (
+                          <p className="text-xs text-gray-400">
+                            {line.brand} · {line.leadTime}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* ═══════════════════════ LUTRON COLLECTION ═══════════════════════ */}
       <section className="w-full bg-[#12141C] py-16 md:py-20">

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
 import { PRIMARY_PHONE } from '@/lib/site'
+import { PARTNER_LINES } from '@/lib/partnerLines'
 
 // Full warranty policy page — linked from the Luma product pages' warranty
 // section (§5 of SONNET-任务书-Luma保修卖点-2026-08-29.md). All copy here is
@@ -42,6 +43,36 @@ const halfPriceTerms = [
   'Not combinable with other promotions or discounts',
   'Covers the shade only — installation, shipping, and sales tax are not included',
   'Subject to the product line still being offered at the time of replacement',
+]
+
+// Partner Lines section renders straight from PARTNER_LINES (apps/web/src/lib/partnerLines.ts)
+// — never a hand-written second copy of this text. Exact-string dedup only:
+// no paraphrasing, so the merged points stay word-for-word what each
+// manufacturer's warranty actually says.
+function mergeWarrantyPoints(lines: { warrantyPoints: string[] }[]): string[] {
+  const seen = new Set<string>()
+  const merged: string[] = []
+  for (const line of lines) {
+    for (const point of line.warrantyPoints) {
+      if (!seen.has(point)) {
+        seen.add(point)
+        merged.push(point)
+      }
+    }
+  }
+  return merged
+}
+
+const sundanceLines = [PARTNER_LINES['sundance-roller-shade'], PARTNER_LINES['sundance-wood-blind']]
+const jcLines = [PARTNER_LINES['jc-woven-wood-shade'], PARTNER_LINES['jc-cambridge-shutter']]
+const sundancePoints = mergeWarrantyPoints(sundanceLines)
+const jcPoints = mergeWarrantyPoints(jcLines)
+
+const partnerLinesTable = [
+  { product: 'Roller Shade', manufacturer: 'Sundance Window Coverings', made: 'Arcadia, California', leadTime: '3–4 weeks' },
+  { product: 'Wood Blind', manufacturer: 'Sundance Window Coverings', made: 'Arcadia, California', leadTime: '3–4 weeks' },
+  { product: 'Woven Wood Shade', manufacturer: 'JC Window Fashions', made: 'Imported', leadTime: '5–8 weeks' },
+  { product: 'Cambridge Shutter', manufacturer: 'JC Window Fashions', made: 'Imported', leadTime: '5–8 weeks' },
 ]
 
 export default function WarrantyPage() {
@@ -177,6 +208,76 @@ export default function WarrantyPage() {
               </Link>
               . We&apos;ll tell you within one business day whether it&apos;s a warranty repair, a replacement,
               or something we can walk you through over the phone.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl md:text-3xl font-light tracking-tighter text-[#12141C] mb-6">
+              Partner Lines — Sundance &amp; JC
+            </h2>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Two of our lines come from suppliers we&apos;ve worked with for decades. Their warranties are
+              their own, and we don&apos;t restate them loosely — here is what each manufacturer actually
+              covers, and where our own coverage picks up.
+            </p>
+
+            <div className="overflow-x-auto rounded-2xl border border-gray-100 mb-10">
+              <table className="w-full text-sm text-left">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-[#F7F6F3]">
+                    <th className="px-6 py-3 font-semibold text-[#12141C]">Product</th>
+                    <th className="px-6 py-3 font-semibold text-[#12141C]">Manufacturer</th>
+                    <th className="px-6 py-3 font-semibold text-[#12141C]">Made</th>
+                    <th className="px-6 py-3 font-semibold text-[#12141C]">Lead time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {partnerLinesTable.map((row, i) => (
+                    <tr key={row.product} className={i !== partnerLinesTable.length - 1 ? 'border-b border-gray-100' : ''}>
+                      <td className="px-6 py-3 text-gray-700">{row.product}</td>
+                      <td className="px-6 py-3 text-gray-700">{row.manufacturer}</td>
+                      <td className="px-6 py-3 text-gray-700">{row.made}</td>
+                      <td className="px-6 py-3 text-gray-700">{row.leadTime}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mb-10">
+              <h3 className="text-lg font-semibold text-[#12141C] mb-4">Sundance Window Coverings</h3>
+              <ul className="space-y-3 mb-4">
+                {sundancePoints.map((point) => (
+                  <li key={point} className="flex gap-3 text-gray-500 text-sm leading-relaxed">
+                    <span className="w-1 shrink-0 rounded-full bg-[#4DB6E8]/30 mt-2 h-1" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-gray-400 leading-relaxed mb-3">{sundanceLines[0].warrantyExclusions}</p>
+              <p className="text-[11px] text-gray-300 leading-relaxed">{sundanceLines[0].warrantySource}</p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-[#12141C] mb-4">JC Window Fashions</h3>
+              <ul className="space-y-3 mb-4">
+                {jcPoints.map((point) => (
+                  <li key={point} className="flex gap-3 text-gray-500 text-sm leading-relaxed">
+                    <span className="w-1 shrink-0 rounded-full bg-[#4DB6E8]/30 mt-2 h-1" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-gray-400 leading-relaxed mb-3">{jcLines[0].warrantyExclusions}</p>
+              <p className="text-[11px] text-gray-300 leading-relaxed">{jcLines[0].warrantySource}</p>
+            </div>
+
+            <p className="text-gray-500 text-sm leading-relaxed mt-10">
+              <span className="font-semibold text-[#12141C]">Where our coverage picks up.</span> Both
+              manufacturers exclude the same things: shipping, the trip charge, the labor for removal and
+              reinstallation, and the cost of measuring. Our three-year installation warranty covers exactly
+              that, on everything we install. Neither manufacturer covers fading from sun exposure, and we
+              won&apos;t tell you otherwise.
             </p>
           </div>
 

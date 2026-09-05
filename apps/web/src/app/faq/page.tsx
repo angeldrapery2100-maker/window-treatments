@@ -135,6 +135,14 @@ const categories = [
         q: 'What are your showroom hours?',
         a: `${BUSINESS_HOURS}. Showroom visits are by appointment only — call or submit our contact form to schedule a time.`,
       },
+      {
+        q: 'Who do I call if something goes wrong with a Sundance or JC product?',
+        a: 'Us. Sundance warrants its products to you directly and JC Window Fashions warrants through us as the retailer, but either way the practical answer is the same — call Angel Drapery and we handle the manufacturer claim on your behalf. Our own three-year installation warranty covers the service visit, the labor and the measuring, which neither manufacturer covers.',
+      },
+      {
+        q: 'How long do Sundance and JC products take to make?',
+        a: 'Sundance roller shades and wood blinds are made in Arcadia and typically take 3–4 weeks. JC woven wood shades and Cambridge shutters are imported and typically take 5–8 weeks. Those are production times, not installation dates — we confirm the install date once the workshop schedule is set.',
+      },
     ],
   },
 ]
